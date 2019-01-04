@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Urobme niečo s `make` | robonovotny</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.css" integrity="sha384-D+9gmBxUQogRLqvARvNLmA9hS2x//eK1FhVb9PiU86gmcrBrJAQT8okdJ4LMp2uv" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.js" integrity="sha384-483A6DwYfKeDa0Q52fJmxFXkcPCFfnXMoXblOkJ4JcA8zATN6Tm78UNL72AKk+0O" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/contrib/auto-render.min.js" integrity="sha384-yACMu8JWxKzSp/C1YV86pzGiQ/l1YUfE8oPuahJQxzehAjEt2GiQuy/BIvl9KyeF" crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body);
+        });
+    </script>
+
+<header>
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <nav>
+    <ul>
+      
+      
+      <li class="pull-left ">
+        <a href="http://novotnyr.github.io/">/home/robonovotny</a>
+      </li>
+      
+
+      
+
+    </ul>
+  </nav>
+</header>
+
+  </head>
+
+  <body>
+    <br/>
+
+<div class="article-meta">
+<h1><span class="title">Urobme niečo s `make`</span></h1>
+
+<h2 class="date">2019/01/04</h2>
+<p class="terms">
+  
+  
+  
+  
+  
+</p>
+</div>
+
+
+
+<main>
+
+
+<h1 id="o-make-a-makefile-súboroch">O <code>make</code> a <code>makefile</code> súboroch</h1>
+
+<p><code>make</code> zjednoduší zostavovanie súborov - teda kompilovanie, konverzie, či akékoľvek iné hromadné spracovanie súborov. Zostaviť binárku zo zdrojáku v Céčku? Vytvoriť PDF súbor v diplomovej práce v LaTeXu? Previesť markdownovské zdrojové súbory do HTML? To všetko <code>make</code> zvládne bez problémov.</p>
+
+<p>A keďže už od nepamäti je súčasťou každého Linuxu, či dokonca MacOS, oplatí sa ho spoznať!</p>
+
+<h1 id="jednoduché-recepty-najmä-pre-céčkarov">Jednoduché recepty, najmä pre céčkarov</h1>
+
+<h2 id="recept-overenie-že-make-funguje">Recept: overenie, že <code>make</code> funguje</h2>
+
+<p><code>make</code>  je naozaj všade! Z terminálu, resp. konzoly spustime:</p>
+
+<pre><code class="language-shell">whitehall:tmp$ make
+make: *** No targets specified and no makefile found.  Stop.
+</code></pre>
+
+<p>Program nemá žiadne špeciálne inštrukcie, preto skončí s chybovou hláškou.</p>
+
+<p>Overme si verziu <code>make</code> v operačnom systéme:</p>
+
+<pre><code class="language-shell">whitehall:tmp$ make -v
+GNU Make 3.81
+Copyright (C) 2006  Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.
+There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A
+PARTICULAR PURPOSE.
+
+This program built for i386-apple-darwin11.3.0
+</code></pre>
+
+<p>V ukážke vidíme <strong>GNU Make</strong> spustený na <em>MacOS Mojave</em>. Ide o najrozšírenejší variant, i keď to nie je najnovšia verzia. V každom prípade, je to rozumný štandard!</p>
+
+<h2 id="recept-zostavenie-jedného-c-súboru">Recept: zostavenie jedného <code>c</code> súboru</h2>
+
+<p>Vytvorme si primitívny program v jazyku C, <code>hello.c</code>:</p>
+
+<pre><code class="language-c">#include&lt;stdio.h&gt;
+
+int main(void) {
+  printf(&quot;Hello World!&quot;);
+  return 0;
+}
+</code></pre>
+
+<p>Build (zostavenie) spustíme nasledovne:</p>
+
+<pre><code class="language-shell">make hello
+</code></pre>
+
+<p>Na výstupe uvidíme priebeh zostavenia:</p>
+
+<pre><code class="language-makefile">cc     hello.c   -o hello
+</code></pre>
+
+<p>V aktuálnom adresári vznikne binárka <code>hello</code>, ktorú môžeme rovno spustiť.</p>
+
+<pre><code class="language-shell">./hello
+</code></pre>
+
+<p><code>make</code> má totiž zabudovanú podporu pre jazyk C. Po spustení <code>make hello</code> sa vyhľadá v aktuálnom adresári súbor <code>hello.c</code>, a skompiluje sa presne tak, ako keby sme vykonali <code>cc hello.c -o hello</code>. Príkaz <code>cc</code> je na tradičnom linuxovom systéme stotožnený s niektorý, kompilátorom jazyka C, napr. s <code>gcc</code>.</p>
+
+<h3 id="pozorovanie-ak-sa-zdrojáky-nezmenili-build-sa-nevykoná">Pozorovanie: ak sa zdrojáky nezmenili, build sa nevykoná</h3>
+
+<p>Opakované spustenie <code>make</code> šetrí čas. Ak <code>make</code> zistí, že zdrojový súbor nebol zmenený, kompiláciu nebude zbytočne opakovať a vypíše len:</p>
+
+<pre><code>`hello` is up to date
+</code></pre>
+
+<h2 id="recept-prispôsobenie-parametrov-buildu-pre-jazyk-c">Recept: prispôsobenie parametrov buildu pre jazyk C</h2>
+
+<p>Ak chceme použiť vlastné nastavenia pre build, založme si konfiguračný súbor <code>makefile</code>. Uveďme doňho nastavenia pre kompilátor C:</p>
+
+<pre><code class="language-makefile">CFLAGS = -Wall -Wextra -ansi -pedantic -Werror
+</code></pre>
+
+<p>V súbore <code>makefile</code> môžeme deklarovať vlastné premenné. V tomto prípade nastavíme zabudovanú premennú <code>CFLAGS</code>, ktorou sa riadia parametre kompilátora jazyka C.
+Ak spustíme <code>make hello</code> znovu, uvidíme jej použitie:</p>
+
+<pre><code class="language-shell">whitehall$ make hello
+cc -Wall -Wextra -ansi -pedantic -Werror    hello.c   -o hello
+</code></pre>
+
+<h2 id="recept-vlastný-kompilátor-pre-c">Recept: vlastný kompilátor pre C</h2>
+
+<p>Ak chceme použiť konkrétny kompilátor jazyka C pre build, nastavme premennú <code>CC</code>:</p>
+
+<pre><code>CC = gcc
+</code></pre>
+
+<p>Spustíme ho:</p>
+
+<pre><code class="language-shell">whitehall$ make hello
+gcc -Wall -Wextra -ansi -pedantic -Werror    hello.c   -o hello
+</code></pre>
+
+<h2 id="recept-vlastný-cieľ-pre-mazanie">Recept: vlastný cieľ pre mazanie</h2>
+
+<p><code>make</code> podporuje aj vlastné ciele (<strong>targets</strong>), teda vlastné postupnosti príkazov, ktoré sa majú vykonať. Folklórom je vymazanie binárok, teda príkaz v duchu:</p>
+
+<pre><code>rm ./hello
+</code></pre>
+
+<p>V <code>makefile</code> si môžeme zaviesť vlastný cieľ <code>clean</code> a následne ho zavolať:</p>
+
+<pre><code>clean:
+	rm ./hello
+</code></pre>
+
+<p>Jednotlivé príkazy <em>musia</em> začínať jedným znakom tabulátora (teda nie medzerami, ani ničím iným, jedným (!) znakom tabulátora), pretože inak sa bude <code>make</code> sťažovať.
+Ak chceme vymazať binárku, stačí zavolať:</p>
+
+<pre><code>make clean
+</code></pre>
+
+<h2 id="recept-prerekvizity">Recept: prerekvizity</h2>
+
+<p>Prerekvizitou je súbor, ktorý musí existovať &ndash; teda je požiadavkou &ndash; na úspešné vykonanie cieľa. Prerekvizity uvádzame za dvojbodku:</p>
+
+<pre><code class="language-makefile">CFLAGS = -Wall -Wextra -ansi -pedantic -Werror
+CC = gcc
+
+all: hello
+
+clean:
+	rm ./hello
+</code></pre>
+
+<p>V tomto prípade sme si vymysleli cieľ <code>all</code>, ktorý vyžaduje na svoje úspešné vykonanie existenciu súboru <code>hello</code>.</p>
+
+<p>Ak spustíme <code>make all</code>, a súbor s binárkou <code>hello</code> , ktorá je prerekvizitou tohto cieľa, neexistuje, spustí sa vykonávanie zabudovaného cieľa <code>hello</code> ,
+teda spustenie kompilátora <code>gcc</code>.</p>
+
+<p>Aký je rozdiel medzi <code>make hello</code> a <code>make</code>? V tomto prípade zdanlivo žiadny, ale o sekundu zistíme, že prináša jednu pohodlnú vec.</p>
+
+<h2 id="recept-implicitné-ciele">Recept: implicitné ciele</h2>
+
+<p>Cieľ, ktorý je v <code>makefile</code> uvedený ako prvý, je <strong>implicitný</strong> (<em>default target</em>). Vykoná sa v prípade, keď zavoláme <code>make</code> len tak, bez ničoho:</p>
+
+<pre><code class="language-shell">make
+</code></pre>
+
+<h1 id="recepty-pre-iné-technológie">Recepty pre iné technológie</h1>
+
+<p>Ukážme si zostavenie, kompiláciu, či konverziu pre iné technológie, presnejšie pre prevod zdrojových súborov z formátu <a href="https://daringfireball.net/projects/markdown/">Markdown</a> pomocou nástroja <a href="https://pandoc.org/">Pandoc</a>.
+Založme si cvičný súbor <code>hello.markdown</code> s nasledovným jednoduchým obsahom:</p>
+
+<pre><code class="language-markdown">Hello World
+===========
+Toto je ukážkový súbor!
+</code></pre>
+
+<h2 id="recept-ručný-prevod-z-markdown-do-html">Recept: ručný prevod z Markdown do HTML</h2>
+
+<p>Ak by sme nepotrebovali <code>make</code>, súbor prevedieme na HTML jednoducho:</p>
+
+<pre><code>pandoc hello.markdown --output hello.html
+</code></pre>
+
+<h2 id="recept-vlastný-prevod-jedného-súboru">Recept: vlastný prevod jedného súboru</h2>
+
+<p>Ak využijeme <code>make</code>, zavedieme pravidlo:</p>
+
+<pre><code class="language-makefile">hello.html: hello.markdown
+	pandoc hello.markdown --output hello.html
+</code></pre>
+
+<p>Cieľ <code>hello.html</code> zodpovedá súboru, ktorý sa má vyprodukovať v prípade, že</p>
+
+<ol>
+<li>existuje <strong>prerekvizita</strong> zodpovedajúca súboru <code>hello.markdown</code> ,</li>
+<li>súbor prerekvizity <code>hello.markdown</code> sa zmenil.
+Vyskúšajme zostaviť cieľ:</li>
+</ol>
+
+<pre><code>make hello.html
+</code></pre>
+
+<p><code>make</code> vykoná požadovaný prevod a v adresári vznikne <code>hello.html</code>.</p>
+
+<h2 id="recept-opakovaný-prevod">Recept: opakovaný prevod</h2>
+
+<p><code>make</code> sleduje zmeny na prerekvizitách. Ak sa prerekvizita nezmenila, pravidlo sa nevykoná, čím sa šetrí čas! Vyskúšajme jeden cieľ spustiť viackrát:</p>
+
+<pre><code>make hello.html
+</code></pre>
+
+<p>Po druhom spustení uvidíme oznam, že cieľ nie je potrebné vykonať, lebo jeho prerekvizita sa nezmenila.</p>
+
+<pre><code>make: `hello.html' is up to date.
+</code></pre>
+
+<h2 id="recept-všeobecné-pravidlá-pre-prevody-súborov-pattern-rules">Recept: všeobecné pravidlá pre prevody súborov (<em>pattern rules</em>)</h2>
+
+<p>Ak by sme mali v adresári viacero zdrojových súborov vo formáte Markdown určených na prevod do HTML, každý jeden súbor by musel mať samostatné pravidlo. To by nebola ktovieaká zábava. Našťastie, <code>make</code> podporuje <em>vzorové pravidlá</em> (<strong>pattern rules</strong>) pre súbory, ktorých názvy zodpovedajú príslušnému vzoru:</p>
+
+<pre><code>%.html: %.markdown
+</code></pre>
+
+<p>V pravidle máme pravidlo, ktoré hovorí, že cieľ (súbor) s príponou <code>.html</code> má za prerekvizitu príslušný zdrojový súbor s príponou <code>.markdown</code>.
+Znak <code>%</code> reprezentuje zástupný znak (<em>wildcard</em>) pre neprázdny reťazec.
+Aký bude konkrétny návod pre zostavenie súboru?</p>
+
+<pre><code>%.html: %.markdown
+	pandoc $&lt; --output $@
+</code></pre>
+
+<p>V definícii používame dve <strong>automatické premenné</strong> (<em>automatic variables</em>):</p>
+
+<ul>
+<li><code>$@</code>: názov cieľa, vrátane prípony.</li>
+<li><code>$&lt;</code> : názov prvej prerekvizity. Inými slovami, obvykle predstavuje názov prvého súboru, vďaka ktorému sa zvolilo toto pravidlo.
+Ak vykonáme <code>make hello.html</code>, v premennej <code>$@</code>  sa ocitne <code>hello.html</code> a v premennej <code>$&lt;</code> bude <code>hello.markdown</code>.</li>
+</ul>
+
+<h2 id="recept-falošné-ciele-phony-targets">Recept: falošné ciele (<em>phony targets</em>)</h2>
+
+<p><a href="http://make.mad-scientist.net/papers/rules-of-makefiles/#rule2">Pravidlo č. 2</a> tvorby <code>makefile</code>-ov hovorí, že názov cieľa predstavuje názov súboru, ktorý sa aktualizuje / zostaví / konvertuje, ak sa cieľ vykoná.</p>
+
+<p>Ale čo taký <code>make clean</code>? Žiaden súbor <code>clean</code> predsa neexistuje!</p>
+
+<p>Ciele, ktoré nezodpovedajú súborom, sú <em>falošné</em> (<strong>phony target</strong>). Ak by totiž existoval v adresári súbor <code>clean</code>, mazanie súborov by sa nekonalo, prípadne by sa diali ďalšie podivnosti.
+Falošný cieľ označíme nasledovne:</p>
+
+<pre><code>.PHONY: clean
+</code></pre>
+
+<p>Zápis je vtipný, pretože vytvoríme špeciálne pravidlo s cieľom  <code>.PHONY</code> , ktorého prerekvizitou je falošný cieľ.</p>
+
+<h2 id="rekapitulácia-jednoduchý-makefile">Rekapitulácia: jednoduchý <code>makefile</code></h2>
+
+<p>Nasledovný <code>makefile</code> dokáže:</p>
+
+<ul>
+<li>zostaviť HTML súbor zo zdrojového Markdownu pomocou <code>make hello.html</code>,</li>
+<li>vymazať všetky prevedené súbory pomocou <code>make clean</code>,</li>
+<li>vyhlásiť <code>clean</code> za falošný cieľ,</li>
+<li>použiť <code>all</code> ako falošný cieľ, ktorý síce neurobí nič, ale vykoná sa v prípade, ak neuvedieme žiaden cieľ`.</li>
+</ul>
+
+<pre><code class="language-makefile">%.html: %.markdown
+	pandoc $&lt; --output $@
+
+all:
+.PHONY: all
+
+clean:
+	rm *.html
+.PHONY: clean
+</code></pre>
+
+<h1 id="recepty-pre-hromadné-spracovanie-súborov">Recepty pre hromadné spracovanie súborov</h1>
+
+<p>Vytvorme si ešte jeden súbor vo formáte Markdown, <code>intro.markdown</code>:</p>
+
+<pre><code>Úvod
+=============
+Toto je úvod!
+</code></pre>
+
+<h2 id="recept-premenné">Recept: premenné</h2>
+
+<p><code>make</code> podporuje premenné, ktoré sprehľadňujú zápis. Vytvorme si premennú <code>MARKDOWN</code>, ktorá obsahuje zoznam dvoch súborov.</p>
+
+<pre><code>MARKDOWN = intro.markdown hello.markdown
+</code></pre>
+
+<p>Premennú následne môžeme použiť na viacerých miestach:</p>
+
+<ul>
+<li>pri prerekvizitách</li>
+<li>v príkazoch samotného receptu.
+V ukážke vidíme priradenie i čítanie z premennej pomocou <code>$(MARKDOWN)</code>, čo je zápis podobný shellu.</li>
+</ul>
+
+<pre><code class="language-makefile">MARKDOWN = intro.markdown hello.markdown
+all.markdown: $(MARKDOWN)
+	cat $(MARKDOWN) &gt; all.markdown
+</code></pre>
+
+<p>Zároveň vidíme, že definujeme cieľ <code>all.markdown</code>, ktorý má prerekvizitu získanú z premennej.
+Vo vykonaní cieľa pomocou <code>cat</code> zoberieme obsahy oboch súborov z premennej a zapíšeme ich do súboru.
+Môžeme tak vykonať príkaz, ktorým sa obsahy oboch súborov konkatenujú do jedného veľkého súboru.</p>
+
+<pre><code class="language-shell">make all.markdown
+</code></pre>
+
+<h2 id="recept-dynamické-zoznamy-súborov-pomocou-funkcie-wildcard">Recept: dynamické zoznamy súborov pomocou funkcie <code>wildcard</code></h2>
+
+<p>Ak by sme mali príliš veľa zdrojových súborov, môžeme využiť zabudovanú funkciu <code>wildcard</code>:</p>
+
+<pre><code>MARKDOWN = $(wildcard *.markdown)
+</code></pre>
+
+<p>Do premennej <code>MARKDOWN</code> vložíme výsledok volania funkcie <code>wildcard</code>, ktorá vyhľadá všetky súbory s príponou <code>.markdown</code> a zostaví z nich zoznam.
+V premennej <code>MARKDOWN</code> sa v našom prípade objavia dva súbory: <code>intro.markdown</code> a <code>hello.markdown</code>.</p>
+
+<pre><code>MARKDOWN = $(wildcard *.markdown)
+all.markdown: $(MARKDOWN)
+	cat $(MARKDOWN) &gt; all.markdown
+</code></pre>
+
+<h2 id="recept-hromadné-zostavenie-súborov">Recept: hromadné zostavenie súborov</h2>
+
+<p>Predstavme si teraz, že chceme jedným cieľom zostaviť všetky markdownové súbory do HTML!
+Zatiaľ máme pravidlo, ktorým prevedieme jeden Markdown na jeden HTML súbor:</p>
+
+<pre><code>%.html: %.markdown
+	pandoc $&lt; --output $@
+</code></pre>
+
+<p>Zároveň vieme získať zoznam všetkých markdownových súborov:</p>
+
+<pre><code>MARKDOWN = $(wildcard *.markdown)
+</code></pre>
+
+<p>Ako však prevedieme všetky markdowny na všetky HTML súbory?
+Mohli by sme si urobiť cieľ  <code>html</code></p>
+
+<pre><code>.PHONY: html
+html: intro.html hello.html
+</code></pre>
+
+<p>Ak zavoláme <code>make html</code> , <code>make</code> zistí, že sú potrebné dve prerekvizity v podobe dvoch HTML súborov. Ak tieto súbory nejestvujú alebo nie sú aktuálne, pokúsi sa ich zostaviť.
+Na vytvorenie HTML súboru máme vzorové pravidlo (<em>pattern rule</em>) , ktoré zavolá nástroj <code>pandoc</code>. Toto pravidlo sa zavolá pre každý markdownový súbor zvlášť.</p>
+
+<pre><code class="language-shell">whitehall$ make html
+pandoc intro.markdown --output intro.html
+pandoc hello.markdown --output hello.html
+</code></pre>
+
+<p>Vidíme, že vieme zavolať cieľ, ktorým naraz vybudujeme všetky HTML súbory!</p>
+
+<h2 id="recept-hromadné-zostavenie-dynamických-súborov">Recept: hromadné zostavenie dynamických súborov</h2>
+
+<p>Ak chceme naraz zostaviť všetky HTML súbory, máme na to cieľ <code>html</code> s pevným zoznamom prerekvizít:</p>
+
+<pre><code>html: intro.html hello.html
+</code></pre>
+
+<p>Čo ak chceme dynamický zoznam prerekvizít? Chceli by sme zoznam všetkých HTML súborov v adresári, a to dosiahneme na dva kroky:</p>
+
+<ol>
+<li>Pomocou funkcie <code>wildcard</code> vieme získať zoznam všetkých markdownových súborov.</li>
+</ol>
+
+<pre><code>MARKDOWN = $(wildcard *.markdown)
+</code></pre>
+
+<ol>
+<li>Keďže každému <code>.markdown</code> prislúcha presne 1 HTML súbor, stačí zmeniť prípony každého súboru v zozname a máme to!
+Na zmenu prípony použijeme nasledovný zápis</li>
+</ol>
+
+<pre><code>HTML = $(MARKDOWN:.markdown=.html)
+</code></pre>
+
+<p>Zápis jemne pripomína expanziu premenných v shelli, ale poďme si ho rozobrať:</p>
+
+<ul>
+<li>v premennej <code>MARKDOWN</code>
+
+<ul>
+<li>za dvojbodkou uvedieme príponu, ktorú nahrádzame (<code>.markdown</code>)</li>
+<li>za “rovná sa” uvedieme reťazec, ktorým nahrádzame (<code>.html</code>)
+Ak je v premennej <code>MARKDOWN</code> zoznam dvoch súborov:</li>
+</ul></li>
+</ul>
+
+<pre><code>MARKDOWN = intro.markdown hello.markdown
+</code></pre>
+
+<p>po nahradení bude v premennej HTML obsah:</p>
+
+<pre><code>HTML = intro.html hello.html
+</code></pre>
+
+<p>Prehľadnejší  <code>makefile</code> môže vyzerať nasledovne:</p>
+
+<pre><code>MARKDOWN = $(wildcard *.markdown)
+HTML = $(MARKDOWN:.markdown=.html)
+
+%.html: %.markdown
+	pandoc $&lt; --output $@
+
+html: $(HTML)
+.PHONY: html
+</code></pre>
+
+<h2 id="rekapitulácia-makefile">Rekapitulácia: <code>makefile</code></h2>
+
+<p>Nasledovný súbor dokáže:</p>
+
+<ul>
+<li><code>make intro.html</code>: vybudovať jeden HTML súbor</li>
+<li><code>make html</code> alebo len <code>make</code>: vybudovať všetky HTML súbory. Keďže cieľ <code>html</code> je prvý nevzorový cieľ, použije sa v prípade, že zavoláme <code>make</code> bez uvedenia cieľa.</li>
+<li><code>make all.markdown</code>: vybudovať súbor obsahujúci všetky markdownové súbory</li>
+<li><code>make clean</code>: odstráni všetky HTML súbory a odstráni generovaný súbor <code>all.markdown</code></li>
+</ul>
+
+<pre><code>MARKDOWN = $(wildcard *.markdown)
+HTML = $(MARKDOWN:.markdown=.html)
+
+%.html: %.markdown
+	pandoc $&lt; --output $@
+
+html: $(HTML)
+.PHONY: html
+
+all.markdown: $(MARKDOWN)
+	cat $(MARKDOWN) &gt; all.markdown
+
+clean:
+	rm *.html
+	rm all.markdown
+.PHONY: clean
+</code></pre>
+
+<p>Keďže ciele <code>clean</code> a <code>html</code> nezodpovedajú súborom, označíme ich ako /phony/. Každá deklarácia cieľa  <code>.PHONY</code> pridá danú prerekvizitu do zoznamu falošných cieľov.</p>
+
+<h1 id="sumár-základov">Sumár základov</h1>
+
+<p><code>make</code> dokáže jednoduchým spôsobom zostavovať súbory. Stačí však dodržať niekoľko základných pravidiel:</p>
+
+<ul>
+<li><strong>Príkazy musia začínať TABulátorom</strong>: v opačnom prípade uvidíme hlášku:</li>
+</ul>
+
+<pre><code>makefile:2: *** missing separator.  Stop.
+</code></pre>
+
+<ul>
+<li><strong>Cieľ = súbor</strong>. Názov cieľa reprezentuje súbor, ktorý sa má vytvoriť. Príkazy cieľa musia vytvoriť, či aktualizovať príslušnú súbor, pretože inak si koledujeme o problémy.</li>
+<li><strong>Falošné ciele sú <code>.PHONY</code></strong>. Ak cieľ nezodpovedá súboru, musíme ho vyhlásiť za prerekvizitu cieľa <code>.PHONY</code></li>
+<li><strong>Prerekvizity sú ciele</strong>. Každá prerekvizita cieľa reprezentuje súbor. Cieľ sa vykoná, ak niektorá z prerekvizít zmenila či vznikla.</li>
+</ul>
+
+</main>
+
+    <footer>
+      
+<script>
+(function() {
+  function center_el(tagName) {
+    var tags = document.getElementsByTagName(tagName), i, tag;
+    for (i = 0; i < tags.length; i++) {
+      tag = tags[i];
+      var parent = tag.parentElement;
+      
+      if (parent.childNodes.length === 1) {
+        
+        if (parent.nodeName === 'A') {
+          parent = parent.parentElement;
+          if (parent.childNodes.length != 1) continue;
+        }
+        if (parent.nodeName === 'P') parent.style.textAlign = 'center';
+      }
+    }
+  }
+  var tagNames = ['img', 'embed', 'object'];
+  for (var i = 0; i < tagNames.length; i++) {
+    center_el(tagNames[i]);
+  }
+})();
+</script>
+
+      
+    </footer>
+  </body>
+</html>
+
