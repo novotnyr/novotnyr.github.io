@@ -6,10 +6,21 @@
     <description>Recent content in Scrolls on robonovotny</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 04 Jan 2019 14:57:45 +0100</lastBuildDate>
+    <lastBuildDate>Mon, 07 Jan 2019 07:44:08 +0100</lastBuildDate>
     
 	<atom:link href="http://novotnyr.github.io/scrolls/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Spracovanie argumentov v shelli cez `getopts`</title>
+      <link>http://novotnyr.github.io/scrolls/spracovanie-argumentov-cez-getopts/</link>
+      <pubDate>Mon, 07 Jan 2019 07:44:08 +0100</pubDate>
+      
+      <guid>http://novotnyr.github.io/scrolls/spracovanie-argumentov-cez-getopts/</guid>
+      <description>Načo je dobrý getops? getopts je posixový nástroj na spracovávanie prepínačov z príkazového riadka v rámci shellového skriptu. Vezmime si príklad:
+./ffind.sh -s -t d java xml  Príkaz ffind.sh dostal päť argumentov, ktoré v skutočnosti reprezentujú tri rozličné druhy “vstupov”:
+ -s teda prepínač -t reprezentujúci prepínač s parametrom (d) dva nepomenované argumenty java a xml  Ak by sme mali takéto argumenty spracovávať ručne, bolo by to šialené.</description>
+    </item>
     
     <item>
       <title>Urobme niečo s `make`</title>

@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Spracovanie argumentov v shelli cez `getopts` | robonovotny</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.css" integrity="sha384-D+9gmBxUQogRLqvARvNLmA9hS2x//eK1FhVb9PiU86gmcrBrJAQT8okdJ4LMp2uv" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.js" integrity="sha384-483A6DwYfKeDa0Q52fJmxFXkcPCFfnXMoXblOkJ4JcA8zATN6Tm78UNL72AKk+0O" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/contrib/auto-render.min.js" integrity="sha384-yACMu8JWxKzSp/C1YV86pzGiQ/l1YUfE8oPuahJQxzehAjEt2GiQuy/BIvl9KyeF" crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body);
+        });
+    </script>
+
+<header>
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <nav>
+    <ul>
+      
+      
+      <li class="pull-left ">
+        <a href="http://novotnyr.github.io/">/home/robonovotny</a>
+      </li>
+      
+
+      
+
+    </ul>
+  </nav>
+</header>
+
+  </head>
+
+  <body>
+    <br/>
+
+<div class="article-meta">
+<h1><span class="title">Spracovanie argumentov v shelli cez `getopts`</span></h1>
+
+<h2 class="date">2019/01/07</h2>
+<p class="terms">
+  
+  
+  
+  
+  
+</p>
+</div>
+
+
+
+<main>
+
+
+<h1 id="načo-je-dobrý-getops">Načo je dobrý <code>getops</code>?</h1>
+
+<p><code>getopts</code>  je posixový nástroj na spracovávanie prepínačov z príkazového riadka v rámci shellového skriptu. Vezmime si príklad:</p>
+
+<pre><code class="language-shell">./ffind.sh -s -t d java xml
+</code></pre>
+
+<p>Príkaz <code>ffind.sh</code> dostal päť argumentov, ktoré v skutočnosti reprezentujú tri rozličné druhy “vstupov”:</p>
+
+<ul>
+<li><code>-s</code> teda prepínač</li>
+<li><code>-t</code>  reprezentujúci prepínač s parametrom (<code>d</code>)</li>
+<li>dva nepomenované argumenty <code>java</code> a <code>xml</code></li>
+</ul>
+
+<p>Ak by sme mali takéto argumenty spracovávať ručne, bolo by to šialené. Príkaz <code>getopts</code> sa s tým vysporiada veľmi jednoducho.</p>
+
+<h2 id="zápis-prepínačov">Zápis prepínačov</h2>
+
+<p>Príkaz <code>getopts</code> sa riadi nasledovnými pravidlami:</p>
+
+<ul>
+<li>prepínače majú jednopísmenové označenia, napr. <code>-s</code> alebo <code>-t</code>. Dlhé parametre (long options) v duchu GNU (<code>—all</code>) nie sú podporované. (To je doménou vylepšeného príkazu <code>getopt</code>, ktorý ale nie je posixový).</li>
+
+<li><p>prepínače možno zoskupovať. Nasledovný zápis je rovnaký ako z úvodnej ukážky:</p>
+
+<pre><code class="language-shell"> ./ffind.sh -st d java xml
+</code></pre></li>
+
+<li><p>prepínače možno uvádzať v ľubovoľnom poradí:</p>
+
+<pre><code class="language-shell">./ffind.sh -t d -s java xml
+</code></pre></li>
+</ul>
+
+<h2 id="použitie-getopts">Použitie <code>getopts</code></h2>
+
+<p>Príkaz <code>getopts</code> spracováva argument za argumentov z príkazového riadka (teda premenné <code>1</code>, <code>2</code> atď)  a sám si poradí so všetkými troma druhmi “vstupov”.
+Samotný príkaz <code>getopts</code> má dva základné argumenty:</p>
+
+<ul>
+<li>špecifikáciu podporovaných argumentov</li>
+<li>premennú, do ktorej postupne priraďuje jednotlivé prepínače.</li>
+</ul>
+
+<h3 id="špecifikácia-parametrov">Špecifikácia parametrov</h3>
+
+<p>V našom príklade bude špecifikácia vyzerať nasledovne:</p>
+
+<pre><code>:st:
+</code></pre>
+
+<p>Rozoberme si to znak po znaku:</p>
+
+<ul>
+<li><code>:</code> Dvojbodka na začiatku vypne automatické vypisovanie chybových hlášok pre parametre, ktoré nedokážeme spracovať. Túto obsluhu si však veľmi jednoducho vieme urobiť sami.</li>
+<li><code>s</code>:  Prepínač <code>s</code> neberie parametre, preto ho uvedieme len názvom.</li>
+<li><code>t:</code> Prepínač <code>t</code>, ktorý berie parameter, uvedieme s dvojbodkou.
+Dvojbodka tu má dva významy: jednak vypína chybové hlášky (ak je na začiatku) a jednak špecifikuje prepínač s argumentami (ak je uvedená za ním).</li>
+</ul>
+
+<h3 id="špecifikácia-premennej-so-vstupom">Špecifikácia premennej so vstupom</h3>
+
+<p>Premennú, ktorá bude obsahovať práve spracovávaný prepínač alebo argument, si môžeme nazvať ľubovoľne, napr. <code>OPT</code>.</p>
+
+<h3 id="použitie-v-kóde">Použitie v kóde</h3>
+
+<p>Každé zavolanie <code>getopts</code> spracuje nasledovnú premennú z príkazového riadka. Pri prvom volaní sa spracuje premenná <code>1</code>, pri druhom volaní premenná <code>2</code>. Ak sa všetky premenné spracovali, <code>getopts</code> skončí  s nenulovým návratovým kódom.</p>
+
+<p>To je presne situácia, keď sa oplatí použiť cyklus <code>while</code>:</p>
+
+<pre><code class="language-shell">while getopts :st: OPT
+do
+...
+done
+</code></pre>
+
+<p>Jednotlivé prepínače spracujeme v rámci príkazu <code>case</code> (ekvivalent <code>switch</code> z iných jazykov).</p>
+
+<pre><code class="language-bash">SILENT=''
+TYPE=''
+while getopts :st: OPT
+do
+  case &quot;$OPT&quot; in
+      s) SILENT=1
+         ;;
+      t) TYPE=&quot;$OPTARG&quot;
+         ;;
+      ?) echo &quot;Neznamy parameter $OPT&quot;
+         ;;
+  esac
+done
+</code></pre>
+
+<p>V rozhodovaní sa pýtame na obsah premennej <code>OPT</code>, a podľa toho zistíme, ktorý prepínač chceme spracovať. V ukážke si podľa prepínača nastavíme príslušnú premennú.</p>
+
+<p>Ak ide o prepínač s parametrom, v premennej <code>OPTARG</code> sa ocitne parameter tohto prepínača. V prípade prepínača <code>-t d</code> sa v premennej <code>OPTARG</code> objaví reťazec <code>d</code>.</p>
+
+<p>Špeciálny prípad tvorí situácia, keď používateľ použije nepodporovaný prepínač (napr. <code>-x</code>). V takom prípade sa v premennej <code>OPT</code> ocitne otáznik. To je presne situácia na ručnú obsluhu nepodporovaných parametrov, čo zrealizujeme výpisom chybovej hlášky s názvom neznámeho parametra.</p>
+
+<h2 id="použitie-getopts-a-pozičných-parametrov">Použitie <code>getopts</code> a pozičných parametrov</h2>
+
+<p>V príklade sme mali dva parametre, ktoré neprislúchali žiadnemu prepínaču. Ide o parametre <code>java</code> a <code>xml</code>:</p>
+
+<pre><code class="language-shell">./ffind.sh -s -t d java xml
+</code></pre>
+
+<p>I na toto dokáže <code>getopts</code> myslieť. Príkaz si totiž počíta jednotlivé spracované parametre v špeciálnej číselnej premennej <code>OPTIND</code> a to môžeme použiť v skripte na zahodenie tých argumentov príkazového riadka, ktoré sa už spracovali.</p>
+
+<p>Príklad? Pre parametre z ukážky si <code>getopts</code> naráta do premennej <code>OPTIND</code> štyri spracované položky.</p>
+
+<table>
+<thead>
+<tr>
+<th>shell</th>
+<th><code>$0</code></th>
+<th><code>$1</code></th>
+<th><code>$2</code></th>
+<th><code>$3</code></th>
+<th><code>$4</code></th>
+<th><code>$5</code></th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td></td>
+<td><code>./ffind.sh</code></td>
+<td><code>-s</code></td>
+<td><code>-t</code></td>
+<td>d</td>
+<td>java</td>
+<td>xml</td>
+</tr>
+
+<tr>
+<td><code>OPTIND</code></td>
+<td>1</td>
+<td>2</td>
+<td>3</td>
+<td>4</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+
+<p>Ak odčítame od <code>OPTIND</code> jednotku, získame akýsi index, o ktorý môžeme posunúť, teda <code>shift</code>núť premenné “doľava” a tým ich sprístupniť do shellových premenných <code>1</code>, <code>2</code> atď.</p>
+
+<p>V tomto prípade máme <code>OPTIND</code> rovný 4, a po posunutí o tri pozície, teda po použití príkazu <code>shift $((OPTIND - 1))</code>, získame nasledovný stav:</p>
+
+<table>
+<thead>
+<tr>
+<th>shell</th>
+<th><code>$0</code></th>
+<th><code>$1</code></th>
+<th><code>$2</code></th>
+<th><code>$3</code></th>
+<th><code>$4</code></th>
+<th><code>$5</code></th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>shell po <code>shift</code></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td><code>$1</code></td>
+<td><code>$2</code></td>
+</tr>
+
+<tr>
+<td></td>
+<td><code>./ffind.sh</code></td>
+<td><code>-s</code></td>
+<td><code>-t</code></td>
+<td>d</td>
+<td>java</td>
+<td>xml</td>
+</tr>
+
+<tr>
+<td><code>OPTIND</code></td>
+<td>1</td>
+<td>2</td>
+<td>3</td>
+<td>4</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+
+<p>Tento trik funguje pre ľubovoľný počet parametrov. Po shifte o príslušný počet miest sa indexované premenné nastavia na správne miesta.
+Zrazu budeme mať prvý pozičný parameter v premennej <code>1</code>, druhý v premennej <code>2</code> atď, ba dokonca v univerzálnej premennej <code>@</code> budeme mať všetky parametre pohromade a môžeme cez ne iterovať cyklom <code>for</code>, prípadne ich použiť ako parametrický vstup pre iné príkazy.</p>
+
+<h1 id="celý-skript">Celý skript</h1>
+
+<p>Výsledný skript so všetkými možnosťami vyzerá nasledovne:</p>
+
+<pre><code class="language-bash">SILENT=0
+TYPE='unknown'
+while getopts :st: OPT
+do
+  case &quot;$OPT&quot; in
+          s) SILENT=1
+             ;;
+          t) TYPE=&quot;$OPTARG&quot;
+             ;;
+          \?) echo &quot;Unsupported parameter $OPT&quot;
+             ;;
+  esac
+done
+
+shift $((OPTIND - 1))
+
+echo &quot;Silent mode: $SILENT&quot;
+echo &quot;Type: $TYPE&quot;
+echo &quot;Files:&quot;
+
+for FILE
+do
+  echo &quot;$FILE&quot;
+done
+</code></pre>
+
+</main>
+
+    <footer>
+      
+<script>
+(function() {
+  function center_el(tagName) {
+    var tags = document.getElementsByTagName(tagName), i, tag;
+    for (i = 0; i < tags.length; i++) {
+      tag = tags[i];
+      var parent = tag.parentElement;
+      
+      if (parent.childNodes.length === 1) {
+        
+        if (parent.nodeName === 'A') {
+          parent = parent.parentElement;
+          if (parent.childNodes.length != 1) continue;
+        }
+        if (parent.nodeName === 'P') parent.style.textAlign = 'center';
+      }
+    }
+  }
+  var tagNames = ['img', 'embed', 'object'];
+  for (var i = 0; i < tagNames.length; i++) {
+    center_el(tagNames[i]);
+  }
+})();
+</script>
+
+      
+    </footer>
+  </body>
+</html>
+
