@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Tri skvelé tipy pre prácu s konzolou: bat, fzf, up | robonovotny</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.css" integrity="sha384-D+9gmBxUQogRLqvARvNLmA9hS2x//eK1FhVb9PiU86gmcrBrJAQT8okdJ4LMp2uv" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.js" integrity="sha384-483A6DwYfKeDa0Q52fJmxFXkcPCFfnXMoXblOkJ4JcA8zATN6Tm78UNL72AKk+0O" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/contrib/auto-render.min.js" integrity="sha384-yACMu8JWxKzSp/C1YV86pzGiQ/l1YUfE8oPuahJQxzehAjEt2GiQuy/BIvl9KyeF" crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body);
+        });
+    </script>
+
+<header>
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <nav>
+    <ul>
+      
+      
+      <li class="pull-left ">
+        <a href="http://novotnyr.github.io/">/home/robonovotny</a>
+      </li>
+      
+
+      
+
+    </ul>
+  </nav>
+</header>
+
+  </head>
+
+  <body>
+    <br/>
+
+<div class="article-meta">
+<h1><span class="title">Tri skvelé tipy pre prácu s konzolou: bat, fzf, up</span></h1>
+
+<h2 class="date">2019/01/09</h2>
+<p class="terms">
+  
+  
+  
+  
+  
+</p>
+</div>
+
+
+
+<main>
+
+
+<p>Na zimu sa treba zahriať pri termináli! Štyri utility v tom pomôžu:</p>
+
+<ul>
+<li><a href="https://github.com/sharkdp/bat"><code>bat</code></a> — ako <code>cat</code>, ale s krídlami.</li>
+<li><a href="https://github.com/akavel/up"><code>up</code></a> — interaktívny budovateľ a vyhodnocovateľ rúr, pájp, či kolón</li>
+<li><a href="https://github.com/junegunn/fzf"><code>fzf</code></a> — interaktívny fuzzy vyhľadávač všetkého — súborov, procesov a mnohého!</li>
+</ul>
+
+<p>Nástroje sú dostupné pre akýkoľvek linuxoidný operačný systém a pre každý shell.</p>
+
+<h1 id="cat-s-farbami"><code>cat</code> s farbami</h1>
+
+<p><code>cat</code> je ako Lada — dokonalý už od začiatku: jednoducho vypľuje dáta z rúry / súboru bez zmeny.</p>
+
+<pre><code>brew install bat
+</code></pre>
+
+<p><code>bat</code> je mačka s krídlami, teda netopier, ktorý je:</p>
+
+<ul>
+<li>farebný</li>
+<li>číslujúci riadky</li>
+<li>podporujúci Git a stavy jednotlivých riadkov</li>
+</ul>
+
+<p><img src="bat.png" alt="" /></p>
+
+<p>Netopier dokáže zobrazovať aj biele miesto, stačí dodať parameter <code>-A</code>.</p>
+
+<p>Okrem toho fungujú všelijaké užitočné parametre:</p>
+
+<ul>
+<li><code>—line-range 3:3</code> zobrazí len rozsah riadkov — v tomto prípade od tretieho po tretí.</li>
+<li><code>-theme</code> zmení tému pre zvýrazňovanie syntaxe</li>
+<li><code>-p</code> vypne všetky dekorácie a nechá len rýdze — ale farebné — riadky textu</li>
+</ul>
+
+<h1 id="up-interaktívne-obzeranie-dát-v-rúre"><code>up</code> — interaktívne obzeranie dát v rúre</h1>
+
+<p><code>up</code> má dosť mätúci názov, ale <em>universal plumber</em>, teda <em>mnohoúčelový klampiar</em> má s funkcionalitou spoločné asi toľko, ako mačka s výpisom súborov.</p>
+
+<p>V tomto prípade ide o interaktívny vyhodnocovač príkazov v rúre, užitočný najmä pre vodičov v zácviku</p>
+
+<pre><code>brew install up
+</code></pre>
+
+<p>Stačí doňho poslať nejaké dáta:</p>
+
+<pre><code>cat /etc/passwd | up
+</code></pre>
+
+<p><img src="up.png" alt="" /></p>
+
+<p>A potom stačí už len uvádzať príkazy presne tak, ako sme na to zvyknutí z príkazového riadka!</p>
+
+<pre><code>| grep root
+root:*:0:0:System Administrator:/var/root:/bin/sh
+daemon:*:1:1:System Services:/var/root:/usr/bin/false
+_cvmsroot:*:212:212:CVMS Root:/var/empty:/usr/bin/false
+</code></pre>
+
+<p>Za rúrou možno uviesť príkaz, následne ENTERovať a <code>up</code> automaticky vyhodnotí výsledok z rúry.</p>
+
+<pre><code> | grep root | cut -d: -f1
+root
+daemon
+_cvmsroot
+</code></pre>
+
+<p>Po riadku s príkazom môžeme slobodne behať, upravovať ho, enterovať a výstup sa bude okamžite aktualizovať.</p>
+
+<p>Ak ukončíme príkaz pomocou <code>Ctrl-X</code>, <code>up</code> dokonca posledný príkaz utešene zapíše do shellskriptového súboru, ktorým ho môžeme zavolať.</p>
+
+<p>Krása!</p>
+
+<h1 id="fzf-interaktívny-fuzzy-vyhľadávač"><code>fzf</code> — interaktívny fuzzy vyhľadávač</h1>
+
+<p><code>fzf</code> je interaktívny vyhľadávač v riadkoch zo vstupu. Niečo ako kombinácia <code>grep</code>u a ručného výberu položiek pomocou klávesnice. Okrem toho je to množstvo ďalších funkcií!</p>
+
+<ul>
+<li>fuzzy vyhľadávanie &ndash; už si netreba pamätať presný názov súboru</li>
+<li>podpora farieb &ndash; až 256 rozličných variantov</li>
+<li>výber z riadkov poskytovaných ľubovoľným linuxovým nástrojom!</li>
+<li>výber jednej alebo viacerých položiek úplne zadarmo!</li>
+<li>automatické dopĺňanie súborov, PIDov a SSH hostiteľov pre všetky bežné shelly!</li>
+</ul>
+
+<pre><code>brew install fzf
+</code></pre>
+
+<p>Vyhľadávanie v aktuálnom adresári je najjednoduchšie:</p>
+
+<pre><code>fzf
+</code></pre>
+
+<p><code>fzf</code> nájde súbory a adresáre v celom podstrome aktuálneho adresára a vypíše ich do riadkov. Pomocou klávesnice (šípky hore/dole) a Enteru možno vybrať aktuálnu položku a voilá! objaví sa na štandardnom výstupe.</p>
+
+<p>Okrem toho možno písať ľubovoľný text a tým filtrovať položky. <code>fzf</code> je fuzzy, takže nemusíme hľadať presnú zhodu, stačí sa približne trafiť a prípadne kurzorom doladiť výsledok.</p>
+
+<p><img src="fzf.png" alt="" /></p>
+
+<p>Dokonca funguje aj viacnásobný výber!</p>
+
+<pre><code>fzf -m
+</code></pre>
+
+<p>Tabulátorom vyznačíme položky a po odENTERovaní sa zjaví výsledok!</p>
+
+<p>Funguje aj spolupráca s akýmkoľvej linuxovým príkazom. Chceme interaktívne vybrať súbor na úpravu?</p>
+
+<pre><code>vim `fzf`
+</code></pre>
+
+<p>Parameter pre <code>vim</code> sa vyberie klávesnicou!</p>
+
+<p>Ak je nainštalovaná podpora pre automatické dopĺňanie pre <code>bash</code>, <code>zsh</code>, či <code>fish</code>, funguje nádherný dvojhviezdičkový trik. Dve hviezdičky a následný TABulátor vyvolajú <code>fzf</code> a umožnia tým vybrať argument.</p>
+
+<pre><code>ls **[TAB]
+</code></pre>
+
+<p>Dopĺňanie v shelli funguje pre súbory/adresáre, SSH hostiteľov, identifikátory procesov v <code>kill</code>e a premenné prostredia!</p>
+
+<p>Samozrejme, <code>fzf</code> funguje pre akýkoľvek filter. Chcete interaktívne vybrať zoznam používateľov z <code>/etc/passwd</code>?</p>
+
+<pre><code>&lt; /etc/passwd fzf -m
+</code></pre>
+
+<p>Okrem toho je možné zapnúť mapovanie klávesov (<em>key bindings</em>)</p>
+
+<ul>
+<li>pre shell, kde pár klávesami priamo zabudujeme <code>fzf</code> do promptu</li>
+<li>pre príkaz, kde možno definovať ľubovoľnú skratku pre akýkoľvek príkaz nad položkou</li>
+</ul>
+
+</main>
+
+    <footer>
+      
+<script>
+(function() {
+  function center_el(tagName) {
+    var tags = document.getElementsByTagName(tagName), i, tag;
+    for (i = 0; i < tags.length; i++) {
+      tag = tags[i];
+      var parent = tag.parentElement;
+      
+      if (parent.childNodes.length === 1) {
+        
+        if (parent.nodeName === 'A') {
+          parent = parent.parentElement;
+          if (parent.childNodes.length != 1) continue;
+        }
+        if (parent.nodeName === 'P') parent.style.textAlign = 'center';
+      }
+    }
+  }
+  var tagNames = ['img', 'embed', 'object'];
+  for (var i = 0; i < tagNames.length; i++) {
+    center_el(tagNames[i]);
+  }
+})();
+</script>
+
+      
+    </footer>
+  </body>
+</html>
+
