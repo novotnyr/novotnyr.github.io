@@ -6,10 +6,23 @@
     <description>Recent content on robonovotny</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 09 Jan 2019 10:20:04 +0100</lastBuildDate>
+    <lastBuildDate>Fri, 11 Jan 2019 08:58:04 +0000</lastBuildDate>
     
 	<atom:link href="http://novotnyr.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Running MongoDB ReplicaSet on localhost</title>
+      <link>http://novotnyr.github.io/scrolls/running-mongodb-replicaset-on-localhost/</link>
+      <pubDate>Fri, 11 Jan 2019 08:58:04 +0000</pubDate>
+      
+      <guid>http://novotnyr.github.io/scrolls/running-mongodb-replicaset-on-localhost/</guid>
+      <description>Setup Cluster Create Instances Create directories:
+mkdir -p /tmp/mongodb/rs-{0,1,2}  In shell, run:
+mongod --dbpath /tmp/mongodb/rs-0 --replSet rs --port 27021 --bind_ip localhost --smallfiles --oplogSize 128 mongod --dbpath /tmp/mongodb/rs-1 --replSet rs --port 27022 --bind_ip localhost --smallfiles --oplogSize 128 mongod --dbpath /tmp/mongodb/rs-2 --replSet rs --port 27023 --bind_ip localhost --smallfiles --oplogSize 128  Initiate ReplicaSet Run client to initiate ReplicaSet:
+mongo --port 27021  Create ReplicaSet configuration:
+rs.initiate({ _id : &#39;rs&#39;, members: [ { _id : 0, host : &amp;quot;localhost:27021&amp;quot; }, { _id : 1, host : &amp;quot;localhost:27022&amp;quot; }, { _id : 2, host : &amp;quot;localhost:27023&amp;quot; } ] })  Review with:</description>
+    </item>
     
     <item>
       <title>Tri skvelé tipy pre prácu s konzolou: bat, fzf, up</title>
