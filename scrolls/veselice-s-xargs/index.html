@@ -260,6 +260,31 @@ rm 3.txt?...y
 
 <p>Ako vidno, pseudopremennú <code>{}</code> môžeme použiť aj viackrát: v tomto prípade raz na výpis a druhýkrát na presmerovanie vstupu.</p>
 
+<h1 id="funky-veci">Funky veci</h1>
+
+<p>A ako bonus, matematika:</p>
+
+<h2 id="vypíšte-maticu-3-x-3-s-prvkami-od-1-po-9">Vypíšte maticu 3 x 3 s prvkami od 1 po 9</h2>
+
+<p>Stačí použiť fintu s dávkovaním parametrom po <em>n</em>-ticiach:</p>
+
+<pre><code>seq 9 | xargs -n 3 
+</code></pre>
+
+<p>Výsledkom je</p>
+
+<pre><code>1 2 3
+4 5 6
+7 8 9
+</code></pre>
+
+<h3 id="vypíšte-jednotkovú-maticu-3-x-3">Vypíšte jednotkovú maticu 3 x 3</h3>
+
+<pre><code>yes | head -n 9 | xargs -n 3 | tr y 1
+</code></pre>
+
+<p>Príkaz <code>yes</code> generuje <code>y</code> donekonečna, ale nám stačí odseknúť <code>head</code>om prvých 9 hodnôt (3 x 3), ktoré pošleme posekať do <code>xargs</code> a na záver nahradíme znaky <code>y</code> jednotkami. (Samozrejme, predpokladá to existenciu príkazu <code>yes</code>, ktorý nie je posixový.)</p>
+
 </main>
 
     <footer>
