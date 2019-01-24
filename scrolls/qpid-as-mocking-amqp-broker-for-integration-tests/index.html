@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Mocking AMQP Integration tests with Apache Qpid | robonovotny</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.css" integrity="sha384-D+9gmBxUQogRLqvARvNLmA9hS2x//eK1FhVb9PiU86gmcrBrJAQT8okdJ4LMp2uv" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.js" integrity="sha384-483A6DwYfKeDa0Q52fJmxFXkcPCFfnXMoXblOkJ4JcA8zATN6Tm78UNL72AKk+0O" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/contrib/auto-render.min.js" integrity="sha384-yACMu8JWxKzSp/C1YV86pzGiQ/l1YUfE8oPuahJQxzehAjEt2GiQuy/BIvl9KyeF" crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body);
+        });
+    </script>
+
+<header>
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <nav>
+    <ul>
+      
+      
+      <li class="pull-left ">
+        <a href="http://novotnyr.github.io/">/home/robonovotny</a>
+      </li>
+      
+
+      
+
+    </ul>
+  </nav>
+</header>
+
+  </head>
+
+  <body>
+    <br/>
+
+<div class="article-meta">
+<h1><span class="title">Mocking AMQP Integration tests with Apache Qpid</span></h1>
+
+<h2 class="date">2019/01/23</h2>
+<p class="terms">
+  
+  
+  
+  
+  
+</p>
+</div>
+
+
+
+<main>
+
+
+<p>AMQP protocol is a useful mechanism to tackle cross-component integration features. When running integration tests, sometimes it’s useful to run integration tests without a full-fledged broker at hand. Especially, when RabbitMQ is an Erlang-based binary expected to run besides a Java-powered application.</p>
+
+<p>Let’s use an alternative solution. <a href="https://qpid.apache.org/index.html">Apache Qpid</a> is a messaging solution and broker that is implemented in Java. In addition, it supports the following features:</p>
+
+<ul>
+<li>Supports the AMQP 0.9.1 provided by RabbitMQ,</li>
+<li>It’s embeddable,</li>
+<li>It’s able to run fully in RAM.</li>
+</ul>
+
+<h1 id="creating-embeddable-in-memory-qpid">Creating Embeddable In Memory QPid</h1>
+
+<p>There are multiple examples that embed an in-memory instance of Qpid. However, most of them are focused on the older 6.x line. More recent Qpid 7.x has changed the API rather dramatically.</p>
+
+<p>The roadmap will be as follows:</p>
+
+<ol>
+<li>Add the necessary Maven dependencies,</li>
+<li>Add the configuration file,</li>
+<li>Add the <em>runner</em> code that will launch an embedded instance of Qpid.</li>
+</ol>
+
+<h2 id="maven-dependencies">Maven Dependencies</h2>
+
+<p>Apache Qpid consists of multiple modules, that are to be added as <code>pom.xml</code> dependencies. All dependencies belong to the <code>org.apache.qpid</code> group ID.</p>
+
+<ul>
+<li><code>qpid-broker-core</code> with the core classes of the broker</li>
+<li><code>qpid-broker-plugins-amqp-0-8-protocol</code> . Despite the misleading name, this module adds support for the ancient AMQP 0.8, but also for AMQP 0.9 and AMQP 0.9.1 that are supported by RabbitMQ.</li>
+<li><code>qpid-broker-plugins-memory-store</code> add support for in-memory message handling.</li>
+</ul>
+
+<pre><code>&lt;dependency&gt;
+    &lt;groupId&gt;org.apache.qpid&lt;/groupId&gt;
+    &lt;artifactId&gt;qpid-broker-core&lt;/artifactId&gt;
+    &lt;version&gt;7.1.0&lt;/version&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.apache.qpid&lt;/groupId&gt;
+    &lt;artifactId&gt;qpid-broker-plugins-amqp-0-8-protocol&lt;/artifactId&gt;
+    &lt;version&gt;7.1.0&lt;/version&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.apache.qpid&lt;/groupId&gt;
+    &lt;artifactId&gt;qpid-broker-plugins-memory-store&lt;/artifactId&gt;
+    &lt;version&gt;7.1.0&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre>
+
+<h2 id="broker-configuration">Broker Configuration</h2>
+
+<p>Qpid is configured from a JSON file. This file provides a configuration for three basic components:</p>
+
+<ul>
+<li><strong>authentication providers</strong> indicating a security mechanism for client authentication.</li>
+<li><strong>virtual hosts</strong>, indicating independent and isolated environments for exchanges, queues and bindings.</li>
+<li><strong>ports</strong> denoting network specific configuration, such as TCP/IP port, supported protocols. Each port is associated with a specific set of virtual hosts. Additionally, a port indicates an authentication provider that will be used.</li>
+</ul>
+
+<p>Let’s create a configuration file, such as <code>qpid-embedded-inmemory-configuration.json</code> and let’s put it into <code>CLASSPATH</code> root.</p>
+
+<p>Aside from the descriptive <code>name</code> and the Qpid Model Version, there are three blocks that we have just described: authentication providers, ports and virtual host nodes.</p>
+
+<pre><code class="language-json">{
+  &quot;name&quot;: &quot;Embedded Broker&quot;,
+  &quot;modelVersion&quot;: &quot;7.0&quot;,
+  &quot;authenticationproviders&quot;: [
+    {
+      &quot;name&quot;: &quot;hardcoded&quot;,
+      &quot;type&quot;: &quot;Plain&quot;,
+      &quot;secureOnlyMechanisms&quot;: [],
+      &quot;users&quot;: [
+        {
+          &quot;name&quot;: &quot;guest&quot;,
+          &quot;password&quot;: &quot;guest&quot;,
+          &quot;type&quot;: &quot;managed&quot;
+        }
+      ]
+    }
+  ],
+  &quot;ports&quot;: [
+    {
+      &quot;name&quot;: &quot;AMQP&quot;,
+      &quot;port&quot;: &quot;${qpid.amqp_port}&quot;,
+      &quot;bindingAddress&quot;: &quot;127.0.0.1&quot;,
+      &quot;protocols&quot;: [
+        &quot;AMQP_0_9_1&quot;
+      ],
+      &quot;authenticationProvider&quot;: &quot;hardcoded&quot;,
+      &quot;virtualhostaliases&quot;: [
+        {
+          &quot;name&quot;: &quot;defaultAlias&quot;,
+          &quot;type&quot;: &quot;defaultAlias&quot;
+        }
+      ]
+    }
+  ],
+  &quot;virtualhostnodes&quot;: [
+    {
+      &quot;name&quot;: &quot;default&quot;,
+      &quot;type&quot;: &quot;Memory&quot;,
+      &quot;defaultVirtualHostNode&quot;: &quot;true&quot;,
+      &quot;virtualHostInitialConfiguration&quot;: &quot;{\&quot;type\&quot;: \&quot;Memory\&quot;}&quot;
+    }
+  ]
+}
+</code></pre>
+
+<p>Let’s dissect this rather large configuration.</p>
+
+<h3 id="authentication-provider">Authentication Provider</h3>
+
+<p>We declare a <code>Plain</code> authentication provider, while specifying hardcoded <code>users</code>. This provider will be identified by a logical name <code>hardcoded</code> (we can pick any name we want).</p>
+
+<p>We will provide just a single user, with dedicated name (<code>guest</code>) and a plaintext password (<code>guest</code>).</p>
+
+<p>Finally, we declare an empty set of <code>secureOnlyMechanisms</code>, essentially disabling any advanced security mechanism, such as SASL.</p>
+
+<h3 id="port">Port</h3>
+
+<p>We declare a single port, running on a default port number provided by Qpid. We will assign an explicit <strong>binding address</strong>, thus limiting the broker to listen on the localhost only.</p>
+
+<p>Then, let’s enumerate a list of supported protocols. Since we need to emulate the RabbitMQ, we declare just the AMQP 0.9.1 protocol.</p>
+
+<p>As seen above, we need to associate a port with an authentication provider. By providing a <code>authenticationProvider</code>, we will provide a reference to our <code>hardcoded</code> plain provider.</p>
+
+<p>Finally, we need to declare mapping between virtual hosts provided in the connection string to the virtual host that will be used. By declaring a <em>virtual host alias</em> of type <code>defaultAlias</code>, the empty virtual host of the connection string the will be mapped to the default virtual host of the broker.</p>
+
+<h3 id="virtual-host">Virtual Host</h3>
+
+<p>Let’s configure a single Virtual Host. We’ll add a <strong>name</strong>, declare the type as <code>Memory</code>, and we will treat it as a <strong>default virtual host</strong> (<code>defaultVirtualHostNode</code>).  Finally, let’s add an <strong>initial configuration</strong>, by embedding a JSON into String (doh!) with in-memory specification for this virtualhost.</p>
+
+<h2 id="creating-an-embedded-broker-runner">Creating an Embedded Broker Runner</h2>
+
+<p>Let’s code the Qpid Wrapper or Runner that will allow easy-starting of the Broker.</p>
+
+<pre><code class="language-java">public class EmbeddedInMemoryQpidBroker {
+    public static final Logger logger = getLogger(EmbeddedInMemoryQpidBroker.class);
+
+    private static final String DEFAULT_INITIAL_CONFIGURATION_LOCATION = &quot;qpid-embedded-inmemory-configuration.json&quot;;
+
+    private SystemLauncher systemLauncher;
+
+    public EmbeddedInMemoryQpidBroker() {
+        this.systemLauncher = new SystemLauncher();
+    }
+
+    public void start() throws Exception {
+        this.systemLauncher.startup(createSystemConfig());
+    }
+
+    public void shutdown() {
+        this.systemLauncher.shutdown();
+    }
+
+    private Map&lt;String, Object&gt; createSystemConfig() throws IllegalConfigurationException {
+        Map&lt;String, Object&gt; attributes = new HashMap&lt;&gt;();
+        URL initialConfigUrl = EmbeddedInMemoryQpidBroker.class.getClassLoader().getResource(DEFAULT_INITIAL_CONFIGURATION_LOCATION);
+        }
+        if (initialConfigUrl == null) {
+            throw new IllegalConfigurationException(&quot;Configuration location '&quot; + DEFAULT_INITIAL_CONFIGURATION_LOCATION + &quot;' not found&quot;);
+        }
+        attributes.put(SystemConfig.TYPE, &quot;Memory&quot;);
+        attributes.put(SystemConfig.INITIAL_CONFIGURATION_LOCATION, initialConfigUrl.toExternalForm());
+        attributes.put(SystemConfig.STARTUP_LOGGED_TO_SYSTEM_OUT, true);
+        return attributes;
+    }
+}
+</code></pre>
+
+<p>Essentially, we provide two methods: <code>start</code> and <code>shutdown</code>. The former method will initialize Qpid <code>SystemLauncher</code>, provide the system configuration as a <code>HashMap</code> and launch it.</p>
+
+<p>In the configuration map, we provide the following configuration options:</p>
+
+<ul>
+<li><strong>type</strong>, indicating an in-memory <code>Memory</code> broker</li>
+<li><strong>initial configuration location</strong>, providing an URL of the JSON config file. We will resolve this URL from the <code>CLASSPATH</code> resource.</li>
+<li><strong>startup logged to stdout</strong>, improving logging messages on startup.</li>
+</ul>
+
+<p>For the future reference, the full and enhanced code for this class is available in the <a href="https://github.com/novotnyr/qpid-embedded-junit4-rule/blob/master/src/main/java/com/github/novotnyr/qpid/junit4/EmbeddedInMemoryQpidBroker.java">Git Repository</a>.</p>
+
+<h1 id="embedded-broker-in-a-junit-4-rule">Embedded Broker in a JUnit 4 Rule</h1>
+
+<h2 id="creating-a-junit-4-rule">Creating a JUnit 4 Rule</h2>
+
+<p>To make our lives easier in the integration tests, let’s create a JUnit 4 Rule that will manage a broker lifecycle. Thus, we can start a broker when a unit test launches, and shutdown the same broker when the unit tests terminates.</p>
+
+<pre><code class="language-java">import org.junit.rules.ExternalResource;
+
+public class EmbeddedInMemoryQpidBrokerRule extends ExternalResource {
+    private EmbeddedInMemoryQpidBroker broker;
+
+    @Override
+    protected void before() throws Throwable {
+        this.broker = new EmbeddedInMemoryQpidBroker();
+        this.broker.start();
+    }
+
+    @Override
+    protected void after() {
+        this.broker.shutdown();
+    }
+}
+
+</code></pre>
+
+<h2 id="using-a-rule-in-the-integration-tests">Using a Rule In the Integration Tests</h2>
+
+<p>Now, we can easily add this rule as a <code>ClassRule</code>. This will allow us to launch a broker in the <code>@BeforeClass</code> manner and terminate it in the <code>@AfterClass</code> style.</p>
+
+<pre><code>public class Test {
+    @ClassRule
+    public static EmbeddedInMemoryQpidBrokerRule qpidBrokerRule = new EmbeddedInMemoryQpidBrokerRule();
+
+    ...
+}
+</code></pre>
+
+<h1 id="resources">Resources</h1>
+
+<ul>
+<li><a href="https://github.com/novotnyr/qpid-embedded-junit4-rule">GitHub repository with the implementation</a>. The full implementation of the concept in the <code>novotnyr/qpid-embedded-junit4-rule</code> repository.</li>
+<li><a href="https://gist.github.com/AlejandroRivera/34235c35bb62ab572932b373444420a0">Gist</a> by AlejandroRivera with an alternative implementation.</li>
+<li><a href="https://cwiki.apache.org/confluence/display/qpid/How+to+embed+Qpid+Broker-J">How To Embed Qpid Broker</a> from the Qpid Wiki</li>
+<li><a href="https://www.rabbitmq.com/interoperability.html">RabbitMQ and Qpid Interoperability</a> on the RabbitMQ Website</li>
+<li><a href="http://qpid.2158936.n2.nabble.com/unknown-virtual-host-td7637861.html">Virtual Host Configuration</a> from the Mailing List</li>
+<li><a href="https://qpid.apache.org/releases/qpid-java-6.0.2/java-broker/book/Java-Broker-Security.html#Java-Broker-Security-Authentication-Providers">Security Provider Configuration</a> from the Qpid Documentation</li>
+</ul>
+
+</main>
+
+    <footer>
+      
+<script>
+(function() {
+  function center_el(tagName) {
+    var tags = document.getElementsByTagName(tagName), i, tag;
+    for (i = 0; i < tags.length; i++) {
+      tag = tags[i];
+      var parent = tag.parentElement;
+      
+      if (parent.childNodes.length === 1) {
+        
+        if (parent.nodeName === 'A') {
+          parent = parent.parentElement;
+          if (parent.childNodes.length != 1) continue;
+        }
+        if (parent.nodeName === 'P') parent.style.textAlign = 'center';
+      }
+    }
+  }
+  var tagNames = ['img', 'embed', 'object'];
+  for (var i = 0; i < tagNames.length; i++) {
+    center_el(tagNames[i]);
+  }
+})();
+</script>
+
+      
+    </footer>
+  </body>
+</html>
+
