@@ -134,5 +134,18 @@ A keďže už od nepamäti je súčasťou každého Linuxu, či dokonca MacOS, o
 Jednoduché recepty, najmä pre céčkarov Recept: overenie, že make funguje make je naozaj všade!</description>
     </item>
     
+    <item>
+      <title></title>
+      <link>http://novotnyr.github.io/scrolls/nahradzanie-premennych-v-retazci-v-springu/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://novotnyr.github.io/scrolls/nahradzanie-premennych-v-retazci-v-springu/</guid>
+      <description>Spring má geniálne vymyslený systém properties, kde možno ukladať rozličné konfiguračné nastavenia v prostredí (Environment) a robiť s tým kdejaké finty. Čo keď však potrebujeme úplne hlúpu vec: nahradiť premenné v reťazci konkrétnymi namapovanými hodnotami?
+Zoberme si reťazec:
+http://${hostname}/${path}  Zoberme si dve premenné — host s hodnotou localhost a path s hodnotou qofola.
+Po nahradení by sme chceli získať krásnu URL:
+http://localhost/qofola  Spring! Trieda PropertyPlaceholderHelper síce nemá úplne ideálny názov, ale má dve základné metódy:</description>
+    </item>
+    
   </channel>
 </rss>

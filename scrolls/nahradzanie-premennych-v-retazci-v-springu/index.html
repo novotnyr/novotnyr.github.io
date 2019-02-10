@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title> | robonovotny</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.css" integrity="sha384-D+9gmBxUQogRLqvARvNLmA9hS2x//eK1FhVb9PiU86gmcrBrJAQT8okdJ4LMp2uv" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.js" integrity="sha384-483A6DwYfKeDa0Q52fJmxFXkcPCFfnXMoXblOkJ4JcA8zATN6Tm78UNL72AKk+0O" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/contrib/auto-render.min.js" integrity="sha384-yACMu8JWxKzSp/C1YV86pzGiQ/l1YUfE8oPuahJQxzehAjEt2GiQuy/BIvl9KyeF" crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body);
+        });
+    </script>
+
+<header>
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <nav>
+    <ul>
+      
+      
+      <li class="pull-left ">
+        <a href="http://novotnyr.github.io/">/home/robonovotny</a>
+      </li>
+      
+
+      
+
+    </ul>
+  </nav>
+</header>
+
+  </head>
+
+  <body>
+    <br/>
+
+<div class="article-meta">
+<h1><span class="title"></span></h1>
+
+
+<p class="terms">
+  
+  
+  
+  
+  
+</p>
+</div>
+
+
+
+<main>
+
+
+<p>Spring má geniálne vymyslený systém <em>properties</em>, kde možno ukladať rozličné konfiguračné nastavenia v <em>prostredí</em> (<code>Environment</code>) a robiť s tým kdejaké finty. Čo keď však potrebujeme úplne hlúpu vec: nahradiť premenné v reťazci konkrétnymi namapovanými hodnotami?</p>
+
+<p>Zoberme si reťazec:</p>
+
+<pre><code>http://${hostname}/${path}
+</code></pre>
+
+<p>Zoberme si dve premenné — <strong>host</strong> s hodnotou <code>localhost</code> a <strong>path</strong> s hodnotou <code>qofola</code>.</p>
+
+<p>Po nahradení by sme chceli získať krásnu URL:</p>
+
+<pre><code>http://localhost/qofola
+</code></pre>
+
+<h2 id="spring">Spring!</h2>
+
+<p>Trieda <a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/util/PropertyPlaceholderHelper.html#replacePlaceholders-java.lang.String-org.springframework.util.PropertyPlaceholderHelper.PlaceholderResolver-"><code>PropertyPlaceholderHelper</code></a> síce nemá úplne ideálny názov, ale má dve základné metódy:</p>
+
+<ul>
+<li><a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/util/PropertyPlaceholderHelper.html#replacePlaceholders-java.lang.String-java.util.Properties-"><code>replacePlaceholders(String, java.util.Properties)</code></a></li>
+<li><a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/util/PropertyPlaceholderHelper.html#replacePlaceholders-java.lang.String-org.springframework.util.PropertyPlaceholderHelper.PlaceholderResolver-"><code>replacePlaceholders(String, PlaceholderResolver)</code></a></li>
+</ul>
+
+<p>Obe dokážu zobrať reťazec a mapovanie medzi názvami premenných a ich hodnotami. Mapovanie môže byť buď v podobe starých dobrých javáckych <code>Properties</code>, alebo v podobe <em>resolvera</em>, čo je prakticky jednometódový interfejs (lambda!) kde zadefinujeme mapovanie.</p>
+
+<p>Okrem toho má aj dva konštruktory, kde môžeme povedať:</p>
+
+<ul>
+<li>reťazec uvádzajúci premennú (<em>prefix</em>). V našom prípade ide o <code>${</code>, alebo konštantu <a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/util/SystemPropertyUtils.html#PLACEHOLDER_PREFIX"><code>SystemPropertyUtils.PLACEHOLDER_PREFIX</code></a></li>
+<li>reťazec ukončujúci premennú (<em>suffix</em>) — teda o <code>}</code>, či konštantu <a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/util/SystemPropertyUtils.html#PLACEHOLDER_SUFFIX"><code>SystemPropertyUtils.PLACEHOLDER_SUFFIX</code></a>.</li>
+</ul>
+
+<p>Môžeme si tak vytvoriť helper pre klasický vzhľad <code>${premennej}</code>, alebo zadefinovať napríklad mustachovský <code>{{spôsob}}</code>.</p>
+
+<p>Klasika známa zo shellu či Mavenu má v Springu už zadefinované konštanty a teda môžeme si helper vytvoriť nasledovne:</p>
+
+<pre><code class="language-java">PropertyPlaceholderHelper helper 
+  = new PropertyPlaceholderHelper(
+      SystemPropertyUtils.PLACEHOLDER_PREFIX,
+      SystemPropertyUtils.PLACEHOLDER_SUFFIX);
+</code></pre>
+
+<p>Nahrádzanie je potom hračka:</p>
+
+<pre><code class="language-java">Properties properties = new Properties();
+properties.setProperty(&quot;host&quot;, &quot;localhost&quot;);
+properties.setProperty(&quot;path&quot;, &quot;qofola&quot;);
+
+String url = helper.replacePlaceholders(urlTemplate, properties);
+</code></pre>
+
+<p>Bonusový konštruktor podporuje aj ďalšie argumenty:</p>
+
+<ul>
+<li>prefix (zmienený hore)</li>
+<li>suffix (ten sme tiež už videli)</li>
+<li>oddeľovač hodnoty: ak ho nastavíme správne, môžu premenné obsahovať aj implicitné (<em>default</em>) hodnoty. Takto môžeme mať: <code>${host:localhost}</code>, čo znamená, že <code>localhost</code> sa použije, ak nenastavíme žiadne špeciálne mapovanie pre premennú <code>host</code>.</li>
+<li>ignorovanie nedefinovaných premenných. Ak sa premenná nenájde v mapovaní, začne <em>helper</em> frflať a hádzať výnimky. Ak použijeme <strong>true</strong>, helper jednoducho nechá nedefinované premenné bez zmeny.</li>
+</ul>
+
+<p><em>Helper</em> automaticky podporuje rekurzívne kľúče aj hodnoty. Ak akýkoľvek kľúč či hodnota obsahuje vnorené kľúče, tie sa budú “rozbaľovať”, kým sa celý reťazec nepodarí úspešne ponahrádzať hodnotami.</p>
+
+</main>
+
+    <footer>
+      
+<script>
+(function() {
+  function center_el(tagName) {
+    var tags = document.getElementsByTagName(tagName), i, tag;
+    for (i = 0; i < tags.length; i++) {
+      tag = tags[i];
+      var parent = tag.parentElement;
+      
+      if (parent.childNodes.length === 1) {
+        
+        if (parent.nodeName === 'A') {
+          parent = parent.parentElement;
+          if (parent.childNodes.length != 1) continue;
+        }
+        if (parent.nodeName === 'P') parent.style.textAlign = 'center';
+      }
+    }
+  }
+  var tagNames = ['img', 'embed', 'object'];
+  for (var i = 0; i < tagNames.length; i++) {
+    center_el(tagNames[i]);
+  }
+})();
+</script>
+
+      
+    </footer>
+  </body>
+</html>
+
