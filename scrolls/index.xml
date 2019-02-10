@@ -6,10 +6,23 @@
     <description>Recent content in Scrolls on robonovotny</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 03 Feb 2019 18:56:29 +0100</lastBuildDate>
+    <lastBuildDate>Sun, 10 Feb 2019 14:06:56 +0100</lastBuildDate>
     
 	<atom:link href="http://novotnyr.github.io/scrolls/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Nahrádzanie premenných v stringu v Springu</title>
+      <link>http://novotnyr.github.io/scrolls/nahradzanie-premennych-v-retazci-v-springu/</link>
+      <pubDate>Sun, 10 Feb 2019 14:06:56 +0100</pubDate>
+      
+      <guid>http://novotnyr.github.io/scrolls/nahradzanie-premennych-v-retazci-v-springu/</guid>
+      <description>Spring má geniálne vymyslený systém properties, kde možno ukladať rozličné konfiguračné nastavenia v prostredí (Environment) a robiť s tým kdejaké finty. Čo keď však potrebujeme úplne hlúpu vec: nahradiť premenné v reťazci konkrétnymi namapovanými hodnotami?
+Zoberme si reťazec:
+http://${hostname}/${path}  Zoberme si dve premenné — host s hodnotou localhost a path s hodnotou qofola.
+Po nahradení by sme chceli získať krásnu URL:
+http://localhost/qofola  Spring! Trieda PropertyPlaceholderHelper síce nemá úplne ideálny názov, ale má dve základné metódy:</description>
+    </item>
     
     <item>
       <title>Šesťdesiat vizitiek s ťahákmi k shellu</title>
@@ -132,19 +145,6 @@ exa - výpis adresára pre moderných ľudí brew install exa  Príkaz exa je ak
       <description>O make a makefile súboroch make zjednoduší zostavovanie súborov - teda kompilovanie, konverzie, či akékoľvek iné hromadné spracovanie súborov. Zostaviť binárku zo zdrojáku v Céčku? Vytvoriť PDF súbor v diplomovej práce v LaTeXu? Previesť markdownovské zdrojové súbory do HTML? To všetko make zvládne bez problémov.
 A keďže už od nepamäti je súčasťou každého Linuxu, či dokonca MacOS, oplatí sa ho spoznať!
 Jednoduché recepty, najmä pre céčkarov Recept: overenie, že make funguje make je naozaj všade!</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>http://novotnyr.github.io/scrolls/nahradzanie-premennych-v-retazci-v-springu/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>http://novotnyr.github.io/scrolls/nahradzanie-premennych-v-retazci-v-springu/</guid>
-      <description>Spring má geniálne vymyslený systém properties, kde možno ukladať rozličné konfiguračné nastavenia v prostredí (Environment) a robiť s tým kdejaké finty. Čo keď však potrebujeme úplne hlúpu vec: nahradiť premenné v reťazci konkrétnymi namapovanými hodnotami?
-Zoberme si reťazec:
-http://${hostname}/${path}  Zoberme si dve premenné — host s hodnotou localhost a path s hodnotou qofola.
-Po nahradení by sme chceli získať krásnu URL:
-http://localhost/qofola  Spring! Trieda PropertyPlaceholderHelper síce nemá úplne ideálny názov, ale má dve základné metódy:</description>
     </item>
     
   </channel>
