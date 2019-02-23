@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Mriežky v Androide cez GridLayout | robonovotny</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.css" integrity="sha384-D+9gmBxUQogRLqvARvNLmA9hS2x//eK1FhVb9PiU86gmcrBrJAQT8okdJ4LMp2uv" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.js" integrity="sha384-483A6DwYfKeDa0Q52fJmxFXkcPCFfnXMoXblOkJ4JcA8zATN6Tm78UNL72AKk+0O" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/contrib/auto-render.min.js" integrity="sha384-yACMu8JWxKzSp/C1YV86pzGiQ/l1YUfE8oPuahJQxzehAjEt2GiQuy/BIvl9KyeF" crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body);
+        });
+    </script>
+
+<header>
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <nav>
+    <ul>
+      
+      
+      <li class="pull-left ">
+        <a href="http://novotnyr.github.io/">/home/robonovotny</a>
+      </li>
+      
+
+      
+
+    </ul>
+  </nav>
+</header>
+
+  </head>
+
+  <body>
+    <br/>
+
+<div class="article-meta">
+<h1><span class="title">Mriežky v Androide cez GridLayout</span></h1>
+
+<h2 class="date">2019/02/20</h2>
+<p class="terms">
+  
+  
+  
+  
+  
+</p>
+</div>
+
+
+
+<main>
+
+
+<p>Vlastné piškvorky v Androide si vyžadujú mriežku 3 x 3, ktorá zaberá celú obrazovku. Ako na to v Androide?</p>
+
+<p>Máme viacero možnosti:</p>
+
+<ul>
+<li><code>GridView</code>: starý dobrý widget, ktorý zobrazí dáta z adaptéra v mriežke. Problémy? Neráta s tým, že widgety sa trafia “presne” do veľkosti obrazovky. Buď ich je málo a dole ostane vzduch, alebo priveľa a potom budeme scrollovať. Ale my nechceme scrollovateľné piškvorky.</li>
+<li><code>GridLayout</code>: layout od čias API 14 (4.0), ktorý naseká údaje do mriežky. Od API 21 (5.0) podporuje aj dynamické veľkosti, aj keď štandardná implementácia máva bugy.</li>
+<li><code>TableLayout</code>: layout v duchu HTML dizajnu roku 1996, kde všetko sa dá nalayoutovať pomocou tabuliek, riadkov a buniek. Funguje spoľahlivo!</li>
+<li><code>RecyclerView</code> s <code>GridLayoutManager</code>-om. Moderný prístup pre 21. storočie, ktorý však chce kopec kódenia.</li>
+<li><code>LinearLayout</code>: vnorené lineárne layouty, kde riadky predstavujú vodorovné lineárne layouty v zvislom lineárnom layoute.</li>
+</ul>
+
+<h2 id="gridlayout">GridLayout</h2>
+
+<p>Ukážme si <code>GridLayout</code>!</p>
+
+<pre><code class="language-java">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;android.support.v7.widget.GridLayout xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
+    xmlns:app=&quot;http://schemas.android.com/apk/res-auto&quot;
+    xmlns:tools=&quot;http://schemas.android.com/tools&quot;
+    android:layout_width=&quot;match_parent&quot;
+    android:layout_height=&quot;match_parent&quot;
+    app:columnCount=&quot;3&quot;
+    tools:context=&quot;.MainActivity&quot;&gt;
+
+
+    &lt;Button android:text=&quot;1&quot; app:layout_gravity=&quot;fill&quot; app:layout_rowWeight=&quot;1&quot; app:layout_columnWeight=&quot;1&quot; /&gt;
+    &lt;Button android:text=&quot;2&quot; app:layout_gravity=&quot;fill&quot; app:layout_rowWeight=&quot;1&quot; app:layout_columnWeight=&quot;1&quot;/&gt;
+
+	&lt;!-- sedem ďalších gombíkov --&gt;
+&lt;/android.support.v7.widget.GridLayout&gt;
+</code></pre>
+
+<p>Ak vyvíjame pre API 21 a novšie, čo je dnes už bežná situácia, môžeme použiť zabudovaný <code>GridLayout</code>. Problém je, že na niektorých zariadeniach sú rozkošné bugy — ba dokonca samotný emulátor API 21 layoutuje nesprávne.</p>
+
+<p>Záchranou je knižnica kompatibility.</p>
+
+<h2 id="závislosti">Závislosti</h2>
+
+<p>Medzi modulové závislosti v <code>build.gradle</code>, do sekcie <code>dependencies</code> pridáme knižnicu pre kompatibilný <code>GridLayout</code>:</p>
+
+<pre><code>implementation 'com.android.support:gridlayout-v7:28.0.0'
+</code></pre>
+
+<h2 id="layoutový-súbor">Layoutový súbor</h2>
+
+<p>Teraz môžeme použiť koreňový layout <code>android.support.v7.widget.GridLayout</code>. Nastavíme mu vlastnosti:</p>
+
+<ul>
+<li><code>layout_width</code> (šírka layoutu) a <code>layout_height</code> (výška layoutu) na celú obrazovku (<code>match_parent</code>)</li>
+<li><code>columnCount</code>: počet stĺpcov, v našom prípade 3. Pozor na to, že keďže layout pochádza z knižnice kompatibility, prefix atribútu musí byť <code>app</code> a nie <code>android</code>!</li>
+</ul>
+
+<p>Následne nasekáme pod seba deväť identických widgetov do mriežky. Pre jednoduchosť si tam nahádžeme gombíky, ale v estetickej appke by sme tam mohli dať <code>ImageView</code>:</p>
+
+<pre><code class="language-xml">&lt;Button android:text=&quot;1&quot; app:layout_gravity=&quot;fill&quot; app:layout_rowWeight=&quot;1&quot; app:layout_columnWeight=&quot;1&quot; /&gt;
+</code></pre>
+
+<p>Na to, aby sa widgety roztiahli na celú obrazovku, potrebujeme nastaviť váhy:</p>
+
+<ul>
+<li><code>app:layout_columnWeight</code>: nastaví váhu prvku pre stĺpec, teda veľkostí pri naťahovaní widgetu. Ak budú všetky váhy widgetov rovnaké (1:1:1), prejaví sa to na rovnomernom rozdelení šírky widgetov. Dôležité je nastaviť váhu všetkým komponentom!</li>
+<li><code>app:layout_rowWeight</code>: nastaví váhu prvku pre riadok. Rovnaké váhy v riadku natiahnu widgety na šírku tak, aby rovnomerne vyplnili celú obrazovku.</li>
+<li><code>app:layout_gravity</code> nastaví správanie widgetu pri naťahovaní. Hodnota <code>fill</code> vyplní celú “bunku” widgetom vo vodorovnom i zvislom smere.</li>
+</ul>
+
+<p>Rovnaké nastavenie platí aj pre ostatné widgety!</p>
+
+</main>
+
+    <footer>
+      
+<script>
+(function() {
+  function center_el(tagName) {
+    var tags = document.getElementsByTagName(tagName), i, tag;
+    for (i = 0; i < tags.length; i++) {
+      tag = tags[i];
+      var parent = tag.parentElement;
+      
+      if (parent.childNodes.length === 1) {
+        
+        if (parent.nodeName === 'A') {
+          parent = parent.parentElement;
+          if (parent.childNodes.length != 1) continue;
+        }
+        if (parent.nodeName === 'P') parent.style.textAlign = 'center';
+      }
+    }
+  }
+  var tagNames = ['img', 'embed', 'object'];
+  for (var i = 0; i < tagNames.length; i++) {
+    center_el(tagNames[i]);
+  }
+})();
+</script>
+
+      
+    </footer>
+  </body>
+</html>
+
