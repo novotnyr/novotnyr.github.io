@@ -1,0 +1,1533 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Korutiny v Kotline | robonovotny</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.css" integrity="sha384-D+9gmBxUQogRLqvARvNLmA9hS2x//eK1FhVb9PiU86gmcrBrJAQT8okdJ4LMp2uv" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.js" integrity="sha384-483A6DwYfKeDa0Q52fJmxFXkcPCFfnXMoXblOkJ4JcA8zATN6Tm78UNL72AKk+0O" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/contrib/auto-render.min.js" integrity="sha384-yACMu8JWxKzSp/C1YV86pzGiQ/l1YUfE8oPuahJQxzehAjEt2GiQuy/BIvl9KyeF" crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body);
+        });
+    </script>
+
+<header>
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <nav>
+    <ul>
+      
+      
+      <li class="pull-left ">
+        <a href="http://novotnyr.github.io/">/home/robonovotny</a>
+      </li>
+      
+
+      
+
+    </ul>
+  </nav>
+</header>
+
+  </head>
+
+  <body>
+    <br/>
+
+<div class="article-meta">
+<h1><span class="title">Korutiny v Kotline</span></h1>
+
+<h2 class="date">2019/07/08</h2>
+<p class="terms">
+  
+  
+  
+  
+  
+</p>
+</div>
+
+
+
+<main>
+
+
+<h1 id="korutiny-v-kotline">Korutiny v Kotline</h1>
+
+<p>V bežnej Jave sa spúšťanie úloh na pozadí (teda paralelný beh úloh) dá dosiahnuť pomocou vlákien (<em>threads</em>). Tento mechanizmus však môže byť natoľko komplikovaný, že zaberie pol semestra vysvetľovania.</p>
+
+<p>Kotlin ponúka alternatívu: <strong>korutiny</strong> / <strong>coroutines</strong>, ktoré majú viacero výhod:</p>
+
+<ul>
+<li><strong>elegantný zápis</strong> vďaka kombinácii syntaxe Kotlinu a knižnice pre korutiny</li>
+<li>sú <strong>škálovateľné</strong>: poľahky si môžeme pustiť státisíce korutín</li>
+<li>využívajú <strong>neblokujúcu</strong> filozofiu: keďže sa takmer nikde na nič nečaká, získame nesmierny výkon</li>
+<li>podporujú skladanie korutín cez štruktúrovanú konkurentnosť (<strong>structured concurrency</strong>). To rieši vzťahy medzi vnorenými korutinami.</li>
+<li>adresuje <strong>štandardné prípady</strong> z programovania používateľských rozhraní — napr. komunikáciu medzi úlohou na pozadí a úlohou na popredí.</li>
+</ul>
+
+<p>Korutinu si môžeme predstaviť ako superhrdinskú funkciu / metódu, ktorá sa dokáže spustiť na pozadí, ale inak sa tvári a používa ako bežná funkcia / metóda.</p>
+
+<h2 id="paralely-v-iných-jazykoch">Paralely v iných jazykoch</h2>
+
+<p>V iných jazykoch sa na tento účel používajú rozličné zápisy:</p>
+
+<ul>
+<li>callbacky z JavaScriptu / Node.js, vedúce ku <em>callback hell</em></li>
+<li>promises / future: nahrádzajúce callbacky a poľuďštujúce zápis z JavaScriptu a Javy</li>
+<li><code>async</code> / <code>await</code> z C#</li>
+<li>generátory / <code>yield</code> z Pythonu</li>
+</ul>
+
+<p>Výhodou korutín v Kotline je zápis programu, ktorý sa (až na drobnosti) programuje ako keby išlo o sekvenčné vykonávanie programu: teda riadok za riadkom pod sebou — bez zanorených callbackov, či všelijakých odbaľovaní / zabaľovaní výsledkov alebo špeciálnych kľúčových slov.</p>
+
+<h1 id="použitie-knižnice-korutín-v-kotline">Použitie knižnice korutín v Kotline</h1>
+
+<p>Korutiny síce nie sú súčasťou jazyka, ale dodávajú sa v samostatnej knižnici (od autorov Kotlinu.) Ak ich chceme použiť, dodajme si závislosť:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-groovy" data-lang="groovy">implementation <span style="background-color:#e0e0ff">&#39;org.jetbrains.kotlinx:kotlinx-coroutines-core:1.2.2&#39;</span></code></pre></div>
+<h1 id="zápis-korutín">Zápis korutín</h1>
+
+<p>Predstavme si, že chceme na pozadí stiahnuť rozsiahly text z webu. Či už programujeme v Androide alebo v JavaFX alebo nebodaj v Swingu, vieme, že dlhotrvajúce I/O operácie musia ísť na pozadí. To je skvelý kandidát na korutinu!</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">kotlinx.coroutines.GlobalScope</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">kotlinx.coroutines.launch</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">java.net.URL</span>
+
+<span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">main</span>() {
+    <span style="color:#289;font-weight:bold">val</span> url = <span style="background-color:#e0e0ff">&#34;http://deelay.me/2000/https://www.sav.sk/rss/&#34;</span>
+
+    GlobalScope.launch { 
+        <span style="color:#289;font-weight:bold">val</span> rss = URL(url).readText()
+        println(rss)
+    }
+    <span style="color:#666;font-style:italic">/* programová chyba! */</span>
+}</code></pre></div>
+<p>Korutina potrebuje prinajmenšom tri zložky:</p>
+
+<ul>
+<li><strong>scope</strong>: teda rozsah platnosti, v ktorej korutina pobeží. V našom prípade hlúpeho programu použijeme rovnako “inteligentné“ riešenie — globálny scope <code>GlobalScope</code> má platnosť celej aplikácie. (Pre reálne aplikácie použijeme iné — jemnejšie — scope, ale pre demo to postačí. V produkcii sa to neodporúča používať!)</li>
+<li><strong>scope builder</strong>: konkrétny spôsob, ktorým sa zostaví a spustí korutina. Z ponúkanej palety si vyberieme <strong>launch</strong>, určený pre prípady <em>fire-and-forget</em>, teda korutiny, od ktorých neočakávame návratové hodnoty.</li>
+<li><strong>kód korutiny</strong>: samotné príkazy, ktoré sa spustia v rámci korutiny.</li>
+</ul>
+
+<p>Spusťme funkciu <code>main</code>! Ale beda, zrejme neuvidíme žiadny vstup!</p>
+
+<h2 id="korutiny-sa-tvária-ako-démonové-vlákna">Korutiny sa tvária ako démonové vlákna</h2>
+
+<p>Na vlastné oči vidíme, že to nefunguje. Aplikácia totiž skončí skôr ako dobehne sťahovanie súboru! To je nemilé, ale aspoň vidíme, že veci sa dejú na pozadí, hoci — nie vždy musia stihnúť to, čo treba.</p>
+
+<p>Na pozadí sa korutina spustí v <em>daemon threade</em>, teda nečaká sa na jej dobehnutie.</p>
+
+<h2 id="počkajme-na-výsledok-runblocking">Počkajme na výsledok: <code>runBlocking</code></h2>
+
+<p>Výhodou korutín je, že nikdy neblokujú a teda nikdy sa na nič nečaká. Na druhej strane, v našom jednoduchom programe vidíme, že čakať jednoducho musíme, inak nikdy neuvidíme výsledok. (To sa týka aj unit testov.) Toto je prekérna situácia, ktorú však vyriešime umnou voľbou <strong>scope buildera</strong>.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">kotlinx.coroutines.runBlocking</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">java.net.URL</span>
+
+<span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">main</span>() {
+    runBlocking {
+        <span style="color:#289;font-weight:bold">val</span> url = <span style="background-color:#e0e0ff">&#34;http://deelay.me/2000/http://ics.upjs.sk/~novotnyr/home/db.txt&#34;</span>
+        <span style="color:#289;font-weight:bold">val</span> db = URL(url).readText()
+        println(<span style="background-color:#e0e0ff">&#34;${db.length} bytes&#34;</span>)
+    }
+}</code></pre></div>
+<p>Kód sme prepísali tak, aby používal builder <code>runBlocking</code>. Ten má granulárnejší <em>scope</em>: je ním aktuálne vlákno. Ba dokonca, toto aktuálne vlákno vyblokuje (počká), kým kód korutiny nedobehne.</p>
+
+<p>V našom prípade <code>runBlocking</code> vyblokuje hlavné vlákno, kým sa nezíska text z webovej adresy a kým sa nevypíše na konzolu. To je dôsledok vlastnosti tejto sekcie, ktorá spúšťa kód v jedinom vlákne.</p>
+
+<p>Opäť poznamenajme, že pri korutinách sa nikdy nemá čakať či blokovať tak vlákno a <code>runBlocking</code> je vhodný jedine pre prípady, keď potrebujeme preklenúť vesmír neblokujúcich korutín s vesmírom starých dobrých pomalých sekvenčných blokujúcich príkazov. Inými slovami, <code>runBlocking</code> je pre prípady preklenutia synchrónneho a asynchrónneho kódu — napr. pre <code>main()</code> a unit testy.</p>
+
+<h3 id="skrátené-zápis-runblocking-pre-testy-a-main">Skrátené zápis <code>runBlocking</code> pre testy a <code>main</code></h3>
+
+<p>V testoch môžeme použiť aj skrátený zápis:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">main</span>() = runBlocking {
+    <span style="color:#289;font-weight:bold">val</span> url = <span style="background-color:#e0e0ff">&#34;http://deelay.me/2000/http://ics.upjs.sk/~novotnyr/home/db.txt&#34;</span>
+    <span style="color:#289;font-weight:bold">val</span> db = URL(url).readText()
+    println(<span style="background-color:#e0e0ff">&#34;${db.length} bytes&#34;</span>)
+}</code></pre></div>
+<h1 id="paralelné-a-sekvenčné-spúšťanie-korutín">Paralelné a sekvenčné spúšťanie korutín</h1>
+
+<p>Kód v korutine sa vykonáva sekvenčne. Ak chceme postupne stiahnuť najprv jeden a potom druhý obsah RSS kanála, stačí zopakovať kód:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">main</span>() = runBlocking {
+    <span style="color:#289;font-weight:bold">val</span> url = <span style="background-color:#e0e0ff">&#34;http://deelay.me/2000/http://ics.upjs.sk/~novotnyr/home/db.txt&#34;</span>
+    <span style="color:#289;font-weight:bold">val</span> db = URL(url).readText()
+    println(<span style="background-color:#e0e0ff">&#34;${db.length} bytes&#34;</span>)
+
+    <span style="color:#289;font-weight:bold">val</span> url2 = <span style="background-color:#e0e0ff">&#34;https://www.sav.sk/rss/&#34;</span>
+    <span style="color:#289;font-weight:bold">val</span> rss = URL(url2).readText()
+    println(<span style="background-color:#e0e0ff">&#34;${rss.length} bytes&#34;</span>)
+}</code></pre></div>
+<p>Čo ak chceme paralelný prístup?</p>
+
+<h3 id="paralelný-prístup">Paralelný prístup</h3>
+
+<p>Paralelný prístup si uľahčíme pomocou mechanizmu <strong>structured concurrency</strong>, teda štruktúrovanej konkurentnosti:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">kotlinx.coroutines.launch</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">kotlinx.coroutines.runBlocking</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">java.net.URL</span>
+
+<span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">main</span>() = runBlocking&lt;Unit&gt; { <span style="color:#666;font-style:italic">/* Sémantická chyba! */</span>
+    launch(Dispatchers.IO) {
+        <span style="color:#289;font-weight:bold">val</span> url = <span style="background-color:#e0e0ff">&#34;http://deelay.me/2000/http://ics.upjs.sk/~novotnyr/home/db.txt&#34;</span>
+        <span style="color:#289;font-weight:bold">val</span> content = URL(url).readText()
+        println(<span style="background-color:#e0e0ff">&#34;${content.length} bytes&#34;</span>)
+    }
+
+    launch(Dispatchers.IO) {
+        <span style="color:#289;font-weight:bold">val</span> url = <span style="background-color:#e0e0ff">&#34;http://deelay.me/2000/http://www.gnu.org/home.en.html&#34;</span>
+        <span style="color:#289;font-weight:bold">val</span> content = URL(url).readText()
+        println(<span style="background-color:#e0e0ff">&#34;${content.length} bytes&#34;</span>)
+    }
+}</code></pre></div>
+<p>V kóde použijeme dva vnorené buildery <code>launch</code>, ktoré skúsia spustiť paralelné sťahovanie súborov a ich následný výpis. V tomto prípade však použijeme parametrizovaný <code>launch</code>, kde uvedieme <strong>dispatcher</strong>, t. j. vlákno, či vlákna, na ktorých sa korutina vykoná.</p>
+
+<h4 id="dispatchers-pre-spúšťanie-vlákien">Dispatchers pre spúšťanie vlákien</h4>
+
+<p>Knižnica pre korutiny ponúka viacero preddefinovaných dispatcherov. My sme si vybrali <code>Dispatchers.IO</code>, teda dispatcher, ktorý je určený pre spúšťanie úloh s I/O operáciami, čo je presne náš prípad. Sťahovanie súboru z webu totiž premárni množstvo času čakaním na dáta zo servera, než vyťažovaním CPU, na čo je príslušný dispatcher primerane optimalizovaný. (Pre znalcov threadov: dispatcher nie je nič iné, ako <em>thread pool</em>).</p>
+
+<h4 id="implicitný-a-zdedený-dispatcher">Implicitný a zdedený dispatcher</h4>
+
+<p>Ak by sme neuviedli žiadny dispatcher, použil by sa dispatcher z rodičovskej korutiny (<strong>inherited dispatcher</strong>). A keďže rodičovská korutina beží v rámci <code>runBlocking</code>, oba bezparametrové <code>launch</code>e by zbehli v jednom vlákne, a to postupne jeden po druhom, teda sekvenčne.</p>
+
+<h3 id="návratové-hodnoty-pre-launch">Návratové hodnoty pre <code>launch</code></h3>
+
+<p><em>Scope builder</em> <code>launch</code> vracia objekt <code>Job</code>, o ktorom si povieme neskôr. Zatiaľ nesmieme zabudnú uviesť korektný návratový typ pre <code>runBlocking</code>, aby sa nám nezbláznila kotlinovská inferencia typov.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">runBlocking&lt;Unit&gt; { 
+...
+}</code></pre></div>
+<h3 id="overenie-paralelného-prístupu">Overenie paralelného prístupu</h3>
+
+<p>Ak si chceme overiť, že vnorené korutiny bežia naozaj paralelne, môžeme merať čas behu v sekcii <code>measureTimeMillis</code>.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">kotlinx.coroutines.Dispatchers</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">kotlinx.coroutines.launch</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">kotlinx.coroutines.runBlocking</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">java.net.URL</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">kotlin.system.measureTimeMillis</span>
+
+<span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">main</span>() {
+    <span style="color:#289;font-weight:bold">val</span> time = measureTimeMillis {
+        runBlocking&lt;Unit&gt; {
+            launch(Dispatchers.IO) {
+                <span style="color:#289;font-weight:bold">val</span> url = <span style="background-color:#e0e0ff">&#34;http://deelay.me/2000/http://ics.upjs.sk/~novotnyr/home/db.txt&#34;</span>
+                <span style="color:#289;font-weight:bold">val</span> content = URL(url).readText()
+                println(<span style="background-color:#e0e0ff">&#34;${content.length} bytes&#34;</span>)
+            }
+
+            launch(Dispatchers.IO) {
+                <span style="color:#289;font-weight:bold">val</span> url = <span style="background-color:#e0e0ff">&#34;http://deelay.me/2000/http://www.gnu.org/home.en.html&#34;</span>
+                <span style="color:#289;font-weight:bold">val</span> content = URL(url).readText()
+                println(<span style="background-color:#e0e0ff">&#34;${content.length} bytes&#34;</span>)
+            }
+        }
+    }
+    println(<span style="background-color:#e0e0ff">&#34;$time ms&#34;</span>)
+}</code></pre></div>
+<p>Po spustení uvidíme, že program pobeží zhruba <em>2 celé niečo</em> sekúnd, čo bude výkonnostný rozdiel oproti sekvenčným <em>2 + 2 + niečo</em> sekundám.</p>
+
+<p>Vďaka štruktúrovanej konkurentnosti vidíme dve vlastnosti:</p>
+
+<ul>
+<li>kód v korutine vždy beží sekvenčne</li>
+<li>paralelný beh získame pomocou niektorého <em>scope buildera</em>, ale musíme myslieť na:
+
+<ul>
+<li>buď uvedieme explicitný dispatcher</li>
+<li>alebo nezabudnime preveriť zdedený dispatcher z nadradenej korutiny. To však môže byť náročné a preto sa odporúča vždy uvádzať explicitný dispatcher.</li>
+</ul></li>
+</ul>
+
+<h1 id="funkcie-v-korutinách">Funkcie v korutinách</h1>
+
+<p>Náš predošlý príklad veselo ťahá dáta v paralelne bežiacich korutinách. Poďme si však trochu upratať repetitívny kód. Vyrobme funkciu <code>download</code>, ktorá ťahá dáta a následne ju zavolajme v korutine.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">kotlinx.coroutines.Dispatchers</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">kotlinx.coroutines.launch</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">kotlinx.coroutines.runBlocking</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">java.net.URL</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">kotlin.system.measureTimeMillis</span>
+
+<span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">download</span>(url: String) {
+    <span style="color:#289;font-weight:bold">val</span> content = URL(url).readText()
+    println(<span style="background-color:#e0e0ff">&#34;${content.length} bytes&#34;</span>)
+}
+
+<span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">main</span>() {
+    <span style="color:#289;font-weight:bold">val</span> time = measureTimeMillis {
+        runBlocking&lt;Unit&gt; {
+            launch(Dispatchers.IO) {
+                download(<span style="background-color:#e0e0ff">&#34;http://deelay.me/5000/http://ics.upjs.sk/~novotnyr/home/db.txt&#34;</span>)
+            }
+
+            launch(Dispatchers.IO) {
+                download(<span style="background-color:#e0e0ff">&#34;http://deelay.me/5000/http://www.gnu.org/home.en.html&#34;</span>)
+            }
+        }
+    }
+    println(<span style="background-color:#e0e0ff">&#34;$time ms&#34;</span>)
+}</code></pre></div>
+<h2 id="suspendujúce-funkcie-suspending-functions">Suspendujúce funkcie (suspending functions)</h2>
+
+<p>Roman Elizarov, jeden z autorov Kotlinu, <a href="https://twitter.com/relizarov/status/1088372857766326272">odporúča nasledovnú konvenciu</a>:</p>
+
+<blockquote>
+<p>Ak je funkcia pomalá alebo využíva vzdialené volanie, použite <em>suspending</em> funkcie.</p>
+</blockquote>
+
+<p>Naša funkcia na sťahovanie rozhodne využíva vzdialené volanie (a dokonca je pomalá). Čo však je tá <em>suspending function</em>? Pozastavujúca sa funkcia?</p>
+
+<p>Naša funkcia na sťahovanie súborov je <strong>blokujúca</strong>, pretože kým neprichádzajú bajty zo servera, bubnuje prstami po stole a <strong>blokuje</strong> vlákno, v ktorom beží, čím zbytočne vyťažuje procesor.</p>
+
+<p><strong>Suspending Function</strong> je funkcia, ktorá namiesto zbytočného čakania len pozastaví (suspenduje) vykonávanie korutiny, a tým uvoľní vlákno (a vzácne cykly CPU) na užitočné účely. Suspending funkcie teda neblokujú! Ak sa okolitá situácia primerane zmení (napr. prídu bajty zo servera), funkcia sa veselo rozbehne ďalej.</p>
+
+<p>Naša funkcia <code>download()</code> je zatiaľ napísaná ako blokujúca, ale vieme ju vylepšiť na neblokujúcu:</p>
+
+<ol>
+<li>spustíme ju v inom vlákne, pomocou dispatchera <code>Dispatchers.IO</code></li>
+<li>vyhlásime ju za suspendujúcu.</li>
+</ol>
+
+<h2 id="funkcie-spúšťané-v-explicitnom-dispatcheri-sekcia-withcontext">Funkcie spúšťané v explicitnom dispatcheri: sekcia <code>withContext</code></h2>
+
+<p>Funkciu môžeme spustiť v explicitnom dispatcheri pomocou bloku <code>withContext</code>.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">download</span>(url: String) {
+    <span style="color:#666;font-style:italic">/* Syntaktická chyba */</span>
+    withContext(Dispatchers.IO) {
+        <span style="color:#289;font-weight:bold">val</span> content = URL(url).readText()
+        println(<span style="background-color:#e0e0ff">&#34;${content.length} bytes&#34;</span>)
+    }
+}</code></pre></div>
+<p>V tomto prípade však uvidíme syntaktickú chybu</p>
+
+<blockquote>
+<p>Suspend function &lsquo;withContext&rsquo; should be called only from a coroutine or another suspend function</p>
+</blockquote>
+
+<p>Táto chyba upozorňuje na dôležitú vlastnosť: <strong>existujúce suspending funkcie môžeme volať len zo suspending funkcie!</strong></p>
+
+<h2 id="deklarácie-suspending-funkcií">Deklarácie suspending funkcií</h2>
+
+<p>Upravme deklaráciu podľa chybovej hlášky a zároveň upracme v kóde podľa kotlinovských konvencií.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">suspend</span> <span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">download</span>(url: String) = withContext(Dispatchers.IO) {
+    <span style="color:#289;font-weight:bold">val</span> content = URL(url).readText()
+    println(<span style="background-color:#e0e0ff">&#34;${content.length} bytes&#34;</span>)
+}</code></pre></div>
+<p>Naša funkcia je teraz suspending, neblokujúca a dokonca explicitne uvádza dispatcher, na ktorom pobeží.</p>
+
+<h2 id="použitie-suspending-funkcie">Použitie suspending funkcie</h2>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">kotlinx.coroutines.Dispatchers</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">kotlinx.coroutines.launch</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">kotlinx.coroutines.runBlocking</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">kotlinx.coroutines.withContext</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">java.net.URL</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">kotlin.system.measureTimeMillis</span>
+
+<span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">main</span>() {
+    <span style="color:#289;font-weight:bold">val</span> time = measureTimeMillis {
+        runBlocking&lt;Unit&gt; {
+            launch {
+                download(<span style="background-color:#e0e0ff">&#34;http://deelay.me/5000/http://ics.upjs.sk/~novotnyr/home/db.txt&#34;</span>)
+            }
+
+            launch {
+                download(<span style="background-color:#e0e0ff">&#34;http://deelay.me/5000/http://www.gnu.org/home.en.html&#34;</span>)
+            }
+        }
+    }
+    println(<span style="background-color:#e0e0ff">&#34;$time ms&#34;</span>)
+}
+
+<span style="color:#289;font-weight:bold">suspend</span> <span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">download</span>(url: String) = withContext(Dispatchers.IO) {
+    <span style="color:#289;font-weight:bold">val</span> content = URL(url).readText()
+    println(<span style="background-color:#e0e0ff">&#34;${content.length} bytes&#34;</span>)
+}</code></pre></div>
+<p>Všimnime si, že <code>launch</code> bloky už nemusia uvádzať dispatcher, pretože namiesto zdedeného dispatchera sa použije dispatcher explicitne uvedený v suspending funkcii.</p>
+
+<h1 id="korutiny-s-návratovou-hodnotou-async">Korutiny s návratovou hodnotou: <code>async</code></h1>
+
+<p>Naše korutiny získavajú reťazec, ktorý vypisujú na konzolu. Čo ak by sme tento reťazec chceli ďalej spracovávať? Napríklad získať celkovú dĺžku v znakoch? (Áno, je to nezmyselné, ale jednoduché!)</p>
+
+<p>Najprv upravme funkciu <code>download</code>:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">suspend</span> <span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">download</span>(url: String): String = withContext(Dispatchers.IO) {
+    URL(url).readText()
+}</code></pre></div>
+<p>Na rozdiel od <code>launch</code>, ktorý len odpálime bez toho, aby sme očakávali výsledok, v tomto prípade chceme raz získať návratovú hodnotu.</p>
+
+<p><strong>Scope builder</strong> typu <code>async</code> vracia hodnotu v podobe objektu <code>Deferred</code>, čo je nič iné ako starý známy <em>promise</em> (JavaScript) / <em>future</em> (Java) / <em>Deferred</em> (JQuery), ibaže neblokujúci a efektívny. Ak tento koncept nepoznáme, principiálne ide o objekt, v ktorom sa niekedy v budúcnosti objaví výsledková hodnota.</p>
+
+<p>S objektom <code>Deferred</code> môžeme voľne nakladať a ak chceme počkať na výsledok, použijeme na ňom metódu <code>await()</code>, ktorá ho získa neblokujúcim spôsobom.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">kotlinx.coroutines.Dispatchers</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">kotlinx.coroutines.async</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">kotlinx.coroutines.runBlocking</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">kotlinx.coroutines.withContext</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">java.net.URL</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">kotlin.system.measureTimeMillis</span>
+
+<span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">main</span>() {
+    <span style="color:#289;font-weight:bold">val</span> time = measureTimeMillis {
+        runBlocking&lt;Unit&gt; {
+            <span style="color:#289;font-weight:bold">val</span> dbTxt = async {
+                download(<span style="background-color:#e0e0ff">&#34;http://deelay.me/5000/http://ics.upjs.sk/~novotnyr/home/db.txt&#34;</span>)
+            }
+
+            <span style="color:#289;font-weight:bold">val</span> homeEnHtml = async {
+                download(<span style="background-color:#e0e0ff">&#34;http://deelay.me/5000/http://www.gnu.org/home.en.html&#34;</span>)
+            }
+            <span style="color:#289;font-weight:bold">val</span> concatenatedContent = dbTxt.await() + homeEnHtml.await()
+            println(<span style="background-color:#e0e0ff">&#34;Total length: ${concatenatedContent.length}&#34;</span>)
+        }
+    }
+    println(<span style="background-color:#e0e0ff">&#34;$time ms&#34;</span>)
+}
+
+<span style="color:#289;font-weight:bold">suspend</span> <span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">download</span>(url: String): String = withContext(Dispatchers.IO) {
+    URL(url).readText()
+}</code></pre></div>
+<p>Všimnime si, že postupne získame:</p>
+
+<ul>
+<li><code>Deferred</code> pre budúci obsah prvej adresy <code>dbTxt</code>,</li>
+<li><code>Deferred</code> pre budúci obsah druhej adresy <code>homeEnHtml</code>.</li>
+</ul>
+
+<p>Tieto dva objekty obsahujú „prísľub“ budúceho obsahu, ktorý sa objaví, keď dolezú dáta z webového servera. Na výsledky počkáme zavolaním metódy <code>await()</code>, kde oba reťazce spojíme dohromady a vypočítame jeho veľkosť.</p>
+
+<h3 id="await-neblokuje">Await neblokuje!</h3>
+
+<p>Metóda <code>await()</code> je podobná metóde <code>get()</code> na triede <code>java.util.concurrent.Future</code>. Na rozdiel od Javy však metóda pri čakaní na výsledok <strong>neblokuje</strong> aktuálne vlákno! Korutina, v ktorej sa funkcia zavolá, sa pozastaví (<em>suspend</em>) bez blokovania vlákna a beh bude pokračovať (<em>resume</em>) vo chvíli, keď bude k dispozícii výsledok v objekte <code>Deferred</code>.</p>
+
+<h2 id="hromadné-sťahovanie">Hromadné sťahovanie</h2>
+
+<p>Ak poznáme <code>async</code>  a trochu funkcionálneho programovania, môžeme sťahovať hromadne ľubovoľný počet súborov!</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">kotlinx.coroutines.Dispatchers</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">kotlinx.coroutines.async</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">kotlinx.coroutines.awaitAll</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">kotlinx.coroutines.runBlocking</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">kotlinx.coroutines.withContext</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">java.net.URL</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">kotlin.system.measureTimeMillis</span>
+
+<span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">main</span>() {
+    <span style="color:#289;font-weight:bold">val</span> time = measureTimeMillis {
+        runBlocking&lt;Unit&gt; {
+            <span style="color:#289;font-weight:bold">val</span> urls = listOf(
+                <span style="background-color:#e0e0ff">&#34;http://deelay.me/5000/http://ics.upjs.sk/~novotnyr/home/db.txt&#34;</span>,
+                <span style="background-color:#e0e0ff">&#34;http://deelay.me/5000/http://www.gnu.org/home.en.html&#34;</span>
+            )
+            urls.map {
+                    async {
+                        download(it)
+                    }
+                }
+                .awaitAll()
+                .sumBy { it.length }
+                .also { println(it) }
+        }
+    }
+    println(<span style="background-color:#e0e0ff">&#34;$time ms&#34;</span>)
+}
+
+<span style="color:#289;font-weight:bold">suspend</span> <span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">download</span>(url: String): String = withContext(Dispatchers.IO) {
+    URL(url).readText()
+}</code></pre></div>
+<ol>
+<li>V premennej <code>urls</code> vyrobíme zoznam adries na sťahovanie.</li>
+<li>Každú URL stiahneme v korutine <code>async</code> a namapujeme ju na výsledok typu <code>Deferred</code>.</li>
+<li>Funkcia <code>awaitAll()</code> je <em>extension function</em>, ktorá dokáže počkať (<em>await</em>) na dobehnutie všetkých deferredov v kolekcii. Výsledkom je zoznam výsledkov, teda v našom prípade zoznam reťazcov s obsahmi.</li>
+<li>Pomocou funkcie <code>sumBy()</code> spočítame celkovú dĺžku obsahov súborov a vypíšeme ju.</li>
+</ol>
+
+<p>Všetko toto sa deje samozrejme na pozadí, asynchrónne a dobehne to za <em>päť plus čosi</em> sekúnd.</p>
+
+<h1 id="hromadné-sťahovanie-vo-funkcii-paralelizovateľná-dekompozícia">Hromadné sťahovanie vo funkcii: paralelizovateľná dekompozícia</h1>
+
+<p>Predstavme si, že si chceme vytvoriť funkciu, ktorá dostane na vstupe niekoľko adries URL, a chceme od nej, aby nám hromadne stiahla obsah a dala ho dohromady.</p>
+
+<p>Skúsime takýto nástrel, ktorý nebude fungovať:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">suspend</span> <span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">downloadAndConcatenate</span>(<span style="color:#289;font-weight:bold">vararg</span> urls: String) {
+    urls.map {
+        async {
+        		<span style="color:#666;font-style:italic">/* Error! Suspension functions can be called only within coroutine body */</span>
+            download(it)
+        }
+    }
+    .awaitAll()
+    .joinToString()
+}</code></pre></div>
+<p>Kompilačná chyba jasne hovorí, že chceme použiť <em>structured concurrency</em>, ale nesprávnym spôsobom.</p>
+
+<blockquote>
+<p>Roman Elizarov v článku <a href="https://medium.com/@elizarov/structured-concurrency-722d765aa952">Structured Concurrency</a> hovorí, že toto je učebnicový príklad <strong>parallel decomposition</strong>, teda paralelizovateľnej dekompozície úlohy. Tuto rozbijeme úlohu na paralelne bežiace sťahovania súborov, ktoré na konci zlepíme dohromady pomocou metódy <code>joinToString()</code>.</p>
+</blockquote>
+
+<p>Najviac problémov nastáva v chybových stavoch, prípadne pri rušení úloh. O tom si povieme neskôr, ale:</p>
+
+<ul>
+<li>čo ak sa korutina, z ktorej voláme <code>downloadAndConcatenate</code> zruší? Očividne musíme zastaviť čiastkové sťahovania.</li>
+<li>čo ak niektoré z čiastkových sťahovaní zlyhá? V tom prípade chceme zrušiť ostatné sťahovania a vyhlásiť celú operáciu za zlyhanú. (Alebo si definovať vlastnú komplexnú sémantiku, ktorá zlyhaným sťahovaniam priradí konkrétne chybové stavy, ale tie sa budú ťažko lepiť do jedného stringu).</li>
+</ul>
+
+<h2 id="vykolíkovanie-rozsahu-platnosti-korutiny-pre-paralelizovateľnú-dekompozíciu-coroutinescope">Vykolíkovanie rozsahu platnosti korutiny pre paralelizovateľnú dekompozíciu: <code>coroutineScope</code></h2>
+
+<p>Na to, aby funkcia <code>downloadAndConcatenate</code>, ktorá predstavuje paralelizovateľnú dekompozíciu, fungovala korektne v zmysle <em>structured concurrency</em>, potrebujeme použiť ďalší zo dostupných <em>scope builderov</em> a to <strong>coroutineScope</strong>.</p>
+
+<p>Táto sekcia:</p>
+
+<ul>
+<li>skončí, keď dobehnú jej všetky deti. Inými slovami, počká na dobehnutie detí, ale neblokuje!</li>
+<li>ak niektoré z detí zlyhá, celý scope zlyhá tiež, a bežiace deti budú zrušené.</li>
+</ul>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">suspend</span> <span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">downloadAndConcatenate</span>(<span style="color:#289;font-weight:bold">vararg</span> urls: String) = coroutineScope {
+    urls.map {
+        async {
+            download(it)
+        }
+    }
+    .awaitAll()
+    .joinToString()
+}</code></pre></div>
+<p>Všimnime si, že celú funkciu sme spustili v deklarovanom scope. Deti, reprezentované jednotlivými <code>async</code> korutinami, sa budú správať podľa očakávaní.</p>
+
+<p>Funkciu môžeme potom zavolať takto:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">main</span>() {
+    <span style="color:#289;font-weight:bold">val</span> time = measureTimeMillis {
+        runBlocking&lt;Unit&gt; {
+            <span style="color:#289;font-weight:bold">val</span> totalContent = downloadAndConcatenate(
+                <span style="background-color:#e0e0ff">&#34;http://deelay.me/5000/http://ics.upjs.sk/~novotnyr/home/db.txt&#34;</span>,
+                <span style="background-color:#e0e0ff">&#34;http://deelay.me/5000/http://www.gnu.org/home.en.html&#34;</span>
+            )
+            println(<span style="background-color:#e0e0ff">&#34;${totalContent.length} bytes&#34;</span>)
+        }
+    }
+    println(<span style="background-color:#e0e0ff">&#34;$time ms&#34;</span>)
+}</code></pre></div>
+<h3 id="rozdiel-medzi-coroutinescope-a-runblocking">Rozdiel medzi <code>coroutineScope</code> a <code>runBlocking</code></h3>
+
+<p>Obe sekcie sa správajú rovnako: nedobehnú, kým neskončia ich deti.</p>
+
+<ul>
+<li><code>runBlocking</code> pri čakaní na deti <strong>blokuje</strong> vlákno, v ktorom beží.</li>
+<li><code>coroutineScope</code> pri čakaní na deti <strong>neblokuje</strong>.</li>
+</ul>
+
+<h1 id="výnimky-chyby-a-errory">Výnimky, chyby a errory</h1>
+
+<p>Predstavme si, že chceme stiahnuť nasledovné adresy URL:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">val</span> totalContent = downloadAndConcatenate(
+    <span style="background-color:#e0e0ff">&#34;http://deelay.me/5000/http://ics.upjs.sk/~novotnyr/home/db.txt&#34;</span>,
+    <span style="background-color:#e0e0ff">&#34;http://deelay.me/5000/http://www.gnu.org/home.en.html&#34;</span>,
+    <span style="background-color:#e0e0ff">&#34;http://deelay.me/5000/FAILHOST&#34;</span>
+)</code></pre></div>
+<p>Je očividné, že tretia adresa neexistuje a teda jej sťahovanie zlyhá.</p>
+
+<p>Ak spustíme aplikáciu, uvidíme nádhernú výnimku:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">Exception in thread &#34;main&#34; java.net.UnknownHostException: FAILHOST
+	at java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:184)
+	at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:392)
+	at java.net.Socket.connect(Socket.java:589)
+...</code></pre></div>
+<p>Čo je ešte dôležitejšie, ostatné dve korutiny a ich metóda <code>download</code> sa síce spustia, ale výsledku sa už nedočkáme a celkového súčtu dĺžok tiež nie.</p>
+
+<p>Naša štruktúrovaná konkurentnosť vyzerá nasledovne:</p>
+
+<ol>
+<li><code>runBlocking</code> v metóde <code>main()</code></li>
+<li><code>coroutineScope</code> v metóde <code>downloadAndConcatenate()</code></li>
+<li><code>async</code> v metóde <code>downloadAndConcatenate()</code> pre stiahnutie jednej adresy</li>
+<li><code>withContext</code> v metóde <code>download()</code></li>
+</ol>
+
+<p>Vďaka nej máme korektné a elegantné spracovanie výnimiek. Konkrétny spôsob záleží od použitého scope buildera:</p>
+
+<ul>
+<li><code>async</code> sa spolieha na klienta, ktorých ich obslúži v mieste volania metódy  <code>await()</code></li>
+<li><code>launch</code> považuje výnimky nespracované a prehodí ich do globálnej obsluhy výnimiek.</li>
+</ul>
+
+<p>V príklade sme sa vôbec obsluhe výnimiek nevenovali a preto vidíme správanie <strong>globálnej obsluhy výnimiek</strong> (<strong>global exception handler</strong>), ktorý ich jednoducho vyklopí na chybový výstup <code>System.err</code>.</p>
+
+<p>Ak chceme definovať superglobálnu obsluhu, prebijeme nastavenie obsluhy neošetrených výnimiek vo vláknach. Do metódy <code>main()</code> uvedieme:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">Thread.setDefaultUncaughtExceptionHandler {
+		_, e -&gt; println(<span style="background-color:#e0e0ff">&#34;Unhandled exception: $e&#34;</span>)
+}</code></pre></div>
+<h2 id="ošetrenie-výnimky-na-príslušnom-mieste">Ošetrenie výnimky na príslušnom mieste</h2>
+
+<p>Skúsme ošetriť výnimku v metóde pre hromadné sťahovanie. Obaľme príslušný háklivý kód do <code>try</code>/<code>catch</code>.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">suspend</span> <span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">downloadAndConcatenate</span>(<span style="color:#289;font-weight:bold">vararg</span> urls: String) = coroutineScope {
+    <span style="color:#289;font-weight:bold">try</span> {
+        urls.map {
+            async {
+                download(it)
+            }
+        }
+            .awaitAll()
+            .joinToString()
+    } <span style="color:#289;font-weight:bold">catch</span> (e: Exception) {
+        <span style="color:#666;font-style:italic">/* Chyba: výnimka sa ošetrí dvakrát! */</span>
+        println(<span style="background-color:#e0e0ff">&#34;Failed to download URLs: $e&#34;</span>)
+        <span style="color:#289;font-weight:bold">return</span>@coroutineScope <span style="background-color:#e0e0ff">&#34;&#34;</span>
+    }
+}</code></pre></div>
+<p>Tento kód povedie k <strong>veľmi</strong> prekvapivej črte: uvidíme dvojité ošetrenie výnimky!</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">Failed to download URLs: kotlinx.coroutines.JobCancellationException: ScopeCoroutine is cancelling; job=&#34;coroutine#1&#34;:ScopeCoroutine{Cancelling}@4361bd48
+
+Exception in thread &#34;main&#34; java.net.UnknownHostException: FAILHOST
+	at java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:184)
+	at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:392)
+	at java.net.Socket.connect(Socket.java:589)
+	at java.net.Socket.connect(Socket.java:538)
+	at sun.net.NetworkClient.doConnect(NetworkClient.java:180)
+	at sun.net.www.http.HttpClient.openServer(HttpClient.java:463)</code></pre></div>
+<p>Zrejme by sme očakávali, že keď sa výnimka ošetrí, neuvidíme druhý stack trace, ktorý pochádza z <em>globálnej obsluhy výnimiek</em> / <em>global exception handlera</em>. Inak povedané, vyzerá to tak, že výnimka sa ošetrí i neošetrí, čo je v rozpore s očakávaniami, ktoré máme na <code>try</code>/<code>catch</code>.</p>
+
+<p>To však nie je chyba, ale vlastnosť súvisiaca so štruktúrovanou konkurentnosťou. <a href="https://kotlinlang.org/docs/reference/coroutines/exception-handling.html#cancellation-and-exceptions">Dokumentácia</a> totiž hovorí:</p>
+
+<blockquote>
+<p>If a coroutine encounters exception other than <code>CancellationException</code>, it cancels its parent with that exception. This behaviour cannot be overridden and is used to provide stable coroutines hierarchies for <a href="https://github.com/Kotlin/kotlinx.coroutines/blob/master/docs/composing-suspending-functions.md#structured-concurrency-with-async">structured concurrency</a> which do not depend on <a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-coroutine-exception-handler/index.html">CoroutineExceptionHandler</a> implementation. The original exception is handled by the parent when all its children terminate.</p>
+</blockquote>
+
+<p>V našom prípade metóda <code>download()</code> vyhodila výnimku v rámci sekcie  <code>async</code>. Výnimku sme síce odchytili, ale naskočil</p>
+
+<ul>
+<li>mechanizmus rušenia (<em>cancel</em>) rodiča, ktorým je <code>coroutineScope</code>.</li>
+<li>obsluha pôvodnej výnimky (<code>UnknownHostException</code>) rodičom vo chvíi, keď deti dobehnú.</li>
+<li>a navyše, keďže sme v <code>coroutineScope</code>, nezabudneme na to, že keď sa zruší rodič, zlyhajú a zrušia sa aj ostatné deti.</li>
+</ul>
+
+<h3 id="paralelizovateľná-dekompozícia-a-výnimky">Paralelizovateľná dekompozícia a výnimky</h3>
+
+<p>Paralelizovateľná dekompozícia / <em>parallel decomposition</em> pomocou <code>async</code> naozaj funguje tak, že:</p>
+
+<ul>
+<li>buď zbehne celá,</li>
+<li>alebo v niektorom potomkovi nastane výnimka a v tom prípade sa zruší rodič, zrušia všetky deti, a výnimka sa prehodí o úroveň vyššie do korutiny, ktorá paralelizovateľnú dekompozíciu spustila</li>
+</ul>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">kotlinx.coroutines.runBlocking</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">kotlin.system.measureTimeMillis</span>
+
+<span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">main</span>() {
+    <span style="color:#289;font-weight:bold">val</span> time = measureTimeMillis {
+        runBlocking&lt;Unit&gt; {
+            <span style="color:#289;font-weight:bold">try</span> {
+                <span style="color:#289;font-weight:bold">val</span> totalContent = downloadAndConcatenate(
+                    <span style="background-color:#e0e0ff">&#34;http://deelay.me/5000/http://ics.upjs.sk/~novotnyr/home/db.txt&#34;</span>,
+                    <span style="background-color:#e0e0ff">&#34;http://deelay.me/5000/http://www.gnu.org/home.en.html&#34;</span>,
+                    <span style="background-color:#e0e0ff">&#34;http://deelay.me/5000/FAILHOST&#34;</span>
+                )
+                println(<span style="background-color:#e0e0ff">&#34;${totalContent.length} bytes&#34;</span>)
+            } <span style="color:#289;font-weight:bold">catch</span> (e: Exception) {
+                println(<span style="background-color:#e0e0ff">&#34;Error while calculating bytes: $e&#34;</span>)
+            }
+        }
+    }
+    println(<span style="background-color:#e0e0ff">&#34;$time ms&#34;</span>)
+}</code></pre></div>
+<h3 id="best-practices-recepty-starých-materí-pre-async">Best Practices / Recepty starých materí pre <code>async</code></h3>
+
+<h4 id="async-funguje-len-pre-paralelizovateľnú-dekompozíciu">Async funguje len pre paralelizovateľnú dekompozíciu</h4>
+
+<p>Kombinácia <code>async</code>/ <code>await()</code> navádza na to, že to je mechanizmus <code>async/await</code> ukradnutý z C#, a vylepšený o krajšiu syntax. Z toho vyplývajú všetky nejasnosti so spracovaním výnimiek.</p>
+
+<p>Diskutéri v issue <a href="https://github.com/Kotlin/kotlinx.coroutines/issues/763">763</a> tvrdia, že <code>async</code> by sa mal radšej volať <strong>decompose</strong> alebo <strong>fork</strong>, čím by sa vyjasnilo použitie.</p>
+
+<h4 id="sekcia-async-hneď-nasledovaná-await-om-je-zbytočná">Sekcia <code>async</code> hneď nasledovaná <code>await()</code>om je zbytočná</h4>
+
+<p>Niekedy sa stane, že uvidíme sekciu <code>async</code>, ktorá je hneď nasledovaná <code>await()</code>-om.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"> <span style="color:#289;font-weight:bold">val</span> content = async(Dispatchers.IO) { <span style="color:#666;font-style:italic">/* kód */</span> }.await()</code></pre></div>
+<p>Toto nie je paralelizovateľná dekompozícia! (Teda je, ale dekomponujeme problém na jeden podproblém.) Namiesto toho stačí prepnúť kontext!</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">val</span> content = withContext(Dispatchers.IO) { <span style="color:#666;font-style:italic">/* kód */</span> }</code></pre></div>
+<h3 id="supervisorscope-pre-jednosmerné-rušenie-od-rodiča-k-deťom"><code>supervisorScope</code> pre jednosmerné rušenie od rodiča k deťom</h3>
+
+<p>V sekcii <code>coroutineScope</code> nastáva rušenie / <em>cancellation</em> v oboch smeroch: od zlyhaných detí k rodičom a následne od rodiča k ostatným bežiacim deťom. Alternatívou je <code>supervisorScope</code>, ktorý deti zruší len vtedy, ak zlyhá sám. Deti sa o svoje rušenie, či obsluhu výnimiek musia postarať samé.</p>
+
+<blockquote>
+<p>Podrobnosti uvádza <a href="https://kotlinlang.org/docs/reference/coroutines/exception-handling.html#supervision-scope">dokumentácia Kotlinu</a>.</p>
+</blockquote>
+
+<h1 id="používateľské-rozhrania-gui-a-korutiny">Používateľské rozhrania GUI a korutiny</h1>
+
+<p>Je čas opustiť hlúpe konzolové hrajkanie sa! Korutiny sú veľmi užitočné pri práci s GUI, pretože uľahčujú typické prípady použitia.</p>
+
+<p>Typická situácia pre jednovláknové GUI toolkity nastáva, keď chceme vyvolať dlhotrvajúcu akciu a zároveň nechceme, aby aplikácia vytuhla. <em>Swing</em> túto situáciu rieši pomocou triedy  <code>SwingWorker</code>, a Android zase pomocou <code>AsyncTask</code>ov.</p>
+
+<p>S korutinami je riešenie takýchto situácii omnoho kratšie a prehľadnejšie.</p>
+
+<h2 id="závislosti-a-podporované-knižnice">Závislosti a podporované knižnice</h2>
+
+<p>Kotlinovská knižnica pre korutiny rovno podporuje tri najznámejšie GUI toolkity, a ku každému ponúka dodatočnú závislosť, ktorú pridáme do projektu:</p>
+
+<ul>
+<li><strong>Swing</strong>: <code>org.jetbrains.kotlinx:kotlinx-coroutines-swing</code></li>
+<li><strong>Android</strong>: <code>org.jetbrains.kotlinx:kotlinx-coroutines-android</code></li>
+<li><strong>JavaFX</strong>: <code>org.jetbrains.kotlinx:kotlinx-coroutines-javafx</code></li>
+</ul>
+
+<p>Ukážme si jednoduchý príklad použitia v Swingu.</p>
+
+<h2 id="swing-a-korutiny">Swing a korutiny</h2>
+
+<p>Do projektu si pridajme závislosť:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-gradle" data-lang="gradle">implementation <span style="background-color:#e0e0ff">&#39;org.jetbrains.kotlinx:kotlinx-coroutines-swing:1.2.2&#39;</span></code></pre></div>
+<p>Každá z knižníc dá k dispozícii špeciálny typ <strong>dispatchera</strong>: <code>Dispatchers.Main</code>, ktorý zabezpečí, že daný kód pobeží v hlavnom vlákne GUI toolkitu. Pre všetky tri GUI toolkity platia dve pravidlá:</p>
+
+<ol>
+<li>dlhotrvajúce operácie <strong>nesmú</strong> bežať v hlavnom vlákne.</li>
+<li>aktualizácie komponentov / widgetov <strong>musia</strong> bežať v hlavnom vlákne.</li>
+</ol>
+
+<p>S použitím špeciálneho dispatchera a vhodného použitia <code>withContext</code> sa táto činnosť úplne uľahčí.</p>
+
+<h2 id="ukážkový-formulár">Ukážkový formulár</h2>
+
+<p>Ukážme si jednoduchý formulár s jediným gombíkom, ktorým odpálime dlhotrvajúcu operáciu:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">javafx.application.Application.launch</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">kotlinx.coroutines.Dispatchers</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">java.awt.event.ActionEvent</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">javax.swing.JButton</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">javax.swing.JFrame</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">javax.swing.SwingUtilities</span>
+
+<span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">PrimeCalculatorForm</span> : JFrame() {
+    <span style="color:#289;font-weight:bold">private</span> <span style="color:#289;font-weight:bold">val</span> startButton: JButton = JButton(<span style="background-color:#e0e0ff">&#34;Start&#34;</span>)
+
+    init {
+        startButton.addActionListener(<span style="color:#333">::</span>onStartButtonClick)
+        add(startButton)
+    }
+
+    <span style="color:#289;font-weight:bold">private</span> <span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">onStartButtonClick</span>(e: ActionEvent) {
+        <span style="color:#666;font-style:italic">/* dlhotrvajúci výpočet */</span>
+    }
+}
+
+<span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">main</span>() {
+    SwingUtilities.invokeLater {
+        PrimeCalculatorForm().apply {
+            defaultCloseOperation = JFrame.EXIT_ON_CLOSE
+            setLocationRelativeTo(<span style="color:#289;font-weight:bold">null</span>)
+            pack()
+            isVisible = <span style="color:#289;font-weight:bold">true</span>
+        }
+    }
+}</code></pre></div>
+<p>V metóde <code>onStartButtonClick()</code> odpálime dlhotrvajúci výpočet, napríklad obľúbený príklad Romana Elizarova, kde rátame veľmi veľké prvočíslo.</p>
+
+<h2 id="korutiny-a-swing">Korutiny a Swing</h2>
+
+<p>Keďže táto operácia musí bežať v samostatnom vlákne, alebo v korutine na pozadí, je to kandidát na použitie scope buildera typu <code>launch</code>.</p>
+
+<p>Ak by sme urobili nasledovný kód, nefungovalo by to a skončilo by to na syntaktickej chybe.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">private</span> <span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">onStartButtonClick</span>(e: ActionEvent) {
+    launch(Dispatchers.Default) {
+        println(BigInteger.probablePrime(<span style="color:#60e;font-weight:bold">4069</span>, Random()))
+    }
+}</code></pre></div>
+<p>V extrémnom prípade sa môže stať, že IntelliJ IDEA importne funkciu, ktorá rozhodne nie je správna:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">javafx.application.Application.launch</span> <span style="color:#666;font-style:italic">// WTF?</span></code></pre></div>
+<p>Nezabudnime na zásady používania korutín: potrebujeme poznať <em>scope</em>, vybrať si <em>scope builder</em> a uviesť kód korutiny. Builder sme si zvolili už predtým: <code>launch</code>, kód už máme, ale aký je <em>scope</em>?</p>
+
+<h3 id="globálny-scope-globalscope-je-považovaný-za-zlo">Globálny scope <code>GlobalScope</code> je považovaný za zlo!</h3>
+
+<p>Hlúpe riešenie by nastavilo scope na globálny: <code>GlobalScope.launch</code>. Roman Elizarov <a href="https://medium.com/@elizarov/the-reason-to-avoid-globalscope-835337445abc#af54">však kýve prstom</a> a hovorí, že globálny scope sa takmer nemá používať.</p>
+
+<blockquote>
+<p><code>GlobalScope.launch</code> vytvára <em>globálne</em> korutiny. Vývojár musí byť zodpovedný za sledovanie ich životného cyklu.</p>
+</blockquote>
+
+<p>Na rozdiel od konzolových zábaviek, kde sme mohli použiť <code>runBlocking</code> ako núdzové riešenie, si tuto musíme zvoliť iný spôsob</p>
+
+<h2 id="zásady-pre-scope-korutín-v-gui">Zásady pre scope korutín v GUI</h2>
+
+<p>Ak funkcia používa buildery pre korutiny, máme štyri možnosti:</p>
+
+<ol>
+<li><del>použiť globálny scope</del></li>
+<li>triedu, ktorá obsahuje funkciu, necháme implementovať interfejs <code>CoroutineScope</code>, a cez neho poskytneme korutinám príslušný scope.</li>
+<li>do triedy, ktorá obsahuje funkciu, zavedieme inštančnú premennú typu <code>CoroutineScope</code> reprezentujúcu objekt.</li>
+<li>do funkcie núdzovo zavedieme parameter typu <code>CoroutineScope</code>. To platí pre privátne API, a je to workaround, pretože takto nebudeme vedieť garantovať scope, v ktorom naša funkcia pobeží.</li>
+</ol>
+
+<h2 id="scope-pre-okno-jframe-mainscope">Scope pre okno <code>JFrame</code>: <code>MainScope</code></h2>
+
+<p>Zvoľme si druhú možnosť a nechajme naše okno <code>JFrame</code> implementovať interfejs <code>CoroutineScope</code>. Aký scope však poskytneme korutinám, keď globálny sme si zakázali?</p>
+
+<p>Kotlinovská knižnica pre korutiny poskytuje krásny objekt <code>MainScope</code> predstavujúci beh korutín v hlavnom (<em>main</em>, EDT) vlákne.</p>
+
+<p>Interfejs ho vie poskytnúť cez kotlinovskú delegáciu.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">kotlinx.coroutines.CoroutineScope</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">kotlinx.coroutines.MainScope</span>
+
+<span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">PrimeCalculatorForm</span> : JFrame(), CoroutineScope <span style="color:#289;font-weight:bold">by</span> MainScope() {</code></pre></div>
+<p>Delegácia je <a href="https://www.reddit.com/r/Kotlin/comments/auoyo8/question_about_coroutinescope_example/ehjoxpu/">odporúčaný postup od Kotlinu 1.1.0</a>.</p>
+
+<h2 id="použitie-korutiny-v-metóde">Použitie korutiny v metóde</h2>
+
+<p>Scope builder <code>launch</code> už teraz zafunguje správne, pretože jeho scope bude prebratý z hlavného okna.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">private</span> <span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">onStartButtonClick</span>(e: ActionEvent) {
+		launch(Dispatchers.Default) {
+				println(BigInteger.probablePrime(<span style="color:#60e;font-weight:bold">4069</span>, Random()))
+		}
+}</code></pre></div>
+<p>Ak si spustíme aplikáciu, môžeme si klikať na tlačidlo <strong>Start</strong> a po dlhej chvíľke uvidíme v konzole výsledky pre prvočísla. Všimnime si, že hlavné vlákno nie je blokované a úlohy bežia na pozadí, pretože inak by sme ani nedokázali kliknúť na tlačidlo a aplikácia by vyzerala zatuhnuto.</p>
+
+<h2 id="prepínanie-vlákien">Prepínanie vlákien</h2>
+
+<p>Ak chceme aktualizovať komponent hlavného okna, presnejšie nastaviť mu korektný titulok po získané prvočísla, použijeme prepnutie kontextu cez <code>withContext</code>:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">private</span> <span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">onStartButtonClick</span>(e: ActionEvent) {
+    launch(Dispatchers.Default) {
+        <span style="color:#289;font-weight:bold">val</span> prime = BigInteger.probablePrime(<span style="color:#60e;font-weight:bold">3000</span>, Random())
+        withContext(Dispatchers.Main) {
+            title = prime.toString()
+            println(prime)
+        }
+    }
+}</code></pre></div>
+<p>Všimnime si, ako sme jednoducho prepli dispatchera a spustili aktualizáciu na hlavnom vlákne.</p>
+
+<h2 id="rušenie-korutín-z-gui">Rušenie korutín z GUI</h2>
+
+<p>Doteraz sme sa vôbec nebavili o rušení korutín (<em>cancel</em>), okrem prípadu, kde korutina vyhodila výnimku. Upravme si naše okno o ďalší gombík, ktorým budeme vedieť pozastaviť výpočet.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">kotlinx.coroutines.CoroutineScope</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">kotlinx.coroutines.Dispatchers</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">kotlinx.coroutines.Job</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">kotlinx.coroutines.MainScope</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">kotlinx.coroutines.launch</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">kotlinx.coroutines.withContext</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">java.awt.FlowLayout</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">java.awt.event.ActionEvent</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">java.math.BigInteger</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">java.util.*</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">javax.swing.JButton</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">javax.swing.JFrame</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">javax.swing.SwingUtilities</span>
+
+<span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">PrimeCalculatorForm</span> : JFrame(), CoroutineScope <span style="color:#289;font-weight:bold">by</span> MainScope() {
+    <span style="color:#289;font-weight:bold">private</span> <span style="color:#289;font-weight:bold">val</span> startButton: JButton = JButton(<span style="background-color:#e0e0ff">&#34;Start&#34;</span>)
+
+    <span style="color:#289;font-weight:bold">private</span> <span style="color:#289;font-weight:bold">val</span> stopButton: JButton = JButton(<span style="background-color:#e0e0ff">&#34;Stop&#34;</span>)
+
+    init {
+        layout = FlowLayout()
+
+        startButton.addActionListener(<span style="color:#333">::</span>onStartButtonClick)
+        add(startButton)
+
+        stopButton.addActionListener(<span style="color:#333">::</span>onStopButtonClick)
+        add(stopButton)
+    }
+    <span style="color:#289;font-weight:bold">private</span> <span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">onStartButtonClick</span>(e: ActionEvent) {
+        <span style="color:#666;font-style:italic">/* ... */</span>
+    }
+
+    <span style="color:#289;font-weight:bold">private</span> <span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">onStopButtonClick</span>(e: ActionEvent) {
+        <span style="color:#666;font-style:italic">/* ... */</span>
+    }
+}</code></pre></div>
+<p>Máme dva gombíky <code>JButton</code>:</p>
+
+<ul>
+<li><strong>startButton</strong> s obsluhou v <code>onStopButtonClick</code></li>
+<li><strong>stopButton</strong> s obsluhou v <code>onStopButtonClick</code></li>
+</ul>
+
+<p>Obe tlačidlá sú uvedené vedľa seba, čo sme dosiahli správcom layoutu (<em>layout manager</em>) typu <code>FlowLayout</code>.</p>
+
+<h3 id="job-úloha">Job: úloha</h3>
+
+<p>Ak si pamätáme scope builder <code>async</code>, hovorili sme, že vracia objekt <code>Deferred</code> reprezentujúci výsledok. Builder <code>launch</code> sme vyhlásili za čosi, čo nevracia výsledok. Napriek tomu z tohto buildera vieme získať objekt reprezentujúci <strong>job</strong> (úlohu), ktorého základná užitočná vlastnosť je <em>nechať sa zrušiť</em> pomocou metódy <code>cancel()</code>.</p>
+
+<p>Dajme si do triedy pekný príklad: tlačidlo <strong>Start</strong> vytvorí job a poznačí ho do inštančnej premennej a tlačidlo <strong>Stop</strong> tento job zruší.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">private</span> <span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">onStartButtonClick</span>(e: ActionEvent) {
+    startButton.isEnabled = <span style="color:#289;font-weight:bold">false</span>
+    job = launch(Dispatchers.Default) {
+        <span style="color:#289;font-weight:bold">val</span> prime = BigInteger.probablePrime(<span style="color:#60e;font-weight:bold">4096</span>, Random())
+        withContext(Dispatchers.Main) {
+            title = prime.toString()
+            startButton.isEnabled = <span style="color:#289;font-weight:bold">true</span>
+        }
+    }
+}
+
+<span style="color:#289;font-weight:bold">private</span> <span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">onStopButton</span>(e: ActionEvent) {
+    job<span style="color:#333">?.</span>apply {
+        cancel()
+        startButton.isEnabled = <span style="color:#289;font-weight:bold">true</span>
+        println(<span style="background-color:#e0e0ff">&#34;Cancelled job&#34;</span>)
+    }
+    job = <span style="color:#289;font-weight:bold">null</span>
+}</code></pre></div>
+<p>Vytvorili sme inštančnú premennú typu <code>job</code>, ktorý vyhlásime za <em>nullable</em>, pretože <code>null</code> indikuje stav, keď sa práve nič nedeje, resp. nič nie je spustené.</p>
+
+<p>V metóde pri štarte do nej priradíme výsledok z <code>launch</code> sekcie a pri kliknutí na zastavenie jednoducho overíme či <code>job</code> nie je <code>null</code>, a následne ho zastavíme.</p>
+
+<p>A aby GUI bolo extra vyladené, nezabudneme umne zakazovať a povoľovať štartovacie tlačidlo pomocou <code>isEnabled</code>.</p>
+
+<p>Ak aplikáciu spustíme, vidíme korektné správanie. Vždy si vieme spustiť (jeden) <em>job</em> na pozadí, a volaním metódy <code>cancel()</code> ho zastaviť. Zároveň všetky práce s tlačidlom <code>startButton</code> robíme korektne na hlavnom vlákne!</p>
+
+<h3 id="upratovanie-s-použitím-suspending-funkcie">Upratovanie s použitím suspending funkcie</h3>
+
+<p>Samotný kód môžeme ešte upratať. Ak použijeme Elizarovovu konvenciu o hlavičkách funkcií, môžeme dosiahnuť toto:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">private</span> <span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">onStartButtonClick</span>(e: ActionEvent) {
+    startButton.isEnabled = <span style="color:#289;font-weight:bold">false</span>
+    job = launch {
+        calculatePrime()
+    }
+}
+
+<span style="color:#289;font-weight:bold">private</span> <span style="color:#289;font-weight:bold">suspend</span> <span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">calculatePrime</span>() = withContext(Dispatchers.Default) {
+    <span style="color:#289;font-weight:bold">val</span> prime = BigInteger.probablePrime(<span style="color:#60e;font-weight:bold">4096</span>, Random())
+    withContext(Dispatchers.Main) {
+        title = prime.toString()
+        startButton.isEnabled = <span style="color:#289;font-weight:bold">true</span>
+    }
+}</code></pre></div>
+<p>Funkcia <code>calculatePrime()</code> je suspending (indikuje dlhý beh), kde uvedieme explicitný <em>dispatcher</em>, v ktorom korutina pobeží. Samozrejme, prepnutie dispatchera funguje automaticky.</p>
+
+<p>V metóde <code>onStartButtonClick()</code> môžeme spustiť suspending procedúru klasickým spôsobom cez <code>launch()</code>.</p>
+
+<h3 id="zrušenie-jobov-so-zatvorením-okna">Zrušenie jobov so zatvorením okna</h3>
+
+<p>Posledná dôležitá vec, ktorú nesmieme zabudnúť vykonať, je zrušiť / cancel všetky joby, ak sa okno zatvorí. Naše okno <code>PrimeCalculatorForm</code> má vďaka scopu typu <code>MainScope</code> svoj vlastný <em>job</em>, ktorého rozsah platnosti zodpovedá životnosti okna.</p>
+
+<p>Vždy, keď spustíme <em>job</em> z obslužnej metódy tlačidla <strong>Start</strong>, spustíme nový <em>job</em>, ktorý sa stane potomkom (<em>child</em>) <em>jobu</em> prináležiacemu oknu.</p>
+
+<p>Táto hierarchia poskytuje výbornú výhodu: ak zrušíme <em>job</em> okna, automaticky sa zrušia všetky deti (podobne, ako to robí napríklad korutina bežiaca v sekcii <code>async</code>).</p>
+
+<p>Dodajme teda poslucháča na udalosť „zatvára sa okno“ a v ňom jednoducho zrušme celú hierarchiu jobov.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">init {
+    addWindowListener(<span style="color:#289;font-weight:bold">object</span> <span style="color:#f00;background-color:#faa">: </span><span style="color:#e9e;font-weight:bold">WindowAdapter</span>() {
+        <span style="color:#289;font-weight:bold">override</span> <span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">windowClosing</span>(e: WindowEvent?) {
+            println(<span style="background-color:#e0e0ff">&#34;Cancelling job&#34;</span>)
+            cancel()
+        }
+    })</code></pre></div>
+<h1 id="prílepky">Prílepky</h1>
+
+<h2 id="korutiny-versus-vlákna">Korutiny versus vlákna</h2>
+
+<p>Korutiny boli navrhnuté ako ľahké vlákna. A naozaj, dá sa použiť skvelé porovnanie:</p>
+
+<ul>
+<li><strong>vlákno / thread</strong> ~ korutina</li>
+<li><strong>blokovanie</strong> ~ suspend</li>
+<li><strong>paralelizmus</strong> ~ konkurentnosť</li>
+<li><strong>preemptívny multitasking</strong> ~ kooperatívny multitasking</li>
+</ul>
+
+<p>Keďže sú korutiny nenáročné, môžeme ich spustiť tisícky. Keďže korutiny nikdy neblokujú, ale pozastavujú sa, sú veľmi výkonné. A tretia vlastnosť: kým vlákna môžu bežať paralelne, teda bok po boku naraz (ak máme viac jadier CPU), korutiny sú konkurentné, teda v jednom časovom úseku sa veľmi rýchlo striedajú ich behy.</p>
+
+<p>Kým vlákna podporujú preemptívny multitasking, teda CPU rozhoduje, kedy ktoré vlákno pobeží, korutiny stavajú na kooperatívnom multitaskingu, kde sa aktívne musia vzdať procesorového času, aby mohli pobežať iné konkurentné korutiny.</p>
+
+<p>Ukážme si, že si ľahko môžeme spustiť desaťtisíc korutín:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">kotlinx.coroutines.launch</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">kotlinx.coroutines.runBlocking</span>
+
+<span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">main</span>() = runBlocking {
+    repeat(<span style="color:#60e;font-weight:bold">10</span>_000) {
+        launch {
+            println(Thread.currentThread().name + <span style="background-color:#e0e0ff">&#34; &#34;</span> + it)
+        }
+    }
+}</code></pre></div>
+<h2 id="kooperatívny-multitasking">Kooperatívny multitasking</h2>
+
+<p>Keďže korutiny fungujú na kooperatívnom multitaskingu, musia definovať v kóde body, kde ich možno suspendovať (pozastaviť) alebo zrušiť (<em>cancel</em>).</p>
+
+<p>Predstavme si mimoriadne hlúpy a mimoriadne pomalý algoritmus na triedenie zoznamu, tzv. <em>bubble sort</em>.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">MutableList</span>&lt;Int&gt;.bubbleSort(): List&lt;Int&gt; {
+    <span style="color:#289;font-weight:bold">for</span> (i <span style="color:#289;font-weight:bold">in</span> <span style="color:#60e;font-weight:bold">0</span> until size) {
+        <span style="color:#289;font-weight:bold">for</span> (j <span style="color:#289;font-weight:bold">in</span> <span style="color:#60e;font-weight:bold">0</span> until size) {
+            <span style="color:#289;font-weight:bold">if</span> (<span style="color:#289;font-weight:bold">this</span><span style="color:#007">[i]</span> &lt; <span style="color:#289;font-weight:bold">this</span><span style="color:#007">[j]</span>) {
+                <span style="color:#289;font-weight:bold">val</span> tmp = <span style="color:#289;font-weight:bold">this</span><span style="color:#007">[i]</span>
+                <span style="color:#289;font-weight:bold">this</span><span style="color:#007">[i]</span> = <span style="color:#289;font-weight:bold">this</span><span style="color:#007">[j]</span>
+                <span style="color:#289;font-weight:bold">this</span><span style="color:#007">[j]</span> = tmp
+            }
+        }
+    }
+    <span style="color:#289;font-weight:bold">return</span> <span style="color:#289;font-weight:bold">this</span>
+}</code></pre></div>
+<p>Skúsme si zotriediť zoznam:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">main</span>(): Unit = runBlocking {
+    <span style="color:#289;font-weight:bold">val</span> job = launch(Dispatchers.Default) {
+        <span style="color:#289;font-weight:bold">val</span> shuffled = (<span style="color:#60e;font-weight:bold">1.</span>.<span style="color:#60e;font-weight:bold">30</span>_000).shuffled().toMutableList()
+        <span style="color:#289;font-weight:bold">val</span> bubbleSort = shuffled.bubbleSort()
+        println(Thread.currentThread().name + <span style="background-color:#e0e0ff">&#34;: &#34;</span> + bubbleSort)
+    }
+    Thread.sleep(<span style="color:#60e;font-weight:bold">1000</span>)
+    println(<span style="background-color:#e0e0ff">&#34;Cancelling...&#34;</span>)
+    job.cancel()
+    println(<span style="background-color:#e0e0ff">&#34;Cancelled&#34;</span>)
+}</code></pre></div>
+<p>Hoci sa pokúsime odstreliť job spojený s triedením, nepodarí sa nám to skôr, než funkcia <code>bubbleSort</code> dobehne. Bublinové triedenie totiž nekooperuje!</p>
+
+<p>Uvidíme niečo takéto:</p>
+
+<pre><code>Cancelling...
+Cancelled
+DefaultDispatcher-worker-1: [1, ... ]
+</code></pre>
+
+<p>Ak chceme vo funkcii dosiahnuť kooperatívny multitasking, buď:</p>
+
+<ul>
+<li><strong>yield</strong>: funkcia naznačí, že suspending funkcia sa vzdáva procesorového času v prospech ďalších výpočtov. Zároveň na tomto mieste môže byť nielen pozastavená, ale i zrušená.</li>
+<li><strong>isActive</strong>: ak beží funkcia v konkrétnom scope cez <code>withContext</code>, môžeme overiť, či je korutina ešte aktívna. Obvyklé použitie je v kombinácii s cyklom  <code>while</code>.  Táto vlastnosť je <em>extension property</em> na objekte typu <code>CoroutineScope</code>.</li>
+</ul>
+
+<p>Keďže naša funkcia nemá nič whileovateľné, použijeme <code>yield()</code> a zároveň vyhlásime funkciu za suspending.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">suspend</span> <span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">MutableList</span>&lt;Int&gt;.bubbleSort(): List&lt;Int&gt; {
+    <span style="color:#289;font-weight:bold">for</span> (i <span style="color:#289;font-weight:bold">in</span> <span style="color:#60e;font-weight:bold">0</span> until size) {
+        <span style="color:#289;font-weight:bold">for</span> (j <span style="color:#289;font-weight:bold">in</span> <span style="color:#60e;font-weight:bold">0</span> until size) {
+            <span style="color:#289;font-weight:bold">if</span> (<span style="color:#289;font-weight:bold">this</span><span style="color:#007">[i]</span> &lt; <span style="color:#289;font-weight:bold">this</span><span style="color:#007">[j]</span>) {
+                <span style="color:#289;font-weight:bold">val</span> tmp = <span style="color:#289;font-weight:bold">this</span><span style="color:#007">[i]</span>
+                <span style="color:#289;font-weight:bold">this</span><span style="color:#007">[i]</span> = <span style="color:#289;font-weight:bold">this</span><span style="color:#007">[j]</span>
+                <span style="color:#289;font-weight:bold">this</span><span style="color:#007">[j]</span> = tmp
+            }
+            yield()
+        }
+    }
+    <span style="color:#289;font-weight:bold">return</span> <span style="color:#289;font-weight:bold">this</span>
+}</code></pre></div>
+<p>Teraz vidíme, že funkcia sa zruší hneď, ako je to možné, a výpis sa ani nevykoná.</p>
+
+<h2 id="čakanie-bez-blokovania-delay">Čakanie bez blokovania: <code>delay()</code></h2>
+
+<p>Doteraz sme na čakanie používali <code>Thread.sleep()</code>, ktorý blokuje vlákno, kým neuplynie lehota. V korutinách však existuje neblokujúca verzia, teda suspending funkcia <code>delay()</code>:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">main</span>(): Unit = runBlocking {
+    <span style="color:#289;font-weight:bold">val</span> launch = launch(Dispatchers.Default) {
+        <span style="color:#289;font-weight:bold">val</span> shuffled = (<span style="color:#60e;font-weight:bold">1.</span>.<span style="color:#60e;font-weight:bold">30</span>_000).shuffled().toMutableList()
+        <span style="color:#289;font-weight:bold">val</span> bubbleSort = shuffled.bubbleSort()
+        println(Thread.currentThread().name + <span style="background-color:#e0e0ff">&#34;: &#34;</span> + bubbleSort)
+    }
+    delay(<span style="color:#60e;font-weight:bold">2000</span>)
+    println(<span style="background-color:#e0e0ff">&#34;Cancelling...&#34;</span>)
+    launch.cancel()
+    println(<span style="background-color:#e0e0ff">&#34;Cancelled&#34;</span>)
+}</code></pre></div>
+<p>V predošlej verzii sme mali <code>Thread.sleep()</code> a <em>IntelliJ IDEA</em> nás dokonca upozornila na nevhodný blokujúci kód:</p>
+
+<pre><code>Inappropriate blocking method call.
+</code></pre>
+
+<h1 id="technická-implementácia-korutín">Technická implementácia korutín</h1>
+
+<p>Ako sú vlastne korutiny implementované? Ak si vezmeme ľubovoľnú bežnú funkciu, máme na nej dve filozofické operácie:</p>
+
+<ul>
+<li><em>invoke</em>: spustenie funkcie</li>
+<li><em>return</em>: získanie návratovej  hodnoty.</li>
+</ul>
+
+<p>Korutina poskytuje dve ďalšie operácie:</p>
+
+<ul>
+<li><em>suspend</em>: pozastaví vykonávanie korutiny</li>
+<li><em>resume</em>: obnoví vykonávanie korutiny</li>
+</ul>
+
+<p>Pri operácii <em>suspend</em> sa — voľne povedané — uložia bokom všetky lokálne premenné. O niečo presnejšie, virtuálny stroj vezme celý <em>stack frame</em> (teda kontext, resp. stav volania funkcie) a pri suspendovaní ho odloží bokom. Ak sa funkcia obnoví pomocou <em>resume</em>, vytiahne sa <em>stack frame</em> a vykonávanie pokračuje.</p>
+
+<p>Korutine zodpovedá objekt typu <code>Continuation</code>, ktorý má tri vlastnosti:</p>
+
+<ul>
+<li>metódu <code>resume()</code>, ktorá pokračuje vo vykonávaní</li>
+<li>metódu <code>resumeWithException()</code>, ktorá obnoví beh s vyvolaním výnimka</li>
+<li>a vlastnosť <strong>kontext</strong> typu <code>CoroutineContext</code> reprezentujúcu stav korutiny.</li>
+</ul>
+
+<p>Objekt <code>Continuation</code> je takmer vždy za oponou a nepotrebujeme s ním pracovať. Jedinou výnimkou je stav, keď chceme premostiť blokujúce callbackovo orientované API na korutiny.</p>
+
+<h2 id="suspending-funkcie">Suspending funkcie</h2>
+
+<p>Suspending funkcie (“pozastavujúce sa funkcie”) predstavujú mechanizmus, ktorým sa v Kotline dá zapisovať kód korutín. Takáto funkcia sa dá nielen vyvolať a získať jej návratová hodnota, ale aj pozastaviť a obnoviť jej chod.</p>
+
+<p>V Kotline sa funkcie uvádzajú kľúčovým slovom <code>suspend</code>.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">suspend</span> <span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">execute</span>() { ... }</code></pre></div>
+<p>Kľúčové slovo je jediná vec zo samotného jazyka, ktorá sa venuje korutinám. Všetko ostatné je záležitosťou knižnice.</p>
+
+<p>Pre suspending funkcie platí niekoľko pravidiel:</p>
+
+<ul>
+<li>funkcia neblokuje!</li>
+<li>suspending funkcia môže volať bežné funkcie alebo iné suspending funkcie</li>
+<li>suspending funkciu môžeme volať len:
+
+<ul>
+<li>z inej suspending funkcie</li>
+<li>zo scope buildera (<code>launch</code>, <code>async</code> atď).</li>
+</ul></li>
+</ul>
+
+<blockquote>
+<p>Suspending funkcie sa riadia článkom <a href="https://journal.stuffwithstuff.com/2015/02/01/what-color-is-your-function/">What Color is Your Function</a>, podľa ktorého sú to červené funkcie.</p>
+</blockquote>
+
+<p>Treba dať pozor na to, že suspending funkcia nemusí byť automaticky asynchrónna, teda nemusí bežať na pozadí! To, že funkcii priradíme <code>suspend</code>, z nej spraví len kód, ktorý zvláda štyri základné schopnosti korutín! Samotný beh na pozadí je dosiahnutý explicitnou konkurentnosťou, teda použitím vhodného scope buildera alebo kontextu.</p>
+
+<h2 id="korutiny-a-dispatchery">Korutiny a dispatchery</h2>
+
+<p>Každá korutina používa <strong>dispatcher</strong>a — niečo ako thread pool —  v ktorom sa spúšťa jej kód. K dispozícii sú nasledovné zabudované dispatchery:</p>
+
+<ul>
+<li><code>Default</code>: pre bežné operácie na pozadí. V thread poole je k dispozícii toľko threadov, koľko je jadier CPU, ale aspoň 2.</li>
+<li><code>IO</code>: thread pool pre vstupno-výstupné operácie (IO). Obvykle je k dispozícii 64 threadov (alebo toľko threadov, koľko je vlákien, ak je ich viac než 64), ktoré sa však zdieľajú s <code>Default</code> poolom.</li>
+
+<li><p><code>Main</code>: hlavné vlákno (<em>main thread</em>, <em>event dispatch thread</em>). Pre tento dispatcher musí byť zavedená podpora konkrétnej knižnice pre konkrétny GUI toolkit.</p>
+
+<ul>
+<li><code>Unconfined</code>: bez thread poolu. Používané pre pokročilé nízkourovňové situácie (napr. emuláciu <em>event loopu</em>).</li>
+</ul></li>
+</ul>
+
+<h3 id="prepínanie-medzi-dispatchermi-withcontext">Prepínanie medzi dispatchermi: <code>withContext()</code></h3>
+
+<p>Sekcia <code>withContext()</code> prepína vykonávanie kódu medzi dispatchermi. Kotlin optimalizuje “prehodenie vykonávania” tak, aby to bolo rýchle. Prepnutie medzi <code>Default</code> a <code>IO</code> je dokonca špeciálne optimalizované, keďže oba dispatchery zdieľajú vlákna z thread poolu.</p>
+
+<h2 id="prehľad-konštrukcií-sekcií-a-scope-builderov">Prehľad konštrukcií, sekcií a scope builderov</h2>
+
+<p>V tejto časti urobíme prehľad často používaných scope builderov. Hoci sa líšia konkrétnym správaním, majú nasledovné spoločné vlastnosti:</p>
+
+<ul>
+<li>kód v korutine dobehne vtedy, keď dobehnú vnorené korutiny. Jednotlivé buildery sa líšia spôsobom, akým to dosiahnu.</li>
+<li>výnimka v potomkovi zruší (<em>cancel</em>) korutinu.</li>
+<li>ak sa zruší (<em>cancel</em>) rodič, zrušia sa aj všetci potomkovia</li>
+</ul>
+
+<p>Podrobnosti o builderoch:</p>
+
+<ul>
+<li><code>runBlocking</code>: vyblokuje aktuálne vlákno a čaká na dobehnutie detí. Používané na premostenie sveta korutín a sveta bez nich, typicky len pre metódu <code>main()</code> a unit testy.</li>
+<li><code>launch</code>: korutina typu <em>fire-and-forget</em>. Bežné použitie je pre spustenie úloh na pozadí, bez nutnosti získať výsledok. Builder vracia <code>Job</code>, ktorým možno korutinu zrušiť.
+
+<ul>
+<li>Tento builder je ideologicky podobný konštrukcii <code>thread{ … }</code> , ale namiesto spustenia vlákna len spustí korutinu.</li>
+<li>Výnimky hltá, resp. prehadzuje ich na <em>globálnu obsluhu výnimiek</em>, ktorá ich vypíše na chybový výstup. Voliteľne je možno zaregistrovať objekt <code>CoroutineExceptionHandler</code> v parametri, ale konkrétne pravidlá pre odchytávanie výnimiek sú značne komplexné.</li>
+</ul></li>
+<li><code>async</code>: pre paralelizovateľnú dekompozíciu, kde sa problém rozbije na paralelne bežiace podúlohy, ktorá sa po dobehnutí zlúčia do jedného výsledku.
+
+<ul>
+<li>Výsledok operácie vráti v podobe objektu <code>Deferred</code> (analógia neblokujúcej <code>Future</code>, resp. <code>Promise</code>).  Na výsledok deferredu možno neblokujúco čakať pomocou metódy <code>await()</code>.</li>
+<li>Objekt <code>Deferred</code> je <code>Job</code>, takže ho možno zrušiť.</li>
+<li>Výnimky sa vyhodia po zavolaní <code>await()</code>, ale pozor na dvojité ošetrenie výnimky! Vyhodená výnimka sa vždy prehodí o úroveň vyššie, na rodiča, ktorý ju ošetrí ešte raz, resp. prehodí na globálnu obsluhu. To platí aj pre prípady, že výnimku ošetríme v <code>try</code>/<code>catch</code> v okolí <code>await()</code>!</li>
+</ul></li>
+</ul>
+
+<h3 id="prehľad-scoping-funkcií">Prehľad scoping funkcií</h3>
+
+<p>Scope funkcie pre korutiny slúžia vymedzenie rozsahu platnosti:</p>
+
+<ul>
+<li><code>coroutineScope</code>: vymedzuje scope pre vnorené korutiny, napríklad pri paralelizovateľnej dekompozícii pomocou <code>async</code>, čo je základ pre <em>structured concurrency</em>, teda štruktúrovanú konkurentnosť.
+
+<ul>
+<li>Pri čakaní na dobehnutie detí na rozdiel od <code>runBlocking</code> neblokuje vlákno, kým sa tak stane.</li>
+<li>Zároveň ak scope spadne na výnimke, alebo je zrušený, zrušia sa aj deti, aj rodič.</li>
+</ul></li>
+<li><code>withContext</code>: zmení kontext (napr. použitého dispatchera) pre vnorený kód. Použiteľné pre spúšťanie kódu v inom vlákne či dispatcheri.</li>
+</ul>
+
+<p>Kód v korutine je <em>vždy sekvenčný</em>, teda čítame ho zhora nadol. Paralelizovateľnosť dosahujeme explicitne, použitím príslušného buildera v kombinácii s vhodným dispatcherom.</p>
+
+<h3 id="job-a-deferred">Job a Deferred</h3>
+
+<p><code>Job</code> predstavuje výsledok volania scope buildera. Má nasledovné užitočné metódy:</p>
+
+<ul>
+<li><code>join()</code>: neblokujúco čaká, kým korutina nedobehne</li>
+<li><code>cancel()</code>: zruší korutinu</li>
+<li><code>joinAndCancel()</code>: kombinácia predošlých dvoch: počká na dobehnutie a zruší korutinu.</li>
+</ul>
+
+<p><code>Deferred</code> reprezentuje špecifický <em>job</em> s výsledkom, ktorý vracia <em>scope builder</em> <code>async</code>. Ponúka hlavne metódu:</p>
+
+<ul>
+<li><code>await()</code>, kde vieme neblokujúco čakať na výsledok asynchrónnej úlohy.</li>
+</ul>
+
+<h2 id="scoping-globálny-scope-a-štruktúrovaná-konkurentnosť">Scoping, globálny scope a štruktúrovaná konkurentnosť</h2>
+
+<p>Kód v korutine musí bežať v rámci <em>scope</em>, teda rozsahu platnosti. Na to máme dve možnosti:</p>
+
+<ul>
+<li>použiť <em>globálny scope</em> (<code>GlobalScope</code>)</li>
+<li>využiť štruktúrovanú konkurentnosť (<em>structured concurrency</em>) spolu s jasne vymedzeným rozsahom platnosti</li>
+</ul>
+
+<h3 id="globalscope">GlobalScope</h3>
+
+<p><a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-global-scope/">Globálny scope</a> slúži pre spúšťanie korutín, ktoré majú pracovať počas celej životnosti aplikácie. Pri takýchto korutinách sa neočakáva ich predčasné rušenie.</p>
+
+<p>Okrem niekoľkých špeciálnych prípadoch sa použitie tohto scope neodporúča práve tak, ako sa neodporúča používanie <em>globálnych premenných</em>.  Bežný kód v aplikácii by rozhodne mal využívať niektoré zo scope builderov.</p>
+
+<p>Korutiny spúšťané v tomto scope totiž musí programátor sledovať a v prípade potreby ručne spravovať ich rušenie, joinovanie a ďalšie spravovanie životnosti.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">kotlinx.coroutines.GlobalScope</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">kotlinx.coroutines.delay</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">kotlinx.coroutines.isActive</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">kotlinx.coroutines.launch</span>
+
+<span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">main</span>() {
+    <span style="color:#289;font-weight:bold">val</span> job = GlobalScope.launch {
+        <span style="color:#289;font-weight:bold">while</span> (isActive) {
+            delay(<span style="color:#60e;font-weight:bold">1000</span>)
+            println(<span style="background-color:#e0e0ff">&#34;Reticulating splines...&#34;</span>)
+        }
+    }
+    Thread.sleep(<span style="color:#60e;font-weight:bold">3000</span>)
+    job.cancel()
+}</code></pre></div>
+<p>V príklade sme si spustili korutinu v globálnom scope, ktorá čo sekundu vypíše hlášku. V metóde <code>main()</code> máme klasický blokujúci kód, ktorý počká tri sekundy a potom <code>job</code> odstrelí.</p>
+
+<p>Ak by sme nečakali v <code>sleep()</code>, korutina by sa síce rozbehla, ale aplikácia by skončila skôr než nekonečná kontrola pravopisu, a tým ukončila jej beh. (Korutiny sa totiž správajú ako <em>daemon threads</em>, démonové vlákna, na ktoré sa nečaká).</p>
+
+<p>Pri sledovaní globálnych korutín musíme dávať pozor na to, že môžeme nechtiac spustiť priveľa korutín alebo môžeme priviesť korutinu v globálnom scope do vytuhnutého stavu. To všetko musíme usledovať zozbieraním referencií na joby / deferredy a následne korektne spracovať.</p>
+
+<h2 id="štruktúrovaná-konkurentnosť">Štruktúrovaná konkurentnosť</h2>
+
+<p>Štruktúrovaná konkurentnosť (<em>structured concurrency</em>) dáva jasné pravidlá pre vnorené korutiny:</p>
+
+<ol>
+<li>Každá korutina musí bežať v nejakom <em>scope</em>.</li>
+<li>Korutiny možno vnárať: teda korutina v scope môže spustiť potomkovské (<em>child</em>) korutiny.</li>
+<li>Rodičovská korutina nedobehne, kým nedobehnú potomkovské korutiny. Vďaka tomu nemusíme zbierať referencie na potomkovské joby, <code>join()</code> ovať ich, a explicitne očakávať ich ukončenie.</li>
+<li>Medzi rodičovskou a potomkovskou korutinou existujú jasne definované pravidlá pre chybové situácie, teda rušenie a vyhadzovanie výnimiek.</li>
+</ol>
+
+<p>Scope deklarujeme pomocou niektorého <em>scope buildera</em>, ktoré sa líšia konkrétnym mechanizmom v treťom a štvrtom bode.</p>
+
+<h2 id="coroutine-context-a-coroutine-scope">Coroutine Context a Coroutine Scope</h2>
+
+<p>Každá korutina so sebou nesie <em>context</em>, teda kýbel dát, ktoré majú vplyv na jej beh. Kontext predstavuje objekt typu <code>CoroutineContext</code>, čo je <em>immutable</em> množina prvkov. Najdôležitejšie sú:</p>
+
+<ul>
+<li><em>job</em>: používaný pre štruktúrovanú konkurentnosť. Tento job sa stane rodičom pre joby v potomkoch a zároveň ak sa zruší, zrušia sa aj potomkovské joby.</li>
+<li><em>dispatcher</em>: určuje thread-pool, na ktorom sa spustí korutina.</li>
+<li><em>názov korutiny</em>: korutina môže dostať prehľadné meno, čo je užitočné pri ladení.</li>
+</ul>
+
+<p>Každý kontext definuje operátor <code>plus</code>, ktorým možno vytvárať immutable kópiu kontextu s novými zmenenými vlastnosťami. Hlúpy príklad vytvorí prázdny kontext s dispatcherom typu IO a vhodným názvom pre korutiny:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">val</span> context = EmptyCoroutineContext + Dispatchers.IO + CoroutineName (<span style="background-color:#e0e0ff">&#34;test&#34;</span>)
+println(context)</code></pre></div>
+<p>Výsledkom bude:</p>
+
+<pre><code>[CoroutineName(test), LimitingDispatcher@27bc2616[dispatcher = DefaultDispatcher]]
+</code></pre>
+
+<h4 id="coroutinescope">CoroutineScope</h4>
+
+<p>Ak si však všimneme šepkára v IntelliJ IDEA, uvidíme:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">main</span>() = runBlocking&lt;Unit&gt; { <span style="color:#666;font-style:italic">/* this: CoroutineScope */</span></code></pre></div>
+<p>Objekt <code>CoroutineScope</code> je obal na kontext (doslova interfejs s jediným getterom <code>CoroutineContext</code>) a používa sa na získanie efektívneho kontextu používaného v korutine.</p>
+
+<p>Scope buildery totiž zlučujú dva kontexty:</p>
+
+<ul>
+<li>keďže scope builder je definovaný ako <em>extension function</em> na triede <code>CoroutineScope</code> , vezme kontext z objektu tejto triedy. (Nezabudnime, že <code>CoroutineScope</code> je len obal na scope!)</li>
+<li>a keďže scope builder má parameter typu <code>CoroutineContext</code>, vezme sa druhý kontext z tohto parametra.</li>
+</ul>
+
+<p>Scope builder zlúči oba kontexty pomocou operátora <code>plus</code>, pričom kontext z parametra má prednosť.</p>
+
+<p>Výsledný kontext sa stane <strong>rodičovským kontextom</strong> pre novú korutinu. Samotná potomkovská korutina si vytvorí vlastný <em>job</em> a zlúči ho s rodičovským kontextom, čím získa vlastný kontext. Okrem toho sa job z rodičovskej korutiny stane rodičom jobu potomka, čím sa bude dať dosiahnuť štruktúrovaná konkurentnosť.</p>
+
+<p>Scope z parametra síce vyzerá ako zbytočná duplicita, ale v skutočnosti slúži ako prostriedok na customizáciu scopu pre potomkov. Môžeme totiž spraviť nasledovné:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">main</span>() = runBlocking&lt;Unit&gt; {
+    launch(Dispatchers.IO + CoroutineName(<span style="background-color:#e0e0ff">&#34;splines&#34;</span>)) {
+        delay(<span style="color:#60e;font-weight:bold">1000</span>)
+        println(<span style="background-color:#e0e0ff">&#34;${coroutineContext[CoroutineName]}: Reticulating splines...&#34;</span>)
+    }
+}</code></pre></div>
+<p>V príklade zoberieme kontext, pridáme k nemu špeciálny dispatcher a špeciálne pomenovanie a použijeme ho ako rodičovský kontext pre vnútro korutiny.</p>
+
+<p>Keďže podľa dôležitej konvencie je v rámci korutiny <code>CoroutineScope</code> reprezentovaný ako <em>receiver</em> pre kód korutiny, môžeme použiť <code>this</code> ako odkaz na scope.</p>
+
+<p>A keďže <code>CoroutineScope</code> je obal na <code>CoroutineContext</code> (s getterom, ako sme spomenuli vyššie), vieme pristúpiť k premennej <code>coroutineContext</code>.</p>
+
+<p>Vo vnútri korutiny si tak vieme získať napr. názov korutiny pomocou <code>coroutineContext[CoroutineName]</code>.</p>
+
+<p>A jedna poznámka: <code>GlobalScope</code> nie je zviazaný s rodičovským scopom a funguje nezávisle. Ale keďže <code>GlobalScope</code> sa nemá používať, v aplikácii to nie je také dôležité.</p>
+
+<h2 id="korutiny-a-výnimky">Korutiny a výnimky</h2>
+
+<p>Korutiny podporujú elegantnú cestu pre ošetrovanie výnimiek. Dajme si jednoduchý príklad:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">kotlinx.coroutines.launch</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">kotlinx.coroutines.runBlocking</span>
+
+<span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">main</span>(): Unit = runBlocking&lt;Unit&gt; {
+    launch {
+        <span style="color:#289;font-weight:bold">throw</span> IndexOutOfBoundsException() <span style="color:#666;font-style:italic">// Will be printed to the console by Thread.defaultUncaughtExceptionHandler
+</span><span style="color:#666;font-style:italic"></span>    }
+}</code></pre></div>
+<p>V sekcii <code>runBlocking</code> spustíme korutinu pomocou <code>launch</code>… a tá zhorí hneď na štarte. Výsledkom bude krásny <em>stack trace</em> na konzole:</p>
+
+<pre><code>Exception in thread &quot;main&quot; java.lang.IndexOutOfBoundsException
+	at ExceKt$main$1$1.invokeSuspend(Exce.kt:6)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:33)
+	at kotlinx.coroutines.DispatchedTask.run(Dispatched.kt:238)
+	at kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.kt:116)
+	at kotlinx.coroutines.BlockingCoroutine.joinBlocking(Builders.kt:80)
+	at kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking(Builders.kt:54)
+	at kotlinx.coroutines.BuildersKt.runBlocking(Unknown Source)
+	at kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking$default(Builders.kt:36)
+	at kotlinx.coroutines.BuildersKt.runBlocking$default(Unknown Source)
+	at ExceKt.main(Exce.kt:4)
+	at ExceKt.main(Exce.kt)
+</code></pre>
+
+<p>Výnimka elegantne prebublala cez vnorené korutiny až do globálnej obsluhy výnimiek (<em>global exception handler</em>). Okrem toho zrušila korutinu v <code>launch</code>, ktorá následne upozornila rodiča <code>runBlocking</code>, aby sa zrušil tiež.</p>
+
+<p>Vďaka štruktúrovanej konkurentnosti máme garantované:</p>
+
+<ul>
+<li>ak padne potomok, automaticky sa zrušia aj ostatní súrodenci v danom <em>scope</em>, a zruší sa aj rodič</li>
+<li>ak sa zruší rodič, zrušia sa aj potomkovia.</li>
+</ul>
+
+<h3 id="rodič-s-viacerými-potomkami-a-výnimky">Rodič s viacerými potomkami a výnimky</h3>
+
+<p>Vytvorme teraz stotisíc korutín, ktoré budú potomkami scopu <code>runBlocking</code>. Tieto korutiny však budú chatrné, pretože je 40% šanca, že niektorá z nik z ničoho nič padne.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">kotlinx.coroutines.launch</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">kotlinx.coroutines.runBlocking</span>
+
+<span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">main</span>() = runBlocking {
+    repeat(<span style="color:#60e;font-weight:bold">100</span>_000) { 
+        launch {
+            println(<span style="background-color:#e0e0ff">&#34;.&#34;</span>)
+            <span style="color:#289;font-weight:bold">if</span> (Math.random() &lt; <span style="color:#60e;font-weight:bold">0.4</span>) {
+                <span style="color:#289;font-weight:bold">throw</span> IllegalStateException()
+            }
+        }
+    }
+}</code></pre></div>
+<p>Ak spustíme program, uvidíme, že sa vypíše niekoľko bodiek a následne <em>stack trace</em>, a program dobehne.</p>
+
+<p>To opäť dokazuje štruktúrovanú konkurentnosť: ak padne niektorý potomok reprezentovaný sekciou <code>launch</code>, zruší sa aj rodič, a s ním aj ostatní potomkovia, ktorí ešte nedostali šancu sa spustiť.</p>
+
+<h3 id="scope-builders-a-výnimky">Scope Builders a výnimky</h3>
+
+<h4 id="scope-builder-launch-a-výnimky">Scope Builder <code>launch</code> a výnimky</h4>
+
+<p>V príklade sme zároveň videli správanie <code>launch</code>: výnimky sa zhltnú. Presnejšie, nechajú sa prebublať zložitými pravidlami hierarchie <em>coroutine exception handlerov</em> (obsluhy výnimiek v korutinách.) Ak by sme chceli obaliť <code>launch</code> do <code>try</code>/<code>catch</code>, nepomôže to, pretože výnimky z tejto sekcie naozaj neputujú bežnými kanálmi javáckej obsluhy.</p>
+
+<p>Ak v kóde nepoužívame vlastnú obsluhu výnimiek, platia pravidlá:</p>
+
+<ol>
+<li>Výnimka <code>CancellationException</code> sa ignoruje. Táto výnimka predstavuje indikátor zrušenia korutiny a je ošetrovaná špeciálnym spôsobom.</li>
+<li>Ak je to iná výnimka, tak:
+
+<ol>
+<li>job v kontexte sa zruší (<em>cancel</em>)</li>
+<li>vyvolajú sa komplexné pravidlá pre jej obsluhu. Pomocou <code>ServiceLoadera</code> sa nájde objekt <code>CoroutineExceptionHandler</code> a použije sa. Ak sa nenájde, použije sa <code>Thread.uncaughtExceptionHandler</code>.</li>
+</ol></li>
+</ol>
+
+<h4 id="scope-builder-launch-a-coroutine-exception-handler">Scope Builder <code>launch</code> a Coroutine Exception Handler</h4>
+
+<p>Komplexné pravidlá pre inštalovanie obsluhy výnimiek (<em>coroutine exception handler</em>) nie sú veľmi dobre zdokumentované. V júli 2019 sú k dispozícii len komentáre k issue <a href="https://github.com/Kotlin/kotlinx.coroutines/issues/1157">#1157</a>, jde je zhruba povedaných niekoľko zásad:</p>
+
+<p><code>CoroutineExceptionHandler</code> je treba považovať za obsluhu poslednej záchrany, keď už nič nezachytí výnimku. Je to ekvivalent obsluhy výnimiek vo vláknach <code>Thread.uncaughtExceptionHandler</code> a na niektorých platformách má špecifickú implementáciu. Na Androide napríklad zhodí appku s <em>Application Not Responding/ANR</em> hlásením.</p>
+
+<p>Dôležité je vedieť, že <code>CoroutineExceptionHandler</code> funguje len v scope builderi <code>launch</code> (a teda inštalovať ho v <code>async</code>, či <code>withContext</code> nemá žiaden účinok).</p>
+
+<p>Handler môžeme nainštalovať ako parameter kontextu korutiny a platia preňho všetky zásady budovania kontextu. Ak sa <code>launch</code> spustí s vlastným handlerom v parametri, použije sa namiesto rodičovského CEH (prepíše sa, keďže parametre kontextu majú prednosť pred rodičovským kontextom.). Inými slovami, ak korutina v launchi padne, buď sa použije zdedený CEH (ak nie je k dispozícii náhrada), alebo CEH, ktorý sa uviedol v parametri.</p>
+
+<p>Ďalšie komplexné pravidlá hovoria:</p>
+
+<ul>
+<li>nie je vždy pravda, že použije sa handler, ktorý je na najvyššej úrovni</li>
+<li>najväčší zmysel dáva CEH pre korutiny bez rodiča, teda tie, ktoré bežia v globálnom scope. Zodpovedá to filozofii obsluhy poslednej záchrany.</li>
+<li>pri určení konkrétneho CEH, ktorý sa zavolá, sa berú do úvahy viaceré faktory:
+
+<ul>
+<li>rodičovský scope a jeho typ</li>
+<li>rodičovský kontext</li>
+<li>a to, či rodič zvládne vybaviť výnimku.</li>
+</ul></li>
+<li>ak použijeme dva zanorené <code>launch</code> scope buildery s priradenými CEH handlermi, vnútorný <code>launch</code> zistí, že rodič dokáže vybaviť vyhodenú výnimku a preto ju na ňu deleguje bez toho, aby zakomponoval svoj CEH.</li>
+<li>ak prepisujeme existujúci CEH, nesmieme zabudnúť skomponovať zdedený handler s tým, ktorý ideme nainštalovať pre vnorenú korutinu, aby sme zaistili korektné správanie.</li>
+<li>pozor na to, že kontext rodiča nie je nijak ovplyvnený kontextom detí. Kontext je predovšetký nemenný (<em>immutable</em>) a jeho dedenie prebieha len od rodiča k potomkom a nie naopak.</li>
+</ul>
+
+<h4 id="obsluha-výnimiek-v-async">Obsluha výnimiek v <code>async</code></h4>
+
+<p>Scope builder <code>async</code> výnimky vyhodí vo chvíli, keď používateľ zavolá <code>await</code>. Pozor však na dvojitú obsluhu kvôli dodržiavaniu zásad štruktúrovanej konkurentnosti!</p>
+
+<h4 id="obsluha-výnimiek-v-runblocking">Obsluha výnimiek v <code>runBlocking</code></h4>
+
+<p>Obľúbený nefunkčný príklad sa pokúsi nainštalovať obsluhu chyby nasledovne:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">kotlinx.coroutines.CoroutineExceptionHandler</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">kotlinx.coroutines.launch</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">kotlinx.coroutines.runBlocking</span>
+
+<span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">main</span>() = runBlocking {
+    <span style="color:#666;font-style:italic">// nefunguje!
+</span><span style="color:#666;font-style:italic"></span>    <span style="color:#289;font-weight:bold">val</span> exceptionHandler = CoroutineExceptionHandler {
+        _, t -&gt; println(t)
+    }
+    repeat(<span style="color:#60e;font-weight:bold">100</span>_000) {
+    		<span style="color:#666;font-style:italic">// nefunguje!
+</span><span style="color:#666;font-style:italic"></span>        launch(exceptionHandler) {
+            println(<span style="background-color:#e0e0ff">&#34;.&#34;</span>)
+            <span style="color:#289;font-weight:bold">if</span> (Math.random() &lt; <span style="color:#60e;font-weight:bold">0.4</span>) {
+                <span style="color:#289;font-weight:bold">throw</span> IllegalStateException()
+            }
+        }
+    }
+}</code></pre></div>
+<p>Ak zhavaruje korutina v <code>launch</code>, podľa pravidiel o štruktúrovanej konkurentnosti zhavaruje aj rodič <code>runBlocking</code>, ktorý sa túto výnimku snaží posunúť o úroveň vyššie. Tam však už nič iné nie je a preto sa vyvolá globálna obsluha výnimiek. Náš <code>exceptionHandler</code> sa vôbec nepoužije.</p>
+
+<p>Inými slovami, na korutinách spúšťaných vo vnútri <code>runBlocking</code> sa neoplatí inštalovať obsluhu výnimiek, pretože to nebude fungovať.</p>
+
+<h2 id="prevod-z-callbackov-na-korutiny-suspendcancellablecoroutine">Prevod z callbackov na korutiny: <code>suspendCancellableCoroutine</code></h2>
+
+<p>Pri niektorých historických knižniciach je k dispozícii staré callbackovo orientované API. Klasickým príkladom je klient z knižnice <code>okhttp</code>, ktorý vykoná príkaz HTTP asynchrónnym spôsobom a poskytuje dve callbackové metódy:</p>
+
+<ul>
+<li><code>onResponse()</code>, ak metóda uspeje</li>
+<li><code>onFailure()</code>, ak nastane výnimka.</li>
+</ul>
+
+<p>Takýto kód vieme preklopiť na korutinový prístup pomocou sekcie <code>suspendCancellableCoroutine</code>. Sekcia má k dispozícii objekt <code>Continuation</code>, kde vieme zavolať tri metódy:</p>
+
+<ul>
+<li><code>resume()</code>: pokračuje korutinu s konkrétnym výsledkom</li>
+<li><code>cancel()</code>: zruší korutinu s konkrétnou výnimkou</li>
+<li><code>resumeWithException()</code> pokračuje korutinu s výnimkou.</li>
+</ul>
+
+<p>Kompletný príklad vyzerá nasledovne:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">kotlinx.coroutines.Dispatchers</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">kotlinx.coroutines.runBlocking</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">kotlinx.coroutines.suspendCancellableCoroutine</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">kotlinx.coroutines.withContext</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">okhttp3.Call</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">okhttp3.Callback</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">okhttp3.OkHttpClient</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">okhttp3.Request</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">okhttp3.Response</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">java.io.IOException</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">kotlin.coroutines.resume</span>
+
+<span style="color:#289;font-weight:bold">object</span> <span style="color:#e9e;font-weight:bold">Http</span> {
+    <span style="color:#289;font-weight:bold">suspend</span> <span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">run</span>(url: String): String = withContext(Dispatchers.IO) {
+        suspendCancellableCoroutine { continuation -&gt;
+            <span style="color:#289;font-weight:bold">val</span> request = Request.Builder()
+                .url(url)
+                .<span style="color:#289;font-weight:bold">get</span>()
+                .build()
+
+            client.newCall(request).enqueue(<span style="color:#289;font-weight:bold">object</span> <span style="color:#f00;background-color:#faa">: </span><span style="color:#e9e;font-weight:bold">Callback</span> {
+                <span style="color:#289;font-weight:bold">override</span> <span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">onFailure</span>(call: Call?, e: IOException?) {
+                    continuation.cancel(e)
+                }
+
+                <span style="color:#289;font-weight:bold">override</span> <span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">onResponse</span>(call: Call, response: Response) {
+                    response.body()<span style="color:#333">?.</span>use {
+                        continuation.resume(it.string())
+                    }
+                }
+            })
+        }
+    }
+
+    <span style="color:#289;font-weight:bold">private</span> <span style="color:#289;font-weight:bold">val</span> client: OkHttpClient
+        <span style="color:#289;font-weight:bold">get</span>() = OkHttpClient.Builder()
+            .followRedirects(<span style="color:#289;font-weight:bold">false</span>)
+            .build()
+}
+
+<span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">main</span>() = runBlocking {
+    <span style="color:#289;font-weight:bold">val</span> xml = Http.run(<span style="background-color:#e0e0ff">&#34;https://dennikn.sk/minuta/feed/?cat=2386&#34;</span>)
+    println(xml)
+}</code></pre></div>
+<h1 id="literatúra">Literatúra</h1>
+
+<h2 id="tutoriály">Tutoriály</h2>
+
+<ul>
+<li>Kotlinlang.org: <a href="https://kotlinlang.org/docs/reference/coroutines/coroutines-guide.html">Coroutines Guide</a></li>
+<li>Simply-how.com: <a href="https://simply-how.com/kotlin-coroutines-by-example-guide">Kotlin Coroutines by Example Guide</a></li>
+<li>Antonis Lilis: <a href="https://antonis.me/2018/12/12/an-introduction-to-kotlin-coroutines/">An Introduction to Kotlin Coroutines</a></li>
+<li>Antionio Leiva: <a href="https://antonioleiva.com/kotlin-coroutines/">Coroutines in Kotlin 1.3 explained: Suspending functions, contexts, builders and scopes</a></li>
+</ul>
+
+<h2 id="architektúra-a-vnútornosti">Architektúra a vnútornosti</h2>
+
+<ul>
+<li>Kotlin KEEP: <a href="https://github.com/Kotlin/KEEP/blob/master/proposals/coroutines.md">Kotlin Coroutines (Design Proposal)</a> Dizajnový dokument o vlastnosti jazyka od autorov Kotlinu.</li>
+<li>Roman Elizarov: <a href="https://medium.com/@elizarov/the-reason-to-avoid-globalscope-835337445abc">The Reason to avoid `GlobalScope</a>`</li>
+<li>Roman Elizarov: <a href="https://medium.com/@elizarov/structured-concurrency-722d765aa952">Structured Concurrency</a></li>
+<li>Roman Elizarov: <a href="https://medium.com/@elizarov/coroutine-context-and-scope-c8b255d59055">Coroutine Context And Scope</a></li>
+<li>Roman Elizarov: <a href="https://medium.com/@elizarov/blocking-threads-suspending-coroutines-d33e11bf4761">Blocking Threads, Suspending Coroutines</a></li>
+<li>Martin Devillers in ProAndroidDev: <a href="https://proandroiddev.com/demystifying-coroutinecontext-1ce5b68407ad">Demystifying CoroutineContext</a></li>
+</ul>
+
+<h1 id="techniky-a-patterny">Techniky a patterny</h1>
+
+<ul>
+<li>StackOverflow.com: <a href="https://stackoverflow.com/questions/53862838/how-to-launch-a-kotlin-coroutine-in-a-suspend-fun-that-uses-the-current-parent">How to launch a Kotlin coroutine in a suspend fun that uses the current parent scope</a></li>
+<li>Medium.com: <a href="https://medium.com/@lubotin/what-is-the-difference-between-coroutinescope-and-withcontext-builders-f6fff744d3db">What is the difference between <code>coroutineScope</code>and <code>withContext</code></a>`</li>
+<li>Dmytro Danylyk at ProAndroidDev.com: <a href="https://proandroiddev.com/kotlin-coroutines-patterns-anti-patterns-f9d12984c68e">Kotlin Coroutines Patterns and Antipatterns</a></li>
+<li>Kotlin Documentation: <a href="https://github.com/Kotlin/kotlinx.coroutines/blob/master/docs/debugging.md">Debugging Coroutines</a></li>
+</ul>
+
+<h2 id="výnimky-a-launch">Výnimky a <code>launch</code></h2>
+
+<ul>
+<li><a href="https://github.com/Kotlin/kotlinx.coroutines/issues/1157">CoroutineExceptionHandler installed on top(-most) scope not always used.</a> Issue #1157 komentujúca inštaláciu obsluhy výnimiek a okrajové prípady</li>
+<li>GitHub.com: <a href="https://github.com/Kotlin/kotlinx.coroutines/issues/753">App exits after catching exception thrown by coroutine</a>, issue #753</li>
+<li>GitHub.com: <a href="https://github.com/Kotlin/kotlinx.coroutines/issues/763,">Async builder and cancellation in structured concurrency</a>, issue #763</li>
+<li>StackOverflow: <a href="https://stackoverflow.com/questions/53222045/exception-thrown-by-deferred-await-within-a-runblocking-treated-as-unhandled-e">Exception thrown by <code>await()</code> within a <code>runBlocking</code> treated as unhandled even after caught</a></li>
+</ul>
+
+<h2 id="android">Android</h2>
+
+<ul>
+<li>Google.com: <a href="https://codelabs.developers.google.com/codelabs/kotlin-coroutines">Using Kotlin Coroutines in your Android app</a></li>
+<li>Google.com: <a href="https://developer.android.com/kotlin/coroutines">Improve App Performance with Kotlin Coroutines</a></li>
+<li>Dmytro Danylyk at ProAndroidDev.com: <a href="https://proandroiddev.com/android-coroutine-recipes-33467a4302e9">Android Coroutine Recipes</a></li>
+<li>Craig Russell: <a href="https://craigrussell.io/2019/03/coroutine-support-in-viewmodels-using-the-new-viewmodelscope-extension-property/">Coroutine Support in ViewModels using the new ViewModelScope extension property</a></li>
+<li>Mayowa Adegeye: <a href="https://proandroiddev.com/part-2-coroutine-cancellation-and-structured-concurrency-2dbc6583c07d">Coroutine Cancellation and Structured Concurrency</a>
+
+<br /></li>
+</ul>
+
+</main>
+
+    <footer>
+      
+<script>
+(function() {
+  function center_el(tagName) {
+    var tags = document.getElementsByTagName(tagName), i, tag;
+    for (i = 0; i < tags.length; i++) {
+      tag = tags[i];
+      var parent = tag.parentElement;
+      
+      if (parent.childNodes.length === 1) {
+        
+        if (parent.nodeName === 'A') {
+          parent = parent.parentElement;
+          if (parent.childNodes.length != 1) continue;
+        }
+        if (parent.nodeName === 'P') parent.style.textAlign = 'center';
+      }
+    }
+  }
+  var tagNames = ['img', 'embed', 'object'];
+  for (var i = 0; i < tagNames.length; i++) {
+    center_el(tagNames[i]);
+  }
+})();
+</script>
+
+      
+    </footer>
+  </body>
+</html>
+

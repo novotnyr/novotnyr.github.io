@@ -71,31 +71,23 @@
 </code></pre>
 
 <p>In shell, run:</p>
-
-<pre><code class="language-shell">mongod --dbpath /tmp/mongodb/rs-0 --replSet rs --port 27021 --bind_ip localhost --smallfiles --oplogSize 128
-mongod --dbpath /tmp/mongodb/rs-1 --replSet rs --port 27022 --bind_ip localhost --smallfiles --oplogSize 128
-mongod --dbpath /tmp/mongodb/rs-2 --replSet rs --port 27023 --bind_ip localhost --smallfiles --oplogSize 128
-</code></pre>
-
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">mongod --dbpath /tmp/mongodb/rs-0 --replSet rs --port <span style="color:#60e;font-weight:bold">27021</span> --bind_ip localhost --smallfiles --oplogSize <span style="color:#60e;font-weight:bold">128</span>
+mongod --dbpath /tmp/mongodb/rs-1 --replSet rs --port <span style="color:#60e;font-weight:bold">27022</span> --bind_ip localhost --smallfiles --oplogSize <span style="color:#60e;font-weight:bold">128</span>
+mongod --dbpath /tmp/mongodb/rs-2 --replSet rs --port <span style="color:#60e;font-weight:bold">27023</span> --bind_ip localhost --smallfiles --oplogSize <span style="color:#60e;font-weight:bold">128</span></code></pre></div>
 <h2 id="initiate-replicaset">Initiate ReplicaSet</h2>
 
 <p>Run client to initiate ReplicaSet:</p>
-
-<pre><code class="language-shell">mongo --port 27021
-</code></pre>
-
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">mongo --port <span style="color:#60e;font-weight:bold">27021</span></code></pre></div>
 <p>Create ReplicaSet configuration:</p>
-
-<pre><code class="language-javascript">rs.initiate({
-    _id : 'rs',
-    members: [
-      { _id : 0, host : &quot;localhost:27021&quot; },
-      { _id : 1, host : &quot;localhost:27022&quot; },
-      { _id : 2, host : &quot;localhost:27023&quot; }
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">rs.initiate({
+    _id <span style="color:#333">:</span> <span style="background-color:#e0e0ff">&#39;rs&#39;</span>,
+    members<span style="color:#333">:</span> [
+      { _id <span style="color:#333">:</span> <span style="color:#66f;font-weight:bold">0</span>, host <span style="color:#333">:</span> <span style="background-color:#e0e0ff">&#34;localhost:27021&#34;</span> },
+      { _id <span style="color:#333">:</span> <span style="color:#66f;font-weight:bold">1</span>, host <span style="color:#333">:</span> <span style="background-color:#e0e0ff">&#34;localhost:27022&#34;</span> },
+      { _id <span style="color:#333">:</span> <span style="color:#66f;font-weight:bold">2</span>, host <span style="color:#333">:</span> <span style="background-color:#e0e0ff">&#34;localhost:27023&#34;</span> }
     ]
 })
-</code></pre>
-
+</code></pre></div>
 <p>Review with:</p>
 
 <pre><code>rs.conf()
@@ -106,20 +98,15 @@ mongod --dbpath /tmp/mongodb/rs-2 --replSet rs --port 27023 --bind_ip localhost 
 <h2 id="establishing-auth">Establishing Auth</h2>
 
 <p>Connecting to ReplicaSet</p>
-
-<pre><code class="language-shell">mongo &quot;mongodb://localhost:27021,localhost:27022,localhost:27023/?replicaSet=rs&quot;
-</code></pre>
-
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">mongo <span style="background-color:#e0e0ff">&#34;mongodb://localhost:27021,localhost:27022,localhost:27023/?replicaSet=rs&#34;</span></code></pre></div>
 <p>Establishing auth:</p>
 
 <pre><code>use admin;
 </code></pre>
 
 <p>Then, create a user:</p>
-
-<pre><code class="language-javascript">db.createUser({ user: &quot;ft-user&quot;, pwd: &quot;3aPFfSIgebQcW1nhliXi&quot;, roles: [ { role: &quot;userAdminAnyDatabase&quot;, db: &quot;admin&quot; } ]})
-</code></pre>
-
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">db.createUser({ user<span style="color:#333">:</span> <span style="background-color:#e0e0ff">&#34;ft-user&#34;</span>, pwd<span style="color:#333">:</span> <span style="background-color:#e0e0ff">&#34;3aPFfSIgebQcW1nhliXi&#34;</span>, roles<span style="color:#333">:</span> [ { role<span style="color:#333">:</span> <span style="background-color:#e0e0ff">&#34;userAdminAnyDatabase&#34;</span>, db<span style="color:#333">:</span> <span style="background-color:#e0e0ff">&#34;admin&#34;</span> } ]})
+</code></pre></div>
 <p>Exit:</p>
 
 <pre><code>exit
@@ -128,11 +115,8 @@ mongod --dbpath /tmp/mongodb/rs-2 --replSet rs --port 27023 --bind_ip localhost 
 <h2 id="create-keyfile">Create Keyfile</h2>
 
 <p>Create a keyfile for internal authentication:</p>
-
-<pre><code class="language-shell">openssl rand -base64 360 &gt; /tmp/mongodb/keyfile
-chmod 600 /tmp/mongodb/keyfile
-</code></pre>
-
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">openssl rand -base64 <span style="color:#60e;font-weight:bold">360</span> &gt; /tmp/mongodb/keyfile
+chmod <span style="color:#60e;font-weight:bold">600</span> /tmp/mongodb/keyfile</code></pre></div>
 <p>Keyfile must not be <em>world</em>-readable.  Otherwise, <code>mongod</code> will complain:</p>
 
 <pre><code>2018-09-02T12:29:58.997+0200 I ACCESS   [main] permissions on /tmp/mongodb/keyfile are too open
@@ -141,19 +125,13 @@ chmod 600 /tmp/mongodb/keyfile
 <h1 id="running-cluster-with-authentication">Running Cluster with Authentication</h1>
 
 <p>Rerun all replica members. Repeat this for all three members:</p>
-
-<pre><code class="language-shell">mongod --replSet rs --port 27021 --bind_ip localhost --dbpath /tmp/mongodb/rs-0 --smallfiles --oplogSize 128 --auth --keyFile /tmp/mongodb/keyfile
-mongod --replSet rs --port 27022 --bind_ip localhost --dbpath /tmp/mongodb/rs-1 --smallfiles --oplogSize 128 --auth --keyFile /tmp/mongodb/keyfile
-mongod --replSet rs --port 27023 --bind_ip localhost --dbpath /tmp/mongodb/rs-2 --smallfiles --oplogSize 128 --auth --keyFile /tmp/mongodb/keyfile
-</code></pre>
-
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">mongod --replSet rs --port <span style="color:#60e;font-weight:bold">27021</span> --bind_ip localhost --dbpath /tmp/mongodb/rs-0 --smallfiles --oplogSize <span style="color:#60e;font-weight:bold">128</span> --auth --keyFile /tmp/mongodb/keyfile
+mongod --replSet rs --port <span style="color:#60e;font-weight:bold">27022</span> --bind_ip localhost --dbpath /tmp/mongodb/rs-1 --smallfiles --oplogSize <span style="color:#60e;font-weight:bold">128</span> --auth --keyFile /tmp/mongodb/keyfile
+mongod --replSet rs --port <span style="color:#60e;font-weight:bold">27023</span> --bind_ip localhost --dbpath /tmp/mongodb/rs-2 --smallfiles --oplogSize <span style="color:#60e;font-weight:bold">128</span> --auth --keyFile /tmp/mongodb/keyfile</code></pre></div>
 <h2 id="connect-to-cluster-with-proper-credentials">Connect to Cluster with Proper Credentials</h2>
 
 <p>Now, re-authenticate with proper credentials:</p>
-
-<pre><code class="language-shell">mongo &quot;mongodb://localhost:27021,localhost:27022,localhost:27023/?replicaSet=rs&quot; --username 'ft-user' --password 3aPFfSIgebQcW1nhliXi --authenticationDatabase admin
-</code></pre>
-
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">mongo <span style="background-color:#e0e0ff">&#34;mongodb://localhost:27021,localhost:27022,localhost:27023/?replicaSet=rs&#34;</span> --username <span style="background-color:#e0e0ff">&#39;ft-user&#39;</span> --password 3aPFfSIgebQcW1nhliXi --authenticationDatabase admin</code></pre></div>
 <p>The following command should work fine now:</p>
 
 <pre><code>show dbs

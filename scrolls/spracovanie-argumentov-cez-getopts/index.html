@@ -64,10 +64,7 @@
 <h1 id="načo-je-dobrý-getops">Načo je dobrý <code>getops</code>?</h1>
 
 <p><code>getopts</code>  je posixový nástroj na spracovávanie prepínačov z príkazového riadka v rámci shellového skriptu. Vezmime si príklad:</p>
-
-<pre><code class="language-shell">./ffind.sh -s -t d java xml
-</code></pre>
-
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">./ffind.sh -s -t d java xml</code></pre></div>
 <p>Príkaz <code>ffind.sh</code> dostal päť argumentov, ktoré v skutočnosti reprezentujú tri rozličné druhy “vstupov”:</p>
 
 <ul>
@@ -86,14 +83,11 @@
 <li>prepínače majú jednopísmenové označenia, napr. <code>-s</code> alebo <code>-t</code>. Dlhé parametre (long options) v duchu GNU (<code>—all</code>) nie sú podporované. (To je doménou vylepšeného príkazu <code>getopt</code>, ktorý ale nie je posixový).</li>
 
 <li><p>prepínače možno zoskupovať. Nasledovný zápis je rovnaký ako z úvodnej ukážky:</p>
-
-<pre><code class="language-shell"> ./ffind.sh -st d java xml
-</code></pre></li>
-
-<li><p>prepínače možno uvádzať v ľubovoľnom poradí:</p>
-
-<pre><code class="language-shell">./ffind.sh -t d -s java xml
-</code></pre></li>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"> ./ffind.sh -st d java xml</code></pre></div>
+<ul>
+<li>prepínače možno uvádzať v ľubovoľnom poradí:</li>
+</ul>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">./ffind.sh -t d -s java xml</code></pre></div></li>
 </ul>
 
 <h2 id="použitie-getopts">Použitie <code>getopts</code></h2>
@@ -131,30 +125,24 @@ Dvojbodka tu má dva významy: jednak vypína chybové hlášky (ak je na začia
 <p>Každé zavolanie <code>getopts</code> spracuje nasledovnú premennú z príkazového riadka. Pri prvom volaní sa spracuje premenná <code>1</code>, pri druhom volaní premenná <code>2</code>. Ak sa všetky premenné spracovali, <code>getopts</code> skončí  s nenulovým návratovým kódom.</p>
 
 <p>To je presne situácia, keď sa oplatí použiť cyklus <code>while</code>:</p>
-
-<pre><code class="language-shell">while getopts :st: OPT
-do
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#289;font-weight:bold">while</span> <span style="color:#072">getopts</span> :st: OPT
+<span style="color:#289;font-weight:bold">do</span>
 ...
-done
-</code></pre>
-
+<span style="color:#289;font-weight:bold">done</span></code></pre></div>
 <p>Jednotlivé prepínače spracujeme v rámci príkazu <code>case</code> (ekvivalent <code>switch</code> z iných jazykov).</p>
-
-<pre><code class="language-bash">SILENT=''
-TYPE=''
-while getopts :st: OPT
-do
-  case &quot;$OPT&quot; in
-      s) SILENT=1
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#036">SILENT</span><span style="color:#333">=</span><span style="background-color:#e0e0ff">&#39;&#39;</span>
+<span style="color:#036">TYPE</span><span style="color:#333">=</span><span style="background-color:#e0e0ff">&#39;&#39;</span>
+<span style="color:#289;font-weight:bold">while</span> <span style="color:#072">getopts</span> :st: OPT
+<span style="color:#289;font-weight:bold">do</span>
+  <span style="color:#289;font-weight:bold">case</span> <span style="background-color:#e0e0ff">&#34;</span><span style="color:#036">$OPT</span><span style="background-color:#e0e0ff">&#34;</span> in
+      s<span style="color:#333">)</span> <span style="color:#036">SILENT</span><span style="color:#333">=</span><span style="color:#60e;font-weight:bold">1</span>
          ;;
-      t) TYPE=&quot;$OPTARG&quot;
+      t<span style="color:#333">)</span> <span style="color:#036">TYPE</span><span style="color:#333">=</span><span style="background-color:#e0e0ff">&#34;</span><span style="color:#036">$OPTARG</span><span style="background-color:#e0e0ff">&#34;</span>
          ;;
-      ?) echo &quot;Neznamy parameter $OPT&quot;
+      ?<span style="color:#333">)</span> <span style="color:#072">echo</span> <span style="background-color:#e0e0ff">&#34;Neznamy parameter </span><span style="color:#036">$OPT</span><span style="background-color:#e0e0ff">&#34;</span>
          ;;
-  esac
-done
-</code></pre>
-
+  <span style="color:#289;font-weight:bold">esac</span>
+<span style="color:#289;font-weight:bold">done</span></code></pre></div>
 <p>V rozhodovaní sa pýtame na obsah premennej <code>OPT</code>, a podľa toho zistíme, ktorý prepínač chceme spracovať. V ukážke si podľa prepínača nastavíme príslušnú premennú.</p>
 
 <p>Ak ide o prepínač s parametrom, v premennej <code>OPTARG</code> sa ocitne parameter tohto prepínača. V prípade prepínača <code>-t d</code> sa v premennej <code>OPTARG</code> objaví reťazec <code>d</code>.</p>
@@ -164,10 +152,7 @@ done
 <h2 id="použitie-getopts-a-pozičných-parametrov">Použitie <code>getopts</code> a pozičných parametrov</h2>
 
 <p>V príklade sme mali dva parametre, ktoré neprislúchali žiadnemu prepínaču. Ide o parametre <code>java</code> a <code>xml</code>:</p>
-
-<pre><code class="language-shell">./ffind.sh -s -t d java xml
-</code></pre>
-
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">./ffind.sh -s -t d java xml</code></pre></div>
 <p>I na toto dokáže <code>getopts</code> myslieť. Príkaz si totiž počíta jednotlivé spracované parametre v špeciálnej číselnej premennej <code>OPTIND</code> a to môžeme použiť v skripte na zahodenie tých argumentov príkazového riadka, ktoré sa už spracovali.</p>
 
 <p>Príklad? Pre parametre z ukážky si <code>getopts</code> naráta do premennej <code>OPTIND</code> štyri spracované položky.</p>
@@ -264,33 +249,30 @@ Zrazu budeme mať prvý pozičný parameter v premennej <code>1</code>, druhý v
 <h1 id="celý-skript">Celý skript</h1>
 
 <p>Výsledný skript so všetkými možnosťami vyzerá nasledovne:</p>
-
-<pre><code class="language-bash">SILENT=0
-TYPE='unknown'
-while getopts :st: OPT
-do
-  case &quot;$OPT&quot; in
-          s) SILENT=1
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#036">SILENT</span><span style="color:#333">=</span><span style="color:#60e;font-weight:bold">0</span>
+<span style="color:#036">TYPE</span><span style="color:#333">=</span><span style="background-color:#e0e0ff">&#39;unknown&#39;</span>
+<span style="color:#289;font-weight:bold">while</span> <span style="color:#072">getopts</span> :st: OPT
+<span style="color:#289;font-weight:bold">do</span>
+  <span style="color:#289;font-weight:bold">case</span> <span style="background-color:#e0e0ff">&#34;</span><span style="color:#036">$OPT</span><span style="background-color:#e0e0ff">&#34;</span> in
+          s<span style="color:#333">)</span> <span style="color:#036">SILENT</span><span style="color:#333">=</span><span style="color:#60e;font-weight:bold">1</span>
              ;;
-          t) TYPE=&quot;$OPTARG&quot;
+          t<span style="color:#333">)</span> <span style="color:#036">TYPE</span><span style="color:#333">=</span><span style="background-color:#e0e0ff">&#34;</span><span style="color:#036">$OPTARG</span><span style="background-color:#e0e0ff">&#34;</span>
              ;;
-          \?) echo &quot;Unsupported parameter $OPT&quot;
+          <span style="color:#666;background-color:#e0e0ff;font-weight:bold">\?</span><span style="color:#333">)</span> <span style="color:#072">echo</span> <span style="background-color:#e0e0ff">&#34;Unsupported parameter </span><span style="color:#036">$OPT</span><span style="background-color:#e0e0ff">&#34;</span>
              ;;
-  esac
-done
+  <span style="color:#289;font-weight:bold">esac</span>
+<span style="color:#289;font-weight:bold">done</span>
 
-shift $((OPTIND - 1))
+<span style="color:#072">shift</span> <span style="color:#289;font-weight:bold">$((</span>OPTIND <span style="color:#333">-</span> <span style="color:#60e;font-weight:bold">1</span><span style="color:#289;font-weight:bold">))</span>
 
-echo &quot;Silent mode: $SILENT&quot;
-echo &quot;Type: $TYPE&quot;
-echo &quot;Files:&quot;
+<span style="color:#072">echo</span> <span style="background-color:#e0e0ff">&#34;Silent mode: </span><span style="color:#036">$SILENT</span><span style="background-color:#e0e0ff">&#34;</span>
+<span style="color:#072">echo</span> <span style="background-color:#e0e0ff">&#34;Type: </span><span style="color:#036">$TYPE</span><span style="background-color:#e0e0ff">&#34;</span>
+<span style="color:#072">echo</span> <span style="background-color:#e0e0ff">&#34;Files:&#34;</span>
 
-for FILE
-do
-  echo &quot;$FILE&quot;
-done
-</code></pre>
-
+<span style="color:#289;font-weight:bold">for</span> FILE
+<span style="color:#289;font-weight:bold">do</span>
+  <span style="color:#072">echo</span> <span style="background-color:#e0e0ff">&#34;</span><span style="color:#036">$FILE</span><span style="background-color:#e0e0ff">&#34;</span>
+<span style="color:#289;font-weight:bold">done</span></code></pre></div>
 </main>
 
     <footer>

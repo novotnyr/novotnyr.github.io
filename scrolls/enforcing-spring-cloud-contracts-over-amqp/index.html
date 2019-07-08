@@ -101,29 +101,23 @@
 </ul>
 
 <p>Most importantly, we need to depend on the Spring Cloud Contract libraries. We will import the libraries via <code>dependencyManagement</code>:</p>
-
-<pre><code class="language-xml">&lt;dependencyManagement&gt;
-    &lt;dependencies&gt;
-        &lt;dependency&gt;
-        &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
-            &lt;artifactId&gt;spring-cloud-dependencies&lt;/artifactId&gt;
-            &lt;version&gt;Finchley.SR2&lt;/version&gt;
-            &lt;type&gt;pom&lt;/type&gt;
-            &lt;scope&gt;import&lt;/scope&gt;
-        &lt;/dependency&gt;
-    &lt;/dependencies&gt;
-&lt;/dependencyManagement&gt;
-</code></pre>
-
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#070">&lt;dependencyManagement&gt;</span>
+    <span style="color:#070">&lt;dependencies&gt;</span>
+        <span style="color:#070">&lt;dependency&gt;</span>
+        <span style="color:#070">&lt;groupId&gt;</span>org.springframework.cloud<span style="color:#070">&lt;/groupId&gt;</span>
+            <span style="color:#070">&lt;artifactId&gt;</span>spring-cloud-dependencies<span style="color:#070">&lt;/artifactId&gt;</span>
+            <span style="color:#070">&lt;version&gt;</span>Finchley.SR2<span style="color:#070">&lt;/version&gt;</span>
+            <span style="color:#070">&lt;type&gt;</span>pom<span style="color:#070">&lt;/type&gt;</span>
+            <span style="color:#070">&lt;scope&gt;</span>import<span style="color:#070">&lt;/scope&gt;</span>
+        <span style="color:#070">&lt;/dependency&gt;</span>
+    <span style="color:#070">&lt;/dependencies&gt;</span>
+<span style="color:#070">&lt;/dependencyManagement&gt;</span></code></pre></div>
 <p>Then, let’s add additional <code>&lt;dependency&gt;</code> :</p>
-
-<pre><code class="language-xml">&lt;dependency&gt;
-    &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
-    &lt;artifactId&gt;spring-cloud-starter-contract-verifier&lt;/artifactId&gt;
-    &lt;scope&gt;test&lt;/scope&gt;
-&lt;/dependency&gt;
-</code></pre>
-
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#070">&lt;dependency&gt;</span>
+    <span style="color:#070">&lt;groupId&gt;</span>org.springframework.cloud<span style="color:#070">&lt;/groupId&gt;</span>
+    <span style="color:#070">&lt;artifactId&gt;</span>spring-cloud-starter-contract-verifier<span style="color:#070">&lt;/artifactId&gt;</span>
+    <span style="color:#070">&lt;scope&gt;</span>test<span style="color:#070">&lt;/scope&gt;</span>
+<span style="color:#070">&lt;/dependency&gt;</span></code></pre></div>
 <p>In addition, this will allow us to add the most important component: Maven plugin that will handle contract management, publishing and upload.</p>
 
 <pre><code>&lt;plugin&gt;
@@ -141,18 +135,15 @@
 <p>The actual contract in the <em>Spring Cloud Contract</em> can be written either in Groovy DSL or in YAML. Let’s use YAML now.</p>
 
 <p>The contract file <code>user-presence.yaml</code> should be put into <code>src/test/resources/contracts</code>, where it would be automatically picked up by Maven plugin.</p>
-
-<pre><code class="language-yaml">label: user-goes-online
-input:
-  triggeredBy: onUserIsOnline()
-outputMessage:
-  sentTo: user-presence
-  body:
-    user: amadeus
-  headers:
-    contentType: application/json
-</code></pre>
-
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">label:<span style="color:#bbb"> </span>user-goes-online<span style="color:#bbb">
+</span><span style="color:#bbb"></span>input:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>triggeredBy:<span style="color:#bbb"> </span>onUserIsOnline()<span style="color:#bbb">
+</span><span style="color:#bbb"></span>outputMessage:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>sentTo:<span style="color:#bbb"> </span>user-presence<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>body:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>user:<span style="color:#bbb"> </span>amadeus<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>headers:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>contentType:<span style="color:#bbb"> </span>application/json</code></pre></div>
 <p>We declare a contract where the message will be triggered by a method call.</p>
 
 <p>To be specific, on a <code>onUserIsOnline()</code> method call, an AQMP message will be sent to the <code>user-presence</code> exchange. The body will be in the JSON format <code>{ “user” : “amadeus” }</code> and the message will contain a necessary JSON content-type header.</p>
@@ -183,20 +174,17 @@ outputMessage:
 
 <li><p>import <em>Spring Cloud Contract</em> dependencies via <code>dependencyManagement</code> in the same vein as in the <em>Producer</em> project.</p></li>
 </ul>
-
-<pre><code class="language-xml">  &lt;dependencyManagement&gt;
-      &lt;dependencies&gt;
-          &lt;dependency&gt;
-              &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
-              &lt;artifactId&gt;spring-cloud-dependencies&lt;/artifactId&gt;
-              &lt;version&gt;Finchley.SR2&lt;/version&gt;
-              &lt;type&gt;pom&lt;/type&gt;
-              &lt;scope&gt;import&lt;/scope&gt;
-          &lt;/dependency&gt;
-      &lt;/dependencies&gt;
-  &lt;/dependencyManagement&gt;
-</code></pre>
-
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml">  <span style="color:#070">&lt;dependencyManagement&gt;</span>
+      <span style="color:#070">&lt;dependencies&gt;</span>
+          <span style="color:#070">&lt;dependency&gt;</span>
+              <span style="color:#070">&lt;groupId&gt;</span>org.springframework.cloud<span style="color:#070">&lt;/groupId&gt;</span>
+              <span style="color:#070">&lt;artifactId&gt;</span>spring-cloud-dependencies<span style="color:#070">&lt;/artifactId&gt;</span>
+              <span style="color:#070">&lt;version&gt;</span>Finchley.SR2<span style="color:#070">&lt;/version&gt;</span>
+              <span style="color:#070">&lt;type&gt;</span>pom<span style="color:#070">&lt;/type&gt;</span>
+              <span style="color:#070">&lt;scope&gt;</span>import<span style="color:#070">&lt;/scope&gt;</span>
+          <span style="color:#070">&lt;/dependency&gt;</span>
+      <span style="color:#070">&lt;/dependencies&gt;</span>
+  <span style="color:#070">&lt;/dependencyManagement&gt;</span></code></pre></div>
 <ul>
 <li><p>use the following dependencies:</p>
 
@@ -221,13 +209,10 @@ outputMessage:
 <h3 id="message-class">Message Class</h3>
 
 <p>The inbound message will be mapped to a proper domain object:</p>
-
-<pre><code class="language-java">  public class UserGoesOnlineMessage {
-      private String user;
-  	/* ..getters and setters */
-  }
-</code></pre>
-
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">  <span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">UserGoesOnlineMessage</span> <span style="color:#333">{</span>
+      <span style="color:#289;font-weight:bold">private</span> String user<span style="color:#333">;</span>
+  	<span style="color:#666;font-style:italic">/* ..getters and setters */</span>
+  <span style="color:#333">}</span></code></pre></div>
 <h3 id="message-listener">Message Listener</h3>
 
 <p>Inbound AMQP message will be handled by a usual <code>@RabbitListener</code>-annotated method in a <code>@Component</code>:</p>
@@ -264,38 +249,35 @@ outputMessage:
 <li>Create a <strong>binding</strong> between declared exchange and the queue. The binding is very important, as it is used by <em>Spring Cloud Contract Stub Runner</em> to discover message routes used in the integration tests.</li>
 </ul></li>
 </ul>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#555;font-weight:bold">@SpringBootApplication</span>
+<span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">ConsumerApplication</span> <span style="color:#333">{</span>
+    <span style="color:#555;font-weight:bold">@Bean</span>
+    <span style="color:#289;font-weight:bold">public</span> Binding <span style="color:#5ed;font-weight:bold">binding</span><span style="color:#333">()</span> <span style="color:#333">{</span>
+        <span style="color:#289;font-weight:bold">return</span> BindingBuilder
+                <span style="color:#333">.</span><span style="color:#007">bind</span><span style="color:#333">(</span>userPresenceQueue<span style="color:#333">())</span>
+                <span style="color:#333">.</span><span style="color:#007">to</span><span style="color:#333">(</span>userPresenceExchange<span style="color:#333">())</span>
+                <span style="color:#333">.</span><span style="color:#007">with</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;#&#34;</span><span style="color:#333">);</span>
+    <span style="color:#333">}</span>
 
-<pre><code class="language-java">@SpringBootApplication
-public class ConsumerApplication {
-    @Bean
-    public Binding binding() {
-        return BindingBuilder
-                .bind(userPresenceQueue())
-                .to(userPresenceExchange())
-                .with(&quot;#&quot;);
-    }
+    <span style="color:#289;font-weight:bold">private</span> DirectExchange <span style="color:#5ed;font-weight:bold">userPresenceExchange</span><span style="color:#333">()</span> <span style="color:#333">{</span>
+        <span style="color:#289;font-weight:bold">return</span> <span style="color:#289;font-weight:bold">new</span> DirectExchange<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;user-presence&#34;</span><span style="color:#333">);</span>
+    <span style="color:#333">}</span>
 
-    private DirectExchange userPresenceExchange() {
-        return new DirectExchange(&quot;user-presence&quot;);
-    }
+    <span style="color:#555;font-weight:bold">@Bean</span>
+    Queue <span style="color:#5ed;font-weight:bold">userPresenceQueue</span><span style="color:#333">()</span> <span style="color:#333">{</span>
+        <span style="color:#289;font-weight:bold">return</span> <span style="color:#289;font-weight:bold">new</span> Queue<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;user-presence&#34;</span><span style="color:#333">);</span>
+    <span style="color:#333">}</span>
 
-    @Bean
-    Queue userPresenceQueue() {
-        return new Queue(&quot;user-presence&quot;);
-    }
+    <span style="color:#555;font-weight:bold">@Bean</span>
+    <span style="color:#289;font-weight:bold">public</span> MessageConverter <span style="color:#5ed;font-weight:bold">jackson2JsonMessageConverter</span><span style="color:#333">()</span> <span style="color:#333">{</span>
+        <span style="color:#289;font-weight:bold">return</span> <span style="color:#289;font-weight:bold">new</span> Jackson2JsonMessageConverter<span style="color:#333">();</span>
+    <span style="color:#333">}</span>
 
-    @Bean
-    public MessageConverter jackson2JsonMessageConverter() {
-        return new Jackson2JsonMessageConverter();
-    }
+    <span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">static</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">main</span><span style="color:#333">(</span>String<span style="color:#333">[]</span> args<span style="color:#333">)</span> <span style="color:#333">{</span>
+        SpringApplication<span style="color:#333">.</span><span style="color:#007">run</span><span style="color:#333">(</span>ConsumerApplication<span style="color:#333">.</span><span style="color:#007">class</span><span style="color:#333">,</span> args<span style="color:#333">);</span>
+    <span style="color:#333">}</span>
 
-    public static void main(String[] args) {
-        SpringApplication.run(ConsumerApplication.class, args);
-    }
-
-}
-</code></pre>
-
+<span style="color:#333">}</span></code></pre></div>
 <p>Obviously, we might be tempted to run this application. This is okay, however, this won’t help us in the verification of the contract that we created.</p>
 
 <p>Let’s create a proper integration test instead!</p>
@@ -373,39 +355,33 @@ public class ListenerTest {
 <h2 id="producer-side-implementation">Producer-Side Implementation</h2>
 
 <p>Let’s create a minimalistic all-in-one class that handles both Spring Boot configuration and message dispatch:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#555;font-weight:bold">@SpringBootApplication</span>
+<span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">Application</span> <span style="color:#333">{</span>
+    <span style="color:#555;font-weight:bold">@Autowired</span>
+    AmqpTemplate amqpTemplate<span style="color:#333">;</span>
 
-<pre><code class="language-java">@SpringBootApplication
-public class Application {
-    @Autowired
-    AmqpTemplate amqpTemplate;
+    <span style="color:#289;font-weight:bold">public</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">sendNotification</span><span style="color:#333">()</span> <span style="color:#333">{</span>
+        amqpTemplate<span style="color:#333">.</span><span style="color:#007">convertAndSend</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;user-presence&#34;</span><span style="color:#333">,</span> <span style="background-color:#e0e0ff">&#34;&#34;</span> <span style="color:#333">,</span> <span style="color:#289;font-weight:bold">new</span> Notification<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;amadeus&#34;</span><span style="color:#333">));</span>
+    <span style="color:#333">}</span>
 
-    public void sendNotification() {
-        amqpTemplate.convertAndSend(&quot;user-presence&quot;, &quot;&quot; , new Notification(&quot;amadeus&quot;));
-    }
+    <span style="color:#555;font-weight:bold">@Bean</span>
+    <span style="color:#289;font-weight:bold">public</span> MessageConverter <span style="color:#5ed;font-weight:bold">jackson2JsonMessageConverter</span><span style="color:#333">()</span> <span style="color:#333">{</span>
+        <span style="color:#289;font-weight:bold">return</span> <span style="color:#289;font-weight:bold">new</span> Jackson2JsonMessageConverter<span style="color:#333">();</span>
+    <span style="color:#333">}</span>
 
-    @Bean
-    public MessageConverter jackson2JsonMessageConverter() {
-        return new Jackson2JsonMessageConverter();
-    }
-
-    public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
-    }
-}
-</code></pre>
-
+    <span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">static</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">main</span><span style="color:#333">(</span>String<span style="color:#333">[]</span> args<span style="color:#333">)</span> <span style="color:#333">{</span>
+        SpringApplication<span style="color:#333">.</span><span style="color:#007">run</span><span style="color:#333">(</span>Application<span style="color:#333">.</span><span style="color:#007">class</span><span style="color:#333">,</span> args<span style="color:#333">);</span>
+    <span style="color:#333">}</span>
+<span style="color:#333">}</span></code></pre></div>
 <p>We configure a <code>MessageConverter</code> that will automatically convert payloads to JSON format.</p>
 
 <p>Then, we create a <code>sendNotification()</code> method that will send an AMQP message via autowired <code>AmqpTemplate</code>. This message is represented by a simple domain object:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">package</span> <span style="color:#0e84b5;font-weight:bold">com.github.novotnyr.contract</span><span style="color:#333">;</span>
 
-<pre><code class="language-java">package com.github.novotnyr.contract;
-
-public class Notification {
-    private String user;
-    /* ... */
-}
-</code></pre>
-
+<span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">Notification</span> <span style="color:#333">{</span>
+    <span style="color:#289;font-weight:bold">private</span> String user<span style="color:#333">;</span>
+    <span style="color:#666;font-style:italic">/* ... */</span>
+<span style="color:#333">}</span></code></pre></div>
 <p>Finally, since this is a standalone Spring Boot app, we provide a <code>main</code> method.</p>
 
 <h2 id="producer-side-integration-tests">Producer-Side Integration Tests</h2>
@@ -440,10 +416,7 @@ public class Notification {
 <h3 id="configuring-stubrunner">Configuring StubRunner</h3>
 
 <p>Additionally, we need to configure the <em>StubRunner</em>. Specifically, we need to enable AMQP-based StubRunner for integration tests. Let’s create <code>src/test/resources/application.properties</code> with the following content:</p>
-
-<pre><code class="language-properties">stubrunner.amqp.enabled=true
-</code></pre>
-
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-properties" data-lang="properties">stubrunner.amqp.enabled=true</code></pre></div>
 <h2 id="configuring-base-test-class">Configuring Base Test Class</h2>
 
 <p>We will now declare the base class <code>TestBase</code> that we specified in the <code>pom.xml</code>. This is an <em>abstract</em> class which covers:</p>
@@ -451,20 +424,21 @@ public class Notification {
 <ul>
 <li>an annotation <code>@AutoConfigureMessageVerifier</code> denoting a base class for integration tests</li>
 <li>the usual <code>@RunWith</code> and <code>@SpringBootTest</code> annotations indicating a usual Spring Boot-based test class</li>
-<li>an implementation of the method that is triggering the message. Since the contract specifies <code>triggeredBy: onUserIsOnline()</code>, we need to provide the implementation of this method. We will use the <code>Application</code> instance and its <code>sendNotification</code> method to dispatch a message to the AMQP exchange.</li>
-</ul>
+
+<li><p>an implementation of the method that is triggering the message. Since the contract specifies <code>triggeredBy: onUserIsOnline()</code>, we need to provide the implementation of this method. We will use the <code>Application</code> instance and its <code>sendNotification</code> method to dispatch a message to the AMQP exchange.</p>
 
 <pre><code>@RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMessageVerifier
 public abstract class TestBase {
-    @Autowired Application application;
+@Autowired Application application;
 
-    protected void onUserIsOnline() {
-        application.sendNotification();
-    }
+protected void onUserIsOnline() {
+    application.sendNotification();
 }
-</code></pre>
+}
+</code></pre></li>
+</ul>
 
 <p>Now that we have prepared the base class <code>TestBase</code>, we can launch Maven <code>install</code> goal. Since our integration tests are ready, we can install the producer artifact properly, without disabled unit tests!</p>
 

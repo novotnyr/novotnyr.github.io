@@ -97,8 +97,8 @@
 
 <ul>
 <li><code>-l</code> (alebo <code>—long</code>) zapne stĺpcový dlhý výpis</li>
-<li><code>-a</code> (alebo <code>-all</code>) vypíše všetky &ndash; aj skryté súbory</li>
-</ul>
+
+<li><p><code>-a</code> (alebo <code>-all</code>) vypíše všetky &ndash; aj skryté súbory</p>
 
 <pre><code>&gt; exa -la
 drwxr-xr-x  - novotnyr  7 Jan 16:17 .git
@@ -106,7 +106,8 @@ drwxr-xr-x  - novotnyr  7 Jan 16:17 .git
 .rw-r--r--  0 novotnyr  7 Jan 16:15 2.txt
 .rw-r--r--  0 novotnyr  7 Jan 16:15 3.txt
 .rw-r--r-- 32 novotnyr  7 Jan 17:17 4.txt
-</code></pre>
+</code></pre></li>
+</ul>
 
 <p>Okrem toho podporuje <code>exa</code> aj špeci stĺpček pre <code>git</code>:</p>
 
@@ -141,8 +142,8 @@ drwxr-xr-x  - novotnyr  7 Jan 16:17 .git
 <ul>
 <li>výpis skupiny používateľa (<em>group</em>) cez <code>-g</code></li>
 <li>výpis estetickej hlavičky stĺpcov cez<code>-h</code></li>
-<li>ISO formát pre modifikáciu súboru (<em>mtime</em>) cez <code>—time-style</code></li>
-</ul>
+
+<li><p>ISO formát pre modifikáciu súboru (<em>mtime</em>) cez <code>—time-style</code></p>
 
 <pre><code>&gt; exa -lag --git -h --time-style=full-iso
 Permissions Size User     Group Date Modified                       Git Name
@@ -152,7 +153,8 @@ drwxr-xr-x     - novotnyr wheel 2019-01-07 16:17:31.996454614 +0100  -- .git
 .rw-r--r--     0 novotnyr wheel 2019-01-07 16:15:36.536635284 +0100  -- 3.txt
 .rw-r--r--    32 novotnyr wheel 2019-01-07 17:17:34.563047197 +0100  -M 4.txt
 drwxr-xr-x     - novotnyr wheel 2019-01-07 17:27:39.019907496 +0100  -N children
-</code></pre>
+</code></pre></li>
+</ul>
 
 <p>Okrem toho môžeme filtrovať a triediť podľa ľubovoľnej vlastnosti súboru (napr. podľa prípony), či prezerať skryté atribúty súborov (<em>xattr</em>).</p>
 

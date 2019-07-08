@@ -6,10 +6,21 @@
     <description>Recent content in Scrolls on robonovotny</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 20 Feb 2019 09:09:39 +0100</lastBuildDate>
+    <lastBuildDate>Mon, 08 Jul 2019 09:09:39 +0100</lastBuildDate>
     
 	<atom:link href="http://novotnyr.github.io/scrolls/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Korutiny v Kotline</title>
+      <link>http://novotnyr.github.io/scrolls/korutiny-v-kotline/</link>
+      <pubDate>Mon, 08 Jul 2019 09:09:39 +0100</pubDate>
+      
+      <guid>http://novotnyr.github.io/scrolls/korutiny-v-kotline/</guid>
+      <description>Korutiny v Kotline V bežnej Jave sa spúšťanie úloh na pozadí (teda paralelný beh úloh) dá dosiahnuť pomocou vlákien (threads). Tento mechanizmus však môže byť natoľko komplikovaný, že zaberie pol semestra vysvetľovania.
+Kotlin ponúka alternatívu: korutiny / coroutines, ktoré majú viacero výhod:
+ elegantný zápis vďaka kombinácii syntaxe Kotlinu a knižnice pre korutiny sú škálovateľné: poľahky si môžeme pustiť státisíce korutín využívajú neblokujúcu filozofiu: keďže sa takmer nikde na nič nečaká, získame nesmierny výkon podporujú skladanie korutín cez štruktúrovanú konkurentnosť (structured concurrency).</description>
+    </item>
     
     <item>
       <title>Mriežky v Androide cez GridLayout</title>
@@ -109,9 +120,9 @@ pre každé slovo R spracuj R  Priamo for cyklus! V shellscriptingu je však for
       <guid>http://novotnyr.github.io/scrolls/running-mongodb-replicaset-on-localhost/</guid>
       <description>Setup Cluster Create Instances Create directories:
 mkdir -p /tmp/mongodb/rs-{0,1,2}  In shell, run:
-mongod --dbpath /tmp/mongodb/rs-0 --replSet rs --port 27021 --bind_ip localhost --smallfiles --oplogSize 128 mongod --dbpath /tmp/mongodb/rs-1 --replSet rs --port 27022 --bind_ip localhost --smallfiles --oplogSize 128 mongod --dbpath /tmp/mongodb/rs-2 --replSet rs --port 27023 --bind_ip localhost --smallfiles --oplogSize 128  Initiate ReplicaSet Run client to initiate ReplicaSet:
-mongo --port 27021  Create ReplicaSet configuration:
-rs.initiate({ _id : &#39;rs&#39;, members: [ { _id : 0, host : &amp;quot;localhost:27021&amp;quot; }, { _id : 1, host : &amp;quot;localhost:27022&amp;quot; }, { _id : 2, host : &amp;quot;localhost:27023&amp;quot; } ] })  Review with:</description>
+mongod --dbpath /tmp/mongodb/rs-0 --replSet rs --port 27021 --bind_ip localhost --smallfiles --oplogSize 128 mongod --dbpath /tmp/mongodb/rs-1 --replSet rs --port 27022 --bind_ip localhost --smallfiles --oplogSize 128 mongod --dbpath /tmp/mongodb/rs-2 --replSet rs --port 27023 --bind_ip localhost --smallfiles --oplogSize 128 Initiate ReplicaSet Run client to initiate ReplicaSet:
+mongo --port 27021 Create ReplicaSet configuration:
+rs.initiate({ _id : &amp;#39;rs&amp;#39;, members: [ { _id : 0, host : &amp;#34;localhost:27021&amp;#34; }, { _id : 1, host : &amp;#34;localhost:27022&amp;#34; }, { _id : 2, host : &amp;#34;localhost:27023&amp;#34; } ] })  Review with:</description>
     </item>
     
     <item>
@@ -143,8 +154,8 @@ exa - výpis adresára pre moderných ľudí brew install exa  Príkaz exa je ak
       
       <guid>http://novotnyr.github.io/scrolls/spracovanie-argumentov-cez-getopts/</guid>
       <description>Načo je dobrý getops? getopts je posixový nástroj na spracovávanie prepínačov z príkazového riadka v rámci shellového skriptu. Vezmime si príklad:
-./ffind.sh -s -t d java xml  Príkaz ffind.sh dostal päť argumentov, ktoré v skutočnosti reprezentujú tri rozličné druhy “vstupov”:
- -s teda prepínač -t reprezentujúci prepínač s parametrom (d) dva nepomenované argumenty java a xml  Ak by sme mali takéto argumenty spracovávať ručne, bolo by to šialené.</description>
+./ffind.sh -s -t d java xml Príkaz ffind.sh dostal päť argumentov, ktoré v skutočnosti reprezentujú tri rozličné druhy “vstupov”:
+ -s teda prepínač -t reprezentujúci prepínač s parametrom (d) dva nepomenované argumenty java a xml  Ak by sme mali takéto argumenty spracovávať ručne, bolo by to šialené. Príkaz getopts sa s tým vysporiada veľmi jednoducho.</description>
     </item>
     
     <item>
