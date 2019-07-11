@@ -1415,7 +1415,7 @@ println(context)</code></pre></div>
 
 <span style="color:#289;font-weight:bold">object</span> <span style="color:#e9e;font-weight:bold">Http</span> {
     <span style="color:#289;font-weight:bold">suspend</span> <span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">run</span>(url: String): String = withContext(Dispatchers.IO) {
-        suspendCancellableCoroutine { continuation -&gt;
+        suspendCancellableCoroutine&lt;String&gt; { continuation -&gt;
             <span style="color:#289;font-weight:bold">val</span> request = Request.Builder()
                 .url(url)
                 .<span style="color:#289;font-weight:bold">get</span>()
@@ -1445,6 +1445,194 @@ println(context)</code></pre></div>
     <span style="color:#289;font-weight:bold">val</span> xml = Http.run(<span style="background-color:#e0e0ff">&#34;https://dennikn.sk/minuta/feed/?cat=2386&#34;</span>)
     println(xml)
 }</code></pre></div>
+<h2 id="supervízia-korutin-supervisorscope">Supervízia korutin: <code>supervisorScope</code></h2>
+
+<p>Vyššie sme videli, že bežné správanie štruktúrovanej konkurentnosti tvorí obojsmerný vzťah medzi rodičom a potomkami. Ak potomok zhavaruje, zruší rodiča i naopak, zrušený rodič automaticky zruší svojich potomkov.</p>
+
+<p>Niekedy však chceme len jednosmerný vzťah: nech sa deti postarajú samé o seba, bez vplyvu na rodiča. Opačný smer však ostane: ak rodič zhavaruje, deti sa zrušia a samozrejme, rodič vždy počká na ich korektné dobehnutie.</p>
+
+<p>Na tento účel máme špecifický builder <code>supervisorScope</code>.</p>
+
+<p>Tento príklad je dobre známy: s prvou výnimkou v potomkovi <code>launch</code> sa zrušia aj deti:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">kotlinx.coroutines.launch</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">kotlinx.coroutines.runBlocking</span>
+
+<span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">main</span>() = runBlocking {
+    repeat(<span style="color:#60e;font-weight:bold">10</span>) {
+        launch {
+            println(Thread.currentThread().name + <span style="background-color:#e0e0ff">&#34; &#34;</span> + it)
+            <span style="color:#289;font-weight:bold">if</span> (it % <span style="color:#60e;font-weight:bold">2</span> == <span style="color:#60e;font-weight:bold">0</span>) {
+                <span style="color:#289;font-weight:bold">throw</span> IllegalStateException(<span style="background-color:#e0e0ff">&#34;Random failure&#34;</span>)
+            }
+        }
+    }
+}</code></pre></div>
+<p>Ak obalíme blok do <code>coroutineScope</code>, správanie sa zmení:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">main</span>() = runBlocking {
+    supervisorScope {
+        repeat(<span style="color:#60e;font-weight:bold">10</span>) {
+            launch {
+                println(Thread.currentThread().name + <span style="background-color:#e0e0ff">&#34; &#34;</span> + it)
+                <span style="color:#289;font-weight:bold">if</span> (it % <span style="color:#60e;font-weight:bold">2</span> == <span style="color:#60e;font-weight:bold">0</span>) {
+                    <span style="color:#289;font-weight:bold">throw</span> IllegalStateException(<span style="background-color:#e0e0ff">&#34;Random failure&#34;</span>)
+                }
+            }
+        }
+    }
+}</code></pre></div>
+<p>S týmto scopom uvidíme päť <em>stack traceov</em> (z desiatich behov spadne každý druhý), pretože potomkovia v <code>launch</code> , u ktorých nastane výnimka už nevyvolajú zrušenie rodiča.</p>
+
+<h3 id="supervisor-a-výnimky"><code>SuperVisor</code> a výnimky</h3>
+
+<p>Pre výnimky platia bežné zásady:</p>
+
+<ul>
+<li><code>launch</code> výnimky hlce, resp. posiela do  <em>globálnej obsluhy výnimiek</em> (<em>coroutine exception handler</em>)</li>
+<li><code>async</code> výnimky vyberá v <code>await()</code>e.</li>
+</ul>
+
+<h4 id="supervízia-a-launch">Supervízia a <code>launch</code></h4>
+
+<p>Keďže máme prvý príklad, hľadá sa v kontexte <em>handler</em> a keďže sa žiadny explicitný nenašiel, použije sa bežný výpis na chybový výstup <em>stderr</em>.</p>
+
+<p>Skúsme si zaregistrovať vlastný handler. Samotný <code>supervisorScope</code> nepodporuje žiadne parametre, ale <em>handler</em> môžeme registrovať u rodiča, teda v <code>runBlocking</code>.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">kotlinx.coroutines.CoroutineExceptionHandler</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">kotlinx.coroutines.launch</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">kotlinx.coroutines.runBlocking</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">kotlinx.coroutines.supervisorScope</span>
+
+<span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">main</span>() {
+    <span style="color:#289;font-weight:bold">val</span> errorHandler = CoroutineExceptionHandler { _, t -&gt; println(<span style="background-color:#e0e0ff">&#34;${t.message}&#34;</span>) }
+
+    runBlocking(errorHandler) {
+        supervisorScope {
+            repeat(<span style="color:#60e;font-weight:bold">10</span>) {
+                launch {
+                    println(Thread.currentThread().name + <span style="background-color:#e0e0ff">&#34; &#34;</span> + it)
+                    <span style="color:#289;font-weight:bold">if</span> (it % <span style="color:#60e;font-weight:bold">2</span> == <span style="color:#60e;font-weight:bold">0</span>) {
+                        <span style="color:#289;font-weight:bold">throw</span> IllegalStateException(<span style="background-color:#e0e0ff">&#34;Random failure&#34;</span>)
+                    }
+                }
+            }
+        }
+    }
+}</code></pre></div>
+<p>Vidíme, že výnimky sa teraz vypisujú v zjednodušenom formáte.</p>
+
+<p>Alternatívne riešenie zaregistruje <code>errorHandler</code> v samotnej sekcii <code>launch</code>:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">kotlinx.coroutines.CoroutineExceptionHandler</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">kotlinx.coroutines.launch</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">kotlinx.coroutines.runBlocking</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">kotlinx.coroutines.supervisorScope</span>
+
+<span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">main</span>() = runBlocking {
+    <span style="color:#289;font-weight:bold">val</span> errorHandler = CoroutineExceptionHandler { _, t -&gt; println(<span style="background-color:#e0e0ff">&#34;${t.message}&#34;</span>) }
+    supervisorScope {
+        repeat(<span style="color:#60e;font-weight:bold">10</span>) {
+            launch(errorHandler) {
+                println(Thread.currentThread().name + <span style="background-color:#e0e0ff">&#34; &#34;</span> + it)
+                <span style="color:#289;font-weight:bold">if</span> (it % <span style="color:#60e;font-weight:bold">2</span> == <span style="color:#60e;font-weight:bold">0</span>) {
+                    <span style="color:#289;font-weight:bold">throw</span> IllegalStateException(<span style="background-color:#e0e0ff">&#34;Random failure&#34;</span>)
+                }
+            }
+        }
+    }
+}</code></pre></div>
+<h3 id="supervízia-a-async">Supervízia a <code>async</code></h3>
+
+<p>V prípade <code>async</code> a supervízie sa očakáva, že potomkovia sa o chybové stavy postarajú sami. Dajme si analogický príklad:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">kotlinx.coroutines.Deferred</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">kotlinx.coroutines.Dispatchers</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">kotlinx.coroutines.async</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">kotlinx.coroutines.awaitAll</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">kotlinx.coroutines.runBlocking</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">kotlinx.coroutines.supervisorScope</span>
+
+<span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">main</span>() = runBlocking {
+    supervisorScope {
+        <span style="color:#289;font-weight:bold">val</span> deferreds = ArrayList&lt;Deferred&lt;Unit&gt;&gt;()
+        repeat(<span style="color:#60e;font-weight:bold">10</span>) {
+            <span style="color:#289;font-weight:bold">val</span> deferred = async(Dispatchers.Default) {
+                println(Thread.currentThread().name + <span style="background-color:#e0e0ff">&#34; &#34;</span> + it)
+                <span style="color:#289;font-weight:bold">if</span> (it % <span style="color:#60e;font-weight:bold">2</span> == <span style="color:#60e;font-weight:bold">0</span>) {
+                    <span style="color:#289;font-weight:bold">throw</span> IllegalStateException(<span style="background-color:#e0e0ff">&#34;Random failure at $it&#34;</span>)
+                }
+            }
+            deferreds.add(deferred)
+        }
+        deferreds.awaitAll()
+        Unit
+    }
+}</code></pre></div>
+<p>V príklade použijeme paralelizovateľnú dekompozíciu. Sekcia <code>supervisorScope</code> sa postará o rovnakú funkcionalitu ako <code>coroutineScope</code>, a vo vnútri tak môžeme spustiť viacero korutín typu <code>async</code>, na separátnom vlákne. Všetky výsledky následne pozbierame do zoznamu <code>deferreds</code> a na konci si počkáme na hromadný výsledok.</p>
+
+<p>Výpis bude elegantný:</p>
+
+<pre><code>DefaultDispatcher-worker-1 0
+DefaultDispatcher-worker-1 1
+DefaultDispatcher-worker-1 2
+DefaultDispatcher-worker-5 3
+DefaultDispatcher-worker-5 4
+DefaultDispatcher-worker-5 5
+DefaultDispatcher-worker-5 6
+DefaultDispatcher-worker-5 7
+DefaultDispatcher-worker-8 8
+DefaultDispatcher-worker-5 9
+Exception in thread &quot;main&quot; java.lang.IllegalStateException: Random failure at 0
+	at Supervisor3Kt$main$1$1$1$deferred$1.invokeSuspend(Supervisor3.kt:16)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:33)
+	at kotlinx.coroutines.DispatchedTask.run(Dispatched.kt:238)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:594)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler.access$runSafely(CoroutineScheduler.kt:60)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:742)
+</code></pre>
+
+<p>Správanie môže vyzerať záhadne, ale má zmysel. Vidíme, že všetky podkorutiny sa spustili, niektoré zlyhali, ale dozvedeli sme sa len o páde prvej z nich. To je vlastnosť <code>awaitAll()</code>, ktorá spadne vo chvíli, keď ktorýkoľvek prvý z deferredov vyhodí výnimku.</p>
+
+<p>Toto môžeme ošetriť pomocou <code>try</code>/<code>catch</code> bloku. Pozor však na to, že <code>CoroutineExceptionHandler</code> nebude fungovať! (Ten totiž pre <code>async</code> nie je podporovaný.)</p>
+
+<p>Jedna z možností, ako to opraviť, je nasledovná:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">kotlinx.coroutines.Dispatchers</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">kotlinx.coroutines.async</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">kotlinx.coroutines.awaitAll</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">kotlinx.coroutines.runBlocking</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">kotlinx.coroutines.supervisorScope</span>
+
+<span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">main</span>() = runBlocking {
+    supervisorScope {
+        <span style="color:#289;font-weight:bold">try</span> {
+            (<span style="color:#60e;font-weight:bold">1.</span>.<span style="color:#60e;font-weight:bold">10</span>).map {
+                async(Dispatchers.Default) {
+                    println(Thread.currentThread().name + <span style="background-color:#e0e0ff">&#34; &#34;</span> + it)
+                    <span style="color:#289;font-weight:bold">if</span> (it % <span style="color:#60e;font-weight:bold">2</span> == <span style="color:#60e;font-weight:bold">0</span>) {
+                        <span style="color:#289;font-weight:bold">throw</span> IllegalStateException(<span style="background-color:#e0e0ff">&#34;Random failure at $it&#34;</span>)
+                    }
+                }
+            }
+                .awaitAll()
+            Unit
+        } <span style="color:#289;font-weight:bold">catch</span> (e: Exception) {
+            println(e.message)
+        }
+    }
+}</code></pre></div>
+<p>Následne uvidíme:</p>
+
+<pre><code>DefaultDispatcher-worker-1 1
+DefaultDispatcher-worker-3 2
+DefaultDispatcher-worker-3 3
+DefaultDispatcher-worker-3 4
+DefaultDispatcher-worker-3 5
+DefaultDispatcher-worker-5 6
+DefaultDispatcher-worker-7 7
+DefaultDispatcher-worker-6 9
+DefaultDispatcher-worker-7 10
+DefaultDispatcher-worker-5 8
+Random failure at 2
+</code></pre>
+
+<p>s</p>
+
 <h1 id="literatúra">Literatúra</h1>
 
 <h2 id="tutoriály">Tutoriály</h2>
