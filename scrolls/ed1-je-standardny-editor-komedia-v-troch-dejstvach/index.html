@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Elder Scrolls: editor `ed` | robonovotny</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.css" integrity="sha384-D+9gmBxUQogRLqvARvNLmA9hS2x//eK1FhVb9PiU86gmcrBrJAQT8okdJ4LMp2uv" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.js" integrity="sha384-483A6DwYfKeDa0Q52fJmxFXkcPCFfnXMoXblOkJ4JcA8zATN6Tm78UNL72AKk+0O" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/contrib/auto-render.min.js" integrity="sha384-yACMu8JWxKzSp/C1YV86pzGiQ/l1YUfE8oPuahJQxzehAjEt2GiQuy/BIvl9KyeF" crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body);
+        });
+    </script>
+
+<header>
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <nav>
+    <ul>
+      
+      
+      <li class="pull-left ">
+        <a href="http://novotnyr.github.io/">/home/robonovotny</a>
+      </li>
+      
+
+      
+
+    </ul>
+  </nav>
+</header>
+
+  </head>
+
+  <body>
+    <br/>
+
+<div class="article-meta">
+<h1><span class="title">Elder Scrolls: editor `ed`</span></h1>
+
+<h2 class="date">2019/07/17</h2>
+<p class="terms">
+  
+  
+  
+  
+  
+</p>
+</div>
+
+
+
+<main>
+
+
+<p><img src="scrolls-of-ancient-wisdom.gif" alt="" /></p>
+
+<p>Ako píše @Bodil:</p>
+
+<p><blockquote class="twitter-tweet" data-lang="en"><p lang="und" dir="ltr"><a href="https://t.co/Ut1KV7mx39">pic.twitter.com/Ut1KV7mx39</a></p>&mdash; 🌯 Bodil 🌯 (@bodil) <a href="https://twitter.com/bodil/status/999714110303588353?ref_src=twsrc%5Etfw">May 24, 2018</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script></p>
+
+<p>Dajme si teda <code>ed</code>.</p>
+
+<p><img src="doom-difficulty.png" alt="" /></p>
+
+<h1 id="introitus">Introitus</h1>
+
+<p>Najprv ukážkový fajl:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#072">printf</span> <span style="background-color:#e0e0ff">&#34;%s\n&#34;</span> Lorem ipsum dolor sit amet &gt; lorem.txt</code></pre></div>
+<p>Pome na to!</p>
+
+<pre><code>ed lorem.txt
+</code></pre>
+
+<p>Uvidíme tretie najlepšie UI <em>ever</em>:</p>
+
+<p><img src="ui.png" alt="Tretie najlepšie UI *ever*" /></p>
+
+<pre><code>/tmp⟩ ed lorem.txt
+27
+</code></pre>
+
+<p><code>ed</code> je REPL. Akurát neni čas na blbosti ako <em>prompt</em>. Jediné, čo vidno, je <code>27</code>, čo nie je zmysel života, ale počet znakov v súbore. Vrátane finálneho lomeno n na konci</p>
+
+<p>Ako z toho preboha vybehnem?</p>
+
+<p><code>ed</code> je REPL. (Hej, to už bolo, ale treba si to pripomenúť). Základný príkaz je</p>
+
+<h2 id="q-qonči-editor"><code>q</code>: qonči editor</h2>
+
+<p>Príkaz <code>q</code> (<strong>quit</strong>) skončí editor a vráti sa do shellu.</p>
+
+<p>Ale hybajme naspäť!</p>
+
+<h2 id="repl-to-neni-príkaz">REPL, to neni príkaz</h2>
+
+<p><code>ed</code> je REPL (neviem, či sa spomenulo). A ako REPL má kopec príkazov. Výpis, úpravy, otvoriť, uložiť, uložiť ako, všetko sú to:</p>
+
+<ul>
+<li>jednopísmenkové príkazy</li>
+<li>kde niektoré berú <strong>rozsah</strong> (range) riadkov, na ktorých zbehnú.</li>
+</ul>
+
+<p>Pre motiváciu si dajme ukážkový sešn:</p>
+
+<pre><code>$
+amet
+-2,$s/m/n/g
+,p
+Lorem
+ipsum
+dolor
+sit
+anet
+</code></pre>
+
+<p>Sranda, hej? Toto je pre úplných profesionalof, ako vravel klasik UPJŠ.</p>
+
+<p>Smrteľníci si najprv customizujú UI/UX.</p>
+
+<h2 id="p-zapni-p-promt"><code>P</code> : zapni <code>P</code>promt</h2>
+
+<p>Veľké <code>P</code> zlepší UX o 200%. Odlíši prompt pre príkazy od samotných riadkov. Štandardný <strong>prompt</strong> začína hviezdičkou a vypnúť pre extra level zábavy je možné druhým <code>P</code>.</p>
+
+<p>Jo, a každý príkaz treba odenterovať, toto nie je MS Word!</p>
+
+<h2 id="p-potlač-a-rozsahy"><code>p</code>: potlač a rozsahy</h2>
+
+<p>Malé <code>p</code> ako potlač tlačí riadky. Ako vravel Knuth v sedemdesiatom piatom, „tí z vás, čo majú šťastie a majú aj monitor“, sa potešia.</p>
+
+<p>Príkaz <code>p</code> potrebuje pár parametrov. (Päť p! Teda sedem „p“!) Chceme vedieť, <em>odkiaľ</em>-<em>pokiaľ</em> tlačíme. Editor <code>janosik</code> tlačil od buka-do buka, my tlačíme od prvého (<code>1</code>) po posledný <code>$</code> riadok. Posledný riadok je <code>$</code>, lebo ako vravel Knuth v sedemdesiatom piatom, tlač celého súboru je drahá.</p>
+
+<pre><code>1,$p
+</code></pre>
+
+<p>Rozsah „všetko“ sa dá skrátiť na… čiarku:</p>
+
+<pre><code>,p
+</code></pre>
+
+<p>Rozsahy môžu byť šelijaké. Napríklad emulácia <code>head</code>-u:</p>
+
+<pre><code>1,3p
+</code></pre>
+
+<h2 id="žiadny-príkaz-dobrý-príkaz">: žiadny príkaz, dobrý príkaz</h2>
+
+<p>Keď uvedieme len rozsah, berie sa do ako <strong>null</strong> príkaz. Ten hýbe kurzorom po súbore. Akurát ten kurzor nie je vidno. Akurát, že kurzor behá po riadkoch, lebo znakový kurzor je pre klikačov.</p>
+
+<p>Výpis tretieho riadku?</p>
+
+<pre><code>3
+</code></pre>
+
+<p>Výpis bude:</p>
+
+<pre><code>dolor
+</code></pre>
+
+<p>Kurzora sme presunuli na tretí riadok. Je z neho <strong>aktuálny riadok</strong>. A aktuálny riadok zistíme krásnym rozsahom: bodkou. A žiadnym príkazom. Teda príkaz tam je, len sa volá prázdny string.</p>
+
+<pre><code>.
+</code></pre>
+
+<p>Výpis bude, nu pagadi:</p>
+
+<pre><code>dolor
+</code></pre>
+
+<h1 id="prvé-dejstvo-pohyby-a-orientácia">Prvé dejstvo: pohyby a orientácia</h1>
+
+<h2 id="n-numberuj-riadky"><code>n</code> : numberuj riadky</h2>
+
+<p>Keď chceme mať <code>vi</code>sual studio code, vz. 1969, môžeme tlačiť riadky aj s číslami:</p>
+
+<pre><code>,n
+</code></pre>
+
+<p>Aha:</p>
+
+<pre><code>1     Lorem
+2     ipsum
+3     dolor
+4     sit
+5     amet
+</code></pre>
+
+<h2 id="i-insertuj-t-j-vkladaj-riadok-pred"><code>i</code>: insertuj, t. j. vkladaj riadok pred</h2>
+
+<p>Príkaz <code>i</code> vkladá riadky. <strong>Pred</strong> daný riadok. Pred prvý riadok? <code>1i</code>. (Jedna í).</p>
+
+<pre><code>*1i
+Some latin
+.
+</code></pre>
+
+<p>Text sa končí bodkou (a Enterom), aby <code>ed</code> vedel, že dosť bolo. Kontrola je klasicky cez <code>,p</code>. (Teraz už vidno, že hviezdička v prompte oddeľuje lamy od hardcore userov).</p>
+
+<h2 id="a-appenduj-riadok-za"><code>a</code>: appenduj riadok <em>za</em></h2>
+
+<p>Protipól <code>i</code> je <code>a</code>, čo vkladá riadok <strong>za</strong> uvedený riadok.</p>
+
+<pre><code>*4a
+hic sunt leones
+.
+</code></pre>
+
+<p>Samozrejme, vkladať môžeme aj za aktuálny riadok. Jaky komplet prepis!</p>
+
+<pre><code>*$
+amet
+*a
+EOF
+.
+*,p
+Some latin
+Lorem
+ipsum
+dolor
+hic sunt leones
+sit
+amet
+EOF
+*
+</code></pre>
+
+<ol>
+<li>Najprv presun na koniec <code>$</code></li>
+<li>Potom pridanie riadku cez <code>a</code>. (Rozsah sa domyslí, že za aktuálny riadok. Teda to isté ako <code>.a</code>)</li>
+<li>Dopísali sme <code>EOF</code>.</li>
+<li>Ukončili bodkou, lebo dosť bolo.</li>
+<li>Vyprintovali všetko cez <code>,p</code>.</li>
+</ol>
+
+<p>To sa jasne dalo spraviť aj kratšie: <code>$a</code>. Ale pre srandu dokola.</p>
+
+<h2 id="d-deletuj-a-maž"><code>d</code>: deletuj a maž</h2>
+
+<p>Mazanie je cez <code>d</code>. Skúsme výpis:</p>
+
+<pre><code>*,n
+1	Some latin
+2	Lorem
+3	ipsum
+4	dolor
+5	hic sunt leones
+6	sit
+7	amet
+8	EOF
+</code></pre>
+
+<p>Vymažme piaty riadok:</p>
+
+<pre><code>5d
+</code></pre>
+
+<p>Uvidíme po <code>,p</code>:</p>
+
+<pre><code>Some latin
+Lorem
+ipsum
+dolor
+sit
+amet
+EOF
+</code></pre>
+
+<h2 id="u-undo-vráť-späť"><code>u</code>: undo, vráť späť</h2>
+
+<p>Až mi je to divnô, ale <code>ed</code> má <strong>undo</strong>. Jedno <code>u</code> zvráti poslednú zmenu. Napr. päťboj:</p>
+
+<ol>
+<li>zmaž všetko: <code>,d</code></li>
+<li>vytlač všetko: <code>,p</code></li>
+<li>panikár, lebo nič sa nevypíše, okrem otáznika, teda WTF <code>?</code></li>
+<li>zvráť: <code>u</code></li>
+<li>oddychuj, lebo vidno celý súbor.</li>
+</ol>
+
+<h2 id="w-ulož-zmeny-teda-kontrol-a-s"><code>w</code>: ulož zmeny, teda kontrol a s</h2>
+
+<p><code>w</code> ako vrajt ukladá zmeny. Uvidíme počet znakov, ktoré sa writeli:</p>
+
+<pre><code>*w
+58
+</code></pre>
+
+<h2 id="f-fde-som"><code>f</code> : fde som?</h2>
+
+<p><code>f</code> má len dva zmysly:</p>
+
+<ol>
+<li><code>fde</code> som, teda jak sa volá súbor, čo editujem?</li>
+<li><code>fuložiť ako</code>, teda zmeniť názov súboru</li>
+</ol>
+
+<p>Prvé:</p>
+
+<pre><code>*f
+lorem.txt
+</code></pre>
+
+<p>Druhé, tzv. <strong>save as</strong>:</p>
+
+<pre><code>*f loremipsum.txt
+loremipsum.txt
+*w
+58
+</code></pre>
+
+<h1 id="intermezzo">Intermezzo</h1>
+
+<p>Asi je jasné, že súbor vyzerá rozdrbane. Dajme ho do pôvodného stavu. Quitnime <code>ed</code> (<code>q</code>) a dajme si pragit:</p>
+
+<pre><code>rm lorem.txt loremipsum.txt
+printf &quot;%s\n&quot; Lorem ipsum dolor sit amet &gt; lorem.txt
+</code></pre>
+
+<p>Dajme si ešte raz <code>ed lorem.txt</code> a nezabudnime zapnúť <code>prompt</code> !</p>
+
+<h1 id="druhé-dejstvo-presuny-a-klipbórd">Druhé dejstvo: presuny a klipbórd</h1>
+
+<p>Vypíšme si, nech vieme, kde sme:</p>
+
+<pre><code>*,n
+1	Lorem
+2	ipsum
+3	dolor
+4	sit
+5	amet
+</code></pre>
+
+<p>Treba nám presunúť piaty riadok na začiatok?</p>
+
+<h2 id="m-ako-presum-move"><code>m</code> ako presuM / <em>move</em></h2>
+
+<p>Treba nám presunúť piaty riadok na začiatok? Čítame to “zober rozsah a presuň ho pred Xtý riadok.” A hej, začiatok je, ako matematici nakázali, nula.</p>
+
+<pre><code>5m0
+</code></pre>
+
+<p>Aha, výsledok:</p>
+
+<pre><code>amet
+Lorem
+ipsum
+dolor
+sit
+</code></pre>
+
+<h2 id="t-ako-topíruj-copy"><code>t</code> ako topíruj / <em>copy</em></h2>
+
+<p>Kopíruj beží presne ako presun, akurát kopíruje. Zoberieme rozsah riadkov, <code>t</code>opírujeme ho za konkrétny riadok. Napríklad, že duplikácia súboru:</p>
+
+<pre><code>,t$
+</code></pre>
+
+<ul>
+<li>Rozsah je šicko: <code>,</code></li>
+<li>Topírovanie je <code>t</code>.</li>
+<li>Za posledný riadok: <code>$</code>.</li>
+</ul>
+
+<p>Chceli sme klipbórd? Ten tu nie je.</p>
+
+<h1 id="tretie-dejstvo-hľadanie-nahrádzanie-masovky">Tretie dejstvo: hľadanie, nahrádzanie, masovky</h1>
+
+<p>Resetnime si súbor a dajme si výpis:</p>
+
+<pre><code>*,p
+Lorem
+ipsum
+dolor
+sit
+amet
+</code></pre>
+
+<h2 id="hľadanie-nie-príkaz">Hľadanie (nie príkaz)</h2>
+
+<p>Rozsahy môžu byť aj také, ktoré vyhľadávajú. Uvádzajú sa do lomítok.</p>
+
+<p>Dajme si všetky riadky, čo obsahujú <code>m</code>, teda <code>/m</code></p>
+
+<pre><code>*/m
+Lorem
+</code></pre>
+
+<p>Hľadá sa od aktuálneho riadku (kurzora), kým sa nenájde riadok s <code>m</code>.</p>
+
+<p>Toto môžeme točiť do bludu:</p>
+
+<pre><code>*/m
+ipsum
+*/m
+amet
+*/m
+Lorem
+</code></pre>
+
+<p>Kurzor sa vždy nastaví od aktuálneho riadka do najbližšieho výskytu.</p>
+
+<h3 id="hľadanie-s-regexpami">Hľadanie s regexpami</h3>
+
+<p>Hľadanie podporuje regexy. Netreba vysvetľovať, čo to je, lebo kto došiel až sem, vie, čo sú regexy.</p>
+
+<p>Dajme si riadky, čo končia na <code>m</code>. Teda <code>/m$</code>:</p>
+
+<pre><code>*/m$
+Lorem
+</code></pre>
+
+<p>Toto môžeme zase točiť dokola. Ale samotné lomítko opakuje predošlý search. Takže:</p>
+
+<pre><code>*/m$
+Lorem
+*/
+ipsum
+*/
+Lorem
+*/
+ipsum
+*/
+</code></pre>
+
+<h2 id="c-ch-čendžuj-riadky-za-riadky-change"><code>c</code>: ch-čendžuj riadky za riadky (change)</h2>
+
+<p>Riadok kus za kus meníme cez <code>c</code>. Keď sme tuto:</p>
+
+<pre><code>*,p
+Lorem
+ipsum
+dolor
+sit
+amet
+</code></pre>
+
+<p>A vymeníme prvý riadok za <code>lorem</code> s malým <code>r</code> cez <code>1c</code>:</p>
+
+<pre><code>*1c
+lorem
+.
+</code></pre>
+
+<p>Končí sa klasicky bodkou, lebo môžeme meniť riadok za viac riadkov, ow wow!</p>
+
+<pre><code>*,p
+lorem
+ipsum
+dolor
+sit
+amet
+</code></pre>
+
+<h2 id="s-substitučné-nahrádzatko"><code>s</code>: substitučné nahrádzatko ()</h2>
+
+<p>Príkaz <code>s</code> je jeden z naj mazecov. Nahrádza reťazce inými reťazcami, takže ako Ctrl-H vo Worde&trade;:</p>
+
+<p>Syntax je trochu divná. Ale mocná! Chceme nahradiť všetky <code>m</code> znakmi <code>n</code>? Takže <code>Lorem</code> =&gt; <code>Loren</code>?</p>
+
+<pre><code>,s/m/n/g
+</code></pre>
+
+<ul>
+<li>prvá čiarka je <em>rozsah</em>. Teda nahrádzaj jak šaleny po všetkých riadkoch. To je to isté ako <code>1,$s/m/n/g</code>. Rozsah môžeme aj vynechať. Takže to je to isté ako <code>s/m/n/g</code>.</li>
+<li>potom ide <code>s</code> ako príkaz substitutovania.</li>
+<li>potom ide <code>/</code> ako oddeľovač parametrov</li>
+<li>potom ide <code>m</code>, akože hľadať emká.</li>
+<li>potom ide <code>/</code> ako oddeľovač parametrov</li>
+<li>potom ide <code>n</code> akože najhrádzaj enkami.</li>
+<li>potom ide <code>/</code> ako oddeľovač parametrov</li>
+<li>a nakoniec ide <code>g</code> ako globálne nahrádzanie na riadku. Keby bolo na riadku viacero <code>m</code>, nahradia sa všetky.</li>
+</ul>
+
+<p>Výsledok:</p>
+
+<pre><code>Loren
+ipsun
+dolor
+sit
+anet
+</code></pre>
+
+<p>Všade môžu byť regexy, takže:</p>
+
+<pre><code>s/[aeiou]//g
+</code></pre>
+
+<p>Regexp “hocijaká samohláska” je <code>[aeiou]</code> a nahradíme ho ničím. A keďže <code>g</code>, tak <code>dolor</code> =&gt; <code>dlr</code>.</p>
+
+<h2 id="masovky">Masovky</h2>
+
+<p>Ak chceme urobiť masovku, máme na to príkazy:</p>
+
+<h2 id="g-globálny-príkaz"><code>g</code>: globálny príkaz</h2>
+
+<p>Chceme čísla riadkov, kde je <code>m</code>? Buď sa zbláznime, alebo vybavíme masovkou. Šaleni toto:</p>
+
+<pre><code>*/m/n
+1	Lorem
+*/m/n
+2	ipsum
+*/m/n
+5	amet
+*/m/n
+1	Lorem
+</code></pre>
+
+<p>Na toto ale existuje <code>g</code>lobálny command.</p>
+
+<p>Chceme očíslovať všetky riadky s <code>m</code>?</p>
+
+<pre><code>g/m/n
+</code></pre>
+
+<ul>
+<li><code>g</code> ako globálny príkaz</li>
+<li>lomítko <code>/</code> ako oddeľovač</li>
+<li><code>m</code> ako hľadaný text</li>
+<li>lomítko <code>/</code> ako oddeľovač</li>
+<li><code>n</code> ako príkaz „očísluj riadky“</li>
+</ul>
+
+<p>Výsledok:</p>
+
+<pre><code>*g/m/n
+1	Lorem
+2	ipsum
+5	amet
+</code></pre>
+
+<p>Môžeme použiť aj rozsah, pre hardcore. Hľadaj na prvých troch riadkoch:</p>
+
+<pre><code>1,3g/m/n
+</code></pre>
+
+<h1 id="grand-finále-trúby-a-všetko">Grand Finále, trúby a všetko</h1>
+
+<p>Všetko to môžeme skombinovať, rozsahy, substitúcie, všetko. Nahraďme <code>m</code> za <code>n</code> na posledných troch riadkoch!</p>
+
+<pre><code>*$
+amet
+*-2,$s/m/n/g
+*,p
+Lorem
+ipsum
+dolor
+sit
+anet
+</code></pre>
+
+<ul>
+<li>Prvý príkaz <code>$</code> nás presunie na posledný riadok.</li>
+<li>Druhý príkaz <code>-2,$s/m/n/g</code>
+
+<ul>
+<li>Rozsah hovorí, že od aktuálneho riadka (posledného) začnime o dva riadky skôr (<code>-2</code>) do konca <code>$</code></li>
+<li><code>s</code> nahrádza</li>
+<li>Hľadáme <code>m</code>,</li>
+<li>Nahrádzame za <code>n</code>.</li>
+<li>Globálne <code>g</code> na celom riadku.</li>
+</ul></li>
+</ul>
+
+<p>To by aj stačilo. A zrazu <code>vi</code> <em>vizerá</em> veľmi dobre, nie?</p>
+
+<h1 id="titulky">Titulky</h1>
+
+<p><strong>Hrali:</strong>  <code>ed</code> ako <code>ed</code> . Skratka od <em>editor</em> .</p>
+
+<p><strong>Napísal:</strong> <em>Ken Thompson</em>, &copy; 1969</p>
+
+<p><strong>Stabilizácia:</strong> <em>Dennis Ritchie</em></p>
+
+<h1 id="pro-tipy">Pro tipy</h1>
+
+<p>Prepínač <code>-p</code> nastavuje reťazec pre prompt. Takže:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">/tmp⟩ ed -p<span style="background-color:#e0e0ff">&#34;&gt; &#34;</span> lorem.txt
+<span style="color:#60e;font-weight:bold">27</span>
+&gt; ,p
+Lorem
+ipsum
+dolor
+sit
+amet</code></pre></div>
+</main>
+
+    <footer>
+      
+<script>
+(function() {
+  function center_el(tagName) {
+    var tags = document.getElementsByTagName(tagName), i, tag;
+    for (i = 0; i < tags.length; i++) {
+      tag = tags[i];
+      var parent = tag.parentElement;
+      
+      if (parent.childNodes.length === 1) {
+        
+        if (parent.nodeName === 'A') {
+          parent = parent.parentElement;
+          if (parent.childNodes.length != 1) continue;
+        }
+        if (parent.nodeName === 'P') parent.style.textAlign = 'center';
+      }
+    }
+  }
+  var tagNames = ['img', 'embed', 'object'];
+  for (var i = 0; i < tagNames.length; i++) {
+    center_el(tagNames[i]);
+  }
+})();
+</script>
+
+      
+    </footer>
+  </body>
+</html>
+
