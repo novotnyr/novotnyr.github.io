@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>“Prehľadávanie do šírky v jazyku Java&#34; | robonovotny</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.css" integrity="sha384-D+9gmBxUQogRLqvARvNLmA9hS2x//eK1FhVb9PiU86gmcrBrJAQT8okdJ4LMp2uv" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.js" integrity="sha384-483A6DwYfKeDa0Q52fJmxFXkcPCFfnXMoXblOkJ4JcA8zATN6Tm78UNL72AKk+0O" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/contrib/auto-render.min.js" integrity="sha384-yACMu8JWxKzSp/C1YV86pzGiQ/l1YUfE8oPuahJQxzehAjEt2GiQuy/BIvl9KyeF" crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body);
+        });
+    </script>
+
+<header>
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <nav>
+    <ul>
+      
+      
+      <li class="pull-left ">
+        <a href="http://novotnyr.github.io/">/home/robonovotny</a>
+      </li>
+      
+
+      
+
+    </ul>
+  </nav>
+</header>
+
+  </head>
+
+  <body>
+    <br/>
+
+<div class="article-meta">
+<h1><span class="title">“Prehľadávanie do šírky v jazyku Java&#34;</span></h1>
+
+
+<p class="terms">
+  
+  
+  
+  
+  
+</p>
+</div>
+
+
+
+<main>
+
+
+<h1 id="úvod">Úvod</h1>
+
+<p>Algoritmy na prehľadávanie stromov si množstvo ľudí pamätá (alebo nepamätá) z vysokej školy. Napriek tomu niekedy môže nastať situácia, keď je vhodné ich použiť a pri tej príležitosti si ich pripomenúť.</p>
+
+<p>Predstavme si jednoduchú úlohu: máme stromovú štruktúru (napr. rodostrom predkov), ktorú chceme vypísať na konzolu. Príkladom takéhoto stromu je nasledovný obrázok:</p>
+
+<p><img src="tree.png" alt="Strom s dvoma vrstvami" /></p>
+
+<p>Výpis na konzolu by znamenal, že chceme vypísať niečo takéto:</p>
+
+<pre><code>koreň
+A
+B
+C
+1
+2
+3
+4
+5
+</code></pre>
+
+<p>Ako na to?</p>
+
+<h1 id="dátové-štruktúry">Dátové štruktúry</h1>
+
+<p>Ako tvrdieval pán Wirth, <em>programovanie = dátové štruktúry + algoritmy</em>. Navrhnime si predovšetkým dátovú štruktúru, v ktorej budeme uchovávať náš strom.</p>
+
+<p>Predovšetkým potrebujeme triedu, ktorá bude reprezentovať uzol. Tá bude jednoduchá: uzol totiž popíšeme nejakým názvom a zoznamom jeho potomkov. V našom prípade bude mať biely uzol popis &ldquo;koreň&rdquo; a v zozname jeho potomkov budú uzly s popismi &ldquo;A&rdquo;, &ldquo;B&rdquo; a &ldquo;C&rdquo;.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">java.util.ArrayList</span><span style="color:#333">;</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">java.util.List</span><span style="color:#333">;</span>
+
+<span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">Node</span> <span style="color:#333">{</span>
+    <span style="color:#666;font-style:italic">/**
+</span><span style="color:#666;font-style:italic">     * Popis uzla
+</span><span style="color:#666;font-style:italic">     */</span>
+    <span style="color:#289;font-weight:bold">private</span> String label<span style="color:#333">;</span>
+
+    <span style="color:#666;font-style:italic">/**
+</span><span style="color:#666;font-style:italic">     * zoznam potomkov
+</span><span style="color:#666;font-style:italic">     */</span>
+    <span style="color:#289;font-weight:bold">private</span> List<span style="color:#333">&lt;</span>Node<span style="color:#333">&gt;</span> children <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> ArrayList<span style="color:#333">&lt;</span>Node<span style="color:#333">&gt;();</span>
+
+    <span style="color:#666;font-style:italic">/**
+</span><span style="color:#666;font-style:italic">     * Vytvorí uzol bez detí s daným názvom.
+</span><span style="color:#666;font-style:italic">     */</span>
+    <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">Node</span><span style="color:#333">(</span>String label<span style="color:#333">)</span> <span style="color:#333">{</span>
+        <span style="color:#289;font-weight:bold">this</span><span style="color:#333">.</span><span style="color:#007">label</span> <span style="color:#333">=</span> label<span style="color:#333">;</span>
+    <span style="color:#333">}</span>
+
+    <span style="color:#666;font-style:italic">/**
+</span><span style="color:#666;font-style:italic">     * Pridá daný uzol medzi potomkov uzla.
+</span><span style="color:#666;font-style:italic">     */</span>
+    <span style="color:#289;font-weight:bold">public</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">add</span><span style="color:#333">(</span>Node node<span style="color:#333">)</span> <span style="color:#333">{</span>
+        <span style="color:#289;font-weight:bold">this</span><span style="color:#333">.</span><span style="color:#007">children</span><span style="color:#333">.</span><span style="color:#007">add</span><span style="color:#333">(</span>node<span style="color:#333">);</span>
+    <span style="color:#333">}</span>
+
+    <span style="color:#666;font-style:italic">/**
+</span><span style="color:#666;font-style:italic">     * Vráti zoznam potomkov uzla.
+</span><span style="color:#666;font-style:italic">     */</span>
+    <span style="color:#289;font-weight:bold">public</span> List<span style="color:#333">&lt;</span>Node<span style="color:#333">&gt;</span> <span style="color:#5ed;font-weight:bold">getChildren</span><span style="color:#333">()</span> <span style="color:#333">{</span>
+        <span style="color:#289;font-weight:bold">return</span> children<span style="color:#333">;</span>
+    <span style="color:#333">}</span>
+
+    <span style="color:#666;font-style:italic">/**
+</span><span style="color:#666;font-style:italic">     * Vráti popisok uzla.
+</span><span style="color:#666;font-style:italic">     */</span>
+    <span style="color:#289;font-weight:bold">public</span> String <span style="color:#5ed;font-weight:bold">getLabel</span><span style="color:#333">()</span> <span style="color:#333">{</span>
+        <span style="color:#289;font-weight:bold">return</span> label<span style="color:#333">;</span>
+    <span style="color:#333">}</span>
+<span style="color:#333">}</span></code></pre></div>
+<p>Ako budeme reprezentovať celý strom? Jednoducho. Dokonca si nemusíme si vytvárať samostatnú triedu pre strom, pretože si stačí pamätať koreňový uzol. Z neho sa vieme dostať do ľubovoľného potomka.</p>
+
+<p>Strom z obrázka skonštruujeme nasledovne:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Node root <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Node<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;koreň&#34;</span><span style="color:#333">);</span>
+
+Node nodeA <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Node<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;A&#34;</span><span style="color:#333">);</span>
+Node nodeB <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Node<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;B&#34;</span><span style="color:#333">);</span>
+Node nodeC <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Node<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;C&#34;</span><span style="color:#333">);</span>
+
+root<span style="color:#333">.</span><span style="color:#007">add</span><span style="color:#333">(</span>nodeA<span style="color:#333">);</span>
+root<span style="color:#333">.</span><span style="color:#007">add</span><span style="color:#333">(</span>nodeB<span style="color:#333">);</span>
+root<span style="color:#333">.</span><span style="color:#007">add</span><span style="color:#333">(</span>nodeC<span style="color:#333">);</span>
+
+Node node1 <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Node<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;1&#34;</span><span style="color:#333">);</span>
+Node node2 <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Node<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;2&#34;</span><span style="color:#333">);</span>
+Node node3 <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Node<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;3&#34;</span><span style="color:#333">);</span>
+Node node4 <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Node<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;4&#34;</span><span style="color:#333">);</span>
+Node node5 <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Node<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;5&#34;</span><span style="color:#333">);</span>
+
+nodeA<span style="color:#333">.</span><span style="color:#007">add</span><span style="color:#333">(</span>node1<span style="color:#333">);</span>
+nodeA<span style="color:#333">.</span><span style="color:#007">add</span><span style="color:#333">(</span>node2<span style="color:#333">);</span>
+
+nodeB<span style="color:#333">.</span><span style="color:#007">add</span><span style="color:#333">(</span>node3<span style="color:#333">);</span>
+nodeB<span style="color:#333">.</span><span style="color:#007">add</span><span style="color:#333">(</span>node4<span style="color:#333">);</span>
+
+nodeC<span style="color:#333">.</span><span style="color:#007">add</span><span style="color:#333">(</span>node5<span style="color:#333">);</span></code></pre></div>
+<h1 id="algoritmy">Algoritmy</h1>
+
+<p>Tento príklad vieme elegantne vyriešiť pomocou algoritmu prehľadávania stromu do šírky. O čo v ňom ide? Je zjavné, že strom musíme vypisovať po vrstvách, čiže najprv prvú vrstvu (<em>koreň</em>), potom druhú vrstvu (<em>A</em>, <em>B</em>, <em>C</em>) a nakoniec tretiu vrstvu (<em>1</em>, <em>2</em>, <em>3</em>, <em>4</em>, <em>5</em>). Navyše pri vypisovaní musíme zachovať správne poradie.</p>
+
+<p>Ak by si každý uzol pamätal svojho ,,súrodenca&rdquo;, bolo by to jednoduché. Mohli by sme upraviť našu triedu tak, aby dávala k dispozícii túto možnosť. Síce by sme si zjednodušili algoritmus, ale značne skomplikovali réžiu pri pridávaní uzlov. Navyše, to vôbec nie je potrebné.</p>
+
+<p>Náš strom totiž budeme prechádzať po jednotlivých uzloch. Pre každý uzol však môžeme vybaviť jeho potomkov až vtedy, čo sú vybavení jeho súrodenci. Inak povedané, ak vezmeme uzol, jeho potomkov musíme zaradiť do frontu, kde budú veselo čakať do chvíle, kým sa nedostanú na rad, čiže kým neodbavíme súrodencov uzla.</p>
+
+<h2 id="priebeh-pre-koreňový-uzol">Priebeh pre koreňový uzol</h2>
+
+<p>Pre uzol <em>koreň</em> vezmeme potomkov <em>A</em>, <em>B</em>, <em>C</em> a zaradíme ich do frontu, kým neodbavíme ostatných súrodencov. Našťastie v tomto prípade súrodenci nejestvujú. Tento uzol teda odbavíme (vypíšeme ho na konzolu), jeho potomkov dáme do frontu a hneď môžeme vybaviť prvého potomka, teda uzol <em>A</em>.</p>
+
+<p>Front teda vyzerá nasledovne:</p>
+
+<pre><code>A, B, C
+</code></pre>
+
+<p><img src="alg1.png" alt="Front pre koreňový uzol" /></p>
+
+</main>
+
+    <footer>
+      
+<script>
+(function() {
+  function center_el(tagName) {
+    var tags = document.getElementsByTagName(tagName), i, tag;
+    for (i = 0; i < tags.length; i++) {
+      tag = tags[i];
+      var parent = tag.parentElement;
+      
+      if (parent.childNodes.length === 1) {
+        
+        if (parent.nodeName === 'A') {
+          parent = parent.parentElement;
+          if (parent.childNodes.length != 1) continue;
+        }
+        if (parent.nodeName === 'P') parent.style.textAlign = 'center';
+      }
+    }
+  }
+  var tagNames = ['img', 'embed', 'object'];
+  for (var i = 0; i < tagNames.length; i++) {
+    center_el(tagNames[i]);
+  }
+})();
+</script>
+
+      
+    </footer>
+  </body>
+</html>
+
