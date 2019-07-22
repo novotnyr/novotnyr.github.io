@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Thinlet – rýchly vývoj jednoduchých GUI v Jave | robonovotny</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.css" integrity="sha384-D+9gmBxUQogRLqvARvNLmA9hS2x//eK1FhVb9PiU86gmcrBrJAQT8okdJ4LMp2uv" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.js" integrity="sha384-483A6DwYfKeDa0Q52fJmxFXkcPCFfnXMoXblOkJ4JcA8zATN6Tm78UNL72AKk+0O" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/contrib/auto-render.min.js" integrity="sha384-yACMu8JWxKzSp/C1YV86pzGiQ/l1YUfE8oPuahJQxzehAjEt2GiQuy/BIvl9KyeF" crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body);
+        });
+    </script>
+
+<header>
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <nav>
+    <ul>
+      
+      
+      <li class="pull-left ">
+        <a href="http://novotnyr.github.io/">/home/robonovotny</a>
+      </li>
+      
+
+      
+
+    </ul>
+  </nav>
+</header>
+
+  </head>
+
+  <body>
+    <br/>
+
+<div class="article-meta">
+<h1><span class="title">Thinlet – rýchly vývoj jednoduchých GUI v Jave</span></h1>
+
+<h2 class="date">2010/02/14</h2>
+<p class="terms">
+  
+  
+  
+  
+  
+</p>
+</div>
+
+
+
+<main>
+
+
+<h1 id="úvod">Úvod</h1>
+
+<p>„Okienkové“ aplikácie síce netvoria dominantu javovských projektov.
+Klasickou voľbou je použitie knižnice Swing (zabudovanej v Jave) či SWT
+(od IBM). Obe knižnice sú dostatočne stabilné a tešia sa širokej podpore
+a používaniu.</p>
+
+<p>Jednou z ich typických charakteristík je definícia používateľského
+rozhrania priamo v kóde. Niekedy v roku 2005 však vznikla vlna
+projektov, ktorá pristupovala k implementácii grafických rozhraní
+odlišným spôsobom. Samotné používateľské rozhranie je definované v XML
+súboroch, a Java kód len definuje samotnú funkcionalitu a príslušnú
+obslužnú logiku. Filozofia je teda podobná situácii z webových
+aplikačných rámcov, kde je výzor používateľského rozhrania je definovaný
+v HTML, čím je možné oddeliť zodpovednosti jednotlivých vývojárov
+(webový dizajnér nemusí ovládať Javu a vývojár zase nemusí pamätať na
+nuansy návrhu). V prípade grafických aplikácii stráca táto výhoda svoj
+význam. I tak však zostáva jedna pozitívna vlastnosť: odčlenením výzoru
+od kódu je možné zmeniť vzhľad používateľského rozhrania bez
+rekompilácie aplikácie. Navyše, XML je všeobecnejšia štruktúra ako kód,
+čím lepší potenciál pre vývoj &ldquo;vizuálnych klikátiek&rdquo; grafických
+rozhraní.</p>
+
+<blockquote>
+<p><strong>Note</strong></p>
+
+<p>Inšpiráciou pre túto módnu vlnu bola Mozilla (v dnešnej inkarnácii
+Firefoxu), ktorá používa na definíciu GUI kombináciu XML+JavaScript,
+známu pod skratkou XUL (<em>XML User Interface Language</em>). Java projekty,
+ktoré sa ňou inšpirovali, boli školským príkladom módnej vlny, ktorá
+zmizla rovnako rýchlo ako odišla. Z niekdajšieho celkového počtu 10 a
+viac projektov dnes v súčasnosti nie je aktívny ani jeden. Vo svete
+.NET však táto vlna pretrvala -- jazyk XAML možno použiť na definíciu
+GUI windowsovských aplikácií.</p>
+</blockquote>
+
+<p>Jedným z mnohých projektov, ktorých životnosť bola o niečo dlhšia, je
+Thinlet. Okrem vízie XML definície rozhraní si dával za primárny cieľ
+minimálnu veľkosť knižnice a beh na čo najväčšom počte platforiem. V
+tomto článku si ukážeme niekoľko jednoduchých príkladov použitia tejto
+knižnice (či skôr triedy, keďže Thinlet je tvorený jednou obrovskou
+triedou).</p>
+
+<h1 id="stiahnutie">Stiahnutie</h1>
+
+<p>Nájsť správnu verziu Thinletu nie je napodiv až také jednoduché. Možno
+nájsť projekt na
+<a href="http://thinlet.sourceforge.net/home.html">SourceForge.net</a>, kde je
+posledná verzia pod názvom <code>thinlet-2005-03-28.zip</code>.</p>
+
+<blockquote>
+<p><strong>Note</strong></p>
+
+<p>Ak zamierite na portál Thinlet.com, ukáže sa, že existuje ešte novšia
+verzia 0.75beta. Tá je však kompletným prepisom pôvodnej verzie, ktorá
+síce ponúka viac možností, ale vyžaduje vyššiu verziu Javy, a
+neobsahuje niektorú dôležitú funkcionalitu. (Absentuje napríklad
+layout manager, ktorý funguje aj pri zmene veľkosti okna.)</p>
+</blockquote>
+
+<p>Do projektu si následne pridáme <code>thinlet.jar</code> (38 kB) a môžeme začať
+vyvíjať.</p>
+
+<h1 id="vytváranie-aplikácie">Vytváranie aplikácie</h1>
+
+<p>Naša aplikácia bude jednoduchá: z internetu zistí aktuálny kurz dolára v
+Európskej centrálnej banke. Najprv však spravme primitívne okno, ktoré
+bude obsahovať jediný popisok <em>label</em> a jedno textové políčko.
+Predovšetkým budeme potrebovať definíciu používateľského rozhrania.</p>
+
+<p>Vytvorme súbor <code>ExchangeRateForm.xml</code> a uložme ho do vhodného adresára,
+najlepšie do zdrojového adresára zodpovedajúceho balíčku exchangerates.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#579">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
+<span style="color:#579">&lt;!DOCTYPE panel PUBLIC &#39;-//Thinlets 1.0//EN&#39; &#39;https://thinlet.dev.java.net/thinlet.dtd&#39;&gt;</span>
+
+<span style="color:#070">&lt;panel&gt;</span>
+    <span style="color:#070">&lt;label</span> <span style="color:#007">text=</span><span style="background-color:#e0e0ff">&#34;Current Exchange Rate for USD:&#34;</span> <span style="color:#070">/&gt;</span>
+    <span style="color:#070">&lt;textfield</span> <span style="color:#007">text=</span><span style="background-color:#e0e0ff">&#34;[unknown]&#34;</span>  <span style="color:#070">/&gt;</span>
+<span style="color:#070">&lt;/panel&gt;</span></code></pre></div>
+<p>Samotné okno zodpovedá panelu (všeobecnému kontajneru pre komponenty),
+do ktorého umiestnime popisok <em>label</em> a textové políčko <em>textfield</em>.
+Nadpis v políčku, resp. text obsiahnutý v textovom poli nastavíme
+pomocou atribútu name.</p>
+
+<p>Prejdime teraz k samotnej triede s názvom
+<code>exchangerates.ExchangeRateForm</code>.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">package</span> <span style="color:#0e84b5;font-weight:bold">exchangerates</span><span style="color:#333">;</span>
+
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">java.io.IOException</span><span style="color:#333">;</span>
+
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">thinlet.FrameLauncher</span><span style="color:#333">;</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">thinlet.Thinlet</span><span style="color:#333">;</span>
+
+<span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">ExchangeRateForm</span> <span style="color:#289;font-weight:bold">extends</span> Thinlet <span style="color:#333">{</span>
+    <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">ExchangeRateForm</span><span style="color:#333">()</span> <span style="color:#333">{</span>
+        <span style="color:#289;font-weight:bold">try</span> <span style="color:#333">{</span>
+            add<span style="color:#333">(</span>parse<span style="color:#333">(</span>getClass<span style="color:#333">().</span><span style="color:#007">getSimpleName</span><span style="color:#333">()</span> <span style="color:#333">+</span> <span style="background-color:#e0e0ff">&#34;.xml&#34;</span><span style="color:#333">));</span>
+        <span style="color:#333">}</span> <span style="color:#289;font-weight:bold">catch</span> <span style="color:#333">(</span>IOException e<span style="color:#333">)</span> <span style="color:#333">{</span>
+            <span style="color:#289;font-weight:bold">throw</span> <span style="color:#289;font-weight:bold">new</span> IllegalStateException<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;Illegal or missing form definition.&#34;</span><span style="color:#333">,</span> e<span style="color:#333">);</span>
+        <span style="color:#333">}</span>
+    <span style="color:#333">}</span>
+
+    <span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">static</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">main</span><span style="color:#333">(</span>String<span style="color:#333">[]</span> args<span style="color:#333">)</span> <span style="color:#333">{</span>
+        FrameLauncher frameLauncher <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> FrameLauncher<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;Exchange Rate&#34;</span><span style="color:#333">,</span> <span style="color:#289;font-weight:bold">new</span> ExchangeRateForm<span style="color:#333">(),</span> 320<span style="color:#333">,</span> 200<span style="color:#333">);</span>
+        frameLauncher<span style="color:#333">.</span><span style="color:#007">pack</span><span style="color:#333">();</span>
+    <span style="color:#333">}</span>
+<span style="color:#333">}</span></code></pre></div>
+<p>Trieda dedí od triedy <code>thinlet.Thinlet</code> a v rámci konštruktora načíta
+svoju definíciu z XML súboru, ktorý má rovnaké meno ako ona a nachádza
+sa v rovnakom balíčku. Samozrejme, možno zvoliť ľubovoľnú inú konvenciu,
+dôležité je, aby bol definičný súbor XML k dispozícii.</p>
+
+<blockquote>
+<p><strong>Warning</strong></p>
+
+<p>Jednou z očividných nevýhod Thinletu sú absolútne nepomáhajúce chybové
+hlášky. V prípade, že načítavate súbor z CLASSPATH a ten sa nenájde,
+získate len ničnehovoriacu NullPointerException.</p>
+</blockquote>
+
+<p>Pre jednoduchosť sme tiež dodali metódu main(), v ktorej využijeme na
+zobrazenie nášho formulára triedu <code>FrameLauncher</code>. V jeho konštruktore
+uvedieme postupne text, ktorý sa zobrazí v záhlaví okna, našu inštanciu
+<code>Thinlet</code>u a odporúčané rozmery hlavného okna.</p>
+
+<p><code>FrameLauncher</code> je zároveň inštanciou triedy <code>java.awt.Frame</code> a v
+prípade, že rozmery nevieme vhodne umiestniť, môžeme sa spoľahnúť na
+implicitné rozmery ovládacích prvkov a zavolaním metódy pack() nastaviť
+veľkosť okna automaticky.</p>
+
+<p>Po vytvorení inštancie <code>FrameLaunchera</code> sa automaticky zobrazí nové okno
+s dvoma komponentami. Thinlet automaticky rozloží komponenty vedľa seba
+a nastaví im preferované (implicitné) rozmery</p>
+
+<p>Ak sa zdá, že sú komponenty príliš &ldquo;nahusto&rdquo;, stačí upraviť okraje:
+atribúty left, right, bottom, right udávajú šírku príslušného okraja a
+element gap udáva veľkosť medzery medzi komponentami.</p>
+
+<pre><code>&lt;panel top=&quot;5&quot; left=&quot;5&quot; bottom=&quot;5&quot; right=&quot;5&quot; gap=&quot;5&quot;&gt;
+...
+</code></pre>
+
+<p>Naše okno je zatiaľ pasívne - nenačítavajú sa žiadne údaje a dokonca aj
+používateľova interakcia je obmedzená na obdivovanie obsahu formulára.
+Skúsme to napraviť – a začneme tým, že pri inicializácii okna načítame
+príslušný výmenný kurz zo stránok ECB.</p>
+
+<blockquote>
+<p><strong>Note</strong></p>
+
+<p>Európska centrálna banka poskytuje údaje v rozličných formátoch, z
+ktorých je pre programové spracovanie najefektívnejší XML. Aktuálne
+údaje možno nájsť na
+<a href="http://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml">http://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml</a>.</p>
+</blockquote>
+
+<p>Stiahnime si triedu <a href="???"><code>exchangerates.ExchangeRateService</code></a> a
+pridajme si ju do projektu. Táto trieda obsahuje jedinú metódu
+getCurrentExchange(), do ktorej uvedieme kód meny.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">package</span> <span style="color:#0e84b5;font-weight:bold">exchangerates</span><span style="color:#333">;</span>
+
+<span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">ExchangeRateService</span> <span style="color:#333">{</span>
+    <span style="color:#289;font-weight:bold">public</span> BigDecimal <span style="color:#5ed;font-weight:bold">getCurrentExchange</span><span style="color:#333">(</span>String currencyCode<span style="color:#333">)</span> <span style="color:#289;font-weight:bold">throws</span> CurrencyException <span style="color:#333">{</span>
+        String urlString <span style="color:#333">=</span> <span style="background-color:#e0e0ff">&#34;http://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml&#34;</span><span style="color:#333">;</span>
+        <span style="color:#289;font-weight:bold">try</span> <span style="color:#333">{</span>
+            InputStream in <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> URL<span style="color:#333">(</span>urlString<span style="color:#333">).</span><span style="color:#007">openStream</span><span style="color:#333">();</span>
+            DocumentBuilderFactory documentBuilderFactory <span style="color:#333">=</span> DocumentBuilderFactory<span style="color:#333">.</span><span style="color:#007">newInstance</span><span style="color:#333">();</span>
+            Document document <span style="color:#333">=</span> documentBuilderFactory<span style="color:#333">.</span><span style="color:#007">newDocumentBuilder</span><span style="color:#333">().</span><span style="color:#007">parse</span><span style="color:#333">(</span>in<span style="color:#333">);</span>
+            
+            NodeList cubeElements <span style="color:#333">=</span> document<span style="color:#333">.</span><span style="color:#007">getElementsByTagName</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;Cube&#34;</span><span style="color:#333">);</span>
+            BigDecimal result <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">null</span><span style="color:#333">;</span>
+            <span style="color:#289;font-weight:bold">for</span><span style="color:#333">(</span><span style="color:#66f;font-weight:bold">int</span> i <span style="color:#333">=</span> 0<span style="color:#333">;</span> i <span style="color:#333">&lt;</span> cubeElements<span style="color:#333">.</span><span style="color:#007">getLength</span><span style="color:#333">();</span> i<span style="color:#333">++)</span> <span style="color:#333">{</span>
+                Element cubeElement <span style="color:#333">=</span> <span style="color:#333">(</span>Element<span style="color:#333">)</span> cubeElements<span style="color:#333">.</span><span style="color:#007">item</span><span style="color:#333">(</span>i<span style="color:#333">);</span>
+                <span style="color:#289;font-weight:bold">if</span><span style="color:#333">(</span>currencyCode<span style="color:#333">.</span><span style="color:#007">equals</span><span style="color:#333">(</span>cubeElement<span style="color:#333">.</span><span style="color:#007">getAttribute</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;currency&#34;</span><span style="color:#333">)))</span> <span style="color:#333">{</span>
+                    result <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> BigDecimal<span style="color:#333">(</span>cubeElement<span style="color:#333">.</span><span style="color:#007">getAttribute</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;rate&#34;</span><span style="color:#333">));</span>
+                    <span style="color:#289;font-weight:bold">return</span> result<span style="color:#333">;</span>
+                <span style="color:#333">}</span>
+            <span style="color:#333">}</span>
+            <span style="color:#289;font-weight:bold">return</span> result<span style="color:#333">;</span>
+        <span style="color:#333">}</span> <span style="color:#289;font-weight:bold">catch</span> <span style="color:#333">(</span>MalformedURLException e<span style="color:#333">)</span> <span style="color:#333">{</span>
+            <span style="color:#289;font-weight:bold">throw</span> <span style="color:#289;font-weight:bold">new</span> CurrencyException<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;Illegal URL for currency service: &#34;</span> <span style="color:#333">+</span> urlString<span style="color:#333">,</span> e<span style="color:#333">);</span>
+        <span style="color:#333">}</span> <span style="color:#289;font-weight:bold">catch</span> <span style="color:#333">(</span>IOException e<span style="color:#333">)</span> <span style="color:#333">{</span>
+            <span style="color:#289;font-weight:bold">throw</span> <span style="color:#289;font-weight:bold">new</span> CurrencyException<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;I/O error while retrieving currency rates data &#34;</span> <span style="color:#333">+</span> e<span style="color:#333">.</span><span style="color:#007">getMessage</span><span style="color:#333">(),</span> e<span style="color:#333">);</span>
+        <span style="color:#333">}</span> <span style="color:#289;font-weight:bold">catch</span> <span style="color:#333">(</span>SAXException e<span style="color:#333">)</span> <span style="color:#333">{</span>
+            <span style="color:#289;font-weight:bold">throw</span> <span style="color:#289;font-weight:bold">new</span> CurrencyException<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;Error while parsing XML response from server: &#34;</span> <span style="color:#333">+</span> e<span style="color:#333">.</span><span style="color:#007">getMessage</span><span style="color:#333">(),</span> e<span style="color:#333">);</span>
+        <span style="color:#333">}</span> <span style="color:#289;font-weight:bold">catch</span> <span style="color:#333">(</span>ParserConfigurationException e<span style="color:#333">)</span> <span style="color:#333">{</span>
+            <span style="color:#289;font-weight:bold">throw</span> <span style="color:#289;font-weight:bold">new</span> CurrencyException<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;Error while configuring response parser from server: &#34;</span> <span style="color:#333">+</span> e<span style="color:#333">.</span><span style="color:#007">getMessage</span><span style="color:#333">(),</span> e<span style="color:#333">);</span>
+        <span style="color:#333">}</span> <span style="color:#289;font-weight:bold">catch</span> <span style="color:#333">(</span>NumberFormatException e<span style="color:#333">)</span> <span style="color:#333">{</span>
+            <span style="color:#289;font-weight:bold">throw</span> <span style="color:#289;font-weight:bold">new</span> CurrencyException<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;Exchange rate is not a string.&#34;</span><span style="color:#333">);</span>
+        <span style="color:#333">}</span>
+    <span style="color:#333">}</span>
+<span style="color:#333">}</span></code></pre></div>
+<p>Ďalej dodáme do triedy <code>ExchangeRateForm</code> príslušnú metódu s hlavičkou
+public void loadExchangeRates(). Prvotný nástrel vyzerá nasledovne:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">loadExchangeRates</span><span style="color:#333">()</span> <span style="color:#333">{</span>
+    <span style="color:#289;font-weight:bold">try</span> <span style="color:#333">{</span>
+        ExchangeRateService service <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> ExchangeRateService<span style="color:#333">();</span>
+        BigDecimal currentExchange <span style="color:#333">=</span> service<span style="color:#333">.</span><span style="color:#007">getCurrentExchange</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;USD&#34;</span><span style="color:#333">);</span>
+        <span style="color:#289;font-weight:bold">if</span><span style="color:#333">(</span>currentExchange <span style="color:#333">!=</span> <span style="color:#289;font-weight:bold">null</span><span style="color:#333">)</span> <span style="color:#333">{</span>
+        <span style="color:#333">}</span>
+    <span style="color:#333">}</span> <span style="color:#289;font-weight:bold">catch</span> <span style="color:#333">(</span>CurrencyException e<span style="color:#333">)</span> <span style="color:#333">{</span>
+        e<span style="color:#333">.</span><span style="color:#007">printStackTrace</span><span style="color:#333">();</span>
+    <span style="color:#333">}</span>
+<span style="color:#333">}</span></code></pre></div>
+<p>Ako uvedieme získaný kurz do požadovaného textového políčka? Každý
+ovládací prvok v Thinlete môže byť v XML definícii pomenovaný pomocou
+atribútu name, ktorý slúži v Java kóde ako jeho identifikátor. Dodajme
+teda do textového políčka token atribút name s hodnotou exchangeRate:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#070">&lt;textfield</span> <span style="color:#007">text=</span><span style="background-color:#e0e0ff">&#34;[unknown]&#34;</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;exchangeRate&#34;</span> <span style="color:#070">/&gt;</span></code></pre></div>
+<p>Pomocou metódy <code>find()</code> vieme nájsť ovládací komponent podľa mena, a
+využitím metódy setStringValue() programovo nastaviť hodnotu konkrétneho
+ovládacieho prvku.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">BigDecimal currentExchange <span style="color:#333">=</span> service<span style="color:#333">.</span><span style="color:#007">getCurrentExchange</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;USD&#34;</span><span style="color:#333">);</span>
+<span style="color:#289;font-weight:bold">if</span><span style="color:#333">(</span>currentExchange <span style="color:#333">!=</span> <span style="color:#289;font-weight:bold">null</span><span style="color:#333">)</span> <span style="color:#333">{</span>
+    setString<span style="color:#333">(</span>find<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;exchangeRate&#34;</span><span style="color:#333">),</span> <span style="background-color:#e0e0ff">&#34;text&#34;</span><span style="color:#333">,</span> currentExchange<span style="color:#333">.</span><span style="color:#007">toString</span><span style="color:#333">());</span>
+<span style="color:#333">}</span></code></pre></div>
+<p>Metóda <code>find()</code> vracia prekvapivo inštanciu typu <code>Object</code>. To zodpovedá
+implementačnej filozofii Thinletu, kde je prvotnou ideou jednoduchosť a
+minimalistickosť kódu (hoci na úkor rozumného návrhu). Ovládacie prvky
+nie sú reprezentované žiadnymi špeciálnymi triedami — všetko sú to
+všeobecné <code>Object</code>y. Z toho vyplýva, že samotný komponent nemá žiadne
+metódy, a akékoľvek nastavenia ich vlastností sú riešené pomocou metód
+samotného <code>Thinlet</code>u – príkladom je metóda <code>setString()</code>, ktorá berie
+parameter zodpovedajúci komponentu, ďalej názov vlastnosti (<em>property</em>),
+ktorá sa má zmeniť a nakoniec jej hodnota.</p>
+
+<p>Samotné volanie metódy <code>loadExchangeRates()</code> môžeme vykonať v
+konštruktore:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">ExchangeRateForm</span><span style="color:#333">()</span> <span style="color:#333">{</span>
+    <span style="color:#289;font-weight:bold">try</span> <span style="color:#333">{</span>
+        add<span style="color:#333">(</span>parse<span style="color:#333">(</span>getClass<span style="color:#333">().</span><span style="color:#007">getSimpleName</span><span style="color:#333">()</span> <span style="color:#333">+</span> <span style="background-color:#e0e0ff">&#34;.xml&#34;</span><span style="color:#333">));</span>
+        loadExchangeRates<span style="color:#333">();</span>
+
+    <span style="color:#333">}</span> <span style="color:#289;font-weight:bold">catch</span> <span style="color:#333">(</span>IOException e<span style="color:#333">)</span> <span style="color:#333">{</span>
+        <span style="color:#289;font-weight:bold">throw</span> <span style="color:#289;font-weight:bold">new</span> IllegalStateException<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;Illegal or missing form definition.&#34;</span><span style="color:#333">,</span> e<span style="color:#333">);</span>
+    <span style="color:#333">}</span>
+<span style="color:#333">}</span></code></pre></div>
+<p>Upravme si teraz formulár tak, aby mal používateľ možnosť zadať vlastný
+kód meny, pre ktorý sa má zistiť aktuálny kurz. Dodajme teda dva
+komponenty: textové políčko pre zadanie kódu (s menom currency) a
+tlačidlo button, ktorým môže získať nové dáta.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#070">&lt;panel</span> <span style="color:#007">top=</span><span style="background-color:#e0e0ff">&#34;5&#34;</span> <span style="color:#007">left=</span><span style="background-color:#e0e0ff">&#34;5&#34;</span> <span style="color:#007">bottom=</span><span style="background-color:#e0e0ff">&#34;5&#34;</span> <span style="color:#007">right=</span><span style="background-color:#e0e0ff">&#34;5&#34;</span> <span style="color:#007">gap=</span><span style="background-color:#e0e0ff">&#34;5&#34;</span><span style="color:#070">&gt;</span>
+    <span style="color:#070">&lt;label</span> <span style="color:#007">text=</span><span style="background-color:#e0e0ff">&#34;Current Exchange Rate for:&#34;</span> <span style="color:#070">/&gt;</span>
+    <span style="color:#070">&lt;textfield</span> <span style="color:#007">text=</span><span style="background-color:#e0e0ff">&#34;USD&#34;</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;currency&#34;</span> <span style="color:#070">/&gt;</span>  
+    <span style="color:#070">&lt;label</span> <span style="color:#007">text=</span><span style="background-color:#e0e0ff">&#34;[unknown]&#34;</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;exchangeRate&#34;</span> <span style="color:#070">/&gt;</span>
+    <span style="color:#070">&lt;button</span> <span style="color:#007">text=</span><span style="background-color:#e0e0ff">&#34;Refresh&#34;</span> <span style="color:#007">action=</span><span style="background-color:#e0e0ff">&#34;loadExchangeRates&#34;</span> <span style="color:#070">/&gt;</span>
+<span style="color:#070">&lt;/panel&gt;</span></code></pre></div>
+<p>Všimnime si ešte tlačidlo button, ktoré má špeciálny atribút <code>action</code>.
+Jeho hodnota udáva metódu v inštancii <code>Thinlet</code>u, ktorá sa má zavolať po
+kliknutí. V našom prípade zavoláme metódu <code>loadExchangeRates()</code>, čiže
+znovu načítame informácie z Európskej centrálnej banky a vyhľadáme
+príslušný kurz.</p>
+
+<p>V tomto prípade sme ešte zmenili textové políčko s výsledným kurzom na
+komponent typu <em>label</em>, čo lepšie zodpovedá statickému textu. Keďže jeho
+obsah je reprezentovaný atribútom text, ktorý je rovnaký ako v prípade
+textového políčka, v kóde nemusíme nič zmeniť.</p>
+
+<p>Ak si spustíme upravené okno, uvidíme nasledovný výzor:</p>
+
+<p>Samozrejme, ešte stále nemáme možnosť vidieť kurz inej meny než dolára.
+V tomto prípade máme viacero možností. Prvá je nasledovná: Metóda
+<code>loadExchangeRates()</code> si sama nájde komponent s menom <code>currency</code> (teda
+textové políčko), vytiahne z neho hodnotu a získa údaje zo servera.</p>
+
+<p>Skúsme upraviť metódu <code>loadExchangeRates()</code>.</p>
+
+<pre><code>public void loadExchangeRates() {
+    try {
+        String currencyCode = getString(find(&quot;currency&quot;), &quot;text&quot;);
+
+        ExchangeRateService service = new ExchangeRateService();
+        BigDecimal currentExchange = service.getCurrentExchange(currencyCode);
+        if(currentExchange != null) {
+            setString(find(&quot;exchangeRate&quot;), &quot;text&quot;, currentExchange.toString());
+        }
+    } catch (CurrencyException e) {
+        e.printStackTrace();
+    }
+}
+</code></pre>
+
+<p>Metódou <code>find()</code> vieme nájsť komponent s menom <code>currency</code>. Metóda
+<code>getString()</code> je protipólom metódy <code>setString()</code>, ktorou možno získať
+hodnotu danej vlastnosti špecifikovaného komponentu.</p>
+
+<p>Alternatívnou možnosťou je vytvoriť metódu, ktorá bude mať argument typu
+<code>String</code> reprezentujúci kód, a o samotné naplnenie parametra sa postará
+niekto iný. (Inak povedané, metóda nebude vyhľadávať obsah textových
+políčiek sama, ale získa ho z parametra.) V tomto prípade však musíme
+prerobiť definíciu v XML súbore:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#070">&lt;panel</span> <span style="color:#007">top=</span><span style="background-color:#e0e0ff">&#34;5&#34;</span> <span style="color:#007">left=</span><span style="background-color:#e0e0ff">&#34;5&#34;</span> <span style="color:#007">bottom=</span><span style="background-color:#e0e0ff">&#34;5&#34;</span> <span style="color:#007">right=</span><span style="background-color:#e0e0ff">&#34;5&#34;</span> <span style="color:#007">gap=</span><span style="background-color:#e0e0ff">&#34;5&#34;</span><span style="color:#070">&gt;</span>
+    <span style="color:#070">&lt;label</span> <span style="color:#007">text=</span><span style="background-color:#e0e0ff">&#34;Current Exchange Rate for:&#34;</span> <span style="color:#070">/&gt;</span>
+    <span style="color:#070">&lt;textfield</span> <span style="color:#007">text=</span><span style="background-color:#e0e0ff">&#34;USD&#34;</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;currency&#34;</span> <span style="color:#070">/&gt;</span>  
+    <span style="color:#070">&lt;label</span> <span style="color:#007">text=</span><span style="background-color:#e0e0ff">&#34;[unknown]&#34;</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;exchangeRate&#34;</span> <span style="color:#070">/&gt;</span>
+    <span style="color:#070">&lt;button</span> <span style="color:#007">text=</span><span style="background-color:#e0e0ff">&#34;Refresh&#34;</span> <span style="color:#007">action=</span><span style="background-color:#e0e0ff">&#34;loadExchangeRates(currency.text)&#34;</span> <span style="color:#070">/&gt;</span>
+<span style="color:#070">&lt;/panel&gt;</span></code></pre></div>
+<p>Akcia <code>loadExchangeRates(currency.text)</code> zavolá rovnomennú metódu a do jej
+parametra vloží aktuálnu hodnotu atribútu text ovládacieho prvka s
+identifikátorom currency. Inak povedané, metóda získa do parametra
+hodnotu textového políčka s kódom meny.</p>
+
+<blockquote>
+<p><strong>Note</strong></p>
+
+<p>Existuje ešte jedno miesto, kde sa dá sprehľadniť kód. Namiesto
+explicitného volania metód <code>setString(find())</code> je možné vytvoriť sadu
+getterov a setterov.</p>
+
+<pre><code>   public void setExchangeRateText(String exchangeRate) {
+       setString(find(&quot;exchangeRate&quot;), &quot;text&quot;, exchangeRate);
+   }
+</code></pre>
+</blockquote>
+
+<p>Prvotná funkcionalita je už hotová, a teraz je zrejme vhodný čas na
+úpravu vizuálu.</p>
+
+<p>Všimnime si, že všetky komponenty boli do formulára ukladané vedľa seba,
+smerom zľava doprava. Po rozložení sa ich veľkosť už nikdy nezmení — po zmene rozmerov formulára ostáva rovnaká. Skúsme to napraviť.</p>
+
+<p>Panel si možno predstaviť ako mriežku, do ktorej Thinlet rozkladá
+komponenty. V základnom nastavení sa predpokladá, že mriežka má jeden
+riadok a neobmedzený počet sĺpcov. Ak však nastavíme</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#070">&lt;panel</span> <span style="color:#007">columns=</span><span style="background-color:#e0e0ff">&#34;1&#34;</span> <span style="color:#007">top=</span><span style="background-color:#e0e0ff">&#34;5&#34;</span> <span style="color:#007">left=</span><span style="background-color:#e0e0ff">&#34;5&#34;</span> <span style="color:#007">bottom=</span><span style="background-color:#e0e0ff">&#34;5&#34;</span> <span style="color:#007">right=</span><span style="background-color:#e0e0ff">&#34;5&#34;</span> <span style="color:#007">gap=</span><span style="background-color:#e0e0ff">&#34;5&#34;</span><span style="color:#070">&gt;</span></code></pre></div>
+<p>rozloženie sa zmení na jednostĺpcové (s neobmedzeným počtom riadkov).</p>
+
+<p>Skúsme umierniť label a textové políčko vedľa seba, pod ne umiestniť
+výsledok a na spodok dať tlačidlo Refresh. Pri tom môžeme využiť
+vnáranie panelov. Prvý vnorený panel bude obsahovať label a textové
+políčko (rozkladané zľava doprava, teda v rozložení 1 riadok krát
+neobmedzený počet stĺpcov), a pod ním bude ďalší panel s troma
+statickými labelmi vedľa seba (prostredný s názvom exchangeRate obsiahne
+výsledok). Oba panely majú päťpixelovú medzeru medzi vnútornými
+komponentami.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#070">&lt;panel</span> <span style="color:#007">columns=</span><span style="background-color:#e0e0ff">&#34;1&#34;</span> <span style="color:#007">top=</span><span style="background-color:#e0e0ff">&#34;5&#34;</span> <span style="color:#007">left=</span><span style="background-color:#e0e0ff">&#34;5&#34;</span> <span style="color:#007">bottom=</span><span style="background-color:#e0e0ff">&#34;5&#34;</span> <span style="color:#007">right=</span><span style="background-color:#e0e0ff">&#34;5&#34;</span> <span style="color:#007">gap=</span><span style="background-color:#e0e0ff">&#34;5&#34;</span><span style="color:#070">&gt;</span>
+    <span style="color:#070">&lt;panel</span> <span style="color:#007">gap=</span><span style="background-color:#e0e0ff">&#34;5&#34;</span><span style="color:#070">&gt;</span>
+        <span style="color:#070">&lt;label</span> <span style="color:#007">text=</span><span style="background-color:#e0e0ff">&#34;Current Exchange Rate for:&#34;</span> <span style="color:#070">/&gt;</span>
+        <span style="color:#070">&lt;textfield</span> <span style="color:#007">text=</span><span style="background-color:#e0e0ff">&#34;USD&#34;</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;currency&#34;</span> <span style="color:#070">/&gt;</span>
+    <span style="color:#070">&lt;/panel&gt;</span>
+    <span style="color:#070">&lt;panel</span> <span style="color:#007">halign=</span><span style="background-color:#e0e0ff">&#34;center&#34;</span> <span style="color:#007">gap=</span><span style="background-color:#e0e0ff">&#34;5&#34;</span><span style="color:#070">&gt;</span>   
+        <span style="color:#070">&lt;label</span> <span style="color:#007">text=</span><span style="background-color:#e0e0ff">&#34;1€ =&#34;</span><span style="color:#070">/&gt;</span>
+        <span style="color:#070">&lt;label</span> <span style="color:#007">text=</span><span style="background-color:#e0e0ff">&#34;[unknown]&#34;</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;exchangeRate&#34;</span> <span style="color:#070">/&gt;</span>
+        <span style="color:#070">&lt;label</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;currencyCode&#34;</span> <span style="color:#007">text=</span><span style="background-color:#e0e0ff">&#34;USD&#34;</span><span style="color:#070">/&gt;</span>
+    <span style="color:#070">&lt;/panel&gt;</span>
+    <span style="color:#070">&lt;button</span> <span style="color:#007">text=</span><span style="background-color:#e0e0ff">&#34;Refresh&#34;</span> <span style="color:#007">action=</span><span style="background-color:#e0e0ff">&#34;loadExchangeRates(currency.text)&#34;</span> <span style="color:#070">/&gt;</span>
+<span style="color:#070">&lt;/panel&gt;</span></code></pre></div>
+<p>Atribút <code>halign=&quot;center&quot;</code> na vnorenom paneli spôsobí vycentrovanie
+labelov.</p>
+
+<p>Stále nám však chýba dôležitá vlastnosť: automatická zmena veľkosti
+(&ldquo;naťahovanie&rdquo; komponentov) pri zväčšovaní či zmenšovaní okna. To sa dá
+vyriešiť jednoducho. Pri zmene veľkosti kontajnera (okna, panela) možno
+každému vnorenému komponentu priradiť percentuálnu váhu, o ktorú sa má
+natiahnuť či zmenšiť pri úprave veľkosti rodičovského kontajnera.</p>
+
+<p>V našom okne máme jeden stĺpec. Ak priradíme vnoreným panelom a tlačidlu
+váhu 1, znamená to, že pri zmene veľkosti okna sa im priradí 100%
+rozdielu medzi novou a pôvodnou veľkosťou rodičovského panela. Váha sa
+nastavuje samostatne v horizontále (atribút weightx) a vo vertikále
+(atribút weighty).</p>
+
+<pre><code>&lt;panel columns=&quot;1&quot; top=&quot;5&quot; left=&quot;5&quot; bottom=&quot;5&quot; right=&quot;5&quot; gap=&quot;5&quot;&gt;
+    &lt;panel gap=&quot;5&quot; weightx=&quot;1&quot;&gt;
+        &lt;label text=&quot;Current Exchange Rate for:&quot; /&gt;
+        &lt;textfield text=&quot;USD&quot; name=&quot;currency&quot; /&gt;
+    &lt;/panel&gt;
+    &lt;panel halign=&quot;center&quot; gap=&quot;5&quot; weightx=&quot;1&quot;&gt;  
+        &lt;label text=&quot;1€ =&quot;/&gt;
+        &lt;label text=&quot;[unknown]&quot; name=&quot;exchangeRate&quot; /&gt;
+        &lt;label name=&quot;currencyCode&quot; text=&quot;USD&quot;/&gt;
+    &lt;/panel&gt;
+    &lt;button text=&quot;Refresh&quot; action=&quot;loadExchangeRates(currency.text)&quot; weightx=&quot;1&quot;/&gt;
+&lt;/panel&gt;
+</code></pre>
+
+<p>Všimnime si, že prostredný panel má roztiahnutý obsah, a stále si
+zachováva centrovanie komponentov, ktoré sú v ňom obsiahnuté.</p>
+
+<p>Vyriešme ešte rozťahovanie labelu a textového políčka. Ich rodičovský
+panel má síce váhu 1, ale keďže ani label, ani textové pole nemajú svoju
+vlastnú váhu, nebudú sa vôbec rozťahovať. Všetko nadbytočné miesto sa
+prejaví ako prázdne miesto napravo od nich. Skúsme nastaviť:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#070">&lt;label</span> <span style="color:#007">weightx=</span><span style="background-color:#e0e0ff">&#34;50&#34;</span> <span style="color:#007">text=</span><span style="background-color:#e0e0ff">&#34;Current Exchange Rate for:&#34;</span> <span style="color:#070">/&gt;</span>
+<span style="color:#070">&lt;textfield</span> <span style="color:#007">weightx=</span><span style="background-color:#e0e0ff">&#34;50&#34;</span> <span style="color:#007">text=</span><span style="background-color:#e0e0ff">&#34;USD&#34;</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;currency&#34;</span> <span style="color:#070">/&gt;</span></code></pre></div>
+<p>Znamená to, že pri zmene veľkosti rodičovského panelu sa label natiahne
+či zmenší o 150% rozdielu medzi pôvodnou a novou veľkosťou tohto panelu.
+To isté sa týka aj textového políčka. Ak chceme, aby sa label rozťahoval
+menej a textové políčko viac, stačí im inak prerozdeliť váhy. Ak chceme
+zabrániť rozťahovaniu labelu, stačí mu nastaviť váhu na 0.</p>
+
+<p>Ak ešte nastavíme</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#070">&lt;panel</span> <span style="color:#007">gap=</span><span style="background-color:#e0e0ff">&#34;5&#34;</span> <span style="color:#007">halign=</span><span style="background-color:#e0e0ff">&#34;center&#34;</span> <span style="color:#007">weighty=</span><span style="background-color:#e0e0ff">&#34;50&#34;</span> <span style="color:#007">valign=</span><span style="background-color:#e0e0ff">&#34;center&#34;</span><span style="color:#070">&gt;</span>
+    <span style="color:#070">&lt;label</span> <span style="color:#007">text=</span><span style="background-color:#e0e0ff">&#34;1€ =&#34;</span><span style="color:#070">/&gt;</span>
+    <span style="color:#070">&lt;label</span> <span style="color:#007">text=</span><span style="background-color:#e0e0ff">&#34;[unknown]&#34;</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;exchangeRate&#34;</span><span style="color:#070">/&gt;</span>
+    <span style="color:#070">&lt;label</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;currencyCode&#34;</span> <span style="color:#007">text=</span><span style="background-color:#e0e0ff">&#34;USD&#34;</span><span style="color:#070">/&gt;</span>
+<span style="color:#070">&lt;/panel&gt;</span></code></pre></div>
+<p>dosiahneme tým vertikálne rozťahovanie panelu (ostatné komponenty si
+ponechajú pôvodnú výšku) a vnútorné komponenty budú vertikálne
+centrované na šírku.</p>
+
+<p>Textové políčko nezabraňuje používateľovi vyhľadávať kurz pre menu,
+ktorá neexistuje, alebo ktorej kurzy ECB neuvádza. Ak by sme však
+nahradili textové políčko rozbaľovacím zoznamom (<em>combo boxom</em>), tento
+problém by vymizol.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#070">&lt;panel</span> <span style="color:#007">gap=</span><span style="background-color:#e0e0ff">&#34;5&#34;</span> <span style="color:#007">weightx=</span><span style="background-color:#e0e0ff">&#34;1&#34;</span><span style="color:#070">&gt;</span>
+    <span style="color:#070">&lt;label</span> <span style="color:#007">weightx=</span><span style="background-color:#e0e0ff">&#34;0&#34;</span> <span style="color:#007">text=</span><span style="background-color:#e0e0ff">&#34;Current Exchange Rate for:&#34;</span> <span style="color:#007">alignment=</span><span style="background-color:#e0e0ff">&#34;right&#34;</span><span style="color:#070">/&gt;</span>
+    <span style="color:#070">&lt;combobox</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;currency&#34;</span> <span style="color:#007">editable=</span><span style="background-color:#e0e0ff">&#34;false&#34;</span> <span style="color:#007">text=</span><span style="background-color:#e0e0ff">&#34;[ choose currency ]&#34;</span><span style="color:#070">&gt;</span>
+        <span style="color:#070">&lt;choice</span> <span style="color:#007">text=</span><span style="background-color:#e0e0ff">&#34;USD&#34;</span><span style="color:#070">/&gt;</span>
+        <span style="color:#070">&lt;choice</span> <span style="color:#007">text=</span><span style="background-color:#e0e0ff">&#34;CZK&#34;</span><span style="color:#070">/&gt;</span>
+        <span style="color:#070">&lt;choice</span> <span style="color:#007">text=</span><span style="background-color:#e0e0ff">&#34;GBP&#34;</span><span style="color:#070">/&gt;</span>
+        <span style="color:#070">&lt;choice</span> <span style="color:#007">text=</span><span style="background-color:#e0e0ff">&#34;RUB&#34;</span><span style="color:#070">/&gt;</span>
+    <span style="color:#070">&lt;/combobox&gt;</span>
+<span style="color:#070">&lt;/panel&gt;</span></code></pre></div>
+<p>Rozbaľovaciemu zoznamu zodpovedá element <code>&lt;combobox&gt;</code> a jeho jednotlivým
+položkám <code>&lt;choice&gt;</code>. Atribút <code>editable</code> určuje, či je rozbaľovací zoznam
+kombinovaný s textovým políčkom. V našom prípade chceme zabrániť, aby
+používateľ zadal vlastný kód, preto túto možnosť vypneme.</p>
+
+<p>Ak chceme zistiť text vybranej položky, opäť nemusíme v kóde meniť nič — objaví sa v atribúte text rozbaľovacieho zoznamu.</p>
+
+<h2 id="zobrazovanie-a-skrývanie-okien">Zobrazovanie a skrývanie okien</h2>
+
+<p>Zatiaľ sme pracovali len s jediným oknom. Niekedy sa však stane, že
+chcem používateľovi zobraziť dodatočné okno – buď jednoduché hlásenie
+(<em>message box</em>) alebo rozšírenejšie okno s podrobnejšími informáciami.</p>
+
+<blockquote>
+<p><strong>Important</strong></p>
+
+<p>Thinlet je primárne stavaný na aplikácie, ktoré pracujú s jediným
+oknom. Inak povedané, všetky okná, ktoré thinletová aplikácia môže
+otvárať, sa musia nachádzať v hlavnom okne. To je rozdiel oproti
+Swingu či AWT, ktoré v tomto ohľade nie sú obmedzené. Limitácia
+pochádza z dizajnérskej filozofie, ktorá umožňovala beh aj na
+mobiloch, u ktorých sa predpokladá, že aplikácia zaberá celú veľkosť
+displeja.</p>
+</blockquote>
+
+<p>V našej aplikácii to môžeme demonštrovať na okno s informáciami o
+aplikácii (<em>about box</em>). Predovšetkým musíme vytvoriť nový XML súbor
+každé okno musí mať svoju vlastnú definíciu. Na rozdiel od hlavného
+okna, ktorého obsah je tvorený panelom (a teda definovaný elementom
+<code>&lt;panel&gt;</code>, sú vnorené okná (dialógy) definované v rámci rovnomenného
+elementu <code>&lt;dialog&gt;</code>. Vytvorme teda súbor <code>AboutBox.xml</code> s nasledovným
+obsahom:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#579">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
+
+<span style="color:#579">&lt;!DOCTYPE dialog PUBLIC &#39;-//Thinlets 1.0//EN&#39; &#39;https://thinlet.dev.java.net/thinlet.dtd&#39;&gt;</span>
+
+<span style="color:#070">&lt;dialog</span> <span style="color:#007">text=</span><span style="background-color:#e0e0ff">&#34;About&#34;</span> <span style="color:#007">top=</span><span style="background-color:#e0e0ff">&#34;5&#34;</span> <span style="color:#007">left=</span><span style="background-color:#e0e0ff">&#34;5&#34;</span> <span style="color:#007">bottom=</span><span style="background-color:#e0e0ff">&#34;5&#34;</span> <span style="color:#007">right=</span><span style="background-color:#e0e0ff">&#34;5&#34;</span> <span style="color:#007">gap=</span><span style="background-color:#e0e0ff">&#34;5&#34;</span> <span style="color:#007">columns=</span><span style="background-color:#e0e0ff">&#34;1&#34;</span> <span style="color:#007">modal=</span><span style="background-color:#e0e0ff">&#34;true&#34;</span><span style="color:#070">&gt;</span>
+    <span style="color:#070">&lt;label</span> <span style="color:#007">text=</span><span style="background-color:#e0e0ff">&#34;Currency Exchange Rate Monitor&#34;</span> <span style="color:#007">font=</span><span style="background-color:#e0e0ff">&#34;bold&#34;</span><span style="color:#070">/&gt;</span>
+    <span style="color:#070">&lt;button</span> <span style="color:#007">text=</span><span style="background-color:#e0e0ff">&#34;Close&#34;</span> <span style="color:#007">action=</span><span style="background-color:#e0e0ff">&#34;closeAboutBox&#34;</span> <span style="color:#070">/&gt;</span>
+<span style="color:#070">&lt;/dialog&gt;</span></code></pre></div>
+<p>V definícii nie je nič prekvapivé: používame jeden <em>label</em> a jedno
+tlačidlo, ktoré sú rozložené pod sebou (layout je v jednom stĺpci).
+Drobnosťou je akurát atribút font, ktorým zvýrazníme label a atribút
+text, kde uvedieme titulok okna.</p>
+
+<p>Všimnime si ale atribút <code>modal=&quot;true&quot;</code> v elemente <code>&lt;dialog&gt;</code>. Týmto
+zaistíme modalitu dialógu, teda po jeho zobrazení nebude možné
+pristupovať ku komponentom, ktoré sa nachádzajú &ldquo;za&rdquo; ním. Užívateľ bude
+môcť ďalej pracovať s aplikáciou až po zavretí modálneho okna.</p>
+
+<p>Zobrazenie tohto okna potom pozostáva z dvoch fáz: v prvej načítame
+definíciu zo XML súboru pomocou metódy <code>parse()</code>. Pridaním okna do
+rodičovského kontajnera ho zobrazíme (zavolaním metódy <code>add()</code>). Ak chceme
+okno skryť, musíme ho z rodičovského okna odobrať, t. j. zavolať metódu
+<code>remove()</code>.</p>
+
+<p>Načítavanie sa môže udiať v konštruktore a načítané okno si uložíme do
+inštančnej premennej.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">private</span> Object aboutBox<span style="color:#333">;</span>
+
+<span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">ExchangeRateForm</span><span style="color:#333">()</span> <span style="color:#333">{</span>
+    <span style="color:#289;font-weight:bold">try</span> <span style="color:#333">{</span>
+        add<span style="color:#333">(</span>parse<span style="color:#333">(</span>getClass<span style="color:#333">().</span><span style="color:#007">getSimpleName</span><span style="color:#333">()</span> <span style="color:#333">+</span> <span style="background-color:#e0e0ff">&#34;.xml&#34;</span><span style="color:#333">));</span>
+        aboutBox <span style="color:#333">=</span> parse<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;AboutBox.xml&#34;</span><span style="color:#333">);</span>
+
+        loadExchangeRates<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;USD&#34;</span><span style="color:#333">);</span>
+
+    <span style="color:#333">}</span> <span style="color:#289;font-weight:bold">catch</span> <span style="color:#333">(</span>IOException e<span style="color:#333">)</span> <span style="color:#333">{</span>
+        <span style="color:#289;font-weight:bold">throw</span> <span style="color:#289;font-weight:bold">new</span> IllegalStateException<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;Illegal or missing form definition.&#34;</span><span style="color:#333">,</span> e<span style="color:#333">);</span>
+    <span style="color:#333">}</span>
+<span style="color:#333">}</span></code></pre></div>
+<p>To však nie je všetko: potrebujeme ešte dodať ovládací prvok, ktorým
+toto okno zobrazíme. Zabezpečíme to dodaním tlačidla do hlavného okna:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#070">&lt;panel&gt;</span>
+    <span style="color:#070">&lt;button</span> <span style="color:#007">text=</span><span style="background-color:#e0e0ff">&#34;Refresh&#34;</span> <span style="color:#007">action=</span><span style="background-color:#e0e0ff">&#34;loadExchangeRates(currency.text)&#34;</span> <span style="color:#007">weightx=</span><span style="background-color:#e0e0ff">&#34;1&#34;</span><span style="color:#070">/&gt;</span>
+    <span style="color:#070">&lt;button</span> <span style="color:#007">text=</span><span style="background-color:#e0e0ff">&#34;?&#34;</span> <span style="color:#007">action=</span><span style="background-color:#e0e0ff">&#34;showAboutBox&#34;</span> <span style="color:#070">/&gt;</span>
+<span style="color:#070">&lt;/panel&gt;</span></code></pre></div>
+<p>Poslednou vecou je dodanie dvoch metód, ktoré budú obsluhovať kód:
+jednou z nich zobrazíme okno (metóda <code>showAboutBox()</code>) a druhou ho zase
+schováme (metóda <code>closeAboutBox()</code>).</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">showAboutBox</span><span style="color:#333">()</span> <span style="color:#333">{</span>
+    add<span style="color:#333">(</span>aboutBox<span style="color:#333">);</span>
+<span style="color:#333">}</span>
+
+<span style="color:#289;font-weight:bold">public</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">closeAboutBox</span><span style="color:#333">()</span> <span style="color:#333">{</span>
+    remove<span style="color:#333">(</span>aboutBox<span style="color:#333">);</span>
+<span style="color:#333">}</span></code></pre></div>
+<p>Po spustení aplikácie a zobrazení okna budeme vidieť nasledovný stav:</p>
+
+<h1 id="implementačné-detaily-a-porovnanie-s-inými-knižnicami">Implementačné detaily a porovnanie s inými knižnicami</h1>
+
+<p>Samotný Thinlet je postavený ako jednoduchá nadstavba nad AWT. Hoci
+samotné AWT použije dnes už len máloktorý vývojár, jeho výhodou je
+jednoduchosť, podpora v starých verziách Javy a na mobilných
+zariadeniach. Jeho ďalším hlavným pozitívom je rýchly vývoj rozhrania
+pre jednoduché aplikácie, samozrejme za predpokladu, že si uvedomíme
+obmedzenia:</p>
+
+<ul>
+<li><p><strong>obmedzenie na jediné okno</strong>: Aplikácia môže mať jediné hlavné okno, všetky vnorené okná musia byť v rámci hlavného okna.</p></li>
+
+<li><p><strong>jediný layout manager:</strong> Ak ste zvyknutí na plejádu rôznorodých manažérov, v Thinlete máte k dispozícii len jediný – tabuľkový. Ten je však dostatočne flexibilný a dokážete ním realizovať množstvo rozličných prípadov.</p></li>
+
+<li><p><strong>žiadne modely komponentov:</strong> v Swingu a SWT je štandardom oddelenie dát od spôsobu ich zobrazovania. Dáta bývajú obvykle uložené v modeli (modelovom objekte) a samotný komponent sa len stará o zobrazenie (prezentáciu modelu). Thinletovské komponenty však modely nepodporujú, inak povedané, komponent je zároveň modelom.</p></li>
+
+<li><p><strong>komponent môže mať len jediný listener danej udalosti:</strong> na rozdiel od Swingu, kde môže mať komponent viacero listenerov, sú tuto listenery skryté. V tomto prípade je listenerom verejná metóda, ktorá sa však musí nachádzať v hlavnej triede.</p></li>
+
+<li><p><strong>občasné obskúrne chybové hlášky:</strong> Kód Thinletu je stelesnením programovania na výkon a efektivitu, ale na úkor prehľadnosti. Čo je horšie, chybové hlášky často vonkoncom nezodpovedajú realite a je treba chvíľu pátrať (či krokovať) po pravej príčine problému.</p></li>
+
+<li><p><strong>obmedzené vláknové programovanie:</strong> V Swingu platí zásada, že dlhotrvajúce operácie by mali bežať v
+separátnom vlákne. V tomto prípade však žiadny takýto mechanizmus
+nie je k dispozícii a teda tiahle operácie spôsobia vytuhnutie
+používateľského rozhrania.</p></li>
+
+<li><p><strong>obmedzená tvorba vlastných komponentov:</strong> Tvorba vlastných komponentov je obmedzená na pasívne komponenty
+dediace od <code>java.awt.Component</code>. Takého komponenty nebudú prijímať
+žiadne udalosti.</p></li>
+
+<li><p><strong>nefunkčnosť niektorých vlastností:</strong> Niektoré vlastnosti, ktoré komponenty ponúkajú, nie sú funkčné. V
+praxi sme sa stretli s nefunkčnosťou zatváracích, maximalizujúcich a
+minimalizujúcich tlačidiel vo vnorených dialógoch (tlačidlá sa
+vykreslia, ale sú pasívne), teda o atribúty closable, maximalizable
+a minimalizable.</p></li>
+</ul>
+
+<h1 id="ďalšie-pramene">Ďalšie pramene</h1>
+
+<ul>
+<li><a href="http://ics.upjs.sk/~novotnyr/wiki/uploads/Java/Thinlet/exchange-rates-thinlet.zip">Zdrojové kódy s ukážkovým projektom</a></li>
+<li><a href="http://thinlet.sourceforge.net/home.html">Hlavná stránka verzie Thinletu, ktorá je používaná v tomto článku</a></li>
+<li><a href="http://thinlet.com">Posledná verzia kompletne prepísanej verzie Thinletu, chýbajú jej
+však niektoré dôležité vlastnosti.</a></li>
+<li><a href="http://thinlet.blog-city.com/frequently_asked_questions.htm">Thinlet FAQ</a> – často kladené otázky k Thinletu.</li>
+<li><a href="http://www.zee.ch/thinlet/">Thinlet-ZEE</a> – Zbierka patchov a dodatočnej funkcionality k pôvodnej verzii Thinletu</li>
+</ul>
+
+</main>
+
+    <footer>
+      
+<script>
+(function() {
+  function center_el(tagName) {
+    var tags = document.getElementsByTagName(tagName), i, tag;
+    for (i = 0; i < tags.length; i++) {
+      tag = tags[i];
+      var parent = tag.parentElement;
+      
+      if (parent.childNodes.length === 1) {
+        
+        if (parent.nodeName === 'A') {
+          parent = parent.parentElement;
+          if (parent.childNodes.length != 1) continue;
+        }
+        if (parent.nodeName === 'P') parent.style.textAlign = 'center';
+      }
+    }
+  }
+  var tagNames = ['img', 'embed', 'object'];
+  for (var i = 0; i < tagNames.length; i++) {
+    center_el(tagNames[i]);
+  }
+})();
+</script>
+
+      
+    </footer>
+  </body>
+</html>
+

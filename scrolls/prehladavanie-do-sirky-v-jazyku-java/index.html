@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>“Prehľadávanie do šírky v jazyku Java&#34; | robonovotny</title>
+    <title>Prehľadávanie do šírky v jazyku Java | robonovotny</title>
     <link rel="stylesheet" href="/css/style.css" />
     <link rel="stylesheet" href="/css/fonts.css" />
     
@@ -44,9 +44,9 @@
     <br/>
 
 <div class="article-meta">
-<h1><span class="title">“Prehľadávanie do šírky v jazyku Java&#34;</span></h1>
+<h1><span class="title">Prehľadávanie do šírky v jazyku Java</span></h1>
 
-
+<h2 class="date">2008/05/06</h2>
 <p class="terms">
   
   
@@ -157,7 +157,7 @@ nodeB<span style="color:#333">.</span><span style="color:#007">add</span><span s
 nodeB<span style="color:#333">.</span><span style="color:#007">add</span><span style="color:#333">(</span>node4<span style="color:#333">);</span>
 
 nodeC<span style="color:#333">.</span><span style="color:#007">add</span><span style="color:#333">(</span>node5<span style="color:#333">);</span></code></pre></div>
-<h1 id="algoritmy">Algoritmy</h1>
+<h1 id="príklad-algoritmu">Príklad algoritmu</h1>
 
 <p>Tento príklad vieme elegantne vyriešiť pomocou algoritmu prehľadávania stromu do šírky. O čo v ňom ide? Je zjavné, že strom musíme vypisovať po vrstvách, čiže najprv prvú vrstvu (<em>koreň</em>), potom druhú vrstvu (<em>A</em>, <em>B</em>, <em>C</em>) a nakoniec tretiu vrstvu (<em>1</em>, <em>2</em>, <em>3</em>, <em>4</em>, <em>5</em>). Navyše pri vypisovaní musíme zachovať správne poradie.</p>
 
@@ -176,6 +176,143 @@ nodeC<span style="color:#333">.</span><span style="color:#007">add</span><span s
 
 <p><img src="alg1.png" alt="Front pre koreňový uzol" /></p>
 
+<h2 id="spracovanie-uzla-a">Spracovanie uzla <em>A</em></h2>
+
+<p>Uzol <em>A</em> má dvoch potomkov (<em>1</em> a <em>2</em>). Tí sa však môžu rovnako vybaviť až po tom, čo vybavíme jeho súrodencov (čiže ostatné uzly na druhej vrstve s uzlom <em>A</em>). Jednotku a dvojku teda poslušne zaradíme do frontu za uzly <em>B</em> a <em>C</em> a uzol <em>A</em> považujeme za vybavený.</p>
+
+<p>Front teda vyzerá nasledovne:</p>
+
+<pre><code>B, C, 1, 2
+</code></pre>
+
+<p><img src="alg2.png" alt="Strom a front po spracovaní uzla A" /></p>
+
+<h2 id="spracovanie-uzla-b">Spracovanie uzla <em>B</em></h2>
+
+<p>Na čele frontu je uzol <em>B</em>. Už vieme, čo máme robiť. Vezmeme jeho potomkov, 3, 4, poslušne ich pošleme do frontu a vybavíme ho.</p>
+
+<p>Front vyzerá nasledovne:</p>
+
+<pre><code>C, 1, 2, 3, 4
+</code></pre>
+
+<p><img src="alg3.png" alt="Spracovanie uzla B a stav frontu" /></p>
+
+<h2 id="spracovanie-uzla-c">Spracovanie uzla <em>C</em></h2>
+
+<p>Uzol <em>C</em> má jediného potomka, 5, ktorý sa do frontu postaví radšej dobrovoľne ;-)</p>
+
+<p>Fronta vyzerá nasledovne:</p>
+
+<pre><code>1, 2, 3, 4, 5
+</code></pre>
+
+<p><img src="alg4.png" alt="Spracovanie uzla C a stav frontu" /></p>
+
+<h2 id="spracovanie-uzlov-bez-potomkov">Spracovanie uzlov bez potomkov</h2>
+
+<p>Takýmto spôsobom postupujeme ďalej. Jednotkový uzol už nemá potomkov, teda nie je čo radiť do frontu a preto ho jednoducho vybavíme. Týmto spôsobom odbavíme všetky zostávajúce uzly až kým sa front nevyprázdni, čím algoritmus ukončíme.</p>
+
+<h1 id="algoritmus">Algoritmus</h1>
+
+<p>Algoritmus je teda nasledovný:</p>
+
+<ol>
+<li>Vložme koreňový uzol do frontu.</li>
+<li>Vezmime uzol zo začiatku frontu a vybavme ho. Vezmime všetkých potomkov uzla a poslušne ich dodajme na koniec frontu.</li>
+<li>Ak je front prázdny, sme hotoví.</li>
+<li>Inak pokračujme krokom 2.</li>
+</ol>
+
+<h2 id="čo-je-to-vlastne-ten-front">Čo je to vlastne ten front?</h2>
+
+<p><strong>Front</strong> (alebo <strong>rad</strong> alebo <strong>queue</strong>) nie je ničím mimoriadnym (aj keď sa tak môže zdať). V podstate ide o klasický zoznam prvkov. Pridávanie a odoberanie prvkov do zoznamu funguje tzv. „FIFO“ spôsobom — <em>,,first-in first-out&rdquo;</em>, čiže ,<em>,prvý dnu-prvý von&rdquo;</em>. Prvok, ktorý bol do frontu pridaný skôr, bude aj skôr vybavený. Inak povedané, je to klasický príklad frontu na pomaranče, mäso či inú potravinu.</p>
+
+<p>Front by sme si prirodzene mohli implementovať sami (to prenechávame na pozorného čitateľa), ale to nie je potrebné. V Jave je totiž takáto trieda priamo k dispozícii.</p>
+
+<p>Interfejs <code>java.util.Queue</code> má k dispozícii niekoľko užitočných metód:</p>
+
+<ul>
+<li><strong>poll()</strong> vráti prvok na začiatku frontu a zároveň ho odstráni. Ak je front prázdny, vráti <code>null</code>.</li>
+<li><strong>offer()</strong>  ponúkne prvok frontu. Presnejšie, vloží prvok na koniec frontu a vráti <code>true</code>, ak sa vloženie podarilo.</li>
+<li><strong>peek()</strong> vráti prvok zo začiatku frontu, ale neodstráni ho. (Doslova „nakukne“ na začiatok frontu.). Ak je front prázdny, vráti <code>null</code></li>
+</ul>
+
+<p>Tento interfejs je implementovaný viacerými triedami. Pre náš prípad nám stačí použiť implementáciu spojového zoznamu v podobe <code>java.util.LinkedList</code>.</p>
+
+<h2 id="implementácia">Implementácia</h2>
+
+<p>Implementácia v Jave je potom priamočiara:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#666;font-style:italic">// vytvoríme front
+</span><span style="color:#666;font-style:italic"></span>Queue<span style="color:#333">&lt;</span>Node<span style="color:#333">&gt;</span> queue <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> LinkedList<span style="color:#333">&lt;</span>Node<span style="color:#333">&gt;();</span>
+<span style="color:#666;font-style:italic">// pridáme koreň do frontu
+</span><span style="color:#666;font-style:italic"></span>queue<span style="color:#333">.</span><span style="color:#007">add</span><span style="color:#333">(</span>root<span style="color:#333">);</span>
+
+<span style="color:#666;font-style:italic">//pokiaľ front nie je prázdny
+</span><span style="color:#666;font-style:italic"></span><span style="color:#289;font-weight:bold">while</span> <span style="color:#333">(!</span>queue<span style="color:#333">.</span><span style="color:#007">isEmpty</span><span style="color:#333">())</span> <span style="color:#333">{</span>
+    <span style="color:#666;font-style:italic">// vyberieme uzol zo začiatku frontu
+</span><span style="color:#666;font-style:italic"></span>    Node node <span style="color:#333">=</span> queue<span style="color:#333">.</span><span style="color:#007">poll</span><span style="color:#333">();</span>
+    <span style="color:#666;font-style:italic">// vypíšeme ho / vybavíme ho
+</span><span style="color:#666;font-style:italic"></span>    System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span>node<span style="color:#333">.</span><span style="color:#007">getLabel</span><span style="color:#333">());</span>
+    <span style="color:#666;font-style:italic">// potomkov zaradíme do frontu
+</span><span style="color:#666;font-style:italic"></span>    <span style="color:#289;font-weight:bold">for</span> <span style="color:#333">(</span>Node childNode <span style="color:#333">:</span> node<span style="color:#333">.</span><span style="color:#007">getChildren</span><span style="color:#333">())</span> <span style="color:#333">{</span>
+        queue<span style="color:#333">.</span><span style="color:#007">offer</span><span style="color:#333">(</span>childNode<span style="color:#333">);</span>
+    <span style="color:#333">}</span>
+<span style="color:#333">}</span></code></pre></div>
+<h1 id="prehľadávanie-do-šírky-zabudované-v-jave">Prehľadávanie do šírky zabudované v Jave</h1>
+
+<h2 id="dátové-štruktúry-1">Dátové štruktúry</h2>
+
+<p>Java poskytuje podporu stromové štruktúry, aj keď pravdupovediac na úplne nečakanom mieste — v balíčku pre používateľské rozhranie Swing. Trieda <a href="https://docs.oracle.com/javase/7/docs/api/javax/swing/tree/DefaultMutableTreeNode.html"><code>javax.swing.tree.DefaultMutableTreeNode</code></a> predstavuje uzol stromu, do ktorého môžeme pridávať potomkov. Náš príklad s budovaním stromu môžeme prepísať nasledovne:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">DefaultMutableTreeNode root <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> DefaultMutableTreeNode<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;koreň&#34;</span><span style="color:#333">);</span>
+
+DefaultMutableTreeNode nodeA <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> DefaultMutableTreeNode<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;A&#34;</span><span style="color:#333">);</span>
+DefaultMutableTreeNode nodeB <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> DefaultMutableTreeNode<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;B&#34;</span><span style="color:#333">);</span>
+DefaultMutableTreeNode nodeC <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> DefaultMutableTreeNode<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;C&#34;</span><span style="color:#333">);</span>
+
+root<span style="color:#333">.</span><span style="color:#007">add</span><span style="color:#333">(</span>nodeA<span style="color:#333">);</span>
+root<span style="color:#333">.</span><span style="color:#007">add</span><span style="color:#333">(</span>nodeB<span style="color:#333">);</span>
+root<span style="color:#333">.</span><span style="color:#007">add</span><span style="color:#333">(</span>nodeC<span style="color:#333">);</span>
+
+DefaultMutableTreeNode node1 <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> DefaultMutableTreeNode<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;1&#34;</span><span style="color:#333">);</span>
+DefaultMutableTreeNode node2 <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> DefaultMutableTreeNode<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;2&#34;</span><span style="color:#333">);</span>
+DefaultMutableTreeNode node3 <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> DefaultMutableTreeNode<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;3&#34;</span><span style="color:#333">);</span>
+DefaultMutableTreeNode node4 <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> DefaultMutableTreeNode<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;4&#34;</span><span style="color:#333">);</span>
+DefaultMutableTreeNode node5 <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> DefaultMutableTreeNode<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;5&#34;</span><span style="color:#333">);</span>
+
+nodeA<span style="color:#333">.</span><span style="color:#007">add</span><span style="color:#333">(</span>node1<span style="color:#333">);</span>
+nodeA<span style="color:#333">.</span><span style="color:#007">add</span><span style="color:#333">(</span>node2<span style="color:#333">);</span>
+
+nodeB<span style="color:#333">.</span><span style="color:#007">add</span><span style="color:#333">(</span>node3<span style="color:#333">);</span>
+nodeB<span style="color:#333">.</span><span style="color:#007">add</span><span style="color:#333">(</span>node4<span style="color:#333">);</span>
+
+nodeC<span style="color:#333">.</span><span style="color:#007">add</span><span style="color:#333">(</span>node5<span style="color:#333">);</span></code></pre></div>
+<p>K zoznamu detí sa pristupuje pomocou metódy <code>children()</code>, ktorá vracia enumeráciu <a href="https://docs.oracle.com/javase/7/docs/api/java/util/Enumeration.html"><code>Enumeration</code></a> potomkov. Metóda pre traverzovanie stromu potom vyzerá nasledovne:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Queue<span style="color:#333">&lt;</span>DefaultMutableTreeNode<span style="color:#333">&gt;</span> queue
+        <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> LinkedList<span style="color:#333">&lt;</span>DefaultMutableTreeNode<span style="color:#333">&gt;();</span>
+queue<span style="color:#333">.</span><span style="color:#007">add</span><span style="color:#333">(</span>root<span style="color:#333">);</span>
+
+<span style="color:#289;font-weight:bold">while</span><span style="color:#333">(!</span>queue<span style="color:#333">.</span><span style="color:#007">isEmpty</span><span style="color:#333">())</span> <span style="color:#333">{</span>
+    DefaultMutableTreeNode node <span style="color:#333">=</span> queue<span style="color:#333">.</span><span style="color:#007">poll</span><span style="color:#333">();</span>
+
+  	<span style="color:#666;font-style:italic">// vybavíme uzol
+</span><span style="color:#666;font-style:italic"></span>    System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span>node<span style="color:#333">.</span><span style="color:#007">getUserObject</span><span style="color:#333">());</span>
+
+    Enumeration<span style="color:#333">&lt;</span>DefaultMutableTreeNode<span style="color:#333">&gt;</span> children <span style="color:#333">=</span> node<span style="color:#333">.</span><span style="color:#007">children</span><span style="color:#333">();</span>
+    <span style="color:#289;font-weight:bold">while</span><span style="color:#333">(</span>children<span style="color:#333">.</span><span style="color:#007">hasMoreElements</span><span style="color:#333">())</span> <span style="color:#333">{</span>
+        queue<span style="color:#333">.</span><span style="color:#007">offer</span><span style="color:#333">(</span>children<span style="color:#333">.</span><span style="color:#007">nextElement</span><span style="color:#333">());</span>
+    <span style="color:#333">}</span>
+<span style="color:#333">}</span></code></pre></div>
+<h2 id="prehľadávanie-do-šírky-zo-škatule">Prehľadávanie do šírky zo škatule</h2>
+
+<p><code>DefaultMutableTreeNode</code> poskytuje prehľadávanie do šírky ako jednu zo svojich metód. Na koreňovom uzle stačí zavolať <code>breadthFirstEnumeration()</code>, ktorá vráti enumeráciu uzlov v usporiadaní po vrstvách.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Enumeration bfsEnum <span style="color:#333">=</span> root<span style="color:#333">.</span><span style="color:#007">breadthFirstEnumeration</span><span style="color:#333">();</span>
+<span style="color:#289;font-weight:bold">while</span><span style="color:#333">(</span>bfsEnum<span style="color:#333">.</span><span style="color:#007">hasMoreElements</span><span style="color:#333">())</span> <span style="color:#333">{</span>
+		DefaultMutableTreeNode treeNode 
+    		<span style="color:#333">=</span> <span style="color:#333">(</span>DefaultMutableTreeNode<span style="color:#333">)</span> bfsEnum<span style="color:#333">.</span><span style="color:#007">nextElement</span><span style="color:#333">();</span>
+	  <span style="color:#666;font-style:italic">// vybavíme uzol
+</span><span style="color:#666;font-style:italic"></span>  	System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span>treeNode<span style="color:#333">.</span><span style="color:#007">getUserObject</span><span style="color:#333">());</span>
+<span style="color:#333">}</span></code></pre></div>
 </main>
 
     <footer>
