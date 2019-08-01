@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Systémové programovanie (UINF/SPR1b) 2011 | robonovotny</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.css" integrity="sha384-D+9gmBxUQogRLqvARvNLmA9hS2x//eK1FhVb9PiU86gmcrBrJAQT8okdJ4LMp2uv" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.js" integrity="sha384-483A6DwYfKeDa0Q52fJmxFXkcPCFfnXMoXblOkJ4JcA8zATN6Tm78UNL72AKk+0O" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/contrib/auto-render.min.js" integrity="sha384-yACMu8JWxKzSp/C1YV86pzGiQ/l1YUfE8oPuahJQxzehAjEt2GiQuy/BIvl9KyeF" crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body);
+        });
+    </script>
+
+<header>
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <nav>
+    <ul>
+      
+      
+      <li class="pull-left ">
+        <a href="http://novotnyr.github.io/">/home/robonovotny</a>
+      </li>
+      
+
+      
+
+    </ul>
+  </nav>
+</header>
+
+  </head>
+
+  <body>
+    <br/>
+
+<div class="article-meta">
+<h1><span class="title">Systémové programovanie (UINF/SPR1b) 2011</span></h1>
+
+<h2 class="date">2011/02/15</h2>
+<p class="terms">
+  
+  
+  
+  
+  
+</p>
+</div>
+
+
+
+<main>
+
+
+<h1 id="sumár">Sumár</h1>
+
+<p>Prednáška: utorok, 8.55, P10</p>
+
+<p>Praktické cvičenie: streda, 15:00, P7</p>
+
+<h1 id="prednášky">Prednášky</h1>
+
+<h2 id="15-2-2011">15. 2. 2011</h2>
+
+<p><a href="http://ics.upjs.sk/~novotnyr/home/skola/systemove_programovanie/2010/leto/spr01.pdf">Prezentácia PDF</a></p>
+
+<p>Procesy, fork/exec, ps, kill. Zombie procesy, wait()</p>
+
+<h2 id="22-2-2011">22. 2. 2011</h2>
+
+<p>Bash skripting. Základné princípy, programové štruktúry. Premenné. Expanzia premenných. Spúšťanie procesov.</p>
+
+<h2 id="1-3-2011">1. 3. 2011</h2>
+
+<p><a href="http://ics.upjs.sk/~novotnyr/home/skola/systemove_programovanie/2010/leto/spr03.pdf">Prezentácia PDF</a></p>
+
+<p>Procesy, fork/exec, ps, kill. Zombie procesy, wait()</p>
+
+<h2 id="8-3-2011">8. 3. 2011</h2>
+
+<p><a href="http://ics.upjs.sk/~novotnyr/home/skola/systemove_programovanie/2010/leto/spr04.pdf">Prezentácia PDF</a></p>
+
+<p>Atribúty vlákna. Kritické sekcie. Race conditions. Mutexy ako metóda prístupu k zdieľaným dátam. Druhy mutexov v UNIXe. Semafory ako metóda konkurentného prístupu k zdieľaným prostriedkom.</p>
+
+<h2 id="15-3-2011">15. 3. 2011</h2>
+
+<p><a href="http://ics.upjs.sk/~novotnyr/home/skola/systemove_programovanie/2010/leto/spr05.pdf">Prezentácia PDF</a></p>
+
+<p>Úvod do programovania v GTK. Widgety, signály widgetov. Layout pomocou boxov a tabuliek.</p>
+
+<h2 id="22-3-2011">22. 3. 2011</h2>
+
+<h2 id="29-3-2011">29. 3. 2011</h2>
+
+<p><a href="http://ics.upjs.sk/~novotnyr/home/skola/systemove_programovanie/2010/leto/spr07.pdf">Prezentácia PDF</a></p>
+
+<p>Vývoj rozhraní v GTK pomocou nástroja Glade. Definícia rozhraní v XML, načítanie v kóde, mapovanie signálov.</p>
+
+<h2 id="5-4-2011">5. 4. 2011</h2>
+
+<p><a href="http://ics.upjs.sk/~novotnyr/home/skola/systemove_programovanie/2010/leto/spr08-android.pdf">Prezentácia PDF</a></p>
+
+<p>Android: životný cyklus aplikácie, spôsoby ukladania stavu: <code>saveInstanceState</code>, bundles, <code>SharedPreferences</code>, content resolvers.</p>
+
+<h1 id="cvičenia">Cvičenia</h1>
+
+<h2 id="16-2-2011">16. 2. 2011</h2>
+
+<p>Inštalácia <a href="http://www.virtualbox.org/">VirtualBoxu</a>. Inštalácia Debianu. Základné príkazy.</p>
+
+<h2 id="22-2-2011-1">22. 2. 2011</h2>
+
+<h2 id="1-3-2011-1">1. 3. 2011</h2>
+
+<h2 id="9-3-2011">9. 3. 2011</h2>
+
+<p>Vytvorte triviálny program, ktorý neustále vypisuje dokola &ldquo;Ahoj&rdquo;. Pozorujte správanie a procesorovú spotrebu pomocou príkazu <code>top</code>.</p>
+
+<p>Dodajte použitie systémového volania <code>sleep()</code> a opäť pozorujte spotrebu CPU.</p>
+
+<p>Vytvorte program, ktorý emuluje <code>top</code>, teda každé tri sekundy vypľuje na obrazovku päť procesov, ktoré najviac spotrebúvavajú procesorový čas. Aplikácia nech reaguje na signál <code>SIGUSR1</code>, pri ktorom zapíše štatistiky o príslušných piatich procesoch do súboru <code>psdump.txt</code></p>
+
+<p>Rady:</p>
+
+<ul>
+<li>textové konzoly v Debiane môžete prepínať cez Ctrl-Alt-F1 až Ctrl-Alt-F5.</li>
+<li>vytvorte si makefile s implicitným cieľom <code>run</code> na vrchu</li>
+<li>ak používate <code>signal.h</code>, nezabudnite deklarovať <code>#DEFINE _POSIX_C_SOURCE</code>
+pretože inak neuvidíte systémové volania.</li>
+<li>nezabudnite, že obsluha signálu musí byť čo najkratšia! Vo funkcii teda neotvárajte súbory, ani nespúšťajte iné procesy. Použite na to atomický integer v úlohe príznaku.</li>
+</ul>
+
+<h2 id="6-4-2011">6. 4. 2011</h2>
+
+<p>Vytvorte aplikáciu „Debilníček&rdquo;. Definujte udalosť, u ktorej evidujte názov a deadline. Zobrazte udalosti v rámci jednej aktivity a vytvorte druhú aktivitu, ktorou môžete pridať novú udalosť do debilníčka.
+Udalosti ukladajte do SQLite databázy.</p>
+
+<p><a href="http://ics.upjs.sk/~novotnyr/home/skola/systemove_programovanie/2010/leto/debilnicek-2011-04-06.zip">ukážkový kód</a></p>
+
+<h1 id="zdroje">Zdroje</h1>
+
+<ul>
+<li><a href="http://www.advancedlinuxprogramming.com/alp-folder">Advanced Linux Programming</a></li>
+</ul>
+
+<h1 id="zadanie">Zadanie</h1>
+
+<p>Majme daný súbor <a href="http://ics.upjs.sk/~novotnyr/home/skola/systemove_programovanie/2010/leto/rozvrh.xml">http://ics.upjs.sk/~novotnyr/home/skola/systemove_programovanie/2010/leto/rozvrh.xml</a> obsahujúci dáta o rozvrhu hodín. Vytvorte aplikáciu pre platformu Android spĺňajúce nasledovné kritériá:</p>
+
+<ul>
+<li>hodnotenie E:
+
+<ul>
+<li>aplikácia zobrazí rozvrh hodín prehľadným spôsobom. Využiť môžete komponent <a href="http://developer.android.com/resources/tutorials/views/hello-listview.html">ListView</a>.</li>
+<li>aplikácia na začiatku životného cyklu stiahne dáta zo zadanej URL adresy. Ďalšia aktualizácia dát nech je realizovaná manuálne, z <a href="http://developer.android.com/reference/android/view/Menu.html">menu</a> pomocou položky §§Aktualizovať dáta§§.</li>
+<li>aplikácia nech obsahuje možnosť filtrovať položky v rozvrhu len na jeden deň (napr. na pondelok).</li>
+</ul></li>
+<li>hodnotenie D
+
+<ul>
+<li>aplikácia obsahuje vhodný objektový model pre jednotlivé elementy XML súboru tak, aby v prípade potreby ju bolo možné zmigrovať na iný vstupný formát dát (napr. JSON)</li>
+</ul></li>
+<li>hodnotenie C
+
+<ul>
+<li>aplikácia je schopná automaticky periodicky aktualizovať rozvrh v pevne zvolenom intervale. Inšpirujte sa článkom <a href="http://developer.android.com/resources/articles/timed-ui-updates.html">Updating the UI from the timer</a></li>
+</ul></li>
+<li>hodnotenie B
+
+<ul>
+<li>aplikácia automaticky zobrazuje len aktivity pre aktuálny deň, ktorý sa zistí automaticky zo systémového času.</li>
+<li>výber iného konkrétneho dňa, pre ktorý sa zobrazí rozvrh, je realizovaný pomocou <a href="http://developer.android.com/guide/topics/ui/dialogs.html#AlertDialog">AlertDialog</a>u.</li>
+</ul></li>
+<li>hodnotenie A
+
+<ul>
+<li>aplikácia umožňuje pridávať vlastné rozvrhové aktivity (napr. semináre), ktoré sú uložené v relačnej databáze. Zobrazovanie vlastných aktivít je automaticky integrované s aktivitami zo súboru XML.</li>
+</ul></li>
+</ul>
+
+<p>Pomôcť vám môže <a href="http://ics.upjs.sk/~novotnyr/home/skola/systemove_programovanie/2010/leto/android-xml.zip">kostra projektu vytvorená na cvičení</a>.</p>
+
+<p>Riešenie je potrebné zaslať mailom do 5. 5. 2011. Projekt nie je potrebné obhájiť osobne, ale vyvarujte sa plagiátorstva. Vzájomná konzultácia projektov je v poriadku, identické zdrojové kódy budú trestané dodatočnými úlohami.</p>
+
+<h1 id="zdroje-k-androidu">Zdroje k Androidu</h1>
+
+<ul>
+<li><a href="http://www.minmax.cz/blog/google-android-tutorial">http://www.minmax.cz/blog/google-android-tutorial</a></li>
+<li><a href="http://www.abclinuxu.cz/serialy/vyvijime-pro-android">http://www.abclinuxu.cz/serialy/vyvijime-pro-android</a></li>
+<li>Hello Android, 3e (Pragmatic, 2010)</li>
+<li>Professional Android 2 Application Development (Wrox, 2010)</li>
+<li>The Busy Coders Guide to Android Development (Commonsware, 2009)</li>
+</ul>
+
+</main>
+
+    <footer>
+      
+<script>
+(function() {
+  function center_el(tagName) {
+    var tags = document.getElementsByTagName(tagName), i, tag;
+    for (i = 0; i < tags.length; i++) {
+      tag = tags[i];
+      var parent = tag.parentElement;
+      
+      if (parent.childNodes.length === 1) {
+        
+        if (parent.nodeName === 'A') {
+          parent = parent.parentElement;
+          if (parent.childNodes.length != 1) continue;
+        }
+        if (parent.nodeName === 'P') parent.style.textAlign = 'center';
+      }
+    }
+  }
+  var tagNames = ['img', 'embed', 'object'];
+  for (var i = 0; i < tagNames.length; i++) {
+    center_el(tagNames[i]);
+  }
+})();
+</script>
+
+      
+    </footer>
+  </body>
+</html>
+

@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Programovací jazyk C (UINF/JAC) – 2011 | robonovotny</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.css" integrity="sha384-D+9gmBxUQogRLqvARvNLmA9hS2x//eK1FhVb9PiU86gmcrBrJAQT8okdJ4LMp2uv" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.js" integrity="sha384-483A6DwYfKeDa0Q52fJmxFXkcPCFfnXMoXblOkJ4JcA8zATN6Tm78UNL72AKk+0O" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/contrib/auto-render.min.js" integrity="sha384-yACMu8JWxKzSp/C1YV86pzGiQ/l1YUfE8oPuahJQxzehAjEt2GiQuy/BIvl9KyeF" crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body);
+        });
+    </script>
+
+<header>
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <nav>
+    <ul>
+      
+      
+      <li class="pull-left ">
+        <a href="http://novotnyr.github.io/">/home/robonovotny</a>
+      </li>
+      
+
+      
+
+    </ul>
+  </nav>
+</header>
+
+  </head>
+
+  <body>
+    <br/>
+
+<div class="article-meta">
+<h1><span class="title">Programovací jazyk C (UINF/JAC) – 2011</span></h1>
+
+<h2 class="date">2011/11/25</h2>
+<p class="terms">
+  
+  
+  
+  
+  
+</p>
+</div>
+
+
+
+<main>
+
+
+<h1 id="inštalácia">Inštalácia</h1>
+
+<p>Nainštalujte Cygwin s balíčkami:</p>
+
+<ul>
+<li><p>gcc</p></li>
+
+<li><p>gcc-g+</p></li>
+
+<li><p>make</p></li>
+
+<li><p>gdb</p></li>
+</ul>
+
+<h1 id="nový-projekt-v-netbeans">Nový projekt v NetBeans</h1>
+
+<h2 id="vytvorenie-nového-projektu-v-netbeans">Vytvorenie nového projektu v NetBeans</h2>
+
+<p>Nechajte si spustiť prázdny projekt. Pozorujte zhody so syntaxou Javy -
+funkcia <code>main()</code>, direktívy #include ako analógia importov kučeravé
+zátvorky, dátové typy podobné Jave. Spustite prázdny projekt, aby ste
+overili, že prostredie funguje korektne. Okomentujeme, že funkcia
+<code>main()</code> musí vracať celé číslo – nula znamená, že program dobehol
+správne. Konštanta EXIT_SUCCESS má hodnotu 0.</p>
+
+<h1 id="cvičenia">Cvičenia</h1>
+
+<h2 id="cvičenie-1-20-9-2011">Cvičenie 1 (20. 9. 2011)</h2>
+
+<h3 id="ahoj-svet">Ahoj svet</h3>
+
+<p>Vypíšte na konzolu &ldquo;Ahoj svet&rdquo;.</p>
+
+<p>Použite funkciu <code>puts()</code>.</p>
+
+<pre><code>#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+int main(int argc, char** argv) {  
+    puts(&quot;Hello World!&quot;);
+    return (EXIT_SUCCESS);
+}
+</code></pre>
+
+<p>Alternatívne použite funkciu <code>printf()</code>.</p>
+
+<p>Urobte zámernú chybu &ndash; napr. vynechajte bodkočiarku &ndash; a pozorujte
+varovanie kompilátora.</p>
+
+<h3 id="vypíšte-čísla-od-1-po-30">Vypíšte čísla od 1 po 30</h3>
+
+<p>Použijeme for cyklus. Vysvetlime si, že na rozdiel od Javy nemôžeme
+deklarovať premenné rovno v rámci cyklu – to je totiž až vymoženosť C++.
+Premenné deklarujeme na začiatku funkciu – podobne ako v Pascale.</p>
+
+<pre><code>#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+int main(int argc, char** argv) {
+    int i = 0;
+    for(i; i &lt; 10; i++) {
+        printf(&quot;%d&quot;, i);
+    }
+    return (EXIT_SUCCESS);
+}
+</code></pre>
+
+<p>Zdôraznime, že lokálne premenné treba vždy inicializovať, pretože
+štandardne je ich hodnota nedefinovaná a môžu obsahovať náhodné dáta.</p>
+
+<p>Stručne vysvetlíme princíp formátovacích reťazcov - %d formátuje číslo.</p>
+
+<p>Všimneme si, že výstupom je štrúdlik čísiel v jednom riadku - funkcia
+<code>printf()</code> totiž neudáva koniec riadku. Ten musíme špeciálne uviesť vo
+formátovacom reťazci. Korektnejšia verzia je teda</p>
+
+<pre><code>printf(&quot;%d\n&quot;, i);
+</code></pre>
+
+<p>Špeciálne si dajme pozor na to, že nesmieme zabudnúť formátovací
+reťazec. V opačnom prípade volanie printf(i) je síce syntakticky
+správne, ale logicky nekorektné.</p>
+
+<p>Naučme sa zapnúť ladiace hlášky a varovania kompilátora, viď
+<a href="http://ics.upjs.sk/~novotnyr/wiki/CLanguage/NastavenieNetBeans">http://ics.upjs.sk/~novotnyr/wiki/CLanguage/NastavenieNetBeans</a>.</p>
+
+<p>Takáto chyba súvisí so smerníkmi, ale na tie si nechajme dostatok času.</p>
+
+<h3 id="malá-násobilka-do-10">Malá násobilka do 10</h3>
+
+<p>Vypíšte malú násobilku od 1 po 10.</p>
+
+<p>Využime na to vnorené cykly. Podotknime, že obe premenné musia byť
+deklarované na začiatku funkcie a dohodnime konvenciu, že každá premenná
+je deklarovaná na samostatnom riadku.</p>
+
+<p>Využime formátovací reťazec:</p>
+
+<pre><code>printf(&quot;%d x %d = %d, i, j, i * j);
+</code></pre>
+
+<h3 id="hľadanie-väčšieho-čísla-z-dvojice">Hľadanie väčšieho čísla z dvojice</h3>
+
+<p>Majme dané dve čísla v dvoch premenných, vypíšte väčšie z nich. (Zatiaľ
+neriešme vstup z klávesnice.)</p>
+
+<p>Použime podmienku if. Pripomeňme, že test rovnosti sa používa pomocou ==
+a nie pomocou (=). Poznamenajme, že v C neexistuje dátový typ <code>boolean</code>
+a podmienka if testuje, či výraz nadobúda nenulovú hodnotu. &ldquo;Nenulové&rdquo;
+hodnoty sú pravdivé.</p>
+
+<blockquote>
+<p><strong>Note</strong></p>
+
+<p>V céčku je podmienka if(i = 0) syntakticky korektná konštrukcia.
+Priraďovací príkaz vracia hodnotu a teda tento príkaz je ekvivalentný
+príkazu <code>if(0)</code>. V kombinácii s predošlou zásadou to znamená, že
+takáto podmienka sa vždy vyhodnotí na &ldquo;nepravdu&rdquo;, ale môže to mať
+vedľajšie efekty (nechcenú zmenu obsahu premennej.)</p>
+</blockquote>
+
+<h3 id="hľadanie-maxima-v-poli">Hľadanie maxima v poli</h3>
+
+<p>Z poľa čísiel zadaných v kóde vypíšte najväčšiu hodnotu (maximum).
+Zatiaľ sa venujme poliam celých čísiel. Syntax je o niečo odlišná od
+konvencie v Jave.</p>
+
+<pre><code>int pole[] = {2, 3, 5, -2};
+</code></pre>
+
+<p>Ak nepoznáme hodnoty pri inicializácii, použime syntax</p>
+
+<pre><code>int[4] pole;
+</code></pre>
+
+<blockquote>
+<p><strong>Note</strong></p>
+
+<p>Java podporuje aj túto syntax, ale konvenciou je deklarovať pole
+nasledovne (všimnime si zátvorky)</p>
+
+<pre><code>  int[] pole = {2, 3, 5, -2}
+</code></pre>
+
+<p>Deklarácia poľa bez inicializácie sa v Jave realizuje konštruktorom,
+ale v C samozrejme operátor new neexistuje.</p>
+</blockquote>
+
+<p>Pri hľadaní maxima v poli musíme inicializovať pomocnú premennú pre
+dosiaľ nájdené maximum. Pre jednoduchosť ju môžeme inicializovať
+hodnotou napr. -127.</p>
+
+<blockquote>
+<p><strong>Note</strong></p>
+
+<p>Letmo treba poznamenať niečo o portabilite programov a o rozsahu
+integeru. Pre korektnosť môžeme include-núť limits.h a využiť
+preddefinované konštanty.</p>
+</blockquote>
+
+<p>Poznamenajme, že na rozdiel od Javy nemajú polia definovanú dĺžku (v
+porovnaní s vlastnosťou .length). V uvedenom prípade musíme už v čase
+kompilácie poznať dĺžku poľa (pre jednoduchosť pracujme s fixným počtom
+5 čísiel v poli).</p>
+
+<blockquote>
+<p><strong>Note</strong></p>
+
+<p>Nekomplikujme výklad poznámkou o sizeof, ani výkladom o dynamicky
+alokovaných poliach - na to je ešte čas.</p>
+</blockquote>
+
+<p>Vysvetlime, že Céčko zásadne nekontroluje medze polí. Ak máme päťprvkové
+pole, nič nám nezabráni iterovať cez prvých 100 prvkov, akurát od istého
+prvku budeme pristupovať do cudzej pamäte, čo môže mať nepredvídateľné
+následky &ndash; od čítania nezmyselných či náhodných dát, po pád programu
+na chybe SEGFAULT.</p>
+
+<h3 id="vypíšte-parametre-zadané-z-príkazového-riadku">Vypíšte parametre zadané z príkazového riadku</h3>
+
+<p>Funkcia <code>main()</code> sprístupňuje dva parametre: <code>argv</code> a <code>argc</code>. Nebudeme
+komentovať dátové typy, vysvetlíme zatiaľ, že <code>argv</code> je pole reťazcov
+(reťazce nepitveme, nepúšťame sa do debát, že je to pointer na <code>char</code> a
+pod.)</p>
+
+<p>Ak chceme uviesť do NetBeansu parametre príkazového riadka pre program,
+použijeme nastavenia projektu:Nastavenie príkazového riadka - dáta pre
+<code>argv</code></p>
+
+<p>Pole <code>argv</code> preiterujeme for cyklom a vypíšeme pomocou <code>printf()</code>. Vo
+formátovacom reťazci použijeme %s, zodpovedajúce reťazcom.</p>
+
+<blockquote>
+<p><strong>Note</strong></p>
+
+<p>V prípade, že vypisujeme čisté reťazce, môžeme použiť <code>printf()</code> tak,
+že reťazec bude sám sebe formátovacím reťazcom. Kvôli bezpečnosti a
+konzistentnosti sa odporúča vždy použiť formátovací reťazec s
+parametrom.</p>
+</blockquote>
+
+<h2 id="cvičenie-2-27-9-2011">Cvičenie 2 (27. 9. 2011)</h2>
+
+<p>Nekonalo sa (konferencia ITAT)</p>
+
+<h2 id="cvičenie-3-4-10-2011">Cvičenie 3 (4. 10. 2011)</h2>
+
+<h2 id="cvičenie-4-11-10-2011">Cvičenie 4 (11. 10. 2011)</h2>
+
+<p>Majme daný zjednodušený súbor typu <code>/etc/passwd</code> z Linuxu, v ktorom sú uvádzané údaje o používateľoch systému. Súbor nech vyzerá nasledovne:</p>
+
+<pre><code>root:x:0:0
+novotnyr:x:127:127
+www-data:x:5:5
+</code></pre>
+
+<p>Na každém riadku sú štyri hodnoty oddelené dvojbodkami:</p>
+
+<ul>
+<li>login používateľa (maximálne 32 znakov)</li>
+<li>indikátor uloženia hesla v externom súbore <code>/etc/shadow</code>. Vždy má hodnotu <code>x</code>.</li>
+<li>ID používateľa (UID), jednoznačné vzhľadom na celý súbor. Prirodzené číslo.</li>
+<li>ID skupiny používateľa (GID). Prirodzené číslo.</li>
+</ul>
+
+<p>Vytvorte program, ktorý načíta súbor do pamäte a zaveďte nasledovné funkcie:</p>
+
+<ul>
+<li>vyhľadanie používateľa podľa UID</li>
+<li>výpis používateľa</li>
+<li>výpis celej databázy.</li>
+</ul>
+
+<p>Databáza nech je realizovaná pomocou <code>struct</code>ov a alokovaná staticky v poli 255 položiek.</p>
+
+<h2 id="cvičenie-5-18-10-2011">Cvičenie 5 (18. 10. 2011)</h2>
+
+<p>Upravte predošlú úlohu tak, aby bola databáza alokovaná dynamicky podľa počtu záznamov v súbore. Pre jednoduchosť predpokladajte upravený súbor <code>passwd</code> tak, že počet záznamov je uvedený na prvom riadku.</p>
+
+<pre><code>2
+root:x:0:0
+novotnyr:x:127:127
+</code></pre>
+
+<p>Dopracujte vyhľadávanie používateľa podľa loginu. Vytvorte funkciu pre túto funkcionalitu; nájdeného používateľa nevracajte, ale vypíšte na konzolu.</p>
+
+<p>Ďalšie čítanie: <a href="http://ics.upjs.sk/~novotnyr/home/skola/programovaci_jazyk_c/jac1a-pointery.pdf">Dynamická alokácia pamäte a pointery</a></p>
+
+<h1 id="zadania">Zadania</h1>
+
+<p>Poznámky k zadaniam: zadania realizujte použitím ANSI C podľa normy ANSI C89/90. Kompilácia nech prebehne s parametrami <code>-ansi -pedantic</code>. Odporúčaný kompilátor je <code>gcc</code>.</p>
+
+<p>Termín na odovzdanie je 6. 2. 2011 do 23:59</p>
+
+<h2 id="zadanie-1">Zadanie 1</h2>
+
+<p>Vytvorte modul a používateľské rozhranie pre spracovanie INI súborov podľa konvencie súboru <code>win.ini</code>.</p>
+
+<p>Inicializačný súbor predstavuje textový súbor nasledovného typu:</p>
+
+<pre><code>; for 16-bit app support
+[Mail]
+MAPI=1
+[MCI Extensions.BAK]
+3g2=MPEGVideo
+3gp=MPEGVideo
+3gp2=MPEGVideo
+3gpp=MPEGVideo
+[Internet]
+UUID=2030258618
+</code></pre>
+
+<p>Riadok predstavuje:</p>
+
+<ul>
+<li>buď komentár začínajúci bodkočiarkou alebo znakom mreže (#)
+Komentár sa vzťahuje k položke na nasledujúcom riadku (t. j. k nasledujúcej sekcii či kľúču).</li>
+</ul>
+
+<p>Príklad:</p>
+
+<ul>
+<li><p>nasledovný komentár sa vzťahuje ku kľúču <code>OS</code></p>
+
+<pre><code>1.  vybraný operačný systém
+OS=Windows
+</code></pre></li>
+
+<li><p>viacriadkový komentár, ktorý sa vzťahuje ku kľúču <code>OS</code></p>
+
+<pre><code>1.  vybraný operačný systém
+1.  jedna z možností: Windows / Linux / MacOS
+OS=Windows
+</code></pre></li>
+
+<li><p>komentár, ktorý sa vzťahuje k sekcii <code>Windows</code></p>
+
+<pre><code>1.  Nastavenia Windowsu
+[Windows]
+BootDrive=C
+InstallFolder=Windows
+</code></pre></li>
+
+<li><p>komentáre začínajú vždy mrežou na začiatku riadku. <em>In-line</em> komentáre uprostred riadka nie sú podporované.</p></li>
+
+<li><p>alebo údaj typu <code>kľúč=hodnota</code>, kde kľúč je reťazec a hodnota je</p>
+
+<ul>
+<li>buď typu reťazec</li>
+<li>alebo typu integer</li>
+</ul></li>
+</ul>
+
+<p>Znak <code>=</code> je tesne spojený na jednej strane s kľúčom a na druhej strane s hodnotou (okolo znaku <code>=</code> nie je žiadne biele miesto).</p>
+
+<p>Názov kľúča nesmie obsahovať medzery, ale hodnota medzery obsahovať môže.</p>
+
+<ul>
+<li>alebo názov sekcie umiestnený v hranatých zátvorkách.</li>
+<li>alebo prázdny riadok, ktorý je možné pri načítaní ignorovať.</li>
+</ul>
+
+<p>Každá položka začína prvým znakom nového riadku (nie sú pred ňou medzery ani iné znaky bieleho miesta).</p>
+
+<p>Modul nech obsahuje funkcionalitu:</p>
+
+<ul>
+<li>načítanie INI dát zo súboru</li>
+<li>získanie všetkých kľúčov zo všetkých sekcií: funkcia nech vráti vhodnú štruktúru obsahujúcu všetky kľúče</li>
+<li>získanie kľúčov z danej sekcie: funkcia nech vráti vhodnú štruktúru obsahujúcu všetky kľúče z danej sekcie</li>
+<li>získanie hodnoty pre daný kľúč
+
+<ul>
+<li>ako reťazca</li>
+<li>ako celého čísla (ošetrite chybové stavy)</li>
+</ul></li>
+<li>pridanie kľúča a hodnoty do danej sekcie spôsobom, kde v prípade existencie daného kľúča sa hodnota prepíše</li>
+<li>pridanie kľúča a hodnoty do danej sekcie spôsobom, kde v prípade existencie daného kľúča nastane chybový stav</li>
+<li>pri pridaní záznamu do neexistujúcej sekcie sa sekcia vytvorí</li>
+<li>odstránenie kľúča a hodnoty z danej sekcie
+
+<ul>
+<li>pri odstránení posledného záznamu zo sekcie sa celá sekcia odstráni</li>
+</ul></li>
+<li>uloženie INI dát do súboru
+
+<ul>
+<li>pri ukladaní súboru nie je potrebné dbať na presnú polohu prázdnych riadkov.</li>
+</ul></li>
+</ul>
+
+<p>Dáta z INI súboru musia byť uložené v pamäti (nepripúšťa sa zmena dát načítaním, prebehnutím a úpravou súboru).</p>
+
+<p>Modul nech je dodaný v podobe samostatného C súboru vrátane hlavičkového súboru obsahujúceho požadované funkcie.</p>
+
+<p>Používateľské rozhranie nech predstavuje jednoduché menu s voľbou položiek menu z klávesnice, kde je možné otestovať nasledovnú funkcionalitu:</p>
+
+<ul>
+<li>načítanie INI súboru</li>
+<li>pridanie novej položky</li>
+<li>výpis všetkých kľúčov a hodnôt</li>
+<li>výpis kľúčov a hodnôt v danej sekcii</li>
+<li>výpis názvov všetkých sekcií</li>
+<li>odstránenie položky</li>
+<li>zmena hodnoty v danom kľúči.</li>
+<li>uloženie údajov do INI súboru.
+
+<ul>
+<li>Pri ukladaní treba dodržať vzájomný vzťah komentárov a položiek, ku ktorým sa vzťahujú.</li>
+</ul></li>
+</ul>
+
+<p>Všetky vyššie popísané funkcie musia byť v zadaní implementované &ndash; nepripúšťa sa odovzdanie čiastočne implementovaného zadania.</p>
+
+<h2 id="zadanie-2">Zadanie 2</h2>
+
+<p>Vytvorte program spracovávajúci matematické výrazy v infixnej notácii za použitia reverznej poľskej notácie. Použité operátory sú:</p>
+
+<ul>
+<li>sčítanie <code>+</code>,</li>
+<li>odčítanie <code>-</code>,</li>
+<li>násobenie <code>*</code>,</li>
+<li>delenie <code>/</code>
+Priorita operátorov je v tradičnom duchu: násobenie a delenie má prednosť pred sčítaním a odčítaním.</li>
+</ul>
+
+<p>Matematický výraz obsahuje prirodzené čísla, zátvorky a operátory.</p>
+
+<p>Príklady výrazov:</p>
+
+<ul>
+<li><code>(2 + 3) + 5</code></li>
+<li><code>(2 * 3) / (5 * 25)</code></li>
+</ul>
+
+<p>Príklady nekorektných výrazov?</p>
+
+<ul>
+<li><code>2 + 3 + 5</code> (zlé uzátvorkovanie)</li>
+<li><code>2 / 3 # 5</code> (nepodporovaný operátor</li>
+</ul>
+
+<p>Prevod z infixnej notácie do reverznej poľskej notácie realizujte napr. pomocou <a href="http://en.wikipedia.org/wiki/Shunting-yard_algorithm"><em>shunting yard</em></a> algoritmu, ktorý využíva zásobník a rad. (Zásobník a rad realizujte ako samostatnú knižnicu v separátnom súbore s hlavičkovým súborom includnutým do hlavného súboru v rovnakom duchu ako sa to realizovalo na cvičeniach. Implementáciu radu a zásobníka zvoľte podľa uváženia.)</p>
+
+<p>Výstupom programu nech je výsledok vyhodnotenia výrazu a zároveň jeho prepis do reverznej poľskej notácie.</p>
+
+<p>Ukážka:</p>
+
+<pre><code>/home/novotnyr&gt; ./rpn &quot;1 + 1&quot;
+1 1 + = 2
+</code></pre>
+
+<p>Ak výraz obsahuje nekorektné zátvorkovanie, vypíšte chybu &ldquo;Nekorektné zátvorkovanie&rdquo; (na overenie použite zásobník a kód z cvičenia, resp. znalosti z PAZ1b).</p>
+
+<p>Ak výraz obsahuje nekorektné znaky, či operátory, vypíšte chybu &ldquo;Nekorektný znak na pozícii X&rdquo;, kde X je poradie znaku indexované od 1ky.</p>
+
+</main>
+
+    <footer>
+      
+<script>
+(function() {
+  function center_el(tagName) {
+    var tags = document.getElementsByTagName(tagName), i, tag;
+    for (i = 0; i < tags.length; i++) {
+      tag = tags[i];
+      var parent = tag.parentElement;
+      
+      if (parent.childNodes.length === 1) {
+        
+        if (parent.nodeName === 'A') {
+          parent = parent.parentElement;
+          if (parent.childNodes.length != 1) continue;
+        }
+        if (parent.nodeName === 'P') parent.style.textAlign = 'center';
+      }
+    }
+  }
+  var tagNames = ['img', 'embed', 'object'];
+  for (var i = 0; i < tagNames.length; i++) {
+    center_el(tagNames[i]);
+  }
+})();
+</script>
+
+      
+    </footer>
+  </body>
+</html>
+

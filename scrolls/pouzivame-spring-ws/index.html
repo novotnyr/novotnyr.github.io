@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Používame Spring Web Services | robonovotny</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.css" integrity="sha384-D+9gmBxUQogRLqvARvNLmA9hS2x//eK1FhVb9PiU86gmcrBrJAQT8okdJ4LMp2uv" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.js" integrity="sha384-483A6DwYfKeDa0Q52fJmxFXkcPCFfnXMoXblOkJ4JcA8zATN6Tm78UNL72AKk+0O" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/contrib/auto-render.min.js" integrity="sha384-yACMu8JWxKzSp/C1YV86pzGiQ/l1YUfE8oPuahJQxzehAjEt2GiQuy/BIvl9KyeF" crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body);
+        });
+    </script>
+
+<header>
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <nav>
+    <ul>
+      
+      
+      <li class="pull-left ">
+        <a href="http://novotnyr.github.io/">/home/robonovotny</a>
+      </li>
+      
+
+      
+
+    </ul>
+  </nav>
+</header>
+
+  </head>
+
+  <body>
+    <br/>
+
+<div class="article-meta">
+<h1><span class="title">Používame Spring Web Services</span></h1>
+
+<h2 class="date">2009/06/23</h2>
+<p class="terms">
+  
+  
+  
+  
+  
+</p>
+</div>
+
+
+
+<main>
+
+
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">package</span> <span style="color:#5ed;font-weight:bold">sk</span>.<span style="color:#007">novotnyr</span>.<span style="color:#007">movie</span>;
+
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">java</span>.<span style="color:#007">util</span>.<span style="color:#007">Date</span>;
+
+<span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> MovieReservation {
+
+  <span style="color:#289;font-weight:bold">protected</span> <span style="color:#5ed;font-weight:bold">String</span> title;
+  <span style="color:#289;font-weight:bold">protected</span> <span style="color:#5ed;font-weight:bold">Date</span> date;
+  <span style="color:#289;font-weight:bold">protected</span> <span style="color:#5ed;font-weight:bold">int</span> numberOfTickets;
+
+  <span style="color:#666;font-style:italic">// gettre a settre
+</span><span style="color:#666;font-style:italic"></span>}</code></pre></div>
+<p>Stiahneme Spring-WS. Do classpath:</p>
+
+<ul>
+<li>activation.jar</li>
+<li>commons-logging-1.1.1.jar</li>
+<li>log4j-1.2.15.jar</li>
+<li>saaj-api-1.3.jar</li>
+<li>saaj-impl-1.3.jar</li>
+<li>spring-web.jar</li>
+<li>spring-webmvc.jar</li>
+<li>spring-ws-1.5.2.jar</li>
+<li>spring.jar</li>
+<li>stax-api-1.0.1.jar</li>
+<li>xstream-1.3.jar</li>
+</ul>
+
+<p>Kostra webovej aplikácie:
+<code>web.xml</code></p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#579">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
+<span style="color:#070">&lt;web-app</span> <span style="color:#007">xmlns=</span><span style="background-color:#e0e0ff">&#34;http://java.sun.com/xml/ns/j2ee&#34;</span> <span style="color:#007">xmlns:xsi=</span><span style="background-color:#e0e0ff">&#34;http://www.w3.org/2001/XMLSchema-instance&#34;</span>
+         <span style="color:#007">xsi:schemaLocation=</span><span style="background-color:#e0e0ff">&#34;http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd&#34;</span>
+         <span style="color:#007">version=</span><span style="background-color:#e0e0ff">&#34;2.4&#34;</span><span style="color:#070">&gt;</span>
+
+    <span style="color:#070">&lt;servlet&gt;</span>
+        <span style="color:#070">&lt;servlet-name&gt;</span>spring-ws<span style="color:#070">&lt;/servlet-name&gt;</span>
+        <span style="color:#070">&lt;servlet-class&gt;</span>org.springframework.ws.transport.http.MessageDispatcherServlet<span style="color:#070">&lt;/servlet-class&gt;</span>
+    <span style="color:#070">&lt;/servlet&gt;</span>
+
+    <span style="color:#070">&lt;servlet-mapping&gt;</span>
+        <span style="color:#070">&lt;servlet-name&gt;</span>spring-ws<span style="color:#070">&lt;/servlet-name&gt;</span>
+        <span style="color:#070">&lt;url-pattern&gt;</span>/*<span style="color:#070">&lt;/url-pattern&gt;</span>
+    <span style="color:#070">&lt;/servlet-mapping&gt;</span>
+
+<span style="color:#070">&lt;/web-app&gt;</span></code></pre></div>
+<p><code>spring-ws-servlet.xml</code></p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#579">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
+<span style="color:#070">&lt;beans</span> <span style="color:#007">xmlns=</span><span style="background-color:#e0e0ff">&#34;http://www.springframework.org/schema/beans&#34;</span> <span style="color:#007">xmlns:xsi=</span><span style="background-color:#e0e0ff">&#34;http://www.w3.org/2001/XMLSchema-instance&#34;</span>
+       <span style="color:#007">xsi:schemaLocation=</span><span style="background-color:#e0e0ff">&#34;http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd&#34;</span><span style="color:#070">&gt;</span>
+ 	<span style="color:#070">&lt;bean</span> <span style="color:#007">id=</span><span style="background-color:#e0e0ff">&#34;movieReservationEndpoint&#34;</span> <span style="color:#007">class=</span><span style="background-color:#e0e0ff">&#34;sk.novotnyr.movie.ws.XStreamMovieReservationEndpoint&#34;</span> <span style="color:#070">/&gt;</span>
+ 	
+	<span style="color:#070">&lt;bean</span> <span style="color:#007">id=</span><span style="background-color:#e0e0ff">&#34;endpointMapping&#34;</span> <span style="color:#007">class=</span><span style="background-color:#e0e0ff">&#34;org.springframework.ws.server.endpoint.mapping.UriEndpointMapping&#34;</span><span style="color:#070">&gt;</span>
+		<span style="color:#070">&lt;property</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;mappings&#34;</span><span style="color:#070">&gt;</span>
+			<span style="color:#070">&lt;props&gt;</span>
+				<span style="color:#070">&lt;prop</span> <span style="color:#007">key=</span><span style="background-color:#e0e0ff">&#34;http://localhost:8080/movie/ws/reservation&#34;</span><span style="color:#070">&gt;</span>movieReservationEndpoint<span style="color:#070">&lt;/prop&gt;</span>
+			<span style="color:#070">&lt;/props&gt;</span>
+		<span style="color:#070">&lt;/property&gt;</span>
+	<span style="color:#070">&lt;/bean&gt;</span>
+    
+<span style="color:#070">&lt;/beans&gt;</span></code></pre></div>
+<h1 id="dokument-pre-požiadavku">Dokument pre požiadavku</h1>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#579">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
+
+<span style="color:#070">&lt;movieReservationRequest&gt;</span>
+  <span style="color:#070">&lt;title&gt;</span>Battlestar Galactica<span style="color:#070">&lt;/title&gt;</span>
+  <span style="color:#070">&lt;date&gt;</span>2008-12-24<span style="color:#070">&lt;/date&gt;</span>
+  <span style="color:#070">&lt;numberOfTickets&gt;</span>4<span style="color:#070">&lt;/numberOfTickets&gt;</span>  
+<span style="color:#070">&lt;/movieReservationRequest&gt;</span></code></pre></div>
+<h1 id="log4j-properties"><code>log4j.properties</code></h1>
+
+<pre><code>log4j.rootCategory=INFO, stdout
+log4j.logger.org.springframework.ws=DEBUG
+log4j.logger.org.springframework.ws.client.MessageTracing.sent=TRACE
+log4j.logger.org.springframework.ws.client.MessageTracing.received=TRACE
+
+log4j.logger.org.springframework.ws.server.MessageTracing=TRACE
+
+log4j.appender.stdout=org.apache.log4j.ConsoleAppender
+log4j.appender.stdout.layout=org.apache.log4j.PatternLayout
+log4j.appender.stdout.layout.ConversionPattern=%p [%c{3}] %m%n
+</code></pre>
+
+<h1 id="endpoint">Endpoint</h1>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">package</span> <span style="color:#5ed;font-weight:bold">sk</span>.<span style="color:#007">novotnyr</span>.<span style="color:#007">movie</span>.<span style="color:#007">ws</span>;
+
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">org</span>.<span style="color:#007">springframework</span>.<span style="color:#007">oxm</span>.<span style="color:#007">xstream</span>.<span style="color:#007">XStreamMarshaller</span>;
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">org</span>.<span style="color:#007">springframework</span>.<span style="color:#007">ws</span>.<span style="color:#007">server</span>.<span style="color:#007">endpoint</span>.<span style="color:#007">AbstractMarshallingPayloadEndpoint</span>;
+
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">sk</span>.<span style="color:#007">novotnyr</span>.<span style="color:#007">movie</span>.<span style="color:#007">MovieReservation</span>;
+
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">com</span>.<span style="color:#007">thoughtworks</span>.<span style="color:#007">xstream</span>.<span style="color:#007">converters</span>.<span style="color:#007">basic</span>.<span style="color:#007">DateConverter</span>;
+
+<span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> XStreamMovieReservationEndpoint <span style="color:#5ed;font-weight:bold">extends</span> AbstractMarshallingPayloadEndpoint {
+  
+  <span style="color:#555;font-weight:bold">@Override</span>
+  <span style="color:#289;font-weight:bold">protected</span> <span style="color:#5ed;font-weight:bold">Object</span> invokeInternal(Object <span style="color:#5ed;font-weight:bold">object</span>) <span style="color:#289;font-weight:bold">throws</span> <span style="color:#5ed;font-weight:bold">Exception</span> {
+
+    MovieReservation <span style="color:#5ed;font-weight:bold">movieReservationRequest</span> <span style="color:#333">=</span> (MovieReservation) object;
+    System.<span style="color:#007">out</span>.<span style="color:#007">println</span>(movieReservationRequest.<span style="color:#007">getTitle</span>());
+    System.<span style="color:#007">out</span>.<span style="color:#007">println</span>(movieReservationRequest.<span style="color:#007">getDate</span>());
+    System.<span style="color:#007">out</span>.<span style="color:#007">println</span>(movieReservationRequest.<span style="color:#007">getNumberOfTickets</span>());
+
+    <span style="color:#666;font-style:italic">// one-way messages return null
+</span><span style="color:#666;font-style:italic"></span>    <span style="color:#289;font-weight:bold">return</span> <span style="color:#289;font-weight:bold">null</span>;
+  }
+
+  <span style="color:#555;font-weight:bold">@Override</span>
+  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">void</span> afterPropertiesSet() <span style="color:#289;font-weight:bold">throws</span> <span style="color:#5ed;font-weight:bold">Exception</span> {
+    <span style="color:#289;font-weight:bold">super</span>.<span style="color:#007">afterPropertiesSet</span>();
+
+    XStreamMarshaller <span style="color:#5ed;font-weight:bold">marshaller</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> XStreamMarshaller();
+    marshaller.<span style="color:#007">addAlias</span>(<span style="background-color:#e0e0ff">&#34;movieReservationRequest&#34;</span>, MovieReservation.<span style="color:#007">class</span>);
+    marshaller.<span style="color:#007">getXStream</span>().<span style="color:#007">registerConverter</span>(<span style="color:#289;font-weight:bold">new</span> DateConverter(<span style="background-color:#e0e0ff">&#34;yyyy-DD-mm&#34;</span>, <span style="color:#289;font-weight:bold">new</span> String[]{}));
+    
+    setMarshaller(marshaller);
+    setUnmarshaller(marshaller);
+
+  }
+  
+}</code></pre></div>
+<h1 id="klient">Klient</h1>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">package</span> <span style="color:#5ed;font-weight:bold">sk</span>.<span style="color:#007">novotnyr</span>.<span style="color:#007">movie</span>.<span style="color:#007">ws</span>;
+
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">java</span>.<span style="color:#007">io</span>.<span style="color:#007">FileReader</span>;
+
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">javax</span>.<span style="color:#007">xml</span>.<span style="color:#007">transform</span>.<span style="color:#007">stream</span>.<span style="color:#007">StreamResult</span>;
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">javax</span>.<span style="color:#007">xml</span>.<span style="color:#007">transform</span>.<span style="color:#007">stream</span>.<span style="color:#007">StreamSource</span>;
+
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">org</span>.<span style="color:#007">springframework</span>.<span style="color:#007">ws</span>.<span style="color:#007">client</span>.<span style="color:#007">core</span>.<span style="color:#007">WebServiceTemplate</span>;
+
+<span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> Client {
+  
+  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">static</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">main</span>(String[] <span style="color:#5ed;font-weight:bold">args</span>) <span style="color:#289;font-weight:bold">throws</span> <span style="color:#5ed;font-weight:bold">Exception</span> {
+    WebServiceTemplate <span style="color:#5ed;font-weight:bold">webServiceTemplate</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> WebServiceTemplate();
+    webServiceTemplate.<span style="color:#007">setDefaultUri</span>(<span style="background-color:#e0e0ff">&#34;http://localhost:8080/movie/ws/reservation&#34;</span>);
+    
+   
+    StreamSource <span style="color:#5ed;font-weight:bold">source</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> StreamSource(<span style="color:#289;font-weight:bold">new</span> FileReader(<span style="background-color:#e0e0ff">&#34;D:\\Projects\\movie-ws\\web\\WEB-INF\\xml\\movieReservationRequest.xml&#34;</span>));
+    StreamResult <span style="color:#5ed;font-weight:bold">result</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> StreamResult(System.<span style="color:#007">out</span>);
+    webServiceTemplate.<span style="color:#007">sendSourceAndReceiveToResult</span>(source, result);        
+
+  }
+}</code></pre></div>
+</main>
+
+    <footer>
+      
+<script>
+(function() {
+  function center_el(tagName) {
+    var tags = document.getElementsByTagName(tagName), i, tag;
+    for (i = 0; i < tags.length; i++) {
+      tag = tags[i];
+      var parent = tag.parentElement;
+      
+      if (parent.childNodes.length === 1) {
+        
+        if (parent.nodeName === 'A') {
+          parent = parent.parentElement;
+          if (parent.childNodes.length != 1) continue;
+        }
+        if (parent.nodeName === 'P') parent.style.textAlign = 'center';
+      }
+    }
+  }
+  var tagNames = ['img', 'embed', 'object'];
+  for (var i = 0; i < tagNames.length; i++) {
+    center_el(tagNames[i]);
+  }
+})();
+</script>
+
+      
+    </footer>
+  </body>
+</html>
+

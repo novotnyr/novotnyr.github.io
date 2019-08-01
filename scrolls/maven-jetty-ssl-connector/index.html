@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Maven, Jetty plug-in a spustenie SSL konektora | robonovotny</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.css" integrity="sha384-D+9gmBxUQogRLqvARvNLmA9hS2x//eK1FhVb9PiU86gmcrBrJAQT8okdJ4LMp2uv" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.js" integrity="sha384-483A6DwYfKeDa0Q52fJmxFXkcPCFfnXMoXblOkJ4JcA8zATN6Tm78UNL72AKk+0O" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/contrib/auto-render.min.js" integrity="sha384-yACMu8JWxKzSp/C1YV86pzGiQ/l1YUfE8oPuahJQxzehAjEt2GiQuy/BIvl9KyeF" crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body);
+        });
+    </script>
+
+<header>
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <nav>
+    <ul>
+      
+      
+      <li class="pull-left ">
+        <a href="http://novotnyr.github.io/">/home/robonovotny</a>
+      </li>
+      
+
+      
+
+    </ul>
+  </nav>
+</header>
+
+  </head>
+
+  <body>
+    <br/>
+
+<div class="article-meta">
+<h1><span class="title">Maven, Jetty plug-in a spustenie SSL konektora</span></h1>
+
+<h2 class="date">2011/11/25</h2>
+<p class="terms">
+  
+  
+  
+  
+  
+</p>
+</div>
+
+
+
+<main>
+
+
+<h1 id="problém">Problém</h1>
+
+<p>Cieľ <code>maven jetty:run</code> v Mavene je veľmi užitočný na rýchle nasadenie
+webovej aplikácie do servletového kontajnera Jetty. V štandardom
+nastavení počúva Jetty na porte 8080... ale nepodporuje SSL.</p>
+
+<h1 id="ako-nastaviť-pom-xml">Ako nastaviť pom.xml?</h1>
+
+<p>Jetty v Mavene používa štandardne klasický konektor určený pre bežné
+nezabezpečené HTTP a SSL konektor ponecháva vypnutý. Ak chceme používať
+SSL, musíme v <code>pom.xml</code> explicitne zapnúť SSL konektor.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-.myxml" data-lang=".myxml">&lt;plugin&gt;
+  &lt;groupId&gt;org.mortbay.jetty&lt;/groupId&gt;
+  &lt;artifactId&gt;jetty-maven-plugin&lt;/artifactId&gt;
+  &lt;version&gt;7.4.2.v20110526&lt;/version&gt;
+    &lt;configuration&gt;
+        &lt;connectors&gt;
+            &lt;connector implementation=&#34;org.eclipse.jetty.server.ssl.SslSocketConnector&#34;&gt;
+                &lt;port&gt;8443&lt;/port&gt;
+                &lt;maxIdleTime&gt;60000&lt;/maxIdleTime&gt;
+                &lt;keystore&gt;etc/jetty-ssl.keystore&lt;/keystore&gt;
+                &lt;password&gt;jetty6&lt;/password&gt;
+                &lt;keyPassword&gt;jetty6&lt;/keyPassword&gt;
+            &lt;/connector&gt;
+        &lt;/connectors&gt;
+    &lt;/configuration&gt;        
+&lt;/plugin&gt;</code></pre></div>
+<p>Na to, aby sme mohli používať SSL, potrebujeme definovať úložisko
+(<em>keystore</em>) pre certifikáty a kľúče používané v komunikácii. Vytvoríme
+ho klasickým Java nástrojom <code>keytool</code>.</p>
+
+<pre><code>keytool -genkey -alias jetty6 -keyalg RSA -keystore etc/jetty-ssl.keystore -storepass jetty6 -keypass jetty6 -dname &quot;CN=vaša doména&quot;
+</code></pre>
+
+<h1 id="záverečné-poznámky">Záverečné poznámky</h1>
+
+<p>Tieto nastavenia platia pre \&ldquo;novú\&rdquo; verziu Jetty pluginu, ktorá
+zodpovedá implementácii Jetty z projektu Eclipse. Návod pre staršie
+verzie možno nájsť na
+[<a href="http://mrhaki.blogspot.com/2009/05/configure-maven-jetty-plugin-for-ssl.html](">http://mrhaki.blogspot.com/2009/05/configure-maven-jetty-plugin-for-ssl.html](</a>).</p>
+
+<p>V tejto ukážke sme explicitne zakázali bežný HTTP konektor.</p>
+
+</main>
+
+    <footer>
+      
+<script>
+(function() {
+  function center_el(tagName) {
+    var tags = document.getElementsByTagName(tagName), i, tag;
+    for (i = 0; i < tags.length; i++) {
+      tag = tags[i];
+      var parent = tag.parentElement;
+      
+      if (parent.childNodes.length === 1) {
+        
+        if (parent.nodeName === 'A') {
+          parent = parent.parentElement;
+          if (parent.childNodes.length != 1) continue;
+        }
+        if (parent.nodeName === 'P') parent.style.textAlign = 'center';
+      }
+    }
+  }
+  var tagNames = ['img', 'embed', 'object'];
+  for (var i = 0; i < tagNames.length; i++) {
+    center_el(tagNames[i]);
+  }
+})();
+</script>
+
+      
+    </footer>
+  </body>
+</html>
+

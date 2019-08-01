@@ -481,17 +481,19 @@
 
 <ul>
 <li>skončí, keď dobehnú jej všetky deti. Inými slovami, počká na dobehnutie detí, ale neblokuje!</li>
-<li>ak niektoré z detí zlyhá, celý scope zlyhá tiež, a bežiace deti budú zrušené.</li>
-</ul>
+
+<li><p>ak niektoré z detí zlyhá, celý scope zlyhá tiež, a bežiace deti budú zrušené.</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">suspend</span> <span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">downloadAndConcatenate</span>(<span style="color:#289;font-weight:bold">vararg</span> urls: String) = coroutineScope {
-    urls.map {
-        async {
-            download(it)
-        }
+urls.map {
+    async {
+        download(it)
     }
-    .awaitAll()
-    .joinToString()
-}</code></pre></div>
+}
+.awaitAll()
+.joinToString()
+}</code></pre></div></li>
+</ul>
+
 <p>Všimnime si, že celú funkciu sme spustili v deklarovanom scope. Deti, reprezentované jednotlivými <code>async</code> korutinami, sa budú správať podľa očakávaní.</p>
 
 <p>Funkciu môžeme potom zavolať takto:</p>
@@ -606,28 +608,30 @@ Exception in thread &#34;main&#34; java.net.UnknownHostException: FAILHOST
 
 <ul>
 <li>buď zbehne celá,</li>
-<li>alebo v niektorom potomkovi nastane výnimka a v tom prípade sa zruší rodič, zrušia všetky deti, a výnimka sa prehodí o úroveň vyššie do korutiny, ktorá paralelizovateľnú dekompozíciu spustila</li>
-</ul>
+
+<li><p>alebo v niektorom potomkovi nastane výnimka a v tom prípade sa zruší rodič, zrušia všetky deti, a výnimka sa prehodí o úroveň vyššie do korutiny, ktorá paralelizovateľnú dekompozíciu spustila</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">kotlinx.coroutines.runBlocking</span>
 <span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">kotlin.system.measureTimeMillis</span>
 
 <span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">main</span>() {
-    <span style="color:#289;font-weight:bold">val</span> time = measureTimeMillis {
-        runBlocking&lt;Unit&gt; {
-            <span style="color:#289;font-weight:bold">try</span> {
-                <span style="color:#289;font-weight:bold">val</span> totalContent = downloadAndConcatenate(
-                    <span style="background-color:#e0e0ff">&#34;http://deelay.me/5000/http://ics.upjs.sk/~novotnyr/home/db.txt&#34;</span>,
-                    <span style="background-color:#e0e0ff">&#34;http://deelay.me/5000/http://www.gnu.org/home.en.html&#34;</span>,
-                    <span style="background-color:#e0e0ff">&#34;http://deelay.me/5000/FAILHOST&#34;</span>
-                )
-                println(<span style="background-color:#e0e0ff">&#34;${totalContent.length} bytes&#34;</span>)
-            } <span style="color:#289;font-weight:bold">catch</span> (e: Exception) {
-                println(<span style="background-color:#e0e0ff">&#34;Error while calculating bytes: $e&#34;</span>)
-            }
+<span style="color:#289;font-weight:bold">val</span> time = measureTimeMillis {
+    runBlocking&lt;Unit&gt; {
+        <span style="color:#289;font-weight:bold">try</span> {
+            <span style="color:#289;font-weight:bold">val</span> totalContent = downloadAndConcatenate(
+                <span style="background-color:#e0e0ff">&#34;http://deelay.me/5000/http://ics.upjs.sk/~novotnyr/home/db.txt&#34;</span>,
+                <span style="background-color:#e0e0ff">&#34;http://deelay.me/5000/http://www.gnu.org/home.en.html&#34;</span>,
+                <span style="background-color:#e0e0ff">&#34;http://deelay.me/5000/FAILHOST&#34;</span>
+            )
+            println(<span style="background-color:#e0e0ff">&#34;${totalContent.length} bytes&#34;</span>)
+        } <span style="color:#289;font-weight:bold">catch</span> (e: Exception) {
+            println(<span style="background-color:#e0e0ff">&#34;Error while calculating bytes: $e&#34;</span>)
         }
     }
-    println(<span style="background-color:#e0e0ff">&#34;$time ms&#34;</span>)
-}</code></pre></div>
+}
+println(<span style="background-color:#e0e0ff">&#34;$time ms&#34;</span>)
+}</code></pre></div></li>
+</ul>
+
 <h3 id="best-practices-recepty-starých-materí-pre-async">Best Practices / Recepty starých materí pre <code>async</code></h3>
 
 <h4 id="async-funguje-len-pre-paralelizovateľnú-dekompozíciu">Async funguje len pre paralelizovateľnú dekompozíciu</h4>
@@ -943,10 +947,10 @@ Exception in thread &#34;main&#34; java.net.UnknownHostException: FAILHOST
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">MutableList</span>&lt;Int&gt;.bubbleSort(): List&lt;Int&gt; {
     <span style="color:#289;font-weight:bold">for</span> (i <span style="color:#289;font-weight:bold">in</span> <span style="color:#60e;font-weight:bold">0</span> until size) {
         <span style="color:#289;font-weight:bold">for</span> (j <span style="color:#289;font-weight:bold">in</span> <span style="color:#60e;font-weight:bold">0</span> until size) {
-            <span style="color:#289;font-weight:bold">if</span> (<span style="color:#289;font-weight:bold">this</span><span style="color:#007">[i]</span> &lt; <span style="color:#289;font-weight:bold">this</span><span style="color:#007">[j]</span>) {
-                <span style="color:#289;font-weight:bold">val</span> tmp = <span style="color:#289;font-weight:bold">this</span><span style="color:#007">[i]</span>
-                <span style="color:#289;font-weight:bold">this</span><span style="color:#007">[i]</span> = <span style="color:#289;font-weight:bold">this</span><span style="color:#007">[j]</span>
-                <span style="color:#289;font-weight:bold">this</span><span style="color:#007">[j]</span> = tmp
+            <span style="color:#289;font-weight:bold">if</span> (<span style="color:#289;font-weight:bold">this</span>[i] &lt; <span style="color:#289;font-weight:bold">this</span>[j]) {
+                <span style="color:#289;font-weight:bold">val</span> tmp = <span style="color:#289;font-weight:bold">this</span>[i]
+                <span style="color:#289;font-weight:bold">this</span>[i] = <span style="color:#289;font-weight:bold">this</span>[j]
+                <span style="color:#289;font-weight:bold">this</span>[j] = tmp
             }
         }
     }
@@ -984,10 +988,10 @@ DefaultDispatcher-worker-1: [1, ... ]
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">suspend</span> <span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">MutableList</span>&lt;Int&gt;.bubbleSort(): List&lt;Int&gt; {
     <span style="color:#289;font-weight:bold">for</span> (i <span style="color:#289;font-weight:bold">in</span> <span style="color:#60e;font-weight:bold">0</span> until size) {
         <span style="color:#289;font-weight:bold">for</span> (j <span style="color:#289;font-weight:bold">in</span> <span style="color:#60e;font-weight:bold">0</span> until size) {
-            <span style="color:#289;font-weight:bold">if</span> (<span style="color:#289;font-weight:bold">this</span><span style="color:#007">[i]</span> &lt; <span style="color:#289;font-weight:bold">this</span><span style="color:#007">[j]</span>) {
-                <span style="color:#289;font-weight:bold">val</span> tmp = <span style="color:#289;font-weight:bold">this</span><span style="color:#007">[i]</span>
-                <span style="color:#289;font-weight:bold">this</span><span style="color:#007">[i]</span> = <span style="color:#289;font-weight:bold">this</span><span style="color:#007">[j]</span>
-                <span style="color:#289;font-weight:bold">this</span><span style="color:#007">[j]</span> = tmp
+            <span style="color:#289;font-weight:bold">if</span> (<span style="color:#289;font-weight:bold">this</span>[i] &lt; <span style="color:#289;font-weight:bold">this</span>[j]) {
+                <span style="color:#289;font-weight:bold">val</span> tmp = <span style="color:#289;font-weight:bold">this</span>[i]
+                <span style="color:#289;font-weight:bold">this</span>[i] = <span style="color:#289;font-weight:bold">this</span>[j]
+                <span style="color:#289;font-weight:bold">this</span>[j] = tmp
             }
             yield()
         }

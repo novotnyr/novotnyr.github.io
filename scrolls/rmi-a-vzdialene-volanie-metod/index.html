@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>RMI - vzdialené volanie metód | robonovotny</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.css" integrity="sha384-D+9gmBxUQogRLqvARvNLmA9hS2x//eK1FhVb9PiU86gmcrBrJAQT8okdJ4LMp2uv" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.js" integrity="sha384-483A6DwYfKeDa0Q52fJmxFXkcPCFfnXMoXblOkJ4JcA8zATN6Tm78UNL72AKk+0O" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/contrib/auto-render.min.js" integrity="sha384-yACMu8JWxKzSp/C1YV86pzGiQ/l1YUfE8oPuahJQxzehAjEt2GiQuy/BIvl9KyeF" crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body);
+        });
+    </script>
+
+<header>
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <nav>
+    <ul>
+      
+      
+      <li class="pull-left ">
+        <a href="http://novotnyr.github.io/">/home/robonovotny</a>
+      </li>
+      
+
+      
+
+    </ul>
+  </nav>
+</header>
+
+  </head>
+
+  <body>
+    <br/>
+
+<div class="article-meta">
+<h1><span class="title">RMI - vzdialené volanie metód</span></h1>
+
+<h2 class="date">2007/08/24</h2>
+<p class="terms">
+  
+  
+  
+  
+  
+</p>
+</div>
+
+
+
+<main>
+
+
+<p>Od verzie Java 5 sa vzdialené volanie metód značne zjednodušilo. Uvedieme jednoduchý príklad servera a klienta, ktorý získa aktuálny dátum na serveri.</p>
+
+<h1 id="základné-interfejsy">Základné interfejsy</h1>
+
+<p>Predovšetkým budeme potrebovať interfejs, ktorý bude obsahovať vzdialené volateľné metódy.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">package</span> <span style="color:#5ed;font-weight:bold">rmi2</span>;
+
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">java</span>.<span style="color:#007">rmi</span>.<span style="color:#007">Remote</span>;
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">java</span>.<span style="color:#007">rmi</span>.<span style="color:#007">RemoteException</span>;
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">java</span>.<span style="color:#007">util</span>.<span style="color:#007">Date</span>;
+
+<span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">interface</span> RemoteDateService <span style="color:#5ed;font-weight:bold">extends</span> Remote {
+  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">Date</span> getDate() <span style="color:#289;font-weight:bold">throws</span> <span style="color:#5ed;font-weight:bold">RemoteException</span>;
+}</code></pre></div>
+<p>Následne dodáme jeho implementáciu:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">package</span> <span style="color:#5ed;font-weight:bold">rmi2</span>;
+
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">java</span>.<span style="color:#007">rmi</span>.<span style="color:#007">RemoteException</span>;
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">java</span>.<span style="color:#007">rmi</span>.<span style="color:#007">server</span>.<span style="color:#007">UnicastRemoteObject</span>;
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">java</span>.<span style="color:#007">util</span>.<span style="color:#007">Date</span>;
+
+<span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> RemoteDateServiceImpl <span style="color:#5ed;font-weight:bold">extends</span> UnicastRemoteObject 
+                                   <span style="color:#5ed;font-weight:bold">implements</span> RemoteDateService 
+{
+  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">RemoteDateServiceImpl</span>() <span style="color:#289;font-weight:bold">throws</span> <span style="color:#5ed;font-weight:bold">RemoteException</span> {
+    <span style="color:#289;font-weight:bold">super</span>();
+  }
+	
+  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">Date</span> getDate() <span style="color:#289;font-weight:bold">throws</span> <span style="color:#5ed;font-weight:bold">RemoteException</span> {
+    <span style="color:#289;font-weight:bold">return</span> <span style="color:#289;font-weight:bold">new</span> Date();
+  }
+}</code></pre></div>
+<p>Trieda implementuje <code>UnicastRemoteObject</code>, to znamená, že pri vytvorení jej inštancie sa vykoná jej automatická registrácia v RMI registroch (teda bude automaticky pripravená na zverejnenie).</p>
+
+<p>Samotná trieda spustiteľného servera je jednoduchá:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">package</span> <span style="color:#5ed;font-weight:bold">rmi2</span>;
+
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">java</span>.<span style="color:#007">rmi</span>.<span style="color:#007">registry</span>.<span style="color:#007">LocateRegistry</span>;
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">java</span>.<span style="color:#007">rmi</span>.<span style="color:#007">registry</span>.<span style="color:#007">Registry</span>;
+
+<span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> Server {
+  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">static</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">main</span>(String[] <span style="color:#5ed;font-weight:bold">args</span>) <span style="color:#289;font-weight:bold">throws</span> <span style="color:#5ed;font-weight:bold">Exception</span> {
+    <span style="color:#666;font-style:italic">// Start RMI registry
+</span><span style="color:#666;font-style:italic"></span>    Registry <span style="color:#5ed;font-weight:bold">registry</span> 
+      <span style="color:#333">=</span> LocateRegistry.<span style="color:#007">createRegistry</span>(Registry.<span style="color:#007">REGISTRY_PORT</span>);
+
+    RemoteDateService <span style="color:#5ed;font-weight:bold">dateService</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> RemoteDateServiceImpl();
+		
+    registry.<span style="color:#007">rebind</span>(<span style="background-color:#e0e0ff">&#34;DateService&#34;</span>, dateService);
+    System.<span style="color:#007">out</span>.<span style="color:#007">println</span>(<span style="background-color:#e0e0ff">&#34;Server running...&#34;</span>);
+  }
+}</code></pre></div>
+<p>V nej spustíme RMI registre (je to analógia programu <code>rmiregistry</code> z predošlých verzií), vytvoríme inštanciu samotnej služby a tú zaregistrujeme v RMI registroch pod daným logickým označením (tu: <code>DateService</code>).</p>
+
+<p>Po spustení začne server načúvať požiadavkám klientov.</p>
+
+<h1 id="klient">Klient</h1>
+
+<p>Klient je analogicky jednoduchý:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">package</span> <span style="color:#5ed;font-weight:bold">rmi2</span>;
+
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">java</span>.<span style="color:#007">rmi</span>.<span style="color:#007">registry</span>.<span style="color:#007">LocateRegistry</span>;
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">java</span>.<span style="color:#007">rmi</span>.<span style="color:#007">registry</span>.<span style="color:#007">Registry</span>;
+
+<span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> Client {
+  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">static</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">main</span>(String[] <span style="color:#5ed;font-weight:bold">args</span>) <span style="color:#289;font-weight:bold">throws</span> <span style="color:#5ed;font-weight:bold">Exception</span> {
+    <span style="color:#289;font-weight:bold">try</span> {
+      Registry <span style="color:#5ed;font-weight:bold">registry</span> <span style="color:#333">=</span> LocateRegistry.<span style="color:#007">getRegistry</span>(<span style="background-color:#e0e0ff">&#34;localhost&#34;</span>);
+      RemoteDateService <span style="color:#5ed;font-weight:bold">stub</span> <span style="color:#333">=</span> 
+        (RemoteDateService) registry.<span style="color:#007">lookup</span>(<span style="background-color:#e0e0ff">&#34;DateService&#34;</span>);
+      System.<span style="color:#007">out</span>.<span style="color:#007">println</span>(stub.<span style="color:#007">getDate</span>());
+    } <span style="color:#289;font-weight:bold">catch</span> (Exception <span style="color:#5ed;font-weight:bold">e</span>) {
+      System.<span style="color:#007">err</span>.<span style="color:#007">println</span>(<span style="background-color:#e0e0ff">&#34;Client exception: &#34;</span> <span style="color:#333">+</span> e.<span style="color:#007">toString</span>());
+      e.<span style="color:#007">printStackTrace</span>();
+    }
+  }
+}</code></pre></div>
+<p>V prvom rade získame objekt RMI registrov pre daný server (v tomto prípade <code>localhost</code>, zvyčajne to však bude nejaký vzdialený server). Z registrov získame interfejs so vzdialene volateľnými metódami zodpovedajúci danému logickému názvu.</p>
+
+<p>Pomocou interfejsu potom môžeme priamočiaro vzdialene volať metódy.</p>
+
+<h1 id="alternatívny-klient-s-využitím-naming">Alternatívny klient s využitím <code>Naming</code></h1>
+
+<p>Alternatívne je možné použiť na získanie vzdialeného interfejsu aj triedu <code>java.rmi.Naming</code>. Klient bude vyzerať nasledovne:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">package</span> <span style="color:#5ed;font-weight:bold">rmi2</span>;
+
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">java</span>.<span style="color:#007">rmi</span>.<span style="color:#007">Naming</span>;
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">java</span>.<span style="color:#007">util</span>.<span style="color:#007">Date</span>;
+
+<span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> DateServiceClient {
+  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">static</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">main</span>(String[] <span style="color:#5ed;font-weight:bold">args</span>) <span style="color:#289;font-weight:bold">throws</span> <span style="color:#5ed;font-weight:bold">Exception</span> {
+    String <span style="color:#5ed;font-weight:bold">host</span> <span style="color:#333">=</span> <span style="background-color:#e0e0ff">&#34;localhost&#34;</span>;
+    <span style="color:#66f;font-weight:bold">int</span> <span style="color:#5ed;font-weight:bold">portNumber</span> <span style="color:#333">=</span> 1099;
+    String <span style="color:#5ed;font-weight:bold">lookupName</span> <span style="color:#333">=</span> 
+      <span style="background-color:#e0e0ff">&#34;//&#34;</span> <span style="color:#333">+</span> host <span style="color:#333">+</span> <span style="background-color:#e0e0ff">&#34;:&#34;</span> <span style="color:#333">+</span> portNumber <span style="color:#333">+</span> <span style="background-color:#e0e0ff">&#34;/&#34;</span> <span style="color:#333">+</span> <span style="background-color:#e0e0ff">&#34;DateService&#34;</span>;
+    RemoteDateService <span style="color:#5ed;font-weight:bold">service</span> 
+      <span style="color:#333">=</span> (RemoteDateService) Naming.<span style="color:#007">lookup</span>(lookupName);
+
+    Date <span style="color:#5ed;font-weight:bold">date</span> <span style="color:#333">=</span> service.<span style="color:#007">getDate</span>();
+      
+    System.<span style="color:#007">out</span>.<span style="color:#007">println</span>(date);     
+  }
+}</code></pre></div>
+<p>Namiesto získania objektu registrov zadáme priamo URL adresu pre server.</p>
+
+<h1 id="poznámky">Poznámky</h1>
+
+<ul>
+<li>v starých verziách bolo treba generovať stuby a skeletony pomocou <code>rmic</code>. Od Javy 5 je to možné tento krok vynechať, keďže stuby a skeletony sa môžu získať použitím automatických proxy tried.</li>
+<li>v starých verziách bolo tiež treba štartovať <code>rmiregistry</code> ako samostatný proces. V novej verzii je možné registre naštartovať priamo v kóde (viď príklad servera).</li>
+<li>treba dávať pozor na triedy v <code>CLASSPATH</code>-e. V prípade, že sa v <code>CLASSPATH</code>-e klienta nenájdu triedy vzdialených metód, bude ich chcieť RMI doťahovať zo servera, čo vyústi v potrebu používať security manager v záplavu vzdialených <code>ClassNotFoundException</code>.</li>
+</ul>
+
+<h1 id="odkazy">Odkazy</h1>
+
+<ul>
+<li><a href="http://www.comp.hkbu.edu.hk/~jng/comp3320/rmi.html">http://www.comp.hkbu.edu.hk/~jng/comp3320/rmi.html</a></li>
+<li><a href="http://java.sun.com/j2se/1.5.0/docs/guide/rmi/relnotes.html">http://java.sun.com/j2se/1.5.0/docs/guide/rmi/relnotes.html</a></li>
+<li><a href="http://java.sun.com/docs/books/tutorial/rmi/overview.html">http://java.sun.com/docs/books/tutorial/rmi/overview.html</a></li>
+<li><a href="http://fragments.turtlemeat.com/rmi.php">http://fragments.turtlemeat.com/rmi.php</a></li>
+<li><a href="http://java.sun.com/j2se/1.4.2/docs/guide/security/PolicyFiles.html">Súbory politík v Jave</a> - používané v Security Manageri</li>
+<li><a href="http://java.sun.com/j2se/1.5.0/docs/guide/rmi/hello/hello-world.html">Hello World v RMI</a></li>
+<li><a href="http://www.comp.lancs.ac.uk/~weerasin/csc253/tutorials/week8.html">http://www.comp.lancs.ac.uk/~weerasin/csc253/tutorials/week8.html</a></li>
+<li><a href="http://www.cs.man.ac.uk/~fellowsd/work/usingRMI.html">http://www.cs.man.ac.uk/~fellowsd/work/usingRMI.html</a></li>
+<li><a href="http://java.sun.com/j2se/1.4.2/docs/guide/rmi/codebase.html">RMI a parameter <code>codebase</code></a> pre automatické sťahovanie tried</li>
+<li><a href="http://www.javacoffeebreak.com/articles/javarmi/javarmi.html">http://www.javacoffeebreak.com/articles/javarmi/javarmi.html</a></li>
+<li><a href="http://today.java.net/pub/a/today/2005/10/06/the-new-rmi.html?page=1">New RMI</a> - popis nového RMI v Jave 5</li>
+</ul>
+
+</main>
+
+    <footer>
+      
+<script>
+(function() {
+  function center_el(tagName) {
+    var tags = document.getElementsByTagName(tagName), i, tag;
+    for (i = 0; i < tags.length; i++) {
+      tag = tags[i];
+      var parent = tag.parentElement;
+      
+      if (parent.childNodes.length === 1) {
+        
+        if (parent.nodeName === 'A') {
+          parent = parent.parentElement;
+          if (parent.childNodes.length != 1) continue;
+        }
+        if (parent.nodeName === 'P') parent.style.textAlign = 'center';
+      }
+    }
+  }
+  var tagNames = ['img', 'embed', 'object'];
+  for (var i = 0; i < tagNames.length; i++) {
+    center_el(tagNames[i]);
+  }
+})();
+</script>
+
+      
+    </footer>
+  </body>
+</html>
+

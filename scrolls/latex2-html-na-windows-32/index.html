@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Inštalácia LaTeX2HTML vo Windows | robonovotny</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.css" integrity="sha384-D+9gmBxUQogRLqvARvNLmA9hS2x//eK1FhVb9PiU86gmcrBrJAQT8okdJ4LMp2uv" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.js" integrity="sha384-483A6DwYfKeDa0Q52fJmxFXkcPCFfnXMoXblOkJ4JcA8zATN6Tm78UNL72AKk+0O" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/contrib/auto-render.min.js" integrity="sha384-yACMu8JWxKzSp/C1YV86pzGiQ/l1YUfE8oPuahJQxzehAjEt2GiQuy/BIvl9KyeF" crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body);
+        });
+    </script>
+
+<header>
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <nav>
+    <ul>
+      
+      
+      <li class="pull-left ">
+        <a href="http://novotnyr.github.io/">/home/robonovotny</a>
+      </li>
+      
+
+      
+
+    </ul>
+  </nav>
+</header>
+
+  </head>
+
+  <body>
+    <br/>
+
+<div class="article-meta">
+<h1><span class="title">Inštalácia LaTeX2HTML vo Windows</span></h1>
+
+<h2 class="date">2004/11/24</h2>
+<p class="terms">
+  
+  
+  
+  
+  
+</p>
+</div>
+
+
+
+<main>
+
+
+<p>LaTeX2HTML-2002-2-1, Windows XP SP1, MikTeX 2.4.1461</p>
+
+<p>Na pripravu potrebujeme:</p>
+
+<ul>
+<li><p><a href="http://saftsack.fs.uni-bayreuth.de/~latex2ht/current/">LaTeX2HTML</a></p></li>
+
+<li><p>Perl (napr. ActiveState Perl)</p></li>
+
+<li><p><a href="http://gnuwin32.sourceforge.net/downlinks/netpbm-bin.php">netpbm</a> &ndash; binarky (pouzita verzia 10.8.14)</p></li>
+
+<li><p>Odbalime LaTeX2HTML do docasneho adresara</p></li>
+
+<li><p>Nainstalujeme netpbm</p></li>
+
+<li><p>Zeditujeme prefs.pm v adresari, kam sa odbalil LaTeX2HTML.</p>
+
+<ul>
+<li><code>$prefs{'PREFIX'}</code> udava cestu, kam sa to nainstaluje</li>
+<li><code>$prefs{'EXTRAPATH'}]</code> treba nastavit na cestu k nainstalovanemu ghostscriptu a netpbm.</li>
+</ul></li>
+</ul>
+
+<p>Pravdepodobne kvoli chybe v parsovani cesty (asi vadia dvojbodky) mi fungovalo len toto riesenie &ndash; netpbm, ghostscript na rovnakom disku ako instalacky LaTeX2HTML, cesty bez uvedenia pismena jednotky:
+  <code>$prefs{'EXTRAPATH'} = '\\Utility\\Alladin\\GS\\gs7.03\\bin;\\MikTeX\\texmf-local\\netpbm\\bin';</code>)
+  Alternativne mozno cesty upravit rucne v konfiguraku <code>l2hconf.pm</code>.</p>
+
+<ul>
+<li><p>pridat cestu k <code>bin</code> adresaru kniznic <code>netpbm</code> do <code>PATH</code></p></li>
+
+<li><p>v distribucii netpbm bolo treba premenovat subory bez pripony na subory EXE (binarne) a rozkopirovat perl.exe pod prislusnymi nazvami (perlove skripty). Napr. pre subor <code>pnmfile</code> bolo treba skopirovat do adresara <code>perl.exe</code> pod nazvom <code>pnmfile.exe</code>.</p></li>
+
+<li><p>v adresari instalaciek spustime <code>config.bat</code></p>
+
+<ul>
+<li>ak sa konfiguracia zastavi pri detekcii verzie dvipsu, treba viackrat stlacit Enter&hellip;</li>
+</ul></li>
+
+<li><p>spustime <code>test.bat</code></p></li>
+
+<li><p>spustime <code>install.bat</code></p></li>
+</ul>
+
+<h2 id="to-be-continued">[to be continued]</h2>
+
+<p>Dalsie rady z Usenetu:</p>
+
+<p>Ok. Now I know what version of NetPBM you have and it is the same as
+mine. Also I have to take back some of what I said: I tried deleting
+and reinstalling both <code>latex2html</code> and <code>netpbm</code> and the error I thought
+went away came back. Aparently, I did something I can&rsquo;t remember doing.</p>
+
+<p>Anyway, the following finally worked for me:</p>
+
+<p>(I deleted all of <code>latex2html</code> and restored it from the archive.
+Same with netpbm. You don&rsquo;t necessarily need to do these, but
+  I had made a bunch of changes and wanted to start from scratch.)</p>
+
+<p>Then:
+- I changed &lsquo;gray85&rsquo; to &lsquo;#D9D9D9&rsquo; on or about line 1511 in pstoimg.pin
+- I edited prefs.pm. I changed only EXTRAPATH and PREFIX.
+- I renamed the netpbm file pnmfile to pnmfile.exe
+- I made sure the netpbm files were in my PATH variable
+- I ran config.bat
+- I ran test.bat</p>
+
+<p>That worked here. (I don&rsquo;t understand why the change to gray85 is
+necessary. It seemed unnecessary at one point, but now I can&rsquo;t get
+things to work without it.)</p>
+
+<p>As to your confusion: I hope the above is clear enough.</p>
+
+<p>You might also want the following:</p>
+
+<p>In the version of netpbm we both have, the following are actually
+executable programs, but do not have the .exe extension. I renamed
+them all, adding the <code>.exe</code> extension:</p>
+
+<ul>
+<li>bmptoppm,</li>
+<li>gemtopbm,</li>
+<li>pgmedge,</li>
+<li>pgmnorm,</li>
+<li>pgmoil,</li>
+<li>pgmslice,</li>
+<li>pnmarith,</li>
+<li>pnmfile,</li>
+<li>pnminterp,</li>
+<li>pnmnoraw,</li>
+<li>ppmnorm,</li>
+
+<li><p>ppmtojpeg,</p></li>
+
+<li><p>and ppmtouil</p></li>
+</ul>
+
+<p>The following are perl scripts. I added the <code>.pl</code> extension to them:</p>
+
+<ul>
+<li>manweb,</li>
+<li>pnmflip,</li>
+<li>pnmquant,</li>
+<li>ppmfade,</li>
+<li>ppmrainbow,</li>
+<li>ppmshadow</li>
+</ul>
+
+<p>The following are shell scripts, requiring some incarnation of
+<code>sh</code> to interpret:</p>
+
+<ul>
+<li>anytopnm,</li>
+<li>hpcdtoppm,</li>
+<li>pamstretch-gen,</li>
+<li>pcdovtoppm,</li>
+
+<li><p>pnmindex,</p></li>
+
+<li><p>pnmmargin,</p></li>
+
+<li><p>ppmquantall,</p></li>
+
+<li><p>ppmtomap</p></li>
+</ul>
+
+<p>If you run <code>latex2html</code> inside a <code>sh</code> shell, you may not need to do
+any renaming.</p>
+
+</main>
+
+    <footer>
+      
+<script>
+(function() {
+  function center_el(tagName) {
+    var tags = document.getElementsByTagName(tagName), i, tag;
+    for (i = 0; i < tags.length; i++) {
+      tag = tags[i];
+      var parent = tag.parentElement;
+      
+      if (parent.childNodes.length === 1) {
+        
+        if (parent.nodeName === 'A') {
+          parent = parent.parentElement;
+          if (parent.childNodes.length != 1) continue;
+        }
+        if (parent.nodeName === 'P') parent.style.textAlign = 'center';
+      }
+    }
+  }
+  var tagNames = ['img', 'embed', 'object'];
+  for (var i = 0; i < tagNames.length; i++) {
+    center_el(tagNames[i]);
+  }
+})();
+</script>
+
+      
+    </footer>
+  </body>
+</html>
+

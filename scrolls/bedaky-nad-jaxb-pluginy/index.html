@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bedáky nad JAXB - pluginy | robonovotny</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.css" integrity="sha384-D+9gmBxUQogRLqvARvNLmA9hS2x//eK1FhVb9PiU86gmcrBrJAQT8okdJ4LMp2uv" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.js" integrity="sha384-483A6DwYfKeDa0Q52fJmxFXkcPCFfnXMoXblOkJ4JcA8zATN6Tm78UNL72AKk+0O" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/contrib/auto-render.min.js" integrity="sha384-yACMu8JWxKzSp/C1YV86pzGiQ/l1YUfE8oPuahJQxzehAjEt2GiQuy/BIvl9KyeF" crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body);
+        });
+    </script>
+
+<header>
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <nav>
+    <ul>
+      
+      
+      <li class="pull-left ">
+        <a href="http://novotnyr.github.io/">/home/robonovotny</a>
+      </li>
+      
+
+      
+
+    </ul>
+  </nav>
+</header>
+
+  </head>
+
+  <body>
+    <br/>
+
+<div class="article-meta">
+<h1><span class="title">Bedáky nad JAXB - pluginy</span></h1>
+
+<h2 class="date">2008/09/10</h2>
+<p class="terms">
+  
+  
+  
+  
+  
+</p>
+</div>
+
+
+
+<main>
+<p>V jednom z projektov používame JAXB, čo je nástroj na mapovanie XML schémy na Java triedy. Jedného pekného rána sme dostali nápad použiť plugin <a href="https://jaxb2-commons.dev.java.net/fluent-api/">FluentAPI</a>, ktorý vie dodať triedam vygenerovaným zo schémy metódy <code>with...</code>. Potom vieme používať</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">USAddress <span style="color:#5ed;font-weight:bold">address</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> USAddress()
+			.<span style="color:#007">withName</span>(name)
+			.<span style="color:#007">withStreet</span>(street)
+			.<span style="color:#007">withCity</span>(city)
+			.<span style="color:#007">withState</span>(state)
+			.<span style="color:#007">withZip</span>(<span style="color:#289;font-weight:bold">new</span> BigDecimal(zip));</code></pre></div>
+<p>Stiahli sme teda JAR súbor, a do antovského <code>build.xml</code> dodali:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#070">&lt;taskdef</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;xjc&#34;</span> <span style="color:#007">classname=</span><span style="background-color:#e0e0ff">&#34;com.sun.tools.xjc.XJCTask&#34;</span><span style="color:#070">&gt;</span>
+  <span style="color:#070">&lt;classpath&gt;</span>
+    <span style="color:#070">&lt;pathelement</span> <span style="color:#007">path=</span><span style="background-color:#e0e0ff">&#34;C:/java/jaxb/lib/jaxb-xjc.jar&#34;</span> <span style="color:#070">/&gt;</span>
+    <span style="color:#070">&lt;pathelement</span> <span style="color:#007">path=</span><span style="background-color:#e0e0ff">&#34;C:/java/jaxb/lib/jaxb-fluent-api-2.1.3.jar&#34;</span> <span style="color:#070">/&gt;</span>      
+  <span style="color:#070">&lt;/classpath&gt;</span>
+<span style="color:#070">&lt;/taskdef&gt;</span>
+
+<span style="color:#070">&lt;target</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;generate-classes&#34;</span><span style="color:#070">&gt;</span>
+  <span style="color:#070">&lt;xjc</span> <span style="color:#007">extension=</span><span style="background-color:#e0e0ff">&#34;true&#34;</span> <span style="color:#007">destdir=</span><span style="background-color:#e0e0ff">&#34;src&#34;</span><span style="color:#070">&gt;</span>
+    <span style="color:#070">&lt;schema</span>  <span style="color:#007">dir=</span><span style="background-color:#e0e0ff">&#34;src&#34;</span> <span style="color:#007">includes=</span><span style="background-color:#e0e0ff">&#34;*.xsd&#34;</span><span style="color:#070">/&gt;</span>
+    <span style="color:#070">&lt;binding</span> <span style="color:#007">dir=</span><span style="background-color:#e0e0ff">&#34;src&#34;</span> <span style="color:#007">includes=</span><span style="background-color:#e0e0ff">&#34;*.xjb&#34;</span><span style="color:#070">/&gt;</span>
+    <span style="color:#070">&lt;arg</span> <span style="color:#007">value=</span><span style="background-color:#e0e0ff">&#34;-Xfluent-api&#34;</span> <span style="color:#070">/&gt;</span>
+  <span style="color:#070">&lt;/xjc&gt;</span>
+<span style="color:#070">&lt;/target&gt;</span></code></pre></div>
+<p>Spustenie Antu na Sun JDK 1.6 u6 však vyvolalo záplavu výnimiek</p>
+
+<pre><code>java.util.ServiceConfigurationError: com.sun.tools.xjc.Plugin: 
+Provider org.jvnet.jaxb2_commons.tools.xjc.plugin.fluent_api.XjcFluentApiPlugin could not be instantiated: java.lang.ClassCastException
+...
+Caused by: java.lang.ClassCastException
+  at java.lang.Class.cast(Class.java:2990)
+  at java.util.ServiceLoader$LazyIterator.next(ServiceLoader.java:345)
+</code></pre>
+
+<p>Filozofia pluginov v JAXB spočíva v použití filozofie <a href="http://java.sun.com/javase/6/docs/api/java/util/ServiceLoader.html">ServiceLoader</a>a. Prehľadávajú sa súbory <code>META-INF/services/com.sun.tools.xjc.Plugin</code>, v ktorých sa hľadajú názvy tried dediacich od triedy <code>com.sun.tools.xjc.Plugin</code>. V prípade FluentApi je v súbore jediný riadok</p>
+
+<pre><code>org.jvnet.jaxb2_commons.tools.xjc.plugin.fluent_api.XjcFluentApiPlugin
+</code></pre>
+
+<p>Čas venovaný ladeniu ukázal, že trieda pluginu sa síce nájde, ale nemôže byť pretypovaná na príslušnú nadradenú triedu <code>Plugin</code>. Ďalší čas venovaný gúgleniu ukázal, že tento problém nie je výnimočná situácia. Na <a href="http://forums.java.net/jive/thread.jspa?messageID=265198">fórach Sunu</a> je možné vidieť niekoľko bedákov k tejto téme.</p>
+
+<p>Kde je problém? Ukázalo sa, že v pribalení JAXB do runtime JDK 6. V prvých vydaniach JDK 1.6 (do updatu 3) je k dispozícii špecifikácia JAXB 2.0 vrátane jej implementácie. Lenže JAXB sa vyvíja a následne vyšla aktualizovaná špecifikácia JAXB 2.1 spolu s novou implementáciou (v súčasnosti 2.1.7).</p>
+
+<p>Kohsuke Kawaguchi, autor sunovskej implementácie, pri vydaní verzie 2.1 <a href="http://weblogs.java.net/blog/kohsuke/archive/2006/12/jaxb_21_release.html">oznámil</a>, že migrácia je jednoduchá. Stačí použiť <em>endorsed</em> mechanizmus na prekrývanie API v JRE. V tomto prípade treba dať <code>jaxb-api.jar</code> (obsahujúci API pre JAXB 2.1) do adresára <code>lib/endorsed</code> v JRE. Týmto spôsobom sa potlačí JAXB API 2.0.</p>
+
+<p>Lenže <em>endorsed</em> mechanizmus nie je ktovie čo. Modifikácia JRE ako súčasť nasadenia aplikácie sa mnohým ľuďom nepáči. Kohsuke sa teda rozhodol situáciu napraviť pomocou brutálneho classloader vúdú. V <a href="http://weblogs.java.net/blog/kohsuke/archive/2007/02/running_jaxbws.html | prvom blogposte]] predviedol fintu, ktorá odstránila nutnosť používať *endorsed* mechanizmus. [[http://weblogs.java.net/blog/kohsuke/archive/2007/02/howitworks_runn.html">V druhom rozširujúcom poste</a> nakreslil úžasný obrázok demonštrujúci štyri (!) classloadery, ktoré spolupracujú na tom, aby sa potlačilo načítavanie JAXB 2.0 API z bootstrap classloadera.</p>
+
+<p>Chvíľu bolo všetko v poriadku.</p>
+
+<p>Následne vyšla JDK 6.0 u4, v ktorej aktualizovali zabudovaný JAXB na verziu 2.1 a dodali novú verziu implementácie. Rama Pulavarthi <a href="http://weblogs.java.net/blog/ramapulavarthi/archive/2008/01/jaxws_21_and_ja.html">na svojom blogu</a> zakončil oznámenie radostným <em>life is better. isn&rsquo;t it?</em>.</p>
+
+<p>Zjavne nie. Pretože používateľom nefunguje už ani <em>endorsed</em> mechanizmus ani Kohsukeho voodoo. Problém s pretypovaním spočíva v tom, že nadradená trieda pluginu sa znovu načítava iným classloaderom než triedy pluginov. Na fóre Sunu však <a href="http://forums.java.net/jive/message.jspa?messageID=267755#267755">ktosi</a> zistil, že pluginy začnú fungovať správne, ak majú názov balíčka začínajúci sa na <code>com.sun.tools.xjc</code> (tieto triedy sa zaradia do rovnakého balíčka ako nadradená trieda pluginu.)</p>
+
+<p>Naše riešenie bolo potom nasledovné: stiahli sme zdrojáky pluginu FluentAPI, triedy presunuli do balíčka <code>com.sun.tools.xjc.plugin.fluent_api</code>, v súbore <code>META-INF/services/com.sun.tools.xjc.Plugin</code> zmenili názov balíčka a prekompilovali plugin projektu.</p>
+
+<p>Zrazu všetko tak funguje ako má.</p>
+
+<p>Otázka je, kde je problém: či v <em>endorsed</em> mechanizme alebo v snahe vyriešiť classloaderovské peklo v dobrej viere iným classloaderovským peklom. Alebo či má zmysel pridávať k JRE špecifické veci ako JAXB.</p>
+
+<p>Sunovská Java sa už raz s bundlovaním popálila (za čias Javy 1.4 pribalili k JRE beta verziu Xalana). A toto vyzerá byť analogický problém.</p>
+
+<p>Ak si chcete stiahnuť nami prebudovaný plugin FluentAPI, ktorý funguje s JAXB 2.1.7 a má upravený názov balíčka, použite <a href="Attach:jaxb-fluent-api-2.1.7-patched.jar">odkaz</a>.</p>
+
+</main>
+
+    <footer>
+      
+<script>
+(function() {
+  function center_el(tagName) {
+    var tags = document.getElementsByTagName(tagName), i, tag;
+    for (i = 0; i < tags.length; i++) {
+      tag = tags[i];
+      var parent = tag.parentElement;
+      
+      if (parent.childNodes.length === 1) {
+        
+        if (parent.nodeName === 'A') {
+          parent = parent.parentElement;
+          if (parent.childNodes.length != 1) continue;
+        }
+        if (parent.nodeName === 'P') parent.style.textAlign = 'center';
+      }
+    }
+  }
+  var tagNames = ['img', 'embed', 'object'];
+  for (var i = 0; i < tagNames.length; i++) {
+    center_el(tagNames[i]);
+  }
+})();
+</script>
+
+      
+    </footer>
+  </body>
+</html>
+

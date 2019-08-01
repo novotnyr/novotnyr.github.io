@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Netbeans, Ubuntu a GTK vývoj | robonovotny</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.css" integrity="sha384-D+9gmBxUQogRLqvARvNLmA9hS2x//eK1FhVb9PiU86gmcrBrJAQT8okdJ4LMp2uv" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.js" integrity="sha384-483A6DwYfKeDa0Q52fJmxFXkcPCFfnXMoXblOkJ4JcA8zATN6Tm78UNL72AKk+0O" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/contrib/auto-render.min.js" integrity="sha384-yACMu8JWxKzSp/C1YV86pzGiQ/l1YUfE8oPuahJQxzehAjEt2GiQuy/BIvl9KyeF" crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body);
+        });
+    </script>
+
+<header>
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <nav>
+    <ul>
+      
+      
+      <li class="pull-left ">
+        <a href="http://novotnyr.github.io/">/home/robonovotny</a>
+      </li>
+      
+
+      
+
+    </ul>
+  </nav>
+</header>
+
+  </head>
+
+  <body>
+    <br/>
+
+<div class="article-meta">
+<h1><span class="title">Netbeans, Ubuntu a GTK vývoj</span></h1>
+
+<h2 class="date">2011/03/19</h2>
+<p class="terms">
+  
+  
+  
+  
+  
+</p>
+</div>
+
+
+
+<main>
+<ul>
+<li><p>nainštalovať vývojárske knižnice</p>
+
+<pre><code>apt-get install libgtk2.0-dev
+</code></pre></li>
+
+<li><p>nastaviť projekt: <strong>Project Properties | Build | C Compiler</strong>. V sekcii <strong>General</strong> uviesť do <strong>Additional Options</strong>:</p>
+
+<pre><code>`pkg-config --cflags gtk+-2.0` `pkg-config --libs gtk+-2.0`
+</code></pre>
+
+<p>Nezabudnúť na spätné apostrofy (backticks). V prípade chyby skontrolujte, či <code>pkg-config</code> funguje z terminálu. Na Ubuntu 10.10 vráti napr.</p>
+
+<pre><code>-pthread -I/usr/include/gtk-2.0 -I/usr/lib/gtk-2.0/include \
+-I/usr/include/atk-1.0 -I/usr/include/cairo \ 
+-I/usr/include/gdk-pixbuf-2.0 -I/usr/include/pango-1.0 \ 
+-I/usr/include/gio-unix-2.0/ \ -I/usr/include/glib-2.0 \ 
+-I/usr/lib/glib-2.0/include \ 
+-I/usr/include/pixman-1 -I/usr/include/freetype2 \ 
+-I/usr/include/libpng12  
+</code></pre></li>
+
+<li><p>V <strong>Tools | Options | C/C++</strong> na karte <em>Code Assistance</em> nastaviť pre vhodnú <em>Tool Collection</em> (štandardne GNU) na karte C Compiler bonusový Include adresár:</p>
+
+<pre><code>/usr/include
+</code></pre></li>
+</ul>
+
+</main>
+
+    <footer>
+      
+<script>
+(function() {
+  function center_el(tagName) {
+    var tags = document.getElementsByTagName(tagName), i, tag;
+    for (i = 0; i < tags.length; i++) {
+      tag = tags[i];
+      var parent = tag.parentElement;
+      
+      if (parent.childNodes.length === 1) {
+        
+        if (parent.nodeName === 'A') {
+          parent = parent.parentElement;
+          if (parent.childNodes.length != 1) continue;
+        }
+        if (parent.nodeName === 'P') parent.style.textAlign = 'center';
+      }
+    }
+  }
+  var tagNames = ['img', 'embed', 'object'];
+  for (var i = 0; i < tagNames.length; i++) {
+    center_el(tagNames[i]);
+  }
+})();
+</script>
+
+      
+    </footer>
+  </body>
+</html>
+

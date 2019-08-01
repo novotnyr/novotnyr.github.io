@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Apache Forrest – receptár tipov a trikov | robonovotny</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.css" integrity="sha384-D+9gmBxUQogRLqvARvNLmA9hS2x//eK1FhVb9PiU86gmcrBrJAQT8okdJ4LMp2uv" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.js" integrity="sha384-483A6DwYfKeDa0Q52fJmxFXkcPCFfnXMoXblOkJ4JcA8zATN6Tm78UNL72AKk+0O" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/contrib/auto-render.min.js" integrity="sha384-yACMu8JWxKzSp/C1YV86pzGiQ/l1YUfE8oPuahJQxzehAjEt2GiQuy/BIvl9KyeF" crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body);
+        });
+    </script>
+
+<header>
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <nav>
+    <ul>
+      
+      
+      <li class="pull-left ">
+        <a href="http://novotnyr.github.io/">/home/robonovotny</a>
+      </li>
+      
+
+      
+
+    </ul>
+  </nav>
+</header>
+
+  </head>
+
+  <body>
+    <br/>
+
+<div class="article-meta">
+<h1><span class="title">Apache Forrest – receptár tipov a trikov</span></h1>
+
+<h2 class="date">2006/02/02</h2>
+<p class="terms">
+  
+  
+  
+  
+  
+</p>
+</div>
+
+
+
+<main>
+
+
+<h1 id="forrest-a-slovenské-fonty">Forrest a slovenské fonty</h1>
+
+<h2 id="problém">Problém</h2>
+
+<p><a href="http://xml.apache.org/forrest |Apache Forrest]] je nástroj na generovanie projektovej dokumentácie v rôznych formátoch zo vstupných súborov vo formáte (implicitne) DocBook. Najčastejším použitím je výstup vo forme webových stránok alebo PDFka. Príkladom siete vytvorenej Forrestom sú stránky k mojej [[http://s.ics.upjs.sk/~novotnyr/dp |diplomke]]. Jednou záludnosťou pri generovaní PDFiek je notorický problém slovenčiny - diakritika. V štandardnej distribúcii a konfigurácii nepodporuje Forrest pri generovaní PDFiek diakritiku - namiesto nej sa zobrazia mriežky #. Jadro problému spočíva vo [[http://xml.apache.org/fop |FOPe]], čo je nástroj spracovávajúci [[http://www.w3.org/TR/2001/REC-xsl-20011015/">Formatting Objects</a> (stručne: špecifikácia pre XML dokumenty s jemnými možnosťami pre formátovanie ich vzhľadu).</p>
+
+<h2 id="riešenie-základné-r-ťažkého-kalibru">Riešenie (základné r. ťažkého kalibru)</h2>
+
+<p>Na vyriešenie problému použijeme podporný balíček pre FOP, ktorého autorom je Jiří Kosek.</p>
+
+<ul>
+<li>Stiahneme balíček z z <a href="http://www.kosek.cz/sw/fop/fop-cs.zip">http://www.kosek.cz/sw/fop/fop-cs.zip</a></li>
+<li>V tomto archíve rozbalíme obsah adresára <code>conf</code> na nejaké inteligentné miesto, napr. do <code>%FORREST_HOME%/fonts/conf</code></li>
+<li>Otvoríme v tomto adresári súbor <code>userconfig.xml</code>, použijeme z neho obsah medzi tagmi <fonts>&hellip;</fonts>. Nahradíme entitu <code>&amp;fop.home;</code> umiestnením súborov z archívu vo formáte URI. Napr. <code>&amp;fop.home;/conf/cour.xml</code> prevedieme na tvar <code>file:///c:/java/apache-forrest-0.5.1/fonts/conf/cour.xml</code>. Entitu <code>&amp;fonts.dir;</code> nahradíme umiestnením fontu v operačnom systéme. Napr. vo Windows nahradíme <code>&amp;fonts.dir;/cour.ttf</code> formou <code>C:/Windows/fonts/cour.ttf</code>.</li>
+<li>Tento nahradený obsah vložíme do súboru <code>%FORREST_HOME%/WEB-INF/lib/fop-0.20.5.jar/conf/config.xml</code> medzi tagy <fonts>&hellip;</fonts> (JAR si môžeme predtým odzálohovať&hellip;)</li>
+<li>generujeme PDFko klasickým spôsobom</li>
+</ul>
+
+<p>Here endeth the lesson.</p>
+
+</main>
+
+    <footer>
+      
+<script>
+(function() {
+  function center_el(tagName) {
+    var tags = document.getElementsByTagName(tagName), i, tag;
+    for (i = 0; i < tags.length; i++) {
+      tag = tags[i];
+      var parent = tag.parentElement;
+      
+      if (parent.childNodes.length === 1) {
+        
+        if (parent.nodeName === 'A') {
+          parent = parent.parentElement;
+          if (parent.childNodes.length != 1) continue;
+        }
+        if (parent.nodeName === 'P') parent.style.textAlign = 'center';
+      }
+    }
+  }
+  var tagNames = ['img', 'embed', 'object'];
+  for (var i = 0; i < tagNames.length; i++) {
+    center_el(tagNames[i]);
+  }
+})();
+</script>
+
+      
+    </footer>
+  </body>
+</html>
+

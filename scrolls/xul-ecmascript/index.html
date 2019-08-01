@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>XUL – EcmaScript | robonovotny</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.css" integrity="sha384-D+9gmBxUQogRLqvARvNLmA9hS2x//eK1FhVb9PiU86gmcrBrJAQT8okdJ4LMp2uv" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.js" integrity="sha384-483A6DwYfKeDa0Q52fJmxFXkcPCFfnXMoXblOkJ4JcA8zATN6Tm78UNL72AKk+0O" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/contrib/auto-render.min.js" integrity="sha384-yACMu8JWxKzSp/C1YV86pzGiQ/l1YUfE8oPuahJQxzehAjEt2GiQuy/BIvl9KyeF" crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body);
+        });
+    </script>
+
+<header>
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <nav>
+    <ul>
+      
+      
+      <li class="pull-left ">
+        <a href="http://novotnyr.github.io/">/home/robonovotny</a>
+      </li>
+      
+
+      
+
+    </ul>
+  </nav>
+</header>
+
+  </head>
+
+  <body>
+    <br/>
+
+<div class="article-meta">
+<h1><span class="title">XUL – EcmaScript</span></h1>
+
+<h2 class="date">2005/03/16</h2>
+<p class="terms">
+  
+  
+  
+  
+  
+</p>
+</div>
+
+
+
+<main>
+
+
+<p>EcmaScript je vlastne normovanou verziou jazyka, ktory vznikol z JavaScriptu. Mozilla podporuje <a href="http://www.ecma-international.org/publications/standards/Ecma-262.htm">EcmaScript verzie 3</a>.</p>
+
+<h1 id="objektový-model-v-ecmascripte-262">Objektový model v EcmaScripte (262).</h1>
+
+<p>V EcmaScripte neexistuje koncept triedy.</p>
+
+<h2 id="tvorba-novych-instancii">Tvorba novych instancii</h2>
+
+<h3 id="explicitne-vytvaranie-objektov">Explicitne vytvaranie objektov</h3>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#289;font-weight:bold">var</span> person <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> <span style="color:#072">Object</span>;
+person.firstName <span style="color:#333">=</span> <span style="background-color:#e0e0ff">&#34;John&#34;</span>;
+person.secondName <span style="color:#333">=</span> <span style="background-color:#e0e0ff">&#34;Doe&#34;</span>;
+</code></pre></div>
+<h3 id="inline-ci-pristup-cez-literal">„Inline&rdquo; ci pristup cez literal</h3>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#289;font-weight:bold">var</span> obj <span style="color:#333">=</span> { foreground<span style="color:#333">:</span><span style="background-color:#e0e0ff">&#34;red&#34;</span>, background<span style="color:#333">:</span><span style="background-color:#e0e0ff">&#34;blue&#34;</span> }
+</code></pre></div>
+<p>Vsimnime si syntax:</p>
+
+<ul>
+<li>datove cleny su uvedene bez <code>var</code></li>
+<li>hodnota sa im priraduje cez dvojbodku (nie cez „rovna sa&rdquo;)</li>
+</ul>
+
+<h2 id="prototypy-v-ulohe-tried">Prototypy v ulohe tried</h2>
+
+<p>Na vytvaranie kvazi-tried sa pouzivaju „prototypy&rdquo;. Protyp specifikuje implicitne hodnoty pre metody a datove cleny novych instancii.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#666;font-style:italic">// tato funkcia je vlastne konstruktorom triedy Person
+</span><span style="color:#666;font-style:italic"></span><span style="color:#289;font-weight:bold">function</span> Person() {
+  print(<span style="background-color:#e0e0ff">&#39;Constructing new person...&#39;</span>);
+}
+
+<span style="color:#666;font-style:italic">// Objekt.prototyp je vlastne kvazi-trieda
+</span><span style="color:#666;font-style:italic"></span>Person.prototype <span style="color:#333">=</span> {
+  firstName<span style="color:#333">:</span> <span style="background-color:#e0e0ff">&#34;John&#34;</span>,
+  secondName<span style="color:#333">:</span> <span style="background-color:#e0e0ff">&#34;Doe&#34;</span>
+}
+
+<span style="color:#666;font-style:italic">// vytvorenie novej instancie
+</span><span style="color:#666;font-style:italic"></span><span style="color:#289;font-weight:bold">var</span> p <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Person();
+<span style="color:#666;font-style:italic">// print the default data field values
+</span><span style="color:#666;font-style:italic"></span>print(p.firstName);
+print(p.secondName);
+
+<span style="color:#666;font-style:italic">// set a value for data field
+</span><span style="color:#666;font-style:italic"></span>p.firstName <span style="color:#333">=</span> <span style="background-color:#e0e0ff">&#34;Michael&#34;</span>;
+print(p.firstName);
+
+<span style="color:#666;font-style:italic">// make a new instance, its data fields have default values specified in prototype
+</span><span style="color:#666;font-style:italic"></span><span style="color:#289;font-weight:bold">var</span> q <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Person();
+print(q.firstName);
+print(q.secondName);
+</code></pre></div>
+</main>
+
+    <footer>
+      
+<script>
+(function() {
+  function center_el(tagName) {
+    var tags = document.getElementsByTagName(tagName), i, tag;
+    for (i = 0; i < tags.length; i++) {
+      tag = tags[i];
+      var parent = tag.parentElement;
+      
+      if (parent.childNodes.length === 1) {
+        
+        if (parent.nodeName === 'A') {
+          parent = parent.parentElement;
+          if (parent.childNodes.length != 1) continue;
+        }
+        if (parent.nodeName === 'P') parent.style.textAlign = 'center';
+      }
+    }
+  }
+  var tagNames = ['img', 'embed', 'object'];
+  for (var i = 0; i < tagNames.length; i++) {
+    center_el(tagNames[i]);
+  }
+})();
+</script>
+
+      
+    </footer>
+  </body>
+</html>
+

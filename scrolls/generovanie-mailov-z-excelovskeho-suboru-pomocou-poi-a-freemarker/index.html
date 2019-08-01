@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Generovanie mailov z excelovského súboru pomocou POI a Freemarker-a | robonovotny</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.css" integrity="sha384-D+9gmBxUQogRLqvARvNLmA9hS2x//eK1FhVb9PiU86gmcrBrJAQT8okdJ4LMp2uv" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.js" integrity="sha384-483A6DwYfKeDa0Q52fJmxFXkcPCFfnXMoXblOkJ4JcA8zATN6Tm78UNL72AKk+0O" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/contrib/auto-render.min.js" integrity="sha384-yACMu8JWxKzSp/C1YV86pzGiQ/l1YUfE8oPuahJQxzehAjEt2GiQuy/BIvl9KyeF" crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body);
+        });
+    </script>
+
+<header>
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <nav>
+    <ul>
+      
+      
+      <li class="pull-left ">
+        <a href="http://novotnyr.github.io/">/home/robonovotny</a>
+      </li>
+      
+
+      
+
+    </ul>
+  </nav>
+</header>
+
+  </head>
+
+  <body>
+    <br/>
+
+<div class="article-meta">
+<h1><span class="title">Generovanie mailov z excelovského súboru pomocou POI a Freemarker-a</span></h1>
+
+<h2 class="date">2010/02/23</h2>
+<p class="terms">
+  
+  
+  
+  
+  
+</p>
+</div>
+
+
+
+<main>
+
+
+<h1 id="problém">Problém?</h1>
+
+<p>Na istú nemenovanú konferenciu bolo v istú chvíľu upozorniť autorov, že sa blíži termín pre splnenie určitých povinností. Každý z autorov článku mal splniť niekoľko náležitostí, napr.:</p>
+
+<ul>
+<li>zaslanie registračného formulára</li>
+<li>rezervácia hotela</li>
+<li>zaslanie článku</li>
+<li>zaplatenie konferenčného poplatku.</li>
+</ul>
+
+<p>Údaje o autoroch sa nachádzali v excelovskom súbore, kde sa na druhom liste nachádzala tabuľka obsahujúca po riadkoch meno autora. V ďalších štyroch bunkách na riadku boli postupne uvedené nuly alebo jednotky, ktoré indikovali splnenie príslušnej povinnosti.</p>
+
+<p>Na základe tejto tabuľky bolo potrebné vygenerovať automaticky mail, kde sa uviedlo meno autora a zoznam povinností, ktoré ešte musí daný autor splniť. V prípade, že napr. nezaslal registračný formulár ani článok, v zozname povinností mali byť len tieto dve položky.</p>
+
+<h1 id="riešenie-pomocou-poi-a-freemarker-u">Riešenie pomocou POI a Freemarker-u</h1>
+
+<p>Úloha sa dá v Jave vyriešiť veľmi elegantne pomocou dvoch knižníc:</p>
+
+<ul>
+<li><a href="http://poi.apache.org/">Apache POI</a> je knižnica poskytujúca možnosť vytvárania a úpravy excelovských súborov</li>
+<li><a href="http://freemarker.org/">Freemarker</a> je viacúčelový nástroj na generovanie textov na základe šablóny, tzv. <em>template engine</em></li>
+</ul>
+
+<h2 id="načítanie-excelovského-súboru">Načítanie excelovského súboru</h2>
+
+<p>Načítanie excelovského súboru je elegantné:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">POIFSFileSystem <span style="color:#5ed;font-weight:bold">fs</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> POIFSFileSystem(
+  <span style="color:#289;font-weight:bold">new</span> FileInputStream(<span style="background-color:#e0e0ff">&#34;data.xls&#34;</span>));
+HSSFWorkbook <span style="color:#5ed;font-weight:bold">wb</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> HSSFWorkbook(fs);
+HSSFSheet <span style="color:#5ed;font-weight:bold">sheet</span> <span style="color:#333">=</span> wb.<span style="color:#007">getSheetAt</span>(1);</code></pre></div>
+<p>Prvý riadok vytvorí súborový systém podporujúci prácu s OLE2 dokumentami. Druhý riadok otvorí nový <em>workbook</em> (<em>sešit</em>), z ktorého vytiahneme druhý <em>sheet</em> (<em>list</em>)) (z indexu 1).</p>
+
+<p>Metódy na získavanie obsahu buniek sú prosté. Zo sheetu vytiahneme riadok pomocou <code>getRow()</code>, čím získame objekt riadka. Z riadku zase vieme vytiahnuť objekt bunky cez <code>getCell()</code>, a na nej vieme volať metódy pre získanie hodnoty, formátov a pod.</p>
+
+<p>Keďže nevieme, koľko riadkov obsahuje daný list, budeme iterovať riadky dovtedy, kým nezískame <code>null</code> hodnotu, čo indikuje to, že ďalší riadok už je prázdny.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">do</span> {
+  HSSFRow <span style="color:#5ed;font-weight:bold">row</span> <span style="color:#333">=</span> sheet.<span style="color:#007">getRow</span>(i);
+  <span style="color:#289;font-weight:bold">if</span>(row <span style="color:#333">==</span> <span style="color:#289;font-weight:bold">null</span>) {
+    <span style="color:#289;font-weight:bold">break</span>;
+  }
+  <span style="color:#666;font-style:italic">//...
+</span><span style="color:#666;font-style:italic"></span>  i<span style="color:#333">++</span>;
+} <span style="color:#289;font-weight:bold">while</span>(<span style="color:#289;font-weight:bold">true</span>);</code></pre></div>
+<p>Každý riadok obsahuje teda vo svojich bunkách riadky o autorovi. Vypísať obsah buniek môžeme jednoducho:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">for</span> (<span style="color:#66f;font-weight:bold">short</span> <span style="color:#5ed;font-weight:bold">j</span> <span style="color:#333">=</span> 1; j <span style="color:#333">&lt;</span> 5; j<span style="color:#333">++</span>) {
+  HSSFCell <span style="color:#5ed;font-weight:bold">cell</span> <span style="color:#333">=</span> row.<span style="color:#007">getCell</span>(j);
+  System.<span style="color:#007">out</span>.<span style="color:#007">println</span>(cell.<span style="color:#007">getNumericCellValue</span>());
+}</code></pre></div>
+<p>Tento kód vypíše numerické hodnoty buniek z druhého až piateho stĺpca. POI rozlišuje medzi typmi buniek &ndash; nie je možné vypisovať číselné hodnoty z reťazcových buniek a naopak. (Typ bunky je možné zistiť volaním metódy <code>getCellType()</code> na bunke, čo vracia celočíselnú konštantu, možné hodnoty sú v <a href="http://poi.apache.org/apidocs/index.html?org/apache/poi/hssf/usermodel/HSSFCell.html">dokumentácii</a>.) Metóda <code>getNumericCellValue()</code> získa obsah číselnej bunky ako <code>double</code>. Hodnoty z textových buniek môžeme získať zase pomocou <code>getRichStringCellValue().getString()</code>.</p>
+
+<p>Jednotlivé riadky môžeme pohodlne namapovať na pomocné objekty obsahujúce dáta o používateľoch. S týmito objektami sa potom bude pohodlne pracovať v šablóne.</p>
+
+<p>Vytvoríme si teda pomocnú triedu <code>Item</code>:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> Item {
+  String <span style="color:#5ed;font-weight:bold">name</span>;
+
+  <span style="color:#66f;font-weight:bold">boolean</span> <span style="color:#5ed;font-weight:bold">hasFirst</span>;
+
+  <span style="color:#66f;font-weight:bold">boolean</span> <span style="color:#5ed;font-weight:bold">hasSecond</span>;
+
+  <span style="color:#66f;font-weight:bold">boolean</span> <span style="color:#5ed;font-weight:bold">hasThird</span>;
+
+  <span style="color:#66f;font-weight:bold">boolean</span> <span style="color:#5ed;font-weight:bold">hasFourth</span>;
+
+  <span style="color:#666;font-style:italic">//gettre a settre
+</span><span style="color:#666;font-style:italic"></span>  ...
+  <span style="color:#666;font-style:italic">//
+</span><span style="color:#666;font-style:italic"></span>
+  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">void</span> setFirst(<span style="color:#66f;font-weight:bold">double</span> <span style="color:#5ed;font-weight:bold">first</span>) {
+    <span style="color:#289;font-weight:bold">this</span>.<span style="color:#007">hasFirst</span> <span style="color:#333">=</span> (first <span style="color:#333">!=</span> 0.<span style="color:#007">0</span>);
+  }
+
+  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">void</span> setSecond(<span style="color:#66f;font-weight:bold">double</span> <span style="color:#5ed;font-weight:bold">second</span>) {
+    <span style="color:#289;font-weight:bold">this</span>.<span style="color:#007">hasSecond</span> <span style="color:#333">=</span> (second <span style="color:#333">!=</span> 0.<span style="color:#007">0</span>);
+  }
+
+  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">void</span> setThird(<span style="color:#66f;font-weight:bold">double</span> <span style="color:#5ed;font-weight:bold">third</span>) {
+    <span style="color:#289;font-weight:bold">this</span>.<span style="color:#007">hasThird</span> <span style="color:#333">=</span> (third <span style="color:#333">!=</span> 0.<span style="color:#007">0</span>);
+  }
+
+  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">void</span> setFourth(<span style="color:#66f;font-weight:bold">double</span> <span style="color:#5ed;font-weight:bold">fourth</span>) {
+    <span style="color:#289;font-weight:bold">this</span>.<span style="color:#007">hasFourth</span> <span style="color:#333">=</span> (fourth <span style="color:#333">!=</span> 0.<span style="color:#007">0</span>);
+  }
+}</code></pre></div>
+<p>Keďže číselné hodnoty v bunkách sú poskytované v podobe <code>double</code> hodnôt a pre šablónu je lepšie mať hodnoty typu <code>boolean</code>, vyrobíme si pomocné settre.</p>
+
+<p>Pre každý riadok z listu teda vytvoríme novú položku typu <code>Item</code> a pre jej zapamätanie ju môžeme hodiť do pomocného zoznamu.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">List<span style="color:#333">&lt;</span>Item<span style="color:#333">&gt;</span> <span style="color:#5ed;font-weight:bold">items</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> ArrayList<span style="color:#333">&lt;</span>Item<span style="color:#333">&gt;</span>();
+<span style="color:#666;font-style:italic">//...otvaranie suborov...
+</span><span style="color:#666;font-style:italic"></span><span style="color:#66f;font-weight:bold">int</span> <span style="color:#5ed;font-weight:bold">i</span> <span style="color:#333">=</span> 1; <span style="color:#666;font-style:italic">//skip the first row
+</span><span style="color:#666;font-style:italic"></span><span style="color:#289;font-weight:bold">do</span> {
+  HSSFRow <span style="color:#5ed;font-weight:bold">row</span> <span style="color:#333">=</span> sheet.<span style="color:#007">getRow</span>(i);
+  <span style="color:#289;font-weight:bold">if</span>(row <span style="color:#333">==</span> <span style="color:#289;font-weight:bold">null</span>) {
+    <span style="color:#289;font-weight:bold">break</span>;
+  }
+  Item <span style="color:#5ed;font-weight:bold">item</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Item();
+  item.<span style="color:#007">setName</span>(row.<span style="color:#007">getCell</span>((<span style="color:#66f;font-weight:bold">short</span>)0).<span style="color:#007">getRichStringCellValue</span>()
+               .<span style="color:#007">getString</span>());
+  item.<span style="color:#007">setFirst</span>(row.<span style="color:#007">getCell</span>((<span style="color:#66f;font-weight:bold">short</span>)1).<span style="color:#007">getNumericCellValue</span>());
+  item.<span style="color:#007">setSecond</span>(row.<span style="color:#007">getCell</span>((<span style="color:#66f;font-weight:bold">short</span>)2).<span style="color:#007">getNumericCellValue</span>());
+  item.<span style="color:#007">setThird</span>(row.<span style="color:#007">getCell</span>((<span style="color:#66f;font-weight:bold">short</span>)3).<span style="color:#007">getNumericCellValue</span>());
+  item.<span style="color:#007">setFourth</span>(row.<span style="color:#007">getCell</span>((<span style="color:#66f;font-weight:bold">short</span>)4).<span style="color:#007">getNumericCellValue</span>());
+
+  items.<span style="color:#007">add</span>(item);
+  i<span style="color:#333">++</span>;
+} <span style="color:#289;font-weight:bold">while</span>(<span style="color:#289;font-weight:bold">true</span>);</code></pre></div>
+<h2 id="generovanie-mailov-zo-šablóny">Generovanie mailov zo šablóny</h2>
+
+<p>Na generovanie mailov zo šablóny potrebujeme dve náležitosti:</p>
+
+<ul>
+<li>samotnú šablónu mailu</li>
+
+<li><p>dáta, ktoré sa budú do šablóny dopĺňať.</p>
+
+<h3 id="šablóna-súbor-template-ftl">Šablóna (súbor <code>template.ftl</code>)</h3>
+
+<pre><code>Vážený používateľ ${item.name}!
+Vzhľadom na to, že sa blíži termín konania konferencie, 
+dovoľujeme si Vám pripomenúť, že je potrebné splniť nasledovné 
+náležitosti:
+&lt;#if !item.first&gt;
+* zaslať registračný formulár
+&lt;/#if&gt;
+&lt;#if !item.second&gt;
+* zaplatiť konferečný poplatok
+&lt;/#if&gt;
+&lt;#if !item.third&gt;
+* zaslať camera-ready kópiu článku
+&lt;/#if&gt;
+&lt;#if !item.fourth&gt;
+* rezervovať hotel
+&lt;/#if&gt;
+----------------------------------------------
+</code></pre>
+
+<p>Reťazec <code>${item.name}</code> predstavuje premennú, ktorá bude nahradená vo výsledku skutočným textom.</p></li>
+</ul>
+
+<p>Značka <code>&lt;#if..</code> predstavuje direktívu (jej syntax je podobná HTML značkám), v tomto prípade podmienku. Syntax podmienky je analogická Jave. Podmienka</p>
+
+<pre><code>&lt;#if !item.fourth&gt;
+* rezervovať hotel
+&lt;/#if&gt;
+</code></pre>
+
+<p>špecifikuje, že text sa má zobraziť len vtedy, ak premenná <code>item.fourth</code> má hodnotu <code>false</code>.</p>
+
+<h3 id="konfigurácia-freemarkera">Konfigurácia Freemarkera</h3>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Configuration <span style="color:#5ed;font-weight:bold">cfg</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Configuration();
+cfg.<span style="color:#007">setDirectoryForTemplateLoading</span>(<span style="color:#289;font-weight:bold">new</span> File(<span style="background-color:#e0e0ff">&#34;.&#34;</span>));
+
+Template <span style="color:#5ed;font-weight:bold">template</span> <span style="color:#333">=</span> cfg.<span style="color:#007">getTemplate</span>(<span style="background-color:#e0e0ff">&#34;template.ftl&#34;</span>);</code></pre></div>
+<p>Pred použitím Freemarkera ho potrebujeme nakonfigurovať, teda vytvoriť objekt <code>Configuration</code>. Na ňom nastavíme adresár, v ktorom sa budú nachádzať šablóny.
+Objekt šablóny získame na treťom riadku &ndash; šablóna sa načíta z daného súboru.</p>
+
+<p>Následne potrebujeme nastaviť obsahy pre premenné definované v šablóne (ide o premenné <code>item.name</code>, <code>item.first</code>, &hellip; <code>item.fourth</code>. Názvy a ich hodnoty sú reprezentované v mape, ktorú vytvoríme</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Map <span style="color:#5ed;font-weight:bold">model</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> HashMap();
+model.<span style="color:#007">put</span>(<span style="background-color:#e0e0ff">&#34;item&#34;</span>, item)</code></pre></div>
+<p>Táto mapa priradí premennej <code>item</code> objekt <code>item</code> typu <code>Item</code>. Premenné definované v šablóne potom môžu používať bodkovú notáciu pri práci s objektom <code>item</code> a pristupovať tak k jeho gettrom.</p>
+
+<p>Napr. premenná <code>${item.name}</code> vezme obsah premennej <code>item</code> (čo je objekt typu <code>Item</code>) a na ňom zavolá metódu <code>getName()</code>. Na výstupe sa teda objaví meno používateľa.</p>
+
+<p>Analogicky podmienka <code>!item.fourth</code> zavolá metódu <code>getFourth()</code> na obsahu premennej <code>item</code> a zneguje ju.</p>
+
+<p>Výsledný kód na vygenerovanie textu mailov a jeho zobrazenie na štandardný výstup je potom:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Configuration <span style="color:#5ed;font-weight:bold">cfg</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Configuration();
+cfg.<span style="color:#007">setDirectoryForTemplateLoading</span>(<span style="color:#289;font-weight:bold">new</span> File(<span style="background-color:#e0e0ff">&#34;.&#34;</span>));
+
+Template <span style="color:#5ed;font-weight:bold">template</span> <span style="color:#333">=</span> cfg.<span style="color:#007">getTemplate</span>(<span style="background-color:#e0e0ff">&#34;template.ftl&#34;</span>);
+	
+Writer <span style="color:#5ed;font-weight:bold">out</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> OutputStreamWriter(System.<span style="color:#007">out</span>);
+Map <span style="color:#5ed;font-weight:bold">rootModel</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> HashMap();
+<span style="color:#289;font-weight:bold">for</span> (Item <span style="color:#5ed;font-weight:bold">item</span> <span style="color:#333">:</span> items) {
+  rootModel.<span style="color:#007">put</span>(<span style="background-color:#e0e0ff">&#34;item&#34;</span>, item);
+  template.<span style="color:#007">process</span>(rootModel, out);
+  out.<span style="color:#007">flush</span>(); 			
+}</code></pre></div>
+<p>Vytvoríme objekt šablóny, vytvoríme objekt <code>out</code>, do ktorého sa bude zapisovať výsledok (teda na konzolu). Prejdeme zoznamom položiek, pomocou metódy <code>process()</code> asociujeme dáta z položky so šablónou a vypľujeme ju na výstup.</p>
+
+<p>Samotný objekt šablóny môžeme medzi zmenami dát recyklovať, keďže je bezstavový (nemusíme teda pre každú položku načítavať šablónu nanovo). Rovnako je užitočné <code>flush()</code>núť výstup, aby sa nestalo, že dáta ostanú v medzipamäti.</p>
+
+<h1 id="punchline">Punchline</h1>
+
+<p>Na tento účel sa dá využiť aj <em>Hromadná korešpondencia z Wordu</em>, ktorá dokáže pomerne pekne zabezpečiť získavanie dát pre maily z excelovského súboru.</p>
+
+<h1 id="odkazy">Odkazy</h1>
+
+<ul>
+<li><a href="http://poi.apache.org/">Apache POI</a></li>
+<li><a href="http://freemarker.org/">Freemarker</a></li>
+<li><a href="http://jexcelapi.sourceforge.net/">Java Excel API</a> - iný prístup k excelovským súborom</li>
+</ul>
+
+</main>
+
+    <footer>
+      
+<script>
+(function() {
+  function center_el(tagName) {
+    var tags = document.getElementsByTagName(tagName), i, tag;
+    for (i = 0; i < tags.length; i++) {
+      tag = tags[i];
+      var parent = tag.parentElement;
+      
+      if (parent.childNodes.length === 1) {
+        
+        if (parent.nodeName === 'A') {
+          parent = parent.parentElement;
+          if (parent.childNodes.length != 1) continue;
+        }
+        if (parent.nodeName === 'P') parent.style.textAlign = 'center';
+      }
+    }
+  }
+  var tagNames = ['img', 'embed', 'object'];
+  for (var i = 0; i < tagNames.length; i++) {
+    center_el(tagNames[i]);
+  }
+})();
+</script>
+
+      
+    </footer>
+  </body>
+</html>
+

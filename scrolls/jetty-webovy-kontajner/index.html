@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Jetty – webový kontajner | robonovotny</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.css" integrity="sha384-D+9gmBxUQogRLqvARvNLmA9hS2x//eK1FhVb9PiU86gmcrBrJAQT8okdJ4LMp2uv" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.js" integrity="sha384-483A6DwYfKeDa0Q52fJmxFXkcPCFfnXMoXblOkJ4JcA8zATN6Tm78UNL72AKk+0O" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/contrib/auto-render.min.js" integrity="sha384-yACMu8JWxKzSp/C1YV86pzGiQ/l1YUfE8oPuahJQxzehAjEt2GiQuy/BIvl9KyeF" crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body);
+        });
+    </script>
+
+<header>
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <nav>
+    <ul>
+      
+      
+      <li class="pull-left ">
+        <a href="http://novotnyr.github.io/">/home/robonovotny</a>
+      </li>
+      
+
+      
+
+    </ul>
+  </nav>
+</header>
+
+  </head>
+
+  <body>
+    <br/>
+
+<div class="article-meta">
+<h1><span class="title">Jetty – webový kontajner</span></h1>
+
+<h2 class="date">2007/09/03</h2>
+<p class="terms">
+  
+  
+  
+  
+  
+</p>
+</div>
+
+
+
+<main>
+
+
+<h1 id="o-jetty">O Jetty</h1>
+
+<p>Jetty je servletový a JSP kontajner, ktorý sa vyznačuje malou veľkosťou a subjektívne väčšou svižnosťou oproti klasickým kontajnerom (napr. Tomcat-u).</p>
+
+<p>Posledná verzia 6.1 spĺňa všetky najnovšie štandardy špecifikácie Servlet/JSP (teda Servlet 2.5 a JSP 2.1)</p>
+
+<h1 id="kde-stiahnuť">Kde stiahnuť</h1>
+
+<p>Jetty si možno stiahnuť napr. z <a href="http://dist.codehaus.org/jetty/jetty-6.1.5/">CodeHaus</a>u, veľkosť ZIP archívu v prípade verzie 6.1 je cca 23 MB.</p>
+
+<p>Rozbalený ZIP archív (66 MB) však môžeme bez problémov osekať o nepoužívané komponenty. V prípade jednoduchého testovania webaplikácií sa môžeme zbaviť súčastí ako asynchrónne IO a pod.</p>
+
+<p>V podstate bez problémov sa môžeme zbaviť adresárov ako:</p>
+
+<ul>
+<li><code>contrib</code> &ndash; obsahuje zdrojové kódy pre komponenty tretích strán)</li>
+<li><code>examples</code> &ndash; príklady webaplikácií</li>
+<li><code>extras</code> &ndash; zdrojové kódy pre integráciu Jetty a ostatných aplikačných rámcov</li>
+<li><code>javadoc</code> &ndash; JavaDoc API pre zdrojové kódy Jetty</li>
+<li><code>modules</code> &ndash; zdrojové kódy pre jednotlivé moduly Jetty</li>
+<li><code>patches</code> &ndash; opravné súbory pre zdrojové kódy Jetty</li>
+<li><code>project-website</code> &ndash; zdrojové kódy pre webovú stránku Jetty</li>
+<li>podadresáre z <code>webapps</code> &ndash; ukážkové testovacie príklady</li>
+<li>konfiguračné súbory a adresáre <code>test-jndi.xml</code>, <code>test-annotations.xml</code> <code>test.xml</code> a nim prislúchajúce <code>.d</code> adresáre</li>
+</ul>
+
+<p>Tým sa veľkosť Jetty zminimalizuje na prijateľných 15 MB.</p>
+
+<h1 id="konfigurácia-webovej-aplikácie">Konfigurácia webovej aplikácie</h1>
+
+<p>Konfigurácia prebieha pomocou XML súborov v adresári <code>contexts</code>. Každej nasadenej aplikácii zodpovedá jeden XML súbor. Príkladom minimalistického konfiguračného súboru je:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#579">&lt;?xml version=&#34;1.0&#34;  encoding=&#34;ISO-8859-1&#34;?&gt;</span>
+<span style="color:#579">&lt;!DOCTYPE Configure PUBLIC &#34;-//Mort Bay Consulting//DTD Configure//EN&#34; &#34;http://jetty.mortbay.org/configure.dtd&#34;&gt;</span>
+
+<span style="color:#070">&lt;Configure</span> <span style="color:#007">class=</span><span style="background-color:#e0e0ff">&#34;org.mortbay.jetty.webapp.WebAppContext&#34;</span><span style="color:#070">&gt;</span>
+  <span style="color:#070">&lt;Set</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;contextPath&#34;</span><span style="color:#070">&gt;</span>/libris<span style="color:#070">&lt;/Set&gt;</span>
+  <span style="color:#070">&lt;Set</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;resourceBase&#34;</span><span style="color:#070">&gt;</span>c:/Projects/libris/web<span style="color:#070">&lt;/Set&gt;</span>
+<span style="color:#070">&lt;/Configure&gt;</span> </code></pre></div>
+<ul>
+<li><code>contextPath</code> špecifikuje koncovku v URL webovej aplikácie. V príklade bude aplikácia typicky nasadená na adresu napr. <code>http://localhost:8080/libris</code></li>
+<li><code>resourceBase</code> odkazuje na adresár webovej aplikácie (ide o adresár obsahujúci <code>WEB-INF</code>)</li>
+</ul>
+
+<h1 id="služba-a-jej-popis">Služba a jej popis</h1>
+
+<p>Jetty podporuje na Windowse spúšťanie kontajnera ako windowsovsej služby. V adresári <code>bin</code> sa nachádza Jetty-Service.exe. Pomocou neho môžeme však spustiť kontajner aj priamo v konzole. Tento <code>exe</code> obaľovač java tried má navyše výhodu v tom, že dokáže detekovať padnuté inštancie a v prípade potreby kontajner reštartovať. To sa týka aj prípadu, keď v JVM nastane nedostatok pamäti (výnimka <code>java.lang.OutOfMemoryError</code>).</p>
+
+<h1 id="autoreload-automatické-načítavanie-webovej-aplikácie">Autoreload - automatické načítavanie webovej aplikácie</h1>
+
+<p>V servletovom kontajneri <a href="http://tomcat.apache.org | Tomcat]] možno využívať možnosť automatického načítania webovej aplikácie po zmene niektorej z tried (typicky po rekompilácii). Analogickú funkcionalitu je možné dosiahnuť aj v Jetty. Znovunačítanie sa uskutoční v momente, keď bol aktualizovaný konfiguračný súbor XML v adresári `contexts`. Jedna z možností je využitie klasického unixovského príkazu [[http://www.helge.mynetcologne.de/touch/program/touch0.1/touch.exe"><code>touch</code></a>, ktorý zmení
+dátum a čas daného súboru. Po kompilácii triedy stačí <code>touch</code>núť daný súbor a prebehne autoreload.</p>
+
+<h1 id="typické-problémy">Typické problémy</h1>
+
+<p>Typickým problémom so štartom Jetty je prípad, keď už na danom porte počúva nejaká aplikácia. (štandardným portom je 8080). To sa prejavuje chybovou hláškou</p>
+
+<pre><code>INFO:  Opened C:\java\jetty\logs\2007_09_03.request.log
+WARN:  failed SelectChannelConnector@0.0.0.0:8080
+ java.net.BindException: Address already in use: bind
+     at sun.nio.ch.Net.bind(Native Method)
+     at sun.nio.ch.ServerSocketChannelImpl.bind(Unknown Source)
+     at sun.nio.ch.ServerSocketAdaptor.bind(Unknown Source)
+</code></pre>
+
+<p>Riešením je zastaviť aplikáciu, ktorá na danom porte počúva, alebo upraviť port.</p>
+
+<p>Zmeniť port možno v súbore <code>etc/jetty.xml</code>, kde v</p>
+
+<pre><code>&lt;Call name=&quot;addConnector&quot;&gt;
+  &lt;Arg&gt;
+    &lt;New class=&quot;org.mortbay.jetty.nio.SelectChannelConnector&quot;&gt;
+      &lt;Set name=&quot;port&quot;&gt;&lt;SystemProperty name=&quot;jetty.port&quot; 
+                       default=&quot;8080&quot;/&gt;
+      &lt;/Set&gt; 
+</code></pre>
+
+<p>upravíme atribút <code>default</code>.</p>
+
+<h1 id="maven-a-jetty">Maven a Jetty</h1>
+
+<p>Pre Jetty existuje plugin do buildovacieho systému <a href="http://maven.apache.org">Maven</a>, kde v najjednoduchšom prípade stačí spustiť <code>mvn jetty:run</code>, ktorý stiahne z úložiska minimalistickú verziu Jetty a spustí ju nad projektom.</p>
+
+<p>Bližšie informácie možno nájsť na <a href="http://docs.codehaus.org/display/JETTY/Maven+Jetty+Plugin">stránkach pluginu</a>.</p>
+
+<h1 id="programové-spustenie-jetty">Programové spustenie Jetty</h1>
+
+<p>Jetty je možné pohodlne naštartovať aj v rámci webovej aplikácie. Prepokladajme, že máme servlet:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> HelloServlet <span style="color:#5ed;font-weight:bold">extends</span> HttpServlet {
+
+  <span style="color:#555;font-weight:bold">@Override</span>
+  <span style="color:#289;font-weight:bold">protected</span> <span style="color:#5ed;font-weight:bold">void</span> doGet(HttpServletRequest <span style="color:#5ed;font-weight:bold">req</span>,
+                       HttpServletResponse <span style="color:#5ed;font-weight:bold">resp</span>)
+      <span style="color:#289;font-weight:bold">throws</span> <span style="color:#5ed;font-weight:bold">ServletException</span>, IOException 
+  {
+    System.<span style="color:#007">out</span>.<span style="color:#007">println</span>(<span style="background-color:#e0e0ff">&#34;Hello world.&#34;</span>);     
+  }
+
+}</code></pre></div>
+<p>Jetty, v ktorej beží jeden jednoduchý servlet (ktorý nepotrebuje celú webovú aplikáciu, ani konfigurovanie cez <code>web.xml</code>), naštartujeme:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">javax</span>.<span style="color:#007">servlet</span>.<span style="color:#007">ServletException</span>;
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">javax</span>.<span style="color:#007">servlet</span>.<span style="color:#007">http</span>.<span style="color:#007">HttpServlet</span>;
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">javax</span>.<span style="color:#007">servlet</span>.<span style="color:#007">http</span>.<span style="color:#007">HttpServletRequest</span>;
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">javax</span>.<span style="color:#007">servlet</span>.<span style="color:#007">http</span>.<span style="color:#007">HttpServletResponse</span>;
+
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">org</span>.<span style="color:#007">mortbay</span>.<span style="color:#007">jetty</span>.<span style="color:#007">Server</span>;
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">org</span>.<span style="color:#007">mortbay</span>.<span style="color:#007">jetty</span>.<span style="color:#007">servlet</span>.<span style="color:#007">ServletHandler</span>;
+
+<span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> ClassicServer {
+  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">static</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">main</span>(String[] <span style="color:#5ed;font-weight:bold">args</span>) <span style="color:#289;font-weight:bold">throws</span> <span style="color:#5ed;font-weight:bold">Exception</span> {
+    Server <span style="color:#5ed;font-weight:bold">server</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Server(8080);
+    ServletHandler <span style="color:#5ed;font-weight:bold">servletHandler</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> ServletHandler();
+    servletHandler.<span style="color:#007">addServletWithMapping</span>(HelloServlet.<span style="color:#007">class</span>,
+                                         <span style="background-color:#e0e0ff">&#34;/hello&#34;</span>);
+    
+    server.<span style="color:#007">addHandler</span>(servletHandler);
+    
+    server.<span style="color:#007">start</span>();
+    server.<span style="color:#007">join</span>();  
+  }
+}</code></pre></div>
+<p>Po spustení aplikácie a navštívení adresy <a href="http://localhost:8080/hello">http://localhost:8080/hello</a> uvidíme výpis:</p>
+
+<pre><code>2007-11-14 15:14:10.168::INFO:  Logging to STDERR via org.mortbay.log.StdErrLog
+2007-11-14 15:14:10.356::INFO:  jetty-6.1.5
+2007-11-14 15:14:10.575::INFO:  Started SocketConnector@0.0.0.0:8080
+Hello world.
+</code></pre>
+
+<p>Táto konfigurácia je minimalistická a servlety napríklad nemajú k dispozícii všetky vymoženosti regulárnej webaplikácie. Prístup ku inštancii <code>ServletContext</code>u nie je možný (vráti sa <code>null</code>), rovnako nie je podporované vytváranie sessionov.</p>
+
+</main>
+
+    <footer>
+      
+<script>
+(function() {
+  function center_el(tagName) {
+    var tags = document.getElementsByTagName(tagName), i, tag;
+    for (i = 0; i < tags.length; i++) {
+      tag = tags[i];
+      var parent = tag.parentElement;
+      
+      if (parent.childNodes.length === 1) {
+        
+        if (parent.nodeName === 'A') {
+          parent = parent.parentElement;
+          if (parent.childNodes.length != 1) continue;
+        }
+        if (parent.nodeName === 'P') parent.style.textAlign = 'center';
+      }
+    }
+  }
+  var tagNames = ['img', 'embed', 'object'];
+  for (var i = 0; i < tagNames.length; i++) {
+    center_el(tagNames[i]);
+  }
+})();
+</script>
+
+      
+    </footer>
+  </body>
+</html>
+

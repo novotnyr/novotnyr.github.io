@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>nLite Status Report | robonovotny</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.css" integrity="sha384-D+9gmBxUQogRLqvARvNLmA9hS2x//eK1FhVb9PiU86gmcrBrJAQT8okdJ4LMp2uv" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.js" integrity="sha384-483A6DwYfKeDa0Q52fJmxFXkcPCFfnXMoXblOkJ4JcA8zATN6Tm78UNL72AKk+0O" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/contrib/auto-render.min.js" integrity="sha384-yACMu8JWxKzSp/C1YV86pzGiQ/l1YUfE8oPuahJQxzehAjEt2GiQuy/BIvl9KyeF" crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body);
+        });
+    </script>
+
+<header>
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <nav>
+    <ul>
+      
+      
+      <li class="pull-left ">
+        <a href="http://novotnyr.github.io/">/home/robonovotny</a>
+      </li>
+      
+
+      
+
+    </ul>
+  </nav>
+</header>
+
+  </head>
+
+  <body>
+    <br/>
+
+<div class="article-meta">
+<h1><span class="title">nLite Status Report</span></h1>
+
+<h2 class="date">2005/05/16</h2>
+<p class="terms">
+  
+  
+  
+  
+  
+</p>
+</div>
+
+
+
+<main>
+<ul>
+<li>nLite aktualizoval Windows XP SP1 slipstreamnutim Service Packu 2. Nasledovne bol zruseny IE (komponenty IE Core, aj IE additional). Ako bonusova volba bol zvoleny klasicky vzhlad instalatora.</li>
+<li>nastalo instalovanie vo VMWare. Instalacia prebehla OK, akurat som bol ochudobneny o pestre modre pozadie pri instalatore (jednoducho Win2K style)</li>
+<li>Okna sa otvorili. V klasickom ,,ye olde&rdquo; vzhlade, a la Windows 2000. Po prestaveni plochy na ,,klasicky vzhlad&rdquo; mi kupodivu chyba ikonka IE.</li>
+<li>po instalacii bolo nacim rozbehat, presnejsie nainstalovat VMTools, ale nastala chyba lavky: instalator nevedel najst Sluzbu Instalator systemu Windows. Povodne som si myslel, ze je treba doinstalovat instalator (sic!), ale pPo chvilke laborovania a uvazovania (a riesenia problemov, typu ,,na nainstalovanie VMTools potrebujem VMTools) som zistil, ze staci spusit sluzbu Windows Installer.</li>
+<li>moralne ponaucenie: nLite povypina takmer vsetky sluzby (implicitne necha spustenych len 5 sluzieb). To ma netrivialne dosledky: treba si ,,spomenut&rdquo;, ze treba zapnut napr. zmieneny Windows Installer (inak toho asi vela nenainstalujete), ale aj napr. Prohledavani pocitacu (lebo bez toho sa daleko nedostanete). Na druhej strane, Windows v takomto stave zabera na disku nieco malo cez 1GB a v RAMke prijemnych 55MB.</li>
+<li>niektore sluzby sa implicitne nespustaju pri starte (opat onen Windows Installer).</li>
+<li>Instalacia Office 2003 zbehla v pohode. Akurat Pomocnik/Napoveda akosi nefunguje (zrejme kvoli tomu, ze HTML sa nema cim zobrazit ;-). Wordovske dokumenty sa pri otvoreni predstavia hlaskou, ze ,,tento dokument nemozno zaregistrovat&rdquo;, ale inak sa tvaria OK.</li>
+</ul>
+
+<p>&hellip;(pokracovanie)</p>
+
+</main>
+
+    <footer>
+      
+<script>
+(function() {
+  function center_el(tagName) {
+    var tags = document.getElementsByTagName(tagName), i, tag;
+    for (i = 0; i < tags.length; i++) {
+      tag = tags[i];
+      var parent = tag.parentElement;
+      
+      if (parent.childNodes.length === 1) {
+        
+        if (parent.nodeName === 'A') {
+          parent = parent.parentElement;
+          if (parent.childNodes.length != 1) continue;
+        }
+        if (parent.nodeName === 'P') parent.style.textAlign = 'center';
+      }
+    }
+  }
+  var tagNames = ['img', 'embed', 'object'];
+  for (var i = 0; i < tagNames.length; i++) {
+    center_el(tagNames[i]);
+  }
+})();
+</script>
+
+      
+    </footer>
+  </body>
+</html>
+

@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Ako na rekurziu v databázach | robonovotny</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.css" integrity="sha384-D+9gmBxUQogRLqvARvNLmA9hS2x//eK1FhVb9PiU86gmcrBrJAQT8okdJ4LMp2uv" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.js" integrity="sha384-483A6DwYfKeDa0Q52fJmxFXkcPCFfnXMoXblOkJ4JcA8zATN6Tm78UNL72AKk+0O" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/contrib/auto-render.min.js" integrity="sha384-yACMu8JWxKzSp/C1YV86pzGiQ/l1YUfE8oPuahJQxzehAjEt2GiQuy/BIvl9KyeF" crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body);
+        });
+    </script>
+
+<header>
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <nav>
+    <ul>
+      
+      
+      <li class="pull-left ">
+        <a href="http://novotnyr.github.io/">/home/robonovotny</a>
+      </li>
+      
+
+      
+
+    </ul>
+  </nav>
+</header>
+
+  </head>
+
+  <body>
+    <br/>
+
+<div class="article-meta">
+<h1><span class="title">Ako na rekurziu v databázach</span></h1>
+
+<h2 class="date">2008/08/07</h2>
+<p class="terms">
+  
+  
+  
+  
+  
+</p>
+</div>
+
+
+
+<main>
+
+
+<h1 id="čísla-od-1-po-n">Čísla od 1 po <em>n</em></h1>
+
+<p>Vytvorte tabulku, ktora obsahuje v riadkoch cisla od 1 po N.</p>
+
+<p>V Pascale by to bol <code>for</code>:</p>
+
+<pre><code>for i:=1 to N do begin
+  writeln(i)
+end
+</code></pre>
+
+<p>Lenze my nemame <code>for</code>. Mame len rekurziu. My vsak vieme kazdy prvok v postupnosti odvodit z predosleho prvku.</p>
+
+<ul>
+<li>Prvy prvok je 0,</li>
+
+<li><p>dalsi prvok je predosly prvok + 1.</p>
+
+<pre><code>s_0 = 0
+s_i = s_i-1 + 1
+</code></pre></li>
+</ul>
+
+<p>Napisane vseobecne</p>
+
+<pre><code>s(i) = 0, ak i = 0
+s(i) = s(i-1) + 1
+</code></pre>
+
+<pre><code>s(x) = 0, ak x = 0
+s(x) = s(x-1) + 1
+</code></pre>
+
+<p>Toto vieme mechanicky previest na SELECT</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql"><span style="color:#289;font-weight:bold">WITH</span> s(x) <span style="color:#289;font-weight:bold">as</span>
+(
+<span style="color:#289;font-weight:bold">SELECT</span> <span style="color:#66f;font-weight:bold">0</span> <span style="color:#289;font-weight:bold">FROM</span> SYSIBM.SYSDUMMY1
+  <span style="color:#289;font-weight:bold">UNION</span> <span style="color:#289;font-weight:bold">ALL</span>
+<span style="color:#289;font-weight:bold">SELECT</span> x <span style="color:#333">+</span> <span style="color:#66f;font-weight:bold">1</span> <span style="color:#289;font-weight:bold">FROM</span> s
+<span style="color:#289;font-weight:bold">WHERE</span> x <span style="color:#333">&lt;</span> <span style="color:#66f;font-weight:bold">1000</span>
+)
+<span style="color:#289;font-weight:bold">SELECT</span> <span style="color:#333">*</span> <span style="color:#289;font-weight:bold">FROM</span> s</code></pre></div>
+<h1 id="fibonacci">Fibonacci</h1>
+
+<p>Fibonacciho postupnosť je definované rekurzívne:</p>
+
+<pre><code>F(0) = 0
+F(1) = 1
+F(x) = F(x - 2) + F(x - 1)
+...
+F(x + 1) = F(x - 1) + F(x)
+F(x + 2) = F(x) + F(x + 1)
+F(x + 3) = F(x + 1) + F(x + 2)
+</code></pre>
+
+<p>Ak sa na to pozrieme z iného uhla, tak:</p>
+
+<ul>
+<li>ak sčítame <em>aktuálny prvok</em> a <em>nasledovný prvok</em> v <em>i</em>-tom kroku, dostaneme <em>nasledovný prvok</em> v <em>i+1</em> kroku</li>
+<li><em>nasledovný prvok</em> v <em>i</em>-tom kroku sa stane <em>aktuálnym prvkom</em> pre <em>i + 1</em> krok</li>
+</ul>
+
+<p>Pamätajme si teda dva stĺpce, čo bude vyzerať takto:</p>
+
+<table>
+<thead>
+<tr>
+<th>Poradie</th>
+<th>Aktuálny prvok</th>
+<th>Nasledovný prvok</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+</tr>
+
+<tr>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+</tr>
+
+<tr>
+<td>2</td>
+<td>1</td>
+<td>2</td>
+</tr>
+
+<tr>
+<td>3</td>
+<td>2</td>
+<td>3</td>
+</tr>
+
+<tr>
+<td>4</td>
+<td>3</td>
+<td>5</td>
+</tr>
+
+<tr>
+<td>5</td>
+<td>5</td>
+<td>8</td>
+</tr>
+</tbody>
+</table>
+
+<p>Toto vieme mechanicky previesť na dopyt:</p>
+
+<pre><code>WITH RECURSIVE FIBONACCI(`current`, `next`) AS
+(
+  SELECT 0, 1
+    UNION ALL
+  SELECT `next`, `current` + `next`
+  FROM FIBONACCI
+  WHERE `next` &lt; 10
+)
+SELECT * FROM FIBONACCI
+</code></pre>
+
+<p>Podmienka <code>next &lt; 10</code> len obmedzuje hĺbku rekurzie, predsa len nemôžeme mať nekonečné tabuľky.</p>
+
+<h1 id="hierarchie">Hierarchie</h1>
+
+<p>Majme tabuľku súborového systému s hierarchiou:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql"><span style="color:#289;font-weight:bold">CREATE</span> <span style="color:#289;font-weight:bold">TABLE</span> filesystem (
+  id <span style="color:#072">INTEGER</span> <span style="color:#289;font-weight:bold">NOT</span> <span style="color:#289;font-weight:bold">NULL</span>,
+  name <span style="color:#072">VARCHAR</span>(<span style="color:#66f;font-weight:bold">255</span>) <span style="color:#289;font-weight:bold">NOT</span> <span style="color:#289;font-weight:bold">NULL</span>,
+  parent_id <span style="color:#072">INTEGER</span>
+);</code></pre></div>
+<p>A hodnoty:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql"><span style="color:#289;font-weight:bold">INSERT</span> <span style="color:#289;font-weight:bold">INTO</span> filesystem <span style="color:#289;font-weight:bold">VALUES</span>
+(<span style="color:#66f;font-weight:bold">0</span>, <span style="background-color:#e0e0ff">&#39;/&#39;</span>, <span style="color:#289;font-weight:bold">NULL</span>),
+(<span style="color:#66f;font-weight:bold">1</span>, <span style="background-color:#e0e0ff">&#39;home&#39;</span>, <span style="color:#66f;font-weight:bold">0</span>),
+(<span style="color:#66f;font-weight:bold">2</span>, <span style="background-color:#e0e0ff">&#39;novotnyr&#39;</span>, <span style="color:#66f;font-weight:bold">1</span>),
+(<span style="color:#66f;font-weight:bold">3</span>, <span style="background-color:#e0e0ff">&#39;armstrong&#39;</span>, <span style="color:#66f;font-weight:bold">1</span>),
+(<span style="color:#66f;font-weight:bold">4</span>, <span style="background-color:#e0e0ff">&#39;public_html&#39;</span>, <span style="color:#66f;font-weight:bold">2</span>),
+(<span style="color:#66f;font-weight:bold">5</span>, <span style="background-color:#e0e0ff">&#39;tmp&#39;</span>, <span style="color:#66f;font-weight:bold">0</span>);</code></pre></div>
+<p>Chceme vypísať pre každý adresár celú jeho cestu:</p>
+
+<pre><code>/home/
+/home/armstrong/
+/home/novotnyr/
+/home/novotnyr/public_html/
+/tmp/
+</code></pre>
+
+<p>Idea je nasledovná:</p>
+
+<ul>
+<li>hierarchia koreňa je lomka <code>/</code></li>
+<li>hierarchiu k položke zistíme cez hierarchiu rodiča položky, ku ktorej prilepíme názov položky.</li>
+</ul>
+
+<p>Pa-matematický zápis by vyzeral:</p>
+
+<pre><code>fullpath(0) = '/'
+fullpath(x) = x.`name` + '/' + fullpath(resolvefile(x).parent_id)  
+</code></pre>
+
+<p>V databázovom prípade však musíme byť presnejší: funkcia musí brať viacero parametrov:</p>
+
+<ul>
+<li>identifikátor položky v strome.</li>
+<li>jej názov</li>
+<li>a celú cestu až ku koreňu</li>
+</ul>
+
+<p>Funkcia <code>resolvefile</code> sa však v databázovom svete preloží na <code>join</code>-om tabuľky na budovanú hierarchiu.</p>
+
+<pre><code>WITH RECURSIVE fullpath (id, name, path) AS
+(
+  SELECT id, name, CAST('/' AS CHAR(200))
+    FROM filesystem
+    WHERE parent_id IS NULL
+  UNION ALL
+  SELECT filesystem.id, filesystem.name, CONCAT(fullpath.path, filesystem.name, '/')
+    FROM filesystem
+	JOIN fullpath ON fullpath.id = filesystem.parent_id
+)
+SELECT * FROM fullpath ORDER BY path;
+</code></pre>
+
+</main>
+
+    <footer>
+      
+<script>
+(function() {
+  function center_el(tagName) {
+    var tags = document.getElementsByTagName(tagName), i, tag;
+    for (i = 0; i < tags.length; i++) {
+      tag = tags[i];
+      var parent = tag.parentElement;
+      
+      if (parent.childNodes.length === 1) {
+        
+        if (parent.nodeName === 'A') {
+          parent = parent.parentElement;
+          if (parent.childNodes.length != 1) continue;
+        }
+        if (parent.nodeName === 'P') parent.style.textAlign = 'center';
+      }
+    }
+  }
+  var tagNames = ['img', 'embed', 'object'];
+  for (var i = 0; i < tagNames.length; i++) {
+    center_el(tagNames[i]);
+  }
+})();
+</script>
+
+      
+    </footer>
+  </body>
+</html>
+

@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Automatická kontrola pravopisu v textovom poli v Swingu | robonovotny</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.css" integrity="sha384-D+9gmBxUQogRLqvARvNLmA9hS2x//eK1FhVb9PiU86gmcrBrJAQT8okdJ4LMp2uv" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.js" integrity="sha384-483A6DwYfKeDa0Q52fJmxFXkcPCFfnXMoXblOkJ4JcA8zATN6Tm78UNL72AKk+0O" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/contrib/auto-render.min.js" integrity="sha384-yACMu8JWxKzSp/C1YV86pzGiQ/l1YUfE8oPuahJQxzehAjEt2GiQuy/BIvl9KyeF" crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body);
+        });
+    </script>
+
+<header>
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <nav>
+    <ul>
+      
+      
+      <li class="pull-left ">
+        <a href="http://novotnyr.github.io/">/home/robonovotny</a>
+      </li>
+      
+
+      
+
+    </ul>
+  </nav>
+</header>
+
+  </head>
+
+  <body>
+    <br/>
+
+<div class="article-meta">
+<h1><span class="title">Automatická kontrola pravopisu v textovom poli v Swingu</span></h1>
+
+<h2 class="date">2010/02/16</h2>
+<p class="terms">
+  
+  
+  
+  
+  
+</p>
+</div>
+
+
+
+<main>
+
+
+<h1 id="úvod">Úvod</h1>
+
+<p>Na príklade automatickej kontroly pravopisu v swingovskom textovom
+políčku sa dá ukázať množstvo zaujímavých vecí: automatické vyhľadávanie
+medzier medzi slovami, vlákna v Swingu ba i podporu pre zvýrazňovanie
+textu. Vytvorme si teda jednoduchú aplikáciu s textovým políčkom, kde
+môže používateľ zadávať text, a v prípade, že je nekorektný, mu ho
+aplikácia zvýrazní červenou farbou.</p>
+
+<h2 id="delenie-textu-na-slová">Delenie textu na slová</h2>
+
+<p>Mnohokrát sa stáva, že pre daný reťazec potrebujeme nájsť pozície
+medzier (hraníc) medzi slovami. Samozrejme, jednou z možností by bola
+implementácia vlastného algoritmu. Ale načo, keď existuje elegantná
+trieda
+<a href="http://java.sun.com/javase/6/docs/api/java/text/BreakIterator.html"><code>java.text.BreakIterator</code></a>,
+ktorá to umožňuje realizovať bez akýchkoľvek problémov.</p>
+
+<p>Ukážme si príklad jednoduchého kódu, ktorý nájde medzery medzi slovami:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">BreakIterator <span style="color:#5ed;font-weight:bold">iterator</span> <span style="color:#333">=</span> BreakIterator.<span style="color:#007">getWordInstance</span>();
+iterator.<span style="color:#007">setText</span>(<span style="background-color:#e0e0ff">&#34; 1  23 4&#34;</span>);
+
+<span style="color:#66f;font-weight:bold">int</span> <span style="color:#5ed;font-weight:bold">pos</span> <span style="color:#333">=</span> iterator.<span style="color:#007">first</span>();
+<span style="color:#289;font-weight:bold">while</span>(pos <span style="color:#333">!=</span> BreakIterator.<span style="color:#007">DONE</span>) {
+    System.<span style="color:#007">out</span>.<span style="color:#007">println</span>(iterator.<span style="color:#007">current</span>());
+    pos <span style="color:#333">=</span> iterator.<span style="color:#007">next</span>();
+}</code></pre></div>
+<p>Trieda, ako už naznačuje jej názov, je založená na princípe iterátora.
+Inštanciu však nezískavame použitím konštruktora, ale cez statickú
+metódu <code>getWordInstance()</code>. To je zámer, ktorý zväčšuje jej flexibilitu,
+<code>BreakIterator</code> totiž umožňuje nachádzať dokonca aj zlomy riadkov, či
+iterovať jednotlivé znaky. Iterátor si možno predstaviť ako kurzor,
+ktorý je postupne posúvaný v slove zľava doprava. V každej chvíli kurzor
+ukazuje na jednu z medzislovných hraníc. Metódou <code>first()</code> nájdeme prvý
+výskyt hranice, metóda current() vráti index aktuálnej pozície kurzora a
+nakoniec metóda <code>next()</code> posúva kurzor na ďalšiu hranicu a zároveň vracia
+novú pozíciu.</p>
+
+<p>V príklade je prvou hranicou začiatok textu, teda index 0. Po prvom
+posune sa kurzor premiestni pred písmeno A, po druhom zase zaňho. Tretie
+volanie metódy <code>next()</code> preskočí obe medzery a posunie sa pred písmeno B.
+Ďalšie volanie sa nastaví za písmeno Y (teda na index 6) a posledné
+volania vrátia hranicu pred a za jednoslovným „slovom” tvoreným znakom
+výkričníka.</p>
+
+<p>V našom príklade nás však nezaujímajú samotné hranice medzi slovami, ako
+skôr indexy udávajúce začiatky a konce slov. V našom príklade
+potrebujeme extrahovať indexy pre všetky tri slová:</p>
+
+<table>
+<thead>
+<tr>
+<th>Slovo</th>
+<th>Počiatočný index</th>
+<th>Koncový index</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>A</td>
+<td>1</td>
+<td>2</td>
+</tr>
+
+<tr>
+<td>BY</td>
+<td>4</td>
+<td>6</td>
+</tr>
+
+<tr>
+<td>!</td>
+<td>7</td>
+<td>8</td>
+</tr>
+</tbody>
+</table>
+
+<p>Kód, ktorý získa všetky slová, vyzerá nasledovne:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">BreakIterator <span style="color:#5ed;font-weight:bold">iterator</span> <span style="color:#333">=</span> BreakIterator.<span style="color:#007">getWordInstance</span>();
+iterator.<span style="color:#007">setText</span>(text);
+
+<span style="color:#66f;font-weight:bold">int</span> <span style="color:#5ed;font-weight:bold">start</span> <span style="color:#333">=</span> iterator.<span style="color:#007">first</span>();
+<span style="color:#66f;font-weight:bold">int</span> <span style="color:#5ed;font-weight:bold">end</span> <span style="color:#333">=</span> iterator.<span style="color:#007">next</span>();
+
+<span style="color:#289;font-weight:bold">while</span> (end <span style="color:#333">!=</span> BreakIterator.<span style="color:#007">DONE</span>) {
+    writeWord(text, start, end);
+    start <span style="color:#333">=</span> end;
+    end <span style="color:#333">=</span> iterator.<span style="color:#007">next</span>();
+}
+<span style="color:#666;font-style:italic">// spracujme aj posledné slovo
+</span><span style="color:#666;font-style:italic"></span>writeWord(text, start, end);</code></pre></div>
+<p>Metóda <code>writeWord()</code> vypíšte časť slova medzi danými indexami.
+Najdôležitejšie je ignorovať tie slová, ktoré sú buď prázdne (teda
+predstavujú medzery či iné biele miesto) alebo zodpovedajú číslam či
+interpunkcii. To zaistíme skontrolovaním prvého znaku metódou
+<a href="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Character.html">Character.isLetterOrDigit()</a>.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">void</span> writeWord(String <span style="color:#5ed;font-weight:bold">text</span>, <span style="color:#66f;font-weight:bold">int</span> <span style="color:#5ed;font-weight:bold">startIndex</span>, <span style="color:#66f;font-weight:bold">int</span> <span style="color:#5ed;font-weight:bold">endIndex</span>) {
+    String <span style="color:#5ed;font-weight:bold">word</span> <span style="color:#333">=</span> text.<span style="color:#007">substring</span>(start, end);
+    <span style="color:#289;font-weight:bold">if</span> (Character.<span style="color:#007">isLetterOrDigit</span>(word.<span style="color:#007">charAt</span>(0))) {
+        System.<span style="color:#007">out</span>.<span style="color:#007">println</span>(word);
+    
+}</code></pre></div>
+<h2 id="kontrola-pravopisu">Kontrola pravopisu</h2>
+
+<p>Vo chvíli, keď vieme deliť text na slová, kontrola pravopisu je
+jednoduchá. Stačí si urobiť triedu <code>KontrolaPravopisu</code>, ktorá v
+jednoduchej verzii skontroluje, či je každé slovo textu v zozname
+povolených slov.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">package</span> <span style="color:#5ed;font-weight:bold">kontrolapravopisu</span>;
+
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">java</span>.<span style="color:#007">text</span>.<span style="color:#007">BreakIterator</span>;
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">java</span>.<span style="color:#007">util</span>.<span style="color:#333">*</span>;
+
+<span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> KontrolaPravopisu {
+    <span style="color:#666;font-style:italic">/** zoznam korektných slov **/</span>
+    <span style="color:#289;font-weight:bold">private</span> <span style="color:#5ed;font-weight:bold">List</span><span style="color:#333">&lt;</span>String<span style="color:#333">&gt;</span> <span style="color:#5ed;font-weight:bold">korektneSlova</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> ArrayList<span style="color:#333">&lt;</span>String<span style="color:#333">&gt;</span>();
+    
+    <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">KontrolaPravopisu</span>(String... <span style="color:#5ed;font-weight:bold">korektneSlova</span>) {
+        korektneSlova.<span style="color:#007">addAll</span>(Arrays.<span style="color:#007">asList</span>(korektneSlova));
+    }
+    
+    <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">List</span><span style="color:#333">&lt;</span>WordCoordinate<span style="color:#333">&gt;</span> <span style="color:#5ed;font-weight:bold">skontroluj</span>(String <span style="color:#5ed;font-weight:bold">text</span>) {
+        List<span style="color:#333">&lt;</span>WordCoordinate<span style="color:#333">&gt;</span> <span style="color:#5ed;font-weight:bold">errors</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> ArrayList<span style="color:#333">&lt;</span>WordCoordinate<span style="color:#333">&gt;</span>();
+        
+        BreakIterator <span style="color:#5ed;font-weight:bold">iterator</span> <span style="color:#333">=</span> BreakIterator.<span style="color:#007">getWordInstance</span>();
+        iterator.<span style="color:#007">setText</span>(text);
+
+        <span style="color:#66f;font-weight:bold">int</span> <span style="color:#5ed;font-weight:bold">start</span> <span style="color:#333">=</span> iterator.<span style="color:#007">first</span>();
+        <span style="color:#66f;font-weight:bold">int</span> <span style="color:#5ed;font-weight:bold">end</span> <span style="color:#333">=</span> iterator.<span style="color:#007">next</span>();
+
+        <span style="color:#289;font-weight:bold">while</span> (end <span style="color:#333">!=</span> BreakIterator.<span style="color:#007">DONE</span>) {
+            skontrolujSlovo(text, start, end, errors);
+            
+            start <span style="color:#333">=</span> end;
+            end <span style="color:#333">=</span> iterator.<span style="color:#007">next</span>();
+        }
+        skontrolujSlovo(text, start, end, errors);
+    
+        <span style="color:#289;font-weight:bold">return</span> errors;
+    }
+    
+    <span style="color:#289;font-weight:bold">private</span> <span style="color:#5ed;font-weight:bold">void</span> skontrolujSlovo(String <span style="color:#5ed;font-weight:bold">text</span>, <span style="color:#66f;font-weight:bold">int</span> <span style="color:#5ed;font-weight:bold">start</span>, <span style="color:#66f;font-weight:bold">int</span> <span style="color:#5ed;font-weight:bold">end</span>, List<span style="color:#333">&lt;</span>WordCoordinate<span style="color:#333">&gt;</span> <span style="color:#5ed;font-weight:bold">errors</span>) {
+        String <span style="color:#5ed;font-weight:bold">word</span> <span style="color:#333">=</span> <span style="background-color:#e0e0ff">&#34;&#34;</span>;
+        <span style="color:#289;font-weight:bold">if</span>(end <span style="color:#333">==</span> <span style="color:#333">-</span>1) {
+            word <span style="color:#333">=</span> text.<span style="color:#007">substring</span>(start);
+        } <span style="color:#289;font-weight:bold">else</span> {
+            word <span style="color:#333">=</span> text.<span style="color:#007">substring</span>(start, end);
+        }
+        <span style="color:#289;font-weight:bold">if</span> (<span style="color:#333">!</span>word.<span style="color:#007">isEmpty</span>() <span style="color:#333">&amp;&amp;</span> Character.<span style="color:#007">isLetterOrDigit</span>(word.<span style="color:#007">charAt</span>(0))) {
+            <span style="color:#289;font-weight:bold">if</span>(<span style="color:#333">!</span>spellCheck(word)) {
+                errors.<span style="color:#007">add</span>(<span style="color:#289;font-weight:bold">new</span> WordCoordinate(start, end));
+            }
+        }   
+        <span style="color:#289;font-weight:bold">return</span> errors;
+    }
+}</code></pre></div>
+<p>Metóda <code>skontrolujSlovo()</code> eviduje nekorektné slová v zozname objektov
+typu <code>WordCoordinate</code>, čo je jednoduchá dvojica udávajúca začiatočnú a
+koncovú pozíciu slova v texte:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">static</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#5ed;font-weight:bold">WordCoordinate</span> {
+    <span style="color:#289;font-weight:bold">private</span> <span style="color:#5ed;font-weight:bold">int</span> start;
+    
+    <span style="color:#289;font-weight:bold">private</span> <span style="color:#5ed;font-weight:bold">int</span> end;
+
+    <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">WordCoordinate</span>(<span style="color:#66f;font-weight:bold">int</span> <span style="color:#5ed;font-weight:bold">start</span>, <span style="color:#66f;font-weight:bold">int</span> <span style="color:#5ed;font-weight:bold">end</span>) {
+        <span style="color:#289;font-weight:bold">this</span>.<span style="color:#007">start</span> <span style="color:#333">=</span> start;
+        <span style="color:#289;font-weight:bold">this</span>.<span style="color:#007">end</span> <span style="color:#333">=</span> end;
+    }
+
+    <span style="color:#666;font-style:italic">// gettre a settre vynechané    
+</span><span style="color:#666;font-style:italic"></span>}</code></pre></div>
+<h1 id="zvýrazňovanie-textu-v-textových-políčkach">Zvýrazňovanie textu v textových políčkach</h1>
+
+<p>Komponent <code>JTextArea</code> podporuje pohodlné zvýrazňovanie textu. V našej
+aplikácii budeme chcieť zvýrazniť nekorektné slová, napr. tak, že ich
+zobrazíme ako text na červenom pozadí.</p>
+
+<p>Pomocou metódy <code>getHighlighter()</code> na inštancii triedy <code>JTextArea</code> vieme
+získať inštanciu triedy <a href="???"><code>java.swing.text.Highlighter</code></a>, ktorá
+dokáže zvýrazňovať konkrétnu časť textu zobrazenú v textovom políčku.
+<code>Highlighter</code> má základnú metódu</p>
+
+<pre><code>addHighlight(int počiatočnýOffset, int koncovýOffset, Highlighter.HighlightPainter painter)
+</code></pre>
+
+<p>Do nej vieme uviesť počiatočný a koncový index do reťazca v textovom
+poli, ktorý sa má zvýrazniť. Parameter typu
+<a href="http://java.sun.com/javase/6/docs/api/javax/swing/text/Highlighter.HighlightPainter.html"><code>Highlighter.HighlightPainter</code></a>
+(je to interfejs) indikuje objekt, ktorý sa postará o samotný vzhľad
+zvýraznenia. Pre jednoduché situácie môžeme použiť objekt
+<code>DefaultHighlighter.DefaultHighlightPainter</code>, ktorý implementuje
+požadovaný interfejs a umožňuje zvýrazniť text konkrétnou farbou.</p>
+
+<p><img src="class-diagram.png" alt="Diagram tried pre zvýrazňovače" /></p>
+
+<p>Nasledovný <em>highlight painter</em> zobrazí text na červenom pozadí:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Highlighter.<span style="color:#007">HighlightPainter</span> <span style="color:#5ed;font-weight:bold">painter</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> DefaultHighlighter.<span style="color:#007">DefaultHighlightPainter</span>(Color.<span style="color:#007">RED</span>);</code></pre></div>
+<p>Nasledovný text zvýrazní prvý znak červenou, pričom použije <em>painter</em>
+definovaný na predošlom riadku.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">textArea.<span style="color:#007">getHighlighter</span>().<span style="color:#007">addHighlight</span>(0, 1, painter);</code></pre></div>
+<p>Ak chceme zrušiť zvýraznenia, stačí zavolať metódu
+<code>highlighter.removeAllHighlights()</code>.</p>
+
+<h1 id="vlákno-kontrolujúce-pravopis">Vlákno kontrolujúce pravopis</h1>
+
+<p>V aplikácii ďalej budeme mať vlákno, ktoré bude periodicky kontrolovať
+korektnosť textu v danom textovom políčku typu <code>JTextArea</code>. Namiesto
+špinavej práce s vláknami však vieme elegantne využiť triedu
+<code>SwingWorker</code>.</p>
+
+<blockquote>
+<p><strong>Note</strong></p>
+
+<p>Podrobnosti o práci so <code>SwingWorker</code>om možno nájsť v článku <a href="http://ics.upjs.sk/~novotnyr/wiki/Java/SwingThreads">Swing a
+vláknové
+programovanie</a>.</p>
+</blockquote>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> SpellCheckSwingWorker <span style="color:#5ed;font-weight:bold">extends</span> SwingWorker<span style="color:#333">&lt;</span>Void, List<span style="color:#333">&lt;</span>WordCoordinate<span style="color:#333">&gt;&gt;</span> {
+    
+    <span style="color:#289;font-weight:bold">private</span> <span style="color:#5ed;font-weight:bold">KontrolaPravopisu</span> spellCheck <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> KontrolaPravopisu();
+    <span style="color:#289;font-weight:bold">private</span> <span style="color:#5ed;font-weight:bold">final</span> JTextArea <span style="color:#5ed;font-weight:bold">textArea</span>;
+    
+    <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">SpellCheckSwingWorker</span>(JTextArea <span style="color:#5ed;font-weight:bold">textArea</span>) {
+        <span style="color:#289;font-weight:bold">this</span>.<span style="color:#007">textArea</span> <span style="color:#333">=</span> textArea;
+
+    }
+ ...</code></pre></div>
+<p>Trieda vytvorí inštanciu kontroly pravopisu a do konštruktora vezme
+<code>JTextArea</code>, teda inštanciu, ktorú mieni kontrolovať.</p>
+
+<p>Metóda <code>doInBackground()</code> je jednoduchá: v nekonečnom cykle vezmeme text z
+textového poľa, skontrolujeme ho a uspíme sa na 500 milisekúnd (aby sme
+zbytočne nevyťažovali procesor; navyše používateľ mení text tiež s
+prestávkami.)</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#555;font-weight:bold">@Override</span>
+<span style="color:#289;font-weight:bold">protected</span> <span style="color:#5ed;font-weight:bold">Void</span> doInBackground() <span style="color:#289;font-weight:bold">throws</span> <span style="color:#5ed;font-weight:bold">Exception</span> {
+    <span style="color:#289;font-weight:bold">while</span>(<span style="color:#289;font-weight:bold">true</span>) {
+        String <span style="color:#5ed;font-weight:bold">text</span> <span style="color:#333">=</span> textArea.<span style="color:#007">getText</span>();
+        
+        List<span style="color:#333">&lt;</span>WordCoordinate<span style="color:#333">&gt;</span> <span style="color:#5ed;font-weight:bold">kontrola</span> <span style="color:#333">=</span> spellCheck.<span style="color:#007">skontroluj</span>(text);
+        
+        publish(kontrola);
+        TimeUnit.<span style="color:#007">MILLISECONDS</span>.<span style="color:#007">sleep</span>(500);
+    }
+}</code></pre></div>
+<p>Pomocou metódy <code>publish()</code> odošleme do vlákna EDT výsledky kontroly.</p>
+
+<p>V rámci metódy <code>process()</code> zase vyzdvihneme odoslané výsledky a na ich
+základe upravíme stav komponentu <code>JTextArea</code>.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#555;font-weight:bold">@Override</span>
+<span style="color:#289;font-weight:bold">protected</span> <span style="color:#5ed;font-weight:bold">void</span> process(List<span style="color:#333">&lt;</span>List<span style="color:#333">&lt;</span>WordCoordinate<span style="color:#333">&gt;&gt;</span> <span style="color:#5ed;font-weight:bold">chunks</span>) {
+    List<span style="color:#333">&lt;</span>WordCoordinate<span style="color:#333">&gt;</span> <span style="color:#5ed;font-weight:bold">errors</span> <span style="color:#333">=</span> chunks.<span style="color:#007">get</span>(chunks.<span style="color:#007">size</span>() <span style="color:#333">-</span> 1);
+    textArea.<span style="color:#007">getHighlighter</span>().<span style="color:#007">removeAllHighlights</span>();
+    <span style="color:#289;font-weight:bold">for</span> (WordCoordinate <span style="color:#5ed;font-weight:bold">wordCoordinate</span> <span style="color:#333">:</span> errors) {
+        <span style="color:#289;font-weight:bold">try</span> {
+            textArea.<span style="color:#007">getHighlighter</span>().<span style="color:#007">addHighlight</span>(wordCoordinate.<span style="color:#007">getStart</span>(), wordCoordinate.<span style="color:#007">getEnd</span>(), HIGHLIGHT_PAINTER);
+        } <span style="color:#289;font-weight:bold">catch</span> (BadLocationException <span style="color:#5ed;font-weight:bold">e</span>) {
+            e.<span style="color:#007">printStackTrace</span>();
+        }
+    }
+}</code></pre></div>
+<p>Podotknime, že <code>HIGHLIGHT_PAINTER</code> je inštancia typu
+<code>DefaultHighlighter.DefaultHighlightPainter</code>.</p>
+
+<h1 id="záver">Záver</h1>
+
+<p>Hotová aplikácia vyzerá nasledovne:</p>
+
+<p>Počas písania sa automaticky zvýrazňujú slová, ktoré nie sú v slovníku
+korektných slov. Drobným nedostatkom je zvýrazňovanie slov, ktoré neboli
+ešte dopísané (napríklad <code>typo</code> je nesprávne, ak používateľ nedopíše
+zvyšok slova, teda <code>grafia</code>), ale v tejto jednoduchej aplikácii sa s tým
+musíme zmieriť.</p>
+
+<p>Ukázali sme teda tri vlastnosti:</p>
+
+<ul>
+<li>vyhľadávanie hraníc medzi slovami, teda triedu <code>BreakIterator</code></li>
+<li>zvýrazňovanie slov, teda triedu <code>Highlighter</code></li>
+<li>a nakoniec vláknové programovanie v Swingu pomocou triedy
+<code>SwingWorker.</code></li>
+</ul>
+
+</main>
+
+    <footer>
+      
+<script>
+(function() {
+  function center_el(tagName) {
+    var tags = document.getElementsByTagName(tagName), i, tag;
+    for (i = 0; i < tags.length; i++) {
+      tag = tags[i];
+      var parent = tag.parentElement;
+      
+      if (parent.childNodes.length === 1) {
+        
+        if (parent.nodeName === 'A') {
+          parent = parent.parentElement;
+          if (parent.childNodes.length != 1) continue;
+        }
+        if (parent.nodeName === 'P') parent.style.textAlign = 'center';
+      }
+    }
+  }
+  var tagNames = ['img', 'embed', 'object'];
+  for (var i = 0; i < tagNames.length; i++) {
+    center_el(tagNames[i]);
+  }
+})();
+</script>
+
+      
+    </footer>
+  </body>
+</html>
+

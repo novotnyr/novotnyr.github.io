@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Jednoduchý príklad použitia Hibernate | robonovotny</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.css" integrity="sha384-D+9gmBxUQogRLqvARvNLmA9hS2x//eK1FhVb9PiU86gmcrBrJAQT8okdJ4LMp2uv" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.js" integrity="sha384-483A6DwYfKeDa0Q52fJmxFXkcPCFfnXMoXblOkJ4JcA8zATN6Tm78UNL72AKk+0O" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/contrib/auto-render.min.js" integrity="sha384-yACMu8JWxKzSp/C1YV86pzGiQ/l1YUfE8oPuahJQxzehAjEt2GiQuy/BIvl9KyeF" crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body);
+        });
+    </script>
+
+<header>
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <nav>
+    <ul>
+      
+      
+      <li class="pull-left ">
+        <a href="http://novotnyr.github.io/">/home/robonovotny</a>
+      </li>
+      
+
+      
+
+    </ul>
+  </nav>
+</header>
+
+  </head>
+
+  <body>
+    <br/>
+
+<div class="article-meta">
+<h1><span class="title">Jednoduchý príklad použitia Hibernate</span></h1>
+
+<h2 class="date">2005/04/17</h2>
+<p class="terms">
+  
+  
+  
+  
+  
+</p>
+</div>
+
+
+
+<main>
+
+
+<h1 id="úvod">Úvod</h1>
+
+<p>Hibernate (<a href="http://www.hibernate.org">http://www.hibernate.org</a>) je nástroj podporujúci objektovú perzistenciu &ndash; v preklade: umožňuje ukladať objekty do databázy a následne ich z nej vyberať (často sa možno stretnúť so pojmom <em>ORM &ndash; Object Relational Mapping</em>). Výhodou je jeho ľahké používanie, stabilita a rozšírenosť.</p>
+
+<h1 id="príklad">Príklad</h1>
+
+<p>Uvažujme niekoľko jednoduchých tried, ktoré sa zaoberajú mačkami. Majme koncept mačky: mačka má meno a deti. Teda môžeme ju reprezentovať triedou <code>Cat</code>.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">package</span> <span style="color:#5ed;font-weight:bold">catology</span>;
+
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">java</span>.<span style="color:#007">util</span>.<span style="color:#007">HashSet</span>;
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">java</span>.<span style="color:#007">util</span>.<span style="color:#007">Set</span>;
+
+<span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> Cat {
+  <span style="color:#289;font-weight:bold">private</span> <span style="color:#5ed;font-weight:bold">String</span> name;
+  
+  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">String</span> getName() {
+    <span style="color:#289;font-weight:bold">return</span> name;
+  }
+
+  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">void</span> setName(String <span style="color:#5ed;font-weight:bold">name</span>) {
+    <span style="color:#289;font-weight:bold">this</span>.<span style="color:#007">name</span> <span style="color:#333">=</span> name;
+  }
+ 
+  
+  <span style="color:#289;font-weight:bold">protected</span> <span style="color:#5ed;font-weight:bold">Set</span> children <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> HashSet();
+
+  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">Set</span> getChildren() {
+    <span style="color:#289;font-weight:bold">return</span> <span style="color:#289;font-weight:bold">this</span>.<span style="color:#007">children</span>;
+  }
+
+  <span style="color:#289;font-weight:bold">private</span> <span style="color:#5ed;font-weight:bold">void</span> setChildren(Set <span style="color:#5ed;font-weight:bold">children</span>) {
+    <span style="color:#289;font-weight:bold">this</span>.<span style="color:#007">children</span> <span style="color:#333">=</span> children;
+  } 
+  
+  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">void</span> addChild(Cat <span style="color:#5ed;font-weight:bold">child</span>) {   
+    <span style="color:#289;font-weight:bold">this</span>.<span style="color:#007">children</span>.<span style="color:#007">add</span>(child);   
+  }
+}</code></pre></div>
+<p>Táto trieda je veľmi jednoduchá, vidíme, že neimplementuje žiadny špeciálny interfejs. Jej použitie je tiež priamočiare.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Cat <span style="color:#5ed;font-weight:bold">parent</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Cat();
+parent.<span style="color:#007">setName</span>(<span style="background-color:#e0e0ff">&#34;Pigislav&#34;</span>);
+
+Cat <span style="color:#5ed;font-weight:bold">child</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Cat();
+child.<span style="color:#007">setName</span>(<span style="background-color:#e0e0ff">&#34;Poldo&#34;</span>);   
+
+parent.<span style="color:#007">addChild</span>(child);</code></pre></div>
+<p>Teraz by sme chceli uložiť mačku do databázy. Mohli by sme to urobiť dvoma spôsobmi: buď jednoducho vytvoriť pomocnú triedu, ktorá by z objektu typu <code>Cat</code> vytiahla príslušné vlastnosti, spojila sa s databázou a odoslala zodpovedajúci SQL dopyt typu <code>INSERT</code>.</p>
+
+<p>Hibernate tento proces v prípade komplikovaných tried, alebo ich veľkého počtu, značne uľahčuje.</p>
+
+<h2 id="základ">Základ</h2>
+
+<p>Majme teda uvedenú triedu <code>Cat</code>.</p>
+
+<h2 id="konfiguračný-súbor">Konfiguračný súbor</h2>
+
+<p>Predovšetkým potrebujeme nakonfigurovať základné vlastnosti: použitú databázu, jej JDBC ovládač a podobne. Na to slúži súbor <code>hibernate.cfg.xml</code></p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#579">&lt;?xml version=&#34;1.0&#34; encoding=&#34;utf-8&#34;?&gt;</span>
+<span style="color:#579">&lt;!DOCTYPE hibernate-configuration
+</span><span style="color:#579">  PUBLIC &#34;-//Hibernate/Hibernate Configuration DTD//EN&#34; 
+</span><span style="color:#579">  http://hibernate.sourceforge.net/hibernate-configuration-2.0.dtd&#34;&gt;</span>
+
+<span style="color:#070">&lt;hibernate-configuration&gt;</span>
+  <span style="color:#070">&lt;session-factory</span> <span style="color:#070">&gt;</span>
+    <span style="color:#666;font-style:italic">&lt;!-- local connection properties --&gt;</span>
+    <span style="color:#070">&lt;property</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;hibernate.connection.url&#34;</span><span style="color:#070">&gt;</span>jdbc:mysql://localhost:3306/macky<span style="color:#070">&lt;/property&gt;</span>
+    <span style="color:#070">&lt;property</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;hibernate.connection.driver_class&#34;</span><span style="color:#070">&gt;</span>com.mysql.jdbc.Driver<span style="color:#070">&lt;/property&gt;</span>
+    <span style="color:#070">&lt;property</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;hibernate.connection.username&#34;</span><span style="color:#070">&gt;</span>root<span style="color:#070">&lt;/property&gt;</span>
+    <span style="color:#070">&lt;property</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;hibernate.connection.password&#34;</span><span style="color:#070">&gt;</span>root<span style="color:#070">&lt;/property&gt;</span>
+    <span style="color:#666;font-style:italic">&lt;!-- dialect for MySQL --&gt;</span>
+    <span style="color:#070">&lt;property</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;dialect&#34;</span><span style="color:#070">&gt;</span>net.sf.hibernate.dialect.MySQLDialect<span style="color:#070">&lt;/property&gt;</span>
+
+    <span style="color:#070">&lt;property</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;hibernate.show_sql&#34;</span><span style="color:#070">&gt;</span>true<span style="color:#070">&lt;/property&gt;</span>
+    <span style="color:#070">&lt;property</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;hibernate.use_outer_join&#34;</span><span style="color:#070">&gt;</span>false<span style="color:#070">&lt;/property&gt;</span>
+    <span style="color:#070">&lt;property</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;hibernate.transaction.factory_class&#34;</span><span style="color:#070">&gt;</span>net.sf.hibernate.transaction.JDBCTransactionFactory<span style="color:#070">&lt;/property&gt;</span>
+
+    <span style="color:#070">&lt;property</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;jta.UserTransaction&#34;</span><span style="color:#070">&gt;</span>java:comp/UserTransaction<span style="color:#070">&lt;/property&gt;</span>
+
+    <span style="color:#070">&lt;mapping</span> <span style="color:#007">resource=</span><span style="background-color:#e0e0ff">&#34;catology/Cat.hbm.xml&#34;</span><span style="color:#070">/&gt;</span>
+
+  <span style="color:#070">&lt;/session-factory&gt;</span>
+<span style="color:#070">&lt;/hibernate-configuration&gt;</span></code></pre></div>
+<p>V súbore sú uvedené základné konfiguračné vlastnosti (adresa databázy, ovládač, meno a heslo). Vlastnosť <code>dialect</code> udáva typ použitého dialektu SQL databázy &ndash; Hibernate na základe neho vykonáva isté optimalizácie. Tu je zjavná ďalšia výhoda: jednoduchá migrácia medzi rôznymi databázami.</p>
+
+<h2 id="tabuľky-v-db">Tabuľky v DB</h2>
+
+<p>Budeme potrebovať dve tabuľky: <code>CAT</code> a <code>PARENT_CHILD</code> (predpokladáme, že každá mačka môže mať viac detí a každé dieťa môže mať viac rodičov). Pre jednoduchosť sa nebudeme zaoberať cudzími kľúčmi.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql"><span style="color:#289;font-weight:bold">CREATE</span> <span style="color:#289;font-weight:bold">TABLE</span> cat (ID <span style="color:#072">INTEGER</span> <span style="color:#289;font-weight:bold">NOT</span> <span style="color:#289;font-weight:bold">NULL</span>, MENO <span style="color:#072">VARCHAR</span>(<span style="color:#66f;font-weight:bold">20</span>) <span style="color:#289;font-weight:bold">NOT</span> <span style="color:#289;font-weight:bold">NULL</span>, <span style="color:#289;font-weight:bold">PRIMARY</span> <span style="color:#289;font-weight:bold">KEY</span>(ID))
+
+<span style="color:#289;font-weight:bold">CREATE</span> <span style="color:#289;font-weight:bold">TABLE</span> parent_child (ID_PARENT <span style="color:#072">INTEGER</span> <span style="color:#289;font-weight:bold">NOT</span> <span style="color:#289;font-weight:bold">NULL</span>, ID_PARENT <span style="color:#072">INTEGER</span> <span style="color:#289;font-weight:bold">NOT</span> <span style="color:#289;font-weight:bold">NULL</span>)</code></pre></div>
+<h2 id="mapovacie-súbory">Mapovacie súbory</h2>
+
+<p>Problémom je, ako namapovať triedy na databázové tabuľky. Každá hibernovaná trieda má svoj vlastný konfiguračný XML súbor s príponou <code>hbm.xml</code> &ndash; tzv. mapovací súbor. Napr. uvedenej triede <code>Cat.java</code> zodpovedá nasledovný súbor <code>Cat.hbm.xml</code>.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#579">&lt;?xml version=&#34;1.0&#34;?&gt;</span>
+<span style="color:#579">&lt;!DOCTYPE hibernate-mapping PUBLIC
+</span><span style="color:#579">        &#34;-//Hibernate/Hibernate Mapping DTD 2.0//EN&#34;
+</span><span style="color:#579">        &#34;http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd&#34;&gt;</span>
+
+<span style="color:#070">&lt;hibernate-mapping&gt;</span>
+
+  <span style="color:#070">&lt;class</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;catology.Cat&#34;</span> <span style="color:#007">table=</span><span style="background-color:#e0e0ff">&#34;cat&#34;</span><span style="color:#070">&gt;</span>
+  
+    <span style="color:#070">&lt;id</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;id&#34;</span> <span style="color:#007">column=</span><span style="background-color:#e0e0ff">&#34;id&#34;</span> <span style="color:#007">type=</span><span style="background-color:#e0e0ff">&#34;java.lang.Long&#34;</span><span style="color:#070">&gt;</span>
+      <span style="color:#070">&lt;generator</span> <span style="color:#007">class=</span><span style="background-color:#e0e0ff">&#34;increment&#34;</span><span style="color:#070">/&gt;</span>
+    <span style="color:#070">&lt;/id&gt;</span>
+  
+    <span style="color:#070">&lt;property</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;name&#34;</span> <span style="color:#007">column=</span><span style="background-color:#e0e0ff">&#34;meno&#34;</span> <span style="color:#007">type=</span><span style="background-color:#e0e0ff">&#34;string&#34;</span><span style="color:#070">/&gt;</span>     
+
+    <span style="color:#070">&lt;set</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;children&#34;</span> <span style="color:#007">table=</span><span style="background-color:#e0e0ff">&#34;parent_child&#34;</span> <span style="color:#007">cascade=</span><span style="background-color:#e0e0ff">&#34;save-update&#34;</span><span style="color:#070">&gt;</span>
+    
+      <span style="color:#070">&lt;key</span> <span style="color:#007">column=</span><span style="background-color:#e0e0ff">&#34;parent&#34;</span><span style="color:#070">/&gt;</span>
+    
+      <span style="color:#070">&lt;many-to-many</span> <span style="color:#007">column=</span><span style="background-color:#e0e0ff">&#34;child&#34;</span> <span style="color:#007">class=</span><span style="background-color:#e0e0ff">&#34;catology.Cat&#34;</span><span style="color:#070">/&gt;</span>
+    <span style="color:#070">&lt;/set&gt;</span>
+  
+  <span style="color:#070">&lt;/class&gt;</span>
+
+<span style="color:#070">&lt;/hibernate-mapping&gt;</span></code></pre></div>
+<h3 id="popis-elementov-mapovacieho-súboru">Popis elementov mapovacieho súboru</h3>
+
+<h4 id="element-class">Element class</h4>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#070">&lt;class</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;catology.Cat&#34;</span> <span style="color:#007">table=</span><span style="background-color:#e0e0ff">&#34;cat&#34;</span><span style="color:#070">&gt;</span></code></pre></div>
+<p>Tento element určuje, že javovská trieda (<code>name</code>) sa mapuje na danú tabuľku (<code>table</code>).</p>
+
+<h4 id="element-id">Element id</h4>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#070">&lt;id</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;id&#34;</span> <span style="color:#007">column=</span><span style="background-color:#e0e0ff">&#34;id&#34;</span> <span style="color:#007">type=</span><span style="background-color:#e0e0ff">&#34;java.lang.Long&#34;</span><span style="color:#070">&gt;</span>
+  <span style="color:#070">&lt;generator</span> <span style="color:#007">class=</span><span style="background-color:#e0e0ff">&#34;increment&#34;</span><span style="color:#070">/&gt;</span>
+<span style="color:#070">&lt;/id&gt;</span></code></pre></div>
+<p>Pri konštrukcii triedy <code>Cat.java</code> sme zatajili jeden detail &ndash; každá hibernovaná trieda by mala mať špeciálny dátový člen, tzv. identifikátor. Preto definíciu <code>Cat.java</code> doplníme o privátny dátový člen <code>Long id</code>, s príslušnými metódami <code>get()</code> a <code>set()</code>. Tento identifikátor využíva Hibernate na rôzne účely (napr. na detekciu, či už bol daný objekt hibernovaný, alebo nie).
+Element <code>id</code> špecifikuje názov dátového člena (<code>name</code>), stĺpec v tabuľke, na ktorý sa identifikátor mapuje (<code>column</code>) a javovský dátový typ (<code>type</code>) identifikátora. Element <code>generator</code> identifikuje algoritmus, pomocou ktorého bude Hibernate identifikátory pre danú triedu generovať &ndash; v princípe nás to ale nemusí zaujímať. Jediné čo potrebujeme urobiť, je špecifikovať v triede jeden špeciálny dátový člen pre identifikátor a príslušné mapovanie. Identifikátor nemusíme pri tvorení inštancie triedy vôbec nastavovať.</p>
+
+<h4 id="elementárne-členy">Elementárne členy</h4>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#070">&lt;property</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;name&#34;</span> <span style="color:#007">column=</span><span style="background-color:#e0e0ff">&#34;meno&#34;</span> <span style="color:#007">type=</span><span style="background-color:#e0e0ff">&#34;string&#34;</span><span style="color:#070">/&gt;</span></code></pre></div>
+<p>Tento element predstavuje mapovanie jednoduchého dátového člena (napr. reťazca, čísla a pod.) V našom prípade sa dátový člen <code>name</code> (<code>name</code>) mapuje na tabuľkový stĺpec <code>meno</code> (<code>column</code>), pričom je dátového typu <code>java.lang.String</code>)</p>
+
+<h4 id="kompozitné-dátové-členy">Kompozitné dátové členy</h4>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#070">&lt;set</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;children&#34;</span> <span style="color:#007">table=</span><span style="background-color:#e0e0ff">&#34;parent_child&#34;</span> <span style="color:#007">cascade=</span><span style="background-color:#e0e0ff">&#34;save-update&#34;</span><span style="color:#070">&gt;</span>    
+  <span style="color:#070">&lt;key</span> <span style="color:#007">column=</span><span style="background-color:#e0e0ff">&#34;parent&#34;</span><span style="color:#070">/&gt;</span>    
+  <span style="color:#070">&lt;many-to-many</span> <span style="color:#007">column=</span><span style="background-color:#e0e0ff">&#34;child&#34;</span> <span style="color:#007">class=</span><span style="background-color:#e0e0ff">&#34;catology.Cat&#34;</span><span style="color:#070">/&gt;</span>
+<span style="color:#070">&lt;/set&gt;</span></code></pre></div>
+<p>Toto je prípad jedného typu kompozitného člena &ndash; napr. množiny, zoznamu či podobnej štruktúry. V Hibernate možno týmto spôsobom reprezentovať viacero asociácií medzi triedami, typicky vzťahy 1-1, 1:m, m:n (rodič-dieťa, agregácia). V našom prípade máme asociáciu rodič-dieťa typu m:n.
+Element <code>set</code> reprezentuje množinu. Dátový člen <code>children</code> je „rozbitý&rdquo; v tabuľke <code>parent_child</code>, pričom stĺpcom identifikujúcim rodiča je <code>parent</code>. Element <code>many-to-many</code> indikuje, že máme asociáciu m:n, pričom deti sú v stĺpci <code>child</code> a sú daného javovského typu.</p>
+
+<p>Atribút <code>cascade=&quot;save-update&quot;</code> upovedomí Hibernate, že pri hibernácii danej triedy má zároveň hibernovať aj asociované triedy: v našom prípade sa pri hibernovaní rodiča automaticky hibernujú aj jeho deti.</p>
+
+<p>Na mapovanie ostatných typov odkazujeme do dokumentácie, prípadne do stránok s prehľadom asociácií a ich mapovaní (<a href="http://www.xylax.net/hibernate/index.html">http://www.xylax.net/hibernate/index.html</a>).</p>
+
+<h2 id="proces-hibernácie-a-dehibernácie">Proces hibernácie a dehibernácie</h2>
+
+<p>Proces hibernácie je potom pomerne priamočiary (neuvádzame odchytávanie výnimiek)</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#666;font-style:italic">//nakonfigujueme tovaren, ktora nam bude davat sessiony s Hibernate
+</span><span style="color:#666;font-style:italic"></span>sessionFactory <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Configuration()
+  .<span style="color:#007">configure</span>(<span style="color:#289;font-weight:bold">new</span> java.<span style="color:#007">io</span>.<span style="color:#007">File</span>(<span style="background-color:#e0e0ff">&#34;/home/user/catology/bin/hibernate.cfg.xml&#34;</span>))
+  .<span style="color:#007">buildSessionFactory</span>();
+
+<span style="color:#666;font-style:italic">//vytvorime triedy, ktore chceme hibernovat
+</span><span style="color:#666;font-style:italic"></span>Cat <span style="color:#5ed;font-weight:bold">parent</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Cat();
+parent.<span style="color:#007">setName</span>(<span style="background-color:#e0e0ff">&#34;Pigislav&#34;</span>);
+Cat <span style="color:#5ed;font-weight:bold">child</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Cat();
+child.<span style="color:#007">setName</span>(<span style="background-color:#e0e0ff">&#34;Poldo&#34;</span>); 
+parent.<span style="color:#007">addChild</span>(child);
+
+<span style="color:#666;font-style:italic">//vyziadame si session
+</span><span style="color:#666;font-style:italic"></span>Session <span style="color:#5ed;font-weight:bold">session</span> <span style="color:#333">=</span> sessionFactory.<span style="color:#007">openSession</span>();
+<span style="color:#666;font-style:italic">//zacneme transakciu (v duchu transakcii v DB)
+</span><span style="color:#666;font-style:italic"></span>Transaction <span style="color:#5ed;font-weight:bold">tx</span> <span style="color:#333">=</span> session.<span style="color:#007">beginTransaction</span>();
+
+<span style="color:#666;font-style:italic">//hibernujeme triedu (to je vsetko!)
+</span><span style="color:#666;font-style:italic"></span>session.<span style="color:#007">save</span>(parent);
+
+<span style="color:#666;font-style:italic">//commitneme transakciu
+</span><span style="color:#666;font-style:italic"></span>tx.<span style="color:#007">commit</span>();         
+
+<span style="color:#666;font-style:italic">//skoncime session 
+</span><span style="color:#666;font-style:italic"></span>session.<span style="color:#007">close</span>();</code></pre></div>
+<p>Analogicky môžeme jednoducho dehibernovať triedy. Na získavanie tried z databázy jestvuje mnoho metód a Hibernate dokonca definuje vlastný jazyk jemne rozširujúci SQL o objektové črty.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#666;font-style:italic">//nakonfigujueme tovaren, ktora nam bude davat sessiony s Hibernate
+</span><span style="color:#666;font-style:italic"></span>sessionFactory <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Configuration()
+  .<span style="color:#007">configure</span>(<span style="color:#289;font-weight:bold">new</span> java.<span style="color:#007">io</span>.<span style="color:#007">File</span>(<span style="background-color:#e0e0ff">&#34;/home/user/catology/bin/hibernate.cfg.xml&#34;</span>))
+  .<span style="color:#007">buildSessionFactory</span>();
+
+<span style="color:#666;font-style:italic">//vyziadame si session
+</span><span style="color:#666;font-style:italic"></span>Session <span style="color:#5ed;font-weight:bold">session</span> <span style="color:#333">=</span> sessionFactory.<span style="color:#007">openSession</span>();
+<span style="color:#666;font-style:italic">//zacneme transakciu (v duchu transakcii v DB)
+</span><span style="color:#666;font-style:italic"></span>Transaction <span style="color:#5ed;font-weight:bold">tx</span> <span style="color:#333">=</span> session.<span style="color:#007">beginTransaction</span>();
+
+<span style="color:#666;font-style:italic">//chcem vsetky macky! (&#34;from Cat&#34;) je vyraz dopytovacieho jazyka
+</span><span style="color:#666;font-style:italic"></span>List <span style="color:#5ed;font-weight:bold">result</span> <span style="color:#333">=</span> session.<span style="color:#007">find</span>(<span style="background-color:#e0e0ff">&#34;from Cat&#34;</span>);         
+
+Cat <span style="color:#5ed;font-weight:bold">c</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">null</span>;
+Cat <span style="color:#5ed;font-weight:bold">kitten</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">null</span>;
+
+<span style="color:#666;font-style:italic">//iterujeme zoznam maciek
+</span><span style="color:#666;font-style:italic"></span><span style="color:#289;font-weight:bold">for</span>(<span style="color:#66f;font-weight:bold">int</span> <span style="color:#5ed;font-weight:bold">i</span> <span style="color:#333">=</span> 0; i <span style="color:#333">&lt;</span> result.<span style="color:#007">size</span>(); i<span style="color:#333">++</span>) {
+  c <span style="color:#333">=</span> (Cat) result.<span style="color:#007">get</span>(i);            
+  System.<span style="color:#007">out</span>.<span style="color:#007">println</span>(c.<span style="color:#007">getName</span>());
+
+  <span style="color:#666;font-style:italic">//iterujeme cez deti macky a vypisujeme ich
+</span><span style="color:#666;font-style:italic"></span>  Iterator <span style="color:#5ed;font-weight:bold">it</span> <span style="color:#333">=</span> c.<span style="color:#007">getChildren</span>().<span style="color:#007">iterator</span>(); 
+  <span style="color:#289;font-weight:bold">while</span>(it.<span style="color:#007">hasNext</span>()) {
+    kitten <span style="color:#333">=</span> (Cat)it.<span style="color:#007">next</span>();
+    System.<span style="color:#007">out</span>.<span style="color:#007">println</span>(<span style="background-color:#e0e0ff">&#34;  &#34;</span> <span style="color:#333">+</span> kitten.<span style="color:#007">getName</span>());
+  }           
+}
+
+<span style="color:#666;font-style:italic">//commitneme transakciu
+</span><span style="color:#666;font-style:italic"></span>tx.<span style="color:#007">commit</span>();         
+
+<span style="color:#666;font-style:italic">//skoncime session 
+</span><span style="color:#666;font-style:italic"></span>session.<span style="color:#007">close</span>();</code></pre></div>
+<h1 id="odkazy">Odkazy</h1>
+
+<ul>
+<li><a href="http://www.xylax.net/hibernate/index.html">http://www.xylax.net/hibernate/index.html</a></li>
+<li><a href="http://www.gloegl.de/14.html">http://www.gloegl.de/14.html</a></li>
+</ul>
+
+<h1 id="riešenie-problémov">Riešenie problémov</h1>
+
+<h2 id="no-appenders-could-be-found"><code>No appenders could be found...</code></h2>
+
+<p>Vypisuje to chybu <code>log4j:WARN No appenders could be found for logger (net.sf.hibernate.cfg.Environment)</code></p>
+
+<p><strong>Riešenie:</strong> v koreňovom adresári aplikácie chýba <code>log4.properties</code>.</p>
+
+<h2 id="unable-to-configure"><code>Unable to configure...</code></h2>
+
+<p>Vypisuje to <code>unable to configure &quot;/hibernate.cfg.xml&quot;</code></p>
+
+<p><strong>Riešenie:</strong> na konfiguráciu použite absolútnu cestu ku konfiguračnému súboru</p>
+
+<pre><code>sessionFactory = new Configuration().configure(new java.io.File(&quot;D:\\Projects\\catology\\bin\\catology\\hibernate.cfg.xml&quot;)).buildSessionFactory();
+</code></pre>
+
+<h2 id="transaction-not-found"><code>Transaction not found..</code></h2>
+
+<p>V tutoriáli na Gloegl.de sa používa <code>net.sf.hibernate.transaction.JTATransactionFactory</code> a nejde to! <code>Transaction not found</code>!</p>
+
+<p><strong>Riešenie:</strong> Továreň v tutoriáli treba v mapovacom subore <code>*.cfg.xml</code> nahradiť továrňou <code>net.sf.hibernate.transaction.JDBCTransactionFactory</code>,
+podrobnosti napr. na <a href="http://www.eclipseplugincentral.com/PNphpBB2+file-viewtopic-t-682-sid-f85fed51a0dc5f6ca54b34c7817d63b4.html">http://www.eclipseplugincentral.com/PNphpBB2+file-viewtopic-t-682-sid-f85fed51a0dc5f6ca54b34c7817d63b4.html</a> .</p>
+
+<h2 id="identifikátor-bol-zmenený-z-5-na-5">Identifikátor bol zmenený z 5 na 5</h2>
+
+<p>Hádže to výnimku s popisom, že identifikátor bol zmenený z 5 na 5!</p>
+
+<p><strong>Riešenie:</strong> Skontrolujte dátové typy, na IDcka je vhodne pouzivat primitivny datovy typ <code>long</code>, alebo este lepsie <code>java.lang.Long</code>. Hibernate vam chce naznacit, ze datovy typ 5 sa zmenil, ale na konzole to nie je vidiet ;-)</p>
+
+<h2 id="hierarchia-sa-neukladá">Hierarchia sa neukladá</h2>
+
+<p>Moja nadherna hierarchia rodicov a deti sa neuklada do databazy!</p>
+
+<p><strong>Riešenie:</strong> Treba uviest atribut <code>cascade</code> s prislusnou hodnotou. Ak nie je atribut uvedeny, podradene objekty treba ukladat do DB rucne. Priklad pre automaticke ukladanie hierarchie:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#070">&lt;set</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;children&#34;</span> <span style="color:#007">table=</span><span style="background-color:#e0e0ff">&#34;parent_child&#34;</span> <span style="color:#007">cascade=</span><span style="background-color:#e0e0ff">&#34;save-update&#34;</span><span style="color:#070">&gt;</span></code></pre></div>
+<h2 id="batch-update-row-count-wrong"><code>Batch update row count wrong</code></h2>
+
+<p>Bliaka to, ze <code>Batch update row count wrong</code>!</p>
+
+<p><strong>Riešenie:</strong> Atribut <code>unsaved-value</code> nie je nastaveny. Ak identifikacny atribut nema implicitnu hodnotu <code>null</code> (to je v pripade primitivnych typov ako napr. <code>long</code>), je potrebné uviesť implicitnu hodnotu.</p>
+
+<p><strong>Riešenie 2:</strong> Alternativne je uzitocne pouzivate neprimitivne typy:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> Cat {
+  <span style="color:#289;font-weight:bold">private</span> <span style="color:#5ed;font-weight:bold">Long</span> id;
+  
+  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">Long</span> getId() {
+     <span style="color:#289;font-weight:bold">return</span> id;
+  }
+  
+  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">void</span> setId(Long <span style="color:#5ed;font-weight:bold">id</span>) {
+     <span style="color:#289;font-weight:bold">this</span>.<span style="color:#007">id</span> <span style="color:#333">=</span> id;
+  }
+}</code></pre></div><div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#070">&lt;id</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;id&#34;</span> <span style="color:#007">column=</span><span style="background-color:#e0e0ff">&#34;id&#34;</span> <span style="color:#007">type=</span><span style="background-color:#e0e0ff">&#34;java.lang.Long&#34;</span><span style="color:#070">&gt;</span></code></pre></div>
+<h2 id="triedy-sa-neukladajú">Triedy sa neukladajú</h2>
+
+<p>Moje inštancie sa neukladajú do databázy! Vypíše sa, že prebehol <code>INSERT</code>, ale v databáze sa nič nezmenilo!</p>
+
+<p><strong>Riešenie:</strong> Skontrolujte, či ukladanie prebieha v rámci transakcie. Ak nepoužívate transakcie, je stále možné použiť najprimitívnejší spôsob a to vypnutím autocommitu JDBC pripojení. Dodajte konfiguračné nastaveniee</p>
+
+<pre><code>hibernate.connection.autocommit = true
+</code></pre>
+
+<p>a pred uzatvorením sessionu ho flushnite (Hibernate totiž kvôli optimalizácii zoskupuje dopyty a odošle ich až v prípade potreby)</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Session <span style="color:#5ed;font-weight:bold">session</span> <span style="color:#333">=</span> factory.<span style="color:#007">openSession</span>();
+<span style="color:#289;font-weight:bold">try</span> {
+  Hotel <span style="color:#5ed;font-weight:bold">hotel</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Hotel(<span style="background-color:#e0e0ff">&#34;Plaza&#34;</span>, <span style="background-color:#e0e0ff">&#34;Main Street 1&#34;</span>, 4);
+  session.<span style="color:#007">saveOrUpdate</span>(hotel);
+			
+  Hotel <span style="color:#5ed;font-weight:bold">hotel2</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Hotel(<span style="background-color:#e0e0ff">&#34;Continental&#34;</span>, <span style="background-color:#e0e0ff">&#34;Turing Street 1&#34;</span>, 5);
+  session.<span style="color:#007">saveOrUpdate</span>(hotel2);
+} <span style="color:#289;font-weight:bold">finally</span> {
+  session.<span style="color:#007">flush</span>();
+  session.<span style="color:#007">close</span>();
+}</code></pre></div>
+<h1 id="faq">FAQ</h1>
+
+<h2 id="aký-je-rozdiel-medzi-get-a-load">Aký je rozdiel medzi <code>get()</code> a <code>load()</code>?</h2>
+
+<ul>
+<li>load nacita proxy, nastavi len jej id, zvysok dotahuje lazy</li>
+<li>get natiahne komplet objekt</li>
+</ul>
+
+</main>
+
+    <footer>
+      
+<script>
+(function() {
+  function center_el(tagName) {
+    var tags = document.getElementsByTagName(tagName), i, tag;
+    for (i = 0; i < tags.length; i++) {
+      tag = tags[i];
+      var parent = tag.parentElement;
+      
+      if (parent.childNodes.length === 1) {
+        
+        if (parent.nodeName === 'A') {
+          parent = parent.parentElement;
+          if (parent.childNodes.length != 1) continue;
+        }
+        if (parent.nodeName === 'P') parent.style.textAlign = 'center';
+      }
+    }
+  }
+  var tagNames = ['img', 'embed', 'object'];
+  for (var i = 0; i < tagNames.length; i++) {
+    center_el(tagNames[i]);
+  }
+})();
+</script>
+
+      
+    </footer>
+  </body>
+</html>
+

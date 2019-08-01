@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Programovanie, algoritmy, zložitosť 2007 | robonovotny</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.css" integrity="sha384-D+9gmBxUQogRLqvARvNLmA9hS2x//eK1FhVb9PiU86gmcrBrJAQT8okdJ4LMp2uv" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.js" integrity="sha384-483A6DwYfKeDa0Q52fJmxFXkcPCFfnXMoXblOkJ4JcA8zATN6Tm78UNL72AKk+0O" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/contrib/auto-render.min.js" integrity="sha384-yACMu8JWxKzSp/C1YV86pzGiQ/l1YUfE8oPuahJQxzehAjEt2GiQuy/BIvl9KyeF" crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body);
+        });
+    </script>
+
+<header>
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <nav>
+    <ul>
+      
+      
+      <li class="pull-left ">
+        <a href="http://novotnyr.github.io/">/home/robonovotny</a>
+      </li>
+      
+
+      
+
+    </ul>
+  </nav>
+</header>
+
+  </head>
+
+  <body>
+    <br/>
+
+<div class="article-meta">
+<h1><span class="title">Programovanie, algoritmy, zložitosť 2007</span></h1>
+
+<h2 class="date">2007/09/23</h2>
+<p class="terms">
+  
+  
+  
+  
+  
+</p>
+</div>
+
+
+
+<main>
+
+
+<h1 id="oznamy">Oznamy</h1>
+
+<ul>
+<li>Podmienky na zápočet sú uvedené v prvej prezentácii.</li>
+<li>Vyberte si vhodnú tému projektu a spoluriešiteľov a príďte ju prekonzultovať. Odovzdávanie projektov je medzi 20. a 30. januárom 2008!</li>
+</ul>
+
+<h1 id="úvod-a-podmienky-na-zápočet">Úvod a podmienky na zápočet</h1>
+
+<ul>
+<li>teoretické cvičenie - piatok, 11.00, P17</li>
+<li>cvičenie pri počítačoch - štvrtok, 13.00, P3</li>
+<li>podmienky na zápočet
+
+<ul>
+<li>účasť na praktických cvičeniach (20%)</li>
+<li>domáce úlohy (raz za dve cvičenia) (30%)</li>
+<li>záverečný projekt (30%)</li>
+<li>test po precvičení dedičnosti (20%)</li>
+</ul></li>
+</ul>
+
+<h1 id="projekty">Projekty</h1>
+
+<ul>
+<li>Číselná lotéria (Potpinková, Martuš). Systém má podporovať viacero typov lotérii s možnosťou ľahko pridávať nové (napr. 5 zo 40 (Mates), 6 + dodatkové číslo zo 49 (Loto)). Používatelia zadávajú do lotérie tikety, kde si podľa typu hry zadajú tipované čísla. Lotéria po vyžrebovaní určí, ktoré tikety (a ktoréí užívatelia) vyhrali. Systém má podporovať načítavanie používateľov zo súboru a zápis výhernej listiny do súboru. Voliteľne môže byť v lotérii i viacero ťahov (tak ako je to v Lote).</li>
+<li>Želežničná doprava (Uhrinová, Šabáková, Puciová)</li>
+<li>Donášková služba (Fedorko, Goč)</li>
+<li>Sieť reštaurácií (Juris)</li>
+<li>Cestovná agentúra (Fedorová, Antoni)</li>
+<li>Internetové kníh a CD-kupectvo (Dvorská)</li>
+<li>Video a CD požičovňa (Ronďošová, Jakimová)</li>
+<li>Autopredajca (Fáber, Schniederová)</li>
+<li>PC Shop (Čup, Daxner)</li>
+<li>Výrobcovia produktov (Miňo, Martiňák)</li>
+</ul>
+
+<h1 id="teoretické-cvičenia">Teoretické cvičenia</h1>
+
+<h2 id="cvičenie-1-28-9-2007">Cvičenie 1 (28. 9. 2007)</h2>
+
+<p>Úvod k Jave. Triedy a objekty. Objekty majú stav (inštančné premenné) a chovanie (metódy).</p>
+
+<ul>
+<li><a href="http://ics.upjs.sk/~novotnyr/home/skola/programovanie_algoritmy_zlozitost/2007/paz1c-1.ppt">Prezentácia</a></li>
+<li><a href="http://ics.upjs.sk/~novotnyr/home/skola/programovanie_algoritmy_zlozitost/2007/paz1c-1.htm">Prezentácia HTML</a></li>
+</ul>
+
+<h2 id="cvičenie-2-5-10-2007">Cvičenie 2 (5. 10. 2007)</h2>
+
+<p>Vytváranie inštancií. Čo sa deje na halde pri vytváraní objektu. Primitívne dátové typy a polia.</p>
+
+<ul>
+<li><a href="http://ics.upjs.sk/~novotnyr/home/skola/programovanie_algoritmy_zlozitost/2007/paz1c-2.ppt">Prezentácia</a></li>
+<li><a href="http://ics.upjs.sk/~novotnyr/home/skola/programovanie_algoritmy_zlozitost/2007/paz1c-2.htm">Prezentácia HTML</a></li>
+</ul>
+
+<h2 id="cvičenie-3-12-10-2007">Cvičenie 3 (12. 10. 2007)</h2>
+
+<p>Metódy na menenie stavu (gettre a settre) a ich zdôvodnenie. Polia, zoznamy. Špeciálne metódy - toString(), equals(), hashCode().</p>
+
+<ul>
+<li><a href="http://ics.upjs.sk/~novotnyr/home/skola/programovanie_algoritmy_zlozitost/2007/paz1c-3.ppt">Prezentácia</a></li>
+<li><a href="http://ics.upjs.sk/~novotnyr/home/skola/programovanie_algoritmy_zlozitost/2007/paz1c-3.htm">Prezentácia HTML</a></li>
+</ul>
+
+<h2 id="cvičenie-4-27-10-2007">Cvičenie 4 (27. 10. 2007)</h2>
+
+<p>Balíčky ako prostriedok na zmiernenie chaosu v triedach. Preťažené metódy. Konštruktory.</p>
+
+<ul>
+<li><a href="http://ics.upjs.sk/~novotnyr/home/skola/programovanie_algoritmy_zlozitost/2007/paz1c-4.ppt">Prezentácia PPT</a></li>
+<li><a href="http://ics.upjs.sk/~novotnyr/home/skola/programovanie_algoritmy_zlozitost/2007/paz1c-4.htm">Prezentácia HTML</a></li>
+</ul>
+
+<h2 id="cvičenie-5-9-11-2007">Cvičenie 5 (9. 11. 2007)</h2>
+
+<p>Dedičnosť a polymorfizmus na príklade orchestra.</p>
+
+<ul>
+<li><a href="http://ics.upjs.sk/~novotnyr/home/skola/programovanie_algoritmy_zlozitost/2007/paz1c-5.ppt">Prezentácia PPT</a></li>
+<li><a href="http://ics.upjs.sk/~novotnyr/home/skola/programovanie_algoritmy_zlozitost/2007/paz1c-5.htm">Prezentácia HTML</a></li>
+</ul>
+
+<h2 id="cvičenie-6-16-11-2007">Cvičenie 6 (16. 11. 2007)</h2>
+
+<p>Dedičnosť metód - podrobnosti a mechanizmy. Abstraktné triedy a abstraktné metódy. Dedičnosť inštančných premenných. Modifikátory viditeľnosti.</p>
+
+<ul>
+<li><a href="http://ics.upjs.sk/~novotnyr/home/skola/programovanie_algoritmy_zlozitost/2007/paz1c-6.ppt">Prezentácia PPT</a></li>
+<li><a href="http://ics.upjs.sk/~novotnyr/home/skola/programovanie_algoritmy_zlozitost/2007/paz1c-6.htm">Prezentácia HTML</a></li>
+</ul>
+
+<h2 id="cvičenie-7-23-11-2007">Cvičenie 7 (23. 11. 2007)</h2>
+
+<p>Dedenie konštruktorov. Pretypovanie.</p>
+
+<ul>
+<li><a href="http://ics.upjs.sk/~novotnyr/home/skola/programovanie_algoritmy_zlozitost/2007/paz1c-7.ppt">Prezentácia PPT</a></li>
+<li><a href="http://ics.upjs.sk/~novotnyr/home/skola/programovanie_algoritmy_zlozitost/2007/paz1c-7.htm">Prezentácia HTML</a></li>
+</ul>
+
+<h2 id="cvičenie-8-30-12-2007">Cvičenie 8 (30. 12. 2007)</h2>
+
+<p>Písomka</p>
+
+<h2 id="cvičenie-9-7-12-2007">Cvičenie 9 (7. 12. 2007)</h2>
+
+<p>Viacnásobná dedičnosť - interfejsy:</p>
+
+<ul>
+<li><a href="http://ics.upjs.sk/~novotnyr/home/skola/programovanie_algoritmy_zlozitost/2007/paz1c-8.ppt">Prezentácia PPT</a></li>
+<li><a href="http://ics.upjs.sk/~novotnyr/home/skola/programovanie_algoritmy_zlozitost/2007/paz1c-8.htm">Prezentácia HTML</a></li>
+</ul>
+
+<h2 id="cvičenie-10-15-12-2007">Cvičenie 10 (15. 12. 2007)</h2>
+
+<p>Výnimky.</p>
+
+<ul>
+<li><a href="http://ics.upjs.sk/~novotnyr/home/skola/programovanie_algoritmy_zlozitost/2007/paz1c-9.ppt">Prezentácia PPT</a></li>
+<li><a href="http://ics.upjs.sk/~novotnyr/home/skola/programovanie_algoritmy_zlozitost/2007/paz1c-9.htm">Prezentácia HTML</a></li>
+</ul>
+
+<p>Statické metódy.
+-  <a href="http://ics.upjs.sk/~novotnyr/home/skola/programovanie_algoritmy_zlozitost/2007/paz1c-10.ppt">Prezentácia PPT</a>
+- <a href="http://ics.upjs.sk/~novotnyr/home/skola/programovanie_algoritmy_zlozitost/2007/paz1c-10.htm">Prezentácia HTML</a></p>
+
+<h1 id="praktické-cvičenia">Praktické cvičenia</h1>
+
+<h2 id="cvičenie-1-27-9-2007">Cvičenie 1 (27. 9. 2007)</h2>
+
+<h3 id="domáca-úloha-do-3-10-2007">Domáca úloha (do 3. 10. 2007)</h3>
+
+<ol>
+<li>Vyskúšajte si program Hello World.</li>
+<li>Vytvorte triedu <code>Maximum</code>, ktorej je možné zasielať postupne celé čísla. Objekt typu <code>Maximum</code> má vrátiť maximálne číslo, ktoré bolo doň vložené od chvíle vytvorenia jeho inštancie.</li>
+<li>Vytvorte triedu <code>Palindrom</code> s metódou, ktorá vie pre daný reťazec zistiť, či je to palindrom (teda reťazec, ktorý sa číta rovnako spredu i zozadu). Príklad: reťazec <code>mordnilapejepalindrom</code>.</li>
+<li>Vytvorte triedu <code>OperacieSPoliami</code>, ktorá bude reprezentovať prácu s poliami celých čísel:
+
+<ol>
+<li>súčet dvoch polí celých čísel rovnakej dĺžky po zložkách</li>
+</ol></li>
+</ol>
+
+<p>príklad: [2, 4, 5, 6] + [2, 3, 5, 2] = [4, 7, 10, 8]</p>
+
+<pre><code>2. rozdiel dvoch polí celých čísel rovnakej dĺžky po zložkách 
+</code></pre>
+
+<p>príklad: [2, 4, 5, 6] - [2, 3, 5, 2] = [0, 1, 0, 4]</p>
+
+<pre><code>3. zlepenie dvoch polí celých čísel  (konkatenácia)
+</code></pre>
+
+<p>príklad: [2, 4, 5, 6] zlep [2, 3, 5, 2] = [2, 4, 5, 6, 2, 3, 5, 2]</p>
+
+<h2 id="cvičenie-2-a-3-4-10-2007-a-10-10-2007">Cvičenie 2 a 3 (4. 10. 2007 a 10. 10. 2007)</h2>
+
+<p>Študenti sa každý rok zúčastňujú na Prírodovedeckých dňoch. Jednou z disciplín je súťaž v pití piva. Chceme vyrobiť informačný systém, ktorý
+bude evidovať koľko piva ktorý študent vypil a ktorý zo študentov vypil najviac piva. Súťaž v pití piva prebieha po kolách - každé
+kolo vypije každý učastník jedno pivo. Každý študent má však alkoholický strop (vypočítaný ako vek študenta + ročník - 15). Keď študent
+dosiahne alkoholický strop, nemôže v súťaži pokračovať (teda vypadáva).</p>
+
+<p>Navrhnite vhodný objektový model a implementujte vhodné triedy, ktoré budú zodpovedať tomuto informačnému systému - teda budú simulovať
+súťaž.</p>
+
+<h3 id="domáca-úloha-do-16-10-2007">Domáca úloha (do 16. 10. 2007)</h3>
+
+<ul>
+<li>navrhnite a implementujte triedu <code>Student</code> s vhodnými stavovými premennými</li>
+<li>implementujte u študenta metódu <code>dajStrop()</code></li>
+<li>navrhnite a implementujte triedu <code>Sutaz</code>, ktorá eviduje súťažiacich a ich počet v poli</li>
+<li>implementujte v súťaži metódu <code>pridajSúťažiaceho</code></li>
+<li>implementujte v súťaži metódu <code>void vymazStarych()</code>, ktorá zo zoznamu súťažiacich vyhodí štvrtákov a starších. (Môžete napr. použiť pomocné pole)</li>
+</ul>
+
+<h2 id="cvičenie-4-17-10-2007">Cvičenie 4 (17. 10. 2007)</h2>
+
+<p>Momentálnym hitom je súťaž Slovensko hľadá SuperStar. Samotné vyraďovanie súťažiacich prebieha pomocou castingov (casting sa koná v jednom meste), kde ho vykonávajú porotcovia (maximálne traja na 1 casting).</p>
+
+<p>Navrhnite vhodné triedy a metódy na pridanie súťažiaceho do castingu, na pridanie porotcu do castingu, pričom zabezpečte, aby casting mal naozaj najviac troch porotcov. Použite gettery a settery a privátne inštančné premenné.</p>
+
+<p>Na všetkých triedach definujte metódu <code>toString()</code>.</p>
+
+<h2 id="cvičenie-5-24-10-2007">Cvičenie 5 (24. 10. 2007)</h2>
+
+<p>Porotca slúži v castingu na to, aby odfiltroval nevhodných súťažiacich. V skutočnej SuperStar existuju určite nejaké striktné kritéria na filtrovanie súťažiacich, my sa však obmedzíme na to, že každý porotca bude súťažiacich vyhadzovať náhodne. (Každý porotca pri vyhadzovaní súťažiaceho si vygeneruje náhodné číslo, ktoré určí, či súťažiaci prešiel alebo nie).</p>
+
+<p>Dopracujte do porotcu metódu na vyhadzovanie súťažiacich. Dopracujte do castingu metódu, ktorá odfiltruje súťažiacich v danom castingu tak, že súťažiaci prejde postupne každým porotcom a pokiaľ ho schvália všetci porotcovia, ostáva v súťaží naďalej.</p>
+
+<p>Skúste nahadzovať do castingu náhodný počet súťažiacich a simulovať chovanie porotcov.</p>
+
+<h3 id="domáca-úloha-do-7-11-2007">Domáca úloha (do 7. 11. 2007)</h3>
+
+<ul>
+<li>naimplementujte metódu <code>ArrayList&lt;Sutaziaci&gt; vyhoď(ArrayList&lt;Sutaziaci&gt;)</code> na <code>Porotcovi</code>, ktorá odfiltruje zoznam súťažiacich na základe koeficientu náhodnosti.</li>
+<li>vyrobte triedu <code>PorotcaTester</code>, kde bude sledované chovanie metódy <code>vyhoď()</code> na štyroch súťažiacich</li>
+<li>naimplementujte metódu <code>vyhoď()</code> na <code>Casting</code>u, ktorá prefiltruje zoznam súťažiacich v castingu postupne cez viacerých porotcov. (Prvý porotca dostane zoznam, ten prefiltruje, výsledok získa druhý porotca atď). Zabezpečte, aby bola metóda pripravená na variabilný počet porotcov (napr. aj pre prípad, že porotca je len jeden).</li>
+</ul>
+
+<h2 id="cvičenie-6-7-8-11-2007-15-11-2007">Cvičenie 6 + 7 (8. 11. 2007 + 15. 11. 2007)</h2>
+
+<p>Firma Známosti s.r.o. chce vytvoriť systém pre vyhľadávanie optimálnych partnerských dvojíc. Kandidáti, ktorí sa chcú registrovať v systéme, musia poskytnúť meno, vek, pohlavie a záľuby.</p>
+
+<p>Navrhnite a implementujte metódy pre registráciu človeka v systéme a vyhľadávanie optimálneho partnera pre daného človeka. Zvážte použitie viacparametrových konštruktorov, a preťažených metód.</p>
+
+<h3 id="domáca-úloha-do-28-11-2007">Domáca úloha (do 28. 11. 2007)</h3>
+
+<p>Implementujte kompletný informačný systém. Odporúčaná stratégia na vyhľadávanie partnerov je nasledovná: každému z partnerov v systéme priradíme bodové ohodnotenie. Za kompatibilné pohlavie priradíme 3 body, za kompatibilný vek (najviac o tri roky starší a najviac o tri roky mladší) 1 bod a za spoločné záľuby (aspoň dve spoločné záľuby) 2 body.</p>
+
+<h2 id="cvičenie-8-9-22-29-11-2007">Cvičenie 8 + 9 (22 + 29. 11. 2007)</h2>
+
+<p>V rovine sa nachádzajú geometrické útvary - štvorce, obdĺžniky a kružnice. Nájdite dva najvzdialenejšie útvary, pričom vzdialenosť rátame ako vzdialenosť ťažísk. Údaje o útvaroch načítavajte do roviny zo súboru.</p>
+
+<p>Použitie triedy <code>java.io.Scanner</code> je <a href="Java.JavaIO">na samostatnej stránke</a>.</p>
+
+<h2 id="cvičenie-10-6-12-2007">Cvičenie 10 (6. 12. 2007)</h2>
+
+<p>Do roviny pridáme nový geometrický útvar - bod. Navyše, pre ostatné geometrické útvary dodáme možnosť zafarbiť sa a vyrátať svoj obsah.</p>
+
+<p>Doimplementujte príslušné metódy a zabezpečte, aby rovina vedela zistiť súčet obsahov všetkých svojich útvarov. (Pre jednoduchosť predpokladáme, že útvary sa neprekrývajú).</p>
+
+<h2 id="cvičenie-11-13-12-2007">Cvičenie 11 (13. 12. 2007)</h2>
+
+<p>Dopracujte interface, ktorý reprezentuje zafarbiteľný útvar. Zabezpečte, aby štvorce a kruhy boli zafarbiteľné nejakou farbou. Do roviny dopracujte metódu, ktorá zráta obsah zafarbiteľných útvarov.</p>
+
+<p>Vytvorte triedu, ktorá načíta zo súboru dáta o útvaroch a vráti ich ako zoznam geometrických útvarov. Odchytávajte korektne vyhodené výnimky.</p>
+
+<h2 id="cvičenie-12-20-12-2007">Cvičenie 12 (20. 12. 2007)</h2>
+
+<p>Zabezpečte, aby metóda pre načítavanie útvarov hádzala výnimku <code>ChybaPriNačítavaníException</code>. Táto výnimka nech má konštruktory zdedené od triedy <code>Exception</code>.</p>
+
+<p>Táto výnimka nech sa hádže aj pri nekorektných alebo chýbajúcich dátach k útvaru.</p>
+
+<h3 id="domáca-úloha">Domáca úloha</h3>
+
+<p>Zašlite hotový projekt s geometrickýcmi útvarmi z predošlých cvičení.</p>
+
+<h1 id="praktické-cvičenia-pondelok">Praktické cvičenia (pondelok)</h1>
+
+<h2 id="cvičenie-5-29-10-2007">Cvičenie 5 (29. 10. 2007)</h2>
+
+<p>Momentálnym hitom je súťaž Slovensko hľadá SuperStar. Samotné vyraďovanie súťažiacich prebieha pomocou castingov (casting sa koná v jednom meste), kde ho vykonávajú porotcovia (maximálne traja na 1 casting).</p>
+
+<p>Navrhnite vhodné triedy a metódy na pridanie súťažiaceho do castingu, na pridanie porotcu do castingu, pričom zabezpečte, aby casting mal naozaj najviac troch porotcov. Použite gettery a settery a privátne inštančné premenné.
+Na všetkých triedach definujte metódu <code>toString()</code>.</p>
+
+<p>Porotca slúži v castingu na to, aby odfiltroval nevhodných súťažiacich. V skutočnej SuperStar existuju určite nejaké striktné kritéria na filtrovanie súťažiacich, my sa však obmedzíme na to, že každý porotca bude súťažiacich vyhadzovať náhodne. (Každý porotca pri vyhadzovaní súťažiaceho si vygeneruje náhodné číslo, ktoré určí, či súťažiaci prešiel alebo nie).</p>
+
+<p>Dopracujte do porotcu metódu na vyhadzovanie súťažiacich. Dopracujte do castingu metódu, ktorá odfiltruje súťažiacich v danom castingu tak, že súťažiaci prejde postupne každým porotcom a pokiaľ ho schvália všetci porotcovia, ostáva v súťaží naďalej.</p>
+
+<p>Skúste nahadzovať do castingu náhodný počet súťažiacich a simulovať chovanie porotcov. Údaje o súťažiacich (meno a vek) načítavajte zo súboru, údaje o porotcoch (meno a koeficient náhodnosti) z iného súboru.</p>
+
+<p>Triedy nech prináležia nejakému balíčku so zmysluplným názvom.</p>
+
+<h2 id="cvičenie-6-7-5-11-12-11-2007">Cvičenie 6, 7 (5. 11 + 12. 11. 2007)</h2>
+
+<p>V rovine sa nachádzájú rôzne geometrické útvary - štvorce, trojuholníky a kruhy. Navrhnite a implementujte triedy a metódy, ktoré umožnia spočítať obsah všetkých útvarov nachádzajúcich sa v rovine.</p>
+
+<h3 id="poznámky">Poznámky</h3>
+
+<ul>
+<li>štvorec je charakterizovaný súradnicami jedného z rohov a dĺžkou strany</li>
+<li>kruh je charakterizovaný súradnicou stredu a polomerom</li>
+<li>trojuholník je charakterizovaný súradnicami jeho troch vrcholov</li>
+<li>pre jednoduchosť predpokladáme, že útvary sa neprekrývajú</li>
+</ul>
+
+<p>Domáca úloha:
+Navrhnite a implementuje triedy riešiace danú úlohu. Načítavajte objekty geometrických útvarov zo súboru a pridávajte ich do roviny. Zvoľte si vhodnú reprezentáciu objektov v súbore, odporúčaná je nasledovná:</p>
+
+<ul>
+<li>každý útvar je na samostatnom riadku</li>
+<li>útvar je špecifikovaný usporiadanou <em>n</em>-ticou. Prvá zložka udáva typ útvaru, a zvyšné údaje týkajúce sa koordinátov.
+
+<ul>
+<li>Príklad štvorca: 1;2;5;4 (1 = štvorec, [2, 5] = súradnice stredu, 4 = dĺžka strany</li>
+<li>Príklad trojuholníka: 2;2;5;3;7;2;2 (ľ = štvorec, [2, 5] = súradnice prvého vrchola, [3,7] = súradnice druhého vrchola, [2,2] = súradnice tretieho vrchola)
+Použite <code>java.uil.Scanner</code> a metódu <code>String#split()</code>.</li>
+</ul></li>
+</ul>
+
+<h2 id="cvičenie-7-8-21-11-26-11-2007">Cvičenie 7 + 8  (21. 11 + 26. 11. 2007)</h2>
+
+<p>Firma Prachy s.r.o. chce zarobiť na kurzových machináciách s použitím internetu. Ich cieľom je prejsť kurzové lístky viacerých bánk a zisťovať pre každú menu najvýhodnejší kurz pre predaj a nákup devíz.</p>
+
+<p>Vytvorte informačný systém, ktorý obíde kurzové lístky bánk a zistí pre každú z mien najnižšiu cenu pre predaj a najvyššiu cenu pre nákup valút. Kurzové lístky sa môžu nachádzať buď na Internete alebo môžu byť načítané zo súboru.</p>
+
+<p>Príkladom kurzového lístka je Národná banka, <a href="http://www.nbs.sk/KL/EXKL/AKT_EXKL.XML">http://www.nbs.sk/KL/EXKL/AKT_EXKL.XML</a></p>
+
+<p>Funkčné požiadavky:</p>
+
+<ul>
+<li>Systém musí podporovať pridanie kurzového lístka (buď z internetovej adresy alebo zo súboru)</li>
+<li>Systém musí vyhadzovať rozumné výnimky</li>
+</ul>
+
+<p>Vytvorte triedy <code>KurzovýLístok</code>, <code>Mena</code>, <code>Banka</code>, <code>Systém</code>. V triede <code>Systém</code> vytvorte metódy <code>načítaj(Banka banka, File file)</code> a <code>načítaj(Banka banka, URL adresa)</code>, ktorými načítate údaje o kurzovom lístku pre danú banku zo súboru, resp. z URL adresy. Metódy nech hádžu výnimku <code>KurzovýLístokException</code>.</p>
+
+<h2 id="cvičenie-9-10-12-2007">Cvičenie 9 (10. 12. 2007)</h2>
+
+<p>Vytvorte pomocnú triedu, ktorá bude vedieť spracovávať kurzový lístok vo formáte Národnej banky (<a href="http://www.nbs.sk/KL/EXKL/AKT_EXKL.XML">http://www.nbs.sk/KL/EXKL/AKT_EXKL.XML</a>). Vytvorte metódy, ktoré načítajú z kurzového lístka</p>
+
+<ul>
+<li>dátum platnosti ako reťazec</li>
+<li>dátum platnosti ako trojicu celých čísel (deň, mesiac a rok)</li>
+<li>výmenný kurz (z elementu <code>&lt;value&gt;</code>) pre daný textový názov krajiny. Pre vstup <code>Albánsko</code> je výstupom 27.347).</li>
+</ul>
+
+<h3 id="užitočné-metódy-triedy-string">Užitočné metódy triedy <code>String</code></h3>
+
+<ul>
+<li><p><code>int indexOf(String s)</code>: vráti index prvého výskytu podreťazca <code>s</code> v danom reťazci. Ak sa daný podreťazec v reťazci nevyskytuje, vráti <code>-1</code>.</p>
+
+<pre><code>	&quot;janko komár&quot;.indexOf(&quot;ko&quot;)
+</code></pre></li>
+</ul>
+
+<p>Výsledkom je 3 (prvýkrát sa <code>ko</code> vyskytuje od štvrtého znaku, teda od tretieho indexu)</p>
+
+<ul>
+<li><p><code>String substring(int počIndex, int koncIndex)</code>: vráti podreťazec medzi počiatočným indexom a koncovým indexom.</p>
+
+<pre><code>&quot;hamburger&quot;.substring(4, 8)
+</code></pre></li>
+</ul>
+
+<p>vráti <code>urge</code>.</p>
+
+<ul>
+<li><p><code>char charAt(int index)</code>: vráti znak na danej pozícii.</p>
+
+<pre><code>char znak = &quot;hamburger&quot;.charAt(3);
+</code></pre>
+
+<p>vráti znak <code>b</code>.</p></li>
+
+<li><p><code>int length()</code>: vráti dĺžku reťazca</p>
+
+<pre><code>int dlzka = &quot;hamburger&quot;.length()
+</code></pre></li>
+</ul>
+
+<p>Výsledkom je 9.</p>
+
+<ul>
+<li><p><code>boolean startsWith(String prefix)</code>: zistí, či sa reťazec začína daným podreťazcom.</p>
+
+<pre><code>boolean b = &quot;myšlienka&quot;.startsWith(&quot;myš&quot;);
+</code></pre>
+
+<p>vráti <code>true</code>.</p></li>
+</ul>
+
+<h2 id="cvičenie-10-17-12-2007">Cvičenie 10 (17. 12. 2007)</h2>
+
+<p>V rovine sa nachádzajú geometrické útvary – štvorce, obdĺžniky a kružnice.</p>
+
+<ul>
+<li>Nájdite dva najvzdialenejšie útvary, pričom vzdialenosť rátame ako vzdialenosť ťažísk. Údaje o útvaroch načítavajte do roviny zo súboru. Použitie triedy <code>java.io.Scanner</code> je <a href="Java.JavaIO">na samostatnej stránke</a>.</li>
+<li>Zabezpečte, aby rovina vedela zistiť súčet obsahov všetkých svojich útvarov. (Pre jednoduchosť predpokladáme, že útvary sa neprekrývajú).</li>
+</ul>
+
+<p>Dopracujte interface, ktorý reprezentuje zafarbiteľný útvar. Zabezpečte, aby štvorce a kruhy boli zafarbiteľné nejakou farbou. Do roviny dopracujte metódu, ktorá zráta obsah zafarbiteľných útvarov.</p>
+
+<p>Vytvorte triedu, ktorá načíta zo súboru dáta o útvaroch a vráti ich ako zoznam geometrických útvarov. Odchytávajte korektne vyhodené výnimky.</p>
+
+<h3 id="domáca-úloha-1">Domáca úloha</h3>
+
+<p>Zašlite hotový projekt s geometrickýcmi útvarmi z predošlých cvičení.</p>
+
+<h1 id="konvencia-o-zasielaní-domácich-úloh">Konvencia o zasielaní domácich úloh</h1>
+
+<p>Domáce úlohy je potrebné zasielať na e-mail cvičiaceho skomprimované v archíve ZIP. Archív musí mať názov typu <em>priezviskoPoradovéČísloTýždňa.zip</em> a musí obsahovať zdrojové (<code>.java</code>) súbory. Skompilované (<code>.class</code>) súbory nie je potrebné prikladať.</p>
+
+<p>Príklad: zadanie pre siedmy týždeň semestra zaslané študentom Mrkvičkom: <code>mrkvicka7.zip</code>.</p>
+
+<p>V predmete (subject-e) mailu uveďte text <code>DU PAZ1c</code>.</p>
+
+<p>Domáce úlohy nespĺňajúce mennú konvenciu nebudú akceptované.</p>
+
+<h1 id="odkazy">Odkazy</h1>
+
+<ul>
+<li><a href="http://ics.upjs.sk/~andrejkova/vyucba/PAZ1aPAZU/ZakladEclipse.pdf">Základy práce s Eclipse</a> (PDF)</li>
+<li>Stiahnutie <a href="http://www.eclipse.org/downloads/">Eclipse</a> (zvoliť Eclipse for Java Developers)</li>
+</ul>
+
+<h1 id="syntaktické-rozdiely-medzi-pascalom-a-javou">Syntaktické rozdiely medzi Pascalom a Javou</h1>
+
+<h2 id="jednoduchý-program-ahoj-svet">Jednoduchý program <em>Ahoj svet</em></h2>
+
+<pre><code>program AhojSvet;
+begin
+  writeln('Ahoj svet');
+end.
+</code></pre>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> AhojSvet
+  <span style="color:#5ed;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">static</span> <span style="color:#5ed;font-weight:bold">void</span> main(String[] <span style="color:#5ed;font-weight:bold">args</span>) {
+    System.<span style="color:#007">out</span>.<span style="color:#007">println</span>(<span style="background-color:#e0e0ff">&#34;Ahoj svet&#34;</span>);
+  }
+}</code></pre></div>
+<h2 id="for-cyklus"><code>for</code> cyklus</h2>
+
+<pre><code>program DU;
+  var i:integer;
+begin
+  for i:=1 to 20 do begin
+    writeln('Budem si pisat domace ulohy');
+  end;
+end.
+</code></pre>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> AhojSvet
+  <span style="color:#5ed;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">static</span> <span style="color:#5ed;font-weight:bold">void</span> main(String[] <span style="color:#5ed;font-weight:bold">args</span>) {
+    <span style="color:#289;font-weight:bold">for</span>(<span style="color:#66f;font-weight:bold">int</span> <span style="color:#5ed;font-weight:bold">i</span> <span style="color:#333">=</span> 0; i <span style="color:#333">&lt;</span> 20; i<span style="color:#333">++</span>) {
+      System.<span style="color:#007">out</span>.<span style="color:#007">println</span>(<span style="background-color:#e0e0ff">&#34;Budem si pisat domace ulohy&#34;</span>);
+    }
+  }
+}</code></pre></div>
+<h2 id="podmienky">Podmienky</h2>
+
+<pre><code>if (a = 25 or b &lt; 25) and (a &gt; b) then begin
+  writeln('Podmienka splnena');
+end 
+else begin
+  writeln('Podmienka nesplnena');
+end;
+</code></pre>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">if</span>( (a <span style="color:#333">==</span> 25 <span style="color:#333">||</span> b <span style="color:#333">&lt;</span> 25) <span style="color:#333">&amp;&amp;</span> (a <span style="color:#333">&gt;</span> b)) {
+  System.<span style="color:#007">out</span>.<span style="color:#007">println</span>(<span style="background-color:#e0e0ff">&#34;Podmienka splnena&#34;</span>);
+} <span style="color:#289;font-weight:bold">else</span> {
+  System.<span style="color:#007">out</span>.<span style="color:#007">println</span>(<span style="background-color:#e0e0ff">&#34;Podmienka nesplnena&#34;</span>);
+}</code></pre></div>
+<h2 id="cyklus-while">Cyklus <code>while</code></h2>
+
+<pre><code>a := 25;
+while a &gt;= 0 do begin
+  writeln(a);
+  a := a - 1;
+end;
+</code></pre>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66f;font-weight:bold">int</span> <span style="color:#5ed;font-weight:bold">a</span> <span style="color:#333">=</span> 25;
+<span style="color:#289;font-weight:bold">while</span>(a <span style="color:#333">&gt;</span> 0) {
+  System.<span style="color:#007">out</span>.<span style="color:#007">println</span>(a);
+  a<span style="color:#333">--</span>;
+}</code></pre></div>
+<h2 id="procedurálne-programovanie">Procedurálne programovanie</h2>
+
+<pre><code>program rovnica;
+
+function diskriminant(a,b,c:integer):integer;
+begin
+  diskriminant := (b * b) - (4 * a * c);
+end;
+
+procedure korene(a,b,c:integer);
+  var d:integer;
+begin
+  d:=diskriminant(a,b,c);
+  writeln( (-b + sqrt(d)) / (2 * a) );
+  writeln( (-b - sqrt(d)) / (2 * a) );
+end;
+
+begin
+  korene(2, 15, 5);
+end.
+</code></pre>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> Rovnica {
+  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">static</span> <span style="color:#66f;font-weight:bold">int</span> <span style="color:#5ed;font-weight:bold">diskriminant</span>(<span style="color:#66f;font-weight:bold">int</span> <span style="color:#5ed;font-weight:bold">a</span>, <span style="color:#66f;font-weight:bold">int</span> <span style="color:#5ed;font-weight:bold">b</span>, <span style="color:#66f;font-weight:bold">int</span> <span style="color:#5ed;font-weight:bold">c</span>) {
+    <span style="color:#289;font-weight:bold">return</span> (b <span style="color:#333">*</span> b) <span style="color:#333">-</span> (4 <span style="color:#333">*</span> a <span style="color:#333">*</span> c);
+  }
+
+  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">static</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">korene</span>(<span style="color:#66f;font-weight:bold">int</span> <span style="color:#5ed;font-weight:bold">a</span>, <span style="color:#66f;font-weight:bold">int</span> <span style="color:#5ed;font-weight:bold">b</span>, <span style="color:#66f;font-weight:bold">int</span> <span style="color:#5ed;font-weight:bold">c</span>) {
+    <span style="color:#66f;font-weight:bold">int</span> <span style="color:#5ed;font-weight:bold">d</span> <span style="color:#333">=</span> diskriminant(a, b, c);
+    System.<span style="color:#007">out</span>.<span style="color:#007">println</span>( (<span style="color:#333">-</span>b <span style="color:#333">+</span> Math.<span style="color:#007">sqrt</span>(d)) <span style="color:#333">/</span> (2 <span style="color:#333">*</span> a) );
+    System.<span style="color:#007">out</span>.<span style="color:#007">println</span>( (<span style="color:#333">-</span>b <span style="color:#333">-</span> Math.<span style="color:#007">sqrt</span>(d)) <span style="color:#333">/</span> (2 <span style="color:#333">*</span> a) );
+  }
+
+  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">static</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">main</span>(String[] <span style="color:#5ed;font-weight:bold">args</span>) {
+    korene(2, 15, 5);
+  }
+}</code></pre></div>
+<h1 id="písomka">Písomka</h1>
+
+<h2 id="vágny-príklad">Vágny príklad</h2>
+
+<p>Firma Vox Populi si chce nechať vytvoriť informačný systém pre prieskum verejnej mienky založený na hlasovaní. Každý prieskum verejnej mienky obsahuje otázku a množinu odpovedí; účastník hlasovania potom následne odpovedá na otázku zvolením jednej z možných odpovedí.</p>
+
+<p>Príkladom prieskumu verejnej mienky môže byť otázka: Myslíte si, že SuperStar je zmanipulovaná? s možnými odpoveďami:</p>
+
+<ul>
+<li>áno, určite</li>
+<li>čiastočne, niekedy mám pocit, že na vypadávajúcom sa dohodli</li>
+<li>nie, veď je to pod dozorom notára</li>
+<li>nerozmýšľal(a) som o tom</li>
+</ul>
+
+<p>Samotné hlasovanie môže prebiehať viacerými formami (SMSkou, mailom, faxom, pohľadnicou atď.) a je neanonymné: pre každý hlas chceme mať identifikáciu odosielateľa.</p>
+
+<p>Firma Vox Populi chce pre daný prieskum zisťovať rôzne štatistiky: koľko ľudí sa zúčastnilo, koľko hlasov prišlo pre danú možnosť a pod.
+Navrhnite pre tento informačný systém triedy, uveďte a slovne popíšte ich inštančné premenné a metódy. Zvážte a odôvodnite použitie dedičnosti (ak si myslíte, že dedičnosť je potrebná, slovne to zdôvodnite; ak si myslíte, že potrebná nie je, zdôvodnite to tiež).</p>
+
+<p>Implementujte metódu (t. j. napíšte kód v programovacom jazyku), ktorá zistí počet účastníkov hlasujúcich cez SMS. Uveďte aj triedu a relevantné inštačné premenné (v prípade, že ich metóda používa). Inak povedané, napíšte fragment triedy a úplnú implementáciu uvedenej metódy.</p>
+
+<p>Naimplementujte tester (t. j. napíšte kód v programovacom jazyku)  s metódou main(), v ktorej ukážete príklady použitia vami navrhnutého informačného systému a tried (predpokladajte, že všetky metódy všetkých tried už máte implementované). V testeri ukážte použitie minimálne 5 metód používaných v triedach informačného systému.</p>
+
+<h2 id="oprava-kódu">Oprava kódu</h2>
+
+<p>Programátor Jozef ťahá v práci už dva týždne šestnásťhodinové nadčasy, čo sa neblaho prejavuje na kvalite kódu, ktorý produkuje. Nižšie je uvedená trieda Kniha, ktorú napísal v noci o pol tretej. Opravte po ňom všetky syntaktické a logické chyby, ktoré nájdete v jeho kóde.</p>
+
+<p>Ak vidíte akékoľvek priestor na vylepšenie, uveďte ho.</p>
+
+<h2 id="testové-otázky">Testové otázky</h2>
+
+<ol>
+<li><p>Majme riadok</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66f;font-weight:bold">int</span>[] <span style="color:#5ed;font-weight:bold">x</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> <span style="color:#66f;font-weight:bold">int</span>[25];</code></pre></div>
+<p>Ktoré z tvrdení budú platiť po vykonaní tohto riadku?</p></li>
+</ol>
+
+<p>A. <code>x[24]</code> je 0</p>
+
+<p>B. <code>x[24]</code> je nedefinovaná</p>
+
+<p>C. <code>x[25]</code> je 0</p>
+
+<p>D. <code>x[0]</code> je <code>null</code></p>
+
+<p>E. <code>x.length</code> je rovné 25</p>
+
+<ol>
+<li><p>Majme triedu</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> Trieda {
+<span style="color:#66f;font-weight:bold">float</span> <span style="color:#5ed;font-weight:bold">rátaj</span>(<span style="color:#66f;font-weight:bold">float</span> <span style="color:#5ed;font-weight:bold">a</span>, <span style="color:#66f;font-weight:bold">float</span> <span style="color:#5ed;font-weight:bold">b</span>) { }
+<span style="color:#666;font-style:italic">// sem príde metóda
+</span><span style="color:#666;font-style:italic"></span>}</code></pre></div>
+<p>Ktorá z nasledovných metód by môže byť uvedená v triede namiesto komentára a prečo?
+A. <code>int rátaj(int a, int b)</code></p></li>
+</ol>
+
+<p>B. <code>float rátaj(float a, float b)</code></p>
+
+<p>C. <code>float rátaj(float c, float d)</code></p>
+
+<p>D. <code>float rátaj(int a, int b, int c)</code></p>
+
+<ol>
+<li><p>Majme nasledovné triedy (každá v samostatnom súbore):</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> Rodič {
+<span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">void</span> metóda(<span style="color:#66f;font-weight:bold">int</span> <span style="color:#5ed;font-weight:bold">i</span>) {
+System.<span style="color:#007">out</span>.<span style="color:#007">print</span>(<span style="background-color:#e0e0ff">&#34;Rodič &#34;</span>
+  <span style="color:#333">+</span> i);
+}
+}
+<span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> Dedič <span style="color:#5ed;font-weight:bold">extends</span> Rodič {
+<span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">void</span> metóda(<span style="color:#66f;font-weight:bold">int</span> <span style="color:#5ed;font-weight:bold">j</span>) {
+System.<span style="color:#007">out</span>.<span style="color:#007">print</span>(<span style="background-color:#e0e0ff">&#34;Dedič &#34;</span> <span style="color:#333">+</span> j);
+}
+<span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">void</span> metóda(String <span style="color:#5ed;font-weight:bold">s</span>) {
+System.<span style="color:#007">out</span>.<span style="color:#007">print</span>(<span style="background-color:#e0e0ff">&#34;Mám &#34;</span> <span style="color:#333">+</span> s);
+}
+<span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">static</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">main</span>(
+String <span style="color:#5ed;font-weight:bold">args</span>[]) {
+Rodič <span style="color:#5ed;font-weight:bold">b1</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Rodič()
+Rodič <span style="color:#5ed;font-weight:bold">b2</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Dedič();
+b1.<span style="color:#007">metóda</span>(5);
+b2.<span style="color:#007">metóda</span>(6);
+}
+}</code></pre></div>
+<p>Aký výsledok sa vypíše po spustení metódy <code>main()</code> v triede <code>Dedič</code>?</p></li>
+</ol>
+
+<p>A. <code>Rodič 5Rodič 6</code></p>
+
+<p>B. <code>Dedič 5Dedič 6</code></p>
+
+<p>C. <code>Dedič 5Rodič 6</code></p>
+
+<p>D. <code>Rodič 5Dedič 6</code></p>
+
+<p>E. <code>Mám 5Mám 6</code></p>
+
+<ol>
+<li><p>Majme nasledovnú triedu</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> Test <span style="color:#5ed;font-weight:bold">extends</span> Rodič {
+<span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">Test</span>(<span style="color:#66f;font-weight:bold">int</span> <span style="color:#5ed;font-weight:bold">j</span>) {   }
+<span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">Test</span>(<span style="color:#66f;font-weight:bold">int</span> <span style="color:#5ed;font-weight:bold">j</span>, <span style="color:#66f;font-weight:bold">int</span> <span style="color:#5ed;font-weight:bold">k</span>) { 
+<span style="color:#289;font-weight:bold">super</span>(j, k);
+}
+}</code></pre></div>
+<p>pričom <code>Rodič</code> je trieda z predošlého príkladu. Ktoré z uvedených konštrukcií je možné použiť na vytvorenie inštancie triedy <code>Test</code>?</p></li>
+</ol>
+
+<p>A. <code>Test t = new Test();</code></p>
+
+<p>B. <code>Test t = new Test(1);</code></p>
+
+<p>C. <code>Test t = new Test(1, 2);</code></p>
+
+<p>D. <code>Test t = new Test(1, 2, 3);</code></p>
+
+<ol>
+<li>Čo sa stane pri pokuse o kompiláciu nasledovných tried a po spustení triedy <code>Zebra</code>?</li>
+</ol>
+
+<p>A. Trieda <code>Zviera</code> sa neskompiluje kvôli chybe.</p>
+
+<p>B. Trieda <code>Zebra</code> sa neskompiluje kvôli chybe.</p>
+
+<p>C. Všetko sa skompiluje správne. Po zavolaní konštruktora triedy <code>Zviera</code> sa vypíše chybové hlásenie.</p>
+
+<p>D. Všetko sa skompiluje správne. Po zavolaní konštruktora triedy <code>Zebra</code> sa vypíše chybové hlásenie.</p>
+
+<p>E. Všetko sa skompiluje správne a spustí sa správne.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">class</span> <span style="color:#5ed;font-weight:bold">Zviera</span> {
+  <span style="color:#66f;font-weight:bold">float</span> <span style="color:#5ed;font-weight:bold">váha</span>;
+  Zviera(<span style="color:#66f;font-weight:bold">float</span> <span style="color:#5ed;font-weight:bold">váha</span>) {
+    <span style="color:#289;font-weight:bold">this</span>.<span style="color:#007">váha</span> <span style="color:#333">=</span> váha;
+  }
+}
+<span style="color:#289;font-weight:bold">class</span> <span style="color:#5ed;font-weight:bold">Zebra</span> <span style="color:#289;font-weight:bold">extends</span> <span style="color:#5ed;font-weight:bold">Zviera</span> {
+  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">static</span>
+  <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">main</span>(String[] <span style="color:#5ed;font-weight:bold">args</span>) {
+    Zviera <span style="color:#5ed;font-weight:bold">a</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Zviera(222.<span style="color:#007">2f</span>);
+    Zebra <span style="color:#5ed;font-weight:bold">z</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Zebra();
+  }
+}</code></pre></div>
+</main>
+
+    <footer>
+      
+<script>
+(function() {
+  function center_el(tagName) {
+    var tags = document.getElementsByTagName(tagName), i, tag;
+    for (i = 0; i < tags.length; i++) {
+      tag = tags[i];
+      var parent = tag.parentElement;
+      
+      if (parent.childNodes.length === 1) {
+        
+        if (parent.nodeName === 'A') {
+          parent = parent.parentElement;
+          if (parent.childNodes.length != 1) continue;
+        }
+        if (parent.nodeName === 'P') parent.style.textAlign = 'center';
+      }
+    }
+  }
+  var tagNames = ['img', 'embed', 'object'];
+  for (var i = 0; i < tagNames.length; i++) {
+    center_el(tagNames[i]);
+  }
+})();
+</script>
+
+      
+    </footer>
+  </body>
+</html>
+

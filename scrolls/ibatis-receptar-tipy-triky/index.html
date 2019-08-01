@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>iBatis – receptár tipov a trikov | robonovotny</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.css" integrity="sha384-D+9gmBxUQogRLqvARvNLmA9hS2x//eK1FhVb9PiU86gmcrBrJAQT8okdJ4LMp2uv" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.js" integrity="sha384-483A6DwYfKeDa0Q52fJmxFXkcPCFfnXMoXblOkJ4JcA8zATN6Tm78UNL72AKk+0O" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/contrib/auto-render.min.js" integrity="sha384-yACMu8JWxKzSp/C1YV86pzGiQ/l1YUfE8oPuahJQxzehAjEt2GiQuy/BIvl9KyeF" crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body);
+        });
+    </script>
+
+<header>
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <nav>
+    <ul>
+      
+      
+      <li class="pull-left ">
+        <a href="http://novotnyr.github.io/">/home/robonovotny</a>
+      </li>
+      
+
+      
+
+    </ul>
+  </nav>
+</header>
+
+  </head>
+
+  <body>
+    <br/>
+
+<div class="article-meta">
+<h1><span class="title">iBatis – receptár tipov a trikov</span></h1>
+
+<h2 class="date">2007/09/06</h2>
+<p class="terms">
+  
+  
+  
+  
+  
+</p>
+</div>
+
+
+
+<main>
+
+
+<h1 id="používanie-bodkočiarok">Používanie bodkočiarok</h1>
+
+<p>Zvážte používanie bodkočiarok v dopytoch - môže to pôsobiť veľa problémov. Napr. ovládač typu NET pre DB2 spokojne skonzumuje dopyt ukončený bodkočiarkou. Žiaľ, JCC verzia ovládača sa zakusne a vyhlási syntaktickú chybu.</p>
+
+<h1 id="vzťahy-1-1-s-použitím-resultmapy-a-explicitné-vzťahy">Vzťahy 1:1 s použitím ResultMapy a explicitné vzťahy</h1>
+
+<p>Majme</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#070">&lt;resultMap</span> <span style="color:#007">class=</span><span style="background-color:#e0e0ff">&#34;libris.Book&#34;</span> <span style="color:#007">id=</span><span style="background-color:#e0e0ff">&#34;bookRM&#34;</span> <span style="color:#007">groupBy=</span><span style="background-color:#e0e0ff">&#34;id&#34;</span> <span style="color:#070">&gt;</span>
+  <span style="color:#070">&lt;result</span> <span style="color:#007">property=</span><span style="background-color:#e0e0ff">&#34;id&#34;</span> <span style="color:#007">column=</span><span style="background-color:#e0e0ff">&#34;id_book&#34;</span><span style="color:#070">/&gt;</span>
+  <span style="color:#070">&lt;result</span> <span style="color:#007">property=</span><span style="background-color:#e0e0ff">&#34;title&#34;</span> <span style="color:#007">column=</span><span style="background-color:#e0e0ff">&#34;title&#34;</span><span style="color:#070">/&gt;</span>   
+
+  <span style="color:#070">&lt;result</span> <span style="color:#007">property=</span><span style="background-color:#e0e0ff">&#34;status.requestsCount&#34;</span> <span style="color:#007">column=</span><span style="background-color:#e0e0ff">&#34;request_count&#34;</span><span style="color:#070">/&gt;</span>
+  <span style="color:#070">&lt;result</span> <span style="color:#007">property=</span><span style="background-color:#e0e0ff">&#34;status.borrowedTo&#34;</span> <span style="color:#007">column=</span><span style="background-color:#e0e0ff">&#34;borrowee&#34;</span><span style="color:#070">/&gt;</span>    
+
+  <span style="color:#070">&lt;result</span> <span style="color:#007">property=</span><span style="background-color:#e0e0ff">&#34;series&#34;</span> <span style="color:#007">resultMap=</span><span style="background-color:#e0e0ff">&#34;Book.seriesRM&#34;</span><span style="color:#070">/&gt;</span>       
+<span style="color:#070">&lt;/resultMap&gt;</span></code></pre></div>
+<p>a triedu</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> Book <span style="color:#5ed;font-weight:bold">implements</span> Serializable {
+  <span style="color:#289;font-weight:bold">protected</span> <span style="color:#5ed;font-weight:bold">Integer</span> id;
+  
+  <span style="color:#289;font-weight:bold">protected</span> <span style="color:#5ed;font-weight:bold">String</span> title <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> String();
+
+  <span style="color:#289;font-weight:bold">private</span> <span style="color:#5ed;font-weight:bold">BookStatus</span> status;
+
+  <span style="color:#289;font-weight:bold">private</span> <span style="color:#5ed;font-weight:bold">SimpleSeries</span> series <span style="color:#333">=</span> SimpleSeries.<span style="color:#007">EMPTY_SERIES</span>;</code></pre></div>
+<p>Všimnime si dve situácie:</p>
+
+<ol>
+<li>premenná <code>status</code> je v <code>Book</code>u nastavená na <code>null</code> a v mapovaní je reprezentovaná pomocou explicitného stĺpcového mapovania. iBatis v tomto prípade vytvorí novú inštanciu <code>BookStatus</code>u a nastaví jej <code>requestCount</code> a <code>borrowedTo</code> zo stĺpcov <code>request_count</code> a <code>borrowee</code>.</li>
+
+<li><p>premenná <code>series</code> nie je v <code>Book</code>u nastavená na <code>null</code>. Ak by sme mapovali pomocou explicitného stĺpcového mapovania, iBatis podľa všetkého nevie nastaviť hodnoty z príslušných stĺpcov na už existujúcej inštancii triedy <code>SimpleSeries</code>.
+Obísť to možno pomocou použitia ďalšej <code>resultMap</code>y, čiže pomocou</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#070">&lt;result</span> <span style="color:#007">property=</span><span style="background-color:#e0e0ff">&#34;series&#34;</span> <span style="color:#007">resultMap=</span><span style="background-color:#e0e0ff">&#34;Book.seriesRM&#34;</span><span style="color:#070">/&gt;</span>       </code></pre></div></li>
+</ol>
+
+</main>
+
+    <footer>
+      
+<script>
+(function() {
+  function center_el(tagName) {
+    var tags = document.getElementsByTagName(tagName), i, tag;
+    for (i = 0; i < tags.length; i++) {
+      tag = tags[i];
+      var parent = tag.parentElement;
+      
+      if (parent.childNodes.length === 1) {
+        
+        if (parent.nodeName === 'A') {
+          parent = parent.parentElement;
+          if (parent.childNodes.length != 1) continue;
+        }
+        if (parent.nodeName === 'P') parent.style.textAlign = 'center';
+      }
+    }
+  }
+  var tagNames = ['img', 'embed', 'object'];
+  for (var i = 0; i < tagNames.length; i++) {
+    center_el(tagNames[i]);
+  }
+})();
+</script>
+
+      
+    </footer>
+  </body>
+</html>
+

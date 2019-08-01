@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Unit Tests with Spring and Hibernate | robonovotny</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.css" integrity="sha384-D+9gmBxUQogRLqvARvNLmA9hS2x//eK1FhVb9PiU86gmcrBrJAQT8okdJ4LMp2uv" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.js" integrity="sha384-483A6DwYfKeDa0Q52fJmxFXkcPCFfnXMoXblOkJ4JcA8zATN6Tm78UNL72AKk+0O" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/contrib/auto-render.min.js" integrity="sha384-yACMu8JWxKzSp/C1YV86pzGiQ/l1YUfE8oPuahJQxzehAjEt2GiQuy/BIvl9KyeF" crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body);
+        });
+    </script>
+
+<header>
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <nav>
+    <ul>
+      
+      
+      <li class="pull-left ">
+        <a href="http://novotnyr.github.io/">/home/robonovotny</a>
+      </li>
+      
+
+      
+
+    </ul>
+  </nav>
+</header>
+
+  </head>
+
+  <body>
+    <br/>
+
+<div class="article-meta">
+<h1><span class="title">Unit Tests with Spring and Hibernate</span></h1>
+
+<h2 class="date">2008/04/22</h2>
+<p class="terms">
+  
+  
+  
+  
+  
+</p>
+</div>
+
+
+
+<main>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#579">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
+
+<span style="color:#070">&lt;beans</span> <span style="color:#007">xmlns=</span><span style="background-color:#e0e0ff">&#34;http://www.springframework.org/schema/beans&#34;</span>
+  <span style="color:#007">xmlns:xsi=</span><span style="background-color:#e0e0ff">&#34;http://www.w3.org/2001/XMLSchema-instance&#34;</span>
+  <span style="color:#007">xmlns:aop=</span><span style="background-color:#e0e0ff">&#34;http://www.springframework.org/schema/aop&#34;</span>
+  <span style="color:#007">xmlns:tx=</span><span style="background-color:#e0e0ff">&#34;http://www.springframework.org/schema/tx&#34;</span>
+  <span style="color:#007">xmlns:context=</span><span style="background-color:#e0e0ff">&#34;http://www.springframework.org/schema/context&#34;</span>
+  <span style="color:#007">xsi:schemaLocation=</span><span style="background-color:#e0e0ff">&#34;http://www.springframework.org/schema/beans
+</span><span style="background-color:#e0e0ff">                           http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+</span><span style="background-color:#e0e0ff">                           http://www.springframework.org/schema/aop
+</span><span style="background-color:#e0e0ff">                           http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
+</span><span style="background-color:#e0e0ff">                           http://www.springframework.org/schema/tx
+</span><span style="background-color:#e0e0ff">                           http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
+</span><span style="background-color:#e0e0ff">                           http://www.springframework.org/schema/context
+</span><span style="background-color:#e0e0ff">                           http://www.springframework.org/schema/context/spring-context-2.5.xsd&#34;</span><span style="color:#070">&gt;</span>
+
+  <span style="color:#070">&lt;bean</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;dataSource&#34;</span>
+    <span style="color:#007">class=</span><span style="background-color:#e0e0ff">&#34;com.mysql.jdbc.jdbc2.optional.MysqlDataSource&#34;</span><span style="color:#070">&gt;</span>
+    <span style="color:#070">&lt;property</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;user&#34;</span> <span style="color:#007">value=</span><span style="background-color:#e0e0ff">&#34;js&#34;</span> <span style="color:#070">/&gt;</span>
+    <span style="color:#070">&lt;property</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;password&#34;</span> <span style="color:#007">value=</span><span style="background-color:#e0e0ff">&#34;js&#34;</span> <span style="color:#070">/&gt;</span>
+    <span style="color:#070">&lt;property</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;serverName&#34;</span> <span style="color:#007">value=</span><span style="background-color:#e0e0ff">&#34;158.197.31.35&#34;</span> <span style="color:#070">/&gt;</span>
+    <span style="color:#070">&lt;property</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;databaseName&#34;</span> <span style="color:#007">value=</span><span style="background-color:#e0e0ff">&#34;js&#34;</span> <span style="color:#070">/&gt;</span>
+    <span style="color:#070">&lt;property</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;port&#34;</span> <span style="color:#007">value=</span><span style="background-color:#e0e0ff">&#34;80&#34;</span> <span style="color:#070">/&gt;</span>
+  <span style="color:#070">&lt;/bean&gt;</span>
+
+  <span style="color:#070">&lt;bean</span> <span style="color:#007">id=</span><span style="background-color:#e0e0ff">&#34;transactionManager&#34;</span>
+    <span style="color:#007">class=</span><span style="background-color:#e0e0ff">&#34;org.springframework.jdbc.datasource.DataSourceTransactionManager&#34;</span><span style="color:#070">&gt;</span>
+    <span style="color:#070">&lt;property</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;dataSource&#34;</span> <span style="color:#007">ref=</span><span style="background-color:#e0e0ff">&#34;dataSource&#34;</span> <span style="color:#070">/&gt;</span>
+  <span style="color:#070">&lt;/bean&gt;</span>
+
+  <span style="color:#070">&lt;tx:annotation-driven</span> <span style="color:#007">transaction-manager=</span><span style="background-color:#e0e0ff">&#34;transactionManager&#34;</span> <span style="color:#070">/&gt;</span>
+
+  <span style="color:#070">&lt;context:component-scan</span> <span style="color:#007">base-package=</span><span style="background-color:#e0e0ff">&#34;sk.upjs.js&#34;</span> <span style="color:#070">/&gt;</span>
+
+  <span style="color:#070">&lt;bean</span> <span style="color:#007">id=</span><span style="background-color:#e0e0ff">&#34;hibernateTemplate&#34;</span>
+    <span style="color:#007">class=</span><span style="background-color:#e0e0ff">&#34;org.springframework.orm.hibernate3.HibernateTemplate&#34;</span><span style="color:#070">&gt;</span>
+    <span style="color:#070">&lt;property</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;sessionFactory&#34;</span> <span style="color:#007">ref=</span><span style="background-color:#e0e0ff">&#34;sessionFactory&#34;</span> <span style="color:#070">/&gt;</span>
+  <span style="color:#070">&lt;/bean&gt;</span>
+
+  <span style="color:#070">&lt;bean</span> <span style="color:#007">id=</span><span style="background-color:#e0e0ff">&#34;sessionFactory&#34;</span>
+    <span style="color:#007">class=</span><span style="background-color:#e0e0ff">&#34;org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean&#34;</span><span style="color:#070">&gt;</span>
+    <span style="color:#070">&lt;property</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;dataSource&#34;</span> <span style="color:#007">ref=</span><span style="background-color:#e0e0ff">&#34;dataSource&#34;</span> <span style="color:#070">/&gt;</span>
+
+    <span style="color:#070">&lt;property</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;annotatedClasses&#34;</span><span style="color:#070">&gt;</span>
+      <span style="color:#070">&lt;list&gt;</span>
+        <span style="color:#070">&lt;value&gt;</span>sk.upjs.js.Student<span style="color:#070">&lt;/value&gt;</span>
+        <span style="color:#070">&lt;value&gt;</span>sk.upjs.js.Predmet<span style="color:#070">&lt;/value&gt;</span>
+      <span style="color:#070">&lt;/list&gt;</span>
+    <span style="color:#070">&lt;/property&gt;</span>
+
+    <span style="color:#070">&lt;property</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;hibernateProperties&#34;</span><span style="color:#070">&gt;</span>
+      <span style="color:#070">&lt;props&gt;</span>
+        <span style="color:#070">&lt;prop</span> <span style="color:#007">key=</span><span style="background-color:#e0e0ff">&#34;hibernate.dialect&#34;</span><span style="color:#070">&gt;</span>
+          org.hibernate.dialect.MySQLDialect
+        <span style="color:#070">&lt;/prop&gt;</span>
+        <span style="color:#070">&lt;prop</span> <span style="color:#007">key=</span><span style="background-color:#e0e0ff">&#34;hibernate.hibernate.format_sql&#34;</span><span style="color:#070">&gt;</span>true<span style="color:#070">&lt;/prop&gt;</span>
+        <span style="color:#070">&lt;prop</span> <span style="color:#007">key=</span><span style="background-color:#e0e0ff">&#34;hibernate.hibernate.show_sql&#34;</span><span style="color:#070">&gt;</span>true<span style="color:#070">&lt;/prop&gt;</span>
+        <span style="color:#070">&lt;prop</span> <span style="color:#007">key=</span><span style="background-color:#e0e0ff">&#34;hibernate.hbm2ddl.auto&#34;</span><span style="color:#070">&gt;</span>update<span style="color:#070">&lt;/prop&gt;</span>
+      <span style="color:#070">&lt;/props&gt;</span>
+    <span style="color:#070">&lt;/property&gt;</span>
+  <span style="color:#070">&lt;/bean&gt;</span>
+
+<span style="color:#070">&lt;/beans&gt;</span></code></pre></div><div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">package</span> <span style="color:#5ed;font-weight:bold">sk</span>.<span style="color:#007">upjs</span>.<span style="color:#007">js</span>;
+
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">java</span>.<span style="color:#007">util</span>.<span style="color:#007">List</span>;
+
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">org</span>.<span style="color:#007">springframework</span>.<span style="color:#007">context</span>.<span style="color:#007">support</span>.<span style="color:#007">ClassPathXmlApplicationContext</span>;
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">org</span>.<span style="color:#007">springframework</span>.<span style="color:#007">orm</span>.<span style="color:#007">hibernate3</span>.<span style="color:#007">HibernateTemplate</span>;
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">org</span>.<span style="color:#007">springframework</span>.<span style="color:#007">test</span>.<span style="color:#007">annotation</span>.<span style="color:#007">AbstractAnnotationAwareTransactionalTests</span>;
+
+<span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> JUnitTest <span style="color:#5ed;font-weight:bold">extends</span> AbstractAnnotationAwareTransactionalTests {
+  <span style="color:#289;font-weight:bold">private</span> <span style="color:#5ed;font-weight:bold">HibernateTemplate</span> hibernateTemplate;
+  
+  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">JUnitTest</span>() {
+    <span style="color:#289;font-weight:bold">super</span>();
+    applicationContext <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> ClassPathXmlApplicationContext(<span style="background-color:#e0e0ff">&#34;applicationContext.xml&#34;</span>);
+    <span style="color:#289;font-weight:bold">this</span>.<span style="color:#007">hibernateTemplate</span> <span style="color:#333">=</span> (HibernateTemplate) applicationContext.<span style="color:#007">getBean</span>(<span style="background-color:#e0e0ff">&#34;hibernateTemplate&#34;</span>);
+  }
+  
+  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">void</span> testStudentiPredmetu() {
+    Predmet <span style="color:#5ed;font-weight:bold">p</span> <span style="color:#333">=</span> (Predmet) hibernateTemplate.<span style="color:#007">get</span>(Predmet.<span style="color:#007">class</span>, 8);
+    
+    System.<span style="color:#007">out</span>.<span style="color:#007">println</span>(p.<span style="color:#007">getNazov</span>());
+    <span style="color:#289;font-weight:bold">for</span> (Student <span style="color:#5ed;font-weight:bold">s</span> <span style="color:#333">:</span> p.<span style="color:#007">getStudenti</span>()) {
+      System.<span style="color:#007">out</span>.<span style="color:#007">println</span>(s);
+    }   
+  }
+  
+  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">void</span> testDatabase() {
+    Database <span style="color:#5ed;font-weight:bold">db</span> <span style="color:#333">=</span> (Database) applicationContext.<span style="color:#007">getBean</span>(<span style="background-color:#e0e0ff">&#34;database&#34;</span>);
+    List<span style="color:#333">&lt;</span>Student<span style="color:#333">&gt;</span> <span style="color:#5ed;font-weight:bold">studenti</span> <span style="color:#333">=</span> db.<span style="color:#007">listStudents</span>();
+    <span style="color:#289;font-weight:bold">for</span> (Student <span style="color:#5ed;font-weight:bold">student</span> <span style="color:#333">:</span> studenti) {
+      System.<span style="color:#007">out</span>.<span style="color:#007">println</span>(student);
+      System.<span style="color:#007">out</span>.<span style="color:#007">println</span>(student.<span style="color:#007">getPredmety</span>().<span style="color:#007">size</span>());
+    }
+  }
+}</code></pre></div>
+</main>
+
+    <footer>
+      
+<script>
+(function() {
+  function center_el(tagName) {
+    var tags = document.getElementsByTagName(tagName), i, tag;
+    for (i = 0; i < tags.length; i++) {
+      tag = tags[i];
+      var parent = tag.parentElement;
+      
+      if (parent.childNodes.length === 1) {
+        
+        if (parent.nodeName === 'A') {
+          parent = parent.parentElement;
+          if (parent.childNodes.length != 1) continue;
+        }
+        if (parent.nodeName === 'P') parent.style.textAlign = 'center';
+      }
+    }
+  }
+  var tagNames = ['img', 'embed', 'object'];
+  for (var i = 0; i < tagNames.length; i++) {
+    center_el(tagNames[i]);
+  }
+})();
+</script>
+
+      
+    </footer>
+  </body>
+</html>
+

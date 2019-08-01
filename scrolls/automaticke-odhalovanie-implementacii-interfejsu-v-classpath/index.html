@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Automatické odhaľovanie implementácii interfejsu v CLASSPATH | robonovotny</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.css" integrity="sha384-D+9gmBxUQogRLqvARvNLmA9hS2x//eK1FhVb9PiU86gmcrBrJAQT8okdJ4LMp2uv" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.js" integrity="sha384-483A6DwYfKeDa0Q52fJmxFXkcPCFfnXMoXblOkJ4JcA8zATN6Tm78UNL72AKk+0O" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/contrib/auto-render.min.js" integrity="sha384-yACMu8JWxKzSp/C1YV86pzGiQ/l1YUfE8oPuahJQxzehAjEt2GiQuy/BIvl9KyeF" crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body);
+        });
+    </script>
+
+<header>
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <nav>
+    <ul>
+      
+      
+      <li class="pull-left ">
+        <a href="http://novotnyr.github.io/">/home/robonovotny</a>
+      </li>
+      
+
+      
+
+    </ul>
+  </nav>
+</header>
+
+  </head>
+
+  <body>
+    <br/>
+
+<div class="article-meta">
+<h1><span class="title">Automatické odhaľovanie implementácii interfejsu v CLASSPATH</span></h1>
+
+<h2 class="date">2007/11/11</h2>
+<p class="terms">
+  
+  
+  
+  
+  
+</p>
+</div>
+
+
+
+<main>
+
+
+<h1 id="zadanie">Zadanie</h1>
+
+<p>Máte zadanú aplikáciu, ktorá má vykonávať nejakú činnosť nad rôznymi geometrickými útvarmi (pre jednoduchosť: štvorce, kruhy a pod.) Nové geometrické útvary však môžu byť pridávané do aplikácie za behu (napr. dopracujeme meňavku a chceme ju zaviesť do systému).</p>
+
+<h1 id="riešenie">Riešenie</h1>
+
+<p>Predpokladajme, že všetky geometrické útvary implementujú rozhranie <code>Shape</code>, ktoré poskytuje jedinú možnú činnosť - výpočet obsahu.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">package</span> <span style="color:#5ed;font-weight:bold">sk</span>.<span style="color:#007">novotnyr</span>.<span style="color:#007">shapes</span>;
+
+<span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">interface</span> Shape {
+  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">double</span> getArea(); 
+}</code></pre></div>
+<p>Príklady ostatných geometrických útvarov môžu byť napr.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">package</span> <span style="color:#5ed;font-weight:bold">sk</span>.<span style="color:#007">novotnyr</span>.<span style="color:#007">shapes</span>;
+
+<span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> Square <span style="color:#5ed;font-weight:bold">implements</span> Shape {
+  <span style="color:#289;font-weight:bold">private</span> <span style="color:#5ed;font-weight:bold">double</span> size <span style="color:#333">=</span> 1;
+
+  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">double</span> getArea() {
+    <span style="color:#289;font-weight:bold">return</span> size <span style="color:#333">*</span> size;
+  } 
+}</code></pre></div>
+<p>alebo</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">package</span> <span style="color:#5ed;font-weight:bold">sk</span>.<span style="color:#007">novotnyr</span>.<span style="color:#007">shapes</span>;
+
+<span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> Circle <span style="color:#5ed;font-weight:bold">implements</span> Shape {
+  <span style="color:#289;font-weight:bold">private</span> <span style="color:#5ed;font-weight:bold">double</span> diameter <span style="color:#333">=</span> 1;
+  
+  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">double</span> getArea() {
+    <span style="color:#289;font-weight:bold">return</span> Math.<span style="color:#007">PI</span> <span style="color:#333">*</span> (diameter <span style="color:#333">*</span> diameter);
+  }  
+}</code></pre></div>
+<p>Dohodneme sa, že všetky nové geometrické útvary musia implementovať rozhranie <code>Shape</code> a že sa budú nachádzať v pevne danom balíčku <code>sk.novotnyr.shapes</code>. Ak budeme chcieť pridať do bežiacej aplikácie nový útvar, budeme musieť skopírovať do <code>CLASSPATH</code> skompilovaný <code>.class</code> súbor s implementáciou nového útvaru. Tu využijeme dôležitú vlastnosť Javy &ndash; načítavanie skompilovanej triedy sa vykonáva až s vytvorením prvej inštancie triedy.</p>
+
+<p>Základná idea na odhaľovanie implementácii je založená na premennej <code>java.class.path</code>, ktorá obsahuje obsah systémovej premennej prostredia <code>CLASSPATH</code>. K tejto premennej môžeme pristupovať pomocou <code>System.getProperty(&quot;java.class.path&quot;)</code>.</p>
+
+<p>Obsah tejto premennej môže obsahovať viacero adresárov. Každý z týchto adresárov prelezieme, vyhľadáme v ňom <code>CLASS</code> súbory z podadresára zodpovedajúcemu dohodnutému balíčku a pokúsime sa na základe ich názvu získať objekt <code>Class</code>.</p>
+
+<p>Ak <code>CLASSPATH</code> vyzerá napr. nasledovne:</p>
+
+<pre><code>d:\Projects\classloading\bin\sk\novotnyr\shapes;.;C:\PROGRA~1\IBM\SQLLIB\java\db2java.zip;
+</code></pre>
+
+<p>tak sa postupne prehľadá:</p>
+
+<ul>
+<li>adresár <code>d:\Projects\classloading\bin\sk\novotnyr\shapes</code>. Hľadajú sa teda súbory <code>d:/Projects/classloading/bin/sk/novotnyr/shapes/sk/novotnyr/shapes/*.class</code>. Ak daná trieda implementuje interfejs <code>Shape</code>, môžeme ju zaradiť medzi potenciálnych kandidátov na vytvorenie inštancie.</li>
+<li>adresár <code>.</code>, čiže aktuálny adresár. Hľadajú sa teda súbory <code>./sk/novotnyr/shapes/*.class</code>.</li>
+<li>súbor <code>C:\PROGRA~1\IBM\SQLLIB\java\db2java.zip</code>. Neadresárové súbory automaticky preskočíme.</li>
+</ul>
+
+<p>Trieda na odhaľovanie môže vyzerať nasledovne:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">package</span> <span style="color:#5ed;font-weight:bold">sk</span>.<span style="color:#007">novotnyr</span>.<span style="color:#007">shapes</span>;
+
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">java</span>.<span style="color:#007">io</span>.<span style="color:#007">File</span>;
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">java</span>.<span style="color:#007">util</span>.<span style="color:#007">ArrayList</span>;
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">java</span>.<span style="color:#007">util</span>.<span style="color:#007">Iterator</span>;
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">java</span>.<span style="color:#007">util</span>.<span style="color:#007">List</span>;
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">java</span>.<span style="color:#007">util</span>.<span style="color:#007">logging</span>.<span style="color:#007">Logger</span>;
+
+<span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> ShapeDiscoverer {
+  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">static</span> <span style="color:#289;font-weight:bold">final</span> <span style="color:#5ed;font-weight:bold">Logger</span> logger <span style="color:#333">=</span> Logger.<span style="color:#007">getLogger</span>(ShapeDiscoverer.<span style="color:#007">class</span>.<span style="color:#007">getName</span>());
+  
+  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">static</span> <span style="color:#289;font-weight:bold">final</span> <span style="color:#5ed;font-weight:bold">String</span> PROPERTY_KEY <span style="color:#333">=</span> <span style="background-color:#e0e0ff">&#34;java.class.path&#34;</span>;
+
+  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">static</span> <span style="color:#289;font-weight:bold">final</span> <span style="color:#5ed;font-weight:bold">String</span> CLASS_EXTENSION <span style="color:#333">=</span> <span style="background-color:#e0e0ff">&#34;.class&#34;</span>;
+  
+  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">static</span> <span style="color:#289;font-weight:bold">final</span> <span style="color:#5ed;font-weight:bold">String</span> PACKAGE_NAME <span style="color:#333">=</span> <span style="background-color:#e0e0ff">&#34;sk.novotnyr.shapes&#34;</span>;
+  
+  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">static</span> <span style="color:#289;font-weight:bold">final</span> <span style="color:#5ed;font-weight:bold">String</span> PACKAGE_DIRECTORY_NAME <span style="color:#333">=</span> PACKAGE_NAME.<span style="color:#007">replace</span>(<span style="background-color:#e0e0ff">&#34;.&#34;</span>, <span style="background-color:#e0e0ff">&#34;/&#34;</span>);
+  
+  <span style="color:#666;font-style:italic">/**
+</span><span style="color:#666;font-style:italic">   * Vrati nazov triedy zo suboru ukazujuceho na CLASS subor.
+</span><span style="color:#666;font-style:italic">   * &lt;p&gt;
+</span><span style="color:#666;font-style:italic">   * Priklad: Pre &lt;tt&gt;D:\projects\java\classez\bin\sk\novotnyr\shapes\Circle.class&lt;/tt&gt; 
+</span><span style="color:#666;font-style:italic">   * vrati &lt;tt&gt;Circle&lt;/tt&gt;
+</span><span style="color:#666;font-style:italic">   * @param file subor obsahujuci nazov a cestu ku CLASS suboru
+</span><span style="color:#666;font-style:italic">   * @return nazov triedy
+</span><span style="color:#666;font-style:italic">   */</span>
+  <span style="color:#289;font-weight:bold">protected</span> <span style="color:#5ed;font-weight:bold">String</span> getClassNameFromFile(File <span style="color:#5ed;font-weight:bold">file</span>) {
+    <span style="color:#289;font-weight:bold">if</span>(file.<span style="color:#007">getName</span>().<span style="color:#007">endsWith</span>(CLASS_EXTENSION)) {
+      <span style="color:#289;font-weight:bold">return</span> PACKAGE_NAME <span style="color:#333">+</span> <span style="background-color:#e0e0ff">&#34;.&#34;</span> <span style="color:#333">+</span> file.<span style="color:#007">getName</span>().<span style="color:#007">substring</span>(0, file.<span style="color:#007">getName</span>().<span style="color:#007">length</span>() <span style="color:#333">-</span> CLASS_EXTENSION.<span style="color:#007">length</span>());
+    } <span style="color:#289;font-weight:bold">else</span> {
+      <span style="color:#289;font-weight:bold">return</span> <span style="color:#289;font-weight:bold">null</span>;
+    }
+  }
+  
+  <span style="color:#666;font-style:italic">/**
+</span><span style="color:#666;font-style:italic">   * Zisti vsetky triedy implementujuce dane rozhranie
+</span><span style="color:#666;font-style:italic">   * v strukture balickov zacinajucej v adresari zadanom v parametri.
+</span><span style="color:#666;font-style:italic">   * &lt;p&gt;
+</span><span style="color:#666;font-style:italic">   *  
+</span><span style="color:#666;font-style:italic">   * @param aPath cesta k adresaru v ktorom zacina balickova struktura. Musi 
+</span><span style="color:#666;font-style:italic">   * to byt adresar (JAR subory a pod su ignorovane). 
+</span><span style="color:#666;font-style:italic">   */</span>
+  <span style="color:#289;font-weight:bold">protected</span> <span style="color:#5ed;font-weight:bold">List</span><span style="color:#333">&lt;</span>Class<span style="color:#333">&gt;</span> <span style="color:#5ed;font-weight:bold">findClassNames</span>(String <span style="color:#5ed;font-weight:bold">aPath</span>) {
+    <span style="color:#289;font-weight:bold">if</span>(aPath <span style="color:#333">==</span> <span style="color:#289;font-weight:bold">null</span> <span style="color:#333">||</span> aPath.<span style="color:#007">trim</span>().<span style="color:#007">length</span>() <span style="color:#333">==</span> 0) {
+      <span style="color:#289;font-weight:bold">return</span> <span style="color:#289;font-weight:bold">new</span> ArrayList<span style="color:#333">&lt;</span>Class<span style="color:#333">&gt;</span>();
+    }
+    List<span style="color:#333">&lt;</span>Class<span style="color:#333">&gt;</span> <span style="color:#5ed;font-weight:bold">classes</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> ArrayList<span style="color:#333">&lt;</span>Class<span style="color:#333">&gt;</span>();
+    
+    File <span style="color:#5ed;font-weight:bold">path</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> File(aPath);
+    <span style="color:#289;font-weight:bold">if</span>(path.<span style="color:#007">isDirectory</span>()) {
+      File <span style="color:#5ed;font-weight:bold">packageFile</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> File(path, PACKAGE_DIRECTORY_NAME);
+      <span style="color:#289;font-weight:bold">for</span> (File <span style="color:#5ed;font-weight:bold">f</span> <span style="color:#333">:</span> packageFile.<span style="color:#007">listFiles</span>()) {
+        String <span style="color:#5ed;font-weight:bold">className</span> <span style="color:#333">=</span> getClassNameFromFile(f);
+        <span style="color:#289;font-weight:bold">if</span>(className <span style="color:#333">!=</span> <span style="color:#289;font-weight:bold">null</span>) {
+          <span style="color:#289;font-weight:bold">try</span> {
+            Class <span style="color:#5ed;font-weight:bold">clazz</span> <span style="color:#333">=</span> Class.<span style="color:#007">forName</span>(className);
+            <span style="color:#289;font-weight:bold">if</span>(Shape.<span style="color:#007">class</span>.<span style="color:#007">isAssignableFrom</span>(clazz)) {
+              classes.<span style="color:#007">add</span>(clazz);
+            }
+          } <span style="color:#289;font-weight:bold">catch</span> (ClassNotFoundException <span style="color:#5ed;font-weight:bold">e</span>) {
+            logger.<span style="color:#007">severe</span>(<span style="background-color:#e0e0ff">&#34;Cannot instantiate &#34;</span> <span style="color:#333">+</span> className);
+          }
+        }
+      }
+    }
+    <span style="color:#289;font-weight:bold">return</span> classes;
+  }
+  
+  <span style="color:#666;font-style:italic">/**
+</span><span style="color:#666;font-style:italic">   * Vrati zoznam tried implementujucich Shape z CLASSPATH.
+</span><span style="color:#666;font-style:italic">   * &lt;p&gt;
+</span><span style="color:#666;font-style:italic">   * Prelezie sa zoznam z hodnoty systemovej premennej v {@link ShapeDiscoverer#PROPERTY_KEY}
+</span><span style="color:#666;font-style:italic">   * a kazda polozka reprezentujuca adresar sa prehlada pre triedy.
+</span><span style="color:#666;font-style:italic">   * 
+</span><span style="color:#666;font-style:italic">   */</span>
+  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">List</span><span style="color:#333">&lt;</span>Class<span style="color:#333">&gt;</span> <span style="color:#5ed;font-weight:bold">discover</span>() {
+    String <span style="color:#5ed;font-weight:bold">javaClasspath</span> <span style="color:#333">=</span> System.<span style="color:#007">getProperty</span>(PROPERTY_KEY);
+    <span style="color:#289;font-weight:bold">if</span>(javaClasspath <span style="color:#333">==</span> <span style="color:#289;font-weight:bold">null</span>) {
+      <span style="color:#289;font-weight:bold">throw</span> <span style="color:#289;font-weight:bold">new</span> IllegalArgumentException(PROPERTY_KEY <span style="color:#333">+</span> <span style="background-color:#e0e0ff">&#34; not found in system properties.&#34;</span>);
+    }
+    String[] <span style="color:#5ed;font-weight:bold">paths</span> <span style="color:#333">=</span> javaClasspath.<span style="color:#007">split</span>(File.<span style="color:#007">pathSeparator</span>);
+    
+    List<span style="color:#333">&lt;</span>Class<span style="color:#333">&gt;</span> <span style="color:#5ed;font-weight:bold">classes</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> ArrayList<span style="color:#333">&lt;</span>Class<span style="color:#333">&gt;</span>();
+    <span style="color:#289;font-weight:bold">for</span> (String <span style="color:#5ed;font-weight:bold">path</span> <span style="color:#333">:</span> paths) {     
+      classes.<span style="color:#007">addAll</span>(findClassNames(path));
+    }
+    <span style="color:#289;font-weight:bold">return</span> classes;
+  }
+  
+}</code></pre></div>
+<h1 id="grafické-rozhranie-a-riešenie-automatického-obnovovania">Grafické rozhranie a riešenie automatického obnovovania</h1>
+
+<p>Vytvoríme grafickú aplikáciu, v ktorej sa bude periodicky vyhľadávať zoznam tried.</p>
+
+<h2 id="periodické-vykonávanie-akcií">Periodické vykonávanie akcií</h2>
+
+<p>Na periodické vykonávanie akcií môžeme použiť kombináciu tried <code>java.util.Timer</code> a <code>java.util.TimerTask</code>. Prvá trieda umožňuje periodické spúštanie akcií, ktoré sú reprezentované <code>TimerTask</code>ami. Naša úloha bude jednoduchá &ndash; po jej spustení zavolá metódu <code>discover</code> na odhaľovači implementácií a vrátený zoznam tried zobrazí v danom swingovskom komponente <code>JList</code>.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">package</span> <span style="color:#5ed;font-weight:bold">sk</span>.<span style="color:#007">novotnyr</span>.<span style="color:#007">shapes</span>;
+
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">java</span>.<span style="color:#007">util</span>.<span style="color:#007">ArrayList</span>;
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">java</span>.<span style="color:#007">util</span>.<span style="color:#007">Date</span>;
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">java</span>.<span style="color:#007">util</span>.<span style="color:#007">List</span>;
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">java</span>.<span style="color:#007">util</span>.<span style="color:#007">TimerTask</span>;
+
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">javax</span>.<span style="color:#007">swing</span>.<span style="color:#007">JList</span>;
+
+<span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> RefreshClassesAction <span style="color:#5ed;font-weight:bold">extends</span> TimerTask {
+  <span style="color:#666;font-style:italic">/**
+</span><span style="color:#666;font-style:italic">   * Komponent Zoznam, ktory bude aktualizovany
+</span><span style="color:#666;font-style:italic">   */</span>
+  <span style="color:#289;font-weight:bold">private</span> <span style="color:#5ed;font-weight:bold">JList</span> jList;
+
+  <span style="color:#666;font-style:italic">/**
+</span><span style="color:#666;font-style:italic">   * Odhalovac implementacii
+</span><span style="color:#666;font-style:italic">   */</span>
+  <span style="color:#289;font-weight:bold">private</span> <span style="color:#5ed;font-weight:bold">ShapeDiscoverer</span> discoverer <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> ShapeDiscoverer();
+  
+  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">RefreshClassesAction</span>(JList <span style="color:#5ed;font-weight:bold">list</span>) {
+    <span style="color:#289;font-weight:bold">super</span>();
+    <span style="color:#289;font-weight:bold">this</span>.<span style="color:#007">jList</span> <span style="color:#333">=</span> list;
+  }
+
+  <span style="color:#666;font-style:italic">/**
+</span><span style="color:#666;font-style:italic">   * Aktualizuje zoznam na zaklade novonajdenych tried
+</span><span style="color:#666;font-style:italic">   */</span>
+  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">void</span> run() {
+    jList.<span style="color:#007">setListData</span>(discoverer.<span style="color:#007">discover</span>().<span style="color:#007">toArray</span>());
+  }
+}</code></pre></div>
+<p>Samotnú akciu môžeme naplánovať vytvorením inštancie <code>Timer</code>a:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Timer <span style="color:#5ed;font-weight:bold">timer</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Timer();
+RefreshClassesAction <span style="color:#5ed;font-weight:bold">action</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> RefreshClassesAction(list);
+timer.<span style="color:#007">schedule</span>(action, 0, 3000);</code></pre></div>
+<p>Každé tri sekundy počnúc súčasnosťou sa zavolá metóda <code>run()</code> na inštancii nášho odhaľovača.</p>
+
+<h2 id="grafické-rozhranie">Grafické rozhranie</h2>
+
+<p>Na záver vytvoríme jednoduché grafické rozhranie s jedným zoznamom JList a jedným tlačidlom JButton, po ktorého stlačení sa zavolá metóda <code>getArea()</code> na novovytvorenej inštancii triedy, ktorá je vybratá zo zoznamu.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">package</span> <span style="color:#5ed;font-weight:bold">sk</span>.<span style="color:#007">novotnyr</span>.<span style="color:#007">shapes</span>;
+
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">java</span>.<span style="color:#007">awt</span>.<span style="color:#007">BorderLayout</span>;
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">java</span>.<span style="color:#007">awt</span>.<span style="color:#007">Container</span>;
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">java</span>.<span style="color:#007">awt</span>.<span style="color:#007">event</span>.<span style="color:#007">ActionEvent</span>;
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">java</span>.<span style="color:#007">awt</span>.<span style="color:#007">event</span>.<span style="color:#007">ActionListener</span>;
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">java</span>.<span style="color:#007">util</span>.<span style="color:#007">Timer</span>;
+
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">javax</span>.<span style="color:#007">swing</span>.<span style="color:#007">JButton</span>;
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">javax</span>.<span style="color:#007">swing</span>.<span style="color:#007">JFrame</span>;
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">javax</span>.<span style="color:#007">swing</span>.<span style="color:#007">JList</span>;
+
+<span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> Gui {
+  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">static</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">main</span>(String[] <span style="color:#5ed;font-weight:bold">args</span>) {
+    JFrame <span style="color:#5ed;font-weight:bold">frame</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> JFrame(<span style="background-color:#e0e0ff">&#34;GUI&#34;</span>);
+    frame.<span style="color:#007">setDefaultCloseOperation</span>(JFrame.<span style="color:#007">EXIT_ON_CLOSE</span>);
+    
+    Container <span style="color:#5ed;font-weight:bold">cp</span> <span style="color:#333">=</span> frame.<span style="color:#007">getContentPane</span>();
+    
+    <span style="color:#289;font-weight:bold">final</span> <span style="color:#5ed;font-weight:bold">JList</span> list <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> JList();
+    cp.<span style="color:#007">add</span>(list, BorderLayout.<span style="color:#007">CENTER</span>);
+    
+    JButton <span style="color:#5ed;font-weight:bold">button</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> JButton(<span style="background-color:#e0e0ff">&#34;Go!&#34;</span>);
+    button.<span style="color:#007">addActionListener</span>(<span style="color:#289;font-weight:bold">new</span> ActionListener() {
+      <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">void</span> actionPerformed(ActionEvent <span style="color:#5ed;font-weight:bold">e</span>) {
+        Class <span style="color:#5ed;font-weight:bold">clazz</span> <span style="color:#333">=</span> (Class) list.<span style="color:#007">getSelectedValue</span>();
+        <span style="color:#289;font-weight:bold">try</span> {
+          Shape <span style="color:#5ed;font-weight:bold">shape</span> <span style="color:#333">=</span> (Shape) clazz.<span style="color:#007">newInstance</span>();
+          System.<span style="color:#007">out</span>.<span style="color:#007">println</span>(shape.<span style="color:#007">getArea</span>());
+        } <span style="color:#289;font-weight:bold">catch</span> (Exception <span style="color:#5ed;font-weight:bold">e1</span>) {
+          System.<span style="color:#007">out</span>.<span style="color:#007">println</span>(<span style="background-color:#e0e0ff">&#34;Cannot instantiate the selected class &#34;</span> <span style="color:#333">+</span> clazz);
+        } 
+      }     
+    });
+    cp.<span style="color:#007">add</span>(button, BorderLayout.<span style="color:#007">SOUTH</span>);
+    
+    frame.<span style="color:#007">pack</span>();
+    frame.<span style="color:#007">setVisible</span>(<span style="color:#289;font-weight:bold">true</span>);
+    
+    Timer <span style="color:#5ed;font-weight:bold">timer</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Timer();
+    RefreshClassesAction <span style="color:#5ed;font-weight:bold">action</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> RefreshClassesAction(list);
+    timer.<span style="color:#007">schedule</span>(action, 0, 3000);
+    
+  }
+}</code></pre></div>
+<p>Ak do adresára v <code>CLASSPATH</code> skopírujeme napríklad triedu <code>Point</code>, po krátkej chvíli sa zjaví v zozname a môžeme vytvárať jej inštancie.</p>
+
+<h1 id="potenciálne-problémy">Potenciálne problémy</h1>
+
+<p>Tento prístup zrejme nebude fungovať vo webových aplikáciách. Napr. servletový kontajner <a href="http://tomcat.apache.org">Tomcat</a> ignoruje systémovú premennú <code>CLASSPATH</code> a triedy bežiace v ňom vidia v premennej <code>java.class.path</code> len niekoľko málo JAR archívov z útrob Tomcata. V takom prípade je zrejme nutné použiť nejaký zložitejší prístup - napr. vyhľadávaním súborov pomocou metódy <code>Class#getResources()</code>, ktorá na to používa aktuálne používaný classloader.</p>
+
+<p>Alternatívnou metódou je použitie niektorej z knižníc na podporu plug-inov v Jave.</p>
+
+<h1 id="zdrojové-kódy">Zdrojové kódy</h1>
+
+<ul>
+<li><a href="classloading.zip">Ukážkový projekt (ZIP)</a></li>
+</ul>
+
+</main>
+
+    <footer>
+      
+<script>
+(function() {
+  function center_el(tagName) {
+    var tags = document.getElementsByTagName(tagName), i, tag;
+    for (i = 0; i < tags.length; i++) {
+      tag = tags[i];
+      var parent = tag.parentElement;
+      
+      if (parent.childNodes.length === 1) {
+        
+        if (parent.nodeName === 'A') {
+          parent = parent.parentElement;
+          if (parent.childNodes.length != 1) continue;
+        }
+        if (parent.nodeName === 'P') parent.style.textAlign = 'center';
+      }
+    }
+  }
+  var tagNames = ['img', 'embed', 'object'];
+  for (var i = 0; i < tagNames.length; i++) {
+    center_el(tagNames[i]);
+  }
+})();
+</script>
+
+      
+    </footer>
+  </body>
+</html>
+

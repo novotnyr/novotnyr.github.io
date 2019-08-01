@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Spring 3.0, JEE 6 a anotácie pre automatické prepájanie komponentov | robonovotny</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.css" integrity="sha384-D+9gmBxUQogRLqvARvNLmA9hS2x//eK1FhVb9PiU86gmcrBrJAQT8okdJ4LMp2uv" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.js" integrity="sha384-483A6DwYfKeDa0Q52fJmxFXkcPCFfnXMoXblOkJ4JcA8zATN6Tm78UNL72AKk+0O" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/contrib/auto-render.min.js" integrity="sha384-yACMu8JWxKzSp/C1YV86pzGiQ/l1YUfE8oPuahJQxzehAjEt2GiQuy/BIvl9KyeF" crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body);
+        });
+    </script>
+
+<header>
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <nav>
+    <ul>
+      
+      
+      <li class="pull-left ">
+        <a href="http://novotnyr.github.io/">/home/robonovotny</a>
+      </li>
+      
+
+      
+
+    </ul>
+  </nav>
+</header>
+
+  </head>
+
+  <body>
+    <br/>
+
+<div class="article-meta">
+<h1><span class="title">Spring 3.0, JEE 6 a anotácie pre automatické prepájanie komponentov</span></h1>
+
+<h2 class="date">2010/01/11</h2>
+<p class="terms">
+  
+  
+  
+  
+  
+</p>
+</div>
+
+
+
+<main>
+
+
+<p>Od čias Springu 2.5 je k dispozícii sada anotácií, ktoré riešia <em>dependency injection</em>. (Viď <a href="Java/AnotacieVSpring25">existujúci článok</a>.) V nej boli dané k dispozícii jednak springovské anotácie (<code>@Component</code> a pod.) a jednak anotácie z JSR-250 (najmä <code>@Resource</code>).</p>
+
+<p>Od tých čias sa situácia ešte „skomplikovala&rdquo;. Medzičasom totiž vyšla finálna špecifikácia JEE6, ktorá rieši dependency injection v rámci dvoch JSR.</p>
+
+<ul>
+<li><strong>JSR-330</strong>: Dependency Injection for Java vznikla z potrieb DI frameworkov Spring a Google Guice, kde dali hlavy dohromady Rod Johnson a Crazy Bob Lee.</li>
+<li><strong>JSR-299</strong>: Contexts and Dependency Injection for the Java EE platform (alias Web Beans, pod vedením Gavina Kinga z JBossu), ktoré stavajú na JSR-330, a obohacujú DI o ďalšie vlastnosti. Táto JSR je v podstate abstrakciou funkcionality, ktorú poskytuje JBoss Seam.</li>
+</ul>
+
+<p>Spočiatku to vyzeralo tak, že špecifikácie vznikli vzájomne „na truc&rdquo;. Vo úvodnej fáze <em>review</em> Red Hat (teda JBoss) vyjadril hlboké pochybnosti o zmysle JSR-330 (niet divu, veď sa to isté snažil riešiť po svojom). Po troche politických bojov sa však obe špecifikácie zladili, a Red Hat ju odsúhlasil s dodatkom, že očakáva ďalšiu spoluprácu medzi oboma štandardmi. Ako tvrdí viacero článkov, oba treba chápať ako vzťah známy JDBC a JPA. Existuje v nich prienik, ale jedna (299) je nadstavbou druhej (330). (Je len zaujímavé, že <a href="http://jcp.org/en/jsr/results?id=4992">IBM neskôr zmenila svoj názor</a>, pretože vidí v JSR-330 značné technické nedostatky a nesplnenie zámeru.)</p>
+
+<h1 id="jsr-330">JSR-330</h1>
+
+<p>Táto špecifikácia definuje päť anotácií a jeden interfejs, ktorými možno dosiahnuť DI. Samotnú implementáciu a spôsob prepájania však ponecháva na konkrétnu implementáciu prislušného DI frameworku.</p>
+
+<p>Všetky anotácie sú z balíčka <code>javax.inject</code>.</p>
+
+<ul>
+<li><code>@Inject</code> – anotuje konštruktory, metódy či inštančné premenné, do ktorých majú byť injektnuté inštancie beanov.</li>
+<li><code>@Qualifier</code> – anotácia anotácií, ktorými možno bližšie obmedziť / špecifikovať injektovanie.</li>
+<li><code>@Scope</code> – metaanotácia, ktorá definuje anotácie zodpovedajúce §§scope§§om, teda rozsahom platnosti. V prípade injektovania sa implicitne (ak chýba anotácia) predpokladá <code>prototype</code> scope (teda non-singleton), čiže s každým injektovaním sa vytvára nová inštancia injektovaného beanu</li>
+<li><code>@Singleton</code> – anotácia typu <code>@Scope</code>, ktorá indikuje, že anotovaný typ bude pri injektovaní používaný ako singleton.</li>
+<li><code>@Named</code> – umožní bližšie špecifikovať injektovaný bean. Odporúča sa používať len v prípade kontajnerov, ktoré označujú beany identifikátorom (čo je prípad Springu). V špecifikácii JEE6 má ešte jeden význam: ak je ňou anotovaná trieda, možno k nej pristupovať v rámci expression language (napr. v JSF šablónach).</li>
+</ul>
+
+<p>Ukážme si jednoduchý príklad v ktorom sa používajú anotácie.</p>
+
+<h1 id="springovské-anotácie">Springovské anotácie</h1>
+
+<p>Majme interfejs na generovanie citátov:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">package</span> <span style="color:#5ed;font-weight:bold">sk</span>.<span style="color:#007">novotnyr</span>.<span style="color:#007">quotes</span>;
+
+<span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">interface</span> QuoteGenerator {
+  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">String</span> getQuote();
+}</code></pre></div>
+<p>a jeho jednoduchú implementáciu:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">package</span> <span style="color:#5ed;font-weight:bold">sk</span>.<span style="color:#007">novotnyr</span>.<span style="color:#007">quotes</span>;
+
+<span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> HardwiredQuoteGenerator <span style="color:#5ed;font-weight:bold">implements</span> QuoteGenerator {
+
+  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">String</span> getQuote() {
+    <span style="color:#289;font-weight:bold">return</span> <span style="background-color:#e0e0ff">&#34;Spring is gr8&#34;</span>;
+  }
+
+}</code></pre></div>
+<p>A okrem toho majme triedu, ktorá bude vypisovať citáty na štandardný výstup:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> QuotePrinter {
+  <span style="color:#289;font-weight:bold">private</span> <span style="color:#5ed;font-weight:bold">QuoteGenerator</span> quoteGenerator;
+  
+  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">void</span> print() {
+    String <span style="color:#5ed;font-weight:bold">quote</span> <span style="color:#333">=</span> quoteGenerator.<span style="color:#007">getQuote</span>();
+    System.<span style="color:#007">out</span>.<span style="color:#007">println</span>(quote);
+  }
+
+  <span style="color:#666;font-style:italic">// gettre a settre
+</span><span style="color:#666;font-style:italic"></span>}</code></pre></div>
+<p>V JSR-330 je k dispozícii anotácia <code>@Inject</code>, ktorá indikuje nutnosť injektovania inštancie. Keďže <code>QuotePrinter</code> vyžaduje inštanciu <code>QuoteGenerator</code>a, injektovanie označíme anotáciou.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> QuotePrinter {
+  <span style="color:#555;font-weight:bold">@Inject</span>
+  <span style="color:#289;font-weight:bold">private</span> <span style="color:#5ed;font-weight:bold">QuoteGenerator</span> quoteGenerator;
+  
+  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">void</span> print() {
+    String <span style="color:#5ed;font-weight:bold">quote</span> <span style="color:#333">=</span> quoteGenerator.<span style="color:#007">getQuote</span>();
+    System.<span style="color:#007">out</span>.<span style="color:#007">println</span>(quote);
+  }
+}</code></pre></div>
+<p>Do <code>quoteGeneratora</code> sa automaticky nawireuje implementácia príslušného rozhrania (prebieha detekcia podľa typu, v kontexte sa musí nájsť práve jedna implementácia, inak nastane výnimka). Ak použijeme <code>@Inject</code> na inštančnej premennej, nemusíme dokonca poskytnúť gettre a settre.</p>
+
+<p>Ostáva ešte jedna „drobnosť: ako zaregistrovať beany v aplikačnom kontexte? Klasických možností je viac:</p>
+
+<ul>
+<li>buď ich uvedieme do XML deskriptora aplikačného kontextu</li>
+
+<li><p>alebo ich anotujeme pomocou springovskej anotácie <code>@Component</code>
+Treťou možnosťou je využitie JSR-330 anotácie <code>Named</code>. Ak je ňou anotovaný typ, Spring ho automaticky odhalí a zaradí do aplikačného kontextu.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#555;font-weight:bold">@Named</span>
+<span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> QuotePrinter {</code></pre></div>
+<p>a</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#555;font-weight:bold">@Named</span>
+<span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> QuoteGenerator {</code></pre></div></li>
+</ul>
+
+<p>Teraz už môžeme vytvoriť aplikačný kontext. V tomto prípade môžeme s výhodou využiť triedu <code>AnnotationConfigApplicationContext</code>:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">AnnotationConfigApplicationContext <span style="color:#5ed;font-weight:bold">context</span> 
+   <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> AnnotationConfigApplicationContext(<span style="background-color:#e0e0ff">&#34;sk.novotnyr.quotes&#34;</span>);
+QuotePrinter <span style="color:#5ed;font-weight:bold">printer</span> <span style="color:#333">=</span> context.<span style="color:#007">getBean</span>(QuotePrinter.<span style="color:#007">class</span>);
+<span style="color:#289;font-weight:bold">for</span> (<span style="color:#66f;font-weight:bold">int</span> <span style="color:#5ed;font-weight:bold">i</span> <span style="color:#333">=</span> 0; i <span style="color:#333">&lt;</span> 3; i<span style="color:#333">++</span>) {
+  printer.<span style="color:#007">print</span>();
+}</code></pre></div>
+<p>Trieda automaticky vyhľadá v balíčku <code>sk.novotnyr.quote</code> nielen triedy anotované ako <code>Named</code>, ale aj všetky triedy so springovským stereotypom <code>@Component</code> (teda všetky triedy anotované ako <code>@Component</code>, <code>@Repository</code>, <code>@Service</code> a <code>@Controller</code>).</p>
+
+<p>Anotácia <code>@Named</code> môže byť použitá v prípade, že chceme pri injektovaní presnejšie vyšpecifikovať použitý bean (napr. v prípade, že sa v aplikačnom kontexte nachádza viacero implementácií daného interfejsu):</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#555;font-weight:bold">@Inject</span>
+<span style="color:#555;font-weight:bold">@Named</span>(<span style="background-color:#e0e0ff">&#34;HardwiredQuoteGenerator&#34;</span>)
+<span style="color:#289;font-weight:bold">private</span> <span style="color:#5ed;font-weight:bold">QuoteGenerator</span> quoteGenerator;</code></pre></div>
+<p>V tomto prípade sa injektne ten bean, ktorý má v triede anotáciu <code>@Named(&quot;HardwiredQuoteGenerator&quot;)</code>.</p>
+
+<p>Nezabúdajme na to, že v tomto prípade prebehne §§prototype§§ injektovanie. Vytvorí sa teda toľko inštancií <code>QuoteGeneratora</code>, koľko je inštancií <code>QuotePrintera</code>. Ak chceme mať <code>QuoteGenerator</code> ako singleton, musíme ho tak označiť.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#555;font-weight:bold">@Named</span>(<span style="background-color:#e0e0ff">&#34;HardwiredQuoteGenerator&#34;</span>)
+<span style="color:#555;font-weight:bold">@Singleton</span>
+<span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> HardwiredQuoteGenerator</code></pre></div>
+<h1 id="vzťah-k-jsr-250">Vzťah k JSR-250</h1>
+
+<p>Z predošlého článku si pamätáme, že injektovanie možno dosiahnuť aj pomocou anotácií <code>javax.annotation.Resource</code> a <code>javax.annotation.WebServiceRef</code>, kde prvá z nich slúžila jednak v úlohe anotovania beanu, ktorý sa má zaviesť do kontextu, jednak v úlohe anotácie <code>@Inject</code> a zároveň v nej bolo možné pomenovávať beany a bližšie špecifikovať odkaz na ne (teda obe úlohy <code>@Named</code>).</p>
+
+<p>Špecifikácia JSR-250 však uvádza, že <em>„The <code>@Resource</code> annotation is used to declare a reference to a resource such as a data source, an enterprise bean, or an environment entry,&rdquo;</em> teda anotácia <code>@Resource</code> deklaruje odkaz na zdroj/prostriedok, ako napr. dátový zdroj enterprise bean či premenná prostredia.</p>
+
+<p>Podľa dokumentácie (<em>The Java EE 6 Tutorial, Volume I</em>) a špecifikácie JSR-250 je úloha tejto anotácie skôr spätá s JNDI. V prípade jej použitia na triede sa z atribútu <code>name</code> odvodí JNDI meno, pod ktorým sa inštancia zaregistruje do JNDI kontextu. Ak je použitá na mene, z názvu premennej sa odvodí kľúč do JNDI kontextu, z ktorého sa inštancia vytiahne.</p>
+
+<h1 id="vzťah-k-springu">Vzťah k Springu</h1>
+
+<table>
+<thead>
+<tr>
+<th>Spring</th>
+<th>JSR-330</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td><code>@Component</code></td>
+<td><code>@Named</code> nad triedou</td>
+</tr>
+
+<tr>
+<td><code>@Autowire</code></td>
+<td><code>@Inject</code></td>
+</tr>
+
+<tr>
+<td><code>@Qualifier</code> na inštančnej premennej či metóde</td>
+<td><code>@Named</code></td>
+</tr>
+</tbody>
+</table>
+
+<h1 id="referencie">Referencie</h1>
+
+<ul>
+<li><a href="http://docs.sun.com/app/docs/doc/820-7627/gjbnr?a=view">Introduction to Contexts and Dependency Injection for the Java EE Platform</a></li>
+<li><a href="http://crazybob.org/2009/05/announcing-javaxinjectinject.html">Announcing @javax.inject.Inject</a> &ndash; pôvodné oznámenie Crazy Bob Leeho</li>
+<li><a href="http://java.dzone.com/articles/what-relation-betwe-there">What Is The Relation Between JSR-299 and JSR-330 In Java EE 6? Do We Need Two DI APIs? </a></li>
+</ul>
+
+</main>
+
+    <footer>
+      
+<script>
+(function() {
+  function center_el(tagName) {
+    var tags = document.getElementsByTagName(tagName), i, tag;
+    for (i = 0; i < tags.length; i++) {
+      tag = tags[i];
+      var parent = tag.parentElement;
+      
+      if (parent.childNodes.length === 1) {
+        
+        if (parent.nodeName === 'A') {
+          parent = parent.parentElement;
+          if (parent.childNodes.length != 1) continue;
+        }
+        if (parent.nodeName === 'P') parent.style.textAlign = 'center';
+      }
+    }
+  }
+  var tagNames = ['img', 'embed', 'object'];
+  for (var i = 0; i < tagNames.length; i++) {
+    center_el(tagNames[i]);
+  }
+})();
+</script>
+
+      
+    </footer>
+  </body>
+</html>
+

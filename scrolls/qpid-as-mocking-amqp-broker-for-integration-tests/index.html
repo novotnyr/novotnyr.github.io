@@ -194,38 +194,38 @@
 <h2 id="creating-an-embedded-broker-runner">Creating an Embedded Broker Runner</h2>
 
 <p>Let’s code the Qpid Wrapper or Runner that will allow easy-starting of the Broker.</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">EmbeddedInMemoryQpidBroker</span> <span style="color:#333">{</span>
-    <span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">static</span> <span style="color:#289;font-weight:bold">final</span> Logger logger <span style="color:#333">=</span> getLogger<span style="color:#333">(</span>EmbeddedInMemoryQpidBroker<span style="color:#333">.</span><span style="color:#007">class</span><span style="color:#333">);</span>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> EmbeddedInMemoryQpidBroker {
+    <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">static</span> <span style="color:#289;font-weight:bold">final</span> <span style="color:#5ed;font-weight:bold">Logger</span> logger <span style="color:#333">=</span> getLogger(EmbeddedInMemoryQpidBroker.<span style="color:#007">class</span>);
 
-    <span style="color:#289;font-weight:bold">private</span> <span style="color:#289;font-weight:bold">static</span> <span style="color:#289;font-weight:bold">final</span> String DEFAULT_INITIAL_CONFIGURATION_LOCATION <span style="color:#333">=</span> <span style="background-color:#e0e0ff">&#34;qpid-embedded-inmemory-configuration.json&#34;</span><span style="color:#333">;</span>
+    <span style="color:#289;font-weight:bold">private</span> <span style="color:#5ed;font-weight:bold">static</span> <span style="color:#289;font-weight:bold">final</span> <span style="color:#5ed;font-weight:bold">String</span> DEFAULT_INITIAL_CONFIGURATION_LOCATION <span style="color:#333">=</span> <span style="background-color:#e0e0ff">&#34;qpid-embedded-inmemory-configuration.json&#34;</span>;
 
-    <span style="color:#289;font-weight:bold">private</span> SystemLauncher systemLauncher<span style="color:#333">;</span>
+    <span style="color:#289;font-weight:bold">private</span> <span style="color:#5ed;font-weight:bold">SystemLauncher</span> systemLauncher;
 
-    <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">EmbeddedInMemoryQpidBroker</span><span style="color:#333">()</span> <span style="color:#333">{</span>
-        <span style="color:#289;font-weight:bold">this</span><span style="color:#333">.</span><span style="color:#007">systemLauncher</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> SystemLauncher<span style="color:#333">();</span>
-    <span style="color:#333">}</span>
+    <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">EmbeddedInMemoryQpidBroker</span>() {
+        <span style="color:#289;font-weight:bold">this</span>.<span style="color:#007">systemLauncher</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> SystemLauncher();
+    }
 
-    <span style="color:#289;font-weight:bold">public</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">start</span><span style="color:#333">()</span> <span style="color:#289;font-weight:bold">throws</span> Exception <span style="color:#333">{</span>
-        <span style="color:#289;font-weight:bold">this</span><span style="color:#333">.</span><span style="color:#007">systemLauncher</span><span style="color:#333">.</span><span style="color:#007">startup</span><span style="color:#333">(</span>createSystemConfig<span style="color:#333">());</span>
-    <span style="color:#333">}</span>
+    <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">void</span> start() <span style="color:#289;font-weight:bold">throws</span> <span style="color:#5ed;font-weight:bold">Exception</span> {
+        <span style="color:#289;font-weight:bold">this</span>.<span style="color:#007">systemLauncher</span>.<span style="color:#007">startup</span>(createSystemConfig());
+    }
 
-    <span style="color:#289;font-weight:bold">public</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">shutdown</span><span style="color:#333">()</span> <span style="color:#333">{</span>
-        <span style="color:#289;font-weight:bold">this</span><span style="color:#333">.</span><span style="color:#007">systemLauncher</span><span style="color:#333">.</span><span style="color:#007">shutdown</span><span style="color:#333">();</span>
-    <span style="color:#333">}</span>
+    <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">void</span> shutdown() {
+        <span style="color:#289;font-weight:bold">this</span>.<span style="color:#007">systemLauncher</span>.<span style="color:#007">shutdown</span>();
+    }
 
-    <span style="color:#289;font-weight:bold">private</span> Map<span style="color:#333">&lt;</span>String<span style="color:#333">,</span> Object<span style="color:#333">&gt;</span> <span style="color:#5ed;font-weight:bold">createSystemConfig</span><span style="color:#333">()</span> <span style="color:#289;font-weight:bold">throws</span> IllegalConfigurationException <span style="color:#333">{</span>
-        Map<span style="color:#333">&lt;</span>String<span style="color:#333">,</span> Object<span style="color:#333">&gt;</span> attributes <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> HashMap<span style="color:#333">&lt;&gt;();</span>
-        URL initialConfigUrl <span style="color:#333">=</span> EmbeddedInMemoryQpidBroker<span style="color:#333">.</span><span style="color:#007">class</span><span style="color:#333">.</span><span style="color:#007">getClassLoader</span><span style="color:#333">().</span><span style="color:#007">getResource</span><span style="color:#333">(</span>DEFAULT_INITIAL_CONFIGURATION_LOCATION<span style="color:#333">);</span>
-        <span style="color:#333">}</span>
-        <span style="color:#289;font-weight:bold">if</span> <span style="color:#333">(</span>initialConfigUrl <span style="color:#333">==</span> <span style="color:#289;font-weight:bold">null</span><span style="color:#333">)</span> <span style="color:#333">{</span>
-            <span style="color:#289;font-weight:bold">throw</span> <span style="color:#289;font-weight:bold">new</span> IllegalConfigurationException<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;Configuration location &#39;&#34;</span> <span style="color:#333">+</span> DEFAULT_INITIAL_CONFIGURATION_LOCATION <span style="color:#333">+</span> <span style="background-color:#e0e0ff">&#34;&#39; not found&#34;</span><span style="color:#333">);</span>
-        <span style="color:#333">}</span>
-        attributes<span style="color:#333">.</span><span style="color:#007">put</span><span style="color:#333">(</span>SystemConfig<span style="color:#333">.</span><span style="color:#007">TYPE</span><span style="color:#333">,</span> <span style="background-color:#e0e0ff">&#34;Memory&#34;</span><span style="color:#333">);</span>
-        attributes<span style="color:#333">.</span><span style="color:#007">put</span><span style="color:#333">(</span>SystemConfig<span style="color:#333">.</span><span style="color:#007">INITIAL_CONFIGURATION_LOCATION</span><span style="color:#333">,</span> initialConfigUrl<span style="color:#333">.</span><span style="color:#007">toExternalForm</span><span style="color:#333">());</span>
-        attributes<span style="color:#333">.</span><span style="color:#007">put</span><span style="color:#333">(</span>SystemConfig<span style="color:#333">.</span><span style="color:#007">STARTUP_LOGGED_TO_SYSTEM_OUT</span><span style="color:#333">,</span> <span style="color:#289;font-weight:bold">true</span><span style="color:#333">);</span>
-        <span style="color:#289;font-weight:bold">return</span> attributes<span style="color:#333">;</span>
-    <span style="color:#333">}</span>
-<span style="color:#333">}</span></code></pre></div>
+    <span style="color:#289;font-weight:bold">private</span> <span style="color:#5ed;font-weight:bold">Map</span><span style="color:#333">&lt;</span>String, Object<span style="color:#333">&gt;</span> <span style="color:#5ed;font-weight:bold">createSystemConfig</span>() <span style="color:#289;font-weight:bold">throws</span> <span style="color:#5ed;font-weight:bold">IllegalConfigurationException</span> {
+        Map<span style="color:#333">&lt;</span>String, Object<span style="color:#333">&gt;</span> <span style="color:#5ed;font-weight:bold">attributes</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> HashMap<span style="color:#333">&lt;&gt;</span>();
+        URL <span style="color:#5ed;font-weight:bold">initialConfigUrl</span> <span style="color:#333">=</span> EmbeddedInMemoryQpidBroker.<span style="color:#007">class</span>.<span style="color:#007">getClassLoader</span>().<span style="color:#007">getResource</span>(DEFAULT_INITIAL_CONFIGURATION_LOCATION);
+        }
+        <span style="color:#289;font-weight:bold">if</span> (initialConfigUrl <span style="color:#333">==</span> <span style="color:#289;font-weight:bold">null</span>) {
+            <span style="color:#289;font-weight:bold">throw</span> <span style="color:#289;font-weight:bold">new</span> IllegalConfigurationException(<span style="background-color:#e0e0ff">&#34;Configuration location &#39;&#34;</span> <span style="color:#333">+</span> DEFAULT_INITIAL_CONFIGURATION_LOCATION <span style="color:#333">+</span> <span style="background-color:#e0e0ff">&#34;&#39; not found&#34;</span>);
+        }
+        attributes.<span style="color:#007">put</span>(SystemConfig.<span style="color:#007">TYPE</span>, <span style="background-color:#e0e0ff">&#34;Memory&#34;</span>);
+        attributes.<span style="color:#007">put</span>(SystemConfig.<span style="color:#007">INITIAL_CONFIGURATION_LOCATION</span>, initialConfigUrl.<span style="color:#007">toExternalForm</span>());
+        attributes.<span style="color:#007">put</span>(SystemConfig.<span style="color:#007">STARTUP_LOGGED_TO_SYSTEM_OUT</span>, <span style="color:#289;font-weight:bold">true</span>);
+        <span style="color:#289;font-weight:bold">return</span> attributes;
+    }
+}</code></pre></div>
 <p>Essentially, we provide two methods: <code>start</code> and <code>shutdown</code>. The former method will initialize Qpid <code>SystemLauncher</code>, provide the system configuration as a <code>HashMap</code> and launch it.</p>
 
 <p>In the configuration map, we provide the following configuration options:</p>
@@ -243,22 +243,22 @@
 <h2 id="creating-a-junit-4-rule">Creating a JUnit 4 Rule</h2>
 
 <p>To make our lives easier in the integration tests, let’s create a JUnit 4 Rule that will manage a broker lifecycle. Thus, we can start a broker when a unit test launches, and shutdown the same broker when the unit tests terminates.</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">org.junit.rules.ExternalResource</span><span style="color:#333">;</span>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">org</span>.<span style="color:#007">junit</span>.<span style="color:#007">rules</span>.<span style="color:#007">ExternalResource</span>;
 
-<span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">EmbeddedInMemoryQpidBrokerRule</span> <span style="color:#289;font-weight:bold">extends</span> ExternalResource <span style="color:#333">{</span>
-    <span style="color:#289;font-weight:bold">private</span> EmbeddedInMemoryQpidBroker broker<span style="color:#333">;</span>
-
-    <span style="color:#555;font-weight:bold">@Override</span>
-    <span style="color:#289;font-weight:bold">protected</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">before</span><span style="color:#333">()</span> <span style="color:#289;font-weight:bold">throws</span> Throwable <span style="color:#333">{</span>
-        <span style="color:#289;font-weight:bold">this</span><span style="color:#333">.</span><span style="color:#007">broker</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> EmbeddedInMemoryQpidBroker<span style="color:#333">();</span>
-        <span style="color:#289;font-weight:bold">this</span><span style="color:#333">.</span><span style="color:#007">broker</span><span style="color:#333">.</span><span style="color:#007">start</span><span style="color:#333">();</span>
-    <span style="color:#333">}</span>
+<span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> EmbeddedInMemoryQpidBrokerRule <span style="color:#5ed;font-weight:bold">extends</span> ExternalResource {
+    <span style="color:#289;font-weight:bold">private</span> <span style="color:#5ed;font-weight:bold">EmbeddedInMemoryQpidBroker</span> broker;
 
     <span style="color:#555;font-weight:bold">@Override</span>
-    <span style="color:#289;font-weight:bold">protected</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">after</span><span style="color:#333">()</span> <span style="color:#333">{</span>
-        <span style="color:#289;font-weight:bold">this</span><span style="color:#333">.</span><span style="color:#007">broker</span><span style="color:#333">.</span><span style="color:#007">shutdown</span><span style="color:#333">();</span>
-    <span style="color:#333">}</span>
-<span style="color:#333">}</span></code></pre></div>
+    <span style="color:#289;font-weight:bold">protected</span> <span style="color:#5ed;font-weight:bold">void</span> before() <span style="color:#289;font-weight:bold">throws</span> <span style="color:#5ed;font-weight:bold">Throwable</span> {
+        <span style="color:#289;font-weight:bold">this</span>.<span style="color:#007">broker</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> EmbeddedInMemoryQpidBroker();
+        <span style="color:#289;font-weight:bold">this</span>.<span style="color:#007">broker</span>.<span style="color:#007">start</span>();
+    }
+
+    <span style="color:#555;font-weight:bold">@Override</span>
+    <span style="color:#289;font-weight:bold">protected</span> <span style="color:#5ed;font-weight:bold">void</span> after() {
+        <span style="color:#289;font-weight:bold">this</span>.<span style="color:#007">broker</span>.<span style="color:#007">shutdown</span>();
+    }
+}</code></pre></div>
 <h2 id="using-a-rule-in-the-integration-tests">Using a Rule In the Integration Tests</h2>
 
 <p>Now, we can easily add this rule as a <code>ClassRule</code>. This will allow us to launch a broker in the <code>@BeforeClass</code> manner and terminate it in the <code>@AfterClass</code> style.</p>

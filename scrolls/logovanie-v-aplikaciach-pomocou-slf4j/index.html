@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Logovanie v aplikáciách pomocou `slf4j` | robonovotny</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.css" integrity="sha384-D+9gmBxUQogRLqvARvNLmA9hS2x//eK1FhVb9PiU86gmcrBrJAQT8okdJ4LMp2uv" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.js" integrity="sha384-483A6DwYfKeDa0Q52fJmxFXkcPCFfnXMoXblOkJ4JcA8zATN6Tm78UNL72AKk+0O" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/contrib/auto-render.min.js" integrity="sha384-yACMu8JWxKzSp/C1YV86pzGiQ/l1YUfE8oPuahJQxzehAjEt2GiQuy/BIvl9KyeF" crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body);
+        });
+    </script>
+
+<header>
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <nav>
+    <ul>
+      
+      
+      <li class="pull-left ">
+        <a href="http://novotnyr.github.io/">/home/robonovotny</a>
+      </li>
+      
+
+      
+
+    </ul>
+  </nav>
+</header>
+
+  </head>
+
+  <body>
+    <br/>
+
+<div class="article-meta">
+<h1><span class="title">Logovanie v aplikáciách pomocou `slf4j`</span></h1>
+
+<h2 class="date">2009/02/11</h2>
+<p class="terms">
+  
+  
+  
+  
+  
+</p>
+</div>
+
+
+
+<main>
+
+
+<h1 id="úvod">Úvod</h1>
+
+<p>Logovanie je neodbytnou súčasťou každej aplikácie, hoci si to autori ani
+neuvedomujú. Je takmer nevyhnutné priebežne sledovať stav behu
+aplikácie, či evidovať chybové hlásenia. Ladiace (logovacie) výpisy sú
+spôsob, ktorým je možné to dosiahnuť. Za takýto výpis možno považovať už
+každý výpis smerujúci na konzolu (teda využívajúci <code>System.out</code> alebo
+<code>System.err</code>). V prípade zložitých systémov však <code>System.out</code> veľmi
+rýchlo prestane vyhovovať.</p>
+
+<blockquote>
+<p><strong>Note</strong></p>
+
+<p>Logovanie (<em>logging</em>) má svoj pôvod v moreplavbe, presnejšie v spôsobe
+určovania rýchlosti lode. Využívalo sa pri tom lano, na ktorom boli
+zaviazané uzly v pevne danej vzdialenosti (cca 14 metrov), a kolík
+(<em>log</em>) umiestnený na konci. Námorník vyhodil log z kormy lode,
+postupne odvíjal lano, a rátal uzly, ktoré mu pri odvíjaní prešli
+pomedzi ruky počas doby tridsiatich sekúnd. (Túto dobu odmeriaval
+ďalší námorník presýpacími hodinami.) Dokázal tak získať vzdialenosť
+prejdenú za čas, z ktorej vedel vyrátať rýchlosť. Získané údaje sa
+zapisovali do *log book*u, doslova „knihy kolíka“, z ktorej sa neskôr
+vyvinul kapitánov denník, teda <em>log</em>. Podľa tejto techniky merania
+tiež získala svoj názov námorná jednotka rýchlosti uzol.</p>
+</blockquote>
+
+<p>Logovacie knižnice predstavujú spôsob, ktorým je možné získať väčšiu
+kontrolu nad výpismi – umožňujú ich filtrovať, zapínať či vypínať podľa
+dôležitosti a presmerovávať do rôznych výstupov a to všetko možno
+nastavovať individuálne pre každú triedu či balíček. V Jave, ako to už
+býva, neexistuje jediný pravý spôsob pre logovanie. Napriek tomu, že v
+JDK máme dostupný balíček <code>java.util.logging</code>, de facto štandardom sa stal
+log4j.</p>
+
+<blockquote>
+<p><strong>Note</strong></p>
+
+<p>Log4j má pôvod v IBM a existoval už dávno predtým, než nastali úvahy o
+zaradení logovacieho balíčka do jadra Javy. Dizajnéri zo Sunu z
+rôznych dôvodov odignorovali log4j a logovaciu knižnicu navrhli
+nanovo. Ich úsilie však do istej miery vyšlo nazmar &ndash;
+java.util.logging vyžadovalo JDK 1.4 (naproti log4j, ktoré si ešte i
+teraz vystačí s JDK 1.3) a poskytovalo oveľa menej funkcionality.
+Situáciu vystihuje tvrdenie z diskusných fór TheServerSide.com:
+“Balíček java.util.logging je len indigovou kópiou log4j. A všetci
+vieme, že takéto kópie sú vždy nekvalitnejšie ako originál.”</p>
+</blockquote>
+
+<p>Samozrejme, mnoho autorov projektov sa nevedelo rozhodnúť medzi
+<em>java.util.logging</em> a <em>log4j</em>. Dilemu sčasti vyriešilo zavedenie abstraktnej
+knižnice <em>commons-logging</em> z dielne Apache, ktorá predstavovala tenkú
+medzivrstvu v podobe interfejsov, ktorá umožňovala dynamicky zvoliť
+použitú logovaciu knižnicu. Táto „metalogovacia“ knižnica však v sebe
+niesla množstvo fatálnych problémov súvisiacich s classloadingom (čiže
+vedúcich k nanajvýš obskúrnym problémom).</p>
+
+<p>Ceki Gülcü, duchovný otec <em>log4j</em>, navrhol vlastný variant
+<em>commons-logging</em>, ktorý odstraňuje tajomné chyby, prináša možnosť voľby
+konkrétnej implementácie a navyše umožňuje zmigrovať i tie aplikácie,
+ktoré sú napevno spojené s jednou konkrétnou implementáciou. Táto
+knižnica sa nazýva <strong>slf4j</strong> a budeme sa jej venovať i v tomto článku.</p>
+
+<p>Akú to má výhodu? V rámci aplikácie môžete v prípade dynamicky zameniť
+použitú implementáciu logovania, a nemusíte zmeniť ani riadok kódu. Ak
+by vaša aplikácia napevno používala <em>log4j</em>, a nasadí sa do servera
+založeného na <em>java.util.logging</em>, prídete napr. o možnosť centralizovane
+spracovávať všetky logy.</p>
+
+<p>Do roly konkrétnej implementácie logovania sme v článku zvolili <strong>logback</strong>,
+ktorý predstavuje „ďalšiu generáciu“ starého známeho <em>log4j</em>, ktorého
+vývoj sa považuje za ukončený (hlavne preto, že podpora nových
+vlastností a oprava niektorých chýb by vyžadovala kompletný prepis).
+Dôležité je, že oba projekty majú rovnakého duchovného otca i rovnaké
+princípy. Ak vám je i napriek tomu ľúto za <em>log4j</em>, vzhľadom na
+abstraktnosť <em>slf4j</em> je výmena <em>log4j</em> za logback len otázkou výmeny JAR
+súborov v projekte.</p>
+
+<h1 id="stiahnutie-a-inštalácia-slf4j-a-logback">Stiahnutie a inštalácia slf4j a logback</h1>
+
+<p><a href="http://www.slf4j.org/download.html">Zo stránok projektu</a> <em>slf4j</em> si
+stiahneme archív a do projektu pridáme <code>slf4j-api-1.5.8.jar</code>. <a href="http://logback.qos.ch/download.html">Zo
+stránok projektu logback</a> si
+stiahneme archív a do projektu pridáme dva JARy:
+<code>logback-core-0.9.17.jar</code> a <code>logback-classic-0.9.17.jar</code>.</p>
+
+<p>JAR pre <em>slf4j</em> reprezentuje interfejsy, ktoré pristupujú ku konkrétnej
+implementácii reprezentovanej zvyšnými dvoma JARmi.</p>
+
+<h1 id="použitie-slf4j">Použitie slf4j</h1>
+
+<p>Logovanie si môžeme ukázať na príklade neužitočného, ale didaktického
+príkladu:</p>
+
+<pre><code>package sk.test.arrays;
+
+public class Arrays {
+    public void countElements(int... elements) {
+        System.out.println(&quot;Spočítavam &quot; + elements.length + &quot; prvkov.&quot;);
+        int sum = 0;
+        for(int i = 0; i &lt; elements.length; i++) {
+            sum = sum + elements[i];
+            System.out.println(&quot;Spracovávam &quot; + i + &quot;. prvok: &quot; + elements[i]);
+        }
+        System.out.println(&quot;Výsledok: &quot; + sum);
+    }
+
+    public static void main(String[] args) {
+        Arrays a = new Arrays();
+        a.countElements(2, 3, 5, 2);
+    }
+}
+</code></pre>
+
+<p>Po spustení dostaneme šesť hlášok – štyri vo vnútri cyklu, jednu na
+úvod a jednu na záver. Problém je, že bežného používateľa asi nechceme
+zaťažovať všetkými možnými ladiacimi informáciami. V tomto príklade by
+bol možno spokojný, keby dostal maximálne jednu úvodnú hlášku, a možno
+dokonca by ho nebolo treba otravovať žiadnymi „zbytočnosťami“.
+<code>System.out</code> nám však nedáva veľa možností na zmenu správania &ndash;
+prinajlepšom je možné úplne potlačiť výstup, alebo ho presmerovať cez
+<code>System.setOut()</code>, ale toto riešenie ovplyvní celú aplikáciu.</p>
+
+<p>Príklad by sme však mohli prerobiť pre použitie slf4j.</p>
+
+<pre><code>package sk.test.arrays;
+import org.slf4j.Logger; 
+import org.slf4j.LoggerFactory; 
+
+public class Arrays {
+    private static final Logger logger = LoggerFactory.getLogger(Arrays.class);
+
+    public void countElements(int... elements) {
+        logger.info(&quot;Spočítavam &quot; + elements.length + &quot; prvkov.&quot;);
+        int sum = 0;
+        for(int i = 0; i &lt; elements.length; i++) {
+            sum = sum + elements[i];
+            logger.info(&quot;Spracovávam &quot; + i + &quot;. prvok: &quot; + elements[i]);
+        }
+        logger.info(&quot;Výsledok: &quot; + sum);
+    }
+
+    public static void main(String[] args) {
+        Arrays a = new Arrays();
+        a.countElements(2, 3, 5, 2);
+    }
+}
+</code></pre>
+
+<p>Po spustení triedy získame výstup:</p>
+
+<pre><code>18:41:25.021 [main] INFO sk.test.Arrays - Spočítavam 4 prvkov.
+18:41:25.030 [main] INFO sk.test.Arrays - Spracovávam 0. prvok: 2
+18:41:25.030 [main] INFO sk.test.Arrays - Spracovávam 1. prvok: 3
+18:41:25.030 [main] INFO sk.test.Arrays - Spracovávam 2. prvok: 5
+18:41:25.031 [main] INFO sk.test.Arrays - Spracovávam 3. prvok: 2
+18:41:25.031 [main] INFO sk.test.Arrays - Výsledok: 12
+</code></pre>
+
+<p>Vypísalo sa teda všetkých šesť hlášok. Rozdiel oproti klasickému
+<code>System.out</code> spočíva vo formáte správ – logback dodal ku každej
+chybovej hláške časovú pečiatku a ďalšie pomocné identifikačné
+záležitosti súvisiace so správou. Na rozdiel od <code>System.out</code> používame
+na logovanie inštanciu triedy <code>org.slf4j.Logger</code>, ktorú môžeme získať z
+továrne na loggery <code>org.slf4j.LoggerFactory</code>.</p>
+
+<pre><code>private static final Logger logger = LoggerFactory.getLogger(Arrays.class);
+</code></pre>
+
+<p>Logger si môžeme predstaviť ako kanál, do ktorého posielame ladiace
+hlášky. V typickom prostredí má každá inštancia triedy vlastnú inštanciu
+loggera – hoci nie je výnimočné, keď všetky inštancie konkrétnej triedy
+využívajú jedinú, spoločnú, inštanciu loggera. (To môžeme docieliť
+použitím modifikátora static).</p>
+
+<p>Bez ohľadu na zvolený spôsob platí, že každá inštancia loggera má svoj
+vlastný reťazcový identifikátor – v uvedenom príklade sme logger
+pomenovali podľa názvu triedy, v ktorej sa nachádza – máme teda logger
+<code>sk.test.Arrays</code>. Vypisovať ladiacu hlášku možno volaním metód, ktorých
+mená závisia od priority (viď ďalšia sekcia); štandardným spôsobom je
+výpis informačnej hlášky (s prioritou, resp. levelom INFO), teda
+zavolaním metódy <code>logger.info()</code>.</p>
+
+<h1 id="konfigurácia-slf4j-a-logbacku">Konfigurácia slf4j a logbacku</h1>
+
+<h2 id="level-priorita-ladiacej-hlášky">Level (priorita) ladiacej hlášky</h2>
+
+<p>Najčastejšie využívanou charakteristikou ladiacej hlášky je <strong>level</strong>
+(priorita), ktorá určuje jej význačnosť a dôležitosť. <em>slf4j</em> podporuje
+päť levelov, v tabuľke ich uvádzame podľa dôležitosti.</p>
+
+<table>
+<thead>
+<tr>
+<th>Level hlášky</th>
+<th>Typický účel</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>TRACE</td>
+<td>trasovacie hlášky, typicky pre jednotlivé kroky algoritmov</td>
+</tr>
+
+<tr>
+<td>DEBUG</td>
+<td>ladiace hlášky, ktoré sú pri ostrom behu vypnuté</td>
+</tr>
+
+<tr>
+<td>INFO</td>
+<td>informačné hlášky, ktoré informujú bežného používateľa</td>
+</tr>
+
+<tr>
+<td>WARN</td>
+<td>upozornenia a varovania pre chyby, z ktorých sa možno zotaviť</td>
+</tr>
+
+<tr>
+<td>ERROR</td>
+<td>závažné chyby, ktoré bránia behu programu</td>
+</tr>
+</tbody>
+</table>
+
+<p>V príklade sme logovali hlášky na úrovniach INFO. Otázkou je, či bežného
+používateľa zaujímajú podrobné ladiace výpisy spracovávania jednotlivých
+prvkov poľa. Podľa nás nie – výpis by sa mal vykonávať len v prípade
+testovacieho/ladiaceho behu. Prerobme teda program nasledovne:</p>
+
+<pre><code>public void countElements(kint... elements) {
+    logger.debug(&quot;Spočítavam &quot; + elements.length + &quot; prvkov.&quot;);
+    int sum = 0;
+    for(int i = 0; i &lt; elements.length; i++) {
+        sum = sum + elements[i];
+        logger.trace(&quot;Spracovávam &quot; + i + &quot;. prvok: &quot; + elements[i]);
+    }
+    logger.trace(&quot;Výsledok: &quot; + sum);
+}
+</code></pre>
+
+<p>Spracovávanie prvkov a výpis výsledku budeme považovať za
+nízkoprioritné, a výpis spracovávania prvkov budeme považovať za
+<code>DEBUG</code>-ovaciu hlášku. Použijeme teda metódy <code>logger.debug()</code> a
+<code>logger.trace()</code>.</p>
+
+<p>Po spustení programu získame jedinú hlášku:</p>
+
+<pre><code>10:09:10.701 [main] DEBUG sk.test.Arrays - Spočítavam 4 prvkov.
+</code></pre>
+
+<p>Kam sa stratili hlášky na úrovni <code>TRACE</code>? Boli odfiltrované, pretože v
+štandardnej konfigurácii vypisuje logback len logovacie hlášky na úrovni
+<code>DEBUG</code> alebo vyššie. Hneď to však napravíme.</p>
+
+<h2 id="zmena-levelu-vypisovaných-hlášok">Zmena levelu vypisovaných hlášok</h2>
+
+<p>Až samotná implementácia logovania (u nás <code>logback</code>) určí, či sa hláška
+nakoniec objaví vo výpise, alebo bude potlačená. Ak chceme vypisovať
+hlášky na úrovni <code>TRACE</code>, už si nevystačíme s implicitnou konfiguráciou
+logbacku. Musíme uviesť vlastnú konfiguráciu, čo dosiahneme vytvorením
+súboru <code>logback.xml</code> a jeho umiestnením do <code>CLASSPATH</code>.</p>
+
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt;
+&lt;configuration&gt;
+    &lt;appender name=&quot;STDOUT&quot; class=&quot;ch.qos.logback.core.ConsoleAppender&quot;&gt;
+        &lt;layout class=&quot;ch.qos.logback.core.layout.EchoLayout&quot; /&gt;
+    &lt;/appender&gt;
+
+    &lt;logger name=&quot;sk.test.Arrays&quot; level=&quot;TRACE&quot;&gt;
+        &lt;appender-ref ref=&quot;STDOUT&quot; /&gt;
+    &lt;/logger&gt;
+&lt;/configuration&gt;
+</code></pre>
+
+<p>Po spustení aplikácie uvidíme všetkých šesť hlások, v tomto prípade však
+bez akýchkoľvek časových značek. Dôvody si ihneď vysvetlíme po
+objasnení architektúry logbacku. Zatiaľ povieme len to, že level hlášok
+pre logger s identifikátorom „<code>sk.test.Arrays</code>“ bol nastavený v elemente
+<code>&lt;logger&gt;</code> na <code>TRACE</code>. Ak by sme chceli nakonfigurovať loggery pre
+ďalšie triedy, pre každý z nich zavedieme samostatný element
+<code>&lt;logger&gt;</code> uvedieme atribút name rovný názvu triedy a v atribúte
+level nastavíme požadovanú prioritu hlášky, ktorá sa má ešte spracovať.
+Nezabudnime, že levely sú usporiadané podľa priority, teda logger, ktorý
+má nastavený level na <code>INFO</code>, prepúšťa hlášky <code>INFO</code>, <code>WARN</code> a <code>ERROR</code>.</p>
+
+<h2 id="formátovanie-hlášok">Formátovanie hlášok</h2>
+
+<p>V prípade <code>System.out</code> sme pri výpise používali spájanie reťazcov, ale
+to nie je veľmi efektívny spôsob. Samotné logovanie by totiž malo byť čo
+najrýchlejšie a nemalo by zdržiavať beh programu. Ďalšou možnosťou
+zrýchlenia logovania je vloženie podmienky, ktorá zistí, či má daný
+logger spracovávať hlášku daného levelu – ak nie, volanie logovacej
+metódy sa preskočí a ušetrí zbytočné spracovávanie.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">if</span>(logger.<span style="color:#007">isTraceEnabled</span>()) {
+    logger.<span style="color:#007">trace</span>(<span style="background-color:#e0e0ff">&#34;Počítam dáta...&#34;</span>);
+}</code></pre></div>
+<p>Dva dodatočné riadky však môžu opticky prekážať v kóde. Našťastie
+existuje spôsob, ktorý zabije dve muchy jednou ranou:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">logger.<span style="color:#007">trace</span>(<span style="background-color:#e0e0ff">&#34;Spracovávam &#34;</span> <span style="color:#333">+</span> i <span style="color:#333">+</span> <span style="background-color:#e0e0ff">&#34;. prvok: &#34;</span> <span style="color:#333">+</span> elements[i]);
+logger.<span style="color:#007">trace</span>(<span style="background-color:#e0e0ff">&#34;Spracovávam {}. prvok {}&#34;</span>, <span style="color:#289;font-weight:bold">new</span> Object[] {i, elements[i]});</code></pre></div>
+<p>Uvedené dva riadky vypíšu to isté – druhý riadok však automaticky
+skontroluje, či logger podporuje <code>TRACE</code> level, a ak nie, rovno preskočí
+typovú konverziu a spájanie reťazcov. Podľa autorov je v prípade
+vypnutého <code>TRACE</code> levelu druhý riadok až tridsaťnásobne rýchlejší.</p>
+
+<p>Parametrizované logovanie teda ušetrí prácu so spájaním reťazcov a
+navyše odbremeňuje od nutnosti testovať, či logovanie má zmysel vykonať.</p>
+
+<p>V prípade jednoparametrových hlášok stačí rovno používať príslušné
+dvojparametrové metody:</p>
+
+<pre><code>logger.debug(&quot;Spočítavam {} prvkov.&quot;, elements.length);
+</code></pre>
+
+<h1 id="architektúra">Architektúra</h1>
+
+<p>Architektúra logbacku pomôže objasniť, čo všetko sa udeje s ladiacou
+hláškou od chvíle, keď ju odošleme do inštancie loggera až do momentu,
+keď sa zjaví na konzole (v súbore, databáze, či inom cieľovom úložisku).</p>
+
+<p><img src="logback-architektura.png" alt="" /></p>
+
+<ul>
+<li><code>org.slf4j.Logger</code>: je trieda, ktorú sme už používali. Predstavuje inštanciu loggera a jej hlavnou úlohou je poskytovať spôsob na zalogovanie hlášky s
+danou prioritou. Zopakujme, že každý logger má svoj jedinečný
+identifikátor, ktorý sa typicky odvodí z názvu triedy, ktorá daný
+logger používa. Logger je nástroj, ktorému vie inštancia povedať
+„zaloguj TOTO“.</li>
+<li><code>ch.qos.logback.classic.Logger</code> predstavuje konkrétnu implementáciu loggera, v tomto prípade z
+projektu logback. Vie, čo presne s logovacou hláškou spraviť, a v
+závislosti od jej levelu ju môže zverejniť alebo ignorovať. Cieľ,
+kam sa hláška zapíše fyzicky, je záležitosťou použitých appenderov.</li>
+<li><strong>Appender</strong>: predstavuje objekt, ktorý fyzicky zapisuje hlášky do nejakého výstupného kanála (inak povedané, určuje <em>kam</em> sa má hláška
+zapísať). V logbacku sú k dispozícii hotové appendéry pre zápis do
+konzoly (<code>ConsoleAppender</code>), súboru (<code>FileAppender</code>), databázy
+(<code>DBAppender</code>) a do mnohých ďalších kanálov. Appendér však nerieši
+formát hlášky – spoľahne sa pri tom na <em>layout</em>.</li>
+<li><strong>Layout</strong>: odpovedá za formát hlášky (teda <em>ako</em> má hláška vyzerať). Primitívny layout len vezme ladiacu hlášku a vráti ju bez akéhokoľvek
+formátovania. Zložitejší layout môže prilepovať časové pečiatky,
+level, názov triedy, ktorá hlášku zalogovala a pod. Tie
+najkomplexnejšie layouty vedia formátovať hlášky do XML či HTML.</li>
+</ul>
+
+<h2 id="architektúra-na-príklade">Architektúra na príklade</h2>
+
+<p>Vráťme sa k predošlému uvedému príkladu XML súboru. V ňom konfigurujeme
+logback, teda nastavujeme triedy, ktoré sú uvedené v „pravej“ časti
+obrázka. (Projekt <em>slf4j</em> nemá žiadnu konfiguráciu.) V elemente
+<code>&lt;appender&gt;</code> sme nakonfigurovali konzolový appender (teda hlášky
+pôjdu do <code>System.out</code>)) a dali sme mu názov „STDOUT“.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#070">&lt;appender</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;STDOUT&#34;</span> <span style="color:#007">class=</span><span style="background-color:#e0e0ff">&#34;ch.qos.logback.core.ConsoleAppender&#34;</span><span style="color:#070">&gt;</span>
+    <span style="color:#070">&lt;layout</span> <span style="color:#007">class=</span><span style="background-color:#e0e0ff">&#34;ch.qos.logback.core.layout.EchoLayout&#34;</span> <span style="color:#070">/&gt;</span>
+<span style="color:#070">&lt;/appender&gt;</span></code></pre></div>
+<p>Tento <em>appender</em> bude využívať layout <code>EchoLayout</code>, ktorý funguje naozaj
+primitívne: pred ladiacu hlášku vloží reťazec s jej prioritou.</p>
+
+<p>V elemente <code>&lt;logger&gt;</code> nakonfigurujeme logger a pridelíme mu minimálny
+level hlášky, ktorý sa má posielať do appenderov uvedených v
+<code>&lt;appender-ref&gt;</code>. Všimnime si, že jeden logger môže posielať hlášky
+do viacerých appenderov: na jeden „šup“ teda vieme zapísať hlášku napr.
+na konzolu i do súboru – stačí uviesť viacero elementov
+<code>&lt;appender-ref&gt;</code>.</p>
+
+<h1 id="hierarchia-loggerov">Hierarchia loggerov</h1>
+
+<p>Veľmi často sa stáva, že chceme meniť vlastnosti loggerov pre celé
+moduly, balíčky alebo skupiny tried. Ak by sme napríklad chceli zmeniť
+level loggerov v balíčku sk.test.Arrays na TRACE, museli by sme upraviť
+atribút level vo všetkých elementoch <code>&lt;logger&gt;</code>. To však našťastie
+nie je potrebné, pretože vieme s výhodou využiť hierarchiu loggerov.</p>
+
+<p>Všetky inštancie loggerov sú usporiadané v hierarchii predkov a
+potomkov. Logger <code>X</code> je predkom iného loggeru <code>Y</code>, ak má identifikátor,
+ktorý po ukončení bodkou tvorí prefix identifikátora loggera <code>Y</code>.
+Napríklad logger s identifikátorom <code>sk.test</code> je predkom loggera
+<code>sk.test.Arrays</code>, ale zase potomkom identifikátora <code>sk</code>. Všetky
+loggery majú jedného spoločného predka, tzv. koreňový logger, ktorý
+môžeme získať cez</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Logger <span style="color:#5ed;font-weight:bold">rootLogger</span> <span style="color:#333">=</span> LoggerFactory.<span style="color:#007">getLogger</span>(org.<span style="color:#007">slf4j</span>.<span style="color:#007">Logger</span>.<span style="color:#007">ROOT_LOGGER_NAME</span>);</code></pre></div>
+<p>Hierarchia sa najčastejšie využíva pre dedenie levelu loggerov. Ak máme
+logger a chceme zistiť jeho level, postupujeme smerom nahor v hierarchii
+a hľadáme prvú nenullovú špecifikáciu levelu. V našom príklade je
+situácia jednoduchá: level loggeru <code>sk.test.Arrays</code> je zjavne TRACE,
+lebo to sme explicitne uviedli v jeho konfigurácii.</p>
+
+<p>Zoberme si ďalší situáciu. Zadefinujme si v XML súbore jedinú
+špecifikáciu loggera:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#070">&lt;logger</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;sk.test&#34;</span> <span style="color:#007">level=</span><span style="background-color:#e0e0ff">&#34;INFO&#34;</span><span style="color:#070">&gt;</span>
+    <span style="color:#070">&lt;appender-ref</span> <span style="color:#007">ref=</span><span style="background-color:#e0e0ff">&#34;STDOUT&#34;</span> <span style="color:#070">/&gt;</span>
+<span style="color:#070">&lt;/logger&gt;</span></code></pre></div>
+<p>Ak by sme mali triedu, ktorá loguje do loggera s
+menom<code>sk.test.algorithms.ComplexAlgorithm</code>, tak jeho level bude <code>INFO</code>.
+Postupne sa totiž prechádza cez hierarchiu smerom nahor a hľadá sa prvá
+explicitná špecifikácia loggera. Logger <code>sk.test.algorithms</code> nemá žiadnu
+špecifikáciu, ale jeho „starý otec“ <code>sk.test</code> už áno – čiže efektívny
+level sa prevezme práve odtiaľto. Inými slovami, platí zásada podobná
+objektovo-orientovanému programovaniu – levely sa dedia od rodičov a
+potomkovia ich môžu prekryť.</p>
+
+<h2 id="nastavenie-koreňového-loggera">Nastavenie koreňového loggera</h2>
+
+<p>Koreňový logger je predkom každého loggera, má pevne určený (a nemenný)
+identifikátor a preddefinovaný level DEBUG. Na rozdiel od bežných
+loggerov, ktoré sa v XML súbore konfigurujú pomocou elementu
+<code>&lt;logger&gt;</code>, koreňovému elementu zodpovedá element <code>&lt;root&gt;</code>, v
+ktorom môžeme nastaviť appendery a prípadne zmeniť jeho implicitný
+level. Zmenou levelu koreňového loggera vieme hromadne nastaviť level
+všetkých potomkov (okrem tých, ktorý ho prekryjú).</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#579">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34; ?&gt;</span>
+<span style="color:#070">&lt;configuration&gt;</span>
+    <span style="color:#070">&lt;appender</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;STDOUT&#34;</span> <span style="color:#007">class=</span><span style="background-color:#e0e0ff">&#34;ch.qos.logback.core.ConsoleAppender&#34;</span><span style="color:#070">&gt;</span>
+        <span style="color:#070">&lt;layout</span> <span style="color:#007">class=</span><span style="background-color:#e0e0ff">&#34;ch.qos.logback.core.layout.EchoLayout&#34;</span> <span style="color:#070">/&gt;</span>
+    <span style="color:#070">&lt;/appender&gt;</span>
+    
+    <span style="color:#070">&lt;root</span> <span style="color:#007">level=</span><span style="background-color:#e0e0ff">&#34;INFO&#34;</span><span style="color:#070">&gt;</span>
+        <span style="color:#070">&lt;appender-ref</span> <span style="color:#007">ref=</span><span style="background-color:#e0e0ff">&#34;STDOUT&#34;</span> <span style="color:#070">/&gt;</span>
+    <span style="color:#070">&lt;/root&gt;</span>
+<span style="color:#070">&lt;/configuration&gt;</span></code></pre></div>
+<p>V tomto prípade sme nastavili koreňovému loggeru level <code>INFO</code>, ktorý sa
+automaticky „prepadne“ nadol do všetkých potomkov. Inak povedané, všetky
+potomkovské loggery budú mať level <code>INFO</code>, pokiaľ si ho nepredefinujú
+sami. Iný príklad dedičnosti je v nasledovnej tabuľke:</p>
+
+<table>
+<thead>
+<tr>
+<th>Identifikátor loggera</th>
+<th>Explicitný level</th>
+<th>Efektívny level</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>koreň</td>
+<td>-</td>
+<td>DEBUG (automaticky priradený)</td>
+</tr>
+
+<tr>
+<td>sk.novotnyr</td>
+<td>-</td>
+<td>DEBUG (zdedený)</td>
+</tr>
+
+<tr>
+<td>sk.novotnyr.davano</td>
+<td>INFO</td>
+<td>INFO</td>
+</tr>
+
+<tr>
+<td>sk.novotnyr.davano.dao</td>
+<td>DEBUG</td>
+<td>DEBUG</td>
+</tr>
+</tbody>
+</table>
+
+<h1 id="dedičnosť-appenderov">Dedičnosť appenderov</h1>
+
+<p>V predošlej stati sme videli, že loggery dedia a prekrývajú levely. Týka
+sa dedičnosť aj appenderov? Istým spôsobom áno. V príklade z predošlej
+state máme koreňový logger, ktorý používa appender s
+názvom <code>STDOUT</code>. Dodajme konfiguráciu ďalšieho loggera:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml">    <span style="color:#579">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34; ?&gt;</span>
+    <span style="color:#070">&lt;configuration&gt;</span>
+        <span style="color:#070">&lt;appender</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;STDOUT&#34;</span> <span style="color:#007">class=</span><span style="background-color:#e0e0ff">&#34;ch.qos.logback.core.ConsoleAppender&#34;</span><span style="color:#070">&gt;</span>
+            <span style="color:#070">&lt;layout</span> <span style="color:#007">class=</span><span style="background-color:#e0e0ff">&#34;ch.qos.logback.core.layout.EchoLayout&#34;</span> <span style="color:#070">/&gt;</span>
+        <span style="color:#070">&lt;/appender&gt;</span>
+      
+        <span style="color:#070">&lt;root</span> <span style="color:#007">level=</span><span style="background-color:#e0e0ff">&#34;INFO&#34;</span><span style="color:#070">&gt;</span>
+            <span style="color:#070">&lt;appender-ref</span> <span style="color:#007">ref=</span><span style="background-color:#e0e0ff">&#34;STDOUT&#34;</span> <span style="color:#070">/&gt;</span>     
+        <span style="color:#070">&lt;/root&gt;</span>
+    
+        <span style="color:#070">&lt;logger</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;sk.test.Arrays&#34;</span> <span style="color:#070">/&gt;</span>
+    <span style="color:#070">&lt;/configuration&gt;</span></code></pre></div>
+<p>Logger <code>sk.test.Arrays</code> zdedí nielen level (teda získa efektívny level
+<code>INFO</code>), ale aj appender <code>STDOUT</code>. Dodajme do príkladu druhý appender, ktorý
+bude posielať na konzolu správy v tvare XML a asociujme ho s loggerom
+<code>sk.test.Arrays</code>.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml">    <span style="color:#070">&lt;appender</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;STDOUTXML&#34;</span> <span style="color:#007">class=</span><span style="background-color:#e0e0ff">&#34;ch.qos.logback.core.ConsoleAppender&#34;</span><span style="color:#070">&gt;</span>
+        <span style="color:#070">&lt;layout</span> <span style="color:#007">class=</span><span style="background-color:#e0e0ff">&#34;ch.qos.logback.classic.log4j.XMLLayout&#34;</span> <span style="color:#070">/&gt;</span>
+    <span style="color:#070">&lt;/appender&gt;</span>
+    ...
+    <span style="color:#070">&lt;logger</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;sk.test.Arrays&#34;</span><span style="color:#070">&gt;</span>
+        <span style="color:#070">&lt;appender-ref</span> <span style="color:#007">ref=</span><span style="background-color:#e0e0ff">&#34;STDOUTXML&#34;</span> <span style="color:#070">/&gt;</span>
+    <span style="color:#070">&lt;/logger&gt;</span></code></pre></div>
+<p>Po spustení Java triedy sa každá správa vypíše dvakrát: raz v bežnom
+jednoduchom formáte a raz v tvare XML:</p>
+
+<pre><code>&lt;log4j:event logger=&quot;sk.test.Arrays&quot;
+            timestamp=&quot;1257172284059&quot; level=&quot;DEBUG&quot; thread=&quot;main&quot;&gt;
+  &lt;log4j:message&gt;&lt;![CDATA[Spočítavam 4 prvkov.]]&gt;&lt;/log4j:message&gt;
+&lt;/log4j:event&gt;
+[DEBUG] Spočítavam 4 prvkov.
+&lt;log4j:event logger=&quot;sk.test.Arrays&quot;
+             timestamp=&quot;1257172284066&quot; level=&quot;TRACE&quot; thread=&quot;main&quot;&gt;
+  &lt;log4j:message&gt;&lt;![CDATA[Spracovávam 0. prvok: 2]]&gt;&lt;/log4j:message&gt;
+&lt;/log4j:event&gt;
+[TRACE] Spracovávam 0. prvok: 2
+...
+</code></pre>
+
+<p>Tento príklad demonštruje, že loggery zdedia appendery od rodičovských
+loggerov, a dodajú k nim každý appender, s ktorým sa asociujú
+explicitne. Inak povedané, logger pošle hlášku nielen do appenderov,
+ktoré pri ňom boli definované, ale aj do appenderov definovaných v
+rodičovských loggeroch. Táto vlastnosť sa nazýva <strong>aditivita appenderov</strong>.</p>
+
+<h2 id="aditivita-appenderov">Aditivita appenderov</h2>
+
+<p>Šírenie správ do rodičovských appenderov možno zaraziť vypnutím
+aditivity na konkrétnom loggeri. Predstavme si situáciu, kde máme logger
+<code>sk.test.algorithms</code> s explicitne uvedenými appendérmi, ktoré zapisujú
+jednak do konzoly a jednak do súboru <code>algorithms.txt</code>. Zároveň majme
+logger <code>sk.test</code>, ktorý zapisuje hlášky do centrálneho aplikačného log
+súboru <code>test.log</code>. Aditivita zabezpečí, že logovacie hlášky z loggera
+sk.test.algorithms sa zjavia v oboch súboroch i na konzole.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#070">&lt;appender</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;ALGORITHMSFILE&#34;</span> <span style="color:#f00;background-color:#faa">...</span>
+<span style="color:#f00;background-color:#faa">&lt;appender</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;TESTFILE&#34;</span> <span style="color:#f00;background-color:#faa">...</span>
+<span style="color:#f00;background-color:#faa">&lt;appender</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;STDOUT&#34;</span> <span style="color:#f00;background-color:#faa">...</span>
+    
+<span style="color:#f00;background-color:#faa">&lt;logger</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;sk.test&#34;</span><span style="color:#070">&gt;</span>
+    <span style="color:#070">&lt;appender-ref</span> <span style="color:#007">ref=</span><span style="background-color:#e0e0ff">&#34;TESTFILE&#34;</span> <span style="color:#070">/&gt;</span>
+<span style="color:#070">&lt;/logger&gt;</span>
+    
+<span style="color:#070">&lt;logger</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;sk.test.algorithms&#34;</span><span style="color:#070">&gt;</span>
+    <span style="color:#070">&lt;appender-ref</span> <span style="color:#007">ref=</span><span style="background-color:#e0e0ff">&#34;ALGORITHMSFILE&#34;</span> <span style="color:#070">/&gt;</span>
+    <span style="color:#070">&lt;appender-ref</span> <span style="color:#007">ref=</span><span style="background-color:#e0e0ff">&#34;STDOUT&#34;</span> <span style="color:#070">/&gt;</span>
+<span style="color:#070">&lt;/logger&gt;</span></code></pre></div>
+<p>Čo ak chceme zabrániť tomu, aby „ladiace hlásenia modulu“ putovali do
+centrálneho aplikačného log súboru? Stačí vypnúť aditivitu na loggeri
+<code>sk.test</code>:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#070">&lt;logger</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;sk.test&#34;</span> <span style="color:#007">additivity=</span><span style="background-color:#e0e0ff">&#34;false&#34;</span><span style="color:#070">&gt;</span>
+    <span style="color:#070">&lt;appender-ref</span> <span style="color:#007">ref=</span><span style="background-color:#e0e0ff">&#34;TESTFILE&#34;</span> <span style="color:#070">/&gt;</span>   
+<span style="color:#070">&lt;/logger&gt;</span></code></pre></div>
+<p>Ladiace hlášky z potomkov loggera <code>sk.test</code> (teda v našom prípade z
+loggera <code>sk.test.algorithms</code>) už nebudú zasielané do appenderov loggera
+<code>sk.test</code>, ani do jeho rodičov. Zakázanie aditivity v podstate zabráni
+potomkom posielať hlášky do appendérov rodičovskej triedy.</p>
+
+<p><img src="logback-additivity.png" alt="" /></p>
+
+<h1 id="dostupné-appendéry">Dostupné appendéry</h1>
+
+<p>V rámci projektu <em>slf4j</em> je k dispozícii viacero zabudovaných appendérov.
+Niektoré ukážky:</p>
+
+<ul>
+<li><code>ch.qos.logback.core.ConsoleAppender</code>: appendér zapisujúci do konzoly, teda typicky do <code>System.out</code>.</li>
+
+<li><p><code>ch.qos.logback.core.FileAppender</code>: appendér zapisujúci do súboru na disku. Najdôležitejšie vlastnosti,
+ktoré možno nastaviť, sú <code>File</code> udávajúci meno súboru s logom, a
+<code>Append</code>, ktorý určuje, či pred začiatkom súboru existujúci log
+súbor nadviaže alebo nie. Podrobnejšie informácie možno nájsť <a href="http://logback.qos.ch/manual/appenders.html#FileAppender">v
+dokumentácii</a>.</p>
+
+<pre><code>&lt;appender name=&quot;FILE&quot; class=&quot;ch.qos.logback.core.FileAppender&quot;&gt;
+    &lt;File&gt;d:/logs/testFile.log&lt;/File&gt;
+    &lt;Append&gt;true&lt;/Append&gt;
+
+    &lt;layout class=&quot;ch.qos.logback.core.layout.EchoLayout&quot; /&gt;
+&lt;/appender&gt; 
+</code></pre></li>
+
+<li><p><code>RollingFileAppender</code>: poskytuje možnosť zápisu do súboru s cyklickou obmenou súborov. Po
+naplnení logu sa automaticky založí nový súbor, a starý log sa
+archivuje, pričom podmienky obmeny je možné špecifikovať rozličnými
+spôsobmi (po dosiahnutí danej veľkosti, po uplynutí časového
+intervalu&hellip;)</p></li>
+
+<li><p><code>DBAppender</code>: umožňuje zapisovať udalosti do databázových tabuliek. Podrobnosti <a href="http://logback.qos.ch/manual/appenders.html#DBAppender">viď dokumentácia</a>.</p></li>
+
+<li><p><code>SMTPAppender</code>: odosiela ladiace hlášky cez mail.</p></li>
+</ul>
+
+<h1 id="dostupné-layouty">Dostupné layouty</h1>
+
+<p>Podobne ako prípade appendérov možno využiť viacero layoutov. Opäť
+niekoľko ukážok:</p>
+
+<h2 id="echolayout">EchoLayout</h2>
+
+<p><code>EchoLayout</code> je naozaj primitívny layout, ktorý predhodí pred správu
+reťazec s prioritou, a samotnú správu ukončí znakom konca riadka.
+Typická správa vyzerá nasledovne:</p>
+
+<pre><code>[DEBUG] Spočítavam 4 prvkov.
+</code></pre>
+
+<h2 id="patternlayout">PatternLayout</h2>
+
+<p><code>PatternLayout</code> (layout založený na predpise) je veľmi flexibilný
+layout, ktorý umožňuje využívať pri správe premenné a pokročilé
+formátovanie.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#070">&lt;appender</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;FILE&#34;</span> <span style="color:#007">class=</span><span style="background-color:#e0e0ff">&#34;ch.qos.logback.core.ConsoleAppender&#34;</span><span style="color:#070">&gt;</span>
+    <span style="color:#070">&lt;layout</span> <span style="color:#007">class=</span><span style="background-color:#e0e0ff">&#34;ch.qos.logback.core.ConsoleAppender&#34;</span><span style="color:#070">&gt;</span>
+        <span style="color:#070">&lt;Pattern&gt;</span>%-5level: %message%n<span style="color:#070">&lt;/Pattern&gt;</span>
+    <span style="color:#070">&lt;/layout&gt;</span>
+<span style="color:#070">&lt;/appender&gt;</span> </code></pre></div>
+<p>Hlášky sformátované uvedeným predpisom vyzerajú nasledovne: level hlášky
+v päťznakovej šírke oddelený dvojbodkou, za ktorou nasleduje text správy
+a koniec riadka.</p>
+
+<pre><code>WARN : This universe is not safe!
+ERROR: Cannot continue!
+</code></pre>
+
+<p>Predpis je uvedený v elemente <code>&lt;Pattern&gt;</code>, kde sú použité
+špeciálne premenné (začínajúce znakom percenta <code>%</code>). Vybrané užitočné
+premenné sú nasledovné:</p>
+
+<table>
+<thead>
+<tr>
+<th>Premenná</th>
+<th>Popis</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td><code>%logger</code></td>
+<td>Identifikátor loggera, do ktorého bola zaslaná logovacia hláška. (Napr. <code>sk.test.Arrays</code>).</td>
+</tr>
+
+<tr>
+<td><code>%date</code></td>
+<td>Aktuálny dátum a čas. Formát možno dokonfigurovať podľa špecifikácie uvedenej v triede <code>java.text.SimpleDateFormat</code>, napríklad<code>%date{HH:mm:ss.SSS}</code> vypíše hodiny, minúty a sekundy.</td>
+</tr>
+
+<tr>
+<td><code>%method</code></td>
+<td>Názov metódy, z ktorej bola vypustená ladiaca hláška. Získanie tejto informácie môže byť pomalé, treba ho používať len vo výnimočných prípadoch.</td>
+</tr>
+
+<tr>
+<td><code>%thread</code></td>
+<td>meno vlákna, z ktorého bolo vypustená ladiaca hláška</td>
+</tr>
+
+<tr>
+<td><code>%n</code></td>
+<td>platformovo nezávislý koniec riadku.</td>
+</tr>
+</tbody>
+</table>
+
+<p>K dispozícii je samozrejme oveľa viac premenných, podrobný popis možno
+nájsť v
+<a href="http://logback.qos.ch/manual/layouts.html#PatternLayout">dokumentácii</a>.</p>
+
+<h1 id="vzťahy-medzi-jednotlivými-api">Vzťahy medzi jednotlivými API</h1>
+
+<p>Typická otázka sa týka vzťahov medzi najpoužívanejšími API a knižnicami
+pre logovanie.</p>
+
+<h2 id="slf4j-vs-commons-logging">slf4j vs commons-logging</h2>
+
+<p>Obe knižnice – <em>slf4j</em> i <em>commons-logging</em> – sú tenké medzivrstvy s
+interfejsmi, ktoré delegujú logovanie na niektorú konkrétnu logovaciu
+knižnicu. <em>Commons-logging</em> je používaná v mnohých projektoch (Spring,
+Hibernate, Tomcat) i napriek zjavným implementačným nevýhodám. <em>slf4j</em>
+namiesto dynamického vyhľadávania dostupnej logovacej implementácie volí
+spôsob, kde vývojar do projektu zahrnie JAR, ktorý obsahuje statické
+prepojenie <em>slf4j</em> s pevne danou implementáciou.</p>
+
+<p><em>Slf4j</em> navyš ponúka JAR súbor, ktorý premosťuje <em>commons-logging</em>, a bez
+akýchkoľvek ďalších zmien umožňuje premigrovať projekt.</p>
+
+<h2 id="logback-vs-log4j">logback vs log4j</h2>
+
+<p>Logback možno nazvať „log4j 2.0“. Implementácia je síce odlišná, ale
+základné pojmy a filozofia je principiálne identická a migrácia z <em>log4j</em>
+je priamočiara. (K dispozícii je dokonca JAR, ktorý umožní migráciu i v
+prípade projektov, ktoré sú natvrdo spojené s <em>log4j</em>).</p>
+
+<h2 id="logback-vs-java-util-logging">logback vs java.util.logging</h2>
+
+<p>Vzťah je podobný ako v prípade <em>log4j</em> a <em>java.util.logging</em>. Filozofie
+týchto projektov sú v jadre rovnaké, líšia sa však terminológiou
+(<em>appender</em> sa nazýva <em>handler</em>, <em>layout</em> je <em>formatter</em>),
+implementačnými detailami a obšírnosťou. <em>logback</em> totiž ponúka oveľa
+širšie možnosti i pohodlnejšiu konfiguráciu.</p>
+
+<h2 id="slf4j-vs-java-util-logging">slf4j vs java.util.logging</h2>
+
+<p>Z predošlých odsekov je zrejmé, že <em>java.util.logging</em> je implementácia
+logovacej knižnice, a <em>slf4j</em> len medzivrstva. V prípade aplikácií, ktoré
+sú napevno zviazané s touto implementáciou, je k dispozícii migračný
+JAR, ktorý premostí konkrétnu implementáciu a medzivrstvu.</p>
+
+<h1 id="referencie">Referencie</h1>
+
+<ul>
+<li><p>Rostislav Behan: Log4j - Logovací API pro aplikační programátory,
+<a href="http://nb.vse.cz/~ZELENYJ/it380/eseje/xbehr02/index.htm">http://nb.vse.cz/~ZELENYJ/it380/eseje/xbehr02/index.htm</a></p></li>
+
+<li><p>LOGBack – The Generic, Reliable, Fast &amp; Flexible Logging Framework,
+<a href="http://logback.qos.ch/">http://logback.qos.ch/</a></p></li>
+
+<li><p>SLF4J – Simple Logging Facade for Java,
+<a href="http://www.slf4j.org/legacy.html">http://www.slf4j.org/legacy.html</a></p></li>
+
+<li><p>Ceki Gülcü: Think again before adopting the commons-logging API.
+<a href="http://articles.qos.ch/thinkAgain.html">http://articles.qos.ch/thinkAgain.html</a>. Poukázanie na základné
+fatálne chyby v commons-logging.</p></li>
+</ul>
+
+</main>
+
+    <footer>
+      
+<script>
+(function() {
+  function center_el(tagName) {
+    var tags = document.getElementsByTagName(tagName), i, tag;
+    for (i = 0; i < tags.length; i++) {
+      tag = tags[i];
+      var parent = tag.parentElement;
+      
+      if (parent.childNodes.length === 1) {
+        
+        if (parent.nodeName === 'A') {
+          parent = parent.parentElement;
+          if (parent.childNodes.length != 1) continue;
+        }
+        if (parent.nodeName === 'P') parent.style.textAlign = 'center';
+      }
+    }
+  }
+  var tagNames = ['img', 'embed', 'object'];
+  for (var i = 0; i < tagNames.length; i++) {
+    center_el(tagNames[i]);
+  }
+})();
+</script>
+
+      
+    </footer>
+  </body>
+</html>
+

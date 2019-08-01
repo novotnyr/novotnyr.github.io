@@ -99,7 +99,7 @@ This program built <span style="color:#289;font-weight:bold">for</span> i386-app
 <p>Build (zostavenie) spustíme nasledovne:</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">make hello</code></pre></div>
 <p>Na výstupe uvidíme priebeh zostavenia:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-makefile" data-lang="makefile"><span style="color:#f00;background-color:#faa">cc</span>     hello.c   -o hello
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-makefile" data-lang="makefile"><span style="color:#f00;background-color:#faa">cc</span>     <span style="color:#f00;background-color:#faa">hello.c</span>   <span style="color:#f00;background-color:#faa">-o</span> <span style="color:#f00;background-color:#faa">hello</span>
 </code></pre></div>
 <p>V aktuálnom adresári vznikne binárka <code>hello</code>, ktorú môžeme rovno spustiť.</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">./hello</code></pre></div>
@@ -263,8 +263,8 @@ Falošný cieľ označíme nasledovne:</p>
 <li>zostaviť HTML súbor zo zdrojového Markdownu pomocou <code>make hello.html</code>,</li>
 <li>vymazať všetky prevedené súbory pomocou <code>make clean</code>,</li>
 <li>vyhlásiť <code>clean</code> za falošný cieľ,</li>
-<li>použiť <code>all</code> ako falošný cieľ, ktorý síce neurobí nič, ale vykoná sa v prípade, ak neuvedieme žiaden cieľ`.</li>
-</ul>
+
+<li><p>použiť <code>all</code> ako falošný cieľ, ktorý síce neurobí nič, ale vykoná sa v prípade, ak neuvedieme žiaden cieľ`.</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-makefile" data-lang="makefile"><span style="color:#5ed;font-weight:bold">%.html</span><span style="color:#333">:</span> %.markdown
 	pandoc $&lt; --output <span style="color:#036">$@</span>
 
@@ -274,7 +274,9 @@ Falošný cieľ označíme nasledovne:</p>
 <span style="color:#5ed;font-weight:bold">clean</span><span style="color:#333">:</span>
 	rm *.html
 <span style="color:#5ed;font-weight:bold">.PHONY</span><span style="color:#333">:</span> clean
-</code></pre></div>
+</code></pre></div></li>
+</ul>
+
 <h1 id="recepty-pre-hromadné-spracovanie-súborov">Recepty pre hromadné spracovanie súborov</h1>
 
 <p>Vytvorme si ešte jeden súbor vo formáte Markdown, <code>intro.markdown</code>:</p>
@@ -295,13 +297,15 @@ Toto je úvod!
 
 <ul>
 <li>pri prerekvizitách</li>
-<li>v príkazoch samotného receptu.
-V ukážke vidíme priradenie i čítanie z premennej pomocou <code>$(MARKDOWN)</code>, čo je zápis podobný shellu.</li>
-</ul>
+
+<li><p>v príkazoch samotného receptu.
+V ukážke vidíme priradenie i čítanie z premennej pomocou <code>$(MARKDOWN)</code>, čo je zápis podobný shellu.</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-makefile" data-lang="makefile"><span style="color:#036">MARKDOWN</span> <span style="color:#333">=</span> intro.markdown hello.markdown
 <span style="color:#5ed;font-weight:bold">all.markdown</span><span style="color:#333">:</span> <span style="color:#289;font-weight:bold">$(</span><span style="color:#036">MARKDOWN</span><span style="color:#289;font-weight:bold">)</span>
 	cat <span style="color:#289;font-weight:bold">$(</span>MARKDOWN<span style="color:#289;font-weight:bold">)</span> &gt; all.markdown
-</code></pre></div>
+</code></pre></div></li>
+</ul>
+
 <p>Zároveň vidíme, že definujeme cieľ <code>all.markdown</code>, ktorý má prerekvizitu získanú z premennej.
 Vo vykonaní cieľa pomocou <code>cat</code> zoberieme obsahy oboch súborov z premennej a zapíšeme ich do súboru.
 Môžeme tak vykonať príkaz, ktorým sa obsahy oboch súborov konkatenujú do jedného veľkého súboru.</p>

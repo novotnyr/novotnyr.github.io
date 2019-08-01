@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>XUL – Vytvorenie nového rozšírenia pre Firefox | robonovotny</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.css" integrity="sha384-D+9gmBxUQogRLqvARvNLmA9hS2x//eK1FhVb9PiU86gmcrBrJAQT8okdJ4LMp2uv" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.js" integrity="sha384-483A6DwYfKeDa0Q52fJmxFXkcPCFfnXMoXblOkJ4JcA8zATN6Tm78UNL72AKk+0O" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/contrib/auto-render.min.js" integrity="sha384-yACMu8JWxKzSp/C1YV86pzGiQ/l1YUfE8oPuahJQxzehAjEt2GiQuy/BIvl9KyeF" crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body);
+        });
+    </script>
+
+<header>
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <nav>
+    <ul>
+      
+      
+      <li class="pull-left ">
+        <a href="http://novotnyr.github.io/">/home/robonovotny</a>
+      </li>
+      
+
+      
+
+    </ul>
+  </nav>
+</header>
+
+  </head>
+
+  <body>
+    <br/>
+
+<div class="article-meta">
+<h1><span class="title">XUL – Vytvorenie nového rozšírenia pre Firefox</span></h1>
+
+<h2 class="date">2005/02/17</h2>
+<p class="terms">
+  
+  
+  
+  
+  
+</p>
+</div>
+
+
+
+<main>
+
+
+<p>(pozn: viacmenej okopírované z tutoriálu na <a href="http://xulplanet.com/tutorials/xultu/xulfile.html">XULPlanet.com</a>)</p>
+
+<h2 id="úvod">Úvod</h2>
+
+<p>Na prípravu nového rozšírenia potrebujeme</p>
+
+<ul>
+<li>adresárovú štruktúru</li>
+<li>upraviť <code>contents.rdf</code></li>
+<li>upraviť <code>installed-chrome.txt</code></li>
+</ul>
+
+<h2 id="adresárová-štruktúra">Adresárová štruktúra</h2>
+
+<p>Súbory rozšírenia by sa mali nachádzať v úhľadnom JARe, ale pri ladení ich nechceme do archívu neustále zabaľovať a odbaľovať. Môžeme si založiť adresár v adresári <code>chrome</code>, v prípade Firefoxu napr. <code>c:\Program Files\Mozilla Firefox\chrome</code>.
+Nech sa naša aplikácia volá „textedit&rdquo;. Založíme teda nasledovnú štruktúru</p>
+
+<pre><code>c:\Program Files\Mozilla Firefox\chrome
+  |
+  |-textedit
+      |-content
+      |-skin
+      |-locale
+</code></pre>
+
+<p>Adresáre <code>skin</code> a <code>locale</code> zatiaľ ponecháme prázdne. Naše súbory <code>.xul</code> budeme pchať do adresára <code>content</code>.</p>
+
+<h2 id="contents-rdf">contents.rdf</h2>
+
+<p>Súbor <code>contents.rdf</code> popisuje obsah balíčka, je to bežný XML súbor. Tento súbor uložíme (podľa mňa ako UTF-8) do adresára <code>textedit/content</code>.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#579">&lt;?xml version=&#34;1.0&#34;?&gt;</span>
+
+<span style="color:#070">&lt;RDF:RDF</span> <span style="color:#007">xmlns:RDF=</span><span style="background-color:#e0e0ff">&#34;http://www.w3.org/1999/02/22-rdf-syntax-ns#&#34;</span>
+         <span style="color:#007">xmlns:chrome=</span><span style="background-color:#e0e0ff">&#34;http://www.mozilla.org/rdf/chrome#&#34;</span><span style="color:#070">&gt;</span>
+
+  <span style="color:#070">&lt;RDF:Seq</span> <span style="color:#007">about=</span><span style="background-color:#e0e0ff">&#34;urn:mozilla:package:root&#34;</span><span style="color:#070">&gt;</span>
+    <span style="color:#070">&lt;RDF:li</span> <span style="color:#007">resource=</span><span style="background-color:#e0e0ff">&#34;urn:mozilla:package:textedit&#34;</span><span style="color:#070">/&gt;</span>
+  <span style="color:#070">&lt;/RDF:Seq&gt;</span>
+
+  <span style="color:#070">&lt;RDF:Description</span> <span style="color:#007">about=</span><span style="background-color:#e0e0ff">&#34;urn:mozilla:package:textedit&#34;</span>
+          <span style="color:#007">chrome:displayName=</span><span style="background-color:#e0e0ff">&#34;Nas mocny textovy editor&#34;</span>
+          <span style="color:#007">chrome:author=</span><span style="background-color:#e0e0ff">&#34;Fero Tarabak&#34;</span>
+          <span style="color:#007">chrome:name=</span><span style="background-color:#e0e0ff">&#34;textedit&#34;</span>
+          <span style="color:#007">chrome:extension=</span><span style="background-color:#e0e0ff">&#34;true&#34;</span><span style="color:#070">/&gt;</span>
+<span style="color:#070">&lt;/RDF:RDF&gt;</span></code></pre></div>
+<h2 id="úprava-installed-chrome-txt">Úprava <code>installed-chrome.txt</code></h2>
+
+<p>Upravíme súbor <code>c:\Program Files\Mozilla Firefox\chrome\installed-chrome.txt</code>, aby sme upovedomili Firefox o našom rozšírení. Na koniec tohto súboru pridáme riadok</p>
+
+<pre><code>content,install,url,resource:/chrome/textedit/content/
+</code></pre>
+
+<p>Uistíme sa, že na konci cesty je spätná lomka a že na konci súboru je prázdny riadok. Riadok znamená, že inštalujeme súčasť <code>content</code> (podrobnosti v tutoriále).</p>
+
+<p>Spustíme Firefox. Ak bola inštalácia úspešná, názov našeho rozšírenia by sa mal objaviť v súbore <code>c:\Program Files\Mozilla Firefox\chrome\chrome.rdf</code>. Ak nie, je niečo zhnité (je <code>contents.rdf</code> validné XML?)</p>
+
+</main>
+
+    <footer>
+      
+<script>
+(function() {
+  function center_el(tagName) {
+    var tags = document.getElementsByTagName(tagName), i, tag;
+    for (i = 0; i < tags.length; i++) {
+      tag = tags[i];
+      var parent = tag.parentElement;
+      
+      if (parent.childNodes.length === 1) {
+        
+        if (parent.nodeName === 'A') {
+          parent = parent.parentElement;
+          if (parent.childNodes.length != 1) continue;
+        }
+        if (parent.nodeName === 'P') parent.style.textAlign = 'center';
+      }
+    }
+  }
+  var tagNames = ['img', 'embed', 'object'];
+  for (var i = 0; i < tagNames.length; i++) {
+    center_el(tagNames[i]);
+  }
+})();
+</script>
+
+      
+    </footer>
+  </body>
+</html>
+

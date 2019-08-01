@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>DB2 – receptár tipov a trikov | robonovotny</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.css" integrity="sha384-D+9gmBxUQogRLqvARvNLmA9hS2x//eK1FhVb9PiU86gmcrBrJAQT8okdJ4LMp2uv" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.js" integrity="sha384-483A6DwYfKeDa0Q52fJmxFXkcPCFfnXMoXblOkJ4JcA8zATN6Tm78UNL72AKk+0O" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/contrib/auto-render.min.js" integrity="sha384-yACMu8JWxKzSp/C1YV86pzGiQ/l1YUfE8oPuahJQxzehAjEt2GiQuy/BIvl9KyeF" crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body);
+        });
+    </script>
+
+<header>
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <nav>
+    <ul>
+      
+      
+      <li class="pull-left ">
+        <a href="http://novotnyr.github.io/">/home/robonovotny</a>
+      </li>
+      
+
+      
+
+    </ul>
+  </nav>
+</header>
+
+  </head>
+
+  <body>
+    <br/>
+
+<div class="article-meta">
+<h1><span class="title">DB2 – receptár tipov a trikov</span></h1>
+
+<h2 class="date">2006/06/11</h2>
+<p class="terms">
+  
+  
+  
+  
+  
+</p>
+</div>
+
+
+
+<main>
+
+
+<h1 id="katalogizacia-vzdialenej-db-do-klienta">Katalogizacia vzdialenej DB do klienta</h1>
+
+<pre><code>catalog tcpip node ssj_d remote dbserver.ics.upjs.sk server 50000
+catalog db slovnikd at node ssj_d
+</code></pre>
+
+<p>SSJ_D je nazov uzla/node - lubovolny. 50000 je port sluzby. Miesto portu je mozne pouzit aj nazov sluzby - ten sa da na Windowse zistit z <code>etc/services</code>.</p>
+
+<h1 id="restore-databazy-zo-zalohy-do-inej-databazy">Restore databazy zo zalohy do inej databazy</h1>
+
+<pre><code>restore database slovnik from d:\bak\slovnikd into slovnikd
+</code></pre>
+
+<h1 id="vytvaranie-sekvencii-v-db2">Vytvaranie sekvencii v DB2</h1>
+
+<pre><code>CREATE SEQUENCE vyznam_seq AS INT 
+START WITH 160000 
+INCREMENT BY 1 
+MINVALUE 1 
+NO MAXVALUE 
+NO CYCLE 
+NO CACHE 
+ORDER;
+</code></pre>
+
+<p>Sekvencia mozu byt pouzita ako generator primarnych klucov.</p>
+
+<pre><code>INSERT INTO VYZNAM VALUES (next value for vyznam_seq, 'Hura');
+</code></pre>
+
+<p>Zo sekvencie mozeme vySELECTovat pomocou</p>
+
+<pre><code>SELECT NEXT VALUE FOR vyznam_seq FROM sysibm.sysdummy1
+</code></pre>
+
+<h1 id="zistenie-edície-db2">Zistenie edície DB2</h1>
+
+<p>Pouzite <code>db2licm -l</code>. Typicky vystup je</p>
+
+<pre><code>Product Name                            = &quot;DB2 Universal Database Express Edition&quot;
+Product Identifier                      = &quot;DB2EXP&quot;
+Version Information                     = &quot;8.2&quot;
+Expiry Date                             = &quot;Permanent&quot;
+Registered User Policy                  = &quot;Disabled&quot;
+Enforcement Policy                      = &quot;Soft Stop&quot;
+Number of processors                    = &quot;2&quot;
+Number of licensed processors           = &quot;2&quot;
+Annotation                              = &quot;&quot;
+Other information                       = &quot;&quot;
+</code></pre>
+
+<h2 id="zistenie-verzie-db2">Zistenie verzie DB2</h2>
+
+<p>Použite <code>db2level</code>. Typický výstup je</p>
+
+<pre><code>C:\IBM\SQLLIB\BIN&gt;db2level
+DB21085I  Instance &quot;DB2&quot; uses &quot;32&quot; bits and DB2 code release &quot;SQL08023&quot; with
+level identifier &quot;03040106&quot;.
+Informational tokens are &quot;DB2 v8.1.10.1155&quot;, &quot;special_15462&quot;, &quot;WR21362_15462&quot;,
+and FixPak &quot;10&quot;.
+Product is installed at &quot;C:\IBM\SQLLIB&quot;.
+</code></pre>
+
+<h2 id="očíslovanie-riadkov-v-selecte">Očíslovanie riadkov v SELECTe</h2>
+
+<pre><code>SELECT id_zakl_tvar, id_autor, text, ROWNUMBER() OVER (ORDER BY id_zakl_tvar)
+FROM citat
+</code></pre>
+
+<h2 id="squirrel-bliaka-ze-sql-sqlcode-443-sqlstate-38553-pri-zistovani-metadat">Squirrel bliaka, ze SQL SQLCODE: -443 SQLSTATE: 38553 pri zistovani metadat.</h2>
+
+<p>Podla clanku nazvaneho sarkasticky „<a href="http://www-128.ibm.com/developerworks/db2/library/techarticle/dm-0509zikopoulos/">10 minut, ktore vam usetria zbytocnych 100</a>&rdquo; je pricina v tom, ze treba citat README a upozornenia instalatora a po kazdom aplikovani fixpaku treba rebindnut package.</p>
+
+<pre><code>db2 terminate
+db2 CONNECT TO &lt;dbname&gt;
+db2 BIND &lt;path&gt;/db2schema.bnd BLOCKING ALL GRANT PUBLIC sqlerror continue
+db2 terminate 
+</code></pre>
+
+<p>That&rsquo;s all.</p>
+
+</main>
+
+    <footer>
+      
+<script>
+(function() {
+  function center_el(tagName) {
+    var tags = document.getElementsByTagName(tagName), i, tag;
+    for (i = 0; i < tags.length; i++) {
+      tag = tags[i];
+      var parent = tag.parentElement;
+      
+      if (parent.childNodes.length === 1) {
+        
+        if (parent.nodeName === 'A') {
+          parent = parent.parentElement;
+          if (parent.childNodes.length != 1) continue;
+        }
+        if (parent.nodeName === 'P') parent.style.textAlign = 'center';
+      }
+    }
+  }
+  var tagNames = ['img', 'embed', 'object'];
+  for (var i = 0; i < tagNames.length; i++) {
+    center_el(tagNames[i]);
+  }
+})();
+</script>
+
+      
+    </footer>
+  </body>
+</html>
+

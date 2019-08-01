@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Connect to LDAP server from Windows client via SSL | robonovotny</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.css" integrity="sha384-D+9gmBxUQogRLqvARvNLmA9hS2x//eK1FhVb9PiU86gmcrBrJAQT8okdJ4LMp2uv" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.js" integrity="sha384-483A6DwYfKeDa0Q52fJmxFXkcPCFfnXMoXblOkJ4JcA8zATN6Tm78UNL72AKk+0O" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/contrib/auto-render.min.js" integrity="sha384-yACMu8JWxKzSp/C1YV86pzGiQ/l1YUfE8oPuahJQxzehAjEt2GiQuy/BIvl9KyeF" crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body);
+        });
+    </script>
+
+<header>
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <nav>
+    <ul>
+      
+      
+      <li class="pull-left ">
+        <a href="http://novotnyr.github.io/">/home/robonovotny</a>
+      </li>
+      
+
+      
+
+    </ul>
+  </nav>
+</header>
+
+  </head>
+
+  <body>
+    <br/>
+
+<div class="article-meta">
+<h1><span class="title">Connect to LDAP server from Windows client via SSL</span></h1>
+
+<h2 class="date">2015/09/14</h2>
+<p class="terms">
+  
+  
+  Categories: <a href="/categories/infra%C5%A1trukt%C3%BAra">infraštruktúra</a> 
+  
+  
+  
+  Tags: <a href="/tags/ldap">LDAP</a> 
+  
+  
+</p>
+</div>
+
+
+
+<main>
+
+
+<p>Connecting to LDAP server with SSL via client side may be difficult due to Windows
+peculiarities. How to <code>ldapmodify</code> the data?</p>
+
+<h2 id="retrieve-server-certificate">Retrieve server certificate</h2>
+
+<p>Locate the server certificate on the server in:</p>
+
+<pre><code>secure/certs/server.pem 
+</code></pre>
+
+<p>Extract the parts between and including</p>
+
+<pre><code>-----BEGIN CERTIFICATE-----
+...
+-----END CERTIFICATE-----
+</code></pre>
+
+<p>Store the certificate to the client machine to the <code>c:/etc/ldap/server.pem</code>.</p>
+
+<h2 id="prepare-client-certificate">Prepare client certificate</h2>
+
+<p>Create <code>c:/etc/ldap/ldap.conf</code> with the following contents:</p>
+
+<pre><code>TLS_CACERT c:/etc/ldap/server.pem
+</code></pre>
+
+<p>Set the location of client configuration file</p>
+
+<pre><code>SET LDAPCONF=c:/etc/ldap/ldap.conf
+</code></pre>
+
+<h2 id="fixing-cn-and-hostname-mismatch">Fixing CN and hostname mismatch</h2>
+
+<p>Connection to the LDAP server will positively fail due to certificate mismatch:</p>
+
+<pre><code>ldap_start_tls: Can't contact LDAP server (-1)
+        additional info: TLS: hostname does not match CN in peer certificate
+ldap_sasl_bind(SIMPLE): Can't contact LDAP server (-1)
+</code></pre>
+
+<p>Analyzing certificate in <code>server.pem</code> leads to:</p>
+
+<ul>
+<li>Common Name: development</li>
+<li>Organization: Internet</li>
+<li>Organization Unit: dc=maxcrc,dc=com</li>
+<li>Locality: Langen</li>
+<li>State: Germany</li>
+<li>Country: DE</li>
+</ul>
+
+<p>Either recreate server certificates to match the host name or resolve hostname
+to <code>development</code> on the client machine.</p>
+
+<p>Add the following line to <code>c:\Windows\System32\drivers\etc\hosts</code>:</p>
+
+<pre><code>127.0.0.1 development
+</code></pre>
+
+<p>Setup is now complete.</p>
+
+<h2 id="import-data">Import data</h2>
+
+<p>Import the data</p>
+
+<pre><code>ldapmodify.exe -a -f sample.ldif -d 1 -x -D &quot;cn=root,dc=mydomain,dc=com&quot; -w iamroot -Z -H ldaps://development
+</code></pre>
+
+<ul>
+<li><code>-a</code> add the data to the LDAP database</li>
+<li><code>-f sample.ldif</code> the data source file</li>
+<li><code>-d 1</code> enable some logging</li>
+<li><code>-x</code> use login+password authentication</li>
+<li><code>-D</code> DN of the administrator user</li>
+<li><code>-w iamroot</code> administrator password</li>
+<li><code>-Z</code> use TLS</li>
+<li><code>-H ldaps://development</code> the LDAP server host. Note that we are using <code>development</code> that matches the CN in the server certificate.</li>
+</ul>
+
+</main>
+
+    <footer>
+      
+<script>
+(function() {
+  function center_el(tagName) {
+    var tags = document.getElementsByTagName(tagName), i, tag;
+    for (i = 0; i < tags.length; i++) {
+      tag = tags[i];
+      var parent = tag.parentElement;
+      
+      if (parent.childNodes.length === 1) {
+        
+        if (parent.nodeName === 'A') {
+          parent = parent.parentElement;
+          if (parent.childNodes.length != 1) continue;
+        }
+        if (parent.nodeName === 'P') parent.style.textAlign = 'center';
+      }
+    }
+  }
+  var tagNames = ['img', 'embed', 'object'];
+  for (var i = 0; i < tagNames.length; i++) {
+    center_el(tagNames[i]);
+  }
+})();
+</script>
+
+      
+    </footer>
+  </body>
+</html>
+

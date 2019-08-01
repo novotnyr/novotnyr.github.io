@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Tomcat Connection Pooling | robonovotny</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.css" integrity="sha384-D+9gmBxUQogRLqvARvNLmA9hS2x//eK1FhVb9PiU86gmcrBrJAQT8okdJ4LMp2uv" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.js" integrity="sha384-483A6DwYfKeDa0Q52fJmxFXkcPCFfnXMoXblOkJ4JcA8zATN6Tm78UNL72AKk+0O" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/contrib/auto-render.min.js" integrity="sha384-yACMu8JWxKzSp/C1YV86pzGiQ/l1YUfE8oPuahJQxzehAjEt2GiQuy/BIvl9KyeF" crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body);
+        });
+    </script>
+
+<header>
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <nav>
+    <ul>
+      
+      
+      <li class="pull-left ">
+        <a href="http://novotnyr.github.io/">/home/robonovotny</a>
+      </li>
+      
+
+      
+
+    </ul>
+  </nav>
+</header>
+
+  </head>
+
+  <body>
+    <br/>
+
+<div class="article-meta">
+<h1><span class="title">Tomcat Connection Pooling</span></h1>
+
+<h2 class="date">2006/02/02</h2>
+<p class="terms">
+  
+  
+  
+  
+  
+</p>
+</div>
+
+
+
+<main>
+
+
+<p>V nasledovnom článku popíšeme <em>rozchodenie</em> connection poolingu v Tomcate.</p>
+
+<h2 id="čo-je-connection-pooling">Čo je connection pooling?</h2>
+
+<p>Connection pooling v Tomcate umožňuje vylepšenú podporu a správu pripojení
+(triedy implementujúce interface <code>java.sql.Connection</code>) v servletoch a JSP. Základné riešenie ťažkého kalibru je pri volaní príslušnej metódy servletu vytvoriť nové pripojenie a po vybavení požiadavky ho hneď zatvoriť. Žiaľ, toto riešenie je k databáze nešetrné (čo ak pripojenie nie je korektne uzavreté? čo ak počet vyžiadaných pripojení presiahne databázou povolenú hodnotu?).</p>
+
+<p>Vhodným riešením je <strong>connection pooling</strong>. Server si pri spustení danej aplikácie otvorí vopred predefinovaný počet pripojení k databáze (t. j. vytvorí sa požadovaný počet inštancií triedy implementujúcej <code>java.sql.Connection</code>) a vloží ich do kvázi-poľa nazývaného pool. Ak nejaká trieda potrebuje pre svoju činnosť objekt typu <code>Connection</code>, vyžiada si ho od servera (nebude teda <code>Connection</code> inštancionalizovať sama). Server vyberie z poolu objekt <code>Connection</code> a aplikácia s ním môže podľa ľubovole pracovať. Ak už aplikácia <code>Connection</code> nepotrebuje, jednoducho to oznámi serveru a server tento objekt vráti do poolu, kde čaká na ďalšie využitie. Ak už v poole nie sú žiadne objekty <code>Connection</code> (t. j. všetky sa už používajú), je možné použiť viacero postupov. Buď sa vytvorí istý <em>rezervný</em> počet objektov <code>Connection</code> (tento postup však nemožno veľakrát opakovať), alebo sa prezrie využívaných zoznam objektov a zistí sa, či niektorý objekt nie je už dlhší čas bez využitia (napr. ak programátor zabudol po použití oznámiť serveru, že <code>Connection</code> je už voľný a uplynul dosť dlhý časový interval od vyžiadania si objektu z poolu).</p>
+
+<h2 id="connection-pooling-v-serveri-apache-tomcat">Connection pooling v serveri Apache Tomcat</h2>
+
+<h3 id="čo-potrebujeme-na-využívanie-connection-poolingu">Čo potrebujeme na využívanie connection poolingu?</h3>
+
+<p>Na využívanie poolingu v Tomcat-e potrebujeme:</p>
+
+<ul>
+<li><strong>Apache Tomcat 4.1.18</strong> (na tejto verzii boli vyskúšané príklady)</li>
+<li><strong>Jakarta Commons DBCP 1.0</strong> je modul, resp. sada tried, ktoré umožňujú programátorom využívať pooling databázových pripojení.Apache Tomcat už obsahuje v sebe tieto triedy (typicky v archíve <code>%CATALINA_HOME%\common\lib\commons-dbcp.jar</code>). Vyššie verzie Tomcata obsahujú novšiu verziu 1.1.</li>
+<li><strong>databázu</strong> a</li>
+<li><strong>JDBC driver</strong>. Príklady boli odskúšané na nasledovných databázach
+
+<ul>
+<li><em>IBM DB2 7.1 Personal Edition.</em> JDBC driver je dodávaný s databázou</li>
+<li><em>MySQL 4.0.15.</em> JDBC driver si možno stiahnuť samostatne zo stránok MySQL</li>
+</ul></li>
+</ul>
+
+<h3 id="apache-tomcat-a-ibm-db2">Apache Tomcat a IBM DB2.</h3>
+
+<p>Popíšeme postup, ako upovedomiť Tomcat o existencii databázy a inštalácii JDBC ovládača do Tomcata.</p>
+
+<h4 id="príprava-jdbc-ovládačov">Príprava JDBC ovládačov</h4>
+
+<ul>
+<li><p>Zastavíme Apache Tomcat 4.1.</p></li>
+
+<li><p>Vyhľadáme archív JAR, resp. ZIP obsahujúci JDBC ovládač k databáze. Vo verzii 7.1 a štandardnej inštalácii je to archív <code>c:\Program Files\SQLLIB\java\db2java.zip</code>. Tento archív skopírujeme medzi rôzne moduly používané Tomcatom a to do adresára <code>%CATALINA_HOME%\common\lib</code>. Archív potom <strong>MUSÍME</strong> premenovať na JAR, inak ho Tomcat neuvidí! JDBC ovládač bude teda v archíve</p>
+
+<pre><code>%CATALINA_HOME%\common\lib\db2java.jar
+</code></pre></li>
+</ul>
+
+<p>Pridanie tohto archívu do systémovej premennej <code>CLASSPATH</code> nestačí!</p>
+
+<ul>
+<li>Spustíme Apache Tomcat 4.1</li>
+</ul>
+
+<h4 id="konfigurácia-webaplikácie">Konfigurácia webaplikácie</h4>
+
+<p>Spustíme v prehliadači Tomcat Web Server Administration Tool (typicky na adrese <a href="http://localhost:8080/admin">http://localhost:8080/admin</a>). Vyhľadáme si v strome príslušný kontext, v ktorej budeme connection pooling využívať. V ňom rozbalíme položku <em>Resources</em> a v nej klikneme na podpoložku <em>Data Sources</em>. Úplná cesta v strome je napr. <code>Tomcat Server/Service (Tomcat-Standalone)/Host (localhost)/Context (mojobchod)/Resources/Data Sources</code>. V rozbaľovacom menu vpravo hore vyberieme položku <em>Create New Data Source</em> a položky vyplníme nasledovne:</p>
+
+<table>
+<thead>
+<tr>
+<th>Položka</th>
+<th>Hodnota</th>
+<th>Popis</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>JNDI Name:</td>
+<td>jdbc/db2Test</td>
+<td>Uvádza skrátený názov, pomocou ktorého sa možno odkazovať na objekt prideľujúci pripojenia (ide o analógiu služby DNS v internete). Názov si môžeme určiť sami, kvôli prehľadnosti je ale vhodné uviesť predponu <code>jdbc/</code></td>
+</tr>
+
+<tr>
+<td>Data Source URL:</td>
+<td>jdbc:db2:<em>nazov_databazy</em></td>
+<td>Adresa databázového servera a databázy v prípade ovládača Type 2</td>
+</tr>
+
+<tr>
+<td>Data Source URL:</td>
+<td>jdbc:db2://<em>adresa_servera</em>:6789/<em>nazov_databazy</em></td>
+<td>Adresa databázového servera a databázy v prípade ovládača Type 4</td>
+</tr>
+
+<tr>
+<td>JDBC Driver Class:</td>
+<td>COM.ibm.db2.jdbc.app.DB2Driver</td>
+<td>Úplný názov triedy ovládača JDBC, prípad ovládača Type 2</td>
+</tr>
+
+<tr>
+<td>JDBC Driver Class:</td>
+<td>COM.ibm.db2.jdbc.net.DB2Driver</td>
+<td>Úplný názov triedy ovládača JDBC, prípad ovládača Type 4</td>
+</tr>
+
+<tr>
+<td>User Name:</td>
+<td>user</td>
+<td>Užívateľské meno pre pripojenie k databáze. Používané pri objektoch <code>Connection</code></td>
+</tr>
+
+<tr>
+<td>Password:</td>
+<td></td>
+<td>Heslo pre pripojenie k databáze. Používané pri objektoch <code>Connection</code></td>
+</tr>
+
+<tr>
+<td>Max. Active Connections:</td>
+<td>2</td>
+<td>Maximálny počet pripojení, ktorý môže byť alokovaný z poolu.</td>
+</tr>
+
+<tr>
+<td>Max. Idle Connections:</td>
+<td>2</td>
+<td>Maximálny počet nevyužitých pripojení v poole, pri ktorom sa ešte nevytvoria dodatočné (rezervné) pripojenia.</td>
+</tr>
+
+<tr>
+<td>Max. Wait for Connection:</td>
+<td>5</td>
+<td>Maximálna dĺžka času, počas ktorého bude pool čakať na uvoľnenie pripojenia, ak sú už všetky pripojenia alokované. Po uplynutí tohto času vyhodí pool výnimku. -1 znamená neobmedzenú dĺžku čakania, 0 znamená okamžité vyhodenie výnimky, ak sú už všetky pripojenia obsadené.</td>
+</tr>
+
+<tr>
+<td>Validation Query:</td>
+<td><code>SELECT COUNT(*) FROM SYSCAT.TABLES</code></td>
+<td>Dopyt, ktorý bude použitý pre overenie správnosti vytvorenia objektu <code>Connection</code>. Uveďte dopyt vracajúci aspoň jeden riadok. Dokumentácia JNDI HOW-TO k Tomcatu 4.1.18 neuvádza, že ak je toto pole prázdne, nebudú vytvárané žiadne pripojenia a DB2 (ale aj MySQL) sa zacyklí, čo vynúti reštart databázy.</td>
+</tr>
+</tbody>
+</table>
+
+<p>Bližší popis jednotlivých položiek a ďalšie rady možno nájsť v JNDI DataSource HOW-TO, JNDI Resources HOW-TO
+v dokumentácii Tomcatu, prípadne v API dokumentácii k Commons DBCP.</p>
+
+<p>Teraz prejdeme k časti Úprava <code>web.xml</code>.</p>
+
+<h3 id="apache-tomcat-a-mysql">Apache Tomcat a MySQL.</h3>
+
+<p>Popíšeme postup, ako upovedomiť Tomcat o existencii databázy a inštalácii JDBC ovládača do Tomcata.</p>
+
+<h3 id="príprava-jdbc-ovládačov-1">Príprava JDBC ovládačov</h3>
+
+<ul>
+<li>Stiahneme si JDBC ovládač k MySQL zo stránok (<a href="http://www.mysql.com">http://www.mysql.com</a>). Typický názov súboru je <code>mysql-connector-java-3.0.8-stable.zip</code>.</li>
+<li>V tomto archíve sa nachádza množstvo súborov, ale najdôležitejší je JAR súbor <code>mysql-connector-java-3.0.8-stable-bin.jar</code>.</li>
+<li>Zastavíme Apache Tomcat 4.1.</li>
+
+<li><p>Tento JAR archív skopírujeme medzi rôzne moduly používané Tomcatom a to do adresára <code>%CATALINA_HOME%\common\lib</code>. JDBC ovládač bude teda v archíve</p>
+
+<pre><code>%CATALINA_HOME%\common\lib\mysql-connector-java-3.0.8-stable-bin.jar
+</code></pre></li>
+</ul>
+
+<p>Pridanie tohto archívu do systémovej premennej <code>CLASSPATH</code> nestačí!</p>
+
+<ul>
+<li>Spustíme Apache Tomcat 4.1</li>
+</ul>
+
+<h4 id="konfigurácia-webaplikácie-1">Konfigurácia webaplikácie</h4>
+
+<p>Webaplikáciu nakonfigurujeme podobne, ako v prípade databázy DB2. Konfiguračné možnosti budú analogické ako v prípade databázy DB2, upravíme len odlišné hodnoty:</p>
+
+<table>
+<thead>
+<tr>
+<th>Položka</th>
+<th>Hodnota</th>
+<th>Popis</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>JNDI Name:</td>
+<td>jdbc/mySQLTest</td>
+<td></td>
+</tr>
+
+<tr>
+<td>Data Source URL:</td>
+<td>jdbc:mysql://localhost:3306/test</td>
+<td>Adresa databázového servera (<code>localhost</code>) portu (implicitne 3306) a databázy (v tomto prípade <code>test</code>)</td>
+</tr>
+
+<tr>
+<td>JDBC Driver Class:</td>
+<td>com.mysql.jdbc.Driver</td>
+<td></td>
+</tr>
+
+<tr>
+<td>Validation Query:</td>
+<td><code>SELECT NOW()</code></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+
+<p>Teraz prejdeme k časti Úprava <code>web.xml</code>.</p>
+
+<h3 id="úprava-web-xml">Úprava <code>web.xml</code></h3>
+
+<p>Máme už nakonfigurovaný kontext a upovedomili sme Tomcat na JDBC ovládače. Potrebujeme ešte upraviť deployment descriptor (súbor <code>web.xml</code>) príslušnej webaplikácie.</p>
+
+<ul>
+<li><p>Do súboru <code>web.xml</code> vložíme nasledovné riadky:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#070">&lt;resource-ref&gt;</span>
+<span style="color:#070">&lt;description&gt;</span>
+Odkaz na továreň, ktorá produkuje objekty java.sql.Connection.
+<span style="color:#070">&lt;/description&gt;</span>
+<span style="color:#070">&lt;res-ref-name&gt;</span>
+jdbc/db2Test <span style="color:#666;font-style:italic">&lt;!-- alebo jdbc/mySQLTest, ak používame MySQL --&gt;</span>
+<span style="color:#070">&lt;/res-ref-name&gt;</span>
+<span style="color:#070">&lt;res-type&gt;</span>
+javax.sql.DataSource
+<span style="color:#070">&lt;/res-type&gt;</span>
+<span style="color:#070">&lt;res-auth&gt;</span>
+Container
+<span style="color:#070">&lt;/res-auth&gt;</span>
+<span style="color:#070">&lt;/resource-ref&gt;</span></code></pre></div></li>
+</ul>
+
+<p>Musíme dávať pozor na štruktúru súboru <code>web.xml</code>. Tá sa riadi príslušným DTD súborom, ktorým sa musíme riadiť.</p>
+
+<ul>
+<li>Reštartujeme príslušnú webaplikáciu.</li>
+</ul>
+
+<h3 id="krátky-kus-kódu">Krátky kus kódu</h3>
+
+<p>Uviedeme úsek kódu, v ktorom je ukázaná, ako sa získa objekt <code>java.sql.Connection</code> z poolu:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#666;font-style:italic">//inicializujeme kontext pre JNDI
+</span><span style="color:#666;font-style:italic"></span>Context <span style="color:#5ed;font-weight:bold">ctx</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> InitialContext();
+<span style="color:#666;font-style:italic">/* získame objekt typu DataSource -- poskytovateľa pripojení. Získame
+</span><span style="color:#666;font-style:italic">   ho podľa jednoznačného identifikátora, ktorý sme nastavili
+</span><span style="color:#666;font-style:italic">   v kontexte webaplikácie. java:comp/env/ je štandardná predpona
+</span><span style="color:#666;font-style:italic">   v Tomcate
+</span><span style="color:#666;font-style:italic">*/</span>
+DataSource <span style="color:#5ed;font-weight:bold">ds</span> <span style="color:#333">=</span> (DataSource) ctx.<span style="color:#007">lookup</span>(<span style="background-color:#e0e0ff">&#34;java:comp/env/jdbc/db2Test&#34;</span>);
+
+Connection <span style="color:#5ed;font-weight:bold">con</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">null</span>;
+<span style="color:#289;font-weight:bold">try</span> {
+  <span style="color:#666;font-style:italic">// DataSource nám poskytne Connection
+</span><span style="color:#666;font-style:italic"></span>  con <span style="color:#333">=</span> ds.<span style="color:#007">getConnection</span>();
+  ... 
+  tu <span style="color:#5ed;font-weight:bold">využívame</span> Connection
+  ...
+} <span style="color:#289;font-weight:bold">finally</span> {
+  <span style="color:#289;font-weight:bold">if</span> (con <span style="color:#333">!=</span> <span style="color:#289;font-weight:bold">null</span>)
+    <span style="color:#666;font-style:italic">//uzavrieme pripojenie (to sa &#34;v tichosti&#34; vráti do poolu)
+</span><span style="color:#666;font-style:italic"></span>    con.<span style="color:#007">close</span>();
+}</code></pre></div>
+<p>Vidíme, že návrat pripojenia do poolu sa deje takmer automaticky. Uzavretím pripojenia sa pripojenie vráti do poolu, pričom programátor toto nemusí nijak špeciálne obslúžiť.</p>
+
+<p>Vidíme, že návrat pripojenia do poolu sa deje takmer automaticky. Uzavretím pripojenia sa pripojenie vráti do poolu, pričom programátor toto nemusí nijak špeciálne obslúžiť.</p>
+
+<h2 id="ďalšie-možnosti">Ďalšie možnosti</h2>
+
+<p>Existuje ešte množstvo ďalších konfiguračných nastavení &ndash; napr. automatické vracanie dlhšie nevyužívaných alebo nekorektne uzatvorených pripojení do poolu a pod. Bližšie informácie možno nájsť v JNDI DataSource How-to,
+ktoré je súčasťou dokumentácie Tomcat-a. Vo verzii 4.1.18 je na adrese
+<a href="http://localhost:8080/tomcat-docs/jndi-datasource-examples-howto.html">http://localhost:8080/tomcat-docs/jndi-datasource-examples-howto.html</a> (localhost:8080 je server a číslo portu, je ho potrebné prispôsobiť lokálnym podmienkam)</p>
+
+</main>
+
+    <footer>
+      
+<script>
+(function() {
+  function center_el(tagName) {
+    var tags = document.getElementsByTagName(tagName), i, tag;
+    for (i = 0; i < tags.length; i++) {
+      tag = tags[i];
+      var parent = tag.parentElement;
+      
+      if (parent.childNodes.length === 1) {
+        
+        if (parent.nodeName === 'A') {
+          parent = parent.parentElement;
+          if (parent.childNodes.length != 1) continue;
+        }
+        if (parent.nodeName === 'P') parent.style.textAlign = 'center';
+      }
+    }
+  }
+  var tagNames = ['img', 'embed', 'object'];
+  for (var i = 0; i < tagNames.length; i++) {
+    center_el(tagNames[i]);
+  }
+})();
+</script>
+
+      
+    </footer>
+  </body>
+</html>
+

@@ -147,27 +147,27 @@ pomocou atribútu name.</p>
 
 <p>Prejdime teraz k samotnej triede s názvom
 <code>exchangerates.ExchangeRateForm</code>.</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">package</span> <span style="color:#0e84b5;font-weight:bold">exchangerates</span><span style="color:#333">;</span>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">package</span> <span style="color:#5ed;font-weight:bold">exchangerates</span>;
 
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">java.io.IOException</span><span style="color:#333">;</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">java</span>.<span style="color:#007">io</span>.<span style="color:#007">IOException</span>;
 
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">thinlet.FrameLauncher</span><span style="color:#333">;</span>
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">thinlet.Thinlet</span><span style="color:#333">;</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">thinlet</span>.<span style="color:#007">FrameLauncher</span>;
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">thinlet</span>.<span style="color:#007">Thinlet</span>;
 
-<span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">ExchangeRateForm</span> <span style="color:#289;font-weight:bold">extends</span> Thinlet <span style="color:#333">{</span>
-    <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">ExchangeRateForm</span><span style="color:#333">()</span> <span style="color:#333">{</span>
-        <span style="color:#289;font-weight:bold">try</span> <span style="color:#333">{</span>
-            add<span style="color:#333">(</span>parse<span style="color:#333">(</span>getClass<span style="color:#333">().</span><span style="color:#007">getSimpleName</span><span style="color:#333">()</span> <span style="color:#333">+</span> <span style="background-color:#e0e0ff">&#34;.xml&#34;</span><span style="color:#333">));</span>
-        <span style="color:#333">}</span> <span style="color:#289;font-weight:bold">catch</span> <span style="color:#333">(</span>IOException e<span style="color:#333">)</span> <span style="color:#333">{</span>
-            <span style="color:#289;font-weight:bold">throw</span> <span style="color:#289;font-weight:bold">new</span> IllegalStateException<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;Illegal or missing form definition.&#34;</span><span style="color:#333">,</span> e<span style="color:#333">);</span>
-        <span style="color:#333">}</span>
-    <span style="color:#333">}</span>
+<span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> ExchangeRateForm <span style="color:#5ed;font-weight:bold">extends</span> Thinlet {
+    <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">ExchangeRateForm</span>() {
+        <span style="color:#289;font-weight:bold">try</span> {
+            add(parse(getClass().<span style="color:#007">getSimpleName</span>() <span style="color:#333">+</span> <span style="background-color:#e0e0ff">&#34;.xml&#34;</span>));
+        } <span style="color:#289;font-weight:bold">catch</span> (IOException <span style="color:#5ed;font-weight:bold">e</span>) {
+            <span style="color:#289;font-weight:bold">throw</span> <span style="color:#289;font-weight:bold">new</span> IllegalStateException(<span style="background-color:#e0e0ff">&#34;Illegal or missing form definition.&#34;</span>, e);
+        }
+    }
 
-    <span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">static</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">main</span><span style="color:#333">(</span>String<span style="color:#333">[]</span> args<span style="color:#333">)</span> <span style="color:#333">{</span>
-        FrameLauncher frameLauncher <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> FrameLauncher<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;Exchange Rate&#34;</span><span style="color:#333">,</span> <span style="color:#289;font-weight:bold">new</span> ExchangeRateForm<span style="color:#333">(),</span> 320<span style="color:#333">,</span> 200<span style="color:#333">);</span>
-        frameLauncher<span style="color:#333">.</span><span style="color:#007">pack</span><span style="color:#333">();</span>
-    <span style="color:#333">}</span>
-<span style="color:#333">}</span></code></pre></div>
+    <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">static</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">main</span>(String[] <span style="color:#5ed;font-weight:bold">args</span>) {
+        FrameLauncher <span style="color:#5ed;font-weight:bold">frameLauncher</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> FrameLauncher(<span style="background-color:#e0e0ff">&#34;Exchange Rate&#34;</span>, <span style="color:#289;font-weight:bold">new</span> ExchangeRateForm(), 320, 200);
+        frameLauncher.<span style="color:#007">pack</span>();
+    }
+}</code></pre></div>
 <p>Trieda dedí od triedy <code>thinlet.Thinlet</code> a v rámci konštruktora načíta
 svoju definíciu z XML súboru, ktorý má rovnaké meno ako ona a nachádza
 sa v rovnakom balíčku. Samozrejme, možno zvoliť ľubovoľnú inú konvenciu,
@@ -220,51 +220,51 @@ ktorých je pre programové spracovanie najefektívnejší XML. Aktuálne
 <p>Stiahnime si triedu <a href="???"><code>exchangerates.ExchangeRateService</code></a> a
 pridajme si ju do projektu. Táto trieda obsahuje jedinú metódu
 getCurrentExchange(), do ktorej uvedieme kód meny.</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">package</span> <span style="color:#0e84b5;font-weight:bold">exchangerates</span><span style="color:#333">;</span>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">package</span> <span style="color:#5ed;font-weight:bold">exchangerates</span>;
 
-<span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">ExchangeRateService</span> <span style="color:#333">{</span>
-    <span style="color:#289;font-weight:bold">public</span> BigDecimal <span style="color:#5ed;font-weight:bold">getCurrentExchange</span><span style="color:#333">(</span>String currencyCode<span style="color:#333">)</span> <span style="color:#289;font-weight:bold">throws</span> CurrencyException <span style="color:#333">{</span>
-        String urlString <span style="color:#333">=</span> <span style="background-color:#e0e0ff">&#34;http://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml&#34;</span><span style="color:#333">;</span>
-        <span style="color:#289;font-weight:bold">try</span> <span style="color:#333">{</span>
-            InputStream in <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> URL<span style="color:#333">(</span>urlString<span style="color:#333">).</span><span style="color:#007">openStream</span><span style="color:#333">();</span>
-            DocumentBuilderFactory documentBuilderFactory <span style="color:#333">=</span> DocumentBuilderFactory<span style="color:#333">.</span><span style="color:#007">newInstance</span><span style="color:#333">();</span>
-            Document document <span style="color:#333">=</span> documentBuilderFactory<span style="color:#333">.</span><span style="color:#007">newDocumentBuilder</span><span style="color:#333">().</span><span style="color:#007">parse</span><span style="color:#333">(</span>in<span style="color:#333">);</span>
+<span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> ExchangeRateService {
+    <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">BigDecimal</span> getCurrentExchange(String <span style="color:#5ed;font-weight:bold">currencyCode</span>) <span style="color:#289;font-weight:bold">throws</span> <span style="color:#5ed;font-weight:bold">CurrencyException</span> {
+        String <span style="color:#5ed;font-weight:bold">urlString</span> <span style="color:#333">=</span> <span style="background-color:#e0e0ff">&#34;http://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml&#34;</span>;
+        <span style="color:#289;font-weight:bold">try</span> {
+            InputStream <span style="color:#5ed;font-weight:bold">in</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> URL(urlString).<span style="color:#007">openStream</span>();
+            DocumentBuilderFactory <span style="color:#5ed;font-weight:bold">documentBuilderFactory</span> <span style="color:#333">=</span> DocumentBuilderFactory.<span style="color:#007">newInstance</span>();
+            Document <span style="color:#5ed;font-weight:bold">document</span> <span style="color:#333">=</span> documentBuilderFactory.<span style="color:#007">newDocumentBuilder</span>().<span style="color:#007">parse</span>(in);
             
-            NodeList cubeElements <span style="color:#333">=</span> document<span style="color:#333">.</span><span style="color:#007">getElementsByTagName</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;Cube&#34;</span><span style="color:#333">);</span>
-            BigDecimal result <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">null</span><span style="color:#333">;</span>
-            <span style="color:#289;font-weight:bold">for</span><span style="color:#333">(</span><span style="color:#66f;font-weight:bold">int</span> i <span style="color:#333">=</span> 0<span style="color:#333">;</span> i <span style="color:#333">&lt;</span> cubeElements<span style="color:#333">.</span><span style="color:#007">getLength</span><span style="color:#333">();</span> i<span style="color:#333">++)</span> <span style="color:#333">{</span>
-                Element cubeElement <span style="color:#333">=</span> <span style="color:#333">(</span>Element<span style="color:#333">)</span> cubeElements<span style="color:#333">.</span><span style="color:#007">item</span><span style="color:#333">(</span>i<span style="color:#333">);</span>
-                <span style="color:#289;font-weight:bold">if</span><span style="color:#333">(</span>currencyCode<span style="color:#333">.</span><span style="color:#007">equals</span><span style="color:#333">(</span>cubeElement<span style="color:#333">.</span><span style="color:#007">getAttribute</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;currency&#34;</span><span style="color:#333">)))</span> <span style="color:#333">{</span>
-                    result <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> BigDecimal<span style="color:#333">(</span>cubeElement<span style="color:#333">.</span><span style="color:#007">getAttribute</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;rate&#34;</span><span style="color:#333">));</span>
-                    <span style="color:#289;font-weight:bold">return</span> result<span style="color:#333">;</span>
-                <span style="color:#333">}</span>
-            <span style="color:#333">}</span>
-            <span style="color:#289;font-weight:bold">return</span> result<span style="color:#333">;</span>
-        <span style="color:#333">}</span> <span style="color:#289;font-weight:bold">catch</span> <span style="color:#333">(</span>MalformedURLException e<span style="color:#333">)</span> <span style="color:#333">{</span>
-            <span style="color:#289;font-weight:bold">throw</span> <span style="color:#289;font-weight:bold">new</span> CurrencyException<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;Illegal URL for currency service: &#34;</span> <span style="color:#333">+</span> urlString<span style="color:#333">,</span> e<span style="color:#333">);</span>
-        <span style="color:#333">}</span> <span style="color:#289;font-weight:bold">catch</span> <span style="color:#333">(</span>IOException e<span style="color:#333">)</span> <span style="color:#333">{</span>
-            <span style="color:#289;font-weight:bold">throw</span> <span style="color:#289;font-weight:bold">new</span> CurrencyException<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;I/O error while retrieving currency rates data &#34;</span> <span style="color:#333">+</span> e<span style="color:#333">.</span><span style="color:#007">getMessage</span><span style="color:#333">(),</span> e<span style="color:#333">);</span>
-        <span style="color:#333">}</span> <span style="color:#289;font-weight:bold">catch</span> <span style="color:#333">(</span>SAXException e<span style="color:#333">)</span> <span style="color:#333">{</span>
-            <span style="color:#289;font-weight:bold">throw</span> <span style="color:#289;font-weight:bold">new</span> CurrencyException<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;Error while parsing XML response from server: &#34;</span> <span style="color:#333">+</span> e<span style="color:#333">.</span><span style="color:#007">getMessage</span><span style="color:#333">(),</span> e<span style="color:#333">);</span>
-        <span style="color:#333">}</span> <span style="color:#289;font-weight:bold">catch</span> <span style="color:#333">(</span>ParserConfigurationException e<span style="color:#333">)</span> <span style="color:#333">{</span>
-            <span style="color:#289;font-weight:bold">throw</span> <span style="color:#289;font-weight:bold">new</span> CurrencyException<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;Error while configuring response parser from server: &#34;</span> <span style="color:#333">+</span> e<span style="color:#333">.</span><span style="color:#007">getMessage</span><span style="color:#333">(),</span> e<span style="color:#333">);</span>
-        <span style="color:#333">}</span> <span style="color:#289;font-weight:bold">catch</span> <span style="color:#333">(</span>NumberFormatException e<span style="color:#333">)</span> <span style="color:#333">{</span>
-            <span style="color:#289;font-weight:bold">throw</span> <span style="color:#289;font-weight:bold">new</span> CurrencyException<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;Exchange rate is not a string.&#34;</span><span style="color:#333">);</span>
-        <span style="color:#333">}</span>
-    <span style="color:#333">}</span>
-<span style="color:#333">}</span></code></pre></div>
+            NodeList <span style="color:#5ed;font-weight:bold">cubeElements</span> <span style="color:#333">=</span> document.<span style="color:#007">getElementsByTagName</span>(<span style="background-color:#e0e0ff">&#34;Cube&#34;</span>);
+            BigDecimal <span style="color:#5ed;font-weight:bold">result</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">null</span>;
+            <span style="color:#289;font-weight:bold">for</span>(<span style="color:#66f;font-weight:bold">int</span> <span style="color:#5ed;font-weight:bold">i</span> <span style="color:#333">=</span> 0; i <span style="color:#333">&lt;</span> cubeElements.<span style="color:#007">getLength</span>(); i<span style="color:#333">++</span>) {
+                Element <span style="color:#5ed;font-weight:bold">cubeElement</span> <span style="color:#333">=</span> (Element) cubeElements.<span style="color:#007">item</span>(i);
+                <span style="color:#289;font-weight:bold">if</span>(currencyCode.<span style="color:#007">equals</span>(cubeElement.<span style="color:#007">getAttribute</span>(<span style="background-color:#e0e0ff">&#34;currency&#34;</span>))) {
+                    result <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> BigDecimal(cubeElement.<span style="color:#007">getAttribute</span>(<span style="background-color:#e0e0ff">&#34;rate&#34;</span>));
+                    <span style="color:#289;font-weight:bold">return</span> result;
+                }
+            }
+            <span style="color:#289;font-weight:bold">return</span> result;
+        } <span style="color:#289;font-weight:bold">catch</span> (MalformedURLException <span style="color:#5ed;font-weight:bold">e</span>) {
+            <span style="color:#289;font-weight:bold">throw</span> <span style="color:#289;font-weight:bold">new</span> CurrencyException(<span style="background-color:#e0e0ff">&#34;Illegal URL for currency service: &#34;</span> <span style="color:#333">+</span> urlString, e);
+        } <span style="color:#289;font-weight:bold">catch</span> (IOException <span style="color:#5ed;font-weight:bold">e</span>) {
+            <span style="color:#289;font-weight:bold">throw</span> <span style="color:#289;font-weight:bold">new</span> CurrencyException(<span style="background-color:#e0e0ff">&#34;I/O error while retrieving currency rates data &#34;</span> <span style="color:#333">+</span> e.<span style="color:#007">getMessage</span>(), e);
+        } <span style="color:#289;font-weight:bold">catch</span> (SAXException <span style="color:#5ed;font-weight:bold">e</span>) {
+            <span style="color:#289;font-weight:bold">throw</span> <span style="color:#289;font-weight:bold">new</span> CurrencyException(<span style="background-color:#e0e0ff">&#34;Error while parsing XML response from server: &#34;</span> <span style="color:#333">+</span> e.<span style="color:#007">getMessage</span>(), e);
+        } <span style="color:#289;font-weight:bold">catch</span> (ParserConfigurationException <span style="color:#5ed;font-weight:bold">e</span>) {
+            <span style="color:#289;font-weight:bold">throw</span> <span style="color:#289;font-weight:bold">new</span> CurrencyException(<span style="background-color:#e0e0ff">&#34;Error while configuring response parser from server: &#34;</span> <span style="color:#333">+</span> e.<span style="color:#007">getMessage</span>(), e);
+        } <span style="color:#289;font-weight:bold">catch</span> (NumberFormatException <span style="color:#5ed;font-weight:bold">e</span>) {
+            <span style="color:#289;font-weight:bold">throw</span> <span style="color:#289;font-weight:bold">new</span> CurrencyException(<span style="background-color:#e0e0ff">&#34;Exchange rate is not a string.&#34;</span>);
+        }
+    }
+}</code></pre></div>
 <p>Ďalej dodáme do triedy <code>ExchangeRateForm</code> príslušnú metódu s hlavičkou
 public void loadExchangeRates(). Prvotný nástrel vyzerá nasledovne:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">loadExchangeRates</span><span style="color:#333">()</span> <span style="color:#333">{</span>
-    <span style="color:#289;font-weight:bold">try</span> <span style="color:#333">{</span>
-        ExchangeRateService service <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> ExchangeRateService<span style="color:#333">();</span>
-        BigDecimal currentExchange <span style="color:#333">=</span> service<span style="color:#333">.</span><span style="color:#007">getCurrentExchange</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;USD&#34;</span><span style="color:#333">);</span>
-        <span style="color:#289;font-weight:bold">if</span><span style="color:#333">(</span>currentExchange <span style="color:#333">!=</span> <span style="color:#289;font-weight:bold">null</span><span style="color:#333">)</span> <span style="color:#333">{</span>
-        <span style="color:#333">}</span>
-    <span style="color:#333">}</span> <span style="color:#289;font-weight:bold">catch</span> <span style="color:#333">(</span>CurrencyException e<span style="color:#333">)</span> <span style="color:#333">{</span>
-        e<span style="color:#333">.</span><span style="color:#007">printStackTrace</span><span style="color:#333">();</span>
-    <span style="color:#333">}</span>
-<span style="color:#333">}</span></code></pre></div>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">void</span> loadExchangeRates() {
+    <span style="color:#289;font-weight:bold">try</span> {
+        ExchangeRateService <span style="color:#5ed;font-weight:bold">service</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> ExchangeRateService();
+        BigDecimal <span style="color:#5ed;font-weight:bold">currentExchange</span> <span style="color:#333">=</span> service.<span style="color:#007">getCurrentExchange</span>(<span style="background-color:#e0e0ff">&#34;USD&#34;</span>);
+        <span style="color:#289;font-weight:bold">if</span>(currentExchange <span style="color:#333">!=</span> <span style="color:#289;font-weight:bold">null</span>) {
+        }
+    } <span style="color:#289;font-weight:bold">catch</span> (CurrencyException <span style="color:#5ed;font-weight:bold">e</span>) {
+        e.<span style="color:#007">printStackTrace</span>();
+    }
+}</code></pre></div>
 <p>Ako uvedieme získaný kurz do požadovaného textového políčka? Každý
 ovládací prvok v Thinlete môže byť v XML definícii pomenovaný pomocou
 atribútu name, ktorý slúži v Java kóde ako jeho identifikátor. Dodajme
@@ -273,10 +273,10 @@ teda do textového políčka token atribút name s hodnotou exchangeRate:</p>
 <p>Pomocou metódy <code>find()</code> vieme nájsť ovládací komponent podľa mena, a
 využitím metódy setStringValue() programovo nastaviť hodnotu konkrétneho
 ovládacieho prvku.</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">BigDecimal currentExchange <span style="color:#333">=</span> service<span style="color:#333">.</span><span style="color:#007">getCurrentExchange</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;USD&#34;</span><span style="color:#333">);</span>
-<span style="color:#289;font-weight:bold">if</span><span style="color:#333">(</span>currentExchange <span style="color:#333">!=</span> <span style="color:#289;font-weight:bold">null</span><span style="color:#333">)</span> <span style="color:#333">{</span>
-    setString<span style="color:#333">(</span>find<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;exchangeRate&#34;</span><span style="color:#333">),</span> <span style="background-color:#e0e0ff">&#34;text&#34;</span><span style="color:#333">,</span> currentExchange<span style="color:#333">.</span><span style="color:#007">toString</span><span style="color:#333">());</span>
-<span style="color:#333">}</span></code></pre></div>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">BigDecimal <span style="color:#5ed;font-weight:bold">currentExchange</span> <span style="color:#333">=</span> service.<span style="color:#007">getCurrentExchange</span>(<span style="background-color:#e0e0ff">&#34;USD&#34;</span>);
+<span style="color:#289;font-weight:bold">if</span>(currentExchange <span style="color:#333">!=</span> <span style="color:#289;font-weight:bold">null</span>) {
+    setString(find(<span style="background-color:#e0e0ff">&#34;exchangeRate&#34;</span>), <span style="background-color:#e0e0ff">&#34;text&#34;</span>, currentExchange.<span style="color:#007">toString</span>());
+}</code></pre></div>
 <p>Metóda <code>find()</code> vracia prekvapivo inštanciu typu <code>Object</code>. To zodpovedá
 implementačnej filozofii Thinletu, kde je prvotnou ideou jednoduchosť a
 minimalistickosť kódu (hoci na úkor rozumného návrhu). Ovládacie prvky
@@ -289,15 +289,15 @@ ktorá sa má zmeniť a nakoniec jej hodnota.</p>
 
 <p>Samotné volanie metódy <code>loadExchangeRates()</code> môžeme vykonať v
 konštruktore:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">ExchangeRateForm</span><span style="color:#333">()</span> <span style="color:#333">{</span>
-    <span style="color:#289;font-weight:bold">try</span> <span style="color:#333">{</span>
-        add<span style="color:#333">(</span>parse<span style="color:#333">(</span>getClass<span style="color:#333">().</span><span style="color:#007">getSimpleName</span><span style="color:#333">()</span> <span style="color:#333">+</span> <span style="background-color:#e0e0ff">&#34;.xml&#34;</span><span style="color:#333">));</span>
-        loadExchangeRates<span style="color:#333">();</span>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">ExchangeRateForm</span>() {
+    <span style="color:#289;font-weight:bold">try</span> {
+        add(parse(getClass().<span style="color:#007">getSimpleName</span>() <span style="color:#333">+</span> <span style="background-color:#e0e0ff">&#34;.xml&#34;</span>));
+        loadExchangeRates();
 
-    <span style="color:#333">}</span> <span style="color:#289;font-weight:bold">catch</span> <span style="color:#333">(</span>IOException e<span style="color:#333">)</span> <span style="color:#333">{</span>
-        <span style="color:#289;font-weight:bold">throw</span> <span style="color:#289;font-weight:bold">new</span> IllegalStateException<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;Illegal or missing form definition.&#34;</span><span style="color:#333">,</span> e<span style="color:#333">);</span>
-    <span style="color:#333">}</span>
-<span style="color:#333">}</span></code></pre></div>
+    } <span style="color:#289;font-weight:bold">catch</span> (IOException <span style="color:#5ed;font-weight:bold">e</span>) {
+        <span style="color:#289;font-weight:bold">throw</span> <span style="color:#289;font-weight:bold">new</span> IllegalStateException(<span style="background-color:#e0e0ff">&#34;Illegal or missing form definition.&#34;</span>, e);
+    }
+}</code></pre></div>
 <p>Upravme si teraz formulár tak, aby mal používateľ možnosť zadať vlastný
 kód meny, pre ktorý sa má zistiť aktuálny kurz. Dodajme teda dva
 komponenty: textové políčko pre zadanie kódu (s menom currency) a
@@ -533,19 +533,19 @@ okno skryť, musíme ho z rodičovského okna odobrať, t. j. zavolať metódu
 
 <p>Načítavanie sa môže udiať v konštruktore a načítané okno si uložíme do
 inštančnej premennej.</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">private</span> Object aboutBox<span style="color:#333">;</span>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">private</span> <span style="color:#5ed;font-weight:bold">Object</span> aboutBox;
 
-<span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">ExchangeRateForm</span><span style="color:#333">()</span> <span style="color:#333">{</span>
-    <span style="color:#289;font-weight:bold">try</span> <span style="color:#333">{</span>
-        add<span style="color:#333">(</span>parse<span style="color:#333">(</span>getClass<span style="color:#333">().</span><span style="color:#007">getSimpleName</span><span style="color:#333">()</span> <span style="color:#333">+</span> <span style="background-color:#e0e0ff">&#34;.xml&#34;</span><span style="color:#333">));</span>
-        aboutBox <span style="color:#333">=</span> parse<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;AboutBox.xml&#34;</span><span style="color:#333">);</span>
+<span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">ExchangeRateForm</span>() {
+    <span style="color:#289;font-weight:bold">try</span> {
+        add(parse(getClass().<span style="color:#007">getSimpleName</span>() <span style="color:#333">+</span> <span style="background-color:#e0e0ff">&#34;.xml&#34;</span>));
+        aboutBox <span style="color:#333">=</span> parse(<span style="background-color:#e0e0ff">&#34;AboutBox.xml&#34;</span>);
 
-        loadExchangeRates<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;USD&#34;</span><span style="color:#333">);</span>
+        loadExchangeRates(<span style="background-color:#e0e0ff">&#34;USD&#34;</span>);
 
-    <span style="color:#333">}</span> <span style="color:#289;font-weight:bold">catch</span> <span style="color:#333">(</span>IOException e<span style="color:#333">)</span> <span style="color:#333">{</span>
-        <span style="color:#289;font-weight:bold">throw</span> <span style="color:#289;font-weight:bold">new</span> IllegalStateException<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;Illegal or missing form definition.&#34;</span><span style="color:#333">,</span> e<span style="color:#333">);</span>
-    <span style="color:#333">}</span>
-<span style="color:#333">}</span></code></pre></div>
+    } <span style="color:#289;font-weight:bold">catch</span> (IOException <span style="color:#5ed;font-weight:bold">e</span>) {
+        <span style="color:#289;font-weight:bold">throw</span> <span style="color:#289;font-weight:bold">new</span> IllegalStateException(<span style="background-color:#e0e0ff">&#34;Illegal or missing form definition.&#34;</span>, e);
+    }
+}</code></pre></div>
 <p>To však nie je všetko: potrebujeme ešte dodať ovládací prvok, ktorým
 toto okno zobrazíme. Zabezpečíme to dodaním tlačidla do hlavného okna:</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#070">&lt;panel&gt;</span>
@@ -555,13 +555,13 @@ toto okno zobrazíme. Zabezpečíme to dodaním tlačidla do hlavného okna:</p>
 <p>Poslednou vecou je dodanie dvoch metód, ktoré budú obsluhovať kód:
 jednou z nich zobrazíme okno (metóda <code>showAboutBox()</code>) a druhou ho zase
 schováme (metóda <code>closeAboutBox()</code>).</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">showAboutBox</span><span style="color:#333">()</span> <span style="color:#333">{</span>
-    add<span style="color:#333">(</span>aboutBox<span style="color:#333">);</span>
-<span style="color:#333">}</span>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">void</span> showAboutBox() {
+    add(aboutBox);
+}
 
-<span style="color:#289;font-weight:bold">public</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">closeAboutBox</span><span style="color:#333">()</span> <span style="color:#333">{</span>
-    remove<span style="color:#333">(</span>aboutBox<span style="color:#333">);</span>
-<span style="color:#333">}</span></code></pre></div>
+<span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">void</span> closeAboutBox() {
+    remove(aboutBox);
+}</code></pre></div>
 <p>Po spustení aplikácie a zobrazení okna budeme vidieť nasledovný stav:</p>
 
 <h1 id="implementačné-detaily-a-porovnanie-s-inými-knižnicami">Implementačné detaily a porovnanie s inými knižnicami</h1>

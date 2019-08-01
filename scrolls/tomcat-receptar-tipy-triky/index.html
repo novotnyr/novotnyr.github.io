@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Tomcat – receptár tipov a trikov | robonovotny</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.css" integrity="sha384-D+9gmBxUQogRLqvARvNLmA9hS2x//eK1FhVb9PiU86gmcrBrJAQT8okdJ4LMp2uv" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.js" integrity="sha384-483A6DwYfKeDa0Q52fJmxFXkcPCFfnXMoXblOkJ4JcA8zATN6Tm78UNL72AKk+0O" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/contrib/auto-render.min.js" integrity="sha384-yACMu8JWxKzSp/C1YV86pzGiQ/l1YUfE8oPuahJQxzehAjEt2GiQuy/BIvl9KyeF" crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body);
+        });
+    </script>
+
+<header>
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <nav>
+    <ul>
+      
+      
+      <li class="pull-left ">
+        <a href="http://novotnyr.github.io/">/home/robonovotny</a>
+      </li>
+      
+
+      
+
+    </ul>
+  </nav>
+</header>
+
+  </head>
+
+  <body>
+    <br/>
+
+<div class="article-meta">
+<h1><span class="title">Tomcat – receptár tipov a trikov</span></h1>
+
+<h2 class="date">2008/04/10</h2>
+<p class="terms">
+  
+  
+  
+  
+  
+</p>
+</div>
+
+
+
+<main>
+
+
+<h1 id="zmena-implicitnej-uvítacej-stránky">Zmena implicitnej uvítacej stránky</h1>
+
+<h2 id="tomcat-4-1-x">Tomcat 4.1.x</h2>
+
+<p>Do <code>web.xml</code> stačí vložiť nový kontext</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#070">&lt;Context</span> <span style="color:#007">docBase=</span><span style="background-color:#e0e0ff">&#34;C:\Java\Tomcat\webapps\ROOT&#34;</span> <span style="color:#007">path=</span><span style="background-color:#e0e0ff">&#34;&#34;</span> <span style="color:#007">workDir=</span><span style="background-color:#e0e0ff">&#34;work\Standalone\localhost\_&#34;</span> <span style="color:#070">/&gt;</span></code></pre></div>
+<h2 id="tomcat-5-5-x">Tomcat 5.5.x</h2>
+
+<p>Podľa odporúčaní je vhodné popisy kontextov ukladať do adresára <code>%CATALINA_HOME%\conf\Catalina\localhost</code> (a nie upravovať <code>web.xml</code>). Koreňový kontext zmeníme vytvorením súboru <code>%CATALINA_HOME%\conf\Catalina\localhost\ROOT.xml</code> s obsahom</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#070">&lt;Context</span> <span style="color:#007">docBase=</span><span style="background-color:#e0e0ff">&#34;C:/projects/tomcat-root&#34;</span> <span style="color:#070">/&gt;</span></code></pre></div>
+<h1 id="kompilácia-jsvc-na-64bitovej-fedore">Kompilácia <code>jsvc</code> na 64bitovej Fedore</h1>
+
+<p>Do <code>configure</code> pre <code>jsvc</code> treba okolo riadku 2630 (tam, kde sa detekuje architektúra) pridať do <code>case</code> vetvenia riadok</p>
+
+<pre><code>x86_64)
+    CFLAGS=&quot;$CFLAGS -DCPU=\\\&quot;i686\\\&quot;&quot; ;;
+</code></pre>
+
+<p>Potom sa pokračuje v inštalácii normálne (<code>./configure</code>, <code>make</code>&hellip;).</p>
+
+<h1 id="tomcat-5-5-x-ako-service-bez-jsvc">Tomcat 5.5.x ako service bez <code>jsvc</code></h1>
+
+<pre><code>#!/bin/bash
+
+# This is the init script for starting up the 
+# Jakarta Tomcat server
+#
+#  chkconfig: 345 91 10 
+#  description: Starts and stops the Tomcat daemon.
+#
+#
+#  Source function library.
+. /etc/rc.d/init.d/functions
+
+#  Get config.
+. /etc/sysconfig/network
+
+#  Check that networking is up.
+[ &quot;${NETWORKING}&quot; = &quot;no&quot; ] &amp;&amp; exit 0
+
+CATALINA_HOME=/opt/tomcat
+startup=$CATALINA_HOME/bin/startup.sh
+shutdown=$CATALINA_HOME/bin/shutdown.sh
+JAVA_HOME=/usr/java/jdk
+
+export CATALINA_HOME JAVA_HOME
+
+start(){
+    echo -n $&quot;Starting tomcat service: &quot; 
+    echo
+    $startup
+    RETVAL=$?
+    echo
+}
+
+stop(){
+    action $&quot;Stopping tomcat service: &quot; $shutdown   
+    RETVAL=$?
+    echo
+}
+
+restart(){
+    stop
+    start
+}
+
+
+#  See how we were called.
+case &quot;$1&quot; in
+  start)
+    start
+    ;;
+  stop)
+    stop
+    ;;
+  status)
+    numproc=`ps -ef | grep catalina | grep -v &quot;grep catalina&quot; | wc -l`
+    if [ $numproc -gt 0 ]; then
+      echo &quot;Tomcat is running...&quot;
+    else
+      echo &quot;Tomcat is stopped...&quot;
+    fi
+    ;;
+  restart)
+    restart
+    ;;
+  *)
+    echo $&quot;Usage: $0 {start|stop|status|restart}&quot;
+    exit 1
+esac
+
+exit 0
+</code></pre>
+
+<h1 id="tomcat-5-5-a-mod-jk">Tomcat 5.5 a mod_jk</h1>
+
+<p>Súbor <code>mod_jk.conf</code>:</p>
+
+<pre><code>&lt;IfModule !mod_jk.c&gt;
+  LoadModule jk_module &quot;/usr/share/tomcat-connector/mod_jk.so&quot;
+&lt;/IfModule&gt;
+
+
+JkWorkersFile /usr/share/tomcat/conf/workers.properties
+JkLogFile     /var/log/httpd/mod_jk.log
+JkLogLevel    debug
+
+JkMount /jorge worker1
+JkMount /jorge/* worker1
+
+Alias /jorge /home/jorge/webapp
+</code></pre>
+
+<p>Súbor <code>mod_jk.conf</code> includeneme do hlavneho konfiguraku Apache HTTPD. V <code>httpd.conf</code> uvedieme direktivu</p>
+
+<pre><code>Include cesta_k_mod_jk/mod_jk.conf
+</code></pre>
+
+<p>Alternatívne môžeme vyššie uvedený obsah rovno vložiť do <code>httpd.conf</code>.</p>
+
+<p>Riadky</p>
+
+<pre><code>JkMount /jorge worker1
+JkMount /jorge/* worker1
+
+Alias /jorge /home/jorge/webapp
+</code></pre>
+
+<p>sa vzťahujú na konkrétnu webovú aplikáciu, ktorá sa má obsluhovať Apacheom. V príklade máme skonfigurovanú webovú aplikáciu <code>jorge</code>.</p>
+
+<h3 id="súbor-workers-properties">Súbor <code>workers.properties</code></h3>
+
+<pre><code>%
+# Define 1 real worker using ajp13
+worker.list=worker1
+# Set properties for worker1 (ajp13)
+worker.worker1.type=ajp13
+worker.worker1.host=localhost
+worker.worker1.port=8009
+worker.worker1.cachesize=10
+worker.worker1.cache_timeout=600
+worker.worker1.socket_keepalive=1
+worker.worker1.recycle_timeout=300
+</code></pre>
+
+<h3 id="tomcatovsky-server-xml">Tomcatovsky <code>server.xml</code></h3>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#070">&lt;Listener</span> <span style="color:#007">className=</span><span style="background-color:#e0e0ff">&#34;org.apache.jk.config.ApacheConfig&#34;</span> <span style="color:#007">modJk=</span><span style="background-color:#e0e0ff">&#34;/usr/share/tomcat-connector/mod_jk.so&#34;</span> <span style="color:#070">/&gt;</span></code></pre></div>
+<p>pod <code>Engine</code> element.</p>
+
+<h1 id="prepojenie-tomcat-a-apache-httpd-prepojenie-cez-mod-proxy-ajp">Prepojenie Tomcat a Apache HTTPD prepojenie cez <code>mod_proxy_ajp</code></h1>
+
+<p>Tomcat 5.5 vo Fedore 6 automaticky podporuje na porte 8009 protokol AJP. Stačí nakonfigurovať <code>mod_proxy_ajp</code>:</p>
+
+<pre><code>[root@server] cat /etc/httpd/conf.d/proxy_ajp.conf
+LoadModule proxy_ajp_module modules/mod_proxy_ajp.so
+ProxyPass /blog ajp://localhost:8009/blog
+</code></pre>
+
+<h1 id="tomcat-6-na-fedore-core-6-manualna-instalacia">Tomcat 6 na Fedore Core 6, manualna instalacia</h1>
+
+<p><a href="http://www.2nrds.com/installing-and-running-apache-tomcat-in-linux">http://www.2nrds.com/installing-and-running-apache-tomcat-in-linux</a></p>
+
+<h1 id="servletcontextlistener-nenájdený"><code>ServletContextListener</code> nenájdený?</h1>
+
+<p>Máte chybovú hlášku typu</p>
+
+<pre><code>org.apache.catalina.core.StandardContext listenerStart
+SEVERE: Error configuring application listener of class org.springframework.web.context.ContextLoaderListener
+java.lang.NoClassDefFoundError: javax/servlet/ServletContextListener
+</code></pre>
+
+<p>Príčinou je zmätočná dokumentácia Tomcatu. Niekedy medzi podverziami verzie 5.5.x sa prepracovala trieda <code>Loader</code>. Automatické načítavanie kontextu je možné nastaviť nasledovne. Pôvodnú verziu (platnú u mňa ešte vo verzii 5.5.17)</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#070">&lt;Context</span> <span style="color:#007">docBase=</span><span style="background-color:#e0e0ff">&#34;D:/projects/libris/web&#34;</span> <span style="color:#007">reloadable=</span><span style="background-color:#e0e0ff">&#34;true&#34;</span><span style="color:#070">&gt;</span>
+  <span style="color:#070">&lt;Loader</span> <span style="color:#007">checkInterval=</span><span style="background-color:#e0e0ff">&#34;3&#34;</span> <span style="color:#070">/&gt;</span>
+<span style="color:#070">&lt;/Context&gt;</span></code></pre></div>
+<p>je potrebné nahradiť verziou</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#070">&lt;Context</span> <span style="color:#007">docBase=</span><span style="background-color:#e0e0ff">&#34;D:/projects/libris/web&#34;</span> <span style="color:#007">reloadable=</span><span style="background-color:#e0e0ff">&#34;true&#34;</span> 
+         <span style="color:#007">backgroundProcessorDelay=</span><span style="background-color:#e0e0ff">&#34;3&#34;</span> <span style="color:#070">/&gt;</span></code></pre></div>
+<h1 id="logovanie-cez-log4j-pre-každú-webaplikáciu-zvlášť">Logovanie cez log4j pre každú webaplikáciu zvlášť.</h1>
+
+<p><a href="http://tomcat.apache.org/tomcat-5.5-doc/logging.html">Dokumentácia</a> Tomcatu uvádza spôsob, ako zaviesť logovanie pre každú webaplikáciu zvlášť.</p>
+
+<ol>
+<li>Vytvoriť <code>log4j.properties</code> a uložiť ho do <code>common/classes</code></li>
+<li>Vložiť JAR pre log4j do <code>common/lib</code></li>
+<li>Vložiť <code>commons-logging.jar</code> do <code>common/lib</code></li>
+<li>Vložiť JAR pre log4j a JAR pre commons-logging do <code>lib</code> adresára webovej aplikácie</li>
+<li>Vytvoriť <code>log4j.properties</code> a uložiť ho do <code>classes</code> adresára webovej aplikácie</li>
+</ol>
+
+<p>Dokumentácia zabudla spomenúť, že do LIB adresára treba popri JARe pre log4j skopírovať aj JAR pre commons-logging.</p>
+
+<h1 id="tomcat-a-ssl">Tomcat a SSL</h1>
+
+<h2 id="povolenie-ssl">Povolenie SSL</h2>
+
+<p>Instalacia SSL do Tomcata je <a href="http://tomcat.apache.org/tomcat-5.5-doc/ssl-howto.html">pekne popisana v jeho dokumentacii</a>. Prikazom</p>
+
+<pre><code>%JAVA_HOME%\bin\keytool -genkey -alias tomcat -keyalg RSA
+</code></pre>
+
+<p>sa vytvori novy subor <code>.keystore</code> v domovskom adresari uzivatela.</p>
+
+<p>V tomcatovskom <code>server.xml</code> staci potom odkomentovat SSL Connector pre HTTP/1.1.</p>
+
+<h2 id="klientska-aplikacia-na-pripojenie-k-tomcatu">Klientska aplikacia na pripojenie k Tomcatu.</h2>
+
+<h3 id="export-certifikatu-zo-servera">Export certifikatu zo servera</h3>
+
+<ul>
+<li>Pomocou Internet Explorera sa pripojime k Tomcatu. Objavi sa varovanie o neplatnom certifikate. Nechame si ho zobrazit a exportujeme ho v tvare Base64 napr. do <code>certifikat.cer</code>. Tento certifikat importneme do klientskeho truststore (vid dalsia sekcia)</li>
+</ul>
+
+<h3 id="importovanie-selfsigned-certifikatu-do-klientskej-aplikacie">Importovanie selfsigned certifikatu do klientskej aplikacie</h3>
+
+<p>Z prikazoveho riadku spustime (cely prikaz je na jednom riadku!)</p>
+
+<pre><code>keytool -import -trustcacerts -file d:\certifikat.cer 
+        -keystore c:\java\jdk-1.5.0_04\jre\lib\security\cacerts 
+        -alias tomkat 
+</code></pre>
+
+<h3 id="ladenie-ssl">Ladenie SSL</h3>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">System.<span style="color:#007">setProperty</span>(<span style="background-color:#e0e0ff">&#34;javax.net.debug&#34;</span>, <span style="background-color:#e0e0ff">&#34;ssl&#34;</span>);</code></pre></div>
+<p>zapne ladiace vypisy na standardny vystup.</p>
+
+<h3 id="testovacia-aplikacia">Testovacia aplikacia</h3>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> SSLTest {
+  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">static</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">main</span>(String[] <span style="color:#5ed;font-weight:bold">args</span>) <span style="color:#289;font-weight:bold">throws</span> <span style="color:#5ed;font-weight:bold">Exception</span> {
+    System.<span style="color:#007">setProperty</span>(<span style="background-color:#e0e0ff">&#34;javax.net.debug&#34;</span>, <span style="background-color:#e0e0ff">&#34;all&#34;</span>);
+    System.<span style="color:#007">out</span>.<span style="color:#007">println</span>(<span style="color:#289;font-weight:bold">new</span> URL(<span style="background-color:#e0e0ff">&#34;https://localhost:8443/&#34;</span>).<span style="color:#007">getContent</span>());
+  }
+}</code></pre></div>
+<h3 id="tomcat-6-a-mod-jk-na-fedore-64-bit">Tomcat 6 a <code>mod_jk</code> na Fedore 64-bit</h3>
+
+<ul>
+<li>stiahnut Tomcat Connector (<a href="http://tomcat.apache.org/connectors-doc/">http://tomcat.apache.org/connectors-doc/</a>)</li>
+<li>yum search apxs</li>
+<li>yum install httpd-devel.x86_64</li>
+<li>cd native</li>
+<li>./configure &ndash;with-apxs=/usr/sbin/apxs</li>
+<li>make</li>
+
+<li><p>make install</p>
+
+<pre><code>Libraries have been installed in:
+/usr/lib64/httpd/modules
+</code></pre></li>
+
+<li><p>konfiguraky ako v pripade Tomcat 5.5</p></li>
+</ul>
+
+</main>
+
+    <footer>
+      
+<script>
+(function() {
+  function center_el(tagName) {
+    var tags = document.getElementsByTagName(tagName), i, tag;
+    for (i = 0; i < tags.length; i++) {
+      tag = tags[i];
+      var parent = tag.parentElement;
+      
+      if (parent.childNodes.length === 1) {
+        
+        if (parent.nodeName === 'A') {
+          parent = parent.parentElement;
+          if (parent.childNodes.length != 1) continue;
+        }
+        if (parent.nodeName === 'P') parent.style.textAlign = 'center';
+      }
+    }
+  }
+  var tagNames = ['img', 'embed', 'object'];
+  for (var i = 0; i < tagNames.length; i++) {
+    center_el(tagNames[i]);
+  }
+})();
+</script>
+
+      
+    </footer>
+  </body>
+</html>
+

@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dobré ráno s jazykom Java | robonovotny</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.css" integrity="sha384-D+9gmBxUQogRLqvARvNLmA9hS2x//eK1FhVb9PiU86gmcrBrJAQT8okdJ4LMp2uv" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.js" integrity="sha384-483A6DwYfKeDa0Q52fJmxFXkcPCFfnXMoXblOkJ4JcA8zATN6Tm78UNL72AKk+0O" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/contrib/auto-render.min.js" integrity="sha384-yACMu8JWxKzSp/C1YV86pzGiQ/l1YUfE8oPuahJQxzehAjEt2GiQuy/BIvl9KyeF" crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body);
+        });
+    </script>
+
+<header>
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <nav>
+    <ul>
+      
+      
+      <li class="pull-left ">
+        <a href="http://novotnyr.github.io/">/home/robonovotny</a>
+      </li>
+      
+
+      
+
+    </ul>
+  </nav>
+</header>
+
+  </head>
+
+  <body>
+    <br/>
+
+<div class="article-meta">
+<h1><span class="title">Dobré ráno s jazykom Java</span></h1>
+
+<h2 class="date">2006/09/20</h2>
+<p class="terms">
+  
+  
+  
+  
+  
+</p>
+</div>
+
+
+
+<main>
+
+
+<h2 id="o-projekte">O projekte</h2>
+
+<p>Majú o vás záujem IT firmy? Zmeškali ste jarné popoludnie s jazykom Java? V rámci predmetu UINF/PAZ1c (2+2) môžete získať (bez nároku na kredity ;-)) teoretické i praktické skúsenosti s jedným z najhorúcejších programovacích jazykov súčasnosti.</p>
+
+<p>Stretnutia budú prebiehať každý týždeň v dvoch podobách: 90 minút (štvrtok o 9.00 v posluchárni P12) budé koncipovaných ako prednáška. Ďalších 90 minút bude venovaných praktickým skúsenostiam v počítačovom laboratóriu (časy sa upresnia).</p>
+
+<p>Na rozdiel od <a href="Java.PopoludnieSJazykomJava">Popoludní s jazykom Java</a> budú tieto stretnutia zamerané viac na idey a princípy objektovo orientovaného programovania a ich aplikovanie v programovacom jazyku Java.</p>
+
+<h2 id="oznamy">Oznamy</h2>
+
+<ul>
+<li>Nezabudnite si čo najskôr vybrať/dohodnúť projekt!</li>
+</ul>
+
+<h2 id="otázky">Otázky?</h2>
+
+<p>Príde Bruce Eckel? Bude sa podávať káva? Dostanem zadarmo zápočet?
+E-mail: <a href="http://ics.upjs.sk/~novotnyr/img/email.gif">http://ics.upjs.sk/~novotnyr/img/email.gif</a></p>
+
+<h2 id="konvencia-o-zasielaní-domácich-úloh">Konvencia o zasielaní domácich úloh</h2>
+
+<p>Domáce úlohy je potrebné zasielať skomprimované v archíve ZIP, RAR, alebo TAR.GZ. Archív musí mať názov typu <code>novotny3.zip</code>, kde namiesto <code>novotny</code> uveďte vlastné priezvisko a namiesto 3 poradové číslo semestra.</p>
+
+<h2 id="návrhy-na-projekty">Návrhy na projekty</h2>
+
+<p>Predbežný návrh projektov. Podmienky sa môžu a budú meniť! Ak niečo nie je jasné, konzultujte. Ak je niečo príliš náročné/ľahké, tiež konzultujte.</p>
+
+<p>Vypracovaním projektu by ste mali preukázať znalosti základných princípov a myšlienok OOP a schopnosť vytvárať programy a nástroje v programovacom jazyku Java. Na projekte môžu spolupracovať maximálne dvaja riešitelia. Každý riešiteľ je však povinný preukázať schopnosť porozumieť svojmu vlastnému projektu a byť schopný v ňom na požiadanie vykonať drobné zmeny. (V preklade: výhovorky ako „ja neviem, čo to robí, lebo to programoval ten druhý&rdquo; neplatia).</p>
+
+<p>Užívateľské rozhranie je typicky realizované cez konzolu (keďže grafickému rozhraniu sme sa nevenovali). Samostatné naštudovanie tvorby grafického rozhrania môže byť ohodnotené dodatočnými bodmi.</p>
+
+<p>Každý projekt by mal obsahovať minimálne 5 tried (testovacie triedy sa nezapočítavajú) a aspoň jeden príklad na použitie dedičnosti.</p>
+
+<h3 id="zoznam-projektov">Zoznam projektov</h3>
+
+<ul>
+<li>Bankomat je referenčným projektom. Na základe tohto projektu môže byť odvodených viacero analogických projektov (obchod, kvetinárstvo, pohrebný ústav&hellip;). %red% Bankomat je už zadaný.</li>
+<li>Evidencia diplomových prác.</li>
+<li>Grafové algoritmy. Trieda pre graf a rôzne typy grafov (ohodnotený graf, orientovaný graf&hellip;). Načítavanie grafových štruktúr zo súboru. Objektovo orientovaná implementácia grafových algoritmy pre hľadanie najkratšej cesty.</li>
+<li>Primitívny textový editor pre konzolu. Textový editor, ktorý pracuje na princípe príkazov v duchu editora vi.</li>
+<li><a href="http://ics.upjs.sk/~novotnyr/home/programovanie/java/jukebox/jukebox.zip">Jukebox</a> je zverejnený ako vzorový projekt. (Predbežná verzia)</li>
+</ul>
+
+<h3 id="zadané-projekty">Zadané projekty</h3>
+
+<ul>
+<li>Exportér databázy. Export dátovej štruktúry a dát v podobe SQL skriptu z databázy MySQL. (Pruzinsky, Skvarkovsky)</li>
+<li>Kalkulačka pre matfyzákov (vymyslel M. Varchula). Podpora štandardných operácií, plus netypických úkonov (matice, determinanty). (Varchula, Vozarikova)</li>
+<li>Bankomat. Informačný systém, ktorý reprezentuje bankomat. Bankomat má dve časti: klientskú a administrátorskú. Klientská časť bankomatu umožňuje operácie, ktoré je možné vidieť v typickom bankomate slovenskej banky. Administrátorská časť umožňuje „vkladať&rdquo; do bankomatu peniaze, sledovať operácie a pod. (Kal, Nagy)</li>
+<li>Viacužívateľský diár. Evidencia dôležitých termínov pre používateľa. Možnosť prihlásenia viacerých používateľov s nezávislou evidenciou pripomienok. Upozornenie na nadchádzajúce termíny po prihlásení. (Frývaldsky, Kopčák)</li>
+<li>Výherný hrací automat. (Horváth, Demčišáková)</li>
+<li>Knižnica (Diheneščíková, Fedorová)</li>
+<li>Spracovanie konfiguračných súborov. Trieda umožňujúca načítavanie konfiguračných súborov vo formáte Windows initialization files a vo formáte XML. (vyžaduje naštudovanie úvodu do XML, možné úľavy v ostatných hľadiskách požiadaviek) (Simal, Palusakova)</li>
+<li>Encyklopédia dostupná z príkazového riadku. Inšpiráciou nech je <a href="http://www.xml.com/pub/a/2004/01/28/ox.html">nástroj Ox</a>. Pridávanie článkov, podpora wikipedie, podpora centrálneho servera&hellip; (Kováčová, Salaková)</li>
+<li>Požičovňa CD (Lazár)</li>
+<li>Elektronická nástenka. Výveska oznamov s podporou viacerých užívateľov a oprávnení. Odosielanie príspevkov, prezeranie najnovších, reakcia na príspevok. (Drvenica, Cienka)</li>
+<li>Cestovná kancelária (Komjatiová+)</li>
+</ul>
+
+<h2 id="realizovaný-program">Realizovaný program</h2>
+
+<h3 id="21-9-2006">21. 9. 2006</h3>
+
+<p>(<a href="http://ics.upjs.sk/~novotnyr/home/skola/programovanie_algoritmy_zlozitost/paz1c-1.ppt">Prezentácia</a>) Formality a byrokracie. Historický úvod. Deklarácia a definovanie premenných. Podmienky a cykly (for, while). Polia.</p>
+
+<h3 id="22-9-2006">22. 9. 2006</h3>
+
+<p>Úlohy, ktoré je potrebné zaslať mailom do 28. 9. 2006, 23.59</p>
+
+<ol>
+<li>Vyskúšajte si program Hello World.</li>
+<li>Dané sú dve polia a = (a&rsquo;<em>1</em>&rsquo;, a&rsquo;<em>2</em>&rsquo;, a&rsquo;<em>3</em>&rsquo;, a&rsquo;<em>4</em>&rsquo;), b = (b&rsquo;<em>1</em>&rsquo;, b&rsquo;<em>2</em>&rsquo;, b&rsquo;<em>3</em>&rsquo;, b&rsquo;<em>4</em>&rsquo;). Vypíšte ich súčet po prvkoch, teda prvky poľa c = (a&rsquo;<em>1</em>&rsquo; + b&rsquo;<em>1</em>&rsquo;, a&rsquo;<em>2</em>&rsquo; + b&rsquo;<em>2</em>&rsquo;, a&rsquo;<em>3</em>&rsquo; + b&rsquo;<em>3</em>&rsquo;, a&rsquo;<em>4</em>&rsquo; + b&rsquo;<em>4</em>&rsquo;).</li>
+<li>Vypíšte prvky poľa d = (a&rsquo;<em>4</em>&rsquo; + b&rsquo;<em>4</em>&rsquo;, a&rsquo;<em>3</em>&rsquo; + b&rsquo;<em>3</em>&rsquo;, a&rsquo;<em>2</em>&rsquo; + b&rsquo;<em>2</em>&rsquo;, a&rsquo;<em>1</em>&rsquo; + b&rsquo;<em>1</em>&rsquo;).</li>
+<li>Daný je reťazec <em>s</em>. Vypíšte ho odzadu (použite cyklus).</li>
+<li>Vypíšte parametre programu, ktoré boli špecifikované pri jeho spustení.</li>
+</ol>
+
+<p>Úlohy, ktoré je potrebné vyskúšať:</p>
+
+<ol>
+<li>Stiahnite a nainštalujte JDK, nastavte systémové premenné PATH, JAVA_HOME, CLASSPATH</li>
+<li>Oboznámte sa s dokumentáciou JavaDoc.</li>
+</ol>
+
+<h3 id="5-10-2006">5. 10. 2006</h3>
+
+<p>(<a href="http://ics.upjs.sk/~novotnyr/home/skola/programovanie_algoritmy_zlozitost/paz1c-2.ppt">Prezentácia</a>) Triedy, inštancie, objekty. Inštančné premenné, metódy (s parametrom, návratovými hodnotami). Vytváranie inštancií.</p>
+
+<h3 id="22-9-2006-praktické-cvičenie">22. 9. 2006 [praktické cvičenie]</h3>
+
+<p>Úlohy, ktoré je potrebné zaslať mailom do 12. 10. 2006, 23.59</p>
+
+<p>Sada 1:</p>
+
+<ol>
+<li>Vytvorte triedu <code>Clovek</code> s inštančnými premennými meno, priezvisko a vek.</li>
+<li>Vytvorte metódy na získanie priezviska (ako Stringu) a získanie iniciál (ako Stringu, pozor, metóda nemá robiť výpis!).</li>
+<li>Vytvorte triedu <code>ClovekTester</code>, pomocou ktorej budete testovať triedu <code>Clovek</code>. V nej vytvorte 5 objektov typu <code>Clovek</code>.</li>
+<li>Vytvorte pole prvkov typu <code>Clovek</code> dĺžky 5 a vložte doňho zmienených päť inštancií.</li>
+<li>Vypočítajte priemerný vek <code>Clovek</code>-ov. Výpočet uskutočnite v metóde <code>main</code> triedy <code>ClovekTester</code>.</li>
+</ol>
+
+<p>Sada 2:</p>
+
+<ol>
+<li>Vytvorte triedu <code>KomplexneCislo</code> s inštačnými premennými reprezentujúcimi reálnu a imaginárnu zložku</li>
+<li>Vytvorte metódu na získanie absolútnej hodnoty komplexného čísla. Absolútnu hodnotu komplexného čísla získate ako odmocninu súčtu mocnín jednotlivých zložiek. Odmocninu v Jave reprezentuje metóda <code>Math.sqrt()</code> s hlavičkou <code>double sqrt(double)</code>. (<code>double</code> je nadtyp typu <code>float</code>, teda do <code>double</code> možno priradiť <code>float</code>, nie však naopak.)</li>
+<li>Vytvorte metódu na pripočítanie komplexného čísla s hlavičkou <code>void pripocitaj(float re, float im)</code></li>
+<li>Vytvorte metódu na pripočítanie komplexného čísla s hlavičkou <code>void pripocitaj(KomplexneCislo k)</code></li>
+<li>Vytvorte triedu <code>KomplexneCisloTester</code>, pomocou ktorej budete testovat triedu <code>KomplexneCislo</code>. V nej vytvorte 4 objekty komplexných čísel.</li>
+<li>Vytvorte pole prvkov typu <code>KomplexneCislo</code> a vložte doň zmienené 4 inštancie.</li>
+<li>Vypočítajte aritmetický priemer z absolútnych hodnôt komplexných čísiel v zmienenom poli.</li>
+</ol>
+
+<p>Občania, ktorí riešili jednu sadu, môžu vyriešiť druhú sadu za polovičný počet bodov.</p>
+
+<h3 id="12-10-2006">12. 10. 2006</h3>
+
+<p>(<a href="http://ics.upjs.sk/~novotnyr/home/skola/programovanie_algoritmy_zlozitost/paz1c-3.ppt">Prezentácia</a>) Gettery, settery, úplné zapúzdrenie. Referencie a ako funguje halda.</p>
+
+<h3 id="13-10-2006-praktické-cvičenie">13. 10. 2006 [praktické cvičenie]</h3>
+
+<ol>
+<li>Simulácia spojového zoznamu. Vytvorte triedu Pes, ktorá reprezentuje psa s menom a odkazom na rodiča (odkaz na rodiča je realizovaný inštančnou premennou <code>private Pes rodič</code>. Máme dané pole reťazcov obsahujúce mená psov. Vytvorte toľko inštancií, koľko je prvkov v tomto poli reťazcov tak, aby pes s menom v <em>i</em>-tom prvku bol rodičom psa v (<em>i-1</em>)-vom prvku. Vypíšte postupnosť predkov prvého psa v poradí na konzolu.</li>
+<li>Navrhnite dve triedy: <code>Surovina</code> a <code>Guláš</code>. Surovina reprezentuje prísadu do guláša, ktorá má názov a cenu. <code>Guláš</code> obsahuje inštančnú premennú typu pole surovín.
+
+<ol>
+<li>Naprogramujte metódu <code>void pridajSurovinu(Surovina surovina)</code>, ktorou prihodíte do guláša novú surovinu.</li>
+<li>Naprogramujte pre <code>Guláš</code> metódu <code>Surovina[] getSuroviny()</code>, ktorá vráti suroviny vyskytujúce sa v guláši.</li>
+<li>Naprogramujte metódu <code>int dajCenu()</code>, ktorá vráti celkový súčet cien surovín v guláši.</li>
+</ol></li>
+</ol>
+
+<h3 id="19-10-2006-teoretické-cvičenie">19. 10. 2006 [teoretické cvičenie]</h3>
+
+<p>(<a href="http://ics.upjs.sk/~novotnyr/home/skola/programovanie_algoritmy_zlozitost/paz1c-4.ppt">Prezentácia</a>) Balíčky, importy. Dátové štruktúry: polia, zoznamy, množiny, mapy</p>
+
+<h3 id="19-10-2006-praktické-cvičenie">19. 10. 2006 [praktické cvičenie]</h3>
+
+<p>Úlohy, ktoré je potrebné zaslať mailom do 26. 10. 2006, 23.59.</p>
+
+<p>Úlohy z piatku možno vyriešiť za polovičný počet bodov.</p>
+
+<ol>
+<li>Práca so súbormi - vstup a výstup. Triedy <code>java.io.FileReader</code> (čítanie súboru po znakoch), <code>java.io.FileWriter</code> (zápis do súboru po znakoch), <code>java.io.BufferedReader</code> (čítanie zo súboru po riadkoch), <code>java.io.PrintWriter</code> (zápis do súboru po riadkoch)).</li>
+<li>Vytvorte triedu <code>Sťahovač</code> s dvoma inštančnými premennými: jedna reprezentuje vstupnú URL (použite triedu <code>java.net.URL</code>), druhá cestu k výstupnému súboru. Vytvorte metódu stiahni s hlavičkou <code>void stiahni() throws Exception</code>, ktorá stiahne z danej URL textový dokument a uloží ho do textového súboru s názvom. Ku inštančným premenným vygenerujte gettery a settery. Na stiahnutie dokumentu použite InputStream a metódu <code>openStream()</code> triedy <code>URL</code>.</li>
+</ol>
+
+<h3 id="20-10-2006-praktické-cvičenie">20. 10. 2006 [praktické cvičenie]</h3>
+
+<p>Úlohy, ktoré je potrebné zaslať mailom do 26. 10. 2006, 23.59.</p>
+
+<p>Úlohy zo štvrtka možno vyriešiť za polovičný počet bodov.</p>
+
+<p>Parodujeme databázu.</p>
+
+<ol>
+<li><p>Vytvorte triedu <code>Študent</code> reprezentujúcu študenta s identifikačným číslom, menom a priezviskom (nezabudnite na gettery a settery). Vytvorte druhú triedu AkademickýInformačnýSystém, ktorého úlohou bude spravovať študentov. AIS v sebe obsahuje zoznam študentov ako inštančnú premennú. Navrhnite a implementujte metódy pre AIS:</p>
+
+<ol>
+<li>pridanie študenta do informačného systému</li>
+<li>odobratie študenta z informačného systému na základe identifikačného čísla</li>
+<li>vyhľadanie študenta podľa identifikačného čísla (v parametri metódy je identifikačné číslo, návratovou hodnotou je študent)</li>
+<li>vyhľadanie študenta podľa priezviska (v parametri metódy je reťazec, návratovou hodnotou je zoznam študentov, ktorých priezvisko obsahuje tento reťazec. Použite metódu <code>String.indexOf</code>)</li>
+<li>získanie dvojíc <identifikačné číslo, priezvisko + meno> (návratovou hodnotou je mapa).</li>
+</ol></li>
+</ol>
+
+<p>Pozor, v prezentácii je preklep. Na pridanie prvku slúži v HashMap metóda <code>put</code> a nie <code>add</code>!</p>
+
+<h3 id="26-10-2006-teoretické-cvičenie">26. 10. 2006 [teoretické cvičenie]</h3>
+
+<p>(<a href="http://ics.upjs.sk/~novotnyr/home/skola/programovanie_algoritmy_zlozitost/paz1c-5.ppt">Prezentácia</a>) Výnimky</p>
+
+<h3 id="26-10-2006-praktické-cvičenie">26. 10. 2006 [praktické cvičenie]</h3>
+
+<ol>
+<li>Vytvorte triedu Elektromer, ktorý meria kumulatívne nameranú spotrebu v kWh od jeho posledného vymazania. Elektromer nech má tieto metódy</li>
+<li><code>void reset()</code>, ktorá vymaže spotrebu (nastaví ju na nulu)</li>
+<li><code>int zistiStav()</code> fungujúcu nasledovne: vráti aktuálny stav elektromera a hneď na to pripočíta k aktuálnej celkovej spotrebe náhodne 1-8 kWh. Problémom elektromera je, že v štvrtine prípadov namiesto vrátenia aktuálneho stavu len vyhodí výnimku (definujte vlastnú výnimku ZléMeranieException).
+Naimplementujte obe metódy, vytvorte triedu <code>ElektromerTester</code> a otestujte obe metódy. V <code>ElektromerTester</code>i obaľte potrebné veci do try-catch bloku.</li>
+<li>V cykle skúste zavolať zo dvadsaťkrát metódu <code>zistiStav()</code> a pozorujte, ako vyhadzujú výnimky</li>
+<li>Vylepšite <code>ElektromerTester</code> tak, aby namerané hodnoty zapisoval do textového súboru až do chvíle, kým elektromer nevyhodí výnimku. Dbajte na to, aby sa súbor korektne uzavrel vo <code>finally</code> bloku.</li>
+<li>Vytvorte triedu <code>Elektraren</code> s metódou <code>void meraj(int početElektromerov, int početMeraní)</code>. Metóda vyrobí <code>početElektromerov</code> inštancií elektromerov, na ktorých postupne spustí merania <code>početMeraní</code>-krát. (Kolovým spôsobom, kde v každom kole sa vypíše postupne stav každého elektromera). Vypisujte jednotlivé merania pre každý elektromer na štandardný výstup. V prípade, že niektorý elektromer vyhodí chybu, zabezpečte, aby sa vypísala chybová hláška a program pokračoval v zistení stavu nasledovného elektromera.</li>
+</ol>
+
+<h3 id="27-10-2006-praktické-cvičenie">27. 10. 2006 [praktické cvičenie]</h3>
+
+<ol>
+<li>Vytvorte triedu <code>Spevak</code>, ktorý má meno a priezvisko (a gettery a settery). Spevák má jedinú metódu: <code>void spievaj()</code>. Spevák je však často indisponovaný a preto sa mu každé druhé spievanie nepodarí. Nepodarenie spievania implementujte pomocou vyhodenia vlastnej výnimky <code>NemôžemSpievaťException</code>.
+Naimplementujte metódu, vytvorte triedu <code>SpevakTester</code> a otestujte ju. V <code>SpevakTester</code>i obaľte potrebné veci do try-catch bloku.</li>
+<li>V cykle skúste zavolať zo dvadsaťkrát metódu <code>spievaj()</code> a pozorujte, ako vyhadzujú výnimky</li>
+<li>Vylepšite <code>SpevakTester</code> tak, aby v prípade úspešného spievania vložil do textového súboru reťazec <code>OK</code> a v prípade neúspešného spievania reťazec <code>BUUUU</code>. Dbajte na to, aby sa súbor korektne uzavrel vo <code>finally</code> bloku. (Zrejme budete musieť použiť try-catch blok vnorený v inom try-catch bloku).</li>
+</ol>
+
+<h3 id="2-11-2006-teoretické-cvičenie">2. 11. 2006 [teoretické cvičenie]</h3>
+
+<p>(<a href="http://ics.upjs.sk/~novotnyr/home/skola/programovanie_algoritmy_zlozitost/paz1c-6.ppt">Prezentácia</a>). Metódy <code>toString()</code>, <code>equals()</code>, <code>hashCode()</code>. Preťažené (overloaded) metódy. Konštruktory. Statické metódy.</p>
+
+<h3 id="2-11-2006-praktické-cvičenie">2. 11. 2006 [praktické cvičenie]</h3>
+
+<ol>
+<li><p>Vytvorte triedu <code>Databaza</code> s metódou dvoma konštruktormi:</p>
+
+<ol>
+<li><code>Databaza(String súbor)</code></li>
+<li><code>Databaza(File súbor)</code></li>
+</ol>
+
+<p>Konštruktory špecifikujú cestu k súboru, s ktorým sa bude pracovať.</p></li>
+
+<li><p>Vytvorte metódu <code>nacitaj()</code>, ktorá bude vracať zoznam inštancií triedy <code>Pes</code>. Zoznam sa vytvorí na základe textového súboru, v ktorom sú po riadkoch postupne uložené mená psov. Metóda načíta zo súboru, ktorého umiestnenie bolo určené v konštruktore, pomocou <code>BufferedReader</code>-a skombinovaného s <code>FileReader</code>-om. Ošetrite všetky výnimky, ktoré môžu pri práci so súborom nastať - metóda nemá hádzať žiadnu výnimku. Ak v metóde nastane výnimka, vráťte prázdny zoznam (nie <code>null</code>!) Nezabudnite ošetriť zatváranie súboru.</p></li>
+
+<li><p>Oboznámte sa s návrhovým vzorom Jedináčik/Singleton.</p></li>
+</ol>
+
+<h3 id="3-11-2006-praktické-cvičenie">3. 11. 2006 [praktické cvičenie]</h3>
+
+<p>Majme danú triedu <code>FilterPárnychČísíel</code>. Tá slúži na načítavanie zoznamu čísiel buď z klávesnice alebo zo súboru a jeho výpis na štandardný výstup. Aby to však nebolo také jednoduché, trieda pri vypisovaní ignoruje párne čísla.</p>
+
+<ol>
+<li>Vytvorte dva konštruktory: jeden bez parametrov a jeden s reťazcovým parametrom určujúcim cestu k súboru, z ktorého sa bude načítavať.</li>
+<li>Vytvorte metódu <code>nacitaj()</code>, ktorá bude načítavať zo súboru, resp. zo štandardného vstupu čísla a na štandardný výstup bude vypisovať len nepárne čísla. To, či sa budú údaje načítavať so súboru alebo z konzoly závisí od toho, ktorý konštruktor použil používateľ na vytvorenie inštancie. (Ak používateľ použil konštruktor bez parametrov, budú sa čísla načítavať zo štandardného vstupu. Ak použil konštruktor s parametrom, bude sa načítavať zo zadaného súboru.).</li>
+</ol>
+
+<p>Na načítavanie použite triedu <code>java.util.Scanner</code>. Príklad použitia je v dokumentácii JavaDoc. (Nápomoc: použite vhodný cyklus. Metóda <code>Scanner.hasNextInt()</code> vracia <code>true</code>, ak je zo súboru možné načítať ďalšie celé číslo, metóda <code>Scanner.nextInt()</code> ho načíta.)</p>
+
+<h3 id="9-11-2006-teoretické-cvičenie">9. 11. 2006 [teoretické cvičenie]</h3>
+
+<p>(<a href="http://ics.upjs.sk/~novotnyr/home/skola/programovanie_algoritmy_zlozitost/paz1c-7.ppt">Prezentácia</a>). Dedičnosť a polymorfizmus. Preťažovanie metód.</p>
+
+<h3 id="9-11-2006-praktické-cvičenie">9. 11. 2006 [praktické cvičenie]</h3>
+
+<p>Načítavanie údajov z klávesnice a súboru pomocou triedy <code>java.util.Scanner</code>. Pripojenie k databázam cez JDBC.</p>
+
+<h3 id="10-11-2006-praktické-cvičenie">10. 11. 2006 [praktické cvičenie]</h3>
+
+<p>Domácu úlohu je potrebné zaslať do 1. 12. 2006</p>
+
+<p>Majme danú triedu <code>GeometrickýÚtvar</code> a z nej odvodené dve podtriedy: <code>Štvorec</code> a <code>Kružnicu</code>. Každý geometrický útvar si dokáže zrátať svoje ťažisko. V rovine je daných niekoľko geometrických útvarov. Nájdite dva najvzdialenejšie útvary, pričom uvažujte vzdialenosť ich ťažísk.</p>
+
+<p>Súradnice útvarov sú zadané po riadkoch v textovom súbore. Kružnica je zadaná v tvare</p>
+
+<pre><code>3.0 2.5 9.0 1
+</code></pre>
+
+<p>(stred má súradnice [3.0, 2.5], polomer kružnice je 9. 1 indikuje, že útvar je kružnica)</p>
+
+<p>Štvorec je zadaný v tvare</p>
+
+<pre><code>2.3 1.7 4.0 0
+</code></pre>
+
+<p>(ľavý dolný roh štvorca má súradnice [2.3, 1.7], dĺžka strany štvorca je 4, 0 indikuje, že útvar je štvorec)</p>
+
+<p>Fotografie tabule: <a href="http://ics.upjs.sk/~novotnyr/home/skola/programovanie_algoritmy_zlozitost/foto/100_1609.JPG">1</a>
+<a href="http://ics.upjs.sk/~novotnyr/home/skola/programovanie_algoritmy_zlozitost/foto/100_1610.JPG">2</a></p>
+
+<h3 id="16-11-2006-teoretické-cvičenie">16. 11. 2006 [teoretické cvičenie]</h3>
+
+<p>Rektorské voľno</p>
+
+<h3 id="16-11-2006-praktické-cvičenie">16. 11. 2006 [praktické cvičenie]</h3>
+
+<p>Rektorské voľno</p>
+
+<h3 id="17-11-2006-praktické-cvičenie">17. 11. 2006 [praktické cvičenie]</h3>
+
+<p>Deň boja za slobodu a demokraciu</p>
+
+<h3 id="23-11-2006-teoretické-cvičenie">23. 11. 2006 [teoretické cvičenie]</h3>
+
+<p>(<a href="http://ics.upjs.sk/~novotnyr/home/skola/programovanie_algoritmy_zlozitost/paz1c-8.ppt">Prezentácia</a>). Abstraktné triedy. Dedičnosť -  prekrývanie metód (override) a inštančných premenných. Modifikátory viditeľnosti (private, protected).</p>
+
+<h3 id="23-11-2006-praktické-cvičenie">23. 11. 2006 [praktické cvičenie]</h3>
+
+<p>Zadanie je identické so zadaním z 10. 11. 2006. Zadanie je nutné poslať do 7. 12. 2006</p>
+
+<h3 id="24-11-2006-praktické-cvičenie">24. 11. 2006 [praktické cvičenie]</h3>
+
+<p>Dokončenie úlohy z predošlého cvičenia.</p>
+
+<h3 id="30-11-2006-teoretické-cvičenie">30. 11. 2006 [teoretické cvičenie]</h3>
+
+<p>Nekonalo sa.</p>
+
+<h3 id="30-11-2006-praktické-cvičenie">30. 11. 2006 [praktické cvičenie]</h3>
+
+<p>Nekonalo sa.</p>
+
+<h3 id="1-12-2006-praktické-cvičenie">1. 12. 2006 [praktické cvičenie]</h3>
+
+<ul>
+<li>Prepracujte triedu <code>GeometrickýÚtvar</code> tak, aby bola abstraktnou triedou, pričom metóda na nájdenie ťažiska má byť tiež abstraktná</li>
+<li>Prepracujte <code>GeometrickýÚtvar</code> tak, aby umožňoval priraďovať geometrickým útvarom ich názvy. Inak povedané, každý útvar môže mať popisný reťazec</li>
+<li>Vytvorte triedu <code>FarebnýKruh</code>, ktorá umožňuje pridať kruhom farbu. (Farbu reprezentujte ako reťazec).</li>
+</ul>
+
+<h3 id="7-12-2006-teoretické-cvičenie">7. 12. 2006 [teoretické cvičenie]</h3>
+
+<p>(<a href="http://ics.upjs.sk/~novotnyr/home/skola/programovanie_algoritmy_zlozitost/paz1c-9.ppt">Prezentácia</a>). Pretypovanie smerom nahor a nadol. Dedenie konštruktorov. Interface-y.</p>
+
+<h3 id="7-12-2006-praktické-cvičenie">7. 12. 2006 [praktické cvičenie]</h3>
+
+<ul>
+<li>Vypíšte zoznam regulárnych súborov v danom adresári. Využite metódu <code>java.io.File#list(FileFilter)</code>. Zostrojte tri triedy implementujúce rozhranie <code>java.io.FileFilter</code> - filter, ktorý akceptuje všetky súbory; filter, ktorý neakceptuje žiadne súbory a filter, ktorý akceptuje len regulárne súbory.</li>
+<li>Vytvorte triedu <code>Študent</code> reprezentujúcu študenta s menom. V triede vytvorte jednoparametrový konštruktor umožňujúci uviesť pri vytváraní inštancie meno študenta.</li>
+<li>Zabezpečte, aby trieda <code>Študent</code> implementovala rozhranie <code>Comparable</code> takto: študent je menší ako iný študent, ak jeho meno je v lexikografickom usporiadaní menšie ako meno iného študenta (použite metódu <code>String#compareTo()</code>).</li>
+<li>Zotrieďte zoznam študentov pomocou <code>Collections.sort()</code></li>
+<li>Prepracujte triedu <code>Študent</code> tak, že odstráňte implementovanie rozhrania <code>Comparable</code>. Dodajte inštančné premenné pre priezvisko a študijný priemer. Zostrojte tri triedy implementujúce rozhranie <code>Comparator</code>, ktoré budú umožňovať porovnanie dvoch študentov postupne podľa mena (<code>StudentNameComparator</code>), priezviska (<code>StudentSurnameComparator</code>) a priemeru (<code>StudentAverageComparator</code>). Zotrieďte zoznam študentov pomocou dvojparametrovej metódy <code>Collections.sort()</code></li>
+</ul>
+
+<h3 id="8-12-2006-praktické-cvičenie">8. 12. 2006 [praktické cvičenie]</h3>
+
+<ul>
+<li>Vytvorte triedu <code>Študent</code> reprezentujúcu študenta s menom, priezviskom a študijným priemerom. V triede vytvorte vhodný počet konštruktorov uľahčujúcich vytváranie inštancií.</li>
+<li>Dodajte inštančné premenné pre priezvisko a študijný priemer. Zostrojte dve triedy implementujúce rozhranie <code>Comparator</code>, ktoré budú umožňovať porovnanie dvoch študentov postupne podľa priezviska (<code>StudentSurnameComparator</code>) a priemeru (<code>StudentAverageComparator</code>). Zotrieďte zoznam študentov pomocou dvojparametrovej metódy <code>Collections.sort()</code></li>
+</ul>
+
+<hr />
+
+<h2 id="rozširujúce-a-doplňujúce-štúdium">Rozširujúce a doplňujúce štúdium</h2>
+
+<p><a href="http://ics.upjs.sk/~novotnyr/home/skola/programovanie_algoritmy_zlozitost/hodnotenie-rsi.xls">Hodnotenie</a></p>
+
+<h3 id="23-9-2006">23. 9. 2006</h3>
+
+<p>(<a href="http://ics.upjs.sk/~novotnyr/home/skola/programovanie_algoritmy_zlozitost/paz1c-1.ppt">Prezentácia</a>) Formality a byrokracie. Historický úvod. Deklarácia a definovanie premenných. Podmienky a cykly (for, while). Polia.</p>
+
+<p>Úlohy, ktoré je potrebné zaslať mailom do 6. 10. 2006, 23.59</p>
+
+<ol>
+<li>Daný je reťazec <em>s</em>. Vypíšte ho odzadu (použite cyklus).</li>
+<li>Dané sú dve polia a = (a&rsquo;<em>1</em>&rsquo;, a&rsquo;<em>2</em>&rsquo;, a&rsquo;<em>3</em>&rsquo;, a&rsquo;<em>4</em>&rsquo;), b = (b&rsquo;<em>1</em>&rsquo;, b&rsquo;<em>2</em>&rsquo;, b&rsquo;<em>3</em>&rsquo;, b&rsquo;<em>4</em>&rsquo;). Nadeklarujte pole c, ktorého prvky sú tvorené súčtom prvkov z polí <em>a</em>, <em>b</em>, teda prvky poľa c = (a&rsquo;<em>1</em>&rsquo; + b&rsquo;<em>1</em>&rsquo;, a&rsquo;<em>2</em>&rsquo; + b&rsquo;<em>2</em>&rsquo;, a&rsquo;<em>3</em>&rsquo; + b&rsquo;<em>3</em>&rsquo;, a&rsquo;<em>4</em>&rsquo; + b&rsquo;<em>4</em>&rsquo;).</li>
+<li>Nadeklarujte nové pole e, ktorého prvky sú tvorené nepárnymi prvkami z poľa <em>a</em> a párnymi prvkami poľa <em>b</em>, teda e = (a&rsquo;<em>1</em>&rsquo;, b&rsquo;<em>2</em>&rsquo;, a&rsquo;<em>3</em>&rsquo;, b&rsquo;<em>4</em>&rsquo;). Použite cyklus.</li>
+</ol>
+
+<h3 id="14-10-2006">14. 10. 2006</h3>
+
+<p>(<a href="http://ics.upjs.sk/~novotnyr/home/skola/programovanie_algoritmy_zlozitost/paz1c-2.ppt">Prezentácia</a>) Triedy, inštancie, objekty. Inštančné premenné, metódy (s parametrom, návratovými hodnotami). Vytváranie inštancií.</p>
+
+<ol>
+<li>Vytvorte triedu <code>Clovek</code> s inštančnými premennými meno, priezvisko a vek.</li>
+<li>Vytvorte metódy na získanie priezviska (ako Stringu) a získanie iniciál (ako Stringu, pozor, metóda nemá robiť výpis!).</li>
+<li>Vytvorte triedu <code>ClovekTester</code>, pomocou ktorej budete testovať triedu <code>Clovek</code>. V nej vytvorte 5 objektov typu <code>Clovek</code>.</li>
+<li>Vytvorte pole prvkov typu <code>Clovek</code> dĺžky 5 a vložte doňho zmienených päť inštancií.</li>
+<li>Vypočítajte priemerný vek <code>Clovek</code>-ov. Výpočet uskutočnite v metóde <code>main</code> triedy <code>ClovekTester</code>.</li>
+</ol>
+
+<h3 id="21-10-2006">21. 10. 2006</h3>
+
+<p>Úlohy je potrebné zaslať do 3. novembra 2006, 23.59</p>
+
+<p>(<a href="http://ics.upjs.sk/~novotnyr/home/skola/programovanie_algoritmy_zlozitost/rsi3.ppt">Prezentácia</a>) Gettery a settery. Polia a zoznamy.</p>
+
+<ol>
+<li>Vytvorte triedu Študent reprezentujúcu študenta s identifikačným číslom, menom a priezviskom (nezabudnite na gettery a settery). Vytvorte druhú triedu AkademickýInformačnýSystém, ktorého úlohou bude spravovať študentov. AIS v sebe obsahuje zoznam študentov ako inštančnú premennú. Navrhnite a implementujte metódy pre AIS:
+
+<ol>
+<li>pridanie študenta do informačného systému</li>
+<li>odobratie študenta z informačného systému na základe identifikačného čísla</li>
+<li>vyhľadanie študenta podľa identifikačného čísla (v parametri metódy je identifikačné číslo, návratovou hodnotou je objekt typu <code>Študent</code>)</li>
+<li>vyhľadanie študenta podľa priezviska (v parametri metódy je reťazec, návratovou hodnotou je zoznam študentov, ktorých priezvisko je zhodné s týmto reťazcom.)</li>
+</ol></li>
+</ol>
+
+<h3 id="4-11-2006">4. 11. 2006</h3>
+
+<p>Úlohy je potrebné zaslať do 3. decembra 2006, 23.59</p>
+
+<p>Vstupno-výstupné operácie. Zápis textu na konzolu. Načítanie dát z konzoly pomocou triedy <code>java.util.Scanner</code>. Načítanie dát z textového súboru. Zápis dát do súboru pomocou kombinácie tried <code>java.io.PrintWriter</code> a <code>java.io.FileWriter</code>. Výnimky.</p>
+
+<ol>
+<li>V textovom súbore je daných <em>n</em> celých čísiel po riadkoch. Vyrobte triedu <code>FilterPárnychČísiel</code>, ktorá spracuje zadaný textový súbor tak, že z neho vyberie len párne čísla a zapíše ich do iného textového súboru. Trieda by mala mať privátne inštančné premenné <code>vstupnýSúbor</code> a <code>výstupnýSúbor</code> typu <code>java.io.File</code>, gettery a settery na ich nastavenie a metódu <code>void filtruj()</code>, ktorá vykoná filtráciu.</li>
+</ol>
+
+<h3 id="2-12-2006">2. 12. 2006</h3>
+
+<p>Majme danú triedu <code>GeometrickýÚtvar</code> a z nej odvodené dve podtriedy: <code>Štvorec</code> a <code>Kružnicu</code>. Každý geometrický útvar si dokáže zrátať svoje ťažisko - má metódu <code>getŤažisko()</code>. V rovine, ktorá je reprezentovaná zoznamom, je daných niekoľko geometrických útvarov. Nájdite dva najvzdialenejšie útvary, pričom uvažujte vzdialenosť ich ťažísk. Využite dedičnosť a polymorfizmus.</p>
+
+<p>Súradnice útvarov sú zadané po riadkoch v textovom súbore. Kružnica je zadaná v tvare</p>
+
+<pre><code>3.0 2.5 9.0 1
+</code></pre>
+
+<p>(stred má súradnice [3.0, 2.5], polomer kružnice je 9. 1 indikuje, že útvar je kružnica)</p>
+
+<p>Štvorec je zadaný v tvare</p>
+
+<pre><code>2.3 1.7 4.0 0
+</code></pre>
+
+<p>(ľavý dolný roh štvorca má súradnice [2.3, 1.7], dĺžka strany štvorca je 4, 0 indikuje, že útvar je štvorec)</p>
+
+<p>Fotografie tabule: <a href="http://ics.upjs.sk/~novotnyr/home/skola/programovanie_algoritmy_zlozitost/foto/100_1609.JPG">1</a>
+<a href="http://ics.upjs.sk/~novotnyr/home/skola/programovanie_algoritmy_zlozitost/foto/100_1610.JPG">2</a></p>
+
+<h2 id="odkazy">Odkazy</h2>
+
+<ul>
+<li><a href="http://en.wikipedia.org/wiki/Java_programming_language">Článok o Jave na Wikipedii</a>. Obsahuje filozofický pokec, prehľad verzií a pod. [english]</li>
+<li><a href="http://javashoplm.sun.com/ECom/docs/Welcome.jsp?StoreId=22&amp;PartDetailId=jdk-1.5.0_06-oth-JPR&amp;SiteId=JSC&amp;TransactionId=noreg">JDK 1.5.0_6 (Win32)</a></li>
+<li><a href="http://mindview.net/Books/TIJ/DownloadSites">Thinking in Java, 3rd Edition</a></li>
+<li><a href="http://dione.zcu.cz/java/sbornik/toc.html">Java Sborník</a> - rýchly náhľad na elementy jazyka Java</li>
+<li><a href="http://interval.cz/clanky/naucte-se-javu-uvod/">Interval.cz: Naučte se Javu</a> - seriál k Jave</li>
+</ul>
+
+</main>
+
+    <footer>
+      
+<script>
+(function() {
+  function center_el(tagName) {
+    var tags = document.getElementsByTagName(tagName), i, tag;
+    for (i = 0; i < tags.length; i++) {
+      tag = tags[i];
+      var parent = tag.parentElement;
+      
+      if (parent.childNodes.length === 1) {
+        
+        if (parent.nodeName === 'A') {
+          parent = parent.parentElement;
+          if (parent.childNodes.length != 1) continue;
+        }
+        if (parent.nodeName === 'P') parent.style.textAlign = 'center';
+      }
+    }
+  }
+  var tagNames = ['img', 'embed', 'object'];
+  for (var i = 0; i < tagNames.length; i++) {
+    center_el(tagNames[i]);
+  }
+})();
+</script>
+
+      
+    </footer>
+  </body>
+</html>
+

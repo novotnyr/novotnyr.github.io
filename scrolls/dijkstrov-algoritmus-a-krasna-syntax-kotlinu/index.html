@@ -181,7 +181,7 @@ g.add(<span style="color:#60e;font-weight:bold">0</span>, <span style="color:#60
 <h2 id="zisťovanie-vzdialeností">Zisťovanie vzdialeností</h2>
 
 <p>Teraz sa nám bude hodiť funkcia pre zisťovanie vzdialeností. Dodajme ju ako metódu do našej grafovej triedy:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">getWeight</span>(node1: Node, node2: Node) = matrix<span style="color:#007">[node1][node2]</span></code></pre></div>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">getWeight</span>(node1: Node, node2: Node) = matrix[node1][node2]</code></pre></div>
 <p>Táto funkcia berie dva parametre a vracia jedno celé číslo reprezentujúce vzdialenosť. Funkcia nemá telo, pretože reprezentuje jednoduchý výraz, ktorý zistí z matice z daného koordinátu hodnotu z príslušného políčka.</p>
 
 <p>Môžeme si to overiť vo funkcii <code>main()</code>:</p>
@@ -219,8 +219,8 @@ g.add(<span style="color:#60e;font-weight:bold">0</span>, <span style="color:#60
 
 <p>Kód vyjadríme krásnou funkciou:</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">remove</span>(node: Node) {
-    matrix<span style="color:#007">[node]</span>.fill(<span style="color:#60e;font-weight:bold">0</span>)
-    matrix.forEach { it<span style="color:#007">[node]</span> = <span style="color:#60e;font-weight:bold">0</span> }
+    matrix[node].fill(<span style="color:#60e;font-weight:bold">0</span>)
+    matrix.forEach { it[node] = <span style="color:#60e;font-weight:bold">0</span> }
 }</code></pre></div>
 <h2 id="zisťovanie-susedov">Zisťovanie susedov</h2>
 
@@ -235,7 +235,7 @@ g.add(<span style="color:#60e;font-weight:bold">0</span>, <span style="color:#60
 
 <p><img src="adjacent-nodes.svg" alt="" /></p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">getAdjacentNodes</span>(node: Node): List&lt;Node&gt; {
-    <span style="color:#289;font-weight:bold">return</span> matrix<span style="color:#007">[node]</span>.mapIndexedNotNull { index, distance -&gt;
+    <span style="color:#289;font-weight:bold">return</span> matrix[node].mapIndexedNotNull { index, distance -&gt;
         <span style="color:#289;font-weight:bold">if</span> (distance &gt; <span style="color:#60e;font-weight:bold">0</span>) index <span style="color:#289;font-weight:bold">else</span> <span style="color:#289;font-weight:bold">null</span>
     }
 }</code></pre></div>
@@ -370,7 +370,7 @@ g.distance(TRNAVA, NITRA, <span style="color:#60e;font-weight:bold">5</span>)
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">val</span> distances = nodes
         .associateWith { Int.MAX_VALUE }
         .toMutableMap()
-distances<span style="color:#007">[sourceNode]</span> = <span style="color:#60e;font-weight:bold">0</span></code></pre></div>
+distances[sourceNode] = <span style="color:#60e;font-weight:bold">0</span></code></pre></div>
 <p>Metóda <code>associateWith</code> prevádza zoznam na mapu. Zoberie lambdu, ktorá povie, aká hodnota sa má namapovať na kľúč reprezentovaný prvkom zoznamu.</p>
 
 <p><img src="associate-with.svg" alt="" /></p>
@@ -395,9 +395,9 @@ distances<span style="color:#007">[sourceNode]</span> = <span style="color:#60e;
         } <span style="color:#289;font-weight:bold">else</span> {
             distance + getWeight(currentNode, adjacentNode)
         }
-        <span style="color:#289;font-weight:bold">if</span> (possiblyBetterDistance &lt; distances<span style="color:#007">[adjacentNode]</span><span style="color:#333">!!</span>) {
-            distances<span style="color:#007">[adjacentNode]</span> = possiblyBetterDistance
-            predecessors<span style="color:#007">[adjacentNode]</span> = currentNode
+        <span style="color:#289;font-weight:bold">if</span> (possiblyBetterDistance &lt; distances[adjacentNode]<span style="color:#333">!!</span>) {
+            distances[adjacentNode] = possiblyBetterDistance
+            predecessors[adjacentNode] = currentNode
         }
     }
     distances -= currentNode
@@ -443,10 +443,10 @@ distances<span style="color:#007">[sourceNode]</span> = <span style="color:#60e;
 <p>Posledný krok bude budovanie cesty. Algoritmus nám vybuduje mapu medzi uzlami a ich predchodcami. Cestu ako zozna vybudujeme nasledovne:</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">private</span> <span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">buildPath</span>(destinationNode: Node, predecessors: Map&lt;Node, Node&gt;): List&lt;Node&gt; {
     <span style="color:#289;font-weight:bold">val</span> path = mutableListOf(destinationNode)
-    <span style="color:#289;font-weight:bold">var</span> predecessor = predecessors<span style="color:#007">[destinationNode]</span>
+    <span style="color:#289;font-weight:bold">var</span> predecessor = predecessors[destinationNode]
     <span style="color:#289;font-weight:bold">while</span> (predecessor != <span style="color:#289;font-weight:bold">null</span>) {
         path += predecessor
-        predecessor = predecessors<span style="color:#007">[predecessor]</span>
+        predecessor = predecessors[predecessor]
     }
     <span style="color:#289;font-weight:bold">return</span> path.reversed()
 }</code></pre></div>
@@ -467,31 +467,31 @@ typealias Node = Int
     <span style="color:#289;font-weight:bold">private</span> <span style="color:#289;font-weight:bold">val</span> matrix = Array(size) { Array(size) { <span style="color:#60e;font-weight:bold">0</span> } }
 
     <span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">add</span>(node1: Node, node2: Node, weight: Int) {
-        matrix<span style="color:#007">[node1][node2]</span> = weight
-        matrix<span style="color:#007">[node2][node1]</span> = weight
+        matrix[node1][node2] = weight
+        matrix[node2][node1] = weight
     }
 
     <span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">remove</span>(node: Node) {
-        matrix<span style="color:#007">[node]</span>.fill(<span style="color:#60e;font-weight:bold">0</span>)
-        matrix.forEach { it<span style="color:#007">[node]</span> = <span style="color:#60e;font-weight:bold">0</span> }
+        matrix[node].fill(<span style="color:#60e;font-weight:bold">0</span>)
+        matrix.forEach { it[node] = <span style="color:#60e;font-weight:bold">0</span> }
     }
 
     <span style="color:#289;font-weight:bold">val</span> nodes: Set&lt;Node&gt; = matrix.indices.toSet()
 
     <span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">getAdjacentNodes</span>(node: Node): List&lt;Node&gt; {
-        <span style="color:#289;font-weight:bold">return</span> matrix<span style="color:#007">[node]</span>.mapIndexedNotNull { index, distance -&gt;
+        <span style="color:#289;font-weight:bold">return</span> matrix[node].mapIndexedNotNull { index, distance -&gt;
             <span style="color:#289;font-weight:bold">if</span> (distance &gt; <span style="color:#60e;font-weight:bold">0</span>) index <span style="color:#289;font-weight:bold">else</span> <span style="color:#289;font-weight:bold">null</span>
         }
     }
 
-    <span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">getWeight</span>(node1: Node, node2: Node) = matrix<span style="color:#007">[node1][node2]</span>
+    <span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">getWeight</span>(node1: Node, node2: Node) = matrix[node1][node2]
 }
 
 <span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">StupidGraph</span>.findShortestPath(sourceNode: Node, destinationNode: Node): List&lt;Node&gt; {
     <span style="color:#289;font-weight:bold">val</span> distances = nodes
         .associateWith { Int.MAX_VALUE }
         .toMutableMap()
-    distances<span style="color:#007">[sourceNode]</span> = <span style="color:#60e;font-weight:bold">0</span>
+    distances[sourceNode] = <span style="color:#60e;font-weight:bold">0</span>
   
     <span style="color:#289;font-weight:bold">val</span> predecessors = mutableMapOf&lt;Node, Node&gt;()
     <span style="color:#289;font-weight:bold">do</span> {
@@ -503,9 +503,9 @@ typealias Node = Int
             } <span style="color:#289;font-weight:bold">else</span> {
                 distance + getWeight(currentNode, adjacentNode)
             }
-            <span style="color:#289;font-weight:bold">if</span> (possiblyBetterDistance &lt; distances<span style="color:#007">[adjacentNode]</span><span style="color:#333">!!</span>) {
-                distances<span style="color:#007">[adjacentNode]</span> = possiblyBetterDistance
-                predecessors<span style="color:#007">[adjacentNode]</span> = currentNode
+            <span style="color:#289;font-weight:bold">if</span> (possiblyBetterDistance &lt; distances[adjacentNode]<span style="color:#333">!!</span>) {
+                distances[adjacentNode] = possiblyBetterDistance
+                predecessors[adjacentNode] = currentNode
             }
         }
         distances -= currentNode
@@ -520,10 +520,10 @@ typealias Node = Int
 
 <span style="color:#289;font-weight:bold">private</span> <span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">buildPath</span>(destinationNode: Node, predecessors: Map&lt;Node, Node&gt;): List&lt;Node&gt; {
     <span style="color:#289;font-weight:bold">val</span> path = mutableListOf(destinationNode)
-    <span style="color:#289;font-weight:bold">var</span> predecessor = predecessors<span style="color:#007">[destinationNode]</span>
+    <span style="color:#289;font-weight:bold">var</span> predecessor = predecessors[destinationNode]
     <span style="color:#289;font-weight:bold">while</span> (predecessor != <span style="color:#289;font-weight:bold">null</span>) {
         path += predecessor
-        predecessor = predecessors<span style="color:#007">[predecessor]</span>
+        predecessor = predecessors[predecessor]
     }
     <span style="color:#289;font-weight:bold">return</span> path.reversed()
 }
@@ -552,7 +552,7 @@ typealias Node = Int
 
         <span style="color:#289;font-weight:bold">val</span> shortestPath = findShortestPath(BRATISLAVA.ordinal, KOSICE.ordinal)
         shortestPath.forEach {
-            println(City.values()<span style="color:#007">[it]</span>)
+            println(City.values()[it])
         }
     }
 }</code></pre></div>

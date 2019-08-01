@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>RMI remoting a Spring | robonovotny</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.css" integrity="sha384-D+9gmBxUQogRLqvARvNLmA9hS2x//eK1FhVb9PiU86gmcrBrJAQT8okdJ4LMp2uv" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.js" integrity="sha384-483A6DwYfKeDa0Q52fJmxFXkcPCFfnXMoXblOkJ4JcA8zATN6Tm78UNL72AKk+0O" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/contrib/auto-render.min.js" integrity="sha384-yACMu8JWxKzSp/C1YV86pzGiQ/l1YUfE8oPuahJQxzehAjEt2GiQuy/BIvl9KyeF" crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body);
+        });
+    </script>
+
+<header>
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <nav>
+    <ul>
+      
+      
+      <li class="pull-left ">
+        <a href="http://novotnyr.github.io/">/home/robonovotny</a>
+      </li>
+      
+
+      
+
+    </ul>
+  </nav>
+</header>
+
+  </head>
+
+  <body>
+    <br/>
+
+<div class="article-meta">
+<h1><span class="title">RMI remoting a Spring</span></h1>
+
+<h2 class="date">2007/07/24</h2>
+<p class="terms">
+  
+  
+  
+  
+  
+</p>
+</div>
+
+
+
+<main>
+
+
+<p>Spring podporuje automatické publikovanie zvoleného interfaceu v podobe RMI triedy.</p>
+
+<p>Majme jednoduchý interface:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">package</span> <span style="color:#5ed;font-weight:bold">spring</span>.<span style="color:#007">rmi</span>;
+
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">java</span>.<span style="color:#007">util</span>.<span style="color:#007">Date</span>;
+
+<span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">interface</span> DateService {
+  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">Date</span> getDate();
+}</code></pre></div>
+<p>a jeho implementáciu, ktorá vracia aktuálny dátum</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">package</span> <span style="color:#5ed;font-weight:bold">spring</span>.<span style="color:#007">rmi</span>;
+
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">java</span>.<span style="color:#007">util</span>.<span style="color:#007">Date</span>;
+
+<span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> DateServiceImpl <span style="color:#5ed;font-weight:bold">implements</span> DateService {
+  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">Date</span> getDate() {
+    <span style="color:#289;font-weight:bold">return</span> <span style="color:#289;font-weight:bold">new</span> Date();
+  }
+}
+(<span style="color:#333">:</span>sourceend<span style="color:#333">:</span>)</code></pre></div>
+<p>Všimnime si, že ani interfejs ani jeho implementácia nemajú v sebe nič špeciálne. Sú to klasické triedy, ktoré dokonca nepoužívajú nič z technológie RMI. Na rozdiel od klasického prístupu tak nemusíme vytvárať vzdialený interfejs (teda interfejs dediaci od <code>java.rmi.Remote</code>).</p>
+
+<p>Všimnime si, že ani interfejs ani jeho implementácia nemajú v sebe nič špeciálne. Sú to klasické triedy, ktoré dokonca nepoužívajú nič z technológie RMI. Na rozdiel od klasického prístupu tak nemusíme vytvárať vzdialený interfejs (teda interfejs dediaci od <code>java.rmi.Remote</code>).</p>
+
+<p>Vytvoríme aplikačný kontext pre klienta, ktorý bude obsahovať nasledovné beany:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#070">&lt;bean</span> <span style="color:#007">id=</span><span style="background-color:#e0e0ff">&#34;dateService&#34;</span> <span style="color:#007">class=</span><span style="background-color:#e0e0ff">&#34;spring.rmi.DateServiceImpl&#34;</span> <span style="color:#070">/&gt;</span>
+
+<span style="color:#070">&lt;bean</span> <span style="color:#007">class=</span><span style="background-color:#e0e0ff">&#34;org.springframework.remoting.rmi.RmiServiceExporter&#34;</span><span style="color:#070">&gt;</span>
+  <span style="color:#070">&lt;property</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;serviceName&#34;</span> <span style="color:#007">value=</span><span style="background-color:#e0e0ff">&#34;DateService&#34;</span> <span style="color:#070">/&gt;</span>
+  <span style="color:#070">&lt;property</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;service&#34;</span> <span style="color:#007">ref=</span><span style="background-color:#e0e0ff">&#34;dateService&#34;</span> <span style="color:#070">/&gt;</span>
+  <span style="color:#070">&lt;property</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;serviceInterface&#34;</span> <span style="color:#007">value=</span><span style="background-color:#e0e0ff">&#34;spring.rmi.DateService&#34;</span> <span style="color:#070">/&gt;</span>
+<span style="color:#070">&lt;/bean&gt;</span></code></pre></div>
+<p>Prvý bean reprezentuje deklaráciu implementácie interfaceu pre službu. Druhý bean predstavuje automatický exportér interfaceu v podobe RMI serveru.</p>
+
+<ul>
+<li><code>serviceName</code> určuje názov služby. Má vplyv na URL endpointu a nemusí mať nič spoločné s názvom interfaceov alebo implementačných tried.</li>
+<li><code>service</code> predstavuje odkaz na bean obsahujúci samotnú aplikačnú logiku</li>
+<li><code>serviceInterface</code> predstavuje meno interfaceu, ktorý implementuje bean v <code>service</code> a ktorý bude publikovaný ako vzdialený.</li>
+</ul>
+
+<h2 id="kód-pre-server">Kód pre server</h2>
+
+<p>Samotný kód pre server je jednoduchý - stačí naštartovať aplikačný kontext.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">package</span> <span style="color:#5ed;font-weight:bold">spring</span>.<span style="color:#007">rmi</span>;
+
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">org</span>.<span style="color:#007">springframework</span>.<span style="color:#007">context</span>.<span style="color:#007">support</span>.<span style="color:#007">ClassPathXmlApplicationContext</span>;
+
+<span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> Server {
+  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">static</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">main</span>(String[] <span style="color:#5ed;font-weight:bold">args</span>) {
+    ClassPathXmlApplicationContext <span style="color:#5ed;font-weight:bold">ctx</span> 
+      <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> ClassPathXmlApplicationContext(<span style="background-color:#e0e0ff">&#34;applicationContext.xml&#34;</span>);
+  }
+}</code></pre></div>
+<p>Aplikačný kontext sa naštartuje spolu so serverom:</p>
+
+<pre><code>INFO Refreshing org.springframework.context.support.ClassPathXmlApplicationContext@14693c7: display name [org.springframework.context.support.ClassPathXmlApplicationContext@14693c7]; startup date [Fri Aug 24 13:07:17 CEST 2007]; root of context hierarchy
+INFO Loading XML bean definitions from class path resource [applicationContext.xml]
+INFO Bean factory for application context [org.springframework.context.support.ClassPathXmlApplicationContext@14693c7]: org.springframework.beans.factory.support.DefaultListableBeanFactory@291aff
+INFO Pre-instantiating singletons in org.springframework.beans.factory.support.DefaultListableBeanFactory@291aff: defining beans [dateService,org.springframework.remoting.rmi.RmiServiceExporter]; root of factory hierarchy
+INFO Looking for RMI registry at port '1099'
+INFO Could not detect RMI registry - creating new one
+INFO Binding service 'DateService' to RMI registry: RegistryImpl[UnicastServerRef [liveRef: [endpoint:[158.197.31.35:1099](local),objID:[0:0:0, 0]]]]
+
+</code></pre>
+
+<h1 id="klient">Klient</h1>
+
+<p>Na strane klienta budeme potrebovať len tri súbory: interface <code>DateService</code>, triedu pripájajúcu sa na server a aplikačný kontext. RMI totiž podporuje automatické načítavanie tried (classloading) zo servera.</p>
+
+<p>Aplikačný kontext bude špecifikovaný nasledovne (napr. v súbore <code>clientContext.xml</code>):</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#070">&lt;beans&gt;</span>
+  <span style="color:#070">&lt;bean</span> <span style="color:#007">id=</span><span style="background-color:#e0e0ff">&#34;dateService&#34;</span>    
+        <span style="color:#007">class=</span><span style="background-color:#e0e0ff">&#34;org.springframework.remoting.rmi.RmiProxyFactoryBean&#34;</span><span style="color:#070">&gt;</span>
+     <span style="color:#070">&lt;property</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;serviceUrl&#34;</span> 
+               <span style="color:#007">value=</span><span style="background-color:#e0e0ff">&#34;rmi://localhost:1099/DateService&#34;</span> <span style="color:#070">/&gt;</span>
+     <span style="color:#070">&lt;property</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;serviceInterface&#34;</span> 
+               <span style="color:#007">value=</span><span style="background-color:#e0e0ff">&#34;spring.rmi.DateService&#34;</span> <span style="color:#070">/&gt;</span>
+  <span style="color:#070">&lt;/bean&gt;</span>
+<span style="color:#070">&lt;/beans&gt;</span></code></pre></div>
+<p>Potrebujeme vhodne nastaviť názov servera v <code>serviceUrl</code> a názov interfaceu, ktorý zodpovedá vzdialene volateľným metódam <code>serviceInterface</code>.</p>
+
+<p>Samotný klient je potom priamočiary:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">package</span> <span style="color:#5ed;font-weight:bold">spring</span>.<span style="color:#007">rmi</span>;
+
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">org</span>.<span style="color:#007">springframework</span>.<span style="color:#007">context</span>.<span style="color:#007">support</span>.<span style="color:#007">ClassPathXmlApplicationContext</span>;
+
+<span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> Client {
+  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">static</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">main</span>(String[] <span style="color:#5ed;font-weight:bold">args</span>) {
+    ClassPathXmlApplicationContext <span style="color:#5ed;font-weight:bold">ctx</span> 
+      <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> ClassPathXmlApplicationContext(<span style="background-color:#e0e0ff">&#34;clientContext.xml&#34;</span>);
+    DateService <span style="color:#5ed;font-weight:bold">dateService</span> <span style="color:#333">=</span> (DateService) appContext.<span style="color:#007">getBean</span>(<span style="background-color:#e0e0ff">&#34;dateService&#34;</span>);
+    System.<span style="color:#007">out</span>.<span style="color:#007">println</span>(dateService.<span style="color:#007">getDate</span>());
+  }	
+}</code></pre></div>
+<p>Spring sa postará o automatické vytvorenie stubov a skeletonov a o ich správne prepojenie.</p>
+
+</main>
+
+    <footer>
+      
+<script>
+(function() {
+  function center_el(tagName) {
+    var tags = document.getElementsByTagName(tagName), i, tag;
+    for (i = 0; i < tags.length; i++) {
+      tag = tags[i];
+      var parent = tag.parentElement;
+      
+      if (parent.childNodes.length === 1) {
+        
+        if (parent.nodeName === 'A') {
+          parent = parent.parentElement;
+          if (parent.childNodes.length != 1) continue;
+        }
+        if (parent.nodeName === 'P') parent.style.textAlign = 'center';
+      }
+    }
+  }
+  var tagNames = ['img', 'embed', 'object'];
+  for (var i = 0; i < tagNames.length; i++) {
+    center_el(tagNames[i]);
+  }
+})();
+</script>
+
+      
+    </footer>
+  </body>
+</html>
+

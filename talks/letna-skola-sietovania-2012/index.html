@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Letná škola sieťovania 2012 | robonovotny</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.css" integrity="sha384-D+9gmBxUQogRLqvARvNLmA9hS2x//eK1FhVb9PiU86gmcrBrJAQT8okdJ4LMp2uv" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.js" integrity="sha384-483A6DwYfKeDa0Q52fJmxFXkcPCFfnXMoXblOkJ4JcA8zATN6Tm78UNL72AKk+0O" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/contrib/auto-render.min.js" integrity="sha384-yACMu8JWxKzSp/C1YV86pzGiQ/l1YUfE8oPuahJQxzehAjEt2GiQuy/BIvl9KyeF" crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body);
+        });
+    </script>
+
+<header>
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <nav>
+    <ul>
+      
+      
+      <li class="pull-left ">
+        <a href="http://novotnyr.github.io/">/home/robonovotny</a>
+      </li>
+      
+
+      
+
+    </ul>
+  </nav>
+</header>
+
+  </head>
+
+  <body>
+    <br/>
+
+<div class="article-meta">
+<h1><span class="title">Letná škola sieťovania 2012</span></h1>
+
+<h2 class="date">2012/07/04</h2>
+<p class="terms">
+  
+  
+  
+  
+  
+</p>
+</div>
+
+
+
+<main>
+
+
+<p>Júl 2012, Danišovce, pre UINF PF UPJŠ</p>
+
+<h1 id="prípravné-práce">Prípravné práce</h1>
+
+<h3 id="maven-proxy-settings">Maven proxy settings</h3>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#070">&lt;settings</span> <span style="color:#007">xmlns=</span><span style="background-color:#e0e0ff">&#34;http://maven.apache.org/SETTINGS/1.0.0&#34;</span>
+  <span style="color:#007">xmlns:xsi=</span><span style="background-color:#e0e0ff">&#34;http://www.w3.org/2001/XMLSchema-instance&#34;</span>
+  <span style="color:#007">xsi:schemaLocation=</span><span style="background-color:#e0e0ff">&#34;http://maven.apache.org/SETTINGS/1.0.0
+</span><span style="background-color:#e0e0ff">                      http://maven.apache.org/xsd/settings-1.0.0.xsd&#34;</span><span style="color:#070">&gt;</span>
+
+<span style="color:#070">&lt;proxies&gt;</span>
+   <span style="color:#070">&lt;proxy&gt;</span>
+      <span style="color:#070">&lt;active&gt;</span>true<span style="color:#070">&lt;/active&gt;</span>
+      <span style="color:#070">&lt;protocol&gt;</span>http<span style="color:#070">&lt;/protocol&gt;</span>
+      <span style="color:#070">&lt;host&gt;</span>localhost<span style="color:#070">&lt;/host&gt;</span>
+      <span style="color:#070">&lt;port&gt;</span>8787<span style="color:#070">&lt;/port&gt;</span>
+    <span style="color:#070">&lt;/proxy&gt;</span>
+  <span style="color:#070">&lt;/proxies&gt;</span> 
+<span style="color:#070">&lt;/settings&gt;</span></code></pre></div>
+<h3 id="konfigurácia-jetty">Konfigurácia Jetty</h3>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#070">&lt;build&gt;</span>
+	<span style="color:#070">&lt;plugins&gt;</span>
+		<span style="color:#070">&lt;plugin&gt;</span>
+			<span style="color:#070">&lt;groupId&gt;</span>org.mortbay.jetty<span style="color:#070">&lt;/groupId&gt;</span>
+			<span style="color:#070">&lt;artifactId&gt;</span>jetty-maven-plugin<span style="color:#070">&lt;/artifactId&gt;</span>
+			<span style="color:#070">&lt;version&gt;</span>8.1.4.v20120524<span style="color:#070">&lt;/version&gt;</span>
+		<span style="color:#070">&lt;/plugin&gt;</span>
+	<span style="color:#070">&lt;/plugins&gt;</span>
+<span style="color:#070">&lt;/build&gt;</span></code></pre></div>
+<h3 id="závislosť-pre-servlety">Závislosť pre servlety</h3>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#070">&lt;dependency&gt;</span>
+	<span style="color:#070">&lt;groupId&gt;</span>javax.servlet<span style="color:#070">&lt;/groupId&gt;</span>
+	<span style="color:#070">&lt;artifactId&gt;</span>javax.servlet-api<span style="color:#070">&lt;/artifactId&gt;</span>
+	<span style="color:#070">&lt;version&gt;</span>3.0.1<span style="color:#070">&lt;/version&gt;</span>
+	<span style="color:#070">&lt;scope&gt;</span>provided<span style="color:#070">&lt;/scope&gt;</span>
+<span style="color:#070">&lt;/dependency&gt;</span></code></pre></div>
+<h3 id="war">WAR</h3>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#070">&lt;plugin&gt;</span>
+    <span style="color:#070">&lt;groupId&gt;</span>org.apache.maven.plugins<span style="color:#070">&lt;/groupId&gt;</span>
+    <span style="color:#070">&lt;artifactId&gt;</span>maven-war-plugin<span style="color:#070">&lt;/artifactId&gt;</span>
+    <span style="color:#070">&lt;version&gt;</span>2.2<span style="color:#070">&lt;/version&gt;</span>
+    <span style="color:#070">&lt;configuration&gt;</span>
+      <span style="color:#070">&lt;failOnMissingWebXml&gt;</span>false<span style="color:#070">&lt;/failOnMissingWebXml&gt;</span>
+    <span style="color:#070">&lt;/configuration&gt;</span>
+<span style="color:#070">&lt;/plugin&gt;</span></code></pre></div>
+<h2 id="ukážkové-jsp">Ukážkové JSP</h2>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f00;background-color:#faa">&lt;</span>%@ page language=&#34;java&#34; contentType=&#34;text/html; charset=utf-8&#34; pageEncoding=&#34;utf-8&#34;%&gt;
+<span style="color:#f00;background-color:#faa">&lt;</span>%@ taglib prefix=&#34;c&#34; uri=&#34;http://java.sun.com/jsp/jstl/core&#34; %&gt;</code></pre></div>
+</main>
+
+    <footer>
+      
+<script>
+(function() {
+  function center_el(tagName) {
+    var tags = document.getElementsByTagName(tagName), i, tag;
+    for (i = 0; i < tags.length; i++) {
+      tag = tags[i];
+      var parent = tag.parentElement;
+      
+      if (parent.childNodes.length === 1) {
+        
+        if (parent.nodeName === 'A') {
+          parent = parent.parentElement;
+          if (parent.childNodes.length != 1) continue;
+        }
+        if (parent.nodeName === 'P') parent.style.textAlign = 'center';
+      }
+    }
+  }
+  var tagNames = ['img', 'embed', 'object'];
+  for (var i = 0; i < tagNames.length; i++) {
+    center_el(tagNames[i]);
+  }
+})();
+</script>
+
+      
+    </footer>
+  </body>
+</html>
+

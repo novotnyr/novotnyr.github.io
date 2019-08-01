@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Programovanie, algoritmy, zložitosť (UINF/PAZ1b) 2006 | robonovotny</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.css" integrity="sha384-D+9gmBxUQogRLqvARvNLmA9hS2x//eK1FhVb9PiU86gmcrBrJAQT8okdJ4LMp2uv" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.js" integrity="sha384-483A6DwYfKeDa0Q52fJmxFXkcPCFfnXMoXblOkJ4JcA8zATN6Tm78UNL72AKk+0O" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/contrib/auto-render.min.js" integrity="sha384-yACMu8JWxKzSp/C1YV86pzGiQ/l1YUfE8oPuahJQxzehAjEt2GiQuy/BIvl9KyeF" crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body);
+        });
+    </script>
+
+<header>
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <nav>
+    <ul>
+      
+      
+      <li class="pull-left ">
+        <a href="http://novotnyr.github.io/">/home/robonovotny</a>
+      </li>
+      
+
+      
+
+    </ul>
+  </nav>
+</header>
+
+  </head>
+
+  <body>
+    <br/>
+
+<div class="article-meta">
+<h1><span class="title">Programovanie, algoritmy, zložitosť (UINF/PAZ1b) 2006</span></h1>
+
+<h2 class="date">2006/06/11</h2>
+<p class="terms">
+  
+  
+  
+  
+  
+</p>
+</div>
+
+
+
+<main>
+
+
+<h2 id="uloha-c-1-19-4-2006">Uloha c. 1 (19. 4. 2006)</h2>
+
+<p>Vytvorte <em>unit</em> s nazvom <code>stats</code>. V tomto unite budu vytvorene dalsie triedy.</p>
+
+<p>Vytvorte dalsiu triedu <code>Zaznam</code>, ktora bude reprezentovat jednu *k*ticu realnych cisiel. Trieda ma mat dva datove cleny, oba v <em>private</em> sekcii:</p>
+
+<ul>
+<li>dlzku zaznamu (pocet clenov).</li>
+<li>pole realnych cisiel obsahujucich data (predpokladajte, ze zaznam moze obsahovat maximalne 30 poloziek).
+V triede vytvorte nasledovne metody, vsetky v <em>public</em> sekcii:</li>
+<li><code>sucet</code> bez argumentov, ktora spocita sucet vsetkych hodnot.</li>
+<li><code>dlzka</code> bez argumentov, ktora vrati pocet prvkov v zazname (t. j. dlzku).</li>
+<li><code>dajPrvok</code> s jednym celociselnym argumentom <em>i</em>, ktora vrati *i*ty prvok zaznamu.</li>
+</ul>
+
+<h2 id="uloha-c-2-19-4-2006">Uloha c. 2 (19. 4. 2006)</h2>
+
+<p>Je dany textovy subor nasledovneho tvaru:</p>
+
+<ul>
+<li>prvy riadok obsahuje pocet riadkov tvoriacich data (<em>n</em>)</li>
+<li>druhy riadok obsahuje pocet stlpcov v kazdom riadku (pocet stlpcov je rovnaky pre vsetky riadky) - <em>k</em></li>
+<li>zvysok textoveho suboru reprezentuju data: <em>n</em> riadkov obsahujucich *k*tice nahodnych cisiel</li>
+</ul>
+
+<p>Vytvorte triedu <code>Statistik</code>, ktora bude nacitavat <em>n</em> usporiadanych *k*tic nahodnych cisiel z textoveho suboru. Vytvorte konstruktor tejto triedy s troma parametrami:</p>
+
+<ul>
+<li>dlzkou <em>k</em>-tice</li>
+<li>poctom <em>k</em>-tic (<em>n</em>).</li>
+<li>nazvom textoveho suboru
+V triede vytvorte nasledovne metody, vsetky v <em>public</em> sekcii:</li>
+<li><code>dajZaznam</code> s jednym celociselnym parametrom <em>i</em>. Tato metoda vrati novu instanciu triedy <code>Zaznam</code> naplnenu datami z <em>i</em>-teho riadku textoveho suboru.</li>
+<li><code>priemer</code> s jednym celociselnym parametrom <em>stlpec</em>. Tato metoda spocita aritmeticky priemer hodnot v <em>stlpec</em>-tom stlpci.</li>
+<li><code>priemer</code> ako pretazenu metodu bez argumentov, ktora spocita aritmeticky priemer vsetkych hodnot.</li>
+</ul>
+
+</main>
+
+    <footer>
+      
+<script>
+(function() {
+  function center_el(tagName) {
+    var tags = document.getElementsByTagName(tagName), i, tag;
+    for (i = 0; i < tags.length; i++) {
+      tag = tags[i];
+      var parent = tag.parentElement;
+      
+      if (parent.childNodes.length === 1) {
+        
+        if (parent.nodeName === 'A') {
+          parent = parent.parentElement;
+          if (parent.childNodes.length != 1) continue;
+        }
+        if (parent.nodeName === 'P') parent.style.textAlign = 'center';
+      }
+    }
+  }
+  var tagNames = ['img', 'embed', 'object'];
+  for (var i = 0; i < tagNames.length; i++) {
+    center_el(tagNames[i]);
+  }
+})();
+</script>
+
+      
+    </footer>
+  </body>
+</html>
+

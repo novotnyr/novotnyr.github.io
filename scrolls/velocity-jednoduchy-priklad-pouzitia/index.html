@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Jednoduchý príklad použitia Velocity | robonovotny</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.css" integrity="sha384-D+9gmBxUQogRLqvARvNLmA9hS2x//eK1FhVb9PiU86gmcrBrJAQT8okdJ4LMp2uv" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.js" integrity="sha384-483A6DwYfKeDa0Q52fJmxFXkcPCFfnXMoXblOkJ4JcA8zATN6Tm78UNL72AKk+0O" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/contrib/auto-render.min.js" integrity="sha384-yACMu8JWxKzSp/C1YV86pzGiQ/l1YUfE8oPuahJQxzehAjEt2GiQuy/BIvl9KyeF" crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body);
+        });
+    </script>
+
+<header>
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <nav>
+    <ul>
+      
+      
+      <li class="pull-left ">
+        <a href="http://novotnyr.github.io/">/home/robonovotny</a>
+      </li>
+      
+
+      
+
+    </ul>
+  </nav>
+</header>
+
+  </head>
+
+  <body>
+    <br/>
+
+<div class="article-meta">
+<h1><span class="title">Jednoduchý príklad použitia Velocity</span></h1>
+
+<h2 class="date">2005/04/17</h2>
+<p class="terms">
+  
+  
+  
+  
+  
+</p>
+</div>
+
+
+
+<main>
+
+
+<p>Podľa prehľadu na stránkach <a href="http://jakarta.apache.org">tohto projektu</a> je Velocity &ldquo;šablónový „stroj&rdquo; založený na Jave. Umožňuje využívať jednoduchý, ale zato mocný jazyk&rdquo; na využívanie objektov definovaných v javovskom kóde.</p>
+
+<p>Šablóny môžu byť používané na generovanie HTML stránok, hromadnej korešpondencie alebo na ľubovoľnú podobnú činnosť.</p>
+
+<p>Príkladom šablóny je napr. súbor <code>knights.vm</code></p>
+
+<pre><code>Rytieri okrúhleho stola sa dnes zišli v počte $knightsList.size().
+
+Tu je ich presný zoznam:
+
+  #foreach( $knight in $knightList )
+    $knight.name
+  #end
+</code></pre>
+
+<p>V šablóne sa používajú direktívy (začínajúce na <code>#</code>), možno využívať premenné (začínajúce <code>$</code>), s premennými možno vykonávať rôzne operácie (bodková notácia ako v Jave).</p>
+
+<p>Pri parsovaní a vyhodnocovaní šablóny sa Velocity spolieha na kontext &ndash; ten obsahuje objekty, na ktoré sa v šablóne odkazujeme.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">static</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">main</span>( String[] <span style="color:#5ed;font-weight:bold">args</span> ) <span style="color:#289;font-weight:bold">throws</span> <span style="color:#5ed;font-weight:bold">Exception</span> {
+  <span style="color:#666;font-style:italic">/*  inicializujeme motor  */</span>
+
+  VelocityEngine <span style="color:#5ed;font-weight:bold">ve</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> VelocityEngine();
+  ve.<span style="color:#007">init</span>();
+
+  <span style="color:#666;font-style:italic">/*  vytvorime data, na ktore sa budeme v kontexte odkazovat  */</span>
+
+  List <span style="color:#5ed;font-weight:bold">list</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> ArrayList();
+  list.<span style="color:#007">add</span>(<span style="background-color:#e0e0ff">&#34;Arthur&#34;</span>);
+  list.<span style="color:#007">add</span>(<span style="background-color:#e0e0ff">&#34;Lancelot&#34;</span>);
+  list.<span style="color:#007">add</span>(<span style="background-color:#e0e0ff">&#34;Galahad&#34;</span>);
+  list.<span style="color:#007">add</span>(<span style="background-color:#e0e0ff">&#34;Robin&#34;</span>);
+
+  <span style="color:#666;font-style:italic">/*  vytvorime kontext  */</span>
+
+  VelocityContext <span style="color:#5ed;font-weight:bold">context</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> VelocityContext();
+
+  <span style="color:#666;font-style:italic">/*  vytvoreny zoznam ulozime do kontextu pod prislusnym menom  */</span>
+  context.<span style="color:#007">put</span>(<span style="background-color:#e0e0ff">&#34;knightList&#34;</span>, list);
+
+  <span style="color:#666;font-style:italic">/*  otvorme sablonu  */</span>
+
+  Template <span style="color:#5ed;font-weight:bold">t</span> <span style="color:#333">=</span> ve.<span style="color:#007">getTemplate</span>(<span style="background-color:#e0e0ff">&#34;knights.vm&#34;</span>);
+
+  <span style="color:#666;font-style:italic">/*  spracujme sablonu a vypisme ju na standardny vystup  */</span>
+
+  StringWriter <span style="color:#5ed;font-weight:bold">writer</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> StringWriter();
+  t.<span style="color:#007">merge</span>(context, writer);
+  System.<span style="color:#007">out</span>.<span style="color:#007">println</span>(writer.<span style="color:#007">toString</span>());
+}</code></pre></div>
+<h2 id="použitie-v-servletoch">Použitie v servletoch</h2>
+
+<p>Velocity sa dá učelne využiť ako vrstva View pri práci s webovými aplikáciami &ndash; napr. namiesto JSP. Každej stránke zodpovedá jedna šablóna (v podstate HTML stránka obsahujúca príkazy jazyka Velocity) a jeden Velocity servlet (trieda dediaca od <code>VelocityServlet</code>).</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> FirstVelocityServlet <span style="color:#5ed;font-weight:bold">extends</span> VelocityServlet {
+  <span style="color:#666;font-style:italic">/* potrebujeme prekryt nasledovnu metodu */</span>
+  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">Template</span> handleRequest(HttpServletRequest <span style="color:#5ed;font-weight:bold">request</span>, HttpServletResponse <span style="color:#5ed;font-weight:bold">response</span>, Context <span style="color:#5ed;font-weight:bold">context</span> ) {  
+    <span style="color:#666;font-style:italic">/* vytvorime data, na ktore sa budeme v kontexte odkazovat  */</span>
+
+    ArrayList <span style="color:#5ed;font-weight:bold">list</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> ArrayList();
+    list.<span style="color:#007">add</span>(<span style="background-color:#e0e0ff">&#34;Arthur&#34;</span>);
+    list.<span style="color:#007">add</span>(<span style="background-color:#e0e0ff">&#34;Lancelot&#34;</span>);
+    list.<span style="color:#007">add</span>(<span style="background-color:#e0e0ff">&#34;Galahad&#34;</span>);
+    list.<span style="color:#007">add</span>(<span style="background-color:#e0e0ff">&#34;Robin&#34;</span>);
+
+    <span style="color:#666;font-style:italic">/* vytvoreny ArrayList ulozime do kontextu 
+</span><span style="color:#666;font-style:italic">       (kontext je datovym clenom servletu) pod prislusnym menom  
+</span><span style="color:#666;font-style:italic">    */</span>
+    context.<span style="color:#007">put</span>(<span style="background-color:#e0e0ff">&#34;knightList&#34;</span>, list);
+
+    <span style="color:#666;font-style:italic">/*  otvorme sablonu (getTemplate je metoda servletu) */</span>
+    Template <span style="color:#5ed;font-weight:bold">template</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">null</span>;  
+    <span style="color:#289;font-weight:bold">try</span> {
+      template <span style="color:#333">=</span> getTemplate(<span style="background-color:#e0e0ff">&#34;knights.vm&#34;</span>);
+    } <span style="color:#289;font-weight:bold">catch</span>( Exception <span style="color:#5ed;font-weight:bold">e</span> ) {
+      System.<span style="color:#007">out</span>.<span style="color:#007">println</span>(<span style="background-color:#e0e0ff">&#34;Nastala chyba pri tvorbe sablony &#34;</span> <span style="color:#333">+</span> e);
+    }
+
+    <span style="color:#666;font-style:italic">/*  vratime z metody ziskanu sablonu */</span>
+    <span style="color:#289;font-weight:bold">return</span> template;
+  }
+}</code></pre></div>
+<p>Stránka je potom jednoduchá šablóna</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#333">&lt;</span>html<span style="color:#333">&gt;</span>
+<span style="color:#333">&lt;</span>h1<span style="color:#333">&gt;</span>Oznam<span style="color:#333">&lt;/</span>h1<span style="color:#333">&gt;</span>
+<span style="color:#333">&lt;</span>p<span style="color:#333">&gt;</span>Rytieri <span style="color:#5ed;font-weight:bold">okrúhleho</span> stola <span style="color:#5ed;font-weight:bold">sa</span> dnes <span style="color:#5ed;font-weight:bold">zišli</span> v <span style="color:#5ed;font-weight:bold">počte</span> $knightsList.<span style="color:#007">size</span>().<span style="color:#333">&lt;/</span>p<span style="color:#333">&gt;</span>
+<span style="color:#333">&lt;</span>p<span style="color:#333">&gt;</span>Tu <span style="color:#5ed;font-weight:bold">je</span> ich <span style="color:#5ed;font-weight:bold">presný</span> zoznam<span style="color:#333">:&lt;/</span>p<span style="color:#333">&gt;</span>
+  <span style="color:#333">&lt;</span>ol<span style="color:#333">&gt;</span>
+  <span style="color:#f00;background-color:#faa">#</span>foreach( $knight <span style="color:#5ed;font-weight:bold">in</span> $knightList )
+    <span style="color:#333">&lt;</span>li<span style="color:#333">&gt;</span>$knight.<span style="color:#007">name</span><span style="color:#333">&lt;/</span>li<span style="color:#333">&gt;</span>
+  <span style="color:#f00;background-color:#faa">#</span>end
+  <span style="color:#333">&lt;/</span>ol<span style="color:#333">&gt;</span>
+<span style="color:#333">&lt;/</span>html<span style="color:#333">&gt;</span></code></pre></div>
+</main>
+
+    <footer>
+      
+<script>
+(function() {
+  function center_el(tagName) {
+    var tags = document.getElementsByTagName(tagName), i, tag;
+    for (i = 0; i < tags.length; i++) {
+      tag = tags[i];
+      var parent = tag.parentElement;
+      
+      if (parent.childNodes.length === 1) {
+        
+        if (parent.nodeName === 'A') {
+          parent = parent.parentElement;
+          if (parent.childNodes.length != 1) continue;
+        }
+        if (parent.nodeName === 'P') parent.style.textAlign = 'center';
+      }
+    }
+  }
+  var tagNames = ['img', 'embed', 'object'];
+  for (var i = 0; i < tagNames.length; i++) {
+    center_el(tagNames[i]);
+  }
+})();
+</script>
+
+      
+    </footer>
+  </body>
+</html>
+

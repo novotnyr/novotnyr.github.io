@@ -158,12 +158,14 @@ hello - Say hello
 <ul>
 <li>Funkcie uvádzame kľúčovým slovom <code>fun</code>.</li>
 <li>Nemáme žiadne parametre a nevraciame nič. Na rozdiel od Javy neuvádzame žiadny <code>void</code>, ani nič podobné.</li>
-<li>Funkcia má <strong>anotáciu</strong> <code>@TaskAction</code>, ktorá hovorí, že toto je vykonateľná metóda tasku. Keďže sme v gradleáckom súbore, balíček pre  <code>org.gradle.api.tasks.TaskAction</code> nemusíme importovať.</li>
+
+<li><p>Funkcia má <strong>anotáciu</strong> <code>@TaskAction</code>, ktorá hovorí, že toto je vykonateľná metóda tasku. Keďže sme v gradleáckom súbore, balíček pre  <code>org.gradle.api.tasks.TaskAction</code> nemusíme importovať.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">tasks {
+register(<span style="background-color:#e0e0ff">&#34;hello&#34;</span>, HelloTask<span style="color:#333">::</span><span style="color:#289;font-weight:bold">class</span>)
+}</code></pre></div></li>
 </ul></li>
 </ul>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">tasks {
-    register(<span style="background-color:#e0e0ff">&#34;hello&#34;</span>, HelloTask<span style="color:#333">::</span><span style="color:#289;font-weight:bold">class</span>)
-}</code></pre></div>
+
 <p>Funkciu zaregistrujeme pomocou názvu <code>hello</code> a odkazom na triedu tasku. Konštrukcia <code>::class</code> reprezentuje mechanizmus známy z Javy, kde je uvádzaný cez dvojbodku.</p>
 
 <p>Task môžeme spustiť obvyklým spôsobom cez <code>gradle hello</code>!</p>
