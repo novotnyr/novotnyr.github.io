@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Elder Scrolls: TECO – Ozymandias medzi editormi | robonovotny</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.css" integrity="sha384-D+9gmBxUQogRLqvARvNLmA9hS2x//eK1FhVb9PiU86gmcrBrJAQT8okdJ4LMp2uv" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.js" integrity="sha384-483A6DwYfKeDa0Q52fJmxFXkcPCFfnXMoXblOkJ4JcA8zATN6Tm78UNL72AKk+0O" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/contrib/auto-render.min.js" integrity="sha384-yACMu8JWxKzSp/C1YV86pzGiQ/l1YUfE8oPuahJQxzehAjEt2GiQuy/BIvl9KyeF" crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body);
+        });
+    </script>
+
+<header>
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <nav>
+    <ul>
+      
+      
+      <li class="pull-left ">
+        <a href="http://novotnyr.github.io/">/home/robonovotny</a>
+      </li>
+      
+
+      
+
+    </ul>
+  </nav>
+</header>
+
+  </head>
+
+  <body>
+    <br/>
+
+<div class="article-meta">
+<h1><span class="title">Elder Scrolls: TECO – Ozymandias medzi editormi</span></h1>
+
+<h2 class="date">2019/08/07</h2>
+<p class="terms">
+  
+  
+  
+  
+  
+</p>
+</div>
+
+
+
+<main>
+
+
+<blockquote>
+<p>Som Ozymandias, všetkých kráľov kráľ.</p>
+
+<p>Hľaď, mocný, zúfaj, vidiac moje dielo!</p>
+
+<p>— Percy Bysshe Shelley: Ozymandias (1818)</p>
+</blockquote>
+
+<p><img src="civ1.jpg" alt="" /></p>
+
+<h1 id="wtf-teco">WTF TECO</h1>
+
+<p>TECO (tíkou, vzor Daewoo Tico) je azda najstarší ehm textový ehm editor.</p>
+
+<p>Klasika od roku 1962.</p>
+
+<blockquote>
+<p>Šialenstvo TECO: chvíľka pohodlnosti; útrapy do konca života.</p>
+
+<p>— Wiki <a href="http://wiki.c2.com/?TecoEditor">C2</a></p>
+</blockquote>
+
+<p>Pozitívne vlastnosti:</p>
+
+<ul>
+<li>stručné príkazy reprezentované jedným písmenom!</li>
+<li>podpora skriptov, ktoré možno verzovať v Gite!</li>
+<li>podpora pre makrá, veď ide o turingovsky úplný jazyk</li>
+</ul>
+
+<p>Veď ktorý editor vám vypíše čísla od 1 po 5 takto:</p>
+
+<pre><code>5&lt;%0$Q0=&gt;$$
+</code></pre>
+
+<h1 id="prelúdium-odkiaľ-zohnať">Prelúdium: odkiaľ zohnať?</h1>
+
+<p>TECO nie je mŕtve. Práve naopak, toto je žralok ríše editorov, dokonalý a nezničiteľný!</p>
+
+<h2 id="binárky">Binárky</h2>
+
+<p>Portál <a href="http://almy.us/teco.html">Almy.us</a> poskytuje binárky pre všetky bežné platformy. Ale nie všade je k dispozícii <em>video mód</em> pre bežných smrteľníkov.</p>
+
+<h2 id="ako-zbuildovať">Ako zbuildovať?</h2>
+
+<p>Na druhej strane, GitHub repo <a href="https://github.com/blakemcbride/TECOC/">blakemcbride/TECOC</a> má céčkové zdrojáky, ktoré sa dajú zbuildovať nielen na Linuxe, ale aj na súčasnom MacOS Mojave.</p>
+
+<pre><code>git clone https://github.com/blakemcbride/TECOC.git
+cd TECOC/src
+make -f makefile.osx
+</code></pre>
+
+<h1 id="prvé-dejstvo-základné-operácie">Prvé dejstvo — základné operácie</h1>
+
+<h2 id="gui">GUI</h2>
+
+<p>TECO nemá GUI. (Ale je tu video mód. Pre krehké srdcia. Viď kapitola na konci.)</p>
+
+<p>Teda, spustenie <code>teco</code> spôsobí nasledovný vrchol GUI:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">*</code></pre></div>
+<p>Jedna hviezdička, teda prompt, je celé GUI.</p>
+
+<p>TECO je totiž znakovo orientovaný editor. Celý textový súbor považuje za obrovský reťazec (znakov), ktoré sú indexované (od nuly). V tomto reťazci máme <strong>kurzor</strong>, ktorý ukazuje na konkrétny znak, a vďaka pestrej palete <strong>príkazov</strong> môžeme po súbore skackať a meniť, pridávať, či mazať jednotlivé znaky.</p>
+
+<p>Akurát trochu terminológie:</p>
+
+<ul>
+<li><strong>pointer</strong> je kurzor. Ale: pointer ukazuje <em>medzi znaky</em>. Pointer na pozícii <code>1</code> hovorí, že „naľavo od pointeru je 1 znak“, teda pointer stojí medzi prvým a druhým znakom súboru..</li>
+<li><strong>súbor</strong> zodpovedá obrovskej páske, kde na políčkach sú znaky. (Turingov stroj, <em>anyone</em>?). Začiatok súboru má index 0.</li>
+<li><strong>riadky</strong> sú <em>sociálny konštrukt</em>, teda falat súboru medzi dvoma znakmi konca riadku. TECO považuje za koniec riadku dvojicu znakov CR-LF (bez ohľadu na platformu).</li>
+</ul>
+
+<h2 id="jak-skončiť-toto-trápenie">Jak skončiť toto trápenie?</h2>
+
+<p>Z <code>teco</code> sa vylieza dvojitým <code>Ctrl+C</code>. <code>Ctrl+C</code>.</p>
+
+<h2 id="načítanie-a-výpis-súboru">Načítanie a výpis súboru</h2>
+
+<p>Na hrajkanie si urobme cvičný súbor <code>lorem.txt</code>, zo shellu:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#072">printf</span> <span style="background-color:#e0e0ff">&#34;%s\n&#34;</span> Lorem ipsum dolor sit amet &gt; lorem.txt</code></pre></div>
+<p>Bežné TECO neberie parametre z príkazového riadka. (Príkazový riadok nebol vynájdený.)</p>
+
+<p>Na načítanie súboru použijeme dva <strong>príkazy</strong>:</p>
+
+<ul>
+<li><code>EB</code> otvorí súbor na čítanie a zápis. (Analógia <code>fopen()</code>)</li>
+<li><code>Y</code> načíta obsah súboru do buffera. (Analógia <code>fgets()</code>). Konkrétne načíta prvú stránku, ale o tom viac v bonuse.</li>
+</ul>
+
+<p>Príkazy sú ultrakrátke, jedno, maximálne dve písmená.</p>
+
+<p>Na vykonanie príkazu sa nepoužíva <em>Enter</em> (Enter nebol vynájdený), ale <strong>dvakrát Escape</strong>.</p>
+
+<p>Ukážkový <em>session</em>, kde <code>*</code> je prompt a <code>$</code> reprezentuje stlačenie <code>Esc</code>:</p>
+
+<pre><code>*EBlorem.txt$$
+*Y$$
+</code></pre>
+
+<p>Súbor sa otvoril a načítal! Po otvorení súboru je pointer na začiatku súboru, na indexe 0.</p>
+
+<h2 id="ht-výpis-obsahu-súboru"><code>HT</code> — výpis obsahu súboru</h2>
+
+<p>Výpis celého súboru získame príkazom <code>HT</code>:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">HT$$</code></pre></div>
+<p>Celý session vyzerá nasledovne:</p>
+
+<pre><code>*HT$$
+Lorem
+ipsum
+dolor
+sit
+amet
+*
+</code></pre>
+
+<p>TECO vypísalo obsah celého buffera.</p>
+
+<p>Mnemotechnika kríva, ale neskôr si povieme, že v skutočnosti sme práve použili dva (!) príkazy. Ale detaily neskôr.</p>
+
+<h2 id="zistenie-aktuálnej-polohy"><code>.=</code> – zistenie aktuálnej polohy</h2>
+
+<p>Ak chceme zistiť, kde máme pointer, použime príkaz <code>.=</code>:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">.=$$</code></pre></div>
+<p>Celý session vyzerá:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">*.=$$
+0</code></pre></div>
+<p>Tento príkaz vypíše index, na ktorom sa práve nachádza pointer.</p>
+
+<p>Mnemotechnika kríva ešte viac, ale v tomto prípade ide o použitie príkazu s parametrom. Ale detaily neskôr.</p>
+
+<h2 id="t-typeout-výpis-riadka"><code>T</code> — typeout – výpis riadka</h2>
+
+<p>Jednopísmenný príkaz <code>T</code> vypisuje text od pointeru do konca riadku (teda po najbližší <code>CR</code>-<code>LF</code>).</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">T$$</code></pre></div>
+<p>Celý session vrátane dekorácie:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">*T$$
+Lorem</code></pre></div>
+<p>Keďže pointer je na začiatku súboru (a na začiatku prvého riadku), samotný <code>T</code> vypíše prvý riadok.</p>
+
+<p><code>T</code> je štandardný debugovací nástroj. Kto je stratený, nech si <code>T</code>-čkne.</p>
+
+<p>Hodí sa aj kombo na výpis celého riadka, bez ohľadu na polohu pointra:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">0TT</code></pre></div>
+<p>O kombách neskôr, zatiaľ to použime ako zaklínadlo!</p>
+
+<h2 id="c-character-move-pohyb-po-znakoch"><code>C</code> — character move – pohyb po znakoch</h2>
+
+<p>Príkaz <code>C</code> hýbe pointerom po <del>páske</del> <del>bufferi</del> súbore. Ak chceme pointer posunúť o jeden znak doprava:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">C</code></pre></div>
+<p>Zrazu máme kurzor medzi indexami 0 a 1, inak povedané, v ukážke medzi písmenami <code>L</code> a <code>o</code>:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">L|orem</code></pre></div>
+<p>To si môžeme overiť:</p>
+
+<ul>
+<li><code>.=</code> vráti <code>1</code></li>
+<li><code>T</code> vráti <code>orem</code>, pretože vypisujeme od pointra (index 1) do konca riadka.</li>
+</ul>
+
+<h3 id="parametre-príkazu">Parametre príkazu</h3>
+
+<p>TECO má minimalistické názvy príkazov,  ale ako vraví Ján Pavol II, nebojme sa. Ide o úplne normálne funkcie, dokonca s parametrami!</p>
+
+<ul>
+<li>Parametre pred názvom berú polohu, alebo rozsah polohy, na ktorú sa príkaz použije.</li>
+<li>Parametre za názvom sú reťazce. Napríklad vkladaný text, hľadaný text, nahrádzaný text. (Okrem registrov, tam je to naopak.)</li>
+</ul>
+
+<h3 id="parametre-c">Parametre <code>C</code></h3>
+
+<p>Príkaz <code>C</code> berie počet znakov, o ktoré sa máme pohnúť doprava. Napr. <code>1C</code> posunie pointer o jeden znak doprava. Posun a výpis, aha:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">*1C$$
+*T$$
+orem</code></pre></div>
+<p>Posúvať sa môžeme aj doľava, cez záporné indexy! <code>-1C</code> posunie pointer o mínus jeden znak doprava. Teda o jeden znak doľava.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">*-1C$$
+*T$$
+Lorem</code></pre></div>
+<p>Plus jedna a mínus jedna sú zabudované. <code>C</code> znamená automaticky <code>1C</code> a <code>-C</code> znamená <code>-1C</code>.</p>
+
+<h2 id="j-jump-skok-na-index"><code>J</code> — jump – skok na index</h2>
+
+<p><code>J</code> ako <strong>jump</strong> skočí na konkrétny index.</p>
+
+<h3 id="skok-na-začiatok">Skok na začiatok</h3>
+
+<p>Napríklad skok pointrom na začiatok buffera?</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">0J</code></pre></div>
+<p>Skok počiatkový je taký bežný, že má skratku:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">J</code></pre></div>
+<p>Skok pred tretí znak?</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">3J</code></pre></div>
+<h3 id="skok-na-koniec">Skok na koniec</h3>
+
+<p>Skok na koniec súboru vyriešime kúzlom:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">ZJ</code></pre></div>
+<h4 id="z-index-konca-súboru"><code>Z</code> — index konca súboru</h4>
+
+<p>Príkaz <code>Z</code> vracia index konca súboru. A samozrejme, výsledok použime ako parameter pre <em>jump</em>! Normálny zápis v normálnom jazyku by vyzeral:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">jump(endOfFileIndex())</code></pre></div>
+<p>Ale normálne jazyky neboli vynájdené!</p>
+
+<h3 id="konce-riadkov-sú-dva-riadky">Konce riadkov sú dva riadky!</h3>
+
+<p>Pozor na to, že konce riadkov sú dva znaky: <code>CR</code> a <code>LF</code>! Index konca súboru tak môže byť väčšie číslo než je dĺžka súboru v Linuxe!</p>
+
+<h2 id="funkcie-pre-indexy">Funkcie pre indexy</h2>
+
+<p>TECO má tri základné funkcie pre vyhodnotenie indexov:</p>
+
+<ul>
+<li><code>Z</code>: vráti index konca buffera (obvykle súboru). Mnemotechnicky: <code>Z</code> je posledné písmeno abecedy a posledný index súboru!</li>
+<li><code>0</code>: vráti index začiatku buffera (wow!)</li>
+<li><code>B</code>: vráti index začiatku buffera. Mnemotechnicky: <code>B</code> ako <em>begin</em>.</li>
+<li><code>.</code> : bodka vráti index pointra. Tu už vidno, že <code>.=</code> je príkaz <code>=</code>  s parametrom „aktuálny index pointra“.</li>
+</ul>
+
+<h2 id="l-line-move-posun-po-riadkoch"><code>L</code> — line move – posun po riadkoch</h2>
+
+<p>Posun zo začiatku na ďalší riadok?</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">L</code></pre></div>
+<p>Ak sme na začiatku súboru, posunieme sa o riadok ďalej a pointer sa posunie <em>za</em> prvý <code>CR-LF</code>.</p>
+
+<p>Overme si to výpisom:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">T</code></pre></div>
+<p>Uvidíme výpis od aktuálneho pointera do konca riadku, teda <code>ipsum</code>.</p>
+
+<h3 id="posun-o-viacero-riadkov">Posun o viacero riadkov</h3>
+
+<p>Posúvať sa môžeme dopredu i dozadu. Napríklad posun o dva riadky dopredu:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">2L</code></pre></div>
+<p>Uvidíme zrejme <code>sit</code>.</p>
+
+<h2 id="i-insert-vkladanie-textu"><code>I</code> – insert – vkladanie textu</h2>
+
+<p>Príkaz <code>I</code> (<strong>insert</strong>) vkladá text pod pointer.</p>
+
+<p>Berie jeden parameter a to <em>text</em>, čo sa má vložiť. Tento parameter však nejde <em>pred</em> príkaz (nie je to poloha), ale <em>za</em> príkaz.</p>
+
+<p>Ak sa nachádzame na začiatku buffera a použijeme</p>
+
+<ul>
+<li><code>I</code> s parametrom <code>lipsum</code>,</li>
+<li>následne odENTERujeme</li>
+<li>a následne ukončíme príkaz cez <code>Esc</code>, <code>Esc</code>,</li>
+</ul>
+
+<p>Vložíme na začiatok súboru nový riadok:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">ILipsum&lt;enter&gt;$$</code></pre></div>
+<p>Súbor si vypíšme klasickým <code>HT</code>.</p>
+
+<h2 id="k-kill-mazanie-textu"><code>K</code> — kill – mazanie textu</h2>
+
+<p>Príkaz <code>K</code> (<strong>kill</strong>) maže riadok od pointera po najbližší koniec riadka (vrátane). Ak chceme zmazať prvý riadok:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">J$$
+K$$
+HT</code></pre></div>
+<ul>
+<li><code>J</code> presunieme sa na začiatok buffera</li>
+<li><code>K</code> vymaže od začiatku súboru po najbližší <code>CR</code>-<code>LF</code> (vrátane)</li>
+<li>a overíme si výpisom.</li>
+</ul>
+
+<p>Príkaz berie aj parametre. Ak chceme vymazať od pointra, dva riadky, stačí <code>2K</code>.</p>
+
+<h3 id="hardcore-combo">Hardcore Combo</h3>
+
+<p>Príkazy môžeme aj spájať do kombinácii. Napríklad <code>JKHT</code>. Podrobnosti nižšie.</p>
+
+<h2 id="d-delete-mazanie-znakov"><code>D</code> – delete – mazanie znakov</h2>
+
+<p>Ak chceme mazať znaky, <code>D</code> maže jeden znak napravo od pointera.</p>
+
+<p>Prvý znak buffera von!</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">J$$
+D</code></pre></div>
+<p><code>D</code> berie parametre, takže <code>3D</code> nie je trojrozmerné TECO, ale mazanie troch znaky napravo od pointera.</p>
+
+<p>Mínusové argumenty mažú naľavo! <code>-5D</code> zmaže päť znakov naľavo od pointra.</p>
+
+<h2 id="hardcore-combo-1">Hardcore Combo</h2>
+
+<p><code>JD</code> nie je <em>Jack Daniels</em>, ale kombo na mazanie prvého znaku buffera.</p>
+
+<h1 id="intermezzo">Intermezzo</h1>
+
+<p>V tomto stave je súbor zrejme rozdrbaný tak, že je najlepšie skončiť a začať nanovo.</p>
+
+<p>Teda</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">Ctrl-C
+Ctrl-C
+teco
+EBlorem.txt$$
+Y$$
+HT$$</code></pre></div>
+<h1 id="druhé-dejstvo-kombá">Druhé dejstvo – kombá</h1>
+
+<p>TECO je v skutočnosti arkádovka: vľavo pisár, vpravo súbor, a kombá nakladajú do súboru, čo sa zmestí.</p>
+
+<p>Príkazy môžu rovno nasledovať za sebou a ukončia sa <strong>Esc/Esc</strong>.</p>
+
+<p>Dajme si prípravu: päť riadkov a jeden prázdny na konci:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">Lorem
+ipsum
+dolor
+sit
+amet</code></pre></div>
+<p>Pre Linux/Mac to vyzerá:</p>
+
+<pre><code>od -bc lorem.txt
+0000000   114 157 162 145 155 012 151 160 163 165 155 012 144 157 154 157
+           L   o   r   e   m  \n   i   p   s   u   m  \n   d   o   l   o
+0000020   162 012 163 151 164 012 141 155 145 164 012
+           r  \n   s   i   t  \n   a   m   e   t  \n
+0000033
+</code></pre>
+
+<p>Pre TECO to však vyzerá s CR-LF:</p>
+
+<pre><code>Lorem&lt;CR&gt;&lt;LF&gt;
+ipsum&lt;CR&gt;&lt;LF&gt;
+dolor&lt;CR&gt;&lt;LF&gt;
+sit&lt;CR&gt;&lt;LF&gt;
+amet&lt;CR&gt;&lt;LF&gt;
+</code></pre>
+
+<p>A teraz kombo tajm!</p>
+
+<h2 id="mazanie-posledného-riadku">Mazanie posledného riadku</h2>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">ZJ-LK$$</code></pre></div>
+<ul>
+<li><code>ZJ</code> nás hodí na koniec súboru:
+
+<ul>
+<li><code>J</code> skáče,</li>
+<li><code>Z</code> je parameter skoku zvaný „na koniec buffera“. Kurzor sa ocitne na úplnom konci, za posledným prázdnym riadkom.</li>
+</ul></li>
+<li><code>-L</code> nás posunie o riadok vyššie, teda pred <code>amet</code>.</li>
+<li><code>K</code> maže celý aktuálny riadok.</li>
+</ul>
+
+<p>Poďme hrať TECO golf! Ušetrime jeden znak:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">ZJ-K$$</code></pre></div>
+<ul>
+<li><code>ZJ</code> nás hodí na koniec súboru: <code>J</code> skáče, <code>Z</code> je parameter skoku zvaný „na koniec buffera“</li>
+<li><code>-K</code> maže celý predošlý riadok. <code>K</code> killuje, mínus hovorí „jeden riadok naľavo“.</li>
+</ul>
+
+<h2 id="vtip-do-prestávky">Vtip do prestávky</h2>
+
+<blockquote>
+<p>Zistilo sa, že postupnosť príkazov v editore TECO sa podobá viac šumu v prenosovej linke než čitateľnému textu [4]. Jedna z tých zábavnejších kratochvíľ, ktoré môžete zažiť s TECOm, je zadávanie svojho mena do príkazového riadku a hádanie, čo sa stane.</p>
+
+<p>— <a href="http://ics.upjs.sk/~novotnyr/blog/1240/pravi-programatori-nepouzivaju-pascal">Praví programátori nepoužívajú Pascal</a>, 1983</p>
+</blockquote>
+
+<h2 id="prepisovanie-textu">Prepisovanie textu</h2>
+
+<p>TECO nepodporuje prepisovanie textu. Ale vieme mazať a vkladať!</p>
+
+<p>Zmeňme <code>Lorem</code> na začiatku súboru na <code>lorem</code>.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">JDIl$$</code></pre></div>
+<ul>
+<li><code>J</code> skáče na začiatok súboru.</li>
+<li><code>D</code> zmaže znak napravo od pointera. Získame <code>orem</code>. Pointer stojí medzi začiatkom súboru a <code>o</code>.</li>
+<li><code>Il</code> vloží znak <code>l</code> (el) napravo od pointera. Získame <code>lorem</code>. Kurzor bude medzi <code>l</code> a <code>o</code>.</li>
+</ul>
+
+<h2 id="nejednoznačnosti-v-kombách">Nejednoznačnosti v kombách</h2>
+
+<p>Nejednoznačnosti vieme vyriešiť voľne pohodeným <code>Esc</code>. Napríklad <code>I</code> (Insert) potrebuje oddeliť vkladaný text od nasledujúcich príkazov.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">ID$-C$$</code></pre></div>
+<p>Vložíme <code>D</code> a posunieme sa o znak doľava. <strong>Esc</strong> zabráni vloženiu reťazca „dé mínus cé“.</p>
+
+<h2 id="výpis-celého-aktuálneho-riadku-t">Výpis celého aktuálneho riadku: <code>T</code></h2>
+
+<p>Niekedy sa pointer ocitne uprostred riadku. Napríklad po poslednom príklade:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">.=$$</code></pre></div>
+<p>Výsledok bude 1.</p>
+
+<p>Ak vypíšeme riadok cez <code>T</code>, získame text od pointera do konca riadka, takže <code>orem</code>. Kde je <code>L</code>?</p>
+
+<p>Kombináciou dvoch príkazov vypíšeme celý aktuálny riadok:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">0TT</code></pre></div>
+<ul>
+<li><code>0T</code> vypíše obsah od začiatku riadku po pointer.</li>
+<li><code>T</code> vypíše od pointra po koniec riadku.</li>
+</ul>
+
+<h2 id="s-search-vyhľadávanie"><code>S</code> – search – vyhľadávanie</h2>
+
+<p>TECO vie vyhľadávať! <code>S</code> berie jeden argument s textom, ktorý sa má hľadať:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">Sdolor$$</code></pre></div>
+<p>TECO nájde reťazec a postaví pointer za hľadaný text.</p>
+
+<h2 id="fs-find-substitute-vyhľadávanie-a-nahrádzanie"><code>FS</code> – find / substitute – vyhľadávanie a nahrádzanie</h2>
+
+<p><code>FS</code> má dva parametre oddelené <strong>Esc</strong>: <em>čo</em> hľadať a <em>čím</em> nahradiť.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">FSdolor$doom$$</code></pre></div>
+<p>Po nahradení sa kurzor objaví za nahradeným textom.</p>
+
+<h2 id="ex-ukončenie-a-zápis-zmien"><code>EX</code> – ukončenie a zápis zmien</h2>
+
+<p>Príkaz <code>EX</code> zapíše zmeny a ukončí trápenie.</p>
+
+<h1 id="tretie-dejstvo-programovanie-a-k-a-brainfuck-time">Tretie dejstvo: programovanie a.k.a. Brainfuck Time</h1>
+
+<p>V TECO sa dá programovať! TECO je turingovsky úplný jazyk!</p>
+
+<h2 id="vyhodnocovanie-výrazov"><code>=</code> – vyhodnocovanie výrazov</h2>
+
+<p>Príkaz <code>=</code> v skutočnosti vyhodnocuje výrazy!</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">2+2*4=$$</code></pre></div>
+<p>Výsledok je .. 16! TECO sa netrápi s prioritou operátorov (tie neboli vynájdené). Kto chce, uzátvorkuje si!</p>
+
+<p>A pozor, medzery vo výrazoch sa nesmú používať. (Teda smú, nahrádzajú sa <code>+</code>. Bol to vraj vtedy dobrý nápad.)</p>
+
+<h2 id="funkcie-pre-polohu">Funkcie pre polohu</h2>
+
+<p>Doteraz sme videli viacero funkcií, ktoré vracali polohu:</p>
+
+<ul>
+<li><code>0</code> vráti nultý index.</li>
+<li><code>.</code> vráti index pointera</li>
+<li><code>B</code> (<em>beginning</em>) vráti index na začiatku súboru</li>
+<li><code>Z</code> (posledné písmeno abecedy) vráti index konca súboru</li>
+<li><code>H</code> (<em>wHole</em>) vráti usporiadanú dvojicu (<em>0</em>, <em>index konca súboru</em>)</li>
+</ul>
+
+<p>To sa dá kombinovať! A to je dôvod, prečo:</p>
+
+<ul>
+<li><code>.=</code> vypíše aktuálnu polohu. Aktuálna poloha je vyhodnotená ako výraz.</li>
+<li><code>HT</code> vypíše celý súbor. Usporiadaná dvojica z <code>H</code> je použitá ako rozsah pre výpis <code>T</code></li>
+</ul>
+
+<h2 id="opakovania-a-cykly">Opakovania a cykly</h2>
+
+<p>TECO podporuje opakovania! Chceme vložiť na začiatok súboru päť hviezdičiek?</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">J$5&lt;I*$&gt;$$</code></pre></div>
+<ul>
+<li><code>J</code> skočí na začiatok súboru</li>
+<li><code>5&lt;I*$&gt;</code>
+
+<ul>
+<li><code>5</code> určuje počet iterácií.</li>
+<li><code>&lt;</code>…<code>&gt;</code> obsahujú kód, ktorý sa má vykonať.</li>
+<li>pomocou <code>I</code> vložíme hviezdičku <code>*</code> a príkaz ukončíme <strong>Esc</strong></li>
+</ul></li>
+<li><strong>Esc Esc</strong> vykoná program.</li>
+</ul>
+
+<h2 id="masové-nahrádzanie">Masové nahrádzanie</h2>
+
+<p>Opakovanie sa dá použiť pri masovom nahrádzaní! Chceme v celom súbore nahradiť <code>m</code> za <code>n</code>?</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">J&lt;FSm$n$;&gt;$$</code></pre></div>
+<ul>
+<li><code>J</code> skáče na začiatok súboru.</li>
+<li><code>&lt;</code>…<code>&gt;</code> obsahuje cyklus. Keďže nemáme počet opakovaní, máme prakticky <code>while</code>.</li>
+<li><code>FS</code> nahrádza:
+
+<ul>
+<li><code>m</code> je nahrádzaný text</li>
+<li><code>$</code> je oddeľovač parametra pre <code>FS</code></li>
+<li><code>n</code> je nahradený text</li>
+<li><code>$</code> je oddeľovač druhého parametra</li>
+</ul></li>
+<li>bodkočiarka <code>;</code> je <code>break</code>. Presnejšie, ukončí cyklus, ak predošlý príkaz zlyhal. V prípade, že sa už nenájde v texte žiadne <code>m</code>, príkaz <code>FS</code> zlyhá a bodkočiarka vyskočí z cyklu.</li>
+</ul>
+
+<hr />
+
+<h2 id="q-registre-s-premenné">Q-Registre –s premenné</h2>
+
+<p>TECO nemá premenné. Namiesto toho má <strong>Q-registre</strong>, čo je 36 chlievikov od <em>á</em> po <em>zet</em>  a od nuly po 9.Každý chlievik <strong>Q-register</strong> môže obsahovať reťazec a nezávisle od toho číslo.</p>
+
+<p>Prečo <code>Q</code>? Lebo toto písmeno ostalo nepoužité.</p>
+
+<h3 id="u-vkladanie-čísla-do-registra"><code>U</code> – vkladanie čísla do registra</h3>
+
+<p>Príkaz <code>U</code> vloží číslo do registra. Má dva parametre 1) vkladané číslo a 2) meno registra.</p>
+
+<p>Vložme dvadsať do nultého registra:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">20U0$$</code></pre></div>
+<h3 id="q-výber-čísla-z-registra"><code>Q</code> – výber čísla z registra</h3>
+
+<p><code>Q</code> je „funkcia“ pre výber čísla z registra. Ak chceme vypísať obsah, dáme kombo s <code>=</code>!</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">Q0=$$</code></pre></div>
+<h3 id="inkrementácia-čísla-v-registri"><code>%</code> – inkrementácia čísla v registri</h3>
+
+<p>Ak chceme zvýšiť číslo v registri o 1:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">%0$$</code></pre></div>
+<h2 id="registre-pre-cyklus-for">Registre pre cyklus <code>for</code></h2>
+
+<p>Teraz si môžeme vypísať čísla od 1 po 5!</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">5&lt;%0$Q0=&gt;$$</code></pre></div>
+<ul>
+<li><code>5</code> určuje počet opakovaní</li>
+<li><code>&lt;</code>…<code>&gt;</code> je kód cyklu
+
+<ul>
+<li><code>%0</code> zvýši hodnotu v nultom registri o 1</li>
+<li><code>$</code> je oddeľovač príkazov v cykle</li>
+<li><code>Q0=</code> vypíše obsah nultého registra. Presnejšie <code>Q0</code> vráti obsah nultého registra a použije ho ako argument pre <code>=</code></li>
+</ul></li>
+<li><strong>Esc Esc</strong> ukončí príkaz</li>
+</ul>
+
+<p>Máme už dosť?</p>
+
+<h1 id="komentáre-video-mód">Komentáre: Video mód</h1>
+
+<p>Niektoré moderné beštie TECO majú video mód. Napríklad verzia z GitHubu vie zapnúť režim nasledovne:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain"> ./teco -scroll:5</code></pre></div>
+<p>Obrazovka sa rozdelí na dve časti:</p>
+
+<ol>
+<li>spodných 5 riadkov je editor príkazov</li>
+<li>zvyšok hore zobrazuje text. Pointer je zvýraznený, ale pozor, na obrazovke nevieme vykresliť kurzor medzi znakmi, preto je vždy na znaku napravo od skutočného pointera.</li>
+</ol>
+
+<h1 id="komentáre-stránkovanie">Komentáre: stránkovanie</h1>
+
+<p>TECO v skutočnosti funguje na stránkach (<em>page</em>). Očividne to šetrí pamäť. Stránka je kus súboru oddelený znakom <code>^L</code>(<code>FF</code>, form feed, ASCII 12, resp. HEX 0xC).</p>
+
+<p>Všetky príkazy pre polohu operujú na jednej stránke, a príkaz <code>P</code> posúva editor na nasledovnú stránku.</p>
+
+<p>Zaveďte si do textového editora ^L a prekvapte svoj Word!</p>
+
+<h1 id="história">História</h1>
+
+<p>Všetci hovoria, že názov je skratka od „Text Editor and COrrector“, ale Dan Murphy vie, že pravda je inde: ide o „Tape Editor and Corrector“.</p>
+
+<p>V roku 1962 bola doba ťažká, pretože v duchu <a href="https://www.youtube.com/watch?v=ue7wM0QC5LE">štyroch Yorkšírčanov</a> „nemali sme pevné disky, pružné disky, magnetické pásky, ani siete. Nemali sme ani operačný systém. Mali sme len čítačku papierovej pásky, dierkovač a konzolový písací stroj“ (Dan Murphy, <a href="http://tenex.opost.com/anhc-31-4-anec.pdf">The Beginnings of TECO, 2009</a>)</p>
+
+<p>TECO vzniklo ako pomocný nástroj na korektorské zásahy pri kopírovaní a úprave pásky. Všetky hardcore vlastnosti vyplynuli z okolností: pamäte bolo málo (PDP-1 malo ledva 8kB), strojový čas bol obmedzený a legendárne jednopísmenové príkazy boli inšpirované debuggerom <a href="https://www.computerhistory.org/pdp-1/_media/pdf/DEC.pdp_1.1964.102650078.pdf">https://www.computerhistory.org/pdp-1/_media/pdf/DEC.pdp_1.1964.102650078.pdf</a>.</p>
+
+<p>Napriek tomu TECO predbehlo dobu, veď ostatné editory prišli o mnoho rokov neskôr.</p>
+
+<ul>
+<li><code>ed</code>, ktorý bol <em>riadkovo orientovaným</em> sa zjavil až v roku 1969</li>
+<li><code>vi</code> , <em>vizuálny editor</em> dorazil až v roku 1976</li>
+<li>a <strong>EMACS</strong>, skrátene z <em>Editor Macros</em> vznikol ako sada makier pre … TECO.</li>
+</ul>
+
+<h1 id="literatúra">Literatúra</h1>
+
+<h2 id="binárky-a-zdrojáky">Binárky a zdrojáky</h2>
+
+<ul>
+<li><a href="http://almy.us/teco.html">almy.us/teco.us</a> – zelený web s odkazmi na binárky pre rozličné súčasné platformy.</li>
+<li>GitHub repo <a href="https://github.com/blakemcbride/TECOC">blakemcbride/TECOC</a>: céčkové zdrojáky skompilovateľné aj na platformách 21. storočia. Obsahujú aj videomód!</li>
+</ul>
+
+<h2 id="dokumentácia">Dokumentácia</h2>
+
+<ul>
+<li><a href="https://sdfeu.org/w/tutorials:survival-teco">Survival TECO</a> – ťaháčik s príkazmi</li>
+<li><a href="http://www.copters.com/teco.html">Video TECO User’s Guide</a> – vyčerpávajúci popis príkazov s parametrami</li>
+<li><a href="https://web.archive.org/web/20061020201751/http://www.avanthar.com/~healyzh/teco/TecoPocketGuide.html#NOTATION">TECO Pocket Guide</a> – príručka mladého svišťa so sumárom príkazov. Od autorov DEC PDP-11!</li>
+<li><a href="http://bitsavers.informatik.uni-stuttgart.de/www.computer.museum.uq.edu.au/pdf/MNT-16%20TECO%20Editing%20-%20A%20Tutorial%20Course%20for%20PDP-10%20and%20PDP-11%20Users.pdf">TECO Editing, A Tutorial Course</a> – sken tutoriálu pre PDP-11, z roku 1978!</li>
+</ul>
+
+<h2 id="ľudia-a-zážitky">Ľudia a zážitky</h2>
+
+<ul>
+<li><a href="http://wiki.c2.com/?TecoEditor"><strong>TecoEditor</strong></a> na Wiki.C2.com</li>
+<li>Dan Murphy, autor TECO,  a jeho <a href="http://www.opost.com/dlm/#teco">domovská stránka</a>. Dal si PhD z psychológie!</li>
+<li><a href="http://tenex.opost.com/anhc-31-4-anec.pdf"><em>The Beginnings of TECO</em></a>, spomienky Dana Murphyho na vznik editora</li>
+<li><a href="https://scienceblogs.com/goodmath/2006/09/22/worlds-greatest-pathological-l-1"><em>World’s Greatest Pathological Languages: TECO</em></a></li>
+</ul>
+
+</main>
+
+    <footer>
+      
+<script>
+(function() {
+  function center_el(tagName) {
+    var tags = document.getElementsByTagName(tagName), i, tag;
+    for (i = 0; i < tags.length; i++) {
+      tag = tags[i];
+      var parent = tag.parentElement;
+      
+      if (parent.childNodes.length === 1) {
+        
+        if (parent.nodeName === 'A') {
+          parent = parent.parentElement;
+          if (parent.childNodes.length != 1) continue;
+        }
+        if (parent.nodeName === 'P') parent.style.textAlign = 'center';
+      }
+    }
+  }
+  var tagNames = ['img', 'embed', 'object'];
+  for (var i = 0; i < tagNames.length; i++) {
+    center_el(tagNames[i]);
+  }
+})();
+</script>
+
+      
+    </footer>
+  </body>
+</html>
+
