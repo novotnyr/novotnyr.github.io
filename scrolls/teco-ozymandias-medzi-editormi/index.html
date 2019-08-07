@@ -128,16 +128,12 @@ make -f makefile.osx
 <p>Akurát trochu terminológie:</p>
 
 <ul>
-<li><strong>pointer</strong> je kurzor. Ale: pointer ukazuje <em>medzi znaky</em>. Pointer na pozícii <code>1</code> hovorí, že „naľavo od pointeru je 1 znak“, teda pointer stojí medzi prvým a druhým znakom súboru..</li>
+<li><strong>pointer</strong> je kurzor. Ale: pointer ukazuje <em>medzi znaky</em>. Pointer na pozícii <code>1</code> hovorí, že „naľavo od pointeru je 1 znak“, teda pointer stojí medzi prvým a druhým znakom buffera.</li>
 <li><strong>súbor</strong> zodpovedá obrovskej páske, kde na políčkach sú znaky. (Turingov stroj, <em>anyone</em>?). Začiatok súboru má index 0.</li>
-<li><strong>riadky</strong> sú <em>sociálny konštrukt</em>, teda falat súboru medzi dvoma znakmi konca riadku. TECO považuje za koniec riadku dvojicu znakov CR-LF (bez ohľadu na platformu).</li>
+<li><strong>riadky</strong> sú <em>sociálny konštrukt</em>, teda falat buffera medzi dvoma znakmi konca riadku. TECO považuje za koniec riadku dvojicu znakov CR-LF (bez ohľadu na platformu).</li>
 </ul>
 
-<h2 id="jak-skončiť-toto-trápenie">Jak skončiť toto trápenie?</h2>
-
-<p>Z <code>teco</code> sa vylieza dvojitým <code>Ctrl+C</code>. <code>Ctrl+C</code>.</p>
-
-<h2 id="načítanie-a-výpis-súboru">Načítanie a výpis súboru</h2>
+<h2 id="načítanie-a-výpis-súboru-v-bufferi">Načítanie a výpis súboru v bufferi</h2>
 
 <p>Na hrajkanie si urobme cvičný súbor <code>lorem.txt</code>, zo shellu:</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#072">printf</span> <span style="background-color:#e0e0ff">&#34;%s\n&#34;</span> Lorem ipsum dolor sit amet &gt; lorem.txt</code></pre></div>
@@ -160,11 +156,11 @@ make -f makefile.osx
 *Y$$
 </code></pre>
 
-<p>Súbor sa otvoril a načítal! Po otvorení súboru je pointer na začiatku súboru, na indexe 0.</p>
+<p>Súbor sa otvoril a načítal! Po otvorení súboru je pointer na začiatku buffera, na indexe 0.</p>
 
-<h2 id="ht-výpis-obsahu-súboru"><code>HT</code> — výpis obsahu súboru</h2>
+<h2 id="ht-výpis-obsahu-buffera"><code>HT</code> — výpis obsahu buffera</h2>
 
-<p>Výpis celého súboru získame príkazom <code>HT</code>:</p>
+<p>Výpis celého buffera získame príkazom <code>HT</code>:</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">HT$$</code></pre></div>
 <p>Celý session vyzerá nasledovne:</p>
 
@@ -180,6 +176,10 @@ amet
 <p>TECO vypísalo obsah celého buffera.</p>
 
 <p>Mnemotechnika kríva, ale neskôr si povieme, že v skutočnosti sme práve použili dva (!) príkazy. Ale detaily neskôr.</p>
+
+<h2 id="please-no-more-is-kruel-joke">Please no more. Is kruel joke.</h2>
+
+<p>Z <code>teco</code> sa vylieza dvojitým <code>Ctrl+C</code>. <code>Ctrl+C</code>.</p>
 
 <h2 id="zistenie-aktuálnej-polohy"><code>.=</code> – zistenie aktuálnej polohy</h2>
 
@@ -199,7 +199,7 @@ amet
 <p>Celý session vrátane dekorácie:</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">*T$$
 Lorem</code></pre></div>
-<p>Keďže pointer je na začiatku súboru (a na začiatku prvého riadku), samotný <code>T</code> vypíše prvý riadok.</p>
+<p>Keďže pointer je na začiatku buffera (a na začiatku prvého riadku), samotný <code>T</code> vypíše prvý riadok.</p>
 
 <p><code>T</code> je štandardný debugovací nástroj. Kto je stratený, nech si <code>T</code>-čkne.</p>
 
@@ -255,17 +255,17 @@ Lorem</code></pre></div>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">3J</code></pre></div>
 <h3 id="skok-na-koniec">Skok na koniec</h3>
 
-<p>Skok na koniec súboru vyriešime kúzlom:</p>
+<p>Skok na koniec buffera vyriešime kúzlom:</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">ZJ</code></pre></div>
-<h4 id="z-index-konca-súboru"><code>Z</code> — index konca súboru</h4>
+<h4 id="z-index-konca-buffera"><code>Z</code> — index konca buffera</h4>
 
-<p>Príkaz <code>Z</code> vracia index konca súboru. A samozrejme, výsledok použime ako parameter pre <em>jump</em>! Normálny zápis v normálnom jazyku by vyzeral:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">jump(endOfFileIndex())</code></pre></div>
+<p>Príkaz <code>Z</code> vracia index konca buffera. A samozrejme, výsledok použime ako parameter pre <em>jump</em>! Normálny zápis v normálnom jazyku by vyzeral:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">jump(endOfBufferIndex())</code></pre></div>
 <p>Ale normálne jazyky neboli vynájdené!</p>
 
 <h3 id="konce-riadkov-sú-dva-riadky">Konce riadkov sú dva riadky!</h3>
 
-<p>Pozor na to, že konce riadkov sú dva znaky: <code>CR</code> a <code>LF</code>! Index konca súboru tak môže byť väčšie číslo než je dĺžka súboru v Linuxe!</p>
+<p>Pozor na to, že konce riadkov sú dva znaky: <code>CR</code> a <code>LF</code>! Index konca bufferu tak môže byť väčšie číslo než je dĺžka súboru v Linuxe!</p>
 
 <h2 id="funkcie-pre-indexy">Funkcie pre indexy</h2>
 
@@ -282,7 +282,7 @@ Lorem</code></pre></div>
 
 <p>Posun zo začiatku na ďalší riadok?</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">L</code></pre></div>
-<p>Ak sme na začiatku súboru, posunieme sa o riadok ďalej a pointer sa posunie <em>za</em> prvý <code>CR-LF</code>.</p>
+<p>Ak sme na začiatku buffera, posunieme sa o riadok ďalej a pointer sa posunie <em>za</em> prvý <code>CR-LF</code>.</p>
 
 <p>Overme si to výpisom:</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">T</code></pre></div>
@@ -308,7 +308,7 @@ Lorem</code></pre></div>
 <li>a následne ukončíme príkaz cez <code>Esc</code>, <code>Esc</code>,</li>
 </ul>
 
-<p>Vložíme na začiatok súboru nový riadok:</p>
+<p>Vložíme na začiatok buffera nový riadok:</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">ILipsum&lt;enter&gt;$$</code></pre></div>
 <p>Súbor si vypíšme klasickým <code>HT</code>.</p>
 
@@ -320,7 +320,7 @@ K$$
 HT</code></pre></div>
 <ul>
 <li><code>J</code> presunieme sa na začiatok buffera</li>
-<li><code>K</code> vymaže od začiatku súboru po najbližší <code>CR</code>-<code>LF</code> (vrátane)</li>
+<li><code>K</code> vymaže od začiatku buffera po najbližší <code>CR</code>-<code>LF</code> (vrátane)</li>
 <li>a overíme si výpisom.</li>
 </ul>
 
@@ -392,7 +392,7 @@ amet&lt;CR&gt;&lt;LF&gt;
 <h2 id="mazanie-posledného-riadku">Mazanie posledného riadku</h2>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">ZJ-LK$$</code></pre></div>
 <ul>
-<li><code>ZJ</code> nás hodí na koniec súboru:
+<li><code>ZJ</code> nás hodí na koniec buffera:
 
 <ul>
 <li><code>J</code> skáče,</li>
@@ -405,7 +405,7 @@ amet&lt;CR&gt;&lt;LF&gt;
 <p>Poďme hrať TECO golf! Ušetrime jeden znak:</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">ZJ-K$$</code></pre></div>
 <ul>
-<li><code>ZJ</code> nás hodí na koniec súboru: <code>J</code> skáče, <code>Z</code> je parameter skoku zvaný „na koniec buffera“</li>
+<li><code>ZJ</code> nás hodí na koniec buffera: <code>J</code> skáče, <code>Z</code> je parameter skoku zvaný „na koniec buffera“</li>
 <li><code>-K</code> maže celý predošlý riadok. <code>K</code> killuje, mínus hovorí „jeden riadok naľavo“.</li>
 </ul>
 
@@ -421,11 +421,11 @@ amet&lt;CR&gt;&lt;LF&gt;
 
 <p>TECO nepodporuje prepisovanie textu. Ale vieme mazať a vkladať!</p>
 
-<p>Zmeňme <code>Lorem</code> na začiatku súboru na <code>lorem</code>.</p>
+<p>Zmeňme <code>Lorem</code> na začiatku buffera na <code>lorem</code>.</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">JDIl$$</code></pre></div>
 <ul>
-<li><code>J</code> skáče na začiatok súboru.</li>
-<li><code>D</code> zmaže znak napravo od pointera. Získame <code>orem</code>. Pointer stojí medzi začiatkom súboru a <code>o</code>.</li>
+<li><code>J</code> skáče na začiatok buffera.</li>
+<li><code>D</code> zmaže znak napravo od pointera. Získame <code>orem</code>. Pointer stojí medzi začiatkom buffera a <code>o</code>.</li>
 <li><code>Il</code> vloží znak <code>l</code> (el) napravo od pointera. Získame <code>lorem</code>. Kurzor bude medzi <code>l</code> a <code>o</code>.</li>
 </ul>
 
@@ -485,8 +485,8 @@ amet&lt;CR&gt;&lt;LF&gt;
 <ul>
 <li><code>0</code> vráti nultý index.</li>
 <li><code>.</code> vráti index pointera</li>
-<li><code>B</code> (<em>beginning</em>) vráti index na začiatku súboru</li>
-<li><code>Z</code> (posledné písmeno abecedy) vráti index konca súboru</li>
+<li><code>B</code> (<em>beginning</em>) vráti index na začiatku buffera</li>
+<li><code>Z</code> (posledné písmeno abecedy) vráti index konca buffera</li>
 <li><code>H</code> (<em>wHole</em>) vráti usporiadanú dvojicu (<em>0</em>, <em>index konca súboru</em>)</li>
 </ul>
 
@@ -499,10 +499,10 @@ amet&lt;CR&gt;&lt;LF&gt;
 
 <h2 id="opakovania-a-cykly">Opakovania a cykly</h2>
 
-<p>TECO podporuje opakovania! Chceme vložiť na začiatok súboru päť hviezdičiek?</p>
+<p>TECO podporuje opakovania! Chceme vložiť na začiatok buffera päť hviezdičiek?</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">J$5&lt;I*$&gt;$$</code></pre></div>
 <ul>
-<li><code>J</code> skočí na začiatok súboru</li>
+<li><code>J</code> skočí na začiatok buffera</li>
 <li><code>5&lt;I*$&gt;</code>
 
 <ul>
@@ -518,7 +518,7 @@ amet&lt;CR&gt;&lt;LF&gt;
 <p>Opakovanie sa dá použiť pri masovom nahrádzaní! Chceme v celom súbore nahradiť <code>m</code> za <code>n</code>?</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">J&lt;FSm$n$;&gt;$$</code></pre></div>
 <ul>
-<li><code>J</code> skáče na začiatok súboru.</li>
+<li><code>J</code> skáče na začiatok buffera.</li>
 <li><code>&lt;</code>…<code>&gt;</code> obsahuje cyklus. Keďže nemáme počet opakovaní, máme prakticky <code>while</code>.</li>
 <li><code>FS</code> nahrádza:
 
