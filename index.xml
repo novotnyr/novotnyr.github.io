@@ -6,10 +6,43 @@
     <description>Recent content on robonovotny</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 07 Aug 2019 10:40:37 +0100</lastBuildDate>
+    <lastBuildDate>Thu, 29 Aug 2019 14:08:58 +0200</lastBuildDate>
     
 	<atom:link href="http://novotnyr.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Rýchle slajdy s `backslide` a `remark.js`</title>
+      <link>http://novotnyr.github.io/scrolls/rychle-slajdy-s-backslide-remark-js/</link>
+      <pubDate>Thu, 29 Aug 2019 14:08:58 +0200</pubDate>
+      
+      <guid>http://novotnyr.github.io/scrolls/rychle-slajdy-s-backslide-remark-js/</guid>
+      <description>Patláme slajdy Treba rýchlo slajdy? PowerPoint je neohrabaný? Beamer je zložitý? A prečo vlastne nepíšeme slajdy v jednoduchom Markdowne? A prečo ich nezobrazujeme v bežnom webovom prehliadači?
+Budeme potrebovať:
+ editor pre Markdown, napríklad notepad remark.js, knižnicu pre web, ktorá vyrenderuje Markdown ako HTML, a to priamo v prehliadači backslide, knižnicu pre príkazový riadok,  Zdrojový kód Ukážkové slajdy v Markdowne vyzerá napríklad nasledovne:
+title: httpd a Tomcat – loadbalancing a ladenie výkonu class: animation-fade layout: true --- # Forward Proxy  - browser si nastaví proxy v prehliadači.</description>
+    </item>
+    
+    <item>
+      <title>Ťahák k počítačovým sieťam</title>
+      <link>http://novotnyr.github.io/scrolls/tahak-k-pocitacovym-sietam/</link>
+      <pubDate>Tue, 13 Aug 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://novotnyr.github.io/scrolls/tahak-k-pocitacovym-sietam/</guid>
+      <description>Prehľad    L Vrstva Kýblik dát Adresácia Relevantné zariadenie Databáza     L5-L7 Aplikačná Správa z nižších vrstiev     L4 Transportná Segment Port Socket (softvérové) -   L3 Sieťová / Network Datagram IP adresa Router Smerovacia tabuľka   L2 Spojová / Data Link Rámec MAC adresa Switch Prepínacia tabuľka   L1 Fyzická vrstva Nuly a jednotky - Hub -    Internet Internet je sieť sietí:</description>
+    </item>
+    
+    <item>
+      <title>V jednej ruke CIDR, v druhej sekera – ako deliť siete</title>
+      <link>http://novotnyr.github.io/scrolls/v-jednej-ruke-cidr-v-druhej-sekera-ako-delit-siete/</link>
+      <pubDate>Sat, 10 Aug 2019 17:39:35 +0100</pubDate>
+      
+      <guid>http://novotnyr.github.io/scrolls/v-jednej-ruke-cidr-v-druhej-sekera-ako-delit-siete/</guid>
+      <description>Ako rozdeliť sieť na podsiete? V letný podvečer zoberieme sekerku, sajder do ruky a počneme rozsekávať počítačovú sieť na podsiete.
+ISO, osy a sieťový model Sieťová vrstva (network layer), alias tretia vrstva (L3) v ISO-OSI modeli vymieňa medzi stanicami instadatagramy s údajmi.
+Každá stanica v sieti je na tejto vrstve identifikovaná IP adresou, čo je:
+ buď štvorica čísiel v rozsahu 0–255, napr. 158.197.31.35 alebo jej analogický binárny prepis:</description>
+    </item>
     
     <item>
       <title>Elder Scrolls: TECO – Ozymandias medzi editormi</title>
@@ -689,6 +722,15 @@ Nastavenie servera Údaje o anotovaných stránkach sa odosielajú na server. Ko
     </item>
     
     <item>
+      <title>Vlákna / Threads a problém producent-konzument</title>
+      <link>http://novotnyr.github.io/slides/threads-vlakna-problem-producent-konzument/</link>
+      <pubDate>Fri, 20 Feb 2009 16:08:05 +0100</pubDate>
+      
+      <guid>http://novotnyr.github.io/slides/threads-vlakna-problem-producent-konzument/</guid>
+      <description> Stiahnuť  PDF PowerPoint PPT  Obsah  Problém producenta a konzumenta ako mechanizmu koordinácie vlákien. Ako si ho napísať od piky. Návrhy riešení a poukázanie na ich chyby.  aktívne čakanie mechanizmus wait/notify  Zabudované riešenia v Jave.  </description>
+    </item>
+    
+    <item>
       <title>Vlákna / Threads a Swing GUI</title>
       <link>http://novotnyr.github.io/slides/threads-vlakna-a-swing-gui/</link>
       <pubDate>Fri, 20 Feb 2009 16:08:05 +0100</pubDate>
@@ -696,15 +738,6 @@ Nastavenie servera Údaje o anotovaných stránkach sa odosielajú na server. Ko
       <guid>http://novotnyr.github.io/slides/threads-vlakna-a-swing-gui/</guid>
       <description>  Ako korektne programovať dlhotrvajúce operácie v Swing GUI?
  Stiahnuť  PDF Powerpoint PPT  Obsah  Swing a vlákna. Problém s Event Dispatch Thread. Metóda invokeLater() Trieda SwingWorker  </description>
-    </item>
-    
-    <item>
-      <title>Vlákna / Threads a problém producent-konzument</title>
-      <link>http://novotnyr.github.io/slides/threads-vlakna-problem-producent-konzument/</link>
-      <pubDate>Fri, 20 Feb 2009 16:08:05 +0100</pubDate>
-      
-      <guid>http://novotnyr.github.io/slides/threads-vlakna-problem-producent-konzument/</guid>
-      <description> Stiahnuť  PDF PowerPoint PPT  Obsah  Problém producenta a konzumenta ako mechanizmu koordinácie vlákien. Ako si ho napísať od piky. Návrhy riešení a poukázanie na ich chyby.  aktívne čakanie mechanizmus wait/notify  Zabudované riešenia v Jave.  </description>
     </item>
     
     <item>

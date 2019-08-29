@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Rýchle slajdy s `backslide` a `remark.js` | robonovotny</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.css" integrity="sha384-D+9gmBxUQogRLqvARvNLmA9hS2x//eK1FhVb9PiU86gmcrBrJAQT8okdJ4LMp2uv" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.js" integrity="sha384-483A6DwYfKeDa0Q52fJmxFXkcPCFfnXMoXblOkJ4JcA8zATN6Tm78UNL72AKk+0O" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/contrib/auto-render.min.js" integrity="sha384-yACMu8JWxKzSp/C1YV86pzGiQ/l1YUfE8oPuahJQxzehAjEt2GiQuy/BIvl9KyeF" crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body);
+        });
+    </script>
+
+<header>
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <nav>
+    <ul>
+      
+      
+      <li class="pull-left ">
+        <a href="http://novotnyr.github.io/">/home/robonovotny</a>
+      </li>
+      
+
+      
+
+    </ul>
+  </nav>
+</header>
+
+  </head>
+
+  <body>
+    <br/>
+
+<div class="article-meta">
+<h1><span class="title">Rýchle slajdy s `backslide` a `remark.js`</span></h1>
+
+<h2 class="date">2019/08/29</h2>
+<p class="terms">
+  
+  
+  
+  
+  
+</p>
+</div>
+
+
+
+<main>
+
+
+<h1 id="patláme-slajdy">Patláme slajdy</h1>
+
+<p>Treba rýchlo slajdy? PowerPoint je neohrabaný? <a href="https://ctan.org/pkg/beamer?lang=en">Beamer</a> je zložitý? A prečo vlastne nepíšeme slajdy v jednoduchom Markdowne? A prečo ich nezobrazujeme v <a href="https://en.wikipedia.org/wiki/Internet_Explorer_6">bežnom webovom prehliadači</a>?</p>
+
+<p>Budeme potrebovať:</p>
+
+<ul>
+<li>editor pre Markdown, napríklad <code>notepad</code></li>
+<li><code>remark.js</code>, knižnicu pre web, ktorá vyrenderuje Markdown ako HTML, a to priamo v prehliadači</li>
+<li><code>backslide</code>, knižnicu pre príkazový riadok,</li>
+</ul>
+
+<h1 id="zdrojový-kód">Zdrojový kód</h1>
+
+<p>Ukážkové slajdy v Markdowne vyzerá napríklad nasledovne:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-markdown" data-lang="markdown">title: httpd a Tomcat – loadbalancing a ladenie výkonu
+class: animation-fade
+layout: true
+---
+<span style="color:#000080;font-weight:bold"># Forward Proxy
+</span><span style="color:#000080;font-weight:bold"></span>
+<span style="color:#289;font-weight:bold">-</span> browser si nastaví proxy v prehliadači.
+<span style="color:#289;font-weight:bold">-</span> vysvetlí, že aký server chce navštíviť
+<span style="color:#289;font-weight:bold">-</span> proxy načíta obsah a prepošle ju klientovi
+<span style="color:#289;font-weight:bold">-</span> v Apachovi cez moduly:
+	<span style="color:#289;font-weight:bold">-</span> proxy
+	<span style="color:#289;font-weight:bold">-</span> proxy_http
+	<span style="color:#289;font-weight:bold">-</span> proxy_connect
+---
+<span style="color:#000080;font-weight:bold"># reverse proxy (gateway)
+</span><span style="color:#000080;font-weight:bold"></span>
+<span style="color:#289;font-weight:bold">-</span> klient nakontaktuje server
+<span style="color:#289;font-weight:bold">-</span> ten je v skutočnosti reverse proxy
+<span style="color:#289;font-weight:bold">-</span> server/reverse-proxy nakontaktuje aplikačné servery
+	<span style="color:#289;font-weight:bold">-</span> získa obsah
+	<span style="color:#289;font-weight:bold">-</span> schrústa
+	- pošle klientovi</code></pre></div>
+<ul>
+<li><strong>YAML Front Matter</strong>: súbor je uvedený YAML preambulou s <em>metadátami</em>, napr. názvom prezentácie (<em>title</em>) a štýlom (<em>class</em>).</li>
+<li><strong>Slajdy</strong> sú oddelené vodorovnou čiarou.</li>
+<li><strong>Nadpisy</strong> slajdov zodpovedajú nadpisom prvej úrovne (<code>#</code>)</li>
+<li><strong>Markdown</strong> funguje ako v bežných súboroch, odrážky odrážame obvyklým spôsobom.</li>
+</ul>
+
+<h1 id="prevod-markdownu-na-html-cez-remark">Prevod Markdownu na HTML cez Remark</h1>
+
+<p>Knižnica <a href="https://github.com/gnab/remark"><code>remark</code></a> dokáže priamo v prehliadači prevádzať markdownový zdroják na HTML. Teda, vytvorí sa jeden HTML súbor obsahujúci knižnicu <em>remark</em> a trochu boilerplatu. Do súboru sa zároveň vrazí markdownovský zdroják, a prehliadač v kombinácii s touto knižnicou automaticky prevedie markdownovské slajdy na nádherné HTML.</p>
+
+<p>HTML súbor nie je ktoviečo. Veď pozrime si <a href="https://github.com/gnab/remark#getting-started">ukážku</a>.</p>
+
+<p>To je dôvod, prečo vznikol <em>backslide</em>.</p>
+
+<h1 id="alebo-lepší-prevod-cez-backslide">Alebo lepší prevod cez backslide</h1>
+
+<p><a href="https://github.com/sinedied/backslide"><em>Backslide</em></a> je nástroj pre príkazový riadok implementovaný v JavaScripte/Node.js. Ponúka:</p>
+
+<ul>
+<li>rýdze a nádherné markdownovské súbory bez HTML boilerplatu</li>
+<li>automatické stiahnutie <em>remark.js</em></li>
+<li>automatické obnovovanie prezentácie v prehliadači pri zmene zdrojáku</li>
+<li>export do PDF</li>
+</ul>
+
+<h2 id="inštalácia-backslide">Inštalácia backslide</h2>
+
+<p><em>Node.js</em> je nutnosťou, takže je nutné ho nainštalovať.</p>
+
+<p>Okrem toho inštalujme samotný nástroj:</p>
+
+<pre><code>npm install -g backslide
+</code></pre>
+
+<p>V ceste sa objaví príkaz <code>bs</code>.</p>
+
+<h2 id="inicializácia-prezentácie">Inicializácia prezentácie</h2>
+
+<p>Novú prezentáciu založme cez</p>
+
+<pre><code>bs init
+</code></pre>
+
+<p>Zjaví sa:</p>
+
+<ul>
+<li>zdroják <code>presentation.md</code> s ukážkovými slajdami</li>
+<li>adresár <code>template</code> so šablónou a knižnicou.</li>
+</ul>
+
+<h2 id="export-do-html">Export do HTML</h2>
+
+<p>Export do HTML je jednoduchý:</p>
+
+<pre><code>bs export
+</code></pre>
+
+<p>Vznikne adresár <code>dist</code>, kde sa objaví krásna prezentácia, ktorú si môžeme otvoriť v prehliadači alebo uložiť na disketu.</p>
+
+<p><img src="image-20190829181510604.png" alt="image-20190829181510604" /></p>
+
+<h3 id="klávesové-skratky">Klávesové skratky</h3>
+
+<p>V prezentácii fungujú šípky doľava a doprava, na mobile funguje swipeovanie prstom</p>
+
+<h2 id="zabudovaný-http-server">Zabudovaný HTTP server</h2>
+
+<p><code>bs</code> ponúka zabudovaný server s automatický reloadovaním prezentácie v prehliadači!</p>
+
+<pre><code>bs serve
+</code></pre>
+
+<p>Príkaz spraví:</p>
+
+<ul>
+<li>export markdownu do HTML</li>
+<li>naštartuje HTTP server na porte 4100</li>
+<li>otvorí webový prehliadač s výsledkom.</li>
+</ul>
+
+<h2 id="export-do-pdf">Export do PDF</h2>
+
+<p>Slajdy možno exportovať do PDF:</p>
+
+<pre><code>bs pdf
+</code></pre>
+
+<p><em>Backslide</em> použije interný prevod cez Chromium a HTML zapíše do PDF. Nie je to dokonalé, ale účel to splní.</p>
+
+<h1 id="tipy-triky-a-štýly">Tipy, triky a štýly</h1>
+
+<h2 id="štýly">Štýly</h2>
+
+<p>Štýly sa riadia súborom <code>template/style.scss</code>, ktorý je vo formáte <a href="https://sass-lang.com/">https://sass-lang.com/</a>. Prepisovaním súboru môžeme meniť:</p>
+
+<ul>
+<li>farby</li>
+<li>fonty: rodinu a jej veľkosti</li>
+</ul>
+
+<h2 id="nastavenia-slajdov">Nastavenia slajdov</h2>
+
+<h3 id="úvodný-slajd">Úvodný slajd</h3>
+
+<p>Úvodný slajd prezentácie má zabudovaný štýl <code>impact</code>:</p>
+
+<pre><code>class: impact
+# O myši a sove
+</code></pre>
+
+<h3 id="použitia-premenných">Použitia premenných</h3>
+
+<p>Premenné zo slajdov sú k dispozícii v moustachovskej syntaxi:</p>
+
+<pre><code># {{title}}
+</code></pre>
+
+<p>V tomto prípade nájde atribút <code>title</code> nastavený v slajdoch a použije ho v nadpise.</p>
+
+<h3 id="vlastné-spany">Vlastné spany</h3>
+
+<p>V prezentácii môžeme používať vlastné <em>span-y</em> so štýlmi. Na to je extra syntax:</p>
+
+<pre><code>.bottom-bar[Krásna prezentácia]
+</code></pre>
+
+<p>Vytvorí sa <code>span</code> s CSS triedou <code>bottom-bar</code> a keďže tento štýl je automaticky k dispozícii, máme rovno spodok slajdu s pekným textom!</p>
+
+<h2 id="slajd-šablóna">Slajd-šablóna</h2>
+
+<p>Každý slajd môže slúžiť ako šablóna pre ostatné slajdy.</p>
+
+<p>Stačí dodať atribút <code>layout: true</code> ako atribút.</p>
+
+<pre><code>class: animation-fade
+layout: true
+
+.bottom-bar[
+  {{title}}
+]
+</code></pre>
+
+<p>Všetky nasledovné slajdy:</p>
+
+<ul>
+<li>budú mať animované prechody</li>
+<li>na spodku (v sekcii <code>bottom-bar</code>) budú uvádzať obsah premennej <code>title</code> .</li>
+</ul>
+
+<h2 id="sumár-vlastností-slajdov">Sumár vlastností slajdov</h2>
+
+<p>Dokumentácia k <em>remarku</em> uvádza zoznam vlastností <a href="https://github.com/gnab/remark/wiki/Markdown#slide-properties"><em>slajdu</em></a>.</p>
+
+</main>
+
+    <footer>
+      
+<script>
+(function() {
+  function center_el(tagName) {
+    var tags = document.getElementsByTagName(tagName), i, tag;
+    for (i = 0; i < tags.length; i++) {
+      tag = tags[i];
+      var parent = tag.parentElement;
+      
+      if (parent.childNodes.length === 1) {
+        
+        if (parent.nodeName === 'A') {
+          parent = parent.parentElement;
+          if (parent.childNodes.length != 1) continue;
+        }
+        if (parent.nodeName === 'P') parent.style.textAlign = 'center';
+      }
+    }
+  }
+  var tagNames = ['img', 'embed', 'object'];
+  for (var i = 0; i < tagNames.length; i++) {
+    center_el(tagNames[i]);
+  }
+})();
+</script>
+
+      
+    </footer>
+  </body>
+</html>
+
