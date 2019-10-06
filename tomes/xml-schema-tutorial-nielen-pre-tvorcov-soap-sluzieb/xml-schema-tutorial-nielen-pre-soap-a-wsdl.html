@@ -829,12 +829,12 @@ XML schéma v štandardnom správaní hovorí, že <em>žiadny z lokálnych elem
 <div class="quoteblock">
 <blockquote>
 <div class="paragraph">
-<p>XML schéma v štandardnom správaní (<code>elementFormDefault</code> s hodnotou <code>unqualified</code> ) hovorí, že žiadny z lokálnych elementov nesmie byť kvalifikovaný.</p>
+<p>XML schéma v štandardnom správaní (<code>elementFormDefault</code> s hodnotou <code>unqualified</code>) zakazuje kvalifikovanie lokálnych elementov.</p>
 </div>
 </blockquote>
 </div>
 <div class="paragraph">
-<p>Inštancia, ktorá spĺňa schému s vynechaným atribútom <code>elementFormDefault</code>, musí vyzerať takto:</p>
+<p>Inštancia, ktorá spĺňa schému bez atribútu <code>elementFormDefault</code>, musí vyzerať takto:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -855,7 +855,7 @@ XML schéma v štandardnom správaní hovorí, že <em>žiadny z lokálnych elem
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Element <code>calendar</code> je kvalifikovaný: <code>{urn:example:calendar}calendar}</code>. Podľa schémy ide o globálny element.</td>
+<td>Element <code>calendar</code> je kvalifikovaný: <code>{urn:example:calendar}calendar</code>. Podľa schémy ide o globálny element.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
@@ -876,7 +876,7 @@ XML schéma v štandardnom správaní hovorí, že <em>žiadny z lokálnych elem
 </div>
 </div>
 <div class="paragraph">
-<p>Chybová hláška hovorí o porušení pravidla XML schémy. Element <code>&lt;event&gt;</code>, ktorý je v schéme lokálny, je v XML inštancii kvalifikovaný (patrí do menného priestoru), čo nie je povolené.</p>
+<p>Chybová hláška hovorí o porušení pravidla XML schémy. Element <code>&lt;event&gt;</code>, ktorý je v schéme lokálny, je v XML inštancii kvalifikovaný (patrí do menného priestoru <code>urn:example:calendar</code>), čo nie je povolené.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1046,27 +1046,29 @@ XML schéma v štandardnom správaní hovorí, že <em>žiadny z lokálnych elem
 <pre class="rouge highlight"><code data-lang="xml"><span class="nt">&lt;schema</span> <span class="na">xmlns=</span><span class="s">"http://www.w3.org/2001/XMLSchema"</span>
         <span class="na">targetNamespace=</span><span class="s">"urn:example:calendar"</span>
         <span class="na">elementFormDefault=</span><span class="s">"qualified"</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;element</span> <span class="na">name=</span><span class="s">"calendar"</span><span class="nt">&gt;</span>
-        <span class="nt">&lt;complexType&gt;</span>
-            <span class="nt">&lt;sequence&gt;</span>
-                <span class="nt">&lt;element</span> <span class="na">name=</span><span class="s">"event"</span> <span class="na">minOccurs=</span><span class="s">"0"</span> <span class="na">maxOccurs=</span><span class="s">"unbounded"</span><span class="nt">&gt;</span>
-                    <span class="nt">&lt;complexType&gt;</span>
-                        <span class="nt">&lt;sequence&gt;</span>
-                            <span class="nt">&lt;element</span> <span class="na">name=</span><span class="s">"date"</span> <span class="na">type=</span><span class="s">"dateTime"</span> <span class="nt">/&gt;</span>
-                            <span class="nt">&lt;element</span> <span class="na">name=</span><span class="s">"description"</span> <span class="na">type=</span><span class="s">"string"</span> <span class="nt">/&gt;</span>
-                            <span class="nt">&lt;element</span> <span class="na">name=</span><span class="s">"participants"</span> <span class="na">minOccurs=</span><span class="s">"0"</span><span class="nt">&gt;</span> <i class="conum" data-value="1"></i><b>(1)</b>
-                                <span class="nt">&lt;complexType&gt;</span>
-                                    <span class="nt">&lt;sequence&gt;</span>
-                                        <span class="nt">&lt;element</span> <span class="na">name=</span><span class="s">"participant"</span> <span class="na">type=</span><span class="s">"string"</span> <span class="na">maxOccurs=</span><span class="s">"unbounded"</span> <span class="nt">/&gt;</span> <i class="conum" data-value="2"></i><b>(2)</b>
-                                    <span class="nt">&lt;/sequence&gt;</span>
-                                <span class="nt">&lt;/complexType&gt;</span>
-                            <span class="nt">&lt;/element&gt;</span>
-                        <span class="nt">&lt;/sequence&gt;</span>
-                    <span class="nt">&lt;/complexType&gt;</span>
-                <span class="nt">&lt;/element&gt;</span>
-            <span class="nt">&lt;/sequence&gt;</span>
-        <span class="nt">&lt;/complexType&gt;</span>
-    <span class="nt">&lt;/element&gt;</span>
+	<span class="nt">&lt;element</span> <span class="na">name=</span><span class="s">"calendar"</span><span class="nt">&gt;</span>
+		<span class="nt">&lt;complexType&gt;</span>
+			<span class="nt">&lt;sequence&gt;</span>
+				<span class="nt">&lt;element</span> <span class="na">name=</span><span class="s">"event"</span> <span class="na">minOccurs=</span><span class="s">"0"</span> <span class="na">maxOccurs=</span><span class="s">"unbounded"</span><span class="nt">&gt;</span>
+					<span class="nt">&lt;complexType&gt;</span>
+						<span class="nt">&lt;sequence&gt;</span>
+							<span class="nt">&lt;element</span> <span class="na">name=</span><span class="s">"date"</span> <span class="na">type=</span><span class="s">"dateTime"</span> <span class="nt">/&gt;</span>
+							<span class="nt">&lt;element</span> <span class="na">name=</span><span class="s">"description"</span> <span class="na">type=</span><span class="s">"string"</span> <span class="nt">/&gt;</span>
+							<span class="nt">&lt;element</span> <span class="na">name=</span><span class="s">"participants"</span> <span class="na">minOccurs=</span><span class="s">"0"</span><span class="nt">&gt;</span> <i class="conum" data-value="1"></i><b>(1)</b>
+								<span class="nt">&lt;complexType&gt;</span>
+									<span class="nt">&lt;sequence&gt;</span>
+										<span class="nt">&lt;element</span> <span class="na">name=</span><span class="s">"participant"</span>
+										         <span class="na">type=</span><span class="s">"string"</span>
+										         <span class="na">maxOccurs=</span><span class="s">"unbounded"</span> <span class="nt">/&gt;</span> <i class="conum" data-value="2"></i><b>(2)</b>
+									<span class="nt">&lt;/sequence&gt;</span>
+								<span class="nt">&lt;/complexType&gt;</span>
+							<span class="nt">&lt;/element&gt;</span>
+						<span class="nt">&lt;/sequence&gt;</span>
+					<span class="nt">&lt;/complexType&gt;</span>
+				<span class="nt">&lt;/element&gt;</span>
+			<span class="nt">&lt;/sequence&gt;</span>
+		<span class="nt">&lt;/complexType&gt;</span>
+	<span class="nt">&lt;/element&gt;</span>
 <span class="nt">&lt;/schema&gt;</span></code></pre>
 </div>
 </div>
@@ -1997,7 +1999,7 @@ Oba prefixy sme namapovali na príslušné menné priestory v koreňovom element
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2019-10-06 23:41:34 +0200
+Last updated 2019-10-07 00:15:22 +0200
 </div>
 </div>
 <style>
