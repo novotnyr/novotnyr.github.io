@@ -6,24 +6,10 @@
     <description>Recent content in Scrolls on robonovotny</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 07 Oct 2019 15:16:53 +0100</lastBuildDate>
+    <lastBuildDate>Mon, 07 Oct 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://novotnyr.github.io/scrolls/index.xml" rel="self" type="application/rss+xml" />
     
-    
-    <item>
-      <title>Testovanie kompatibility WSDL voči WS-IT</title>
-      <link>http://novotnyr.github.io/scrolls/testovanie-kompatibility-wsdl-s-wsit/</link>
-      <pubDate>Mon, 07 Oct 2019 15:16:53 +0100</pubDate>
-      
-      <guid>http://novotnyr.github.io/scrolls/testovanie-kompatibility-wsdl-s-wsit/</guid>
-      <description>Na testovanie kompatibility existuje Java nástroj. Pôvodne bol k dispozícii na webe ws-i.org, ale tento portál má dlhodobé problémy so stabilitou.
-Na stiahnutie použime radšej poslednú archivovanú verziu
-curl https://web.archive.org/web/20170307052202/http://www.ws-i.org/Testing/Tools/2005/06/WSI_Test_Java_Final_1.1.zip  Následne ju odZIPujme:
-unzip WSI_Test_Java_Final_1.1.zip  Linux/MacOS shellskripty majú zle nastavený executable bit, takže sa nedajú spustiť. Opravme to:
-chmod +x wsi-test-tools/java/bin/*.sh  Okrem toho majú skripty zlé konce riadkov. Opravme ich napríklad pomocou dos2unix:
-dos2unix wsi-test-tools/java/bin/*.sh  Nastavme premennú prostredia WSIT_HOME:</description>
-    </item>
     
     <item>
       <title>Od WSDL k webovej službe – tvoríme vlastné WSDL</title>
