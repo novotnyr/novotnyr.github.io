@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Od WSDL k webovej službe – tvoríme vlastné WSDL | robonovotny</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.css" integrity="sha384-D+9gmBxUQogRLqvARvNLmA9hS2x//eK1FhVb9PiU86gmcrBrJAQT8okdJ4LMp2uv" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.js" integrity="sha384-483A6DwYfKeDa0Q52fJmxFXkcPCFfnXMoXblOkJ4JcA8zATN6Tm78UNL72AKk+0O" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/contrib/auto-render.min.js" integrity="sha384-yACMu8JWxKzSp/C1YV86pzGiQ/l1YUfE8oPuahJQxzehAjEt2GiQuy/BIvl9KyeF" crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body);
+        });
+    </script>
+
+<header>
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <nav>
+    <ul>
+      
+      
+      <li class="pull-left ">
+        <a href="http://novotnyr.github.io/">/home/robonovotny</a>
+      </li>
+      
+
+      
+
+    </ul>
+  </nav>
+</header>
+
+  </head>
+
+  <body>
+    <br/>
+
+<div class="article-meta">
+<h1><span class="title">Od WSDL k webovej službe – tvoríme vlastné WSDL</span></h1>
+
+<h2 class="date">2019/10/07</h2>
+<p class="terms">
+  
+  
+  
+  
+  
+</p>
+</div>
+
+
+
+<main>
+
+
+<h1 id="úvod">Úvod</h1>
+
+<p>Pri návrhu webových služieb nastáva sa môžeme vydať dvoma rozličnými cestami.
+Pri tom jednoduchšom postavíme webovú službu vo vhodnej technológii (JAX-WS, či <a href="https://github.com/jk/php-wsdl-creator">PHP-WSDL Creator</a>, a WSDL si necháme vygenerovať automaticky, čím dosiahneme tzv <em>contract-last</em> spôsob.</p>
+
+<p>Opačný spôsob, <em>contract-first</em> spočíva v nadefinovaní WSDL, na základe ktorého
+si necháme vygenerovať jednak kostru pre server, a neskôr i klienta.</p>
+
+<p>Postup od WSDL k triedam má mnohé výhody. Ota &lsquo;tapik&rsquo; Buchta napr.
+<a href="http://tapikuv.blogspot.com/2008/06/kdy-zat-s-wsdl-kdy-s-kdem.html">uvádza</a>:</p>
+
+<blockquote>
+<ul>
+<li>tvůrce se musí nejdříve zamyslet nad strukturou dat, což nebývá tak
+úplně zvykem</li>
+<li>to zabrání nutnosti neustále měnit rozhraní (a tím i WSDL) při změně
+datového modelu</li>
+<li>tvůrce uvažuje v intencích dokumentů a operací nad nimi, což mu
+umožní přehoupnout se přes onen RPC XORBA zlozvyk</li>
+<li>WSDL je čitelné a &ldquo;hezké&rdquo; a interoperabilní (pokud je navrženo jako
+document-wrapped (.NET nic jiného neumí))</li>
+<li>celý návrh systému je pak mnohem lépe udržovatelný,
+modularizovatelný, rozšiřitelný, znovupoužitelný, lépe odladitelný</li>
+</ul>
+</blockquote>
+
+<p><a href="https://docs.spring.io/spring-ws/docs/3.0.7.RELEASE/reference/#_object_xml_impedance_mismatch">Dokumentácia k Spring Web Services</a>, čo je štandardná knižnica pre <em>contract-first</em> spôsob, podporuje tento prístup ďalšími významnými
+bodmi, ktoré môžu spôsobovať problémy:</p>
+
+<ul>
+<li>neprenositeľné dátové typy (za všetky spomeňme napr. mapy/slovníky) a cyklické objektové grafy</li>
+<li>so zmenou dát či modelu sa môže zmeniť WSDL, čo má vplyv na robustnosť</li>
+</ul>
+
+<p>V článku si ukážeme, ako je možné vybudovať službu práve týmto zložitejším spôsobom.
+Ukážeme si, ako možno pochopiť jednotlivé stavebné bloky WSDL, ako ich možno vytvárať ručne,
+a necháme si tiež vygenerovať zdrojový kód pre JAX-WS server.</p>
+
+<h2 id="predpokladané-znalosti">Predpokladané znalosti</h2>
+
+<ul>
+<li>Veľmi vám uľahčí život, ak budete poznať zásady XML a menných priestorov, napr. z <a href="https://novotnyr.github.io/scrolls/menne-priestory-v-xml-namespaces/">krátkeho tutoriálu</a>.</li>
+<li>Oplatí sa tiež poznať XML schému a zásady jej tvorby, napr. z tutoriálu <a href="https://novotnyr.github.io/tomes/xml-schema-tutorial-nielen-pre-tvorcov-soap-sluzieb/">XML Schema: Tutoriál nielen pre tvorcov SOAP služieb</a></li>
+</ul>
+
+<h1 id="príklad-a-štruktúra-dát">Príklad a štruktúra dát</h1>
+
+<p>V našom príklade budeme chcieť vybudovať SOAPovú službu pre rezerváciu lístkov v kine. Klient zašle požiadavku, v ktorej špecifikuje názov filmu, dátum jeho premietania a počet lístkov, ktoré si chce zarezervovať.</p>
+
+<p>Požiadavka by mohla vyzerať nasledovne:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#070">&lt;movieReservationRequest</span> <span style="color:#007">xmlns=</span><span style="background-color:#e0e0ff">&#34;urn:example:movies&#34;</span><span style="color:#070">&gt;</span>
+  <span style="color:#070">&lt;title&gt;</span>Krv, črevá a lietajúce hlavy<span style="color:#070">&lt;/title&gt;</span>
+  <span style="color:#070">&lt;date&gt;</span>2008-12-24<span style="color:#070">&lt;/date&gt;</span>
+  <span style="color:#070">&lt;numberOfTickets&gt;</span>4<span style="color:#070">&lt;/numberOfTickets&gt;</span>
+<span style="color:#070">&lt;/movieReservationRequest&gt;</span></code></pre></div>
+<p>V dokumentoch, ktoré tvoria jadro správy SOAP sa silne odporúča používať menné priestory (<em>namespaces</em>), všetky elementy požiadavky sme priradili do implicitného menného priestoru <code>urn:example:movies</code>.</p>
+
+<p>Odpoveďou na uvedenú požiadavku by mohol byť dokument obsahujúci číslo rezervácie a zoznam miest na sedenie, ktoré boli zarezervované:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#070">&lt;movieReservationResponse</span> <span style="color:#007">xmlns=</span><span style="background-color:#e0e0ff">&#34;urn:example:movies&#34;</span><span style="color:#070">&gt;</span>
+  <span style="color:#070">&lt;id&gt;</span>2323241<span style="color:#070">&lt;/id&gt;</span>
+  <span style="color:#070">&lt;reservedSeats&gt;</span>23<span style="color:#070">&lt;/reservedSeats&gt;</span>
+  <span style="color:#070">&lt;reservedSeats&gt;</span>12<span style="color:#070">&lt;/reservedSeats&gt;</span>
+  <span style="color:#070">&lt;reservedSeats&gt;</span>12<span style="color:#070">&lt;/reservedSeats&gt;</span>
+<span style="color:#070">&lt;/movieReservationResponse&gt;</span></code></pre></div>
+<p>Dokument s odpoveďou tiež priradíme do menného priestoru, a pre poriadok ním bude rovnaký menný priestor ako majú dokumenty s požiadavkami.</p>
+
+<h3 id="xml-schéma-pre-dokumenty">XML schéma pre dokumenty</h3>
+
+<p>Na základe týchto XML dokumentov si môžeme napísať XML schému, ktorá bude definovať štruktúru pre dáta na vstupe (požiadavky) a na výstupe (odpovede). Bez definície XML schémy nevieme špecifikovať formát vstupných a výstupných dokumentov vo WSDL.</p>
+
+<p>Vzťah XML schéma-dokument je podobný vzťahu trieda-objekt z OOP. XML schéma („trieda“) definuje predpis, teda štruktúru, hierarchiu a dátové typy jednotlivých elementov, a konkrétny XML dokument („objekt“) predstavuje inštanciu tejto XML schémy.</p>
+
+<p>XML schému možno navrhovať viacerými spôsobmi, ale pre nás je najvhodnejší
+štýl „matrioška” (<em>russian doll</em>). Pre každý z elementov priamo určíme jeho štruktúru.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#579">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
+<span style="color:#070">&lt;schema</span> <span style="color:#007">xmlns=</span><span style="background-color:#e0e0ff">&#34;http://www.w3.org/2001/XMLSchema&#34;</span>
+        <span style="color:#007">targetNamespace=</span><span style="background-color:#e0e0ff">&#34;urn:example:movies&#34;</span><span style="color:#070">&gt;</span>
+
+    <span style="color:#070">&lt;element</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;movieReservationRequest&#34;</span><span style="color:#070">&gt;</span>
+        <span style="color:#070">&lt;complexType&gt;</span>
+            <span style="color:#070">&lt;sequence&gt;</span>
+                <span style="color:#070">&lt;element</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;title&#34;</span> <span style="color:#007">type=</span><span style="background-color:#e0e0ff">&#34;string&#34;</span> <span style="color:#070">/&gt;</span>
+                <span style="color:#070">&lt;element</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;date&#34;</span> <span style="color:#007">type=</span><span style="background-color:#e0e0ff">&#34;date&#34;</span> <span style="color:#070">/&gt;</span>
+                <span style="color:#070">&lt;element</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;numberOfTickets&#34;</span> <span style="color:#007">type=</span><span style="background-color:#e0e0ff">&#34;int&#34;</span> <span style="color:#070">/&gt;</span>
+            <span style="color:#070">&lt;/sequence&gt;</span>
+        <span style="color:#070">&lt;/complexType&gt;</span>
+    <span style="color:#070">&lt;/element&gt;</span>
+
+    <span style="color:#070">&lt;element</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;movieReservationResponse&#34;</span><span style="color:#070">&gt;</span>
+        <span style="color:#070">&lt;complexType&gt;</span>
+            <span style="color:#070">&lt;sequence&gt;</span>
+                <span style="color:#070">&lt;element</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;id&#34;</span> <span style="color:#007">type=</span><span style="background-color:#e0e0ff">&#34;int&#34;</span> <span style="color:#070">/&gt;</span>
+                <span style="color:#070">&lt;element</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;reservedSeats&#34;</span>
+                         <span style="color:#007">type=</span><span style="background-color:#e0e0ff">&#34;int&#34;</span>
+                         <span style="color:#007">minOccurs=</span><span style="background-color:#e0e0ff">&#34;1&#34;</span>
+                         <span style="color:#007">maxOccurs=</span><span style="background-color:#e0e0ff">&#34;unbounded&#34;</span> <span style="color:#070">/&gt;</span>
+            <span style="color:#070">&lt;/sequence&gt;</span>
+        <span style="color:#070">&lt;/complexType&gt;</span>
+    <span style="color:#070">&lt;/element&gt;</span>
+<span style="color:#070">&lt;/schema&gt;</span></code></pre></div>
+<p>V koreňovom elemente dokumentu môže byť buď element <code>movieReservationRequest</code> (ak ide o požiadavku) alebo <code>movieReservationResponse</code> (ak pôjde o dokument z odpovede). Prvý z nich má tri podelementy: <code>title</code> (názov), <code>date</code> (dátum) alebo <code>numberOfTickets</code> (počet lístkov). Druhý z nich je podobný: má <code>id</code> (identifikátor rezervácie) a niekoľko elementov <code>reservedSeats</code> (zoznam miest).</p>
+
+<p>Všetky deklarované elementy budú spadať do <em>cieľového menného priestoru</em> (<em>target namespace</em>) <code>urn:example:movies</code>.</p>
+
+<p>Schému môžeme dokonca publikovať na konkrétnej webovej adrese, dostupnej cez webový prehliadač. Ak by sa schéma ocitla na adrese <code>http://movie.novotnyr.sk/schema.xsd</code>, môžeme mať dokument, ktorý vieme priamo <em>validovať</em> oproti schéme.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#070">&lt;movieReservationRequest</span>
+      <span style="color:#007">xmlns=</span><span style="background-color:#e0e0ff">&#34;urn:example:movies&#34;</span>
+      <span style="color:#007">xmlns:xsi=</span><span style="background-color:#e0e0ff">&#34;http://www.w3.org/2001/XMLSchema-instance&#34;</span>
+      <span style="color:#007">xsi:schemaLocation=</span><span style="background-color:#e0e0ff">&#34;urn:example:movies http://movie.novotnyr.sk/schema.xsd&#34;</span><span style="color:#070">&gt;</span>
+
+	<span style="color:#070">&lt;title&gt;</span>Krv, črevá a lietajúce hlavy<span style="color:#070">&lt;/title&gt;</span>
+	<span style="color:#070">&lt;date&gt;</span>2008-12-24<span style="color:#070">&lt;/date&gt;</span>
+	<span style="color:#070">&lt;numberOfTickets&gt;</span>4<span style="color:#070">&lt;/numberOfTickets&gt;</span>  
+<span style="color:#070">&lt;/movieReservationRequest&gt;</span></code></pre></div>
+<p>V tomto dokumente sme deklarovali menný priestor pre inštanciu schémy <code>xsi</code> a samozrejme mapovanie menného priestoru na príslušnú schému: v tomto prípade elementy z menného priestoru <code>urn:example:movies</code> možno validovať oproti schéme zverejnenej na adrese <code>http://movie.novotnyr.sk/schema.xsd</code>.</p>
+
+<h1 id="wsdl-súbor">WSDL súbor</h1>
+
+<p>Minimalistický WSDL súbor bez akýchkoľvek deklarácii vyzerá nasledovne:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#579">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34; ?&gt;</span>
+<span style="color:#070">&lt;definitions</span>
+        <span style="color:#007">xmlns=</span><span style="background-color:#e0e0ff">&#34;http://schemas.xmlsoap.org/wsdl/&#34;</span>
+        <span style="color:#007">xmlns:m=</span><span style="background-color:#e0e0ff">&#34;urn:example:movies&#34;</span>
+        <span style="color:#007">targetNamespace=</span><span style="background-color:#e0e0ff">&#34;urn:example:movies&#34;</span>
+        <span style="color:#007">xmlns:soap=</span><span style="background-color:#e0e0ff">&#34;http://schemas.xmlsoap.org/wsdl/soap/&#34;</span><span style="color:#070">&gt;</span>
+
+<span style="color:#070">&lt;/definitions&gt;</span></code></pre></div>
+<p>Najdôležitejšie sú definície prefixov menných priestorov:</p>
+
+<ul>
+<li>implicitný menný priestor <code>http://schemas.xmlsoap.org/wsdl/</code> zodpovedá <a href="http://www.w3.org/TR/wsdl">norme WSDL 1.1</a>. V niektorých WSDL je tento priestor uvedený explicitne, s prefixom <code>wsdl</code>.</li>
+<li>prefix <code>m</code> a atribút <code>targetNamespace</code> obsahujú (rovnaký) <em>cieľový menný priestor</em> pre elementy deklarované v rámci tohto WSDL súboru. Prefix <code>m</code> budeme využívať v prepojeniach medzi elementami WSDL. Pre jednoduchosť volíme rovnaký cieľový menný priestor ako v prípade XML schémy.</li>
+<li>prefix <code>soap</code> sa vzťahuje na menný priestor <code>http://schemas.xmlsoap.org/wsdl/soap/</code> a použije sa pri definovaní formátu správ v sekcii <em>binding</em>.</li>
+</ul>
+
+<h2 id="schéma-a-dátové-typy">Schéma a dátové typy</h2>
+
+<p>V prvom kroku potrebujeme zadefinovať štruktúru vstupných a výstupných dát, čo zabezpečíme sekciou <code>&lt;types&gt;</code>. Máme dve možnosti:</p>
+
+<ul>
+<li>buď sa odkážeme na externú XML schému prítomnú v samostatnom súbore.</li>
+<li>alebo uvedieme XML schému priamo vo WSDL súbore.</li>
+</ul>
+
+<p>V oboch prípadoch deklarujeme v sekcii <code>types</code> vnorený element <code>schema</code> z menného priestoru prináležiaceho špecifikácii <em>XML Schema</em>.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#070">&lt;types&gt;</span>
+    <span style="color:#070">&lt;schema</span> <span style="color:#007">xmlns=</span><span style="background-color:#e0e0ff">&#34;http://www.w3.org/2001/XMLSchema&#34;</span> 
+            <span style="color:#007">targetNamespace=</span><span style="background-color:#e0e0ff">&#34;urn:example:movies&#34;</span><span style="color:#070">&gt;</span>
+        <span style="color:#666;font-style:italic">&lt;!-- explicitná XML schéma alebo odkaz na externú XML schému --&gt;</span>
+    <span style="color:#070">&lt;/schema&gt;</span>
+<span style="color:#070">&lt;/types&gt;</span></code></pre></div>
+<p>Schéma XML bude mať rovnaký cieľový priestor (<code>targetNamespace</code>) ako má WSDL.</p>
+
+<h3 id="externá-xml-schéma">Externá XML schéma</h3>
+
+<p>Ak máme XML schému definovanú v externom súbore, môžeme sa na ňu odkázať. Vyššie sme definovali vlastnú schému <code>schema.xsd</code> s cieľovým menným priestorom <code>urn:example:movies</code>, ktorý je rovnaký ako cieľový menný priestor WSDL súboru.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#579">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
+<span style="color:#070">&lt;definitions</span>
+        <span style="color:#007">xmlns=</span><span style="background-color:#e0e0ff">&#34;http://schemas.xmlsoap.org/wsdl/&#34;</span>
+        <span style="color:#007">xmlns:m=</span><span style="background-color:#e0e0ff">&#34;urn:example:movies&#34;</span>
+        <span style="color:#007">targetNamespace=</span><span style="background-color:#e0e0ff">&#34;urn:example:movies&#34;</span>
+        <span style="color:#007">xmlns:soap=</span><span style="background-color:#e0e0ff">&#34;http://schemas.xmlsoap.org/wsdl/soap/&#34;</span><span style="color:#070">&gt;</span>
+
+    <span style="color:#070">&lt;types&gt;</span>
+        <span style="color:#070">&lt;schema</span> <span style="color:#007">xmlns=</span><span style="background-color:#e0e0ff">&#34;http://www.w3.org/2001/XMLSchema
+</span><span style="background-color:#e0e0ff">                targetNamespace=&#34;</span><span style="color:#f00;background-color:#faa">urn:example:movies&#34;</span><span style="color:#070">&gt;</span>
+            <span style="color:#070">&lt;include</span> <span style="color:#007">schemaLocation=</span><span style="background-color:#e0e0ff">&#34;schema.xsd&#34;</span> <span style="color:#070">/&gt;</span>
+        <span style="color:#070">&lt;/schema&gt;</span>
+    <span style="color:#070">&lt;/types&gt;</span>
+<span style="color:#070">&lt;/definitions&gt;</span></code></pre></div>
+<p>Keďže menný priestor našej schémy XML je rovnaký ako cieľový menný priestor WSDL súboru, môžeme použiť deklaráciu <code>include</code>. Ak by sa menné priestory líšili, musíme schému vložiť pomocou elementu  <code>import</code>.</p>
+
+<p>Umiestnenie XML schémy v atribúte <code>schemaLocation</code> môže byť dvojaké:</p>
+
+<ul>
+<li><em>relatívne</em>, kde sa súbor so schémou nachádza relatívne vzhľadom na „adresár“, v ktorom je súbor WSDL.</li>
+<li><em>absolútne</em>, kde uvedieme kompletnú adresu URL, z ktorej si môžeme stiahnuť schému, napríklad <code>http://movie.novotnyr.sk/schema.xsd</code>.</li>
+</ul>
+
+<p>V oboch prípadoch sa na uvedenej lokácii musí nachádzať verejne dostupný súbor so schémou XML.</p>
+
+<p>Všetky elementy zo schémy sa po <em>include</em> ocitnú v mennom priestore <code>urn:example:movies</code>.</p>
+
+<h3 id="priamo-uvedená-schéma">Priamo uvedená schéma</h3>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#579">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
+<span style="color:#070">&lt;definitions</span> <span style="color:#007">xmlns=</span><span style="background-color:#e0e0ff">&#34;http://schemas.xmlsoap.org/wsdl/&#34;</span>
+             <span style="color:#007">xmlns:m=</span><span style="background-color:#e0e0ff">&#34;urn:example:movies&#34;</span> 
+             <span style="color:#007">targetNamespace=</span><span style="background-color:#e0e0ff">&#34;urn:example:movies&#34;</span>
+             <span style="color:#007">xmlns:soap=</span><span style="background-color:#e0e0ff">&#34;http://schemas.xmlsoap.org/wsdl/soap/&#34;</span><span style="color:#070">&gt;</span>
+
+    <span style="color:#070">&lt;types&gt;</span>
+        <span style="color:#070">&lt;schema</span> <span style="color:#007">xmlns=</span><span style="background-color:#e0e0ff">&#34;http://www.w3.org/2001/XMLSchema&#34;</span>
+                <span style="color:#007">targetNamespace=</span><span style="background-color:#e0e0ff">&#34;urn:example:movies&#34;</span><span style="color:#070">&gt;</span>
+            <span style="color:#070">&lt;element</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;movieReservationRequest&#34;</span><span style="color:#070">&gt;</span>
+                <span style="color:#070">&lt;complexType&gt;</span>
+                    <span style="color:#070">&lt;sequence&gt;</span>
+                        <span style="color:#070">&lt;element</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;title&#34;</span> <span style="color:#007">type=</span><span style="background-color:#e0e0ff">&#34;string&#34;</span> <span style="color:#070">/&gt;</span>
+                        <span style="color:#070">&lt;element</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;date&#34;</span> <span style="color:#007">type=</span><span style="background-color:#e0e0ff">&#34;date&#34;</span> <span style="color:#070">/&gt;</span>
+                        <span style="color:#070">&lt;element</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;numberOfTickets&#34;</span> <span style="color:#007">type=</span><span style="background-color:#e0e0ff">&#34;int&#34;</span> <span style="color:#070">/&gt;</span>
+                    <span style="color:#070">&lt;/sequence&gt;</span>
+                <span style="color:#070">&lt;/complexType&gt;</span>
+            <span style="color:#070">&lt;/element&gt;</span>
+
+            <span style="color:#070">&lt;element</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;movieReservationResponse&#34;</span><span style="color:#070">&gt;</span>
+                <span style="color:#070">&lt;complexType&gt;</span>
+                    <span style="color:#070">&lt;sequence&gt;</span>
+                        <span style="color:#070">&lt;element</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;id&#34;</span> <span style="color:#007">type=</span><span style="background-color:#e0e0ff">&#34;int&#34;</span> <span style="color:#070">/&gt;</span>
+                        <span style="color:#070">&lt;element</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;reservedSeats&#34;</span> 
+                                 <span style="color:#007">type=</span><span style="background-color:#e0e0ff">&#34;int&#34;</span> 
+                                 <span style="color:#007">maxOccurs=</span><span style="background-color:#e0e0ff">&#34;unbounded&#34;</span> <span style="color:#070">/&gt;</span>
+                    <span style="color:#070">&lt;/sequence&gt;</span>
+                <span style="color:#070">&lt;/complexType&gt;</span>
+            <span style="color:#070">&lt;/element&gt;</span>
+        <span style="color:#070">&lt;/schema&gt;</span>
+    <span style="color:#070">&lt;/types&gt;</span>
+<span style="color:#070">&lt;/definitions&gt;</span></code></pre></div>
+<p>Všimnime si, ako sme medzi elementy <code>&lt;types&gt;</code>&hellip;<code>&lt;/types&gt;</code> bez zmeny vložili celú deklaráciu XML schémy, ktorú sme definovali v predošlej sekcii, čím sme doslova nasimulovali deklaráciu <em>include</em>.</p>
+
+<h2 id="správy">Správy</h2>
+
+<p>Ďalej potrebujeme definovať abstraktné správy, ktoré budú putovať medzi klientom a serverom. Je zjavné, že správy budú dve: požiadavka <code>movieReservationRequest</code> a odpoveď <code>movieReservationResponse</code>. Každá bude mať jednu časť <code>part</code> tvorenú príslušným koreňovým elementom.</p>
+
+<h3 id="požiadavka">Požiadavka</h3>
+
+<p>Požiadavka bude pozostávať z koreňového elementu <code>movieReservationRequest</code> z menného priestoru <code>urn:example:movies</code>, ktorému sme priradili prefix <code>m</code>.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#070">&lt;message</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;movieReservationRequest&#34;</span><span style="color:#070">&gt;</span>
+    <span style="color:#070">&lt;part</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;body&#34;</span> <span style="color:#007">element=</span><span style="background-color:#e0e0ff">&#34;m:movieReservationRequest&#34;</span><span style="color:#070">/&gt;</span>
+<span style="color:#070">&lt;/message&gt;</span></code></pre></div>
+<p>Požiadavka má jedinú časť, ktorú sme pomenovali <em>body</em>, ktorej obsah bude vyzerať presne tak, ako element <code>movieReservationRequest</code>.</p>
+
+<h3 id="odpoveď">Odpoveď</h3>
+
+<p>Odpoveď na požiadavku pozostáva z koreňového elementu <code>movieReservationResponse</code>, ktorý sa nachádza tiež v mennom priestore s prefixom <code>m</code>.</p>
+
+<pre><code>&lt;message name=&quot;movieReservationResponse&quot;&gt;
+    &lt;part name=&quot;body&quot; element=&quot;m:movieReservationResponse&quot;/&gt;
+&lt;/message&gt;
+</code></pre>
+
+<p>I odpoveď má jedinú časť – pomenovanú <em>body</em>, ktorej obsah zodpovedá elementu <code>movieReservationResponse</code> z menného priestoru <code>urn:example:movies</code>.</p>
+
+<h2 id="typy-pre-port-s-operácie-v-ňom">Typy pre port s operácie v ňom</h2>
+
+<p>Teraz definujeme <strong>typ pre port</strong>, ktorý predstavuje popis dostupných operácii a výzor vstupných a výstupných dokumentov. Môžeme sa naň dívať ako na analógiu <em>interface</em> z objektovo-orientovaných jazykov, kde operáciám zodpovedajú metódy.</p>
+
+<p>Zatiaľ nie je nič povedané o konkrétnom protokole (HTTP, Jabber, a podobne), čiže inými slovami definujeme len syntax správ a sadu operácií nad nimi.</p>
+
+<p>V ukážke definujeme typ pre port s názvom <code>movieReservationPortType</code> s jedinou operáciou <code>movieReservation</code>. V operácii definujeme odkaz na vstupnú správu (<code>m:movieReservationRequest</code>) a tiež na výstupnú správu (<code>m:movieReservationRequest</code>). Oba odkazy v atribútoch <code>message</code> musia obsahovať kvalifikované meno vstupnej, resp. výstupnej správy, kde menný priestor nahradíme kratším prefixom.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#070">&lt;portType</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;movieReservationPortType&#34;</span><span style="color:#070">&gt;</span>
+    <span style="color:#070">&lt;operation</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;movieReservation&#34;</span><span style="color:#070">&gt;</span>
+        <span style="color:#070">&lt;input</span> <span style="color:#007">message=</span><span style="background-color:#e0e0ff">&#34;m:movieReservationRequest&#34;</span> <span style="color:#070">/&gt;</span>
+        <span style="color:#070">&lt;output</span> <span style="color:#007">message=</span><span style="background-color:#e0e0ff">&#34;m:movieReservationResponse&#34;</span>  <span style="color:#070">/&gt;</span>
+    <span style="color:#070">&lt;/operation&gt;</span>
+<span style="color:#070">&lt;/portType&gt;</span></code></pre></div>
+<h2 id="binding">Binding</h2>
+
+<p>Až v tejto chvíli sa posunieme od abstraktnej syntaxe správ ku konkrétnemu tvaru odchádzajúcich a prichádzajúcich správ. Ten definujeme pomocou <strong>bindingu</strong>, ktorého úloha je:</p>
+
+<ul>
+<li>definovať <em>transportný protokol</em>: napr. HTTP, Mail, či Jabber</li>
+<li>určiť <em>štýl správ</em>, teda konkrétny tvar volaní operácií.</li>
+</ul>
+
+<p>Každý typ portu môže definovať svoj vlastný binding, čo znamená, že môžeme definovať rozličné komunikačné protokoly pre rozličné operácie v porte. Konkrétny binding môže byť bližšie špecifikovaný pre každú operáciu zvlášť.</p>
+
+<p>V príklade definujeme binding <code>movieReservationBinding</code>, ktorý asociujeme s typom portu <code>tns:movieReservationPort</code>, ktorý sme definovali pred chvíľou. Ďalej definujeme transportný protokol: bude ním SOAP nad HTTP v štýle <em>document</em>.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#070">&lt;soap:binding</span> <span style="color:#007">style=</span><span style="background-color:#e0e0ff">&#34;document&#34;</span>
+              <span style="color:#007">transport=</span><span style="background-color:#e0e0ff">&#34;http://schemas.xmlsoap.org/soap/http&#34;</span> <span style="color:#070">/&gt;</span></code></pre></div>
+<p>Následne musíme pre každú operáciu definovanú v type portu určiť konkrétny fyzický formát jednotlivých správ. Pre operáciu <code>movieReservation</code> budeme pre vstup i výstup používať správy v štýle <em>literal</em>.</p>
+
+<blockquote>
+<p>Jednotlivé štýly správ sú v tomto momente nepodstatné. Štýl, ktorý má najväčšiu podporu medzi klientmi, je <code>document/literal</code>. Podrobnosti možno nájsť v článku <a href="http://www.ibm.com/developerworks/webservices/library/ws-whichwsdl/">Which style of WSDL should I use?</a>)</p>
+</blockquote>
+
+<p>Celý <em>binding</em> vyzerá nasledovne. Všimnime si, ako sa v atribúte <code>type</code> odkazujeme na typ portu (pomocou kvalifikovaného mena s prefixom).</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#070">&lt;binding</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;movieReservationBinding&#34;</span>     
+         <span style="color:#007">type=</span><span style="background-color:#e0e0ff">&#34;m:movieReservationPortType&#34;</span><span style="color:#070">&gt;</span>
+
+    <span style="color:#070">&lt;soap:binding</span> <span style="color:#007">style=</span><span style="background-color:#e0e0ff">&#34;document&#34;</span>
+                  <span style="color:#007">transport=</span><span style="background-color:#e0e0ff">&#34;http://schemas.xmlsoap.org/soap/http&#34;</span> <span style="color:#070">/&gt;</span>
+    <span style="color:#070">&lt;operation</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;movieReservation&#34;</span><span style="color:#070">&gt;</span>
+        <span style="color:#070">&lt;input&gt;</span>
+            <span style="color:#070">&lt;soap:body</span> <span style="color:#007">use=</span><span style="background-color:#e0e0ff">&#34;literal&#34;</span><span style="color:#070">/&gt;</span>
+        <span style="color:#070">&lt;/input&gt;</span>
+        <span style="color:#070">&lt;output&gt;</span>
+            <span style="color:#070">&lt;soap:body</span> <span style="color:#007">use=</span><span style="background-color:#e0e0ff">&#34;literal&#34;</span><span style="color:#070">/&gt;</span>
+        <span style="color:#070">&lt;/output&gt;</span>
+    <span style="color:#070">&lt;/operation&gt;</span>
+<span style="color:#070">&lt;/binding&gt;</span></code></pre></div>
+<h2 id="služba">Služba</h2>
+
+<p>Ako poslednú náležitosť nastavíme službu <em>service</em>, ktorá definuje konkrétnu adresu, na ktorej sú fyzicky dostupné jednotlivé porty a operácie. Služba logicky zoskupuje viacero <em>portov</em>, pričom každý port predstavuje kombináciu <em>typu pre port</em> s konkrétnym <em>bindingom</em>.</p>
+
+<p>Odlíšenie <em>portu</em> (typ portu zviazaný s konkrétnym transportným protokolom a štýlom správ) od <em>typu portu</em> (zoznam operácií) sa v novších verziách WSDL vyjasnilo. Port v službe sa nazýva <em>endpoint</em> a <em>typ portu</em> je jednoducho <em>port</em>.</p>
+
+<p>V našom prípade definujeme službu <code>movieReservationService</code> obsahujúcu port <code>movieReservationPort</code>, ktorý sa vzťahuje k bindingu <code>m:movieReservationBinding</code> a zároveň nastavíme URL adresu, na ktorej bude port fyzicky dostupný prostredníctvom sieťového protokolu HTTP.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#070">&lt;service</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;movieReservationService&#34;</span><span style="color:#070">&gt;</span>
+    <span style="color:#070">&lt;port</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;movieReservationPort&#34;</span>
+          <span style="color:#007">binding=</span><span style="background-color:#e0e0ff">&#34;m:movieReservationBinding&#34;</span><span style="color:#070">&gt;</span>
+        <span style="color:#070">&lt;soap:address</span> <span style="color:#007">location=</span><span style="background-color:#e0e0ff">&#34;http://localhost:8080/movies/ws&#34;</span><span style="color:#070">/&gt;</span>
+    <span style="color:#070">&lt;/port&gt;</span>
+<span style="color:#070">&lt;/service&gt;</span></code></pre></div>
+<h2 id="sumár">Sumár</h2>
+
+<p>Ak si zosumarizujeme veci definované vo WSDL, tak máme:</p>
+
+<ul>
+<li><em>typy</em> – definujú syntax (štruktúru + dátové typy) prenášaných dát vo vnútri správ</li>
+<li><em>správy</em> – definujú abstraktnú štruktúru prenášaných zásielok (požiadaviek a odpovedí).</li>
+<li><em>typ pre portu</em> – definuje množinu operácií spolu so správami, ktoré sú v nich používané</li>
+<li><em>binding</em> – predstavuje konkrétny protokol a konkrétnu reprezentáciu správ</li>
+<li>typ pre port + binding = <em>port</em>. Inak povedané, port získame dodaním protokolu k abstraktnej definícii typu portu.</li>
+<li><em>služba</em> – zhromažďuje viacero portov</li>
+</ul>
+
+<p><img src="wsdl-schema.png" alt="" /></p>
+
+<h1 id="kompletné-wsdl">Kompletné WSDL</h1>
+
+<p>WSDL si môžeme ilustrovať na obrázku:</p>
+
+<p><img src="wsdl.png" alt="Celé WSDL" style="zoom:50%;" /></p>
+
+<p>Kompletné WSDL, v tvare explicitne uvedenej schémy, vyzerá nasledovne:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#579">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
+<span style="color:#070">&lt;definitions</span>
+        <span style="color:#007">xmlns=</span><span style="background-color:#e0e0ff">&#34;http://schemas.xmlsoap.org/wsdl/&#34;</span>
+        <span style="color:#007">xmlns:m=</span><span style="background-color:#e0e0ff">&#34;urn:example:movies&#34;</span>
+        <span style="color:#007">targetNamespace=</span><span style="background-color:#e0e0ff">&#34;urn:example:movies&#34;</span>
+        <span style="color:#007">xmlns:soap=</span><span style="background-color:#e0e0ff">&#34;http://schemas.xmlsoap.org/wsdl/soap/&#34;</span><span style="color:#070">&gt;</span>
+
+    <span style="color:#070">&lt;types&gt;</span>
+        <span style="color:#070">&lt;schema</span> <span style="color:#007">xmlns=</span><span style="background-color:#e0e0ff">&#34;http://www.w3.org/2001/XMLSchema&#34;</span>
+                <span style="color:#007">targetNamespace=</span><span style="background-color:#e0e0ff">&#34;urn:example:movies&#34;</span><span style="color:#070">&gt;</span>
+
+            <span style="color:#070">&lt;element</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;movieReservationRequest&#34;</span><span style="color:#070">&gt;</span>
+                <span style="color:#070">&lt;complexType&gt;</span>
+                    <span style="color:#070">&lt;sequence&gt;</span>
+                        <span style="color:#070">&lt;element</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;title&#34;</span> <span style="color:#007">type=</span><span style="background-color:#e0e0ff">&#34;string&#34;</span><span style="color:#070">/&gt;</span>
+                        <span style="color:#070">&lt;element</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;date&#34;</span> <span style="color:#007">type=</span><span style="background-color:#e0e0ff">&#34;date&#34;</span><span style="color:#070">/&gt;</span>
+                        <span style="color:#070">&lt;element</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;numberOfTickets&#34;</span> <span style="color:#007">type=</span><span style="background-color:#e0e0ff">&#34;int&#34;</span><span style="color:#070">/&gt;</span>
+                    <span style="color:#070">&lt;/sequence&gt;</span>
+                <span style="color:#070">&lt;/complexType&gt;</span>
+            <span style="color:#070">&lt;/element&gt;</span>
+
+            <span style="color:#070">&lt;element</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;movieReservationResponse&#34;</span><span style="color:#070">&gt;</span>
+                <span style="color:#070">&lt;complexType&gt;</span>
+                    <span style="color:#070">&lt;sequence&gt;</span>
+                        <span style="color:#070">&lt;element</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;id&#34;</span> <span style="color:#007">type=</span><span style="background-color:#e0e0ff">&#34;int&#34;</span><span style="color:#070">/&gt;</span>
+                        <span style="color:#070">&lt;element</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;reservedSeats&#34;</span>
+                                 <span style="color:#007">type=</span><span style="background-color:#e0e0ff">&#34;int&#34;</span>
+                                 <span style="color:#007">maxOccurs=</span><span style="background-color:#e0e0ff">&#34;unbounded&#34;</span><span style="color:#070">/&gt;</span>
+                    <span style="color:#070">&lt;/sequence&gt;</span>
+                <span style="color:#070">&lt;/complexType&gt;</span>
+            <span style="color:#070">&lt;/element&gt;</span>
+        <span style="color:#070">&lt;/schema&gt;</span>
+    <span style="color:#070">&lt;/types&gt;</span>
+
+    <span style="color:#070">&lt;message</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;movieReservationRequest&#34;</span><span style="color:#070">&gt;</span>
+        <span style="color:#070">&lt;part</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;body&#34;</span> <span style="color:#007">element=</span><span style="background-color:#e0e0ff">&#34;m:movieReservationRequest&#34;</span><span style="color:#070">/&gt;</span>
+    <span style="color:#070">&lt;/message&gt;</span>
+
+    <span style="color:#070">&lt;message</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;movieReservationResponse&#34;</span><span style="color:#070">&gt;</span>
+        <span style="color:#070">&lt;part</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;body&#34;</span> <span style="color:#007">element=</span><span style="background-color:#e0e0ff">&#34;m:movieReservationResponse&#34;</span><span style="color:#070">/&gt;</span>
+    <span style="color:#070">&lt;/message&gt;</span>
+
+    <span style="color:#070">&lt;portType</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;movieReservationPortType&#34;</span><span style="color:#070">&gt;</span>
+        <span style="color:#070">&lt;operation</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;movieReservation&#34;</span><span style="color:#070">&gt;</span>
+            <span style="color:#070">&lt;input</span> <span style="color:#007">message=</span><span style="background-color:#e0e0ff">&#34;m:movieReservationRequest&#34;</span><span style="color:#070">/&gt;</span>
+            <span style="color:#070">&lt;output</span> <span style="color:#007">message=</span><span style="background-color:#e0e0ff">&#34;m:movieReservationResponse&#34;</span><span style="color:#070">/&gt;</span>
+        <span style="color:#070">&lt;/operation&gt;</span>
+    <span style="color:#070">&lt;/portType&gt;</span>
+
+    <span style="color:#070">&lt;binding</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;movieReservationBinding&#34;</span> <span style="color:#007">type=</span><span style="background-color:#e0e0ff">&#34;m:movieReservationPortType&#34;</span><span style="color:#070">&gt;</span>
+        <span style="color:#070">&lt;soap:binding</span> <span style="color:#007">style=</span><span style="background-color:#e0e0ff">&#34;document&#34;</span>
+                      <span style="color:#007">transport=</span><span style="background-color:#e0e0ff">&#34;http://schemas.xmlsoap.org/soap/http&#34;</span><span style="color:#070">/&gt;</span>
+        <span style="color:#070">&lt;operation</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;movieReservation&#34;</span><span style="color:#070">&gt;</span>
+            <span style="color:#070">&lt;input&gt;</span>
+                <span style="color:#070">&lt;soap:body</span> <span style="color:#007">use=</span><span style="background-color:#e0e0ff">&#34;literal&#34;</span><span style="color:#070">/&gt;</span>
+            <span style="color:#070">&lt;/input&gt;</span>
+            <span style="color:#070">&lt;output&gt;</span>
+                <span style="color:#070">&lt;soap:body</span> <span style="color:#007">use=</span><span style="background-color:#e0e0ff">&#34;literal&#34;</span><span style="color:#070">/&gt;</span>
+            <span style="color:#070">&lt;/output&gt;</span>
+        <span style="color:#070">&lt;/operation&gt;</span>
+    <span style="color:#070">&lt;/binding&gt;</span>
+
+    <span style="color:#070">&lt;service</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;movieReservationService&#34;</span><span style="color:#070">&gt;</span>
+        <span style="color:#070">&lt;port</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;movieReservationPort&#34;</span>
+              <span style="color:#007">binding=</span><span style="background-color:#e0e0ff">&#34;m:movieReservationBinding&#34;</span><span style="color:#070">&gt;</span>
+            <span style="color:#070">&lt;soap:address</span> <span style="color:#007">location=</span><span style="background-color:#e0e0ff">&#34;http://localhost:8080/movies/ws&#34;</span><span style="color:#070">/&gt;</span>
+        <span style="color:#070">&lt;/port&gt;</span>
+    <span style="color:#070">&lt;/service&gt;</span>
+<span style="color:#070">&lt;/definitions&gt;</span></code></pre></div>
+<h1 id="literatúra">Literatúra</h1>
+
+<ul>
+<li><a href="http://www.w3schools.com/webservices/ws_wsdl_intro.asp">WSDL Tutorial</a>, W3Schools.org</li>
+<li><a href="http://msdn.microsoft.com/en-us/library/ms996486.aspx">Understanding WSDL</a>, Aaron Skonnard, Northface University, Microsoft 2003</li>
+<li><a href="http://www.w3.org/TR/wsdl">WSDL 1.1</a> - W3C Recommendation</li>
+<li><a href="https://www.oracle.com/technetwork/java/design-patterns-142138.html">Introducing Design Patterns in XML
+Schema</a>: popis XML schémy a návrhových vzorov (matrioška)</li>
+<li><a href="http://www.ibm.com/developerworks/webservices/library/ws-whichwsdl/">Which style of WSDL should I
+use?</a>, IBM DeveloperWorks.</li>
+<li><a href="http://www.ibm.com/developerworks/library/j-jws20/">Java web services: Understanding and modeling WSDL 1.1</a>, IBM DeveloperWorks</li>
+</ul>
+
+<h1 id="revízie">Revízie</h1>
+
+<ul>
+<li>2004/dec/03: prvá verzia zverejnená na <a href="http://ics.upjs.sk/~novotnyr/blog/1988/od-wsdl-k-webovej-sluzbe-pitveme-a-tvorime-vlastne-wsdl">http://ics.upjs.sk/~novotnyr/blog/1988/od-wsdl-k-webovej-sluzbe-pitveme-a-tvorime-vlastne-wsdl</a></li>
+<li>2019/okt/07: schémy a WSLD používajú implicitné menné priestory. Prekreslený obrázok, zrevidované odkazy, pridaný odkaz na tutoriál ku XSD:</li>
+</ul>
+
+</main>
+
+    <footer>
+      
+<script>
+(function() {
+  function center_el(tagName) {
+    var tags = document.getElementsByTagName(tagName), i, tag;
+    for (i = 0; i < tags.length; i++) {
+      tag = tags[i];
+      var parent = tag.parentElement;
+      
+      if (parent.childNodes.length === 1) {
+        
+        if (parent.nodeName === 'A') {
+          parent = parent.parentElement;
+          if (parent.childNodes.length != 1) continue;
+        }
+        if (parent.nodeName === 'P') parent.style.textAlign = 'center';
+      }
+    }
+  }
+  var tagNames = ['img', 'embed', 'object'];
+  for (var i = 0; i < tagNames.length; i++) {
+    center_el(tagNames[i]);
+  }
+})();
+</script>
+
+      
+    </footer>
+  </body>
+</html>
+

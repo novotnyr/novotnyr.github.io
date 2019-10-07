@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html lang="en-us">
   <head>
-	<meta name="generator" content="Hugo 0.58.3" />
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>robonovotny | robonovotny</title>
+    <title>Testovanie kompatibility WSDL voči WS-IT | robonovotny</title>
     <link rel="stylesheet" href="/css/style.css" />
     <link rel="stylesheet" href="/css/fonts.css" />
     
@@ -28,7 +27,7 @@
     <ul>
       
       
-      <li class="pull-left current">
+      <li class="pull-left ">
         <a href="http://novotnyr.github.io/">/home/robonovotny</a>
       </li>
       
@@ -44,39 +43,70 @@
   <body>
     <br/>
 
+<div class="article-meta">
+<h1><span class="title">Testovanie kompatibility WSDL voči WS-IT</span></h1>
+
+<h2 class="date">2019/10/07</h2>
+<p class="terms">
+  
+  
+  
+  
+  
+</p>
+</div>
 
 
 
+<main>
 
 
-<ul>
-  
-  <li>
-    <span class="date">2019/10/07</span>
-    <a href="/scrolls/">Scrolls</a>
-  </li>
-  
-  <li>
-    <span class="date">2019/10/06</span>
-    <a href="/tomes/">Tomes</a>
-  </li>
-  
-  <li>
-    <span class="date">2012/07/04</span>
-    <a href="/talks/">Talks</a>
-  </li>
-  
-  <li>
-    <span class="date">2011/11/25</span>
-    <a href="/courses/">Courses</a>
-  </li>
-  
-  <li>
-    <span class="date">2009/04/02</span>
-    <a href="/slides/">Slides</a>
-  </li>
-  
-</ul>
+<p>Na testovanie kompatibility existuje Java nástroj. Pôvodne bol k dispozícii na webe <code>ws-i.org</code>, ale tento portál má dlhodobé problémy so stabilitou.</p>
+
+<p>Na stiahnutie použime radšej poslednú archivovanú verziu</p>
+
+<pre><code>curl https://web.archive.org/web/20170307052202/http://www.ws-i.org/Testing/Tools/2005/06/WSI_Test_Java_Final_1.1.zip
+</code></pre>
+
+<p>Následne ju odZIPujme:</p>
+
+<pre><code>unzip WSI_Test_Java_Final_1.1.zip
+</code></pre>
+
+<p>Linux/MacOS shellskripty majú zle nastavený <em>executable bit</em>, takže sa nedajú spustiť. Opravme to:</p>
+
+<pre><code>chmod +x wsi-test-tools/java/bin/*.sh
+</code></pre>
+
+<p>Okrem toho majú skripty zlé konce riadkov. Opravme ich napríklad pomocou <a href="https://formulae.brew.sh/formula/dos2unix"><code>dos2unix</code></a>:</p>
+
+<pre><code>dos2unix wsi-test-tools/java/bin/*.sh
+</code></pre>
+
+<p>Nastavme premennú prostredia <code>WSIT_HOME</code>:</p>
+
+<pre><code>export WSI_HOME=$PWD/wsi-test-tools
+</code></pre>
+
+<p>Spustime analyzátor</p>
+
+<pre><code>$WSI_HOME/java/bin/Analyzer.sh
+</code></pre>
+
+<h2 id="konfiguračný-súbor-pre-validáciu">Konfiguračný súbor pre validáciu</h2>
+
+<pre><code>&lt;configuration xmlns=&quot;http://www.ws-i.org/testing/2003/03/analyzerConfig/&quot;&gt;
+  &lt;verbose&gt;true&lt;/verbose&gt;
+  &lt;assertionResults type=&quot;all&quot; messageEntry=&quot;true&quot; failureMessage=&quot;true&quot; assertionDescription=&quot;true&quot;/&gt;
+  &lt;testAssertionsFile&gt;/tmp/wsi-test-tools/common/profiles/SSBP10_BP11_TAD.xml&lt;/testAssertionsFile&gt;
+  &lt;wsdlReference&gt;
+    &lt;wsdlElement type=&quot;binding&quot; namespace=&quot;urn:example:calendar:api&quot;&gt;binding&lt;/wsdlElement&gt;
+    &lt;wsdlURI&gt;/Users/novotnyr/eclipse-ws-2019/calendar-ee/calendar.wsdl&lt;/wsdlURI&gt;
+  &lt;/wsdlReference&gt;
+&lt;/configuration&gt;
+</code></pre>
+
+</main>
 
     <footer>
       
