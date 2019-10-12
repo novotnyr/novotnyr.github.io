@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SOAP Web Service Compliance with WS-IT in Eclipse IDE | robonovotny</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    <link rel="stylesheet" href="https://novotnyr.github.io/asciidoctor.css">
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.css" integrity="sha384-D+9gmBxUQogRLqvARvNLmA9hS2x//eK1FhVb9PiU86gmcrBrJAQT8okdJ4LMp2uv" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.js" integrity="sha384-483A6DwYfKeDa0Q52fJmxFXkcPCFfnXMoXblOkJ4JcA8zATN6Tm78UNL72AKk+0O" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/contrib/auto-render.min.js" integrity="sha384-yACMu8JWxKzSp/C1YV86pzGiQ/l1YUfE8oPuahJQxzehAjEt2GiQuy/BIvl9KyeF" crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body);
+        });
+    </script>
+
+<header>
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <nav>
+    <ul>
+      
+      
+      <li class="pull-left ">
+        <a href="https://novotnyr.github.io/">/home/robonovotny</a>
+      </li>
+      
+
+      
+
+    </ul>
+  </nav>
+</header>
+
+  </head>
+
+  <body>
+    <br/>
+
+<div class="article-meta">
+<h1><span class="title">SOAP Web Service Compliance with WS-IT in Eclipse IDE</span></h1>
+
+<h2 class="date">2019/10/12</h2>
+<p class="terms">
+  
+  
+  
+  
+  
+</p>
+</div>
+
+
+
+<main>
+<div class="paragraph">
+<p>Eclipse IDE (with <strong>Eclipse Java Web Developer Tools</strong> plugin) provides a WS-IT Validation capability on WSDL files. This ensures a fundamental interoperability across major SOAP frameworks.</p>
+</div>
+<div class="paragraph">
+<p>However, WS-IT.org is often offline. In that case, validation fails and we need to workaround!</p>
+</div>
+<div class="sect1">
+<h2 id="_the_best_case_scenario">The best-case scenario</h2>
+<div class="sectionbody">
+<div class="imageblock">
+<div class="content">
+<img src="eclipse-wsit-validate.png" alt="eclipse wsit validate">
+</div>
+</div>
+<div class="paragraph">
+<p>The WS-IT validator directly contacts the WS-IT.org portal. It fetches the validation results, processes and exports them to the <strong>Problems</strong> view.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_working_around_ws_it_org_outages">Working around WS-IT.org outages</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>WS-IT.org outages are very common.
+Even with caching turned on, Eclipse IDE might not be able to reach the validation services (see <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=535813">Eclipse Bug 535813</a>).
+Sadly, unlike SOAP UI or other GUI tools, validation profiles are always downloaded from the web, and not provided offline.</p>
+</div>
+<div class="paragraph">
+<p>Workaround? Download the necessary files and launch a local HTTP server.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_roadmap">Roadmap</h2>
+<div class="sectionbody">
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Clone the necessary files.</p>
+</li>
+<li>
+<p>Setup Apache HTTP / local server</p>
+</li>
+<li>
+<p>Setup domain name aliasing</p>
+</li>
+</ol>
+</div>
+<div class="sect2">
+<h3 id="_cloning_the_repo">Cloning the repo</h3>
+<div class="paragraph">
+<p>The <a href="https://github.com/novotnyr/ws-i_org"><code>novotnyr/ws-i_org</code></a> repository contains the minimal necessary files that should be provided locally.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_running_the_http">Running the HTTP</h3>
+<div class="paragraph">
+<p>Since Eclipse IDE requires the <code>ws-i.org</code> running on port 80, we need to adapt.</p>
+</div>
+<div class="sect3">
+<h4 id="_running_on_macos">Running on MacOS</h4>
+<div class="paragraph">
+<p>On MacOS, we can reuse the default Apache HTTPD running on port 80.
+We can symlink the <code>Testing</code> directory to the <code>/Library/WebServer/Documents</code>.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_running_elsewhere">Running elsewhere</h4>
+<div class="paragraph">
+<p>With Python 3 available, we can run the embedded Python server.
+From the Git clone root, let&#8217;s run:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">python3 -m http.server 9990</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_setup_domain_name">Setup domain name</h3>
+<div class="paragraph">
+<p>In <code>/etc/hosts</code>, let&#8217;s alias <code>www.ws-it.org</code> to localhost.
+Let&#8217;s add the following entry:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>127.0.0.1	www.ws-i.org</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_testing_the_validation">Testing the Validation</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Let&#8217;s use a minimalistic, although noncompliant WSDL:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
+&lt;definitions xmlns:e="urn:example:echo"
+	xmlns="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="urn:example:echo" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"&gt;
+
+	&lt;message name="Request"&gt;
+		&lt;part name="body" type="xsd:string" /&gt;
+	&lt;/message&gt;
+
+	&lt;message name="Response"&gt;
+		&lt;part name="body" type="xsd:string" /&gt;
+	&lt;/message&gt;
+
+	&lt;portType name="PortType"&gt;
+		&lt;operation name="echo"&gt;
+			&lt;input message="e:Request" /&gt;
+			&lt;output message="e:Response" /&gt;
+		&lt;/operation&gt;
+	&lt;/portType&gt;
+
+    &lt;binding name="Binding"
+    	type="e:PortType"&gt;
+    	&lt;soap:binding style="document"
+    		transport="http://schemas.xmlsoap.org/soap/http" /&gt;
+    	&lt;operation name="echo"&gt;
+    		&lt;input&gt;
+    			&lt;soap:body use="literal" /&gt;
+    		&lt;/input&gt;
+    		&lt;output&gt;
+    			&lt;soap:body use="literal" /&gt;
+    		&lt;/output&gt;
+    	&lt;/operation&gt;
+    &lt;/binding&gt;
+
+    &lt;service name="Service"&gt;
+    	&lt;port name="Port" binding="e:Binding"&gt;
+    		&lt;soap:address location="http://localhost" /&gt;
+    	&lt;/port&gt;
+    &lt;/service&gt;
+&lt;/definitions&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>When running <strong>Validate</strong> from context menu, we will see a warning:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="wsi-warning.png" alt="wsi warning">
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>WS-I: (BP2012) A document-literal binding contains soapbind:body element(s) that refer to message part element(s) that do not have the element attribute.</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This is a regular WS-I validation error, indicating a noncompliant document.
+Despite warnings, we are successfully running the WS-I validation against our local server.</p>
+</div>
+</div>
+</div>
+
+</main>
+
+    <footer>
+      
+<script>
+(function() {
+  function center_el(tagName) {
+    var tags = document.getElementsByTagName(tagName), i, tag;
+    for (i = 0; i < tags.length; i++) {
+      tag = tags[i];
+      var parent = tag.parentElement;
+      
+      if (parent.childNodes.length === 1) {
+        
+        if (parent.nodeName === 'A') {
+          parent = parent.parentElement;
+          if (parent.childNodes.length != 1) continue;
+        }
+        if (parent.nodeName === 'P') parent.style.textAlign = 'center';
+      }
+    }
+  }
+  var tagNames = ['img', 'embed', 'object'];
+  for (var i = 0; i < tagNames.length; i++) {
+    center_el(tagNames[i]);
+  }
+})();
+</script>
+
+      
+    </footer>
+  </body>
+</html>
+
