@@ -221,32 +221,28 @@ promise.then(response =&gt; showResult(response.statusText))
 
 <h2 id="metóda-then">Metóda <code>then()</code></h2>
 
-<ul>
-<li>berie dva parametre, <strong>handlery</strong> (a.k.a <em>callbacky</em>)
+<p>Metóda <code>then()</code> na promise berie dva parametre, tzv. <strong>callbacky</strong> (niekde tiež <em>handlery</em>), reprezentujúce dve funkcie.</p>
 
 <ul>
-<li>funkciu <code>onFulfilled</code>:
+<li>funkcia <code>onFulfilled</code>:
 
 <ul>
 <li>zavolaná po splnení prísľubu</li>
 <li>prvým parametrom je hodnota prísľubu</li>
 </ul></li>
-<li>funkciu <code>onRejected</code>
+<li>funkcia <code>onRejected</code>
 
 <ul>
 <li>zavolaná po zamietnutí prísľubu</li>
-<li>prvým parametrom je dôvod zamietnutia</li>
+<li>prvým parametrom je dôvod zamietnutia (obvykle výnimka)</li>
 </ul></li>
-<li>obe funkcie nebudú mať definovaný <code>this</code> (sú to čisté funkcie)</li>
-</ul></li>
-<li>metódu <code>then</code> možno reťaziť:
-
-<ul>
-<li>handlery sa budú volať v poradí registrácie</li>
-</ul></li>
-<li>vracia nový promise, ktorý je splnený po dobehnutí handlera pre splnenie, či po dobehnutí zamietacieho handlera.</li>
-<li>hodnota z handlera pre splnenie je fulfillment hodnota pre nový promise</li>
 </ul>
+
+<h3 id="návratová-hodnota-then">Návratová hodnota <code>then()</code></h3>
+
+<p>Po zavolaní metódy <code>then()</code> získame nový promise, ktorý je splnený po dobehnutí handlera pre splnenie, či zamietnutý po dobehnutí zamietacieho handlera. V prípade úspechu je hodnota v splnenom promise prevzatá z návratovej hodnoty callbacku.</p>
+
+<p>To nám dáva možnosť reťaziť prísľuby, o čom si povieme podrobnejšie v sekcii <em>Reťazenie promisov</em>.</p>
 
 <h3 id="použitie-then-s-dvoma-callbackmi">Použitie <code>then</code> s dvoma callbackmi</h3>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">fetch(<span style="background-color:#e0e0ff">&#39;http://jsonplaceholder.typicode.com/albums&#39;</span>)
@@ -276,15 +272,15 @@ promise.then(response =&gt; showResult(response.statusText))
 <ul>
 <li>nič</li>
 <li>bežnú hodnotu</li>
-<li>prísľub</li>
+<li>promise</li>
 <li>vyhodiť výnimku</li>
 </ul>
 
-<p>Ak callback nevracia nič, alebo vracia nejakú hodnotu, je prísľub vrátený funkciou <code>then</code> <a href="https://promisesaplus.com/#point-64">automaticky splnený</a>.</p>
+<p>Ak callback nevracia nič, alebo vracia nejakú hodnotu, je promise vrátený funkciou <code>then</code> <a href="https://promisesaplus.com/#point-64">automaticky splnený</a>.</p>
 
 <p>Ak callback vyhodí výnimku, promise je zamietnutý.</p>
 
-<p>Ak callback prísľubu P vracia iný prísľub Q, prísľub P prevezme stav vráteného prísľubu Q (prísľub P musí byť <em>pending</em> dovtedy, kým je <em>pending</em> vrátený prísľub Q. Podobne sa spriahne aj prechod do splneného či zamietnutého vzťahu. Podrobnosti určuje <a href="https://promisesaplus.com/#point-49">špecifikácia</a>.).</p>
+<p>Ak callback promisu P vracia iný promise Q, promise P prevezme stav vráteného promisu Q (promise P musí byť v stave <em>pending</em> dovtedy, kým je v stave <em>pending</em> vrátený promise Q. Podobne sa spriahne aj prechod do splneného či zamietnutého vzťahu. Podrobnosti určuje <a href="https://promisesaplus.com/#point-49">špecifikácia</a>.).</p>
 
 <h3 id="ukážka-reťazenia">Ukážka reťazenia</h3>
 
@@ -294,8 +290,8 @@ promise.then(response =&gt; showResult(response.statusText))
     .then(json =&gt; console.log(json))
 </code></pre></div>
 <ol>
-<li>Prvý callback vracia JSON z odpovede. Keďže metóda <a href="https://developer.mozilla.org/en-US/docs/Web/API/Body/json"><code>json()</code></a> vracia <code>Promise</code>, stav prísľubu vráteného z prvého <code>then</code> sa spriahne s prísľubom <code>json()</code>.</li>
-<li>Druhý callback prevezme parameter <code>json</code>, obsahujúci odbalenú hodnotu z predošlého promisu, teda samotný objekt s dátami, a vypíše ho. Callback nevracia nič, ale prísľub vrátený z druhej <code>then</code> už ani nepotrebujeme.</li>
+<li>Prvý callback vracia JSON z odpovede. Keďže metóda <a href="https://developer.mozilla.org/en-US/docs/Web/API/Body/json"><code>json()</code></a> vracia <code>Promise</code>, stav promisu vráteného z prvého <code>then</code> sa spriahne s prísľubom <code>json()</code>.</li>
+<li>Druhý callback prevezme parameter <code>json</code>, obsahujúci odbalenú hodnotu z predošlého promisu, teda samotný objekt s dátami, a vypíše ho. Callback nevracia nič, ale promise vrátený z druhej <code>then</code> už ani nepotrebujeme.</li>
 </ol>
 
 <h3 id="volanie-catch-odchytáva-výnimky">Volanie <code>catch()</code> odchytáva výnimky</h3>
@@ -525,6 +521,10 @@ async <span style="color:#289;font-weight:bold">function</span> findFullAlbums()
     }
 })();
 </code></pre></div>
+<h1 id="repozitár-v-gite">Repozitár v Gite</h1>
+
+<p>Ukážkový kód sa nachádza v repozitári na GitHube, v repe <a href="https://github.com/novotnyr/javascript-async-rest-client"><code>novotnyr/javascript-async-rest-client</code></a>.</p>
+
 <h1 id="pramene">Pramene</h1>
 
 <ul>
