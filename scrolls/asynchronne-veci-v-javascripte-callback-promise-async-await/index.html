@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Asynchrónne veci v JavaScripte pomocou callbackov, promises a async/await | robonovotny</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    <link rel="stylesheet" href="https://novotnyr.github.io/asciidoctor.css">
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.css" integrity="sha384-D+9gmBxUQogRLqvARvNLmA9hS2x//eK1FhVb9PiU86gmcrBrJAQT8okdJ4LMp2uv" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.js" integrity="sha384-483A6DwYfKeDa0Q52fJmxFXkcPCFfnXMoXblOkJ4JcA8zATN6Tm78UNL72AKk+0O" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/contrib/auto-render.min.js" integrity="sha384-yACMu8JWxKzSp/C1YV86pzGiQ/l1YUfE8oPuahJQxzehAjEt2GiQuy/BIvl9KyeF" crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body);
+        });
+    </script>
+
+<header>
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <nav>
+    <ul>
+      
+      
+      <li class="pull-left ">
+        <a href="https://novotnyr.github.io/">/home/robonovotny</a>
+      </li>
+      
+
+      
+
+    </ul>
+  </nav>
+</header>
+
+  </head>
+
+  <body>
+    <br/>
+
+<div class="article-meta">
+<h1><span class="title">Asynchrónne veci v JavaScripte pomocou callbackov, promises a async/await</span></h1>
+
+<h2 class="date">2019/10/29</h2>
+<p class="terms">
+  
+  
+  
+  
+  
+</p>
+</div>
+
+
+
+<main>
+
+
+<h1 id="úvod">Úvod</h1>
+
+<ul>
+<li>JavaScript v browseroch sa vykonáva v jednom vlákne</li>
+<li>ale chceme riešiť veci <em>na pozadí</em></li>
+<li>príklad: klient REST API
+
+<ul>
+<li>nemôžeme čakať, kým dobehne HTTP request na pozadí, trvalo by to dlho, a vlákno by bolo zablokované</li>
+</ul></li>
+<li>príklad: výkonný server v Node.js
+
+<ul>
+<li>nebudeme pre každého klienta spúšťať nové vlákno, namiesto neho použijeme udalosťami orientovaný systém bez blokovania a čakania</li>
+</ul></li>
+<li>JavaScript nemá analógiu javáckych <code>Thread</code>ov, ale má iné mechanizmy</li>
+</ul>
+
+<p>Riešení je viacero:</p>
+
+<ul>
+<li>použitie callbackov, čo je najstaršia a „najhlúpejšia“ filozofia, ale s nepríjemným zápisom</li>
+<li>použitie promisov, čo je objektovo-orientovaný prístup s vylepšeným zápisom</li>
+<li>použitie <code>async</code>-<code>await</code>, čo je takmer klasický zápis synchrónnych úloh.</li>
+</ul>
+
+<h1 id="callbacks">Callbacks</h1>
+
+<p>Tradičný spôsob: funkcia má medzi parametrami inú funkciu, <strong>callback</strong>, ktorú zavolá po dobehnutí.</p>
+
+<h2 id="callback-príklad-settimeout">Callback: príklad <code>setTimeout()</code></h2>
+
+<p>Objekt <code>window</code> v browseroch má metódu <code>setTimeout()</code>, ktorá berie:</p>
+
+<ul>
+<li>obslužnú funkciu</li>
+<li>lehotu, ktorá po vypršaní vyvolá volanie funkcie</li>
+</ul>
+
+<p>Kód:</p>
+
+<pre><code>function ding() {
+    console.log(&quot;Ding!&quot;)
+}
+
+setTimeout(ding, 3000);
+</code></pre>
+
+<p>Alternatívne:</p>
+
+<pre><code>setTimeout(function() {
+    console.log(&quot;Three seconds elapsed!&quot;);
+}, 3000);
+</code></pre>
+
+<h2 id="callback-príklad-práce-so-súborovým-systémom-v-node-js">Callback: príklad práce so súborovým systémom v Node.js</h2>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">fs.readFile(<span style="background-color:#e0e0ff">&#39;/etc/passwd&#39;</span>, <span style="background-color:#e0e0ff">&#39;utf8&#39;</span>, (err, data) =&gt; {
+    <span style="color:#289;font-weight:bold">if</span> (err) <span style="color:#289;font-weight:bold">throw</span> err;
+    console.log(data)
+});
+</code></pre></div>
+<p>Callback v Node.js prijíma dva parametre:</p>
+
+<ul>
+<li>indikátor chyby <code>err</code>  pre prípad, že volanie zlyhalo.</li>
+<li>výsledok volania, v našom príklade <code>data</code> s textovým obsahom súboru.</li>
+</ul>
+
+<h2 id="pyramid-of-doom">Pyramid of Doom</h2>
+
+<p>Callbacky sú jednoduchý spôsob zápisu, ktorý však trpí neprehľadnosťou. Programátorský folklór ich často volá „pyramída hrôzy“, pretože biele miesto v odsadení pripomína otočenú pyramídu.</p>
+
+<p>Skrátene, „Kód ide rýchlejšie doprava než nadol“:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#289;font-weight:bold">const</span> fs <span style="color:#333">=</span> require(<span style="background-color:#e0e0ff">&#39;fs&#39;</span>);
+
+fs.open(<span style="background-color:#e0e0ff">&#39;/etc/passwd&#39;</span>, <span style="background-color:#e0e0ff">&#39;r&#39;</span>, (err, fd) =&gt; {
+    <span style="color:#289;font-weight:bold">if</span> (err) <span style="color:#289;font-weight:bold">throw</span> err;
+    fs.fstat(fd, (err, stats) =&gt; {
+        console.log(stats.ctime)
+        fs.close(fd, (err) =&gt; {
+            <span style="color:#289;font-weight:bold">if</span> (err) <span style="color:#289;font-weight:bold">throw</span> err;
+        });
+    });
+});
+</code></pre></div>
+<p>V algoritme voláme tri kroky:</p>
+
+<ol>
+<li>Otvor súbor a získaj jeho <em>deskriptor</em> v premennej <code>fd</code>.</li>
+<li>Zisti informácie o súbore.</li>
+<li>Zatvor súbor.</li>
+</ol>
+
+<p>Každý krok algoritmu vedie k samostatnému <em>callbacku</em> a k ďalšej úrovni zanorenia.</p>
+
+<h3 id="žiadne-návratové-hodnoty">Žiadne návratové hodnoty</h3>
+
+<p>Všimnime si, ako sa vôbec nepoužívajú návratové hodnoty funkcií v algoritme! Namiesto nich používame callbacky, ktoré prijmú výslednú hodnotu:</p>
+
+<ol>
+<li>Callback funkcie <code>open</code> prijme deskriptor súboru.</li>
+<li>Callback funkcie <code>fstat</code> prijme objekt so štatistikami súboru.</li>
+<li>Callback funkcie <code>close</code> nepríjima žiaden parameter, čo zodpovedá <em>procedúre</em>, teda funkcii bez návratovej hodnoty.</li>
+</ol>
+
+<h1 id="promises">Promises</h1>
+
+<p>Promises (prísľuby) sprehľadňujú zápis <em>callbackov</em>.</p>
+
+<ul>
+<li>prísľub budúceho výsledku z asynchrónnej operácie.</li>
+<li>objekty obaľujúce výsledok operácie, ktorý nemusí byť hneď dostupný</li>
+<li>v Jave je to ekvivalent <code>CompletableFuture</code>.</li>
+</ul>
+
+<h2 id="promises-v-javascripte">Promises v JavaScripte</h2>
+
+<p>Od ES6/ECMAScript 2015 sú promisy súčasťou jazyka.</p>
+
+<p>V odôvodnených prípadoch možno použiť niektorú z knižníc:</p>
+
+<ul>
+<li><code>q.js</code></li>
+<li><code>when.js</code></li>
+<li><code>rsvp.js</code></li>
+<li>jQuery (ale tie sú pokazené!)</li>
+</ul>
+
+<h2 id="príklad-použitia-v-prehliadači">Príklad použitia v prehliadači</h2>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#289;font-weight:bold">let</span> promise <span style="color:#333">=</span> fetch(<span style="background-color:#e0e0ff">&#39;http://jsonplaceholder.typicode.com/albums&#39;</span>)
+promise.then(response =&gt; showResult(response.statusText))
+</code></pre></div>
+<ul>
+<li>Funkcia <code>fetch()</code> vracia prísľub budúceho výsledku, <code>promise</code>.</li>
+<li>S premennou <code>promise</code> môžeme veselo narábať, aj keď jej výsledok bude dostupný až v momente, keď server pošle všetky dáta.</li>
+</ul>
+
+<h2 id="špecifikácia-promises-a">Špecifikácia Promises/A+</h2>
+
+<ul>
+<li>promise je objekt/funkcia s metódou <code>then()</code>, ktorá sa správa podľa <a href="https://promisesaplus.com/">špecifikácie Promises/A+</a>.</li>
+<li>thenable: objekt/funkcia s metódou <code>then()</code></li>
+</ul>
+
+<p>Promisy z ES6 a zmienených knižníc zodpovedajú tejto špecifikácii.</p>
+
+<h2 id="promise-stavy-a-prechody">Promise: stavy a prechody</h2>
+
+<ul>
+<li><strong>pending</strong>: prechod do <strong>fulfilled</strong> ALEBO do <strong>rejected</strong></li>
+<li><strong>fulfilled</strong>: promise je splnený, a nesie v sebe hodnotu, ktorá sa nesmie zmeniť (immutability v zmysle <code>===</code>). Stav sa niekde volá aj <strong>resolved</strong>.</li>
+<li><strong>rejected</strong>: promise je zamietnutý, a nesie v sebe <strong>dôvod zamietnutia</strong> (<em>reason</em>), čo je ľubovoľná hodnota, ktorá sa nesmie zmeniť. <em>Reason</em> je obvykle objekt výnimky.</li>
+</ul>
+
+<p>Splnený, ani zamietnutý prísľub sa už nikdy nemôže dostať do stavu <em>pending</em>.</p>
+
+<p>Poznámka: natívne promisy v ES2015 neposkytujú spôsob, ako zistiť ich stav.</p>
+
+<h2 id="metóda-then">Metóda <code>then()</code></h2>
+
+<ul>
+<li>berie dva parametre, <strong>handlery</strong> (a.k.a <em>callbacky</em>)
+
+<ul>
+<li>funkciu <code>onFulfilled</code>:
+
+<ul>
+<li>zavolaná po splnení prísľubu</li>
+<li>prvým parametrom je hodnota prísľubu</li>
+</ul></li>
+<li>funkciu <code>onRejected</code>
+
+<ul>
+<li>zavolaná po zamietnutí prísľubu</li>
+<li>prvým parametrom je dôvod zamietnutia</li>
+</ul></li>
+<li>obe funkcie nebudú mať definovaný <code>this</code> (sú to čisté funkcie)</li>
+</ul></li>
+<li>metódu <code>then</code> možno reťaziť:
+
+<ul>
+<li>handlery sa budú volať v poradí registrácie</li>
+</ul></li>
+<li>vracia nový promise, ktorý je splnený po dobehnutí handlera pre splnenie, či po dobehnutí zamietacieho handlera.</li>
+<li>hodnota z handlera pre splnenie je fulfillment hodnota pre nový promise</li>
+</ul>
+
+<h3 id="použitie-then-s-dvoma-callbackmi">Použitie <code>then</code> s dvoma callbackmi</h3>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">fetch(<span style="background-color:#e0e0ff">&#39;http://jsonplaceholder.typicode.com/albums&#39;</span>)
+    .then(response =&gt; console.log(response.statusText), err =&gt; console.error(err));
+</code></pre></div>
+<p>Funkcia <a href="https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API"><code>fetch</code></a> je zabudovaná funkcia v ES6/ECMAScript v prehliadači, ktorá predstavuje náhradu ajaxového API <em>XMLHttpRequest</em>.</p>
+
+<p>Výsledkom funkcie je promise, ktorému podsunieme dva callbacky:</p>
+
+<ul>
+<li>v prípade úspechu získame objekt odpovede typu <a href="https://developer.mozilla.org/en-US/docs/Web/API/Response"><code>Response</code></a>, z ktorého zalogujeme stavovú správu.</li>
+<li>v prípade zlyhania vypíšeme na konzolu chybu.</li>
+</ul>
+
+<p>Skúsme zámerne urobiť preklep v adrese URL, napríklad na <code>ftp://</code> a uvidíme zamietnutý promise s volaním chybového callbacku.</p>
+
+<h3 id="použitie-then-s-jedným-callbackom">Použitie <code>then</code>  s jedným callbackom</h3>
+
+<p>Ak funkciu <code>onRejected</code> (druhý callback) vynecháme, použije sa štandardná obsluha chýb: chyba sa prepadne do zreťazeného promisu (viď nižšie) a ak taký neexistuje, prostredie ju môže vypísať na konzolu, prípadne do logu.</p>
+
+<h2 id="reťazenie-promisov">Reťazenie promisov</h2>
+
+<p>Funkcia <code>then</code> vracia ďalší <em>promise</em>, ktorý môžeme použiť na ďalšie spracovanie údajov. Stav tohto promisu záleží od návratovej hodnoty callbackov.</p>
+
+<p>Callback (funkcia, ktorá je parametrom pre <code>then()</code>) môže vracať tri veci:</p>
+
+<ul>
+<li>nič</li>
+<li>bežnú hodnotu</li>
+<li>prísľub</li>
+<li>vyhodiť výnimku</li>
+</ul>
+
+<p>Ak callback nevracia nič, alebo vracia nejakú hodnotu, je prísľub vrátený funkciou <code>then</code> <a href="https://promisesaplus.com/#point-64">automaticky splnený</a>.</p>
+
+<p>Ak callback vyhodí výnimku, promise je zamietnutý.</p>
+
+<p>Ak callback prísľubu P vracia iný prísľub Q, prísľub P prevezme stav vráteného prísľubu Q (prísľub P musí byť <em>pending</em> dovtedy, kým je <em>pending</em> vrátený prísľub Q. Podobne sa spriahne aj prechod do splneného či zamietnutého vzťahu. Podrobnosti určuje <a href="https://promisesaplus.com/#point-49">špecifikácia</a>.).</p>
+
+<h3 id="ukážka-reťazenia">Ukážka reťazenia</h3>
+
+<p>V ukážke vidíme dvojité reťazenie promisov, v dvoch rozličných situáciách,.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">fetch(<span style="background-color:#e0e0ff">&#39;http://jsonplaceholder.typicode.com/albums&#39;</span>)
+    .then(response =&gt; response.json())
+    .then(json =&gt; console.log(json))
+</code></pre></div>
+<ol>
+<li>Prvý callback vracia JSON z odpovede. Keďže metóda <a href="https://developer.mozilla.org/en-US/docs/Web/API/Body/json"><code>json()</code></a> vracia <code>Promise</code>, stav prísľubu vráteného z prvého <code>then</code> sa spriahne s prísľubom <code>json()</code>.</li>
+<li>Druhý callback prevezme parameter <code>json</code>, obsahujúci odbalenú hodnotu z predošlého promisu, teda samotný objekt s dátami, a vypíše ho. Callback nevracia nič, ale prísľub vrátený z druhej <code>then</code> už ani nepotrebujeme.</li>
+</ol>
+
+<h3 id="volanie-catch-odchytáva-výnimky">Volanie <code>catch()</code> odchytáva výnimky</h3>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">fetch(<span style="background-color:#e0e0ff">&#39;http://jsonplaceholder.typicode.com/albums&#39;</span>)
+    .then(response =&gt; response.json())
+    .then(json =&gt; console.log(json))
+    .<span style="color:#289;font-weight:bold">catch</span>(err =&gt; console.error(err));
+</code></pre></div>
+<p>Volanie <code>catch()</code> je len syntaktický cukor pre volanie <code>.then()</code>, kde prvý parameter je <code>undefined</code>.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">.then(<span style="color:#289;font-weight:bold">undefined</span>, err =&gt; console.error(err))
+</code></pre></div>
+<h3 id="skracovanie-zreťazených-promisov">Skracovanie zreťazených promisov</h3>
+
+<p>Ak sú kroky a obsluhy výnimiek implementované ako funkcie, máme takmer Java/.NET <em>try-catch</em> štýl. Môžeme využiť trik <em>eta-redukcia</em>, kde volanie funkcie s jedným parametrom nahradíme priamo jej názvom:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">fetch(<span style="background-color:#e0e0ff">&#39;http://jsonplaceholder.typicode.com/albums&#39;</span>)
+    .then(response =&gt; response.json())
+    .then(console.log)
+    .<span style="color:#289;font-weight:bold">catch</span>(console.error);
+</code></pre></div>
+<h2 id="komplexné-volania-rest-api">Komplexné volania REST API</h2>
+
+<p>Komplexné volania REST API pomocou promisov sú veľmi bežné. Predstavme si nasledovnú situáciu:</p>
+
+<ol>
+<li>Získame zoznam albumov pomocou volania REST.</li>
+<li>Pre každý album dotiahneme samostatným volaním majiteľa (používateľa).</li>
+<li>Majiteľa asociujeme s albumom.</li>
+<li>Vrátime zoznam albumov s asociovanými majiteľmi.</li>
+</ol>
+
+<p>Niektoré operácie sú asynchrónne: získanie zoznamu a dotiahnutie majiteľa.</p>
+
+<p>Záludnosť spočíva v poslednom kroku: máme zoznam albumov, pre každú položku asynchrónne dotiahneme majiteľa a obohatíme existujúci album. Výsledný zoznam albumov však nemôžeme používať dovtedy, kým nedobehli všetky získavania jednotlivých majiteľov. Preto musíme <em>počkať</em> na splnenie všetkých prísľubov s majiteľmi albumov; to však urobíme asynchrónne, bez blokujúceho čakania!</p>
+
+<p>Poďme si to rozobrať po kroku:</p>
+
+<h3 id="získanie-albumu">Získanie albumu</h3>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">fetch(<span style="background-color:#e0e0ff">&#39;http://jsonplaceholder.typicode.com/albums&#39;</span>)
+    .then(response =&gt; response.json())
+    .then(fetchAlbumOwnersAsync)
+    .then(JSON.stringify)
+    .then(console.log)
+    .<span style="color:#289;font-weight:bold">catch</span>(console.error);
+</code></pre></div>
+<p>Získanie albumu zrealizujeme jednoducho: získame odpoveď, z nej vytiahneme JSON, a následne zavoláme funkciu <code>fetchAlbumOwnersAsync</code> (tá ešte neexistuje, ale vznikne). Funkcia vráti finálny zoznam albumov, ktorý následne zalogujeme, a obslúžime prípadné chyby.</p>
+
+<p>Všimnime si, že to všetko zrealizujeme reťazení promisov!</p>
+
+<p>Jednotlivé kroky si postupne odovzdávajú výsledky:</p>
+
+<ol>
+<li>objekt <code>Response</code>.</li>
+<li>prísľub, ktorý obsiahne JSONovskú reprezentáciu objektu v odpovedi</li>
+<li>zoznam albumov, vrátane majiteľov</li>
+<li>ich reťazová reprezentácia</li>
+<li>nič (po zalogovaní), ak sa všetko vykoná bez problémov</li>
+<li>nič (po zalogovaní chyby), v prípade chýb.</li>
+</ol>
+
+<h3 id="získanie-majiteľov-albumov">Získanie majiteľov albumov</h3>
+
+<p>Funkcia <code>fetchAlbumOwnersAsync</code> zoberie sadu albumov, a pre každý album v nej dotiahne autora pomocou vnoreného prísľubu.</p>
+
+<p>Funkcia má príponu <code>Async</code>, čo je menná konvencia z niektorých projektov, ktorá naznačuje, že návratovou hodnotou je <em>promise</em>.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#289;font-weight:bold">function</span> fetchAlbumOwnersAsync(albums) {
+    <span style="color:#289;font-weight:bold">let</span> userPromises <span style="color:#333">=</span> albums.map(findUserByAlbumAsync);
+    <span style="color:#289;font-weight:bold">return</span> <span style="color:#072">Promise</span>.all(userPromises)
+        .then(users =&gt; associate(albums, users))
+}
+</code></pre></div>
+<p>Funkcia prakticky namapuje každý album na prísľub, ktorý bude obsahovať jeho majiteľa. Mapovanie zrealizuje ďalšia funkcia, <code>findUserByAlbumAsync</code>, ku ktorej sa ihneď dostaneme:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#289;font-weight:bold">function</span> findUserByAlbumAsync(album) {
+    <span style="color:#289;font-weight:bold">return</span> fetch(<span style="background-color:#e0e0ff">`http://jsonplaceholder.typicode.com/users/</span><span style="background-color:#eee">${</span>album.userId<span style="background-color:#eee">}</span><span style="background-color:#e0e0ff">`</span>)
+        .then(response =&gt; response.json())
+}
+</code></pre></div>
+<p>Táto funkcia je jednoduchá: vráti prísľub s jedným používateľom, podľa identifikátora <code>userId</code> v albume.</p>
+
+<p>Opäť pripomeňme, že táto funkcia mapuje album na prísľub používateľa a preto sme jej dali príponu <code>Async</code>.</p>
+
+<p>Ak sa vrátime naspäť k <code>fetchAlbumOwnersAsync</code>, uvidíme premennú <code>userPromises</code>, ktorá obsahuje zoznam prísľubov (s majiteľmi). V tejto chvíli musíme „počkať“ na dobehnutie všetkých promisov, pretože inak nevieme albumom priradiť ich celé objekty majiteľov. Slovo „počkať“ je zámerne v úvodzovkách, lebo ide o <strong>neblokujúce čakanie</strong>, ktoré nezbrzdí (jediné) vlákno prehliadača. Vďaka špinavým trikom ide o neblokujúce čakanie, ktoré dosiahneme pomocou metódy <code>Promise.all</code>.</p>
+
+<p>Metóda <code>all</code> — statická na triede <code>Promise</code> — počká na dobehnutie promisov v poli, alebo na zlyhanie ktoréhokoľvek z nich a vráti prísľub s jedným poľom obsahujúcim výsledky jednotlivých promisov.</p>
+
+<p>Inak povedané, <code>all</code> prevádza pole prísľubov na pole s výsledkami prísľubov, pričom počká na úspech alebo prvé zlyhanie.</p>
+
+<p>Výsledné pole s výsledkami (s majiteľmi albumov v takom poradí, v akom sme zaslali albumy) následne preiterujeme a priradíme k nim albumy pomocou funkcie <code>associate()</code>.</p>
+
+<h3 id="asociovanie-majiteľa-s-albumom">Asociovanie majiteľa s albumom</h3>
+
+<p>Na asociovanie majiteľa s albumom si urobíme pomocnú funkciu:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#289;font-weight:bold">function</span> associate(albums, users) {
+    albums.forEach((album, i) =&gt; album.user <span style="color:#333">=</span> users[i]);
+    <span style="color:#289;font-weight:bold">return</span> albums
+}
+</code></pre></div>
+<p>Funkcia prejde dve polia, index po indexe a priradí majiteľa zo zoznamu používateľov do dynamickej premennej <code>user</code> v príslušnom albume. Táto funkcia je úplne bežná, nie je asynchrónna, ani nevracia prísľub, ale bežný, upravený zoznam albumov.</p>
+
+<h3 id="výsledný-kód">Výsledný kód</h3>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#289;font-weight:bold">function</span> associate(albums, users) {
+    albums.forEach((album, i) =&gt; album.user <span style="color:#333">=</span> users[i]);
+    <span style="color:#289;font-weight:bold">return</span> albums
+}
+
+<span style="color:#289;font-weight:bold">function</span> findUserByAlbumAsync(album) {
+    <span style="color:#289;font-weight:bold">return</span> fetch(<span style="background-color:#e0e0ff">`http://jsonplaceholder.typicode.com/users/</span><span style="background-color:#eee">${</span>album.userId<span style="background-color:#eee">}</span><span style="background-color:#e0e0ff">`</span>)
+        .then(response =&gt; response.json())
+}
+
+<span style="color:#289;font-weight:bold">function</span> fetchAlbumOwnersAsync(albums) {
+    <span style="color:#289;font-weight:bold">let</span> userPromises <span style="color:#333">=</span> albums.map(findUserByAlbumAsync);
+    <span style="color:#289;font-weight:bold">return</span> <span style="color:#072">Promise</span>.all(userPromises)
+        .then(users =&gt; associate(albums, users))
+}
+
+fetch(<span style="background-color:#e0e0ff">&#39;http://jsonplaceholder.typicode.com/albums&#39;</span>)
+    .then(response =&gt; response.json())
+    .then(fetchAlbumOwnersAsync)
+    .then(JSON.stringify)
+    .then(console.log)
+    .<span style="color:#289;font-weight:bold">catch</span>(console.error);
+</code></pre></div>
+<h1 id="async-await">Async-Await</h1>
+
+<p>Mechanizmus <code>async</code>/<code>await</code> slúži na <em>návrat</em> ku klasickému zápisu, kde máme premenné a priradenia do nich z návratových hodnôt funkcií namiesto používania <code>then</code> a callbackov.</p>
+
+<p>Kľúčové slová <code>async</code> /<code>await</code> sú k dispozícii vo viacerých programovacích jazykoch, napr. v modernom JavaScripte a v C#.</p>
+
+<ul>
+<li><code>async</code> označuje funkciu, ktorej návratová hodnota sa automaticky zabalí do prísľubu.</li>
+<li><code>await</code> automaticky prevedie prísľub na hodnotu. Zamietnuté prísľuby prevedie na vyhodenie výnimky.</li>
+</ul>
+
+<p>Kľúčové slovo <code>await</code> môžeme v JavaScripte používať len vo funkciách označených ako <code>async</code>.</p>
+
+<p>Prebudujme teraz náš kód tak, aby používal <code>async</code>-<code>await</code>.</p>
+
+<p>Začnime zhora: a rovno povieme, že funkcie <code>associate</code> sa nedotkneme, lebo tá nie je asynchrónna.</p>
+
+<h2 id="vyhľadanie-používateľa-podľa-albumu">Vyhľadanie používateľa podľa albumu</h2>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">async <span style="color:#289;font-weight:bold">function</span> findUserByAlbum(album) {
+    <span style="color:#289;font-weight:bold">let</span> response <span style="color:#333">=</span> await fetch(<span style="background-color:#e0e0ff">`http://jsonplaceholder.typicode.com/users/</span><span style="background-color:#eee">${</span>album.userId<span style="background-color:#eee">}</span><span style="background-color:#e0e0ff">`</span>);
+    <span style="color:#289;font-weight:bold">return</span> response.json()
+}
+</code></pre></div>
+<p>Keďže funkcia <code>fetch</code> vracia prísľub, je to skvelý kandidát na prepis <code>then</code> na bežné priradenie do premennej. Keďže prísľub musíme odbaliť do hodnoty, použijeme slovo <code>await</code> (“očakávaj”).</p>
+
+<p>Odpoveď používa metódu <code>json()</code>, ktorá vracia prísľub s objektovou reprezentáciou albumov, ktorý prepočleme ďalej.</p>
+
+<p>A keďže funkcia <code>findUserByAlbum</code> vracia prísľub a keďže funkcia využíva <code>await</code>, musíme ju vyhlásiť za <code>async</code>, teda asynchrónnu.</p>
+
+<h2 id="dotiahnutie-majiteľov-albumu">Dotiahnutie majiteľov albumu</h2>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">async <span style="color:#289;font-weight:bold">function</span> fetchAlbumOwners(albums) {
+    <span style="color:#289;font-weight:bold">let</span> userPromises <span style="color:#333">=</span> albums.map(findUserByAlbum);
+    <span style="color:#289;font-weight:bold">let</span> users <span style="color:#333">=</span> await <span style="color:#072">Promise</span>.all(userPromises);
+    <span style="color:#289;font-weight:bold">return</span> associate(albums, users)
+}
+</code></pre></div>
+<p>Funkcia je tiež asynchrónna. Keďže <code>all</code> vracia prísľub, môžeme ho nahradiť očakávaním odpovede s poľom používateľov, ktoré priradíme do premennej s použitím <code>await</code>. Výsledok následne použijeme ako argument pre funkciu <code>associate</code>, ktorá nevracia prísľub, ale bežnú hodnotu. To neprekáža, pretože vďaka kľúčovému slovu <code>async</code> nad funkciou sa návratová hodnota funkcie <code>fetchAlbumOwners</code> vždy zabalí do prísľubu.</p>
+
+<h2 id="spustenie-mašinérie">Spustenie mašinérie</h2>
+
+<p>Keďže zavolanie zoznamu albumov chceme prepísať do <code>async</code>/<code>await</code>, čo je možné len v rámci <code>async</code> funkcie, upracme v kóde:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">async <span style="color:#289;font-weight:bold">function</span> findFullAlbums() {
+    <span style="color:#289;font-weight:bold">let</span> response <span style="color:#333">=</span> await fetch(<span style="background-color:#e0e0ff">&#39;http://jsonplaceholder.typicode.com/albums&#39;</span>);
+    <span style="color:#289;font-weight:bold">let</span> albums <span style="color:#333">=</span> await response.json();
+    <span style="color:#289;font-weight:bold">return</span> fetchAlbumOwners(albums);
+}
+</code></pre></div>
+<p>Odpoveď z funkcie <code>fetch</code> je prísľub, preto ho odbalíme do premennej <code>response</code>.</p>
+
+<p>V ďalšom kroku prevedieme prísľub z funkcie <code>json()</code> na zoznam albumov, opäť odbalením pomocou <code>await</code>.</p>
+
+<p>Výslednú zbierku albumov následne použijeme ako argument pre funkciu <code>fetchAlbumOwners</code>, ktorá vracia prísľub. Ten použijeme ako návratovú hodnotu z našej funkcie.</p>
+
+<h3 id="vajce-sliepka-pri-asynchrónnych-funkciách">Vajce-sliepka pri asynchrónnych funkciách</h3>
+
+<p>Samotná mašinéria teraz trpí problémom vajca a sliepky. Potrebujeme zavolať <code>findFullAlbums</code>, ktorá je asynchrónna, ale to môžeme robiť len v rámci asynchrónnej funkcie. Ako z toho von?</p>
+
+<p>Pripravíme si <strong>anonymnú asynchrónnu funkciu</strong>, ktorá sa navyše nielen zadeklaruje, ale aj sama spustí. Ide o <em>immediately invoked async function expression</em>, čo je rozšírenie vzorca IIFE z JavaScriptu.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">(async <span style="color:#289;font-weight:bold">function</span> () {
+    <span style="color:#289;font-weight:bold">try</span> {
+        <span style="color:#289;font-weight:bold">let</span> fullAlbums <span style="color:#333">=</span> await findFullAlbums();
+        console.log(JSON.stringify(fullAlbums));
+    } <span style="color:#289;font-weight:bold">catch</span> (e) {
+        console.error(e)
+    }
+})();
+</code></pre></div>
+<p>Kolekcia zátvoriek definuje anonymnú funkciu (medzi úplne prvou guľatou zátvorkou a jej párom), ktorú následne okamžite vykoná (úplne posledný pár zátvoriek pred finálnou bodkočiarkou.).</p>
+
+<p>Takto máme asynchrónnu funkciu, kde vieme získať zoznam celých albumov (i s majiteľmi), priradiť do do premennej s odbalením prísľubu a následným zalogovaním.</p>
+
+<h2 id="obsluha-výnimiek-a-flow">Obsluha výnimiek a flow</h2>
+
+<p>Všimnime si, ako sa vieme vrátiť k civilizovanej obsluhe výnimiek pomocou <code>try</code>/<code>catch</code>, čo je obvyklý spôsob! Vďaka <code>async</code>/<code>await</code> vieme používať asynchrónny kód skoro tak isto ako bežný, synchrónny&rdquo;</p>
+
+<h2 id="celý-kód">Celý kód</h2>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#289;font-weight:bold">function</span> associate(albums, users) {
+    albums.forEach((album, i) =&gt; album.user <span style="color:#333">=</span> users[i]);
+    <span style="color:#289;font-weight:bold">return</span> albums
+}
+
+async <span style="color:#289;font-weight:bold">function</span> findUserByAlbum(album) {
+    <span style="color:#289;font-weight:bold">let</span> response <span style="color:#333">=</span> await fetch(<span style="background-color:#e0e0ff">`http://jsonplaceholder.typicode.com/users/</span><span style="background-color:#eee">${</span>album.userId<span style="background-color:#eee">}</span><span style="background-color:#e0e0ff">`</span>);
+    <span style="color:#289;font-weight:bold">return</span> response.json()
+}
+
+async <span style="color:#289;font-weight:bold">function</span> fetchAlbumOwners(albums) {
+    <span style="color:#289;font-weight:bold">let</span> userPromises <span style="color:#333">=</span> albums.map(findUserByAlbum);
+    <span style="color:#289;font-weight:bold">let</span> users <span style="color:#333">=</span> await <span style="color:#072">Promise</span>.all(userPromises);
+    <span style="color:#289;font-weight:bold">return</span> associate(albums, users)
+}
+
+async <span style="color:#289;font-weight:bold">function</span> findFullAlbums() {
+    <span style="color:#289;font-weight:bold">let</span> response <span style="color:#333">=</span> await fetch(<span style="background-color:#e0e0ff">&#39;http://jsonplaceholder.typicode.com/albums&#39;</span>);
+    <span style="color:#289;font-weight:bold">let</span> albums <span style="color:#333">=</span> await response.json();
+    <span style="color:#289;font-weight:bold">return</span> fetchAlbumOwners(albums);
+}
+
+(async <span style="color:#289;font-weight:bold">function</span> () {
+    <span style="color:#289;font-weight:bold">try</span> {
+        <span style="color:#289;font-weight:bold">let</span> fullAlbums <span style="color:#333">=</span> await findFullAlbums();
+        console.log(JSON.stringify(fullAlbums));
+    } <span style="color:#289;font-weight:bold">catch</span> (e) {
+        console.error(e)
+    }
+})();
+</code></pre></div>
+<h1 id="pramene">Pramene</h1>
+
+<ul>
+<li><p><a href="http://ics.upjs.sk/~novotnyr/blog/1996/asynchronne-veci-v-javascripte-cez-promises">Asynchrónne veci v JavaScripte cez Promises</a> — staršia verzia článku z roku 2014, pred príchodom promisov do jadra JavaScriptu.</p></li>
+
+<li><p><a href="http://www.slideshare.net/domenicdenicola/promises-promises">Promises, Promises (slides)</a></p></li>
+
+<li><p><a href="https://blog.domenic.me/youre-missing-the-point-of-promises/">You&rsquo;re Missing the Point of Promises</a>, @domenic, 14. October 2012</p></li>
+
+<li><p><a href="http://www.shakyshane.com/javascript/2013/11/16/making-promises-with-javascript/">Making Promises with JavaScript</a></p></li>
+
+<li><p><a href="https://promisesaplus.com/">Promises/A+ Specification</a></p></li>
+
+<li><p><a href="https://github.com/domenic/promises-unwrapping/blob/master/docs/states-and-fates.md">States and Fates</a> — popis stavov prísľubov a prechodov medzi nimi</p></li>
+
+<li><p><a href="http://wiki.commonjs.org/wiki/Promises/A">Promises/A Specification</a></p></li>
+
+<li><p><a href="https://github.com/petkaantonov/bluebird/wiki/Promise-anti-patterns">Promise Anti-Patterns</a></p></li>
+
+<li><p><a href="https://javascript.info/async-await">JavaScript a <code>async</code>-<code>await</code></a></p></li>
+</ul>
+
+</main>
+
+    <footer>
+      
+<script>
+(function() {
+  function center_el(tagName) {
+    var tags = document.getElementsByTagName(tagName), i, tag;
+    for (i = 0; i < tags.length; i++) {
+      tag = tags[i];
+      var parent = tag.parentElement;
+      
+      if (parent.childNodes.length === 1) {
+        
+        if (parent.nodeName === 'A') {
+          parent = parent.parentElement;
+          if (parent.childNodes.length != 1) continue;
+        }
+        if (parent.nodeName === 'P') parent.style.textAlign = 'center';
+      }
+    }
+  }
+  var tagNames = ['img', 'embed', 'object'];
+  for (var i = 0; i < tagNames.length; i++) {
+    center_el(tagNames[i]);
+  }
+})();
+</script>
+
+      
+    </footer>
+  </body>
+</html>
+
