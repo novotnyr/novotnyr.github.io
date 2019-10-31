@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>OpenSlava 2019 — zápisky | robonovotny</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    <link rel="stylesheet" href="https://novotnyr.github.io/asciidoctor.css">
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.css" integrity="sha384-D+9gmBxUQogRLqvARvNLmA9hS2x//eK1FhVb9PiU86gmcrBrJAQT8okdJ4LMp2uv" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.js" integrity="sha384-483A6DwYfKeDa0Q52fJmxFXkcPCFfnXMoXblOkJ4JcA8zATN6Tm78UNL72AKk+0O" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/contrib/auto-render.min.js" integrity="sha384-yACMu8JWxKzSp/C1YV86pzGiQ/l1YUfE8oPuahJQxzehAjEt2GiQuy/BIvl9KyeF" crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body);
+        });
+    </script>
+
+<header>
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <nav>
+    <ul>
+      
+      
+      <li class="pull-left ">
+        <a href="https://novotnyr.github.io/">/home/robonovotny</a>
+      </li>
+      
+
+      
+
+    </ul>
+  </nav>
+</header>
+
+  </head>
+
+  <body>
+    <br/>
+
+<div class="article-meta">
+<h1><span class="title">OpenSlava 2019 — zápisky</span></h1>
+
+<h2 class="date">2019/10/31</h2>
+<p class="terms">
+  
+  
+  
+  
+  
+</p>
+</div>
+
+
+
+<main>
+
+
+<p>Nebojím sa povedať, že OpenSlava je najväčšia vývojárska konferencia na Slovensku. Celý deň, päť trackov, 40 (!) talkov, málo bullshitu a marketingu. A bezplatná (lebo Accenture). A pekné priestory (lebo STU v Bratislave).</p>
+
+<p>OpenSlave sa darí dobre vyhmatať súčasné trendy — napríklad túto sezónu letí AI / Machine Learning, masírovanie dát zľava is sprava, orchestrácia služieb Kubernetes, platformy pre aplikácie GraalVM a Quarkus, a samozrejme nevyhnutný blockchain.</p>
+
+<p><img src="openslava-pink.jpg" alt="openslava-pink" style="zoom:50%;" /></p>
+
+<h1 id="google-flutter-roman-schiefer">Google Flutter (Roman Schiefer)</h1>
+
+<p><a href="https://www.youtube.com/watch?v=WLDtH03dNfY">Prvá prednáška</a>, ktorú som navštívil bola o Google Flutter. (Keynote som nestihol, pretože doprava z pražského Java User Group do Bratislavy nie je triviálna). Hoci nie som frontendista, Flutter znie dobre, lebo vyzerá ako alternatíva k React Native. V skratke: jeden kód pokryje Android, iOS, i desktop.</p>
+
+<p>Roman Schiefer začal veľmi zoširoka, ale veľmi rýchlo sa prepol do hardcore režimu, kde začal kódiť naživo a ukázal ToDo appku, ktorú predviedol na Androide a desktope.</p>
+
+<p>Zlé jazyky hovoria, že také appky vyzerajú jednotne… jednotne zle na každej platforme, ale to je určite otázka vkusu. Zaujímavé pozorovanie o Flutteri je použitie jazyka Dart, ktorý vyzeral už takmer mŕtvo, ale toto ho zrejme oživí.</p>
+
+<p>Prednáška mi prišla ako klasický štandard: info o technológii, live coding (!) a dobré podanie.</p>
+
+<h1 id="responsible-microservices-nate-schutta">Responsible Microservices (Nate Schutta)</h1>
+
+<p>OpenSlava má pekný koncept lighting talkov, ktoré sú krátke, úderné a odohrávajú sa v miestnosti plnej tulivakov. Publikum ich väčšinou zažíva z polohy ležmo. (Okrem toho, lighting talky sú ako inkubátor pre speakerov — takto sa mi podarilo mať pred rokmi prednášku o <a href="http://ics.upjs.sk/~novotnyr/home/prezentacie/consul/openslava%20spring%20consul.pdf">Consule</a>)</p>
+
+<p>Nate Schutta z Pivotalu má však prednášky, ktoré rozhýbu každého. (Schválne hovorím prednášky, lebo mal ešte jednu, tzv. „grand finale“). Keďže microservicy zažívajú éru sebareflexie a možno aj krízy, Nate Schutta <a href="https://www.youtube.com/watch?v=VSaSwudm4qE">za osem minút zhrnul</a>, kedy <em>áno</em>, kedy <em>nie</em>. Bez nejakých detailov to bola turbotúra všetkými dôležitými bodmi. Určite sa to oplatí ako druhá prednáška, hneď po „microservisy sú übercool“.</p>
+
+<p><img src="openslava-nate-schutta.jpg" alt="openslava-nate-schutta" style="zoom:50%;" /></p>
+
+<h1 id="quarkus-what-is-it-and-how-it-is-used-pablo-di-vita-natale-vinto">Quarkus, what is it and how it is used (Pablo di Vita, Natale Vinto)</h1>
+
+<p>Podľa Murphyho zákona o konferenciách sa skvelé veci vždy dejú naraz, a to bol dôvod, prečo som sa rozbehol na <em>Quarkus</em>. Ako som spomínal vyššie, GraalVM a príľahlé technológie na rýchle spúšťanie backendových aplikácii bez ohľadu na platformu sú (a budú) hitom, Quarkus vyzeral zaujímavo.</p>
+
+<p>Quarkus chce zobrať klasické javácke backendové technológie (lôg bol plný slajd), napríklad JPA a JAX-RS a s klasickými, rokmi overenými znalosťami, chce dať možnosť vybudovať kubernetesovskú, graal-vm-ovateľnú aplikáciu.</p>
+
+<p>Dvaja speakeri sú vždy super, pretože osobnosťami sa vedia dopĺňať. Pozoruhodným momentom bolo lešenie — speakeri nepokryte išli cez akýsi redhatovský tutoriál zverejnený na webe a demonštrovali príklady z neho, s občasným komentárom: od jednoduchého JAX-RS servera, cez jeho deployment na Kubernetes a administráciu</p>
+
+<p>V každom prípade to vyzerá veľmi zaujímavo: Micronaut, Quarkus a čoskoro aj Spring si užijú na Graale v najbližších mesiacoch veľa <em>technologických flamewarov</em>.</p>
+
+<h1 id="obed">Obed</h1>
+
+<p>OpenSlava dáva obed zadarmo, ale ten som využil na stretnutia mimo konferencie. Novinkou tohto roka bola až dvojhodinová pauza umne určená na socializáciu a voľný keynote, ktorý som — samozrejme — zmeškal.</p>
+
+<p><img src="openslava-ludia.jpg" alt="openslava-ludia" style="zoom:50%;" /></p>
+
+<h1 id="open-data-open-api-my-data-coming-to-a-e-government-near-you-jano-suchal">Open Data, Open API &amp; My Data Coming to a e-government Near You (Jano Suchal)</h1>
+
+<p>Jano Suchal je chodiaca legenda slovensko.digital, ktorú som nikdy nevidel rozprávať. Táto <a href="https://www.youtube.com/watch?v=PmYaIodUyUQ">prednáška</a> bola dokonalé intro k tomu, čo robia, prečo to robia, s občasnými historkami so zákopov. (Akurát v angličtine.)</p>
+
+<p>Prednáška bola dokonca takticky nastavené na diskusiu — kým mnohé prednášky zbehli bez otázok (dokonca sa nečítalo ani obligátne Sli.do), tuto ľudia diskutovali azda aj 15 minút.</p>
+
+<h1 id="prestávka">Prestávka</h1>
+
+<p>Slovenskodigitálna prednáška bola pre mňa energetický vrchol, kde som nasledovný blok vynechal, jednak preto, že ma nič neinteresovalo a jednak pre únavovú krízu.</p>
+
+<p>Nezvládol som ani návštevu 90minútovej panelovej diskusie o budúcnosti vzdelávania, kde bol pomer panelistiek ku panelistom 3:2!</p>
+
+<h1 id="graalvm-jorge-hidalgo">GraalVM (Jorge Hidalgo)</h1>
+
+<p>Jorge Hidalgo je klasik OpenSlavy, na ktorého sa oplatí ísť bez ohľadu na to, o čom rozpráva. Každý rok  vytočí trendovú prednášku plnú dobrej nálady, určenej pre developerov, a plnej pragmatizmu — jednoducho niečo, čo sa mi páči a čo rád na svojich prednáškach robím tiež.</p>
+
+<p>Tentokrát dovliekol GraalVM, čo sme nazvali „platforma pre spúšťanie všetkého nad všetkým a to veľmi rýchlo“.</p>
+
+<p><a href="https://www.youtube.com/watch?v=3-UuzCIJkmo">Porozprával realisticky</a>, ako to s Graalom vyzerá, čo od toho čakať (aplikácie sa naozaj nakompilujú pre cieľovú platformu), kde sú zádrhele (napríklad ako funguje reflexia v Jave), a čo s tým dá robiť, a celý čas kódil naživo.</p>
+
+<p>Na rozdiel od Quarkus-u vidno, že Jorge má veci vyskúšané, zažité a v rukách, a nebál sa hovoriť, kedy čo nefungovalo, resp. s čím nemá skúsenosti.</p>
+
+<h1 id="thinking-architecturally-nate-schutta-sa-vracia">Thinking Architecturally (Nate Schutta sa vracia)</h1>
+
+<p>Keby existovalo veľké finále konferencie, tak Nate Schutta ho <a href="https://www.youtube.com/watch?v=giKlW14TnaY">dodal</a>. Nate je autorom O’Reilly knihy <em>Thinking Architecturally</em> a tento talk bol 40 minútovým sumárom. Už pri lightning talku bolo vidieť energiu, ale tuto sa Nate rozbehol naplno.</p>
+
+<p>Nate vyzeral ako správny ideológ / motivátor — naplno porozprával, na čo všetko si konceptuálne / filozoficky treba dať pozor pri projektoch ako takých. Jeho prednášky sú skvelé k žehleniu košieľ, nie sú nudné, sú takmer bez technológií, sú však o soft skilloch, medziľudských vzťahoch, prinášajú nové veci a netreba sa plne sústrediť napríklad na presné kroky pri programovaní. (Speakerský tip: na slajdoch používa tweety.) Inými slovami, prednáška je typu „polovicu netechnických aspektov projektu som tušil, ale je dobré mi ich pripomenúť, prípadne mi ich oplieskať o hlavu“.</p>
+
+<p>Publikum ho očividne žralo a jedna z otázok na Sli.do ho otvorene pozývala na pivo.</p>
+
+<p><img src="openslava-nate-schutta-2.jpg" alt="openslava-nate-schutta-2" style="zoom:50%;" /></p>
+
+<h1 id="záver">Záver</h1>
+
+<p>OpenSlava nikdy nedopadla zle. Za sedem rokov majú na mnoho % vyladené organizačné veci, prakticky ich nič neprekvapí. Ľudí bolo primerane veľa (netlačili sa, ani to nevyzeralo poloprázdne), i keď azda menej než minulého roku, a rozhodne menej mužov.</p>
+
+<p>(Organizačný protip: tohto roku tlačili menovky operatívne na minitlačiarňach, namiesto zúfalého hľadania medzi stovkami registrovaných ľudí. Organizačná otázka: prečo sú tam ženy, ktorých úloha je stáť a otvárať dvere na konferečných miestnostiach?).</p>
+
+<p>Ak to má byť populárne-technologická konferencia na Slovensku, tak za mňa jednoznačne 100%.</p>
+
+</main>
+
+    <footer>
+      
+<script>
+(function() {
+  function center_el(tagName) {
+    var tags = document.getElementsByTagName(tagName), i, tag;
+    for (i = 0; i < tags.length; i++) {
+      tag = tags[i];
+      var parent = tag.parentElement;
+      
+      if (parent.childNodes.length === 1) {
+        
+        if (parent.nodeName === 'A') {
+          parent = parent.parentElement;
+          if (parent.childNodes.length != 1) continue;
+        }
+        if (parent.nodeName === 'P') parent.style.textAlign = 'center';
+      }
+    }
+  }
+  var tagNames = ['img', 'embed', 'object'];
+  for (var i = 0; i < tagNames.length; i++) {
+    center_el(tagNames[i]);
+  }
+})();
+</script>
+
+      
+    </footer>
+  </body>
+</html>
+
