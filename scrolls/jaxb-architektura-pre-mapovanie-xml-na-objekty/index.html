@@ -91,14 +91,14 @@
 <p>Ukážme si jednoduchý príklad, keď máme existujúcu triedu, ktorú chceme namapovať na XML.</p>
 
 <p>Majme jednoduchú triedu osoby:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> Person {
-  <span style="color:#289;font-weight:bold">private</span> <span style="color:#5ed;font-weight:bold">String</span> firstName;
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">public class </span>Person {
+  <span style="color:#f00;background-color:#faa">private String </span>firstName;
   
-  <span style="color:#289;font-weight:bold">private</span> <span style="color:#5ed;font-weight:bold">String</span> lastName;
+  <span style="color:#f00;background-color:#faa">private String </span>lastName;
   
-  <span style="color:#289;font-weight:bold">private</span> <span style="color:#5ed;font-weight:bold">Date</span> dateOfBirth;
+  <span style="color:#f00;background-color:#faa">private Date </span>dateOfBirth;
   
-  <span style="color:#289;font-weight:bold">private</span> <span style="color:#5ed;font-weight:bold">float</span> weight;
+  <span style="color:#f00;background-color:#faa">private float </span>weight;
 
   <span style="color:#666;font-style:italic">/* gettre a settre */</span>
 }</code></pre></div>
@@ -110,12 +110,12 @@
 
 <li><p>vytvoriť inštanciu osoby.</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#666;font-style:italic">// vytvoríme kontext JAXB
-</span><span style="color:#666;font-style:italic"></span>JAXBContext <span style="color:#5ed;font-weight:bold">jaxbContext</span> 
-<span style="color:#333">=</span> JAXBContext.<span style="color:#007">newInstance</span>(Person.<span style="color:#007">class</span>);      
+</span><span style="color:#666;font-style:italic"></span><span style="color:#f00;background-color:#faa">JAXBContext jaxbContext 
+</span><span style="color:#f00;background-color:#faa"></span><span style="color:#333">=</span> JAXBContext.<span style="color:#007">newInstance</span>(Person.<span style="color:#007">class</span>);      
 
-Marshaller <span style="color:#5ed;font-weight:bold">marshaller</span> <span style="color:#333">=</span> jaxbContext.<span style="color:#007">createMarshaller</span>();
+<span style="color:#f00;background-color:#faa">Marshaller marshaller </span><span style="color:#333">=</span> jaxbContext.<span style="color:#007">createMarshaller</span>();
 
-Person <span style="color:#5ed;font-weight:bold">person</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Person();
+<span style="color:#f00;background-color:#faa">Person person </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Person();
 person.<span style="color:#007">setFirstName</span>(<span style="background-color:#e0e0ff">&#34;Janko&#34;</span>);
 person.<span style="color:#007">setLastName</span>(<span style="background-color:#e0e0ff">&#34;Ždiebik&#34;</span>);
 person.<span style="color:#007">setDateOfBirth</span>(<span style="color:#289;font-weight:bold">new</span> Date(1972, 3, 2));
@@ -123,8 +123,8 @@ person.<span style="color:#007">setWeight</span>(95);</code></pre></div></li>
 </ol>
 
 <p>Pred samotným serializovaním daného objektu ho musíme obaliť do inštancie triedy <code>JAXBElement</code>, čo je akýsi prostredník medzi Java objektom a jeho XML reprezentáciou. Pri vytváraní tohto prostredníka potrebujeme špecifikovať názov koreňového uzla s dátami serializovaného objektu, dátový typ tohto objektu a samozrejme konkrétnu inštanciu:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">JAXBElement<span style="color:#333">&lt;</span>Person<span style="color:#333">&gt;</span> <span style="color:#5ed;font-weight:bold">personElement</span> 
-  <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> JAXBElement<span style="color:#333">&lt;</span>Person<span style="color:#333">&gt;</span>(<span style="color:#289;font-weight:bold">new</span> QName(<span style="background-color:#e0e0ff">&#34;person&#34;</span>), 
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">JAXBElement&lt;Person&gt; personElement 
+</span><span style="color:#f00;background-color:#faa">  </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> JAXBElement<span style="color:#333">&lt;</span>Person<span style="color:#333">&gt;</span>(<span style="color:#289;font-weight:bold">new</span> QName(<span style="background-color:#e0e0ff">&#34;person&#34;</span>), 
                                 Person.<span style="color:#007">class</span>, 
                                 person);</code></pre></div>
 <p>Názov koreňového elementu uvedieme pomocou objektu <code>QName</code>, bude ním element <code>&lt;person&gt;</code>.</p>
@@ -138,12 +138,12 @@ person.<span style="color:#007">setWeight</span>(95);</code></pre></div></li>
 <h2 id="deserializácia">Deserializácia</h2>
 
 <p>Deserializácia prebieha podobným spôsobom. Vytvoríme inštanciu kontextu <code>JAXBContext</code>, z ktorej získame objekt <code>Unmarshaller</code>a:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">JAXBContext <span style="color:#5ed;font-weight:bold">jaxbContext</span> <span style="color:#333">=</span> JAXBContext.<span style="color:#007">newInstance</span>(Person.<span style="color:#007">class</span>);
-Unmarshaller <span style="color:#5ed;font-weight:bold">unmarshaller</span> <span style="color:#333">=</span> jaxbContext.<span style="color:#007">createUnmarshaller</span>();</code></pre></div>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">JAXBContext jaxbContext </span><span style="color:#333">=</span> JAXBContext.<span style="color:#007">newInstance</span>(Person.<span style="color:#007">class</span>);
+<span style="color:#f00;background-color:#faa">Unmarshaller unmarshaller </span><span style="color:#333">=</span> jaxbContext.<span style="color:#007">createUnmarshaller</span>();</code></pre></div>
 <p>Na ňom zavoláme metódu <code>unmarshall()</code>. Tá vracia <code>Object</code> reprezentujúci konkrétnu inštanciu načítanú z XML. Ale aký skutočný typ má daný objekt? To si ukážeme o chvíľu.</p>
 
 <p>Ešte poznamenajme, že deserializácia môže načítavať XML z rôznych zdrojov, my si ukážeme načítavanie z reťazca:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">String <span style="color:#5ed;font-weight:bold">xmlPerson</span> <span style="color:#333">=</span>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">String xmlPerson </span><span style="color:#333">=</span>
   <span style="background-color:#e0e0ff">&#34;&lt;?xml version=\&#34;1.0\&#34; encoding=\&#34;windows-1250\&#34; ?&gt;\n&#34;</span> <span style="color:#333">+</span> 
   <span style="background-color:#e0e0ff">&#34;&lt;person&gt;\n&#34;</span> <span style="color:#333">+</span> 
   <span style="background-color:#e0e0ff">&#34;    &lt;dateOfBirth&gt;3872-04-02T00:00:00+02:00&lt;/dateOfBirth&gt;\n&#34;</span> <span style="color:#333">+</span> 
@@ -152,7 +152,7 @@ Unmarshaller <span style="color:#5ed;font-weight:bold">unmarshaller</span> <span
   <span style="background-color:#e0e0ff">&#34;    &lt;weight&gt;95.0&lt;/weight&gt;\n&#34;</span> <span style="color:#333">+</span> 
   <span style="background-color:#e0e0ff">&#34;&lt;/person&gt;&#34;</span>;</code></pre></div>
 <p>Prvá vec, ktorá by nás napadla, by bolo volanie metódy nad <code>java.io.StringReader</code>om.</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Object <span style="color:#5ed;font-weight:bold">o</span> <span style="color:#333">=</span> unmarshaller.<span style="color:#007">unmarshal</span>(<span style="color:#289;font-weight:bold">new</span> StringReader(xmlPerson));</code></pre></div>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">Object o </span><span style="color:#333">=</span> unmarshaller.<span style="color:#007">unmarshal</span>(<span style="color:#289;font-weight:bold">new</span> StringReader(xmlPerson));</code></pre></div>
 <p>Lenže po spustení takéhoto kódu dostaneme výnimku:</p>
 
 <pre><code>javax.xml.bind.UnmarshalException: 
@@ -163,11 +163,11 @@ Unmarshaller <span style="color:#5ed;font-weight:bold">unmarshaller</span> <span
 <p>Problém spočíva v tom, že nepoužívame ani XML schému, ani žiadnu inú špeciálnu konfiguráciu mapovaných tried (napr. cez anotácie). JAXB teda nevie presne, na aký dátový typ má daný XML súbor namapovať. To napravíme zavolaním dvojparametrovej metódy <code>unmarshall</code>, kde do druhého argumentu dodáme dátový typ. Musíme sa však ešte vysporiadať s jednou nepríjemnosťou: neexistuje metóda so signatúrou <code>unmarshall(Reader, Class&lt;T&gt;)</code>, ktorá by umožňovala použiť <code>StringReader</code>. To však obídeme metódou <code>unmarshall(javax.xml.transform.Source, Class&lt;T&gt;)</code>, kde vytvoríme objekt <code>Source</code> nad <code>StringReader</code>om.</p>
 
 <p>Zároveň sa tým vyrieši otázka týkajúca sa návratového typu. V prípade serializácie sme museli obaliť inštanciu osoby objektom <code>JAXBElement</code>. Podobná zásada platí aj tu. Výsledkom deserializácie bude objekt typu <code>JAXBElement&lt;Person&gt;</code>, ktorý bude v sebe obsahovať inštanciu osoby:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Source <span style="color:#5ed;font-weight:bold">source</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> StreamSource(<span style="color:#289;font-weight:bold">new</span> StringReader(xmlPerson));
-JAXBElement<span style="color:#333">&lt;</span>Person<span style="color:#333">&gt;</span> <span style="color:#5ed;font-weight:bold">personElement</span> 
-  <span style="color:#333">=</span> unmarshaller.<span style="color:#007">unmarshal</span>(source, Person.<span style="color:#007">class</span>);
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">Source source </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> StreamSource(<span style="color:#289;font-weight:bold">new</span> StringReader(xmlPerson));
+<span style="color:#f00;background-color:#faa">JAXBElement&lt;Person&gt; personElement 
+</span><span style="color:#f00;background-color:#faa">  </span><span style="color:#333">=</span> unmarshaller.<span style="color:#007">unmarshal</span>(source, Person.<span style="color:#007">class</span>);
 <span style="color:#666;font-style:italic">//získame osobu a vypíšeme ju
-</span><span style="color:#666;font-style:italic"></span>Person <span style="color:#5ed;font-weight:bold">person</span> <span style="color:#333">=</span> personElement.<span style="color:#007">getValue</span>();
+</span><span style="color:#666;font-style:italic"></span><span style="color:#f00;background-color:#faa">Person person </span><span style="color:#333">=</span> personElement.<span style="color:#007">getValue</span>();
 System.<span style="color:#007">out</span>.<span style="color:#007">println</span>(person);</code></pre></div>
 <h1 id="jaxb-a-anotované-objekty-bez-použitia-schémy">JAXB a anotované objekty bez použitia schémy</h1>
 
@@ -175,22 +175,22 @@ System.<span style="color:#007">out</span>.<span style="color:#007">println</spa
 
 <p>Základnou anotáciou je <code>XmlRootElement</code>. Takto anotovaná trieda bude serializovaná v podobe XML podstromu.</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#555;font-weight:bold">@XmlRootElement</span>
-<span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> Person {
-  <span style="color:#289;font-weight:bold">private</span> <span style="color:#5ed;font-weight:bold">String</span> firstName;
+<span style="color:#f00;background-color:#faa">public class </span>Person {
+  <span style="color:#f00;background-color:#faa">private String </span>firstName;
   
-  <span style="color:#289;font-weight:bold">private</span> <span style="color:#5ed;font-weight:bold">String</span> lastName;
+  <span style="color:#f00;background-color:#faa">private String </span>lastName;
   
-  <span style="color:#289;font-weight:bold">private</span> <span style="color:#5ed;font-weight:bold">Date</span> dateOfBirth;
+  <span style="color:#f00;background-color:#faa">private Date </span>dateOfBirth;
   
-  <span style="color:#289;font-weight:bold">private</span> <span style="color:#5ed;font-weight:bold">float</span> weight;
+  <span style="color:#f00;background-color:#faa">private float </span>weight;
 
   <span style="color:#666;font-style:italic">/* gettre a settre */</span>
 }</code></pre></div>
 <p>Serializácia takejto triedy sa potom zjednoduší: nemusíme totiž obaľovať inštanciu osôb do <code>JAXBElement</code>ov.</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">JAXBContext <span style="color:#5ed;font-weight:bold">jaxbContext</span> <span style="color:#333">=</span> JAXBContext.<span style="color:#007">newInstance</span>(Person.<span style="color:#007">class</span>);
-Marshaller <span style="color:#5ed;font-weight:bold">marshaller</span> <span style="color:#333">=</span> jaxbContext.<span style="color:#007">createMarshaller</span>();   
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">JAXBContext jaxbContext </span><span style="color:#333">=</span> JAXBContext.<span style="color:#007">newInstance</span>(Person.<span style="color:#007">class</span>);
+<span style="color:#f00;background-color:#faa">Marshaller marshaller </span><span style="color:#333">=</span> jaxbContext.<span style="color:#007">createMarshaller</span>();   
 
-Person <span style="color:#5ed;font-weight:bold">person</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Person();
+<span style="color:#f00;background-color:#faa">Person person </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Person();
 person.<span style="color:#007">setFirstName</span>(<span style="background-color:#e0e0ff">&#34;Janko&#34;</span>);
 person.<span style="color:#007">setLastName</span>(<span style="background-color:#e0e0ff">&#34;Ždiebik&#34;</span>);
 person.<span style="color:#007">setDateOfBirth</span>(<span style="color:#289;font-weight:bold">new</span> Date(1972, 3, 2));
@@ -198,11 +198,11 @@ person.<span style="color:#007">setWeight</span>(95);
             
 marshaller.<span style="color:#007">marshal</span>(person, System.<span style="color:#007">out</span>);</code></pre></div>
 <p>Rovnako sa zjednoduší aj deserializácia. Nemusíme totiž špecifikovať dátový typ a nemusíme ani vyťahovať osobu z <code>JAXBElement</code>u. Musíme len pretypovať výsledný <code>Object</code> na <code>Person</code>.</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">JAXBContext <span style="color:#5ed;font-weight:bold">jaxbContext</span> <span style="color:#333">=</span> JAXBContext.<span style="color:#007">newInstance</span>(Person.<span style="color:#007">class</span>);
-Unmarshaller <span style="color:#5ed;font-weight:bold">unmarshaller</span> <span style="color:#333">=</span> jaxbContext.<span style="color:#007">createUnmarshaller</span>();
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">JAXBContext jaxbContext </span><span style="color:#333">=</span> JAXBContext.<span style="color:#007">newInstance</span>(Person.<span style="color:#007">class</span>);
+<span style="color:#f00;background-color:#faa">Unmarshaller unmarshaller </span><span style="color:#333">=</span> jaxbContext.<span style="color:#007">createUnmarshaller</span>();
 
-Reader <span style="color:#5ed;font-weight:bold">reader</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> StringReader(xmlPerson);
-Person <span style="color:#5ed;font-weight:bold">person</span> <span style="color:#333">=</span> (Person) unmarshaller.<span style="color:#007">unmarshal</span>(reader);
+<span style="color:#f00;background-color:#faa">Reader reader </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> StringReader(xmlPerson);
+<span style="color:#f00;background-color:#faa">Person person </span><span style="color:#333">=</span> (Person) unmarshaller.<span style="color:#007">unmarshal</span>(reader);
 
 System.<span style="color:#007">out</span>.<span style="color:#007">println</span>(person);</code></pre></div>
 <h1 id="generovanie-xml-schémy-z-existujúcich-tried">Generovanie XML schémy z existujúcich tried</h1>
@@ -261,21 +261,21 @@ jaxb\servlet\config\WelcomeFileList.java
 <p>Proces serializácie a deserializácie je analogický ako v predošlých prípadoch. Rozdiel je však v spôsobe inicializácie kontextu. Namiesto jednej triedy môžeme uviesť názov balíčka, ktorého triedy chceme (de)serializovať.</p>
 
 <p>Následne vytvoríme <code>Unmarshaller</code> klasickým spôsobom. Koreňovému elementu XML súboru, ktorým je <code>&lt;web-app&gt;</code> zodpovedá trieda <code>WebApp</code>, a práve túto triedu budeme potrebovať pri deserializácii XML dokumentu. V príklade deserializujeme dáta z XML súboru na disku.</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">JAXBContext <span style="color:#5ed;font-weight:bold">jaxbContext</span> <span style="color:#333">=</span>   
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">JAXBContext jaxbContext </span><span style="color:#333">=</span>   
   JAXBContext.<span style="color:#007">newInstance</span>(<span style="background-color:#e0e0ff">&#34;jaxb.servlet.config&#34;</span>);
 
-Unmarshaller <span style="color:#5ed;font-weight:bold">unmarshaller</span> <span style="color:#333">=</span> jaxbContext.<span style="color:#007">createUnmarshaller</span>();
-File <span style="color:#5ed;font-weight:bold">xmlFile</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> File(<span style="background-color:#e0e0ff">&#34;web.xml&#34;</span>)
-WebApp <span style="color:#5ed;font-weight:bold">webApp</span> <span style="color:#333">=</span> (WebApp) unmarshaller.<span style="color:#007">unmarshal</span>(xmlFile);</code></pre></div>
+<span style="color:#f00;background-color:#faa">Unmarshaller unmarshaller </span><span style="color:#333">=</span> jaxbContext.<span style="color:#007">createUnmarshaller</span>();
+<span style="color:#f00;background-color:#faa">File xmlFile </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> File(<span style="background-color:#e0e0ff">&#34;web.xml&#34;</span>)
+<span style="color:#f00;background-color:#faa">WebApp webApp </span><span style="color:#333">=</span> (WebApp) unmarshaller.<span style="color:#007">unmarshal</span>(xmlFile);</code></pre></div>
 <p>Následne môžeme pracovať s triedami klasickým spôsobom. Napr. deklaráciu nového servletu pridáme do webovej aplikácie nasledovne:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Servlet <span style="color:#5ed;font-weight:bold">servlet</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Servlet();
-ServletName <span style="color:#5ed;font-weight:bold">servletName</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> ServletName();
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">Servlet servlet </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Servlet();
+<span style="color:#f00;background-color:#faa">ServletName servletName </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> ServletName();
 servletName.<span style="color:#007">setvalue</span>(<span style="background-color:#e0e0ff">&#34;HelloServlet&#34;</span>);
 servlet.<span style="color:#007">setServletName</span>(servletName);
     
 webApp.<span style="color:#007">getServlet</span>().<span style="color:#007">add</span>(servlet);</code></pre></div>
 <p>Spätnú serializáciu (v tomto prípade na konzolu) dosiahneme tiež klasickým spôsobom, zavolaním metódy <code>marshall()</code> nad objektom typu <code>WebApp</code>.</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Marshaller <span style="color:#5ed;font-weight:bold">marshaller</span> <span style="color:#333">=</span> jaxbContext.<span style="color:#007">createMarshaller</span>();
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">Marshaller marshaller </span><span style="color:#333">=</span> jaxbContext.<span style="color:#007">createMarshaller</span>();
 marshaller.<span style="color:#007">marshal</span>(webApp, System.<span style="color:#007">out</span>);</code></pre></div>
 <h1 id="odkazy">Odkazy</h1>
 

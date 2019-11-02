@@ -66,48 +66,48 @@
 <h1 id="základné-interfejsy">Základné interfejsy</h1>
 
 <p>Predovšetkým budeme potrebovať interfejs, ktorý bude obsahovať vzdialené volateľné metódy.</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">package</span> <span style="color:#5ed;font-weight:bold">rmi2</span>;
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">package rmi2</span>;
 
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">java</span>.<span style="color:#007">rmi</span>.<span style="color:#007">Remote</span>;
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">java</span>.<span style="color:#007">rmi</span>.<span style="color:#007">RemoteException</span>;
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">java</span>.<span style="color:#007">util</span>.<span style="color:#007">Date</span>;
+<span style="color:#f00;background-color:#faa">import java</span>.<span style="color:#007">rmi</span>.<span style="color:#007">Remote</span>;
+<span style="color:#f00;background-color:#faa">import java</span>.<span style="color:#007">rmi</span>.<span style="color:#007">RemoteException</span>;
+<span style="color:#f00;background-color:#faa">import java</span>.<span style="color:#007">util</span>.<span style="color:#007">Date</span>;
 
-<span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">interface</span> RemoteDateService <span style="color:#5ed;font-weight:bold">extends</span> Remote {
-  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">Date</span> getDate() <span style="color:#289;font-weight:bold">throws</span> <span style="color:#5ed;font-weight:bold">RemoteException</span>;
+<span style="color:#f00;background-color:#faa">public interface RemoteDateService extends </span>Remote {
+  <span style="color:#f00;background-color:#faa">public Date </span>getDate() <span style="color:#f00;background-color:#faa">throws RemoteException</span>;
 }</code></pre></div>
 <p>Následne dodáme jeho implementáciu:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">package</span> <span style="color:#5ed;font-weight:bold">rmi2</span>;
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">package rmi2</span>;
 
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">java</span>.<span style="color:#007">rmi</span>.<span style="color:#007">RemoteException</span>;
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">java</span>.<span style="color:#007">rmi</span>.<span style="color:#007">server</span>.<span style="color:#007">UnicastRemoteObject</span>;
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">java</span>.<span style="color:#007">util</span>.<span style="color:#007">Date</span>;
+<span style="color:#f00;background-color:#faa">import java</span>.<span style="color:#007">rmi</span>.<span style="color:#007">RemoteException</span>;
+<span style="color:#f00;background-color:#faa">import java</span>.<span style="color:#007">rmi</span>.<span style="color:#007">server</span>.<span style="color:#007">UnicastRemoteObject</span>;
+<span style="color:#f00;background-color:#faa">import java</span>.<span style="color:#007">util</span>.<span style="color:#007">Date</span>;
 
-<span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> RemoteDateServiceImpl <span style="color:#5ed;font-weight:bold">extends</span> UnicastRemoteObject 
-                                   <span style="color:#5ed;font-weight:bold">implements</span> RemoteDateService 
+<span style="color:#f00;background-color:#faa">public class RemoteDateServiceImpl extends UnicastRemoteObject 
+</span><span style="color:#f00;background-color:#faa">                                   implements </span>RemoteDateService 
 {
-  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">RemoteDateServiceImpl</span>() <span style="color:#289;font-weight:bold">throws</span> <span style="color:#5ed;font-weight:bold">RemoteException</span> {
+  <span style="color:#f00;background-color:#faa">public RemoteDateServiceImpl</span>() <span style="color:#f00;background-color:#faa">throws RemoteException </span>{
     <span style="color:#289;font-weight:bold">super</span>();
   }
 	
-  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">Date</span> getDate() <span style="color:#289;font-weight:bold">throws</span> <span style="color:#5ed;font-weight:bold">RemoteException</span> {
+  <span style="color:#f00;background-color:#faa">public Date </span>getDate() <span style="color:#f00;background-color:#faa">throws RemoteException </span>{
     <span style="color:#289;font-weight:bold">return</span> <span style="color:#289;font-weight:bold">new</span> Date();
   }
 }</code></pre></div>
 <p>Trieda implementuje <code>UnicastRemoteObject</code>, to znamená, že pri vytvorení jej inštancie sa vykoná jej automatická registrácia v RMI registroch (teda bude automaticky pripravená na zverejnenie).</p>
 
 <p>Samotná trieda spustiteľného servera je jednoduchá:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">package</span> <span style="color:#5ed;font-weight:bold">rmi2</span>;
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">package rmi2</span>;
 
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">java</span>.<span style="color:#007">rmi</span>.<span style="color:#007">registry</span>.<span style="color:#007">LocateRegistry</span>;
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">java</span>.<span style="color:#007">rmi</span>.<span style="color:#007">registry</span>.<span style="color:#007">Registry</span>;
+<span style="color:#f00;background-color:#faa">import java</span>.<span style="color:#007">rmi</span>.<span style="color:#007">registry</span>.<span style="color:#007">LocateRegistry</span>;
+<span style="color:#f00;background-color:#faa">import java</span>.<span style="color:#007">rmi</span>.<span style="color:#007">registry</span>.<span style="color:#007">Registry</span>;
 
-<span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> Server {
-  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">static</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">main</span>(String[] <span style="color:#5ed;font-weight:bold">args</span>) <span style="color:#289;font-weight:bold">throws</span> <span style="color:#5ed;font-weight:bold">Exception</span> {
+<span style="color:#f00;background-color:#faa">public class </span>Server {
+  <span style="color:#f00;background-color:#faa">public static void main</span>(<span style="color:#f00;background-color:#faa">String[] args</span>) <span style="color:#f00;background-color:#faa">throws Exception </span>{
     <span style="color:#666;font-style:italic">// Start RMI registry
-</span><span style="color:#666;font-style:italic"></span>    Registry <span style="color:#5ed;font-weight:bold">registry</span> 
-      <span style="color:#333">=</span> LocateRegistry.<span style="color:#007">createRegistry</span>(Registry.<span style="color:#007">REGISTRY_PORT</span>);
+</span><span style="color:#666;font-style:italic"></span>    <span style="color:#f00;background-color:#faa">Registry registry 
+</span><span style="color:#f00;background-color:#faa">      </span><span style="color:#333">=</span> LocateRegistry.<span style="color:#007">createRegistry</span>(Registry.<span style="color:#007">REGISTRY_PORT</span>);
 
-    RemoteDateService <span style="color:#5ed;font-weight:bold">dateService</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> RemoteDateServiceImpl();
+    <span style="color:#f00;background-color:#faa">RemoteDateService dateService </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> RemoteDateServiceImpl();
 		
     registry.<span style="color:#007">rebind</span>(<span style="background-color:#e0e0ff">&#34;DateService&#34;</span>, dateService);
     System.<span style="color:#007">out</span>.<span style="color:#007">println</span>(<span style="background-color:#e0e0ff">&#34;Server running...&#34;</span>);
@@ -120,19 +120,19 @@
 <h1 id="klient">Klient</h1>
 
 <p>Klient je analogicky jednoduchý:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">package</span> <span style="color:#5ed;font-weight:bold">rmi2</span>;
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">package rmi2</span>;
 
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">java</span>.<span style="color:#007">rmi</span>.<span style="color:#007">registry</span>.<span style="color:#007">LocateRegistry</span>;
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">java</span>.<span style="color:#007">rmi</span>.<span style="color:#007">registry</span>.<span style="color:#007">Registry</span>;
+<span style="color:#f00;background-color:#faa">import java</span>.<span style="color:#007">rmi</span>.<span style="color:#007">registry</span>.<span style="color:#007">LocateRegistry</span>;
+<span style="color:#f00;background-color:#faa">import java</span>.<span style="color:#007">rmi</span>.<span style="color:#007">registry</span>.<span style="color:#007">Registry</span>;
 
-<span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> Client {
-  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">static</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">main</span>(String[] <span style="color:#5ed;font-weight:bold">args</span>) <span style="color:#289;font-weight:bold">throws</span> <span style="color:#5ed;font-weight:bold">Exception</span> {
+<span style="color:#f00;background-color:#faa">public class </span>Client {
+  <span style="color:#f00;background-color:#faa">public static void main</span>(<span style="color:#f00;background-color:#faa">String[] args</span>) <span style="color:#f00;background-color:#faa">throws Exception </span>{
     <span style="color:#289;font-weight:bold">try</span> {
-      Registry <span style="color:#5ed;font-weight:bold">registry</span> <span style="color:#333">=</span> LocateRegistry.<span style="color:#007">getRegistry</span>(<span style="background-color:#e0e0ff">&#34;localhost&#34;</span>);
-      RemoteDateService <span style="color:#5ed;font-weight:bold">stub</span> <span style="color:#333">=</span> 
+      <span style="color:#f00;background-color:#faa">Registry registry </span><span style="color:#333">=</span> LocateRegistry.<span style="color:#007">getRegistry</span>(<span style="background-color:#e0e0ff">&#34;localhost&#34;</span>);
+      <span style="color:#f00;background-color:#faa">RemoteDateService stub </span><span style="color:#333">=</span> 
         (RemoteDateService) registry.<span style="color:#007">lookup</span>(<span style="background-color:#e0e0ff">&#34;DateService&#34;</span>);
       System.<span style="color:#007">out</span>.<span style="color:#007">println</span>(stub.<span style="color:#007">getDate</span>());
-    } <span style="color:#289;font-weight:bold">catch</span> (Exception <span style="color:#5ed;font-weight:bold">e</span>) {
+    } <span style="color:#289;font-weight:bold">catch</span> (<span style="color:#f00;background-color:#faa">Exception e</span>) {
       System.<span style="color:#007">err</span>.<span style="color:#007">println</span>(<span style="background-color:#e0e0ff">&#34;Client exception: &#34;</span> <span style="color:#333">+</span> e.<span style="color:#007">toString</span>());
       e.<span style="color:#007">printStackTrace</span>();
     }
@@ -145,21 +145,21 @@
 <h1 id="alternatívny-klient-s-využitím-naming">Alternatívny klient s využitím <code>Naming</code></h1>
 
 <p>Alternatívne je možné použiť na získanie vzdialeného interfejsu aj triedu <code>java.rmi.Naming</code>. Klient bude vyzerať nasledovne:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">package</span> <span style="color:#5ed;font-weight:bold">rmi2</span>;
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">package rmi2</span>;
 
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">java</span>.<span style="color:#007">rmi</span>.<span style="color:#007">Naming</span>;
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">java</span>.<span style="color:#007">util</span>.<span style="color:#007">Date</span>;
+<span style="color:#f00;background-color:#faa">import java</span>.<span style="color:#007">rmi</span>.<span style="color:#007">Naming</span>;
+<span style="color:#f00;background-color:#faa">import java</span>.<span style="color:#007">util</span>.<span style="color:#007">Date</span>;
 
-<span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> DateServiceClient {
-  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">static</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">main</span>(String[] <span style="color:#5ed;font-weight:bold">args</span>) <span style="color:#289;font-weight:bold">throws</span> <span style="color:#5ed;font-weight:bold">Exception</span> {
-    String <span style="color:#5ed;font-weight:bold">host</span> <span style="color:#333">=</span> <span style="background-color:#e0e0ff">&#34;localhost&#34;</span>;
-    <span style="color:#66f;font-weight:bold">int</span> <span style="color:#5ed;font-weight:bold">portNumber</span> <span style="color:#333">=</span> 1099;
-    String <span style="color:#5ed;font-weight:bold">lookupName</span> <span style="color:#333">=</span> 
+<span style="color:#f00;background-color:#faa">public class </span>DateServiceClient {
+  <span style="color:#f00;background-color:#faa">public static void main</span>(<span style="color:#f00;background-color:#faa">String[] args</span>) <span style="color:#f00;background-color:#faa">throws Exception </span>{
+    <span style="color:#f00;background-color:#faa">String host </span><span style="color:#333">=</span> <span style="background-color:#e0e0ff">&#34;localhost&#34;</span>;
+    <span style="color:#f00;background-color:#faa">int portNumber </span><span style="color:#333">=</span> 1099;
+    <span style="color:#f00;background-color:#faa">String lookupName </span><span style="color:#333">=</span> 
       <span style="background-color:#e0e0ff">&#34;//&#34;</span> <span style="color:#333">+</span> host <span style="color:#333">+</span> <span style="background-color:#e0e0ff">&#34;:&#34;</span> <span style="color:#333">+</span> portNumber <span style="color:#333">+</span> <span style="background-color:#e0e0ff">&#34;/&#34;</span> <span style="color:#333">+</span> <span style="background-color:#e0e0ff">&#34;DateService&#34;</span>;
-    RemoteDateService <span style="color:#5ed;font-weight:bold">service</span> 
-      <span style="color:#333">=</span> (RemoteDateService) Naming.<span style="color:#007">lookup</span>(lookupName);
+    <span style="color:#f00;background-color:#faa">RemoteDateService service 
+</span><span style="color:#f00;background-color:#faa">      </span><span style="color:#333">=</span> (RemoteDateService) Naming.<span style="color:#007">lookup</span>(lookupName);
 
-    Date <span style="color:#5ed;font-weight:bold">date</span> <span style="color:#333">=</span> service.<span style="color:#007">getDate</span>();
+    <span style="color:#f00;background-color:#faa">Date date </span><span style="color:#333">=</span> service.<span style="color:#007">getDate</span>();
       
     System.<span style="color:#007">out</span>.<span style="color:#007">println</span>(date);     
   }

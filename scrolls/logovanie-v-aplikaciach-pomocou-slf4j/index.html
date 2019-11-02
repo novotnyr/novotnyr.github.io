@@ -441,7 +441,7 @@ Napríklad logger s identifikátorom <code>sk.test</code> je predkom loggera
 <code>sk.test.Arrays</code>, ale zase potomkom identifikátora <code>sk</code>. Všetky
 loggery majú jedného spoločného predka, tzv. koreňový logger, ktorý
 môžeme získať cez</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Logger <span style="color:#5ed;font-weight:bold">rootLogger</span> <span style="color:#333">=</span> LoggerFactory.<span style="color:#007">getLogger</span>(org.<span style="color:#007">slf4j</span>.<span style="color:#007">Logger</span>.<span style="color:#007">ROOT_LOGGER_NAME</span>);</code></pre></div>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">Logger rootLogger </span><span style="color:#333">=</span> LoggerFactory.<span style="color:#007">getLogger</span>(org.<span style="color:#007">slf4j</span>.<span style="color:#007">Logger</span>.<span style="color:#007">ROOT_LOGGER_NAME</span>);</code></pre></div>
 <p>Hierarchia sa najčastejšie využíva pre dedenie levelu loggerov. Ak máme
 logger a chceme zistiť jeho level, postupujeme smerom nahor v hierarchii
 a hľadáme prvú nenullovú špecifikáciu levelu. V našom príklade je

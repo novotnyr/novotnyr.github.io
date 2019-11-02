@@ -88,12 +88,12 @@
 <h1 id="jazyky-bez-lambda-výrazov">Jazyky bez lambda výrazov</h1>
 
 <p>Java 7 ako príklad jazyka bez lambda výrazov, či funkcií vyššieho rádu, dokáže navrhúť visitora pomocou interfejsu:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">interface</span> Visitor<span style="color:#333">&lt;</span>T<span style="color:#333">&gt;</span> {
-  <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">visit</span>(T <span style="color:#5ed;font-weight:bold">element</span>);
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">public interface </span>Visitor<span style="color:#333">&lt;</span>T<span style="color:#333">&gt;</span> {
+  <span style="color:#f00;background-color:#faa">void visit</span>(<span style="color:#f00;background-color:#faa">T element</span>);
 }</code></pre></div>
 <p>Implementácia interfejsu hovorí, <strong>ako</strong> spracujeme prvky dátovej štruktúry. Napríklad:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> SystemOutPrintlnVisitor<span style="color:#333">&lt;</span>T<span style="color:#333">&gt;</span> <span style="color:#5ed;font-weight:bold">implements</span> Visitor<span style="color:#333">&lt;</span>T<span style="color:#333">&gt;</span> {
-    <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">void</span> visit(T <span style="color:#5ed;font-weight:bold">element</span>) {
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">public class SystemOutPrintlnVisitor&lt;T&gt; implements </span>Visitor<span style="color:#333">&lt;</span>T<span style="color:#333">&gt;</span> {
+    <span style="color:#f00;background-color:#faa">public void </span>visit(<span style="color:#f00;background-color:#faa">T element</span>) {
         System.<span style="color:#007">out</span>.<span style="color:#007">println</span>(element);
     }
 }    </code></pre></div>
@@ -103,15 +103,15 @@
 <li>dátová štruktúra, tuto zoznam <code>List</code></li>
 
 <li><p>objekt visitora</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">static</span> <span style="color:#333">&lt;</span>T<span style="color:#333">&gt;</span> <span style="color:#5ed;font-weight:bold">void</span> visit(List<span style="color:#333">&lt;</span>T<span style="color:#333">&gt;</span> <span style="color:#5ed;font-weight:bold">list</span>, Visitor<span style="color:#333">&lt;</span>T<span style="color:#333">&gt;</span> <span style="color:#5ed;font-weight:bold">visitor</span>) {
-<span style="color:#289;font-weight:bold">for</span> (T <span style="color:#5ed;font-weight:bold">element</span> <span style="color:#333">:</span> list) {
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">public static </span><span style="color:#333">&lt;</span><span style="color:#f00;background-color:#faa">T&gt; void </span>visit(<span style="color:#f00;background-color:#faa">List&lt;T&gt; list</span>, <span style="color:#f00;background-color:#faa">Visitor&lt;T&gt; visitor</span>) {
+<span style="color:#289;font-weight:bold">for</span> (<span style="color:#f00;background-color:#faa">T element </span><span style="color:#333">:</span> list) {
     visitor.<span style="color:#007">visit</span>(element);
 }
 }</code></pre></div></li>
 </ul>
 
 <p>Použiť to môžeme nasledovne:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">List<span style="color:#333">&lt;</span>String<span style="color:#333">&gt;</span> <span style="color:#5ed;font-weight:bold">names</span> <span style="color:#333">=</span> Arrays.<span style="color:#007">asList</span>(<span style="background-color:#e0e0ff">&#34;John&#34;</span>, <span style="background-color:#e0e0ff">&#34;Paul&#34;</span>, <span style="background-color:#e0e0ff">&#34;Ringo&#34;</span>, <span style="background-color:#e0e0ff">&#34;George&#34;</span>);
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">List&lt;String&gt; names </span><span style="color:#333">=</span> Arrays.<span style="color:#007">asList</span>(<span style="background-color:#e0e0ff">&#34;John&#34;</span>, <span style="background-color:#e0e0ff">&#34;Paul&#34;</span>, <span style="background-color:#e0e0ff">&#34;Ringo&#34;</span>, <span style="background-color:#e0e0ff">&#34;George&#34;</span>);
 Visitor.<span style="color:#007">visit</span>(names, <span style="color:#289;font-weight:bold">new</span> SystemOutPrintlnVisitor<span style="color:#333">&lt;&gt;</span>());</code></pre></div>
 <p>Tento princíp môžeme použiť na akúkoľvek dátovú štruktúru a jej prechod. Ak máme strom, môžeme implementovať prehľadávanie do šírky ako metódu <code>visitBreadthFirst()</code> a na každom prvku zavolať visitorovu metódu. Klient našej metódy potom špecifikuje, <strong>ako</strong> spracujeme každý uzol stromu.</p>
 
@@ -120,18 +120,18 @@ Visitor.<span style="color:#007">visit</span>(names, <span style="color:#289;fon
 <h2 id="java-8-zoznamy-a-visitor">Java 8, zoznamy a visitor</h2>
 
 <p>Java 8 podporuje <em>visitora</em> na zoznamoch od prírody, a to hlavne preto, že má k dispozícii lambda výrazy. Na zozname existuje metóda <code>forEach()</code>, ktorá navštívi každý prvok. Metóda berie parameter typu <code>Consumer</code>, ktorý môžeme implementovať napríklad nasledovne.</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">static</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#5ed;font-weight:bold">SystemOutPrintlnConsumer</span><span style="color:#333">&lt;</span>T<span style="color:#333">&gt;</span> <span style="color:#5ed;font-weight:bold">implements</span> Consumer<span style="color:#333">&lt;</span>T<span style="color:#333">&gt;</span> {
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">public static class SystemOutPrintlnConsumer</span><span style="color:#333">&lt;</span><span style="color:#f00;background-color:#faa">T&gt; implements </span>Consumer<span style="color:#333">&lt;</span>T<span style="color:#333">&gt;</span> {
     <span style="color:#555;font-weight:bold">@Override</span>
-    <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">void</span> accept(T <span style="color:#5ed;font-weight:bold">element</span>) {
+    <span style="color:#f00;background-color:#faa">public void </span>accept(<span style="color:#f00;background-color:#faa">T element</span>) {
         System.<span style="color:#007">out</span>.<span style="color:#007">println</span>(element);
     }
 }</code></pre></div>
 <p>Následne môžeme navštíviť každý prvok nasledovne:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">List<span style="color:#333">&lt;</span>String<span style="color:#333">&gt;</span> <span style="color:#5ed;font-weight:bold">names</span> <span style="color:#333">=</span> Arrays.<span style="color:#007">asList</span>(<span style="background-color:#e0e0ff">&#34;John&#34;</span>, <span style="background-color:#e0e0ff">&#34;Paul&#34;</span>, <span style="background-color:#e0e0ff">&#34;Ringo&#34;</span>, <span style="background-color:#e0e0ff">&#34;George&#34;</span>);
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">List&lt;String&gt; names </span><span style="color:#333">=</span> Arrays.<span style="color:#007">asList</span>(<span style="background-color:#e0e0ff">&#34;John&#34;</span>, <span style="background-color:#e0e0ff">&#34;Paul&#34;</span>, <span style="background-color:#e0e0ff">&#34;Ringo&#34;</span>, <span style="background-color:#e0e0ff">&#34;George&#34;</span>);
 names.<span style="color:#007">forEach</span>(<span style="color:#289;font-weight:bold">new</span> SystemOutPrintlnConsumer<span style="color:#333">&lt;&gt;</span>());</code></pre></div>
 <p>Samozrejme, s prítomnosťou Java 8 a lambda výrazov vieme skrátiť jednometódový interfejs na lambda výraz reprezentujúci funkciu.</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">List<span style="color:#333">&lt;</span>String<span style="color:#333">&gt;</span> <span style="color:#5ed;font-weight:bold">names</span> <span style="color:#333">=</span> Arrays.<span style="color:#007">asList</span>(<span style="background-color:#e0e0ff">&#34;John&#34;</span>, <span style="background-color:#e0e0ff">&#34;Paul&#34;</span>, <span style="background-color:#e0e0ff">&#34;Ringo&#34;</span>, <span style="background-color:#e0e0ff">&#34;George&#34;</span>);
-Consumer<span style="color:#333">&lt;</span>String<span style="color:#333">&gt;</span> <span style="color:#5ed;font-weight:bold">visitor</span> <span style="color:#333">=</span> element <span style="color:#333">-&gt;</span> System.<span style="color:#007">out</span>.<span style="color:#007">println</span>(element);
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">List&lt;String&gt; names </span><span style="color:#333">=</span> Arrays.<span style="color:#007">asList</span>(<span style="background-color:#e0e0ff">&#34;John&#34;</span>, <span style="background-color:#e0e0ff">&#34;Paul&#34;</span>, <span style="background-color:#e0e0ff">&#34;Ringo&#34;</span>, <span style="background-color:#e0e0ff">&#34;George&#34;</span>);
+<span style="color:#f00;background-color:#faa">Consumer&lt;String&gt; visitor </span><span style="color:#333">=</span> element <span style="color:#333">-&gt;</span> System.<span style="color:#007">out</span>.<span style="color:#007">println</span>(element);
 names.<span style="color:#007">forEach</span>(visitor);</code></pre></div>
 <p><em>Visitor</em> je v tomto prípade objekt typu <code>Consumer&lt;String&gt;</code>, teda funkcia s jedným parametrom typu <code>String</code>, ktorá v tele vytlačí každý prvok.</p>
 

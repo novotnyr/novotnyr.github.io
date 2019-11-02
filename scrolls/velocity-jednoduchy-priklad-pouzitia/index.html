@@ -79,15 +79,15 @@ Tu je ich presný zoznam:
 <p>V šablóne sa používajú direktívy (začínajúce na <code>#</code>), možno využívať premenné (začínajúce <code>$</code>), s premennými možno vykonávať rôzne operácie (bodková notácia ako v Jave).</p>
 
 <p>Pri parsovaní a vyhodnocovaní šablóny sa Velocity spolieha na kontext &ndash; ten obsahuje objekty, na ktoré sa v šablóne odkazujeme.</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">static</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">main</span>( String[] <span style="color:#5ed;font-weight:bold">args</span> ) <span style="color:#289;font-weight:bold">throws</span> <span style="color:#5ed;font-weight:bold">Exception</span> {
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">public static void main</span>( <span style="color:#f00;background-color:#faa">String[] args </span>) <span style="color:#f00;background-color:#faa">throws Exception </span>{
   <span style="color:#666;font-style:italic">/*  inicializujeme motor  */</span>
 
-  VelocityEngine <span style="color:#5ed;font-weight:bold">ve</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> VelocityEngine();
+  <span style="color:#f00;background-color:#faa">VelocityEngine ve </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> VelocityEngine();
   ve.<span style="color:#007">init</span>();
 
   <span style="color:#666;font-style:italic">/*  vytvorime data, na ktore sa budeme v kontexte odkazovat  */</span>
 
-  List <span style="color:#5ed;font-weight:bold">list</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> ArrayList();
+  <span style="color:#f00;background-color:#faa">List list </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> ArrayList();
   list.<span style="color:#007">add</span>(<span style="background-color:#e0e0ff">&#34;Arthur&#34;</span>);
   list.<span style="color:#007">add</span>(<span style="background-color:#e0e0ff">&#34;Lancelot&#34;</span>);
   list.<span style="color:#007">add</span>(<span style="background-color:#e0e0ff">&#34;Galahad&#34;</span>);
@@ -95,30 +95,30 @@ Tu je ich presný zoznam:
 
   <span style="color:#666;font-style:italic">/*  vytvorime kontext  */</span>
 
-  VelocityContext <span style="color:#5ed;font-weight:bold">context</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> VelocityContext();
+  <span style="color:#f00;background-color:#faa">VelocityContext context </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> VelocityContext();
 
   <span style="color:#666;font-style:italic">/*  vytvoreny zoznam ulozime do kontextu pod prislusnym menom  */</span>
   context.<span style="color:#007">put</span>(<span style="background-color:#e0e0ff">&#34;knightList&#34;</span>, list);
 
   <span style="color:#666;font-style:italic">/*  otvorme sablonu  */</span>
 
-  Template <span style="color:#5ed;font-weight:bold">t</span> <span style="color:#333">=</span> ve.<span style="color:#007">getTemplate</span>(<span style="background-color:#e0e0ff">&#34;knights.vm&#34;</span>);
+  <span style="color:#f00;background-color:#faa">Template t </span><span style="color:#333">=</span> ve.<span style="color:#007">getTemplate</span>(<span style="background-color:#e0e0ff">&#34;knights.vm&#34;</span>);
 
   <span style="color:#666;font-style:italic">/*  spracujme sablonu a vypisme ju na standardny vystup  */</span>
 
-  StringWriter <span style="color:#5ed;font-weight:bold">writer</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> StringWriter();
+  <span style="color:#f00;background-color:#faa">StringWriter writer </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> StringWriter();
   t.<span style="color:#007">merge</span>(context, writer);
   System.<span style="color:#007">out</span>.<span style="color:#007">println</span>(writer.<span style="color:#007">toString</span>());
 }</code></pre></div>
 <h2 id="použitie-v-servletoch">Použitie v servletoch</h2>
 
 <p>Velocity sa dá učelne využiť ako vrstva View pri práci s webovými aplikáciami &ndash; napr. namiesto JSP. Každej stránke zodpovedá jedna šablóna (v podstate HTML stránka obsahujúca príkazy jazyka Velocity) a jeden Velocity servlet (trieda dediaca od <code>VelocityServlet</code>).</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> FirstVelocityServlet <span style="color:#5ed;font-weight:bold">extends</span> VelocityServlet {
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">public class FirstVelocityServlet extends </span>VelocityServlet {
   <span style="color:#666;font-style:italic">/* potrebujeme prekryt nasledovnu metodu */</span>
-  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">Template</span> handleRequest(HttpServletRequest <span style="color:#5ed;font-weight:bold">request</span>, HttpServletResponse <span style="color:#5ed;font-weight:bold">response</span>, Context <span style="color:#5ed;font-weight:bold">context</span> ) {  
+  <span style="color:#f00;background-color:#faa">public Template </span>handleRequest(<span style="color:#f00;background-color:#faa">HttpServletRequest request</span>, <span style="color:#f00;background-color:#faa">HttpServletResponse response</span>, <span style="color:#f00;background-color:#faa">Context context </span>) {  
     <span style="color:#666;font-style:italic">/* vytvorime data, na ktore sa budeme v kontexte odkazovat  */</span>
 
-    ArrayList <span style="color:#5ed;font-weight:bold">list</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> ArrayList();
+    <span style="color:#f00;background-color:#faa">ArrayList list </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> ArrayList();
     list.<span style="color:#007">add</span>(<span style="background-color:#e0e0ff">&#34;Arthur&#34;</span>);
     list.<span style="color:#007">add</span>(<span style="background-color:#e0e0ff">&#34;Lancelot&#34;</span>);
     list.<span style="color:#007">add</span>(<span style="background-color:#e0e0ff">&#34;Galahad&#34;</span>);
@@ -130,10 +130,10 @@ Tu je ich presný zoznam:
     context.<span style="color:#007">put</span>(<span style="background-color:#e0e0ff">&#34;knightList&#34;</span>, list);
 
     <span style="color:#666;font-style:italic">/*  otvorme sablonu (getTemplate je metoda servletu) */</span>
-    Template <span style="color:#5ed;font-weight:bold">template</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">null</span>;  
+    <span style="color:#f00;background-color:#faa">Template template </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">null</span>;  
     <span style="color:#289;font-weight:bold">try</span> {
       template <span style="color:#333">=</span> getTemplate(<span style="background-color:#e0e0ff">&#34;knights.vm&#34;</span>);
-    } <span style="color:#289;font-weight:bold">catch</span>( Exception <span style="color:#5ed;font-weight:bold">e</span> ) {
+    } <span style="color:#289;font-weight:bold">catch</span>( <span style="color:#f00;background-color:#faa">Exception e </span>) {
       System.<span style="color:#007">out</span>.<span style="color:#007">println</span>(<span style="background-color:#e0e0ff">&#34;Nastala chyba pri tvorbe sablony &#34;</span> <span style="color:#333">+</span> e);
     }
 
@@ -144,10 +144,10 @@ Tu je ich presný zoznam:
 <p>Stránka je potom jednoduchá šablóna</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#333">&lt;</span>html<span style="color:#333">&gt;</span>
 <span style="color:#333">&lt;</span>h1<span style="color:#333">&gt;</span>Oznam<span style="color:#333">&lt;/</span>h1<span style="color:#333">&gt;</span>
-<span style="color:#333">&lt;</span>p<span style="color:#333">&gt;</span>Rytieri <span style="color:#5ed;font-weight:bold">okrúhleho</span> stola <span style="color:#5ed;font-weight:bold">sa</span> dnes <span style="color:#5ed;font-weight:bold">zišli</span> v <span style="color:#5ed;font-weight:bold">počte</span> $knightsList.<span style="color:#007">size</span>().<span style="color:#333">&lt;/</span>p<span style="color:#333">&gt;</span>
-<span style="color:#333">&lt;</span>p<span style="color:#333">&gt;</span>Tu <span style="color:#5ed;font-weight:bold">je</span> ich <span style="color:#5ed;font-weight:bold">presný</span> zoznam<span style="color:#333">:&lt;/</span>p<span style="color:#333">&gt;</span>
+<span style="color:#333">&lt;</span><span style="color:#f00;background-color:#faa">p&gt;Rytieri okrúhleho stola sa dnes zišli v počte </span>$knightsList.<span style="color:#007">size</span>().<span style="color:#333">&lt;/</span>p<span style="color:#333">&gt;</span>
+<span style="color:#333">&lt;</span><span style="color:#f00;background-color:#faa">p&gt;Tu je ich presný </span>zoznam<span style="color:#333">:&lt;/</span>p<span style="color:#333">&gt;</span>
   <span style="color:#333">&lt;</span>ol<span style="color:#333">&gt;</span>
-  <span style="color:#f00;background-color:#faa">#</span>foreach( $knight <span style="color:#5ed;font-weight:bold">in</span> $knightList )
+  <span style="color:#f00;background-color:#faa">#</span>foreach( <span style="color:#f00;background-color:#faa">$knight in </span>$knightList )
     <span style="color:#333">&lt;</span>li<span style="color:#333">&gt;</span>$knight.<span style="color:#007">name</span><span style="color:#333">&lt;/</span>li<span style="color:#333">&gt;</span>
   <span style="color:#f00;background-color:#faa">#</span>end
   <span style="color:#333">&lt;/</span>ol<span style="color:#333">&gt;</span>

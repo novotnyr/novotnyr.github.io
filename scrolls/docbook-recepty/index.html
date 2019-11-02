@@ -120,23 +120,23 @@
 <p>Vytvorte nový Java projekt a do §§build path§§ pridajte <code>xalan.jar</code> a <code>serializer.jar</code>.</p>
 
 <p>Kód pre transformáciu vyzerá nasledovne:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">java</span>.<span style="color:#007">io</span>.<span style="color:#007">File</span>;
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">java</span>.<span style="color:#007">io</span>.<span style="color:#007">FileReader</span>;
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">import java</span>.<span style="color:#007">io</span>.<span style="color:#007">File</span>;
+<span style="color:#f00;background-color:#faa">import java</span>.<span style="color:#007">io</span>.<span style="color:#007">FileReader</span>;
 
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">javax</span>.<span style="color:#007">xml</span>.<span style="color:#007">transform</span>.<span style="color:#007">Transformer</span>;
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">javax</span>.<span style="color:#007">xml</span>.<span style="color:#007">transform</span>.<span style="color:#007">TransformerFactory</span>;
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">javax</span>.<span style="color:#007">xml</span>.<span style="color:#007">transform</span>.<span style="color:#007">stream</span>.<span style="color:#007">StreamResult</span>;
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">javax</span>.<span style="color:#007">xml</span>.<span style="color:#007">transform</span>.<span style="color:#007">stream</span>.<span style="color:#007">StreamSource</span>;
+<span style="color:#f00;background-color:#faa">import javax</span>.<span style="color:#007">xml</span>.<span style="color:#007">transform</span>.<span style="color:#007">Transformer</span>;
+<span style="color:#f00;background-color:#faa">import javax</span>.<span style="color:#007">xml</span>.<span style="color:#007">transform</span>.<span style="color:#007">TransformerFactory</span>;
+<span style="color:#f00;background-color:#faa">import javax</span>.<span style="color:#007">xml</span>.<span style="color:#007">transform</span>.<span style="color:#007">stream</span>.<span style="color:#007">StreamResult</span>;
+<span style="color:#f00;background-color:#faa">import javax</span>.<span style="color:#007">xml</span>.<span style="color:#007">transform</span>.<span style="color:#007">stream</span>.<span style="color:#007">StreamSource</span>;
 
 
-<span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> Transformator {
-  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">static</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">main</span>(String[] <span style="color:#5ed;font-weight:bold">args</span>) <span style="color:#289;font-weight:bold">throws</span> <span style="color:#5ed;font-weight:bold">Exception</span> {
-    StreamSource <span style="color:#5ed;font-weight:bold">sablona</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> StreamSource(<span style="color:#289;font-weight:bold">new</span> File(<span style="background-color:#e0e0ff">&#34;c:/Programs/docbook/html/docbook.xsl&#34;</span>));
+<span style="color:#f00;background-color:#faa">public class </span>Transformator {
+  <span style="color:#f00;background-color:#faa">public static void main</span>(<span style="color:#f00;background-color:#faa">String[] args</span>) <span style="color:#f00;background-color:#faa">throws Exception </span>{
+    <span style="color:#f00;background-color:#faa">StreamSource sablona </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> StreamSource(<span style="color:#289;font-weight:bold">new</span> File(<span style="background-color:#e0e0ff">&#34;c:/Programs/docbook/html/docbook.xsl&#34;</span>));
 				
-    StreamSource <span style="color:#5ed;font-weight:bold">vstup</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> StreamSource(<span style="color:#289;font-weight:bold">new</span> File(<span style="background-color:#e0e0ff">&#34;c:/Users/rn/Documents/refprirucka.xml&#34;</span>));
-    StreamResult <span style="color:#5ed;font-weight:bold">vystup</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> StreamResult(<span style="color:#289;font-weight:bold">new</span> File(<span style="background-color:#e0e0ff">&#34;C:/Users/rn/Documents/refprirucka.html&#34;</span>));
+    <span style="color:#f00;background-color:#faa">StreamSource vstup </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> StreamSource(<span style="color:#289;font-weight:bold">new</span> File(<span style="background-color:#e0e0ff">&#34;c:/Users/rn/Documents/refprirucka.xml&#34;</span>));
+    <span style="color:#f00;background-color:#faa">StreamResult vystup </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> StreamResult(<span style="color:#289;font-weight:bold">new</span> File(<span style="background-color:#e0e0ff">&#34;C:/Users/rn/Documents/refprirucka.html&#34;</span>));
 
-    Transformer <span style="color:#5ed;font-weight:bold">transformer</span> <span style="color:#333">=</span> TransformerFactory.<span style="color:#007">newInstance</span>().<span style="color:#007">newTransformer</span>(sablona);
+    <span style="color:#f00;background-color:#faa">Transformer transformer </span><span style="color:#333">=</span> TransformerFactory.<span style="color:#007">newInstance</span>().<span style="color:#007">newTransformer</span>(sablona);
 
     transformer.<span style="color:#007">transform</span>(vstup, vystup);
   }

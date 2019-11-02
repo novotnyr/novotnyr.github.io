@@ -70,18 +70,18 @@ na čítanie a vo while-cykle načítavali dáta pomocou starej známej
 funkcie <code>readln()</code>. Hja, procedurálne programovanie malo niekedy svoje
 výhody. V Jave je práca so súbormi o niečo komplikovanejšia – veď len
 triviálny príklad vyzerá nasledovne:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">package</span> <span style="color:#5ed;font-weight:bold">sk</span>.<span style="color:#007">test</span>;
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">package sk</span>.<span style="color:#007">test</span>;
 
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">java</span>.<span style="color:#007">io</span>.<span style="color:#007">File</span>;
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">java</span>.<span style="color:#007">io</span>.<span style="color:#007">FileNotFoundException</span>;
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">java</span>.<span style="color:#007">util</span>.<span style="color:#007">Scanner</span>;
+<span style="color:#f00;background-color:#faa">import java</span>.<span style="color:#007">io</span>.<span style="color:#007">File</span>;
+<span style="color:#f00;background-color:#faa">import java</span>.<span style="color:#007">io</span>.<span style="color:#007">FileNotFoundException</span>;
+<span style="color:#f00;background-color:#faa">import java</span>.<span style="color:#007">util</span>.<span style="color:#007">Scanner</span>;
 
-<span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> Subory {
-    <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">static</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">main</span>(String[] <span style="color:#5ed;font-weight:bold">args</span>) <span style="color:#289;font-weight:bold">throws</span> <span style="color:#5ed;font-weight:bold">FileNotFoundException</span> {
-        File <span style="color:#5ed;font-weight:bold">file</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> File(<span style="background-color:#e0e0ff">&#34;data.txt&#34;</span>);
-        Scanner <span style="color:#5ed;font-weight:bold">scanner</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Scanner(file);
+<span style="color:#f00;background-color:#faa">public class </span>Subory {
+    <span style="color:#f00;background-color:#faa">public static void main</span>(<span style="color:#f00;background-color:#faa">String[] args</span>) <span style="color:#f00;background-color:#faa">throws FileNotFoundException </span>{
+        <span style="color:#f00;background-color:#faa">File file </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> File(<span style="background-color:#e0e0ff">&#34;data.txt&#34;</span>);
+        <span style="color:#f00;background-color:#faa">Scanner scanner </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Scanner(file);
         <span style="color:#289;font-weight:bold">while</span>(scanner.<span style="color:#007">hasNextLine</span>()) {
-            String <span style="color:#5ed;font-weight:bold">line</span> <span style="color:#333">=</span> scanner.<span style="color:#007">nextLine</span>();
+            <span style="color:#f00;background-color:#faa">String line </span><span style="color:#333">=</span> scanner.<span style="color:#007">nextLine</span>();
             System.<span style="color:#007">out</span>.<span style="color:#007">println</span>(line);
         }
         scanner.<span style="color:#007">close</span>();
@@ -104,19 +104,19 @@ ktoré začínajú veľkým písmenom, Java kód by vyzeral takmer identicky:
 rozdiel by spočíval v odlišnom kóde vo vnútri <code>while</code>-cyklu. Ak
 vyextrahujeme kód z metódy <code>main()</code> do metódy novozaloženej triedy
 <code>FileUtils</code>, situácia bude nasledovná:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">package</span> <span style="color:#5ed;font-weight:bold">sk</span>.<span style="color:#007">test</span>;
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">package sk</span>.<span style="color:#007">test</span>;
 
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">java</span>.<span style="color:#007">io</span>.<span style="color:#007">File</span>;
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">java</span>.<span style="color:#007">io</span>.<span style="color:#007">FileNotFoundException</span>;
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">java</span>.<span style="color:#007">util</span>.<span style="color:#007">Scanner</span>;
+<span style="color:#f00;background-color:#faa">import java</span>.<span style="color:#007">io</span>.<span style="color:#007">File</span>;
+<span style="color:#f00;background-color:#faa">import java</span>.<span style="color:#007">io</span>.<span style="color:#007">FileNotFoundException</span>;
+<span style="color:#f00;background-color:#faa">import java</span>.<span style="color:#007">util</span>.<span style="color:#007">Scanner</span>;
 
-<span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> FileUtils {
-    <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">void</span> printAllLines(File <span style="color:#5ed;font-weight:bold">file</span>) <span style="color:#289;font-weight:bold">throws</span> <span style="color:#5ed;font-weight:bold">FileNotFoundException</span> {
-        Scanner <span style="color:#5ed;font-weight:bold">scanner</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">null</span>;
+<span style="color:#f00;background-color:#faa">public class </span>FileUtils {
+    <span style="color:#f00;background-color:#faa">public void </span>printAllLines(<span style="color:#f00;background-color:#faa">File file</span>) <span style="color:#f00;background-color:#faa">throws FileNotFoundException </span>{
+        <span style="color:#f00;background-color:#faa">Scanner scanner </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">null</span>;
         <span style="color:#289;font-weight:bold">try</span> {
             scanner <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Scanner(file);
             <span style="color:#289;font-weight:bold">while</span>(scanner.<span style="color:#007">hasNextLine</span>()) {
-                String <span style="color:#5ed;font-weight:bold">line</span> <span style="color:#333">=</span> scanner.<span style="color:#007">nextLine</span>();
+                <span style="color:#f00;background-color:#faa">String line </span><span style="color:#333">=</span> scanner.<span style="color:#007">nextLine</span>();
                 System.<span style="color:#007">out</span>.<span style="color:#007">println</span>(line);
             }
             scanner.<span style="color:#007">close</span>();
@@ -183,13 +183,13 @@ každým riadkom <strong>niečo</strong> urob“. To sa podobá na očakávania,
 vedeli špecifikovať v interfejsi. Ako konkrétne sa s daným riadkom
 vysporiadame, záleží od triedy, ktorá bude náš interfejs implementovať.
 Prepíšme si to do kódu, tentokrát do metódy handleLines(File):</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> FileUtils {
-    <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">void</span> handleLines(File <span style="color:#5ed;font-weight:bold">file</span>) <span style="color:#289;font-weight:bold">throws</span> <span style="color:#5ed;font-weight:bold">FileNotFoundException</span> {
-        Scanner <span style="color:#5ed;font-weight:bold">scanner</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">null</span>;
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">public class </span>FileUtils {
+    <span style="color:#f00;background-color:#faa">public void </span>handleLines(<span style="color:#f00;background-color:#faa">File file</span>) <span style="color:#f00;background-color:#faa">throws FileNotFoundException </span>{
+        <span style="color:#f00;background-color:#faa">Scanner scanner </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">null</span>;
         <span style="color:#289;font-weight:bold">try</span> {
             scanner <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Scanner(file);
             <span style="color:#289;font-weight:bold">while</span>(scanner.<span style="color:#007">hasNextLine</span>()) {
-                String <span style="color:#5ed;font-weight:bold">line</span> <span style="color:#333">=</span> scanner.<span style="color:#007">nextLine</span>();
+                <span style="color:#f00;background-color:#faa">String line </span><span style="color:#333">=</span> scanner.<span style="color:#007">nextLine</span>();
 
                 <span style="color:#666;font-style:italic">// urob niečo s riadkom
 </span><span style="color:#666;font-style:italic"></span>
@@ -211,8 +211,8 @@ fiktívnej metódy inštancie <code>lineHandler</code> zatiaľ nenavrhnutej trie
 neho chceme. Naše želanie je „chcem triedu, ktorá mi spracuje riadok”.
 To bohate stačí na to, aby sme vedeli vytvoriť interfejs LineHandler,
 ktorý naše želanie špecifikuje v programovacom jazyku:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">interface</span> LineHandler {
-    <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">void</span> String <span style="color:#5ed;font-weight:bold">handle</span>(String <span style="color:#5ed;font-weight:bold">line</span>);
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">public interface </span>LineHandler {
+    <span style="color:#f00;background-color:#faa">public void String handle</span>(<span style="color:#f00;background-color:#faa">String line</span>);
 }</code></pre></div>
 <p>Naozaj tam nie je nič zložité – máme predpis pre triedu, ktorá spracuje
 riadok. Nevieme síce ako sa to spraví, ale v rámci triedy <code>FileUtils</code>,
@@ -231,10 +231,10 @@ použijeme nasledovne:</p>
 <p>V kóde je ešte jedna nejasnosť: odkiaľ sa zjavila premenná
 <code>lineHandler</code>? Prirodzené miesto, kde ju môžeme uviesť, je parameter
 metódy handleLines() v triede <code>FileUtils</code>.</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> FileUtils {
-    <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">void</span> handleLines(File <span style="color:#5ed;font-weight:bold">file</span>, LineHandler <span style="color:#5ed;font-weight:bold">lineHandler</span>)
-        <span style="color:#289;font-weight:bold">throws</span> <span style="color:#5ed;font-weight:bold">FileNotFoundException</span> 
-    {
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">public class </span>FileUtils {
+    <span style="color:#f00;background-color:#faa">public void </span>handleLines(<span style="color:#f00;background-color:#faa">File file</span>, <span style="color:#f00;background-color:#faa">LineHandler lineHandler</span>)
+        <span style="color:#f00;background-color:#faa">throws FileNotFoundException 
+</span><span style="color:#f00;background-color:#faa">    </span>{
     ... 
     }
 }</code></pre></div>
@@ -250,8 +250,8 @@ konkrétnych tried, ktoré budú implementovať interfejs <code>LineHandler</cod
 
 <p>Dajme si triviálny príklad, ktorý spraví presne to, čo kód na úplnom
 začiatku článku, čiže vypíše riadky na konzolu.</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> SysoutLineHandler <span style="color:#5ed;font-weight:bold">implements</span> LineHandler {
-    <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">void</span> handleLine(String <span style="color:#5ed;font-weight:bold">line</span>) {
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">public class SysoutLineHandler implements </span>LineHandler {
+    <span style="color:#f00;background-color:#faa">public void </span>handleLine(<span style="color:#f00;background-color:#faa">String line</span>) {
         System.<span style="color:#007">out</span>.<span style="color:#007">println</span>(line);
     }
 }</code></pre></div>
@@ -262,10 +262,10 @@ hovorí, <strong>ako</strong> sa s riadkom vysporiadame.</p>
 
 <p>Použitie v kóde je zjavné: stačí si vytvoriť testovaciu triedu s metódou
 main() a v nej zavolať:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">static</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">main</span>(String... <span style="color:#5ed;font-weight:bold">args</span>) {
-    FileUtils <span style="color:#5ed;font-weight:bold">fileUtils</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> FileUtils();
-    LineHandler <span style="color:#5ed;font-weight:bold">lineHandler</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> SysoutLineHandler();
-    File <span style="color:#5ed;font-weight:bold">file</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> File(<span style="background-color:#e0e0ff">&#34;data.txt&#34;</span>);
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">public static void main</span>(<span style="color:#f00;background-color:#faa">String... args</span>) {
+    <span style="color:#f00;background-color:#faa">FileUtils fileUtils </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> FileUtils();
+    <span style="color:#f00;background-color:#faa">LineHandler lineHandler </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> SysoutLineHandler();
+    <span style="color:#f00;background-color:#faa">File file </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> File(<span style="background-color:#e0e0ff">&#34;data.txt&#34;</span>);
 
     fileUtils.<span style="color:#007">handleLines</span>(file, lineHandler);
 }</code></pre></div>
@@ -286,8 +286,8 @@ súboru).</p>
 vytvoriť samostatnú triedu <code>UpperCaseStartingLineHandler</code>, ktorá
 implementuje interfejs <code>LineHandler</code>, vytvoriť jej inštanciu, ktorú
 použijeme ako argument v metóde FileUtils#handleLines():</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> UpperCaseStartingLineHandler <span style="color:#5ed;font-weight:bold">implements</span> LineHandler {
-    <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">void</span> handleLine(String <span style="color:#5ed;font-weight:bold">line</span>) {
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">public class UpperCaseStartingLineHandler implements </span>LineHandler {
+    <span style="color:#f00;background-color:#faa">public void </span>handleLine(<span style="color:#f00;background-color:#faa">String line</span>) {
         <span style="color:#289;font-weight:bold">if</span>(line.<span style="color:#007">length</span>() <span style="color:#333">&gt;</span> 1 
             <span style="color:#333">&amp;&amp;</span> Character.<span style="color:#007">isUpperCase</span>(line.<span style="color:#007">charAt</span>(0))) 
         {
@@ -297,10 +297,10 @@ použijeme ako argument v metóde FileUtils#handleLines():</p>
 }</code></pre></div>
 <p>Prepojenie inštancií je analogické ako v predošlej stati, rozdiel
 spočíva vo vytvorení inej inštancie <code>LineHandlera</code>.</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">static</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">main</span>(String... <span style="color:#5ed;font-weight:bold">args</span>) {
-    FileUtils <span style="color:#5ed;font-weight:bold">fileUtils</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> FileUtils();
-    LineHandler <span style="color:#5ed;font-weight:bold">lineHandler</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> UpperCaseStartingLineHandler();
-    File <span style="color:#5ed;font-weight:bold">file</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> File(<span style="background-color:#e0e0ff">&#34;data.txt&#34;</span>);
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">public static void main</span>(<span style="color:#f00;background-color:#faa">String... args</span>) {
+    <span style="color:#f00;background-color:#faa">FileUtils fileUtils </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> FileUtils();
+    <span style="color:#f00;background-color:#faa">LineHandler lineHandler </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> UpperCaseStartingLineHandler();
+    <span style="color:#f00;background-color:#faa">File file </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> File(<span style="background-color:#e0e0ff">&#34;data.txt&#34;</span>);
 
     fileUtils.<span style="color:#007">handleLines</span>(file, lineHandler);
 }</code></pre></div>
@@ -308,23 +308,23 @@ spočíva vo vytvorení inej inštancie <code>LineHandlera</code>.</p>
 
 <p>Na základe dvoch predlôh vieme vytvoriť aj tretí vzorový príklad, ktorý
 zistí počet riadkov v súbore.</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> LineCountingHandler <span style="color:#5ed;font-weight:bold">implements</span> LineHandler {
-    <span style="color:#289;font-weight:bold">private</span> <span style="color:#5ed;font-weight:bold">int</span> lines;
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">public class LineCountingHandler implements </span>LineHandler {
+    <span style="color:#f00;background-color:#faa">private int </span>lines;
 
-    <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">void</span> handleLine(String <span style="color:#5ed;font-weight:bold">line</span>) {
+    <span style="color:#f00;background-color:#faa">public void </span>handleLine(<span style="color:#f00;background-color:#faa">String line</span>) {
         lines<span style="color:#333">++</span>;
     }
 
-    <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">int</span> getLines() {
+    <span style="color:#f00;background-color:#faa">public int </span>getLines() {
         <span style="color:#289;font-weight:bold">return</span> lines;
     }
 }</code></pre></div>
 <p>V tomto prípade sme dodali navyše jeden <em>getter</em>, ktorým získame počet
 riadkov v súbore. Použitie je v tomto prípade opäť analogické:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">static</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">main</span>(String... <span style="color:#5ed;font-weight:bold">args</span>) {
-    FileUtils <span style="color:#5ed;font-weight:bold">fileUtils</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> FileUtils();
-    LineCountingHandler <span style="color:#5ed;font-weight:bold">lineHandler</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> LineCountingHandler();
-    File <span style="color:#5ed;font-weight:bold">file</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> File(<span style="background-color:#e0e0ff">&#34;data.txt&#34;</span>);
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">public static void main</span>(<span style="color:#f00;background-color:#faa">String... args</span>) {
+    <span style="color:#f00;background-color:#faa">FileUtils fileUtils </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> FileUtils();
+    <span style="color:#f00;background-color:#faa">LineCountingHandler lineHandler </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> LineCountingHandler();
+    <span style="color:#f00;background-color:#faa">File file </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> File(<span style="background-color:#e0e0ff">&#34;data.txt&#34;</span>);
     fileUtils.<span style="color:#007">handleLines</span>(file, lineHandler);
     
     System.<span style="color:#007">out</span>.<span style="color:#007">println</span>(lineHandler.<span style="color:#007">getLines</span>());
@@ -354,8 +354,8 @@ rozličnú funkcionalitu.</p>
 Javy. Bežným príkladom je výpis súborov a adresárov, ktoré sa nachádzajú
 v adresári, ktorý je možné dosiahnuť pomocou metódy
 <code>java.io.File\#listFiles()</code>. Chcete všetky súbory končiace sa na .mp3?</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">File <span style="color:#5ed;font-weight:bold">file</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> File(<span style="background-color:#e0e0ff">&#34;C:/Windows&#34;</span>);
-<span style="color:#289;font-weight:bold">for</span>(File <span style="color:#5ed;font-weight:bold">child</span> <span style="color:#333">:</span> file.<span style="color:#007">listFiles</span>()) {
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">File file </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> File(<span style="background-color:#e0e0ff">&#34;C:/Windows&#34;</span>);
+<span style="color:#289;font-weight:bold">for</span>(<span style="color:#f00;background-color:#faa">File child </span><span style="color:#333">:</span> file.<span style="color:#007">listFiles</span>()) {
     <span style="color:#289;font-weight:bold">if</span>(child.<span style="color:#007">getPath</span>().<span style="color:#007">endsWith</span>(<span style="background-color:#e0e0ff">&#34;.mp3&#34;</span>)) {
         System.<span style="color:#007">out</span>.<span style="color:#007">println</span>(child);
     }
@@ -371,15 +371,15 @@ ktoré potom dynamicky používame podľa toho, ako chceme vyfiltrovať
 súbory či podadresáre daného adresára.</p>
 
 <p>Ten istý príklad vieme napísať aj takto:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> Mp3Filter <span style="color:#5ed;font-weight:bold">implements</span> java.<span style="color:#007">io</span>.<span style="color:#007">FileFilter</span> {
-    <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">boolean</span> accept(File <span style="color:#5ed;font-weight:bold">pathname</span>) {
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">public class Mp3Filter implements </span>java.<span style="color:#007">io</span>.<span style="color:#007">FileFilter</span> {
+    <span style="color:#f00;background-color:#faa">public boolean </span>accept(<span style="color:#f00;background-color:#faa">File pathname</span>) {
         <span style="color:#289;font-weight:bold">return</span> pathname.<span style="color:#007">getPath</span>().<span style="color:#007">endsWith</span>(<span style="background-color:#e0e0ff">&#34;.mp3&#34;</span>);
     }
 }
 <span style="color:#666;font-style:italic">// ...
-</span><span style="color:#666;font-style:italic"></span>File <span style="color:#5ed;font-weight:bold">file</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> File(<span style="background-color:#e0e0ff">&#34;C:/Windows&#34;</span>);
-FileFilter <span style="color:#5ed;font-weight:bold">mp3Filter</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Mp3Filter();
-File[] <span style="color:#5ed;font-weight:bold">mp3Files</span> <span style="color:#333">=</span> file.<span style="color:#007">listFiles</span>(mp3Filter);</code></pre></div>
+</span><span style="color:#666;font-style:italic"></span><span style="color:#f00;background-color:#faa">File file </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> File(<span style="background-color:#e0e0ff">&#34;C:/Windows&#34;</span>);
+<span style="color:#f00;background-color:#faa">FileFilter mp3Filter </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Mp3Filter();
+<span style="color:#f00;background-color:#faa">File[] mp3Files </span><span style="color:#333">=</span> file.<span style="color:#007">listFiles</span>(mp3Filter);</code></pre></div>
 <p>Vo výslednom poli <code>mp3Files</code> budeme mať len tie súbory, ktoré spĺňajú
 podmienku v metóde <code>Mp3Filter#accept()</code>.</p>
 
@@ -396,15 +396,15 @@ súbor vráti true, ak ho treba ponechať vo výslednej kolekcii.</p>
 rozličné druhy kolekcie.)</p>
 
 <p>Pomocou interfejsu by sme to zapísali nasledovne:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">interface</span> Predicate<span style="color:#333">&lt;</span>T<span style="color:#333">&gt;</span> {
-    <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">boolean</span> evaluate(T <span style="color:#5ed;font-weight:bold">variable</span>);
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">public interface </span>Predicate<span style="color:#333">&lt;</span>T<span style="color:#333">&gt;</span> {
+    <span style="color:#f00;background-color:#faa">public boolean </span>evaluate(<span style="color:#f00;background-color:#faa">T variable</span>);
 }</code></pre></div>
 <p>Filtrujúca metóda, ktorá odstráni z kolekcie tie prvky, ktoré nespĺňajú
 pravdivostnú funkciu, by potom vyzerala nasledovne:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#333">&lt;</span>T<span style="color:#333">&gt;</span> <span style="color:#5ed;font-weight:bold">Collection</span><span style="color:#333">&lt;</span>T<span style="color:#333">&gt;</span> <span style="color:#5ed;font-weight:bold">filter</span>(Collection<span style="color:#333">&lt;</span>T<span style="color:#333">&gt;</span> <span style="color:#5ed;font-weight:bold">collection</span>, Predicate<span style="color:#333">&lt;</span>T<span style="color:#333">&gt;</span> <span style="color:#5ed;font-weight:bold">predicate</span>) {
-    Iterator<span style="color:#333">&lt;</span>T<span style="color:#333">&gt;</span> <span style="color:#5ed;font-weight:bold">iterator</span> <span style="color:#333">=</span> collection.<span style="color:#007">iterator</span>();
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#333">&lt;</span><span style="color:#f00;background-color:#faa">T&gt; Collection</span><span style="color:#333">&lt;</span><span style="color:#f00;background-color:#faa">T&gt; filter</span>(<span style="color:#f00;background-color:#faa">Collection&lt;T&gt; collection</span>, <span style="color:#f00;background-color:#faa">Predicate&lt;T&gt; predicate</span>) {
+    <span style="color:#f00;background-color:#faa">Iterator&lt;T&gt; iterator </span><span style="color:#333">=</span> collection.<span style="color:#007">iterator</span>();
     <span style="color:#289;font-weight:bold">while</span>(iterator.<span style="color:#007">hasNext</span>()) {
-        T <span style="color:#5ed;font-weight:bold">element</span> <span style="color:#333">=</span> iterator.<span style="color:#007">next</span>();
+        <span style="color:#f00;background-color:#faa">T element </span><span style="color:#333">=</span> iterator.<span style="color:#007">next</span>();
         <span style="color:#666;font-style:italic">// ak prvok nespĺňa pravdivostnú funkciu, vyhodíme ho
 </span><span style="color:#666;font-style:italic"></span>        <span style="color:#289;font-weight:bold">if</span>(<span style="color:#333">!</span>predicate.<span style="color:#007">evaluate</span>(element)) {
             iterator.<span style="color:#007">remove</span>();
@@ -417,18 +417,18 @@ ktorá sa má aplikovať na každý element v dátach.</p>
 
 <p>Ukážme si to na príklade – z danej množiny vráťme len párne čísla.
 Najprv si definujme triedu pre pravdivostnú podmienku „číslo je párne”:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> EvenNumberPredicate <span style="color:#5ed;font-weight:bold">implements</span> Predicate<span style="color:#333">&lt;</span>Integer<span style="color:#333">&gt;</span>() {
-    <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">boolean</span> evaluate(Integer <span style="color:#5ed;font-weight:bold">variable</span>) {
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">public class EvenNumberPredicate implements </span>Predicate<span style="color:#333">&lt;</span>Integer<span style="color:#333">&gt;</span>() {
+    <span style="color:#f00;background-color:#faa">public boolean </span>evaluate(<span style="color:#f00;background-color:#faa">Integer variable</span>) {
         <span style="color:#289;font-weight:bold">return</span> variable <span style="color:#333">%</span> 2 <span style="color:#333">==</span> 0;
     }
 }</code></pre></div>
 <p>Následne definujme vstupné dáta, na ktoré aplikujeme filter:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Set<span style="color:#333">&lt;</span>Integer<span style="color:#333">&gt;</span> <span style="color:#5ed;font-weight:bold">čísla</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> HashSet<span style="color:#333">&lt;</span>Integer<span style="color:#333">&gt;</span>();
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">Set&lt;Integer&gt; čísla </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> HashSet<span style="color:#333">&lt;</span>Integer<span style="color:#333">&gt;</span>();
 Collections.<span style="color:#007">addAll</span>(čísla, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
 
-Predicate<span style="color:#333">&lt;</span>Integer<span style="color:#333">&gt;</span> <span style="color:#5ed;font-weight:bold">filter</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> EvenNumberPredicate();
+<span style="color:#f00;background-color:#faa">Predicate&lt;Integer&gt; filter </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> EvenNumberPredicate();
 
-Collection<span style="color:#333">&lt;</span>Integer<span style="color:#333">&gt;</span> <span style="color:#5ed;font-weight:bold">párneČísla</span> <span style="color:#333">=</span> CollectionUtils.<span style="color:#007">filter</span>(čísla, filter);</code></pre></div>
+<span style="color:#f00;background-color:#faa">Collection&lt;Integer&gt; párneČísla </span><span style="color:#333">=</span> CollectionUtils.<span style="color:#007">filter</span>(čísla, filter);</code></pre></div>
 <p>Výmenou triedy, ktorá implementuje <code>Predicate</code>, môžeme dynamicky meniť
 filtračnú podmienku.</p>
 

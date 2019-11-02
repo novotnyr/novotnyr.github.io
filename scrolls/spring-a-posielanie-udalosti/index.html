@@ -78,23 +78,23 @@
 <h2 id="udalosť-event">Udalosť / Event</h2>
 
 <p>Je reprezentovaný triedou <code>org.springframework.context.ApplicationEvent</code>. Príkladom môže byť napr.</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> FileDownloadedEvent <span style="color:#5ed;font-weight:bold">extends</span> ApplicationEvent {
-  <span style="color:#289;font-weight:bold">private</span> <span style="color:#5ed;font-weight:bold">File</span> file;
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">public class FileDownloadedEvent extends </span>ApplicationEvent {
+  <span style="color:#f00;background-color:#faa">private File </span>file;
 
-  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">FileDownloadedEvent</span>(Object <span style="color:#5ed;font-weight:bold">source</span>) {
+  <span style="color:#f00;background-color:#faa">public FileDownloadedEvent</span>(<span style="color:#f00;background-color:#faa">Object source</span>) {
     <span style="color:#289;font-weight:bold">super</span>(source);
   }
 
-  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">FileDownloadedEvent</span>(Object <span style="color:#5ed;font-weight:bold">source</span>, File <span style="color:#5ed;font-weight:bold">file</span>) {
+  <span style="color:#f00;background-color:#faa">public FileDownloadedEvent</span>(<span style="color:#f00;background-color:#faa">Object source</span>, <span style="color:#f00;background-color:#faa">File file</span>) {
     <span style="color:#289;font-weight:bold">super</span>(source);
     <span style="color:#289;font-weight:bold">this</span>.<span style="color:#007">file</span> <span style="color:#333">=</span> file;
   }
 
-  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">File</span> getFile() {
+  <span style="color:#f00;background-color:#faa">public File </span>getFile() {
     <span style="color:#289;font-weight:bold">return</span> file;
   }
 
-  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">void</span> setFile(File <span style="color:#5ed;font-weight:bold">file</span>) {
+  <span style="color:#f00;background-color:#faa">public void </span>setFile(<span style="color:#f00;background-color:#faa">File file</span>) {
     <span style="color:#289;font-weight:bold">this</span>.<span style="color:#007">file</span> <span style="color:#333">=</span> file;
   } 
   
@@ -106,14 +106,14 @@
 <p>Registruje sa vo vysielači a v prípade, že nastane udalosť, môže na ňu reagovať. V Springu je reprezentovaný rozhraním <code>org.springframework.context.ApplicationListener</code>, ktoré môže poslucháč implementovať.</p>
 
 <p><code>ApplicationListener</code> má jedinú metódu, <code>onApplicationEvent()</code> s jediným parametrom <code>ApplicationEvent</code>. Táto metóda je zavolaná vysielačom v prípade, že nastala udalosť a v parametri je poskytnutý objekt udalosti. Poslucháč môže reagovať buď na všetky udalosti, alebo vhodným testom na typ niektoré z nich ignorovať.</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> SystemOutPrintlnListener <span style="color:#5ed;font-weight:bold">implements</span> ApplicationListener {
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">public class SystemOutPrintlnListener implements </span>ApplicationListener {
 
   <span style="color:#666;font-style:italic">/**
 </span><span style="color:#666;font-style:italic">   * @see org.springframework.context.ApplicationListener#onApplicationEvent(org.springframework.context.ApplicationEvent)
 </span><span style="color:#666;font-style:italic">   */</span>
-  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">void</span> onApplicationEvent(ApplicationEvent <span style="color:#5ed;font-weight:bold">anEvent</span>) {
-    <span style="color:#289;font-weight:bold">if</span>(anEvent <span style="color:#5ed;font-weight:bold">instanceof</span> FileDownloadedEvent) {
-      FileDownloadedEvent <span style="color:#5ed;font-weight:bold">event</span> <span style="color:#333">=</span> (FileDownloadedEvent) anEvent;
+  <span style="color:#f00;background-color:#faa">public void </span>onApplicationEvent(<span style="color:#f00;background-color:#faa">ApplicationEvent anEvent</span>) {
+    <span style="color:#289;font-weight:bold">if</span>(<span style="color:#f00;background-color:#faa">anEvent instanceof </span>FileDownloadedEvent) {
+      <span style="color:#f00;background-color:#faa">FileDownloadedEvent event </span><span style="color:#333">=</span> (FileDownloadedEvent) anEvent;
       System.<span style="color:#007">out</span>.<span style="color:#007">println</span>(event.<span style="color:#007">getFile</span>());
     }
   }   
@@ -126,7 +126,7 @@
 Tá má metódu <code>addApplicationListener()</code>, pomocou ktorej je možné pridať poslucháča.</p>
 
 <p>Samotné vysielanie udalostí sa realizuje zavolaním metódy <code>multicastEvent()</code>, kde sa v parametri poskytne objekt udalosti.</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">SimpleApplicationEventMulticaster <span style="color:#5ed;font-weight:bold">multicaster</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> SimpleApplicationEventMulticaster();
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">SimpleApplicationEventMulticaster multicaster </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> SimpleApplicationEventMulticaster();
 multicaster.<span style="color:#007">addApplicationListener</span>(<span style="color:#289;font-weight:bold">new</span> SystemOutPrintlnListener());
 <span style="color:#666;font-style:italic">//udalosť nastala v samotnom multicasteri, takže ho použijeme ako zdroj. Nie je to však nutné
 </span><span style="color:#666;font-style:italic"></span>multicaster.<span style="color:#007">multicastEvent</span>(<span style="color:#289;font-weight:bold">new</span> FileDownloadedEvent(multicaster, <span style="color:#289;font-weight:bold">new</span> File(<span style="background-color:#e0e0ff">&#34;C:/autoexec.bat&#34;</span>)));</code></pre></div>
@@ -139,14 +139,14 @@ multicaster.<span style="color:#007">addApplicationListener</span>(<span style="
 <p>Nastavenie poslucháča je možné urobiť pomocou metódy <code>setTaskExecutor()</code> na vysielači:</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">multicaster.<span style="color:#007">setTaskExecutor</span>(<span style="color:#289;font-weight:bold">new</span> SimpleAsyncTaskExecutor());</code></pre></div>
 <p>Môžeme napr. vyrobiť zámerne pomalého poslucháča:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> SlowListener <span style="color:#5ed;font-weight:bold">implements</span> ApplicationListener  {
-  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">void</span> onApplicationEvent(ApplicationEvent <span style="color:#5ed;font-weight:bold">anEvent</span>) {
-    <span style="color:#289;font-weight:bold">if</span>(anEvent <span style="color:#5ed;font-weight:bold">instanceof</span> FileDownloadedEvent) {
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">public class SlowListener implements </span>ApplicationListener  {
+  <span style="color:#f00;background-color:#faa">public void </span>onApplicationEvent(<span style="color:#f00;background-color:#faa">ApplicationEvent anEvent</span>) {
+    <span style="color:#289;font-weight:bold">if</span>(<span style="color:#f00;background-color:#faa">anEvent instanceof </span>FileDownloadedEvent) {
       <span style="color:#289;font-weight:bold">try</span> {
         System.<span style="color:#007">out</span>.<span style="color:#007">println</span>(<span style="background-color:#e0e0ff">&#34;Slow event start: &#34;</span> <span style="color:#333">+</span> <span style="color:#289;font-weight:bold">new</span> Date());
         Thread.<span style="color:#007">sleep</span>(5000);
         System.<span style="color:#007">out</span>.<span style="color:#007">println</span>(<span style="background-color:#e0e0ff">&#34;Slow event end: &#34;</span> <span style="color:#333">+</span> <span style="color:#289;font-weight:bold">new</span> Date());
-      } <span style="color:#289;font-weight:bold">catch</span> (InterruptedException <span style="color:#5ed;font-weight:bold">e</span>) {
+      } <span style="color:#289;font-weight:bold">catch</span> (<span style="color:#f00;background-color:#faa">InterruptedException e</span>) {
         e.<span style="color:#007">printStackTrace</span>();
       }
     }
@@ -171,7 +171,7 @@ multicaster.<span style="color:#007">addApplicationListener</span>(<span style="
   <span style="color:#070">&lt;bean</span> <span style="color:#007">class=</span><span style="background-color:#e0e0ff">&#34;sk.novotnyr.spring2.broadcast.SystemOutPrintlnListener&#34;</span> <span style="color:#070">/&gt;</span> 
 <span style="color:#070">&lt;/beans&gt;</span></code></pre></div>
 <p>Objekt aplikačného kontextu implementuje rozhranie, pomocou ktorého je možné odoslať všetkým poslucháčom danú udalosť. Slúži na to metóda <code>publishEvent()</code>.</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">ClassPathXmlApplicationContext <span style="color:#5ed;font-weight:bold">ctx</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> ClassPathXmlApplicationContext(<span style="background-color:#e0e0ff">&#34;appContext.xml&#34;</span>);
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">ClassPathXmlApplicationContext ctx </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> ClassPathXmlApplicationContext(<span style="background-color:#e0e0ff">&#34;appContext.xml&#34;</span>);
 ctx.<span style="color:#007">publishEvent</span>(<span style="color:#289;font-weight:bold">new</span> FileDownloadedEvent(ctx, <span style="color:#289;font-weight:bold">new</span> File(<span style="background-color:#e0e0ff">&#34;C:&#34;</span>)));</code></pre></div>
 <p>Udalosti sa v štandardnej implementácii posielajú synchrónne (pomocou triedy <code>ApplicationEventMulticaster</code>. Zmeniť implementáciu odosielateľa je možné deklarovaním beanu s identifikátorom <code>applicationEventMulticaster</code> v kontexte.</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#070">&lt;bean</span> <span style="color:#007">id=</span><span style="background-color:#e0e0ff">&#34;applicationEventMulticaster&#34;</span> 

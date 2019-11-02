@@ -237,21 +237,21 @@ File[] children = fileC.listFiles();
 
 <h3 id="algoritmus-v-jave-s-použitím-zásobníka">Algoritmus v Jave s použitím zásobníka</h3>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#666;font-style:italic">// vytvoríme zásobník
-</span><span style="color:#666;font-style:italic"></span>Stack<span style="color:#333">&lt;</span>File<span style="color:#333">&gt;</span> <span style="color:#5ed;font-weight:bold">zásobník</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Stack<span style="color:#333">&lt;</span>File<span style="color:#333">&gt;</span>();
+</span><span style="color:#666;font-style:italic"></span><span style="color:#f00;background-color:#faa">Stack&lt;File&gt; zásobník </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Stack<span style="color:#333">&lt;</span>File<span style="color:#333">&gt;</span>();
 <span style="color:#666;font-style:italic">// pridáme koreň do fronty
 </span><span style="color:#666;font-style:italic"></span>zásobník.<span style="color:#007">push</span>(root);
 
 <span style="color:#666;font-style:italic">//pokiaľ fronta nie je prázdna
 </span><span style="color:#666;font-style:italic"></span><span style="color:#289;font-weight:bold">while</span>(<span style="color:#333">!</span>zásobník.<span style="color:#007">isEmpty</span>()) {
     <span style="color:#666;font-style:italic">// vyberme uzol z vrcholu zásobníka
-</span><span style="color:#666;font-style:italic"></span>    File <span style="color:#5ed;font-weight:bold">file</span> <span style="color:#333">=</span> zásobník.<span style="color:#007">pop</span>();
+</span><span style="color:#666;font-style:italic"></span>    <span style="color:#f00;background-color:#faa">File file </span><span style="color:#333">=</span> zásobník.<span style="color:#007">pop</span>();
     <span style="color:#666;font-style:italic">// vybavme ho
 </span><span style="color:#666;font-style:italic"></span>    System.<span style="color:#007">out</span>.<span style="color:#007">println</span>(file);
     <span style="color:#666;font-style:italic">// potomkov zaradíme do fronty
 </span><span style="color:#666;font-style:italic"></span>    <span style="color:#289;font-weight:bold">if</span>(file.<span style="color:#007">isDirectory</span>()) {
-        File[] <span style="color:#5ed;font-weight:bold">children</span> <span style="color:#333">=</span> file.<span style="color:#007">listFiles</span>();
+        <span style="color:#f00;background-color:#faa">File[] children </span><span style="color:#333">=</span> file.<span style="color:#007">listFiles</span>();
         <span style="color:#666;font-style:italic">// hádžeme na vrchol zásobníka v opačnom poradí
-</span><span style="color:#666;font-style:italic"></span>        <span style="color:#289;font-weight:bold">for</span>(<span style="color:#66f;font-weight:bold">int</span> <span style="color:#5ed;font-weight:bold">i</span> <span style="color:#333">=</span> children.<span style="color:#007">length</span> <span style="color:#333">-</span> 1; i <span style="color:#333">&gt;=</span> 0; i<span style="color:#333">--</span>) {
+</span><span style="color:#666;font-style:italic"></span>        <span style="color:#289;font-weight:bold">for</span>(<span style="color:#f00;background-color:#faa">int i </span><span style="color:#333">=</span> children.<span style="color:#007">length</span> <span style="color:#333">-</span> 1; i <span style="color:#333">&gt;=</span> 0; i<span style="color:#333">--</span>) {
           	zásobník.<span style="color:#007">push</span>(children[i]);
         }       
     }
@@ -259,9 +259,9 @@ File[] children = fileC.listFiles();
 <h1 id="zabudovaný-algoritmus-v-jave">Zabudovaný algoritmus v Jave</h1>
 
 <p>Trieda <code>javax.swing.tree.DefaultMutableTreeNode</code> má medzi svojimi metódami tiež prehľadávanie do hĺbky. Na koreňovom uzle stačí zavolať <code>depthFirstEnumeration()</code>, ktorá vráti enumeráciu uzlov.</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Enumeration<span style="color:#333">&lt;</span>DefaultMutableTreeNode<span style="color:#333">&gt;</span> <span style="color:#5ed;font-weight:bold">bfsEnum</span> <span style="color:#333">=</span> root.<span style="color:#007">depthFirstEnumeration</span>();
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">Enumeration&lt;DefaultMutableTreeNode&gt; bfsEnum </span><span style="color:#333">=</span> root.<span style="color:#007">depthFirstEnumeration</span>();
 <span style="color:#289;font-weight:bold">while</span> (bfsEnum.<span style="color:#007">hasMoreElements</span>()) {
-  	DefaultMutableTreeNode <span style="color:#5ed;font-weight:bold">treeNode</span>  <span style="color:#333">=</span> bfsEnum.<span style="color:#007">nextElement</span>();
+  	<span style="color:#f00;background-color:#faa">DefaultMutableTreeNode treeNode  </span><span style="color:#333">=</span> bfsEnum.<span style="color:#007">nextElement</span>();
   	System.<span style="color:#007">out</span>.<span style="color:#007">println</span>(treeNode.<span style="color:#007">getUserObject</span>());
 }</code></pre></div>
 </main>

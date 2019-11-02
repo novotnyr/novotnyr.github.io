@@ -288,8 +288,8 @@ java.lang.NoClassDefFoundError: javax/servlet/ServletContextListener
 <p>zapne ladiace vypisy na standardny vystup.</p>
 
 <h3 id="testovacia-aplikacia">Testovacia aplikacia</h3>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> SSLTest {
-  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">static</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">main</span>(String[] <span style="color:#5ed;font-weight:bold">args</span>) <span style="color:#289;font-weight:bold">throws</span> <span style="color:#5ed;font-weight:bold">Exception</span> {
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">public class </span>SSLTest {
+  <span style="color:#f00;background-color:#faa">public static void main</span>(<span style="color:#f00;background-color:#faa">String[] args</span>) <span style="color:#f00;background-color:#faa">throws Exception </span>{
     System.<span style="color:#007">setProperty</span>(<span style="background-color:#e0e0ff">&#34;javax.net.debug&#34;</span>, <span style="background-color:#e0e0ff">&#34;all&#34;</span>);
     System.<span style="color:#007">out</span>.<span style="color:#007">println</span>(<span style="color:#289;font-weight:bold">new</span> URL(<span style="background-color:#e0e0ff">&#34;https://localhost:8443/&#34;</span>).<span style="color:#007">getContent</span>());
   }

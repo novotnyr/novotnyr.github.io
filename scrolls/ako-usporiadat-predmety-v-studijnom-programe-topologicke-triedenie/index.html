@@ -239,33 +239,33 @@ vypocitatelnost automaty
 <p>Implementácia prvku v Jave pozostáva z priamočiareho prepisu vyššie uvedeného algoritmu.</p>
 
 <p>Budeme však potrebovať navrhnúť dátovu štruktúru. Vytvorme si triedu uzla, <code>Node</code>, ktorý obsahuje popisok, množinu nasledovníkov (v podobe triedy <code>java.util.Set</code> a implementácie <code>java.util.HashSet</code>) a počet predchodcov. Kvôli jednoduchosti si dodáme metódy na zvýšenie a zníženie počtu predchodcov.</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> Uzol {
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">public class </span>Uzol {
   <span style="color:#666;font-style:italic">// popisok uzla
-</span><span style="color:#666;font-style:italic"></span>  <span style="color:#289;font-weight:bold">private</span> <span style="color:#5ed;font-weight:bold">String</span> nazov;
+</span><span style="color:#666;font-style:italic"></span>  <span style="color:#f00;background-color:#faa">private String </span>nazov;
   
   <span style="color:#666;font-style:italic">// množina nasledovníkov
-</span><span style="color:#666;font-style:italic"></span>  <span style="color:#289;font-weight:bold">private</span> <span style="color:#5ed;font-weight:bold">Set</span><span style="color:#333">&lt;</span>Uzol<span style="color:#333">&gt;</span> <span style="color:#5ed;font-weight:bold">nasledovníci</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> HashSet<span style="color:#333">&lt;</span>Uzol<span style="color:#333">&gt;</span>();
+</span><span style="color:#666;font-style:italic"></span>  <span style="color:#f00;background-color:#faa">private Set</span><span style="color:#333">&lt;</span><span style="color:#f00;background-color:#faa">Uzol&gt; nasledovníci </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> HashSet<span style="color:#333">&lt;</span>Uzol<span style="color:#333">&gt;</span>();
   
   <span style="color:#666;font-style:italic">// počet predchodcov
-</span><span style="color:#666;font-style:italic"></span>  <span style="color:#289;font-weight:bold">private</span> <span style="color:#5ed;font-weight:bold">int</span> početPredchodcov;
+</span><span style="color:#666;font-style:italic"></span>  <span style="color:#f00;background-color:#faa">private int </span>početPredchodcov;
   
   <span style="color:#666;font-style:italic">// konštruktor
-</span><span style="color:#666;font-style:italic"></span>  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">Uzol</span>(String <span style="color:#5ed;font-weight:bold">nazov</span>) {
+</span><span style="color:#666;font-style:italic"></span>  <span style="color:#f00;background-color:#faa">public Uzol</span>(<span style="color:#f00;background-color:#faa">String nazov</span>) {
     <span style="color:#289;font-weight:bold">this</span>.<span style="color:#007">nazov</span> <span style="color:#333">=</span> nazov;
   }
 
   <span style="color:#666;font-style:italic">// pridaj medzi nasledovníkov daný uzol
-</span><span style="color:#666;font-style:italic"></span>  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">void</span> pridajNasledovníka(Uzol <span style="color:#5ed;font-weight:bold">uzol</span>) {
+</span><span style="color:#666;font-style:italic"></span>  <span style="color:#f00;background-color:#faa">public void </span>pridajNasledovníka(<span style="color:#f00;background-color:#faa">Uzol uzol</span>) {
     <span style="color:#289;font-weight:bold">this</span>.<span style="color:#007">nasledovníci</span>.<span style="color:#007">add</span>(uzol);
   }
 
   <span style="color:#666;font-style:italic">// zvýši počet predchodcov o 1
-</span><span style="color:#666;font-style:italic"></span>  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">void</span> zvýšPočetPredchodcov() {
+</span><span style="color:#666;font-style:italic"></span>  <span style="color:#f00;background-color:#faa">public void </span>zvýšPočetPredchodcov() {
     <span style="color:#289;font-weight:bold">this</span>.<span style="color:#007">početPredchodcov</span><span style="color:#333">++</span>;
   }
 
   <span style="color:#666;font-style:italic">// zníži počet predchodcov o 1
-</span><span style="color:#666;font-style:italic"></span>  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">void</span> znížPočetPredchodcov() {
+</span><span style="color:#666;font-style:italic"></span>  <span style="color:#f00;background-color:#faa">public void </span>znížPočetPredchodcov() {
     <span style="color:#289;font-weight:bold">this</span>.<span style="color:#007">početPredchodcov</span><span style="color:#333">--</span>;    
   }
   
@@ -281,16 +281,16 @@ vypocitatelnost automaty
 <h2 id="budovanie-grafu-1">Budovanie grafu</h2>
 
 <p>Najprv implementujme metódu na pridanie dvojice do grafu:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">void</span> pridajDvojicu(String <span style="color:#5ed;font-weight:bold">prerekvizita</span>, String <span style="color:#5ed;font-weight:bold">predmet</span>) {
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">  <span style="color:#f00;background-color:#faa">public void </span>pridajDvojicu(<span style="color:#f00;background-color:#faa">String prerekvizita</span>, <span style="color:#f00;background-color:#faa">String predmet</span>) {
     <span style="color:#666;font-style:italic">// nájdi v grafe prvý uzol
-</span><span style="color:#666;font-style:italic"></span>    Uzol <span style="color:#5ed;font-weight:bold">uzolPrerekvizity</span> <span style="color:#333">=</span> hľadajPodľaNázvu(prerekvizita);
+</span><span style="color:#666;font-style:italic"></span>    <span style="color:#f00;background-color:#faa">Uzol uzolPrerekvizity </span><span style="color:#333">=</span> hľadajPodľaNázvu(prerekvizita);
     <span style="color:#666;font-style:italic">// ak prvý uzol nejestvuje, vytvor ho a pridaj do grafu
 </span><span style="color:#666;font-style:italic"></span>    <span style="color:#289;font-weight:bold">if</span>(uzolPrerekvizity <span style="color:#333">==</span> <span style="color:#289;font-weight:bold">null</span>) {
       uzolPrerekvizity <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Uzol(prerekvizita);
       uzly.<span style="color:#007">add</span>(uzolPrerekvizity);
     }
     <span style="color:#666;font-style:italic">// nájdi v grafe druhý uzol
-</span><span style="color:#666;font-style:italic"></span>    Uzol <span style="color:#5ed;font-weight:bold">uzolPredmetu</span> <span style="color:#333">=</span> hľadajPodľaNázvu(predmet);
+</span><span style="color:#666;font-style:italic"></span>    <span style="color:#f00;background-color:#faa">Uzol uzolPredmetu </span><span style="color:#333">=</span> hľadajPodľaNázvu(predmet);
     <span style="color:#666;font-style:italic">// ak druhý uzol nejestvuje, vytvor a pridaj ho do grafu
 </span><span style="color:#666;font-style:italic"></span>    <span style="color:#289;font-weight:bold">if</span>(uzolPredmetu <span style="color:#333">==</span> <span style="color:#289;font-weight:bold">null</span>) {
       uzolPredmetu <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Uzol(predmet);
@@ -302,9 +302,9 @@ vypocitatelnost automaty
 </span><span style="color:#666;font-style:italic"></span>    uzolPredmetu.<span style="color:#007">zvýšPočetPredchodcov</span>();
   }</code></pre></div>
 <p>Metóda <code>hľadajPodľaNázvu()</code> nájde v grafe uzol s daným popiskom. Ak taký uzol nejestvuje, vráti <code>null</code>.</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">protected</span> <span style="color:#5ed;font-weight:bold">Uzol</span> hľadajPodľaNázvu(String <span style="color:#5ed;font-weight:bold">nazov</span>) {
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">protected Uzol </span>hľadajPodľaNázvu(<span style="color:#f00;background-color:#faa">String nazov</span>) {
   <span style="color:#666;font-style:italic">// prechádzame uzly
-</span><span style="color:#666;font-style:italic"></span>  <span style="color:#289;font-weight:bold">for</span> (Uzol <span style="color:#5ed;font-weight:bold">uzol</span> <span style="color:#333">:</span> uzly) {
+</span><span style="color:#666;font-style:italic"></span>  <span style="color:#289;font-weight:bold">for</span> (<span style="color:#f00;background-color:#faa">Uzol uzol </span><span style="color:#333">:</span> uzly) {
     <span style="color:#666;font-style:italic">// ak sme našli uzol, končíme
 </span><span style="color:#666;font-style:italic"></span>    <span style="color:#289;font-weight:bold">if</span>(uzol.<span style="color:#007">getNazov</span>().<span style="color:#007">equals</span>(nazov)) {
       <span style="color:#289;font-weight:bold">return</span> uzol;
@@ -316,8 +316,8 @@ vypocitatelnost automaty
 <h2 id="topologické-triedenie-1">Topologické triedenie</h2>
 
 <p>Metóda pre topologické triedenie je jednoduchá:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">void</span> topologickeTriedenie() {
-  Uzol <span style="color:#5ed;font-weight:bold">uzolBezPredkov</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">null</span>;
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">public void </span>topologickeTriedenie() {
+  <span style="color:#f00;background-color:#faa">Uzol uzolBezPredkov </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">null</span>;
   <span style="color:#289;font-weight:bold">while</span>((uzolBezPredkov <span style="color:#333">=</span> hľadajUzolBezPredkov()) <span style="color:#333">!=</span> <span style="color:#289;font-weight:bold">null</span>) {
     System.<span style="color:#007">out</span>.<span style="color:#007">println</span>(uzolBezPredkov);
     odstráňUzol(uzolBezPredkov);     
@@ -327,8 +327,8 @@ vypocitatelnost automaty
   }
 }</code></pre></div>
 <p>Metóda <code>hľadajUzolBezPredkov()</code> slúži na nájdenie uzla bez predchodcov. Ako sme spomínali vyššie, stačí prejsť množinu uzlov a hľadať ten, ktorý má v príslušnej inštančnej premennej 0.</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">protected</span> <span style="color:#5ed;font-weight:bold">Uzol</span> hľadajUzolBezPredkov() {
-  <span style="color:#289;font-weight:bold">for</span> (Uzol <span style="color:#5ed;font-weight:bold">uzol</span> <span style="color:#333">:</span> uzly) {
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">protected Uzol </span>hľadajUzolBezPredkov() {
+  <span style="color:#289;font-weight:bold">for</span> (<span style="color:#f00;background-color:#faa">Uzol uzol </span><span style="color:#333">:</span> uzly) {
     <span style="color:#289;font-weight:bold">if</span>(uzol.<span style="color:#007">getPočetPredchodcov</span>() <span style="color:#333">==</span> 0) {
       <span style="color:#289;font-weight:bold">return</span> uzol;
     }
@@ -336,22 +336,22 @@ vypocitatelnost automaty
   <span style="color:#289;font-weight:bold">return</span> <span style="color:#289;font-weight:bold">null</span>;
 }</code></pre></div>
 <p>Ak taký uzol nájdeme, vyhodíme ho metódou <code>odstráňUzol()</code>. Tá sa postará o zrušenie uzlu z grafu (stačí ho vyhodiť z množiny uzlov) a o aktualizáciu počtu predchodcov u nasledovníkov.</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">protected</span> <span style="color:#5ed;font-weight:bold">void</span> odstráňUzol(Uzol <span style="color:#5ed;font-weight:bold">node</span>) {
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">protected void </span>odstráňUzol(<span style="color:#f00;background-color:#faa">Uzol node</span>) {
   <span style="color:#666;font-style:italic">// vyhoďme uzol z množiny uzlov v grafe
 </span><span style="color:#666;font-style:italic"></span>  uzly.<span style="color:#007">remove</span>(node);
   <span style="color:#666;font-style:italic">// pre každého nasledovníka zníž počet predchodcov
-</span><span style="color:#666;font-style:italic"></span>  <span style="color:#289;font-weight:bold">for</span> (Uzol <span style="color:#5ed;font-weight:bold">nasledovník</span><span style="color:#333">:</span> uzol.<span style="color:#007">getNasledovníci</span>()) {
+</span><span style="color:#666;font-style:italic"></span>  <span style="color:#289;font-weight:bold">for</span> (<span style="color:#f00;background-color:#faa">Uzol nasledovník</span><span style="color:#333">:</span> uzol.<span style="color:#007">getNasledovníci</span>()) {
     nasledovník.<span style="color:#007">znížPočetPredchodcov</span>();
   }
 }</code></pre></div>
 <p>Samotné spustenie programu je jednoduché. Dáta môžeme načítavať z textového súboru pomocou triedy <code>java.util.Scanner</code>. Postupne ich pridáme do grafu a na záver zavoláme metódu <code>topologicalSort</code>.</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">static</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">main</span>(String[] <span style="color:#5ed;font-weight:bold">args</span>) <span style="color:#289;font-weight:bold">throws</span> <span style="color:#5ed;font-weight:bold">FileNotFoundException</span> {
-  TopologickeTriedenie <span style="color:#5ed;font-weight:bold">topologickeTriedenie</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> TopologickeTriedenie();
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">public static void main</span>(<span style="color:#f00;background-color:#faa">String[] args</span>) <span style="color:#f00;background-color:#faa">throws FileNotFoundException </span>{
+  <span style="color:#f00;background-color:#faa">TopologickeTriedenie topologickeTriedenie </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> TopologickeTriedenie();
 
-  Scanner <span style="color:#5ed;font-weight:bold">scanner</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Scanner(<span style="color:#289;font-weight:bold">new</span> File(<span style="background-color:#e0e0ff">&#34;vstup.txt&#34;</span>));
+  <span style="color:#f00;background-color:#faa">Scanner scanner </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Scanner(<span style="color:#289;font-weight:bold">new</span> File(<span style="background-color:#e0e0ff">&#34;vstup.txt&#34;</span>));
   <span style="color:#289;font-weight:bold">while</span>(scanner.<span style="color:#007">hasNextLine</span>()) {
-    String <span style="color:#5ed;font-weight:bold">line</span> <span style="color:#333">=</span> scanner.<span style="color:#007">nextLine</span>();
-    String[] <span style="color:#5ed;font-weight:bold">items</span> <span style="color:#333">=</span> line.<span style="color:#007">split</span>(<span style="background-color:#e0e0ff">&#34; &#34;</span>);
+    <span style="color:#f00;background-color:#faa">String line </span><span style="color:#333">=</span> scanner.<span style="color:#007">nextLine</span>();
+    <span style="color:#f00;background-color:#faa">String[] items </span><span style="color:#333">=</span> line.<span style="color:#007">split</span>(<span style="background-color:#e0e0ff">&#34; &#34;</span>);
     <span style="color:#289;font-weight:bold">if</span>(items.<span style="color:#007">length</span> <span style="color:#333">!=</span> 2) {
       System.<span style="color:#007">err</span>.<span style="color:#007">println</span>(<span style="background-color:#e0e0ff">&#34;Nedostatok dát na riadku: \n  &#34;</span> <span style="color:#333">+</span> line);
     }

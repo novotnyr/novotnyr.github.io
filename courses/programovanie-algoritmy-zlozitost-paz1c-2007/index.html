@@ -459,8 +459,8 @@ begin
   writeln('Ahoj svet');
 end.
 </code></pre>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> AhojSvet
-  <span style="color:#5ed;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">static</span> <span style="color:#5ed;font-weight:bold">void</span> main(String[] <span style="color:#5ed;font-weight:bold">args</span>) {
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">public class AhojSvet
+</span><span style="color:#f00;background-color:#faa">  public static void </span>main(<span style="color:#f00;background-color:#faa">String[] args</span>) {
     System.<span style="color:#007">out</span>.<span style="color:#007">println</span>(<span style="background-color:#e0e0ff">&#34;Ahoj svet&#34;</span>);
   }
 }</code></pre></div>
@@ -474,9 +474,9 @@ begin
   end;
 end.
 </code></pre>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> AhojSvet
-  <span style="color:#5ed;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">static</span> <span style="color:#5ed;font-weight:bold">void</span> main(String[] <span style="color:#5ed;font-weight:bold">args</span>) {
-    <span style="color:#289;font-weight:bold">for</span>(<span style="color:#66f;font-weight:bold">int</span> <span style="color:#5ed;font-weight:bold">i</span> <span style="color:#333">=</span> 0; i <span style="color:#333">&lt;</span> 20; i<span style="color:#333">++</span>) {
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">public class AhojSvet
+</span><span style="color:#f00;background-color:#faa">  public static void </span>main(<span style="color:#f00;background-color:#faa">String[] args</span>) {
+    <span style="color:#289;font-weight:bold">for</span>(<span style="color:#f00;background-color:#faa">int i </span><span style="color:#333">=</span> 0; i <span style="color:#333">&lt;</span> 20; i<span style="color:#333">++</span>) {
       System.<span style="color:#007">out</span>.<span style="color:#007">println</span>(<span style="background-color:#e0e0ff">&#34;Budem si pisat domace ulohy&#34;</span>);
     }
   }
@@ -503,7 +503,7 @@ while a &gt;= 0 do begin
   a := a - 1;
 end;
 </code></pre>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66f;font-weight:bold">int</span> <span style="color:#5ed;font-weight:bold">a</span> <span style="color:#333">=</span> 25;
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">int a </span><span style="color:#333">=</span> 25;
 <span style="color:#289;font-weight:bold">while</span>(a <span style="color:#333">&gt;</span> 0) {
   System.<span style="color:#007">out</span>.<span style="color:#007">println</span>(a);
   a<span style="color:#333">--</span>;
@@ -529,18 +529,18 @@ begin
   korene(2, 15, 5);
 end.
 </code></pre>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> Rovnica {
-  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">static</span> <span style="color:#66f;font-weight:bold">int</span> <span style="color:#5ed;font-weight:bold">diskriminant</span>(<span style="color:#66f;font-weight:bold">int</span> <span style="color:#5ed;font-weight:bold">a</span>, <span style="color:#66f;font-weight:bold">int</span> <span style="color:#5ed;font-weight:bold">b</span>, <span style="color:#66f;font-weight:bold">int</span> <span style="color:#5ed;font-weight:bold">c</span>) {
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">public class </span>Rovnica {
+  <span style="color:#f00;background-color:#faa">public static int diskriminant</span>(<span style="color:#f00;background-color:#faa">int a</span>, <span style="color:#f00;background-color:#faa">int b</span>, <span style="color:#f00;background-color:#faa">int c</span>) {
     <span style="color:#289;font-weight:bold">return</span> (b <span style="color:#333">*</span> b) <span style="color:#333">-</span> (4 <span style="color:#333">*</span> a <span style="color:#333">*</span> c);
   }
 
-  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">static</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">korene</span>(<span style="color:#66f;font-weight:bold">int</span> <span style="color:#5ed;font-weight:bold">a</span>, <span style="color:#66f;font-weight:bold">int</span> <span style="color:#5ed;font-weight:bold">b</span>, <span style="color:#66f;font-weight:bold">int</span> <span style="color:#5ed;font-weight:bold">c</span>) {
-    <span style="color:#66f;font-weight:bold">int</span> <span style="color:#5ed;font-weight:bold">d</span> <span style="color:#333">=</span> diskriminant(a, b, c);
+  <span style="color:#f00;background-color:#faa">public static void korene</span>(<span style="color:#f00;background-color:#faa">int a</span>, <span style="color:#f00;background-color:#faa">int b</span>, <span style="color:#f00;background-color:#faa">int c</span>) {
+    <span style="color:#f00;background-color:#faa">int d </span><span style="color:#333">=</span> diskriminant(a, b, c);
     System.<span style="color:#007">out</span>.<span style="color:#007">println</span>( (<span style="color:#333">-</span>b <span style="color:#333">+</span> Math.<span style="color:#007">sqrt</span>(d)) <span style="color:#333">/</span> (2 <span style="color:#333">*</span> a) );
     System.<span style="color:#007">out</span>.<span style="color:#007">println</span>( (<span style="color:#333">-</span>b <span style="color:#333">-</span> Math.<span style="color:#007">sqrt</span>(d)) <span style="color:#333">/</span> (2 <span style="color:#333">*</span> a) );
   }
 
-  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">static</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">main</span>(String[] <span style="color:#5ed;font-weight:bold">args</span>) {
+  <span style="color:#f00;background-color:#faa">public static void main</span>(<span style="color:#f00;background-color:#faa">String[] args</span>) {
     korene(2, 15, 5);
   }
 }</code></pre></div>
@@ -578,7 +578,7 @@ Navrhnite pre tento informačný systém triedy, uveďte a slovne popíšte ich 
 
 <ol>
 <li><p>Majme riadok</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66f;font-weight:bold">int</span>[] <span style="color:#5ed;font-weight:bold">x</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> <span style="color:#66f;font-weight:bold">int</span>[25];</code></pre></div>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">int[] x </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> <span style="color:#66f;font-weight:bold">int</span>[25];</code></pre></div>
 <p>Ktoré z tvrdení budú platiť po vykonaní tohto riadku?</p></li>
 </ol>
 
@@ -594,8 +594,8 @@ Navrhnite pre tento informačný systém triedy, uveďte a slovne popíšte ich 
 
 <ol>
 <li><p>Majme triedu</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> Trieda {
-<span style="color:#66f;font-weight:bold">float</span> <span style="color:#5ed;font-weight:bold">rátaj</span>(<span style="color:#66f;font-weight:bold">float</span> <span style="color:#5ed;font-weight:bold">a</span>, <span style="color:#66f;font-weight:bold">float</span> <span style="color:#5ed;font-weight:bold">b</span>) { }
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">public class </span>Trieda {
+<span style="color:#f00;background-color:#faa">float rátaj</span>(<span style="color:#f00;background-color:#faa">float a</span>, <span style="color:#f00;background-color:#faa">float b</span>) { }
 <span style="color:#666;font-style:italic">// sem príde metóda
 </span><span style="color:#666;font-style:italic"></span>}</code></pre></div>
 <p>Ktorá z nasledovných metód by môže byť uvedená v triede namiesto komentára a prečo?
@@ -610,23 +610,23 @@ A. <code>int rátaj(int a, int b)</code></p></li>
 
 <ol>
 <li><p>Majme nasledovné triedy (každá v samostatnom súbore):</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> Rodič {
-<span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">void</span> metóda(<span style="color:#66f;font-weight:bold">int</span> <span style="color:#5ed;font-weight:bold">i</span>) {
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">public class </span>Rodič {
+<span style="color:#f00;background-color:#faa">public void </span>metóda(<span style="color:#f00;background-color:#faa">int i</span>) {
 System.<span style="color:#007">out</span>.<span style="color:#007">print</span>(<span style="background-color:#e0e0ff">&#34;Rodič &#34;</span>
   <span style="color:#333">+</span> i);
 }
 }
-<span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> Dedič <span style="color:#5ed;font-weight:bold">extends</span> Rodič {
-<span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">void</span> metóda(<span style="color:#66f;font-weight:bold">int</span> <span style="color:#5ed;font-weight:bold">j</span>) {
+<span style="color:#f00;background-color:#faa">public class Dedič extends </span>Rodič {
+<span style="color:#f00;background-color:#faa">public void </span>metóda(<span style="color:#f00;background-color:#faa">int j</span>) {
 System.<span style="color:#007">out</span>.<span style="color:#007">print</span>(<span style="background-color:#e0e0ff">&#34;Dedič &#34;</span> <span style="color:#333">+</span> j);
 }
-<span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">void</span> metóda(String <span style="color:#5ed;font-weight:bold">s</span>) {
+<span style="color:#f00;background-color:#faa">public void </span>metóda(<span style="color:#f00;background-color:#faa">String s</span>) {
 System.<span style="color:#007">out</span>.<span style="color:#007">print</span>(<span style="background-color:#e0e0ff">&#34;Mám &#34;</span> <span style="color:#333">+</span> s);
 }
-<span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">static</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">main</span>(
-String <span style="color:#5ed;font-weight:bold">args</span>[]) {
-Rodič <span style="color:#5ed;font-weight:bold">b1</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Rodič()
-Rodič <span style="color:#5ed;font-weight:bold">b2</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Dedič();
+<span style="color:#f00;background-color:#faa">public static void main</span>(
+<span style="color:#f00;background-color:#faa">String args</span>[]) {
+<span style="color:#f00;background-color:#faa">Rodič b1 </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Rodič()
+<span style="color:#f00;background-color:#faa">Rodič b2 </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Dedič();
 b1.<span style="color:#007">metóda</span>(5);
 b2.<span style="color:#007">metóda</span>(6);
 }
@@ -646,9 +646,9 @@ b2.<span style="color:#007">metóda</span>(6);
 
 <ol>
 <li><p>Majme nasledovnú triedu</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> Test <span style="color:#5ed;font-weight:bold">extends</span> Rodič {
-<span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">Test</span>(<span style="color:#66f;font-weight:bold">int</span> <span style="color:#5ed;font-weight:bold">j</span>) {   }
-<span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">Test</span>(<span style="color:#66f;font-weight:bold">int</span> <span style="color:#5ed;font-weight:bold">j</span>, <span style="color:#66f;font-weight:bold">int</span> <span style="color:#5ed;font-weight:bold">k</span>) { 
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">public class Test extends </span>Rodič {
+<span style="color:#f00;background-color:#faa">public Test</span>(<span style="color:#f00;background-color:#faa">int j</span>) {   }
+<span style="color:#f00;background-color:#faa">public Test</span>(<span style="color:#f00;background-color:#faa">int j</span>, <span style="color:#f00;background-color:#faa">int k</span>) { 
 <span style="color:#289;font-weight:bold">super</span>(j, k);
 }
 }</code></pre></div>
@@ -676,17 +676,17 @@ b2.<span style="color:#007">metóda</span>(6);
 <p>D. Všetko sa skompiluje správne. Po zavolaní konštruktora triedy <code>Zebra</code> sa vypíše chybové hlásenie.</p>
 
 <p>E. Všetko sa skompiluje správne a spustí sa správne.</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">class</span> <span style="color:#5ed;font-weight:bold">Zviera</span> {
-  <span style="color:#66f;font-weight:bold">float</span> <span style="color:#5ed;font-weight:bold">váha</span>;
-  Zviera(<span style="color:#66f;font-weight:bold">float</span> <span style="color:#5ed;font-weight:bold">váha</span>) {
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">class Zviera </span>{
+  <span style="color:#f00;background-color:#faa">float váha</span>;
+  Zviera(<span style="color:#f00;background-color:#faa">float váha</span>) {
     <span style="color:#289;font-weight:bold">this</span>.<span style="color:#007">váha</span> <span style="color:#333">=</span> váha;
   }
 }
-<span style="color:#289;font-weight:bold">class</span> <span style="color:#5ed;font-weight:bold">Zebra</span> <span style="color:#289;font-weight:bold">extends</span> <span style="color:#5ed;font-weight:bold">Zviera</span> {
-  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">static</span>
-  <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">main</span>(String[] <span style="color:#5ed;font-weight:bold">args</span>) {
-    Zviera <span style="color:#5ed;font-weight:bold">a</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Zviera(222.<span style="color:#007">2f</span>);
-    Zebra <span style="color:#5ed;font-weight:bold">z</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Zebra();
+<span style="color:#f00;background-color:#faa">class Zebra extends Zviera </span>{
+  <span style="color:#f00;background-color:#faa">public static
+</span><span style="color:#f00;background-color:#faa">  void main</span>(<span style="color:#f00;background-color:#faa">String[] args</span>) {
+    <span style="color:#f00;background-color:#faa">Zviera a </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Zviera(222.<span style="color:#007">2f</span>);
+    <span style="color:#f00;background-color:#faa">Zebra z </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Zebra();
   }
 }</code></pre></div>
 </main>

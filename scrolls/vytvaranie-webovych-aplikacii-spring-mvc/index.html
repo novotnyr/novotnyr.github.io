@@ -79,25 +79,25 @@
 <h1 id="doménové-objekty-webovej-aplikácie">Doménové objekty webovej aplikácie</h1>
 
 <p>Trieda študenta je klasický Java bean:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> Student {
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">public class </span>Student {
   <span style="color:#666;font-style:italic">/**
 </span><span style="color:#666;font-style:italic">   * Id študenta.
 </span><span style="color:#666;font-style:italic">   */</span>
-  <span style="color:#289;font-weight:bold">private</span> <span style="color:#5ed;font-weight:bold">Long</span> id;
+  <span style="color:#f00;background-color:#faa">private Long </span>id;
   <span style="color:#666;font-style:italic">/**
 </span><span style="color:#666;font-style:italic">   * Krstné meno študenta.
 </span><span style="color:#666;font-style:italic">   */</span>
-  <span style="color:#289;font-weight:bold">private</span> <span style="color:#5ed;font-weight:bold">String</span> firstName;
+  <span style="color:#f00;background-color:#faa">private String </span>firstName;
   <span style="color:#666;font-style:italic">/**
 </span><span style="color:#666;font-style:italic">   * Priezvisko študenta. 
 </span><span style="color:#666;font-style:italic">   */</span>
-  <span style="color:#289;font-weight:bold">private</span> <span style="color:#5ed;font-weight:bold">String</span> lastName;
+  <span style="color:#f00;background-color:#faa">private String </span>lastName;
 
-  <span style="color:#289;font-weight:bold">private</span> <span style="color:#5ed;font-weight:bold">int</span> year;
+  <span style="color:#f00;background-color:#faa">private int </span>year;
   <span style="color:#666;font-style:italic">/**
 </span><span style="color:#666;font-style:italic">   * Dátum narodenia študenta.
 </span><span style="color:#666;font-style:italic">   */</span>
-  <span style="color:#289;font-weight:bold">private</span> <span style="color:#5ed;font-weight:bold">Date</span> birthDate;
+  <span style="color:#f00;background-color:#faa">private Date </span>birthDate;
 
 
   <span style="color:#666;font-style:italic">/* gettre, settre, konštruktory, hashCode() a equals() */</span>
@@ -213,21 +213,21 @@ V adresári <code>WEB-INF/lib</code> by sa mal nachádzať:</p>
 <h1 id="zobrazenie-študenta">Zobrazenie študenta</h1>
 
 <p>Ako prvú vec v našej webovej aplikácii vyrobíme stránku, ktorá zobrazí stále rovnakého študenta. Vyrobme si teda triedu s príslušnou metódou:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> DisplayStudent {
-  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">Student</span> getStudent() {
-    Student <span style="color:#5ed;font-weight:bold">student</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Student(1L, <span style="background-color:#e0e0ff">&#34;John&#34;</span>, <span style="background-color:#e0e0ff">&#34;Doe&#34;</span>, 1, <span style="color:#289;font-weight:bold">new</span> Date(87, 4, 2)));
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">public class </span>DisplayStudent {
+  <span style="color:#f00;background-color:#faa">public Student </span>getStudent() {
+    <span style="color:#f00;background-color:#faa">Student student </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Student(1L, <span style="background-color:#e0e0ff">&#34;John&#34;</span>, <span style="background-color:#e0e0ff">&#34;Doe&#34;</span>, 1, <span style="color:#289;font-weight:bold">new</span> Date(87, 4, 2)));
     <span style="color:#289;font-weight:bold">return</span> student;
   }
 }</code></pre></div>
 <p>Táto trieda nie je zatiaľ ničím výnimočná. Tú správnu šťavu jej dajú až anotácie, ktorými ju okoreníme.</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">package</span> <span style="color:#5ed;font-weight:bold">sk</span>.<span style="color:#007">spring</span>.<span style="color:#007">mvc</span>;
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">package sk</span>.<span style="color:#007">spring</span>.<span style="color:#007">mvc</span>;
 
 <span style="color:#555;font-weight:bold">@Controller</span>
-<span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> DisplayStudent {
+<span style="color:#f00;background-color:#faa">public class </span>DisplayStudent {
 
   <span style="color:#555;font-weight:bold">@RequestMapping</span>(<span style="background-color:#e0e0ff">&#34;/displayStudent.do&#34;</span>)
-  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">Student</span> getStudent() {
-    Student <span style="color:#5ed;font-weight:bold">student</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Student(1L, <span style="background-color:#e0e0ff">&#34;John&#34;</span>, <span style="background-color:#e0e0ff">&#34;Doe&#34;</span>, 1, <span style="color:#289;font-weight:bold">new</span> Date(87, 4, 2)));
+  <span style="color:#f00;background-color:#faa">public Student </span>getStudent() {
+    <span style="color:#f00;background-color:#faa">Student student </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Student(1L, <span style="background-color:#e0e0ff">&#34;John&#34;</span>, <span style="background-color:#e0e0ff">&#34;Doe&#34;</span>, 1, <span style="color:#289;font-weight:bold">new</span> Date(87, 4, 2)));
     <span style="color:#289;font-weight:bold">return</span> student;
   }
 }</code></pre></div>
@@ -297,10 +297,10 @@ Ukážeme si len najjednoduchší prípad, kde budeme logické označenie viewu 
 
 <p>V ďalšom kroku si upravíme kontrolér tak, aby umožňoval zobrazenie študenta na základe užívateľom dodaného identifikátora. Ešte predtým si však vytvorme triedu, ktorá bude simulovať relačnú databázu, v ktorej budú uložení študenti.</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#555;font-weight:bold">@Component</span>
-<span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> Database {
-  <span style="color:#289;font-weight:bold">private</span> <span style="color:#5ed;font-weight:bold">List</span><span style="color:#333">&lt;</span>Student<span style="color:#333">&gt;</span> <span style="color:#5ed;font-weight:bold">students</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> ArrayList<span style="color:#333">&lt;</span>Student<span style="color:#333">&gt;</span>();
+<span style="color:#f00;background-color:#faa">public class </span>Database {
+  <span style="color:#f00;background-color:#faa">private List</span><span style="color:#333">&lt;</span><span style="color:#f00;background-color:#faa">Student&gt; students </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> ArrayList<span style="color:#333">&lt;</span>Student<span style="color:#333">&gt;</span>();
   
-  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">Database</span>() {
+  <span style="color:#f00;background-color:#faa">public Database</span>() {
     students.<span style="color:#007">add</span>(
       <span style="color:#289;font-weight:bold">new</span> Student(1L, <span style="background-color:#e0e0ff">&#34;John&#34;</span>, <span style="background-color:#e0e0ff">&#34;Doe&#34;</span>, 1, <span style="color:#289;font-weight:bold">new</span> Date(87, 4, 2)));
     students.<span style="color:#007">add</span>(
@@ -319,7 +319,7 @@ Ukážeme si len najjednoduchší prípad, kde budeme logické označenie viewu 
 </span><span style="color:#666;font-style:italic">   * Vráti zoznam všetkých študentov v databáze. Zoznam
 </span><span style="color:#666;font-style:italic">   * je nemeniteľný.
 </span><span style="color:#666;font-style:italic">   */</span>
-  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">List</span><span style="color:#333">&lt;</span>Student<span style="color:#333">&gt;</span> <span style="color:#5ed;font-weight:bold">listStudents</span>() {
+  <span style="color:#f00;background-color:#faa">public List</span><span style="color:#333">&lt;</span><span style="color:#f00;background-color:#faa">Student&gt; listStudents</span>() {
     <span style="color:#289;font-weight:bold">return</span> Collections.<span style="color:#007">unmodifiableList</span>(students);
   }
   
@@ -327,8 +327,8 @@ Ukážeme si len najjednoduchší prípad, kde budeme logické označenie viewu 
 </span><span style="color:#666;font-style:italic">   * Nájde v databáze študenta s daným identifikátorom. Ak
 </span><span style="color:#666;font-style:italic">   * sa taký študent nenájde, vráti &lt;code&gt;null&lt;/code&gt;.
 </span><span style="color:#666;font-style:italic">   */</span>
-  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">Student</span> findById(Long <span style="color:#5ed;font-weight:bold">id</span>) {
-    <span style="color:#289;font-weight:bold">for</span> (Student <span style="color:#5ed;font-weight:bold">student</span> <span style="color:#333">:</span> students) {
+  <span style="color:#f00;background-color:#faa">public Student </span>findById(<span style="color:#f00;background-color:#faa">Long id</span>) {
+    <span style="color:#289;font-weight:bold">for</span> (<span style="color:#f00;background-color:#faa">Student student </span><span style="color:#333">:</span> students) {
       <span style="color:#289;font-weight:bold">if</span>(student.<span style="color:#007">getId</span>().<span style="color:#007">equals</span>(id)) {
         <span style="color:#289;font-weight:bold">return</span> student;
       }
@@ -345,13 +345,13 @@ Ukážeme si len najjednoduchší prípad, kde budeme logické označenie viewu 
 </span><span style="color:#666;font-style:italic">   * 
 </span><span style="color:#666;font-style:italic">   * @param student
 </span><span style="color:#666;font-style:italic">   */</span>
-  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">void</span> saveOrUpdate(Student <span style="color:#5ed;font-weight:bold">student</span>) {
+  <span style="color:#f00;background-color:#faa">public void </span>saveOrUpdate(<span style="color:#f00;background-color:#faa">Student student</span>) {
     <span style="color:#289;font-weight:bold">if</span>(student.<span style="color:#007">getId</span>() <span style="color:#333">==</span> <span style="color:#289;font-weight:bold">null</span>) {
       student.<span style="color:#007">setId</span>(<span style="color:#289;font-weight:bold">new</span> Date().<span style="color:#007">getTime</span>());
       students.<span style="color:#007">add</span>(student);
       <span style="color:#289;font-weight:bold">return</span>;
     }
-    Student <span style="color:#5ed;font-weight:bold">dbStudent</span> <span style="color:#333">=</span> findById(student.<span style="color:#007">getId</span>());
+    <span style="color:#f00;background-color:#faa">Student dbStudent </span><span style="color:#333">=</span> findById(student.<span style="color:#007">getId</span>());
     students.<span style="color:#007">remove</span>(dbStudent);
     students.<span style="color:#007">add</span>(student);
   }
@@ -361,8 +361,8 @@ Ukážeme si len najjednoduchší prípad, kde budeme logické označenie viewu 
 </span><span style="color:#666;font-style:italic">   * Inštancia v parametri nemusí mať vyplnené všetky údaje, stačí,
 </span><span style="color:#666;font-style:italic">   * keď má vyplnený identifikátor.
 </span><span style="color:#666;font-style:italic">   */</span> 
-  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">void</span> removeStudent(Student <span style="color:#5ed;font-weight:bold">student</span>) {
-    Student <span style="color:#5ed;font-weight:bold">dbStudent</span> <span style="color:#333">=</span> findById(student.<span style="color:#007">getId</span>());
+  <span style="color:#f00;background-color:#faa">public void </span>removeStudent(<span style="color:#f00;background-color:#faa">Student student</span>) {
+    <span style="color:#f00;background-color:#faa">Student dbStudent </span><span style="color:#333">=</span> findById(student.<span style="color:#007">getId</span>());
     <span style="color:#289;font-weight:bold">if</span>(dbStudent <span style="color:#333">!=</span> <span style="color:#289;font-weight:bold">null</span>) {
       students.<span style="color:#007">remove</span>(dbStudent);
     }
@@ -372,12 +372,12 @@ Ukážeme si len najjednoduchší prípad, kde budeme logické označenie viewu 
 
 <p>Upravme si teraz kontrolér tak, aby jeho metóda mala medzi parametrami identifikátor a vracala príslušného študenta.</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#555;font-weight:bold">@Controller</span>
-<span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> DisplayStudent {
+<span style="color:#f00;background-color:#faa">public class </span>DisplayStudent {
   <span style="color:#555;font-weight:bold">@Autowired</span>
-  <span style="color:#289;font-weight:bold">private</span> <span style="color:#5ed;font-weight:bold">Database</span> database;
+  <span style="color:#f00;background-color:#faa">private Database </span>database;
 
   <span style="color:#555;font-weight:bold">@RequestMapping</span>(<span style="background-color:#e0e0ff">&#34;/displayStudent.do&#34;</span>)
-  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">Student</span> getStudent(Long <span style="color:#5ed;font-weight:bold">id</span>) {
+  <span style="color:#f00;background-color:#faa">public Student </span>getStudent(<span style="color:#f00;background-color:#faa">Long id</span>) {
     <span style="color:#289;font-weight:bold">return</span> database.<span style="color:#007">findById</span>(id);
   }
 }</code></pre></div>
@@ -423,13 +423,13 @@ Ukážeme si len najjednoduchší prípad, kde budeme logické označenie viewu 
 
 <p>Kontrolér sa nebude líšiť od toho predošlého - rozdielom bude návratová hodnota.</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#555;font-weight:bold">@Controller</span>
-<span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> ListStudents {
+<span style="color:#f00;background-color:#faa">public class </span>ListStudents {
   <span style="color:#555;font-weight:bold">@Autowired</span>
-  <span style="color:#289;font-weight:bold">private</span> <span style="color:#5ed;font-weight:bold">Database</span> database;
+  <span style="color:#f00;background-color:#faa">private Database </span>database;
   
   <span style="color:#555;font-weight:bold">@RequestMapping</span>(<span style="background-color:#e0e0ff">&#34;/listStudents.do&#34;</span>)
-  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">List</span><span style="color:#333">&lt;</span>Student<span style="color:#333">&gt;</span> <span style="color:#5ed;font-weight:bold">listStudents</span>() {
-    List<span style="color:#333">&lt;</span>Student<span style="color:#333">&gt;</span> <span style="color:#5ed;font-weight:bold">students</span> <span style="color:#333">=</span> database.<span style="color:#007">listStudents</span>();
+  <span style="color:#f00;background-color:#faa">public List</span><span style="color:#333">&lt;</span><span style="color:#f00;background-color:#faa">Student&gt; listStudents</span>() {
+    <span style="color:#f00;background-color:#faa">List&lt;Student&gt; students </span><span style="color:#333">=</span> database.<span style="color:#007">listStudents</span>();
     <span style="color:#289;font-weight:bold">return</span> students;
   }
 }</code></pre></div>
@@ -490,11 +490,11 @@ V našom prípade je modelový objekt uložený v premennej <code>student</code>
 <p>Vytvorme teraz prvú verziu triedy kontroléra:</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#555;font-weight:bold">@Controller</span>
 <span style="color:#555;font-weight:bold">@RequestMapping</span>(<span style="background-color:#e0e0ff">&#34;/createStudent.do&#34;</span>)
-<span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> CreateStudent {
+<span style="color:#f00;background-color:#faa">public class </span>CreateStudent {
  
   <span style="color:#555;font-weight:bold">@RequestMapping</span>(method <span style="color:#333">=</span> RequestMethod.<span style="color:#007">GET</span>)
-  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">Student</span> displayStudent() {
-    Student <span style="color:#5ed;font-weight:bold">student</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Student();
+  <span style="color:#f00;background-color:#faa">public Student </span>displayStudent() {
+    <span style="color:#f00;background-color:#faa">Student student </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Student();
     <span style="color:#289;font-weight:bold">return</span> student;
   }
 }</code></pre></div>
@@ -502,10 +502,10 @@ V našom prípade je modelový objekt uložený v premennej <code>student</code>
 
 <p>Teraz dodajme metódu, ktorá bude spracovávať odoslané dáta.</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#555;font-weight:bold">@Autowired</span>
-<span style="color:#289;font-weight:bold">private</span> <span style="color:#5ed;font-weight:bold">Database</span> database;
+<span style="color:#f00;background-color:#faa">private Database </span>database;
 
 <span style="color:#555;font-weight:bold">@RequestMapping</span>(method <span style="color:#333">=</span> RequestMethod.<span style="color:#007">POST</span>)
-<span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">String</span> updateStudent(Student <span style="color:#5ed;font-weight:bold">student</span>) {
+<span style="color:#f00;background-color:#faa">public String </span>updateStudent(<span style="color:#f00;background-color:#faa">Student student</span>) {
   database.<span style="color:#007">saveOrUpdate</span>(student);
   <span style="color:#289;font-weight:bold">return</span> <span style="background-color:#e0e0ff">&#34;redirect:listStudents.do&#34;</span>;
 }  </code></pre></div>
@@ -520,9 +520,9 @@ V našom prípade je modelový objekt uložený v premennej <code>student</code>
 <p>Náš kontrolér má jednu chybu - uloží aj študenta, ktorý nemá žiadne vyplnené údaje, čo zrejme nie je ideálny prípad. Validácia by mala zaistiť kontrolu korektnosti a konzistencie dát a v prípade nesúladu na ne používateľa upozorniť.</p>
 
 <p>V Spring MVC existuje užitočný interfejs <code>Validator</code>, ktoré reprezentuje triedu schopnú zvalidovať daný objekt. Vytvorme si triedu <code>StudentValidator</code>:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> StudentValidator <span style="color:#5ed;font-weight:bold">implements</span> Validator {
-  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">void</span> validate(Object <span style="color:#5ed;font-weight:bold">target</span>, Errors <span style="color:#5ed;font-weight:bold">errors</span>) {
-    Student <span style="color:#5ed;font-weight:bold">student</span> <span style="color:#333">=</span> (Student) target;
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">public class StudentValidator implements </span>Validator {
+  <span style="color:#f00;background-color:#faa">public void </span>validate(<span style="color:#f00;background-color:#faa">Object target</span>, <span style="color:#f00;background-color:#faa">Errors errors</span>) {
+    <span style="color:#f00;background-color:#faa">Student student </span><span style="color:#333">=</span> (Student) target;
     ValidationUtils.<span style="color:#007">rejectIfEmptyOrWhitespace</span>(
       errors, <span style="background-color:#e0e0ff">&#34;firstName&#34;</span>, <span style="background-color:#e0e0ff">&#34;&#34;</span>, <span style="background-color:#e0e0ff">&#34;Name cannot be empty.&#34;</span>);
     ValidationUtils.<span style="color:#007">rejectIfEmptyOrWhitespace</span>(
@@ -533,7 +533,7 @@ V našom prípade je modelový objekt uložený v premennej <code>student</code>
     }
   }
   
-  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">boolean</span> supports(Class <span style="color:#5ed;font-weight:bold">clazz</span>) {
+  <span style="color:#f00;background-color:#faa">public boolean </span>supports(<span style="color:#f00;background-color:#faa">Class clazz</span>) {
     <span style="color:#289;font-weight:bold">return</span> Student.<span style="color:#007">class</span>.<span style="color:#007">isAssignableFrom</span>(clazz);
   }  
 }</code></pre></div>
@@ -545,11 +545,11 @@ V našom prípade je modelový objekt uložený v premennej <code>student</code>
 </ul>
 
 <p>Validátor potom pridáme do kontroléra jednoducho: napr. ako inštančnú premennú:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">private</span> <span style="color:#5ed;font-weight:bold">static</span> StudentValidator <span style="color:#5ed;font-weight:bold">studentValidator</span> 
-  <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> StudentValidator();</code></pre></div>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">private static StudentValidator studentValidator 
+</span><span style="color:#f00;background-color:#faa">  </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> StudentValidator();</code></pre></div>
 <p>Jeho použitie bude nasledovné - upravíme si metódu volanú pri POST požiadavke:</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#555;font-weight:bold">@RequestMapping</span>(method <span style="color:#333">=</span> RequestMethod.<span style="color:#007">POST</span>)
-<span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">String</span> updateStudent(Student <span style="color:#5ed;font-weight:bold">student</span>, Errors <span style="color:#5ed;font-weight:bold">errors</span>) {
+<span style="color:#f00;background-color:#faa">public String </span>updateStudent(<span style="color:#f00;background-color:#faa">Student student</span>, <span style="color:#f00;background-color:#faa">Errors errors</span>) {
   studentValidator.<span style="color:#007">validate</span>(student, errors);
   <span style="color:#289;font-weight:bold">if</span>(errors.<span style="color:#007">hasErrors</span>()) {
     <span style="color:#289;font-weight:bold">return</span> <span style="background-color:#e0e0ff">&#34;createStudent&#34;</span>;
@@ -583,8 +583,8 @@ V našom prípade je modelový objekt uložený v premennej <code>student</code>
 
 <p>Kontrolér <code>EditStudent</code> anotovaný ako <code>@RequestMapping(&quot;/editStudent.do&quot;)</code> bude veľmi podobný kontroléru pre vytvorenie študenta. Jedinou odlišnosťou bude kód v metóde <code>displayStudent()</code>:</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#555;font-weight:bold">@RequestMapping</span>(method <span style="color:#333">=</span> RequestMethod.<span style="color:#007">GET</span>)
-<span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">String</span> displayStudent(Long <span style="color:#5ed;font-weight:bold">studentId</span>, ModelMap <span style="color:#5ed;font-weight:bold">model</span>) {
-  Student <span style="color:#5ed;font-weight:bold">student</span> <span style="color:#333">=</span> database.<span style="color:#007">findById</span>(studentId);
+<span style="color:#f00;background-color:#faa">public String </span>displayStudent(<span style="color:#f00;background-color:#faa">Long studentId</span>, <span style="color:#f00;background-color:#faa">ModelMap model</span>) {
+  <span style="color:#f00;background-color:#faa">Student student </span><span style="color:#333">=</span> database.<span style="color:#007">findById</span>(studentId);
   <span style="color:#289;font-weight:bold">if</span>(student <span style="color:#333">==</span> <span style="color:#289;font-weight:bold">null</span>) {
     <span style="color:#289;font-weight:bold">throw</span> <span style="color:#289;font-weight:bold">new</span> IllegalArgumentException();
   } 
@@ -623,8 +623,8 @@ V našom prípade je modelový objekt uložený v premennej <code>student</code>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#070">form:select</span> <span style="color:#007">path</span><span style="color:#333">=</span><span style="background-color:#e0e0ff">&#34;year&#34;</span> <span style="color:#007">items</span><span style="color:#333">=</span><span style="background-color:#e0e0ff">&#34;${allYears}&#34;</span>/&gt;</code></pre></div>
 <p>Položky v zozname sa naplnia z premennej <code>allYears</code>, ktorú prirodzene musíme naplniť v kontroléri.</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#555;font-weight:bold">@ModelAttribute</span>(<span style="background-color:#e0e0ff">&#34;allYears&#34;</span>)
-<span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">Map</span><span style="color:#333">&lt;</span>Integer, String<span style="color:#333">&gt;</span> <span style="color:#5ed;font-weight:bold">getAllYears</span>() {
-  Map<span style="color:#333">&lt;</span>Integer, String<span style="color:#333">&gt;</span> <span style="color:#5ed;font-weight:bold">hodnoty</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> TreeMap<span style="color:#333">&lt;</span>Integer, String<span style="color:#333">&gt;</span>();
+<span style="color:#f00;background-color:#faa">public Map</span><span style="color:#333">&lt;</span>Integer, <span style="color:#f00;background-color:#faa">String&gt; getAllYears</span>() {
+  Map<span style="color:#333">&lt;</span>Integer, <span style="color:#f00;background-color:#faa">String&gt; hodnoty </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> TreeMap<span style="color:#333">&lt;</span>Integer, String<span style="color:#333">&gt;</span>();
   hodnoty.<span style="color:#007">put</span>(1, <span style="background-color:#e0e0ff">&#34;prvák&#34;</span>);
   hodnoty.<span style="color:#007">put</span>(2, <span style="background-color:#e0e0ff">&#34;druhák&#34;</span>);
   hodnoty.<span style="color:#007">put</span>(3, <span style="background-color:#e0e0ff">&#34;tretiak&#34;</span>);
@@ -647,19 +647,19 @@ Ak by sme totiž modelovú mapu napĺňali len v metóde obsluhujúcej GET poži
 
 <p>Príkladom je nasledovný kontrolér:</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#555;font-weight:bold">@Controller</span>
-<span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> StudentActions {
+<span style="color:#f00;background-color:#faa">public class </span>StudentActions {
   <span style="color:#555;font-weight:bold">@Autowired</span>
-  <span style="color:#289;font-weight:bold">private</span> <span style="color:#5ed;font-weight:bold">Database</span> database;
+  <span style="color:#f00;background-color:#faa">private Database </span>database;
   
   <span style="color:#555;font-weight:bold">@RequestMapping</span>(<span style="background-color:#e0e0ff">&#34;/deleteStudent.do&#34;</span>)
-  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">String</span> delete(Long <span style="color:#5ed;font-weight:bold">studentId</span>) {
+  <span style="color:#f00;background-color:#faa">public String </span>delete(<span style="color:#f00;background-color:#faa">Long studentId</span>) {
     database.<span style="color:#007">removeStudent</span>(<span style="color:#289;font-weight:bold">new</span> Student(studentId));
     <span style="color:#289;font-weight:bold">return</span> <span style="background-color:#e0e0ff">&#34;redirect:listStudents.do&#34;</span>;
   }
   
   <span style="color:#555;font-weight:bold">@RequestMapping</span>(<span style="background-color:#e0e0ff">&#34;/advanceStudent.do&#34;</span>)
-  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">String</span> advance(Long <span style="color:#5ed;font-weight:bold">studentId</span>) {
-    Student <span style="color:#5ed;font-weight:bold">student</span> <span style="color:#333">=</span> database.<span style="color:#007">findById</span>(studentId);
+  <span style="color:#f00;background-color:#faa">public String </span>advance(<span style="color:#f00;background-color:#faa">Long studentId</span>) {
+    <span style="color:#f00;background-color:#faa">Student student </span><span style="color:#333">=</span> database.<span style="color:#007">findById</span>(studentId);
     student.<span style="color:#007">setYear</span>(student.<span style="color:#007">getYear</span>() <span style="color:#333">+</span> 1);
     <span style="color:#289;font-weight:bold">return</span> <span style="background-color:#e0e0ff">&#34;redirect:listStudents.do&#34;</span>;
   }

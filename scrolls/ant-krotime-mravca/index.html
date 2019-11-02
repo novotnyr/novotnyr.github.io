@@ -114,10 +114,10 @@ určených pre výsledky zostavovania: adresár <code>classes</code> bude obsaho
 
 <p>Nasledovná jednoduchá trieda vypíše správu na štandardný výstup. Zdrojový
 kód uložíme do adresára <code>src\oata\AhojSvet.java</code></p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">package</span> <span style="color:#5ed;font-weight:bold">oata</span>;
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">package oata</span>;
 
-<span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> AhojSvet {
-  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">static</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">main</span>(String[] <span style="color:#5ed;font-weight:bold">args</span>) {
+<span style="color:#f00;background-color:#faa">public class </span>AhojSvet {
+  <span style="color:#f00;background-color:#faa">public static void main</span>(<span style="color:#f00;background-color:#faa">String[] args</span>) {
     System.<span style="color:#007">out</span>.<span style="color:#007">println</span>(<span style="background-color:#e0e0ff">&#34;Ahoj svet!&#34;</span>);
   }
 }</code></pre></div>
@@ -420,15 +420,15 @@ a spustení.</p>
 
 <p>Postup práce s log4j je uvedený v príslušnej dokumentácii. My použijeme
 minimalistickú verziu triedy, ktorá bude vyzerať nasledovne:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">package</span> <span style="color:#5ed;font-weight:bold">oata</span>;
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">package oata</span>;
 
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">org</span>.<span style="color:#007">apache</span>.<span style="color:#007">log4j</span>.<span style="color:#007">Logger</span>;
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">org</span>.<span style="color:#007">apache</span>.<span style="color:#007">log4j</span>.<span style="color:#007">BasicConfigurator</span>;
+<span style="color:#f00;background-color:#faa">import org</span>.<span style="color:#007">apache</span>.<span style="color:#007">log4j</span>.<span style="color:#007">Logger</span>;
+<span style="color:#f00;background-color:#faa">import org</span>.<span style="color:#007">apache</span>.<span style="color:#007">log4j</span>.<span style="color:#007">BasicConfigurator</span>;
 
-<span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> AhojSvet {
-    <span style="color:#289;font-weight:bold">static</span> <span style="color:#5ed;font-weight:bold">Logger</span> logger <span style="color:#333">=</span> Logger.<span style="color:#007">getLogger</span>(HelloWorld.<span style="color:#007">class</span>);
+<span style="color:#f00;background-color:#faa">public class </span>AhojSvet {
+    <span style="color:#f00;background-color:#faa">static Logger </span>logger <span style="color:#333">=</span> Logger.<span style="color:#007">getLogger</span>(HelloWorld.<span style="color:#007">class</span>);
 
-    <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">static</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">main</span>(String[] <span style="color:#5ed;font-weight:bold">args</span>) {
+    <span style="color:#f00;background-color:#faa">public static void main</span>(<span style="color:#f00;background-color:#faa">String[] args</span>) {
         BasicConfigurator.<span style="color:#007">configure</span>();
         logger.<span style="color:#007">info</span>(<span style="background-color:#e0e0ff">&#34;Ahoj svet!&#34;</span>);  
     }

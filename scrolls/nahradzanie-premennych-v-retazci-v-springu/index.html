@@ -96,16 +96,16 @@
 <p>Môžeme si tak vytvoriť helper pre klasický vzhľad <code>${premennej}</code>, alebo zadefinovať napríklad mustachovský <code>{{spôsob}}</code>.</p>
 
 <p>Klasika známa zo shellu či Mavenu má v Springu už zadefinované konštanty a teda môžeme si helper vytvoriť nasledovne:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">PropertyPlaceholderHelper <span style="color:#5ed;font-weight:bold">helper</span> 
-  <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> PropertyPlaceholderHelper(
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">PropertyPlaceholderHelper helper 
+</span><span style="color:#f00;background-color:#faa">  </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> PropertyPlaceholderHelper(
       SystemPropertyUtils.<span style="color:#007">PLACEHOLDER_PREFIX</span>,
       SystemPropertyUtils.<span style="color:#007">PLACEHOLDER_SUFFIX</span>);</code></pre></div>
 <p>Nahrádzanie je potom hračka:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Properties <span style="color:#5ed;font-weight:bold">properties</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Properties();
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">Properties properties </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Properties();
 properties.<span style="color:#007">setProperty</span>(<span style="background-color:#e0e0ff">&#34;host&#34;</span>, <span style="background-color:#e0e0ff">&#34;localhost&#34;</span>);
 properties.<span style="color:#007">setProperty</span>(<span style="background-color:#e0e0ff">&#34;path&#34;</span>, <span style="background-color:#e0e0ff">&#34;qofola&#34;</span>);
 
-String <span style="color:#5ed;font-weight:bold">url</span> <span style="color:#333">=</span> helper.<span style="color:#007">replacePlaceholders</span>(urlTemplate, properties);</code></pre></div>
+<span style="color:#f00;background-color:#faa">String url </span><span style="color:#333">=</span> helper.<span style="color:#007">replacePlaceholders</span>(urlTemplate, properties);</code></pre></div>
 <p>Bonusový konštruktor podporuje aj ďalšie argumenty:</p>
 
 <ul>

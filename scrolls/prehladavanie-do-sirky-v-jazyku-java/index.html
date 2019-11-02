@@ -89,66 +89,66 @@ C
 <p>Ako tvrdieval pán Wirth, <em>programovanie = dátové štruktúry + algoritmy</em>. Navrhnime si predovšetkým dátovú štruktúru, v ktorej budeme uchovávať náš strom.</p>
 
 <p>Predovšetkým potrebujeme triedu, ktorá bude reprezentovať uzol. Tá bude jednoduchá: uzol totiž popíšeme nejakým názvom a zoznamom jeho potomkov. V našom prípade bude mať biely uzol popis &ldquo;koreň&rdquo; a v zozname jeho potomkov budú uzly s popismi &ldquo;A&rdquo;, &ldquo;B&rdquo; a &ldquo;C&rdquo;.</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">java</span>.<span style="color:#007">util</span>.<span style="color:#007">ArrayList</span>;
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">java</span>.<span style="color:#007">util</span>.<span style="color:#007">List</span>;
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">import java</span>.<span style="color:#007">util</span>.<span style="color:#007">ArrayList</span>;
+<span style="color:#f00;background-color:#faa">import java</span>.<span style="color:#007">util</span>.<span style="color:#007">List</span>;
 
-<span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> Node {
+<span style="color:#f00;background-color:#faa">public class </span>Node {
     <span style="color:#666;font-style:italic">/**
 </span><span style="color:#666;font-style:italic">     * Popis uzla
 </span><span style="color:#666;font-style:italic">     */</span>
-    <span style="color:#289;font-weight:bold">private</span> <span style="color:#5ed;font-weight:bold">String</span> label;
+    <span style="color:#f00;background-color:#faa">private String </span>label;
 
     <span style="color:#666;font-style:italic">/**
 </span><span style="color:#666;font-style:italic">     * zoznam potomkov
 </span><span style="color:#666;font-style:italic">     */</span>
-    <span style="color:#289;font-weight:bold">private</span> <span style="color:#5ed;font-weight:bold">List</span><span style="color:#333">&lt;</span>Node<span style="color:#333">&gt;</span> <span style="color:#5ed;font-weight:bold">children</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> ArrayList<span style="color:#333">&lt;</span>Node<span style="color:#333">&gt;</span>();
+    <span style="color:#f00;background-color:#faa">private List</span><span style="color:#333">&lt;</span><span style="color:#f00;background-color:#faa">Node&gt; children </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> ArrayList<span style="color:#333">&lt;</span>Node<span style="color:#333">&gt;</span>();
 
     <span style="color:#666;font-style:italic">/**
 </span><span style="color:#666;font-style:italic">     * Vytvorí uzol bez detí s daným názvom.
 </span><span style="color:#666;font-style:italic">     */</span>
-    <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">Node</span>(String <span style="color:#5ed;font-weight:bold">label</span>) {
+    <span style="color:#f00;background-color:#faa">public Node</span>(<span style="color:#f00;background-color:#faa">String label</span>) {
         <span style="color:#289;font-weight:bold">this</span>.<span style="color:#007">label</span> <span style="color:#333">=</span> label;
     }
 
     <span style="color:#666;font-style:italic">/**
 </span><span style="color:#666;font-style:italic">     * Pridá daný uzol medzi potomkov uzla.
 </span><span style="color:#666;font-style:italic">     */</span>
-    <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">void</span> add(Node <span style="color:#5ed;font-weight:bold">node</span>) {
+    <span style="color:#f00;background-color:#faa">public void </span>add(<span style="color:#f00;background-color:#faa">Node node</span>) {
         <span style="color:#289;font-weight:bold">this</span>.<span style="color:#007">children</span>.<span style="color:#007">add</span>(node);
     }
 
     <span style="color:#666;font-style:italic">/**
 </span><span style="color:#666;font-style:italic">     * Vráti zoznam potomkov uzla.
 </span><span style="color:#666;font-style:italic">     */</span>
-    <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">List</span><span style="color:#333">&lt;</span>Node<span style="color:#333">&gt;</span> <span style="color:#5ed;font-weight:bold">getChildren</span>() {
+    <span style="color:#f00;background-color:#faa">public List</span><span style="color:#333">&lt;</span><span style="color:#f00;background-color:#faa">Node&gt; getChildren</span>() {
         <span style="color:#289;font-weight:bold">return</span> children;
     }
 
     <span style="color:#666;font-style:italic">/**
 </span><span style="color:#666;font-style:italic">     * Vráti popisok uzla.
 </span><span style="color:#666;font-style:italic">     */</span>
-    <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">String</span> getLabel() {
+    <span style="color:#f00;background-color:#faa">public String </span>getLabel() {
         <span style="color:#289;font-weight:bold">return</span> label;
     }
 }</code></pre></div>
 <p>Ako budeme reprezentovať celý strom? Jednoducho. Dokonca si nemusíme si vytvárať samostatnú triedu pre strom, pretože si stačí pamätať koreňový uzol. Z neho sa vieme dostať do ľubovoľného potomka.</p>
 
 <p>Strom z obrázka skonštruujeme nasledovne:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Node <span style="color:#5ed;font-weight:bold">root</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Node(<span style="background-color:#e0e0ff">&#34;koreň&#34;</span>);
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">Node root </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Node(<span style="background-color:#e0e0ff">&#34;koreň&#34;</span>);
 
-Node <span style="color:#5ed;font-weight:bold">nodeA</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Node(<span style="background-color:#e0e0ff">&#34;A&#34;</span>);
-Node <span style="color:#5ed;font-weight:bold">nodeB</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Node(<span style="background-color:#e0e0ff">&#34;B&#34;</span>);
-Node <span style="color:#5ed;font-weight:bold">nodeC</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Node(<span style="background-color:#e0e0ff">&#34;C&#34;</span>);
+<span style="color:#f00;background-color:#faa">Node nodeA </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Node(<span style="background-color:#e0e0ff">&#34;A&#34;</span>);
+<span style="color:#f00;background-color:#faa">Node nodeB </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Node(<span style="background-color:#e0e0ff">&#34;B&#34;</span>);
+<span style="color:#f00;background-color:#faa">Node nodeC </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Node(<span style="background-color:#e0e0ff">&#34;C&#34;</span>);
 
 root.<span style="color:#007">add</span>(nodeA);
 root.<span style="color:#007">add</span>(nodeB);
 root.<span style="color:#007">add</span>(nodeC);
 
-Node <span style="color:#5ed;font-weight:bold">node1</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Node(<span style="background-color:#e0e0ff">&#34;1&#34;</span>);
-Node <span style="color:#5ed;font-weight:bold">node2</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Node(<span style="background-color:#e0e0ff">&#34;2&#34;</span>);
-Node <span style="color:#5ed;font-weight:bold">node3</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Node(<span style="background-color:#e0e0ff">&#34;3&#34;</span>);
-Node <span style="color:#5ed;font-weight:bold">node4</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Node(<span style="background-color:#e0e0ff">&#34;4&#34;</span>);
-Node <span style="color:#5ed;font-weight:bold">node5</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Node(<span style="background-color:#e0e0ff">&#34;5&#34;</span>);
+<span style="color:#f00;background-color:#faa">Node node1 </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Node(<span style="background-color:#e0e0ff">&#34;1&#34;</span>);
+<span style="color:#f00;background-color:#faa">Node node2 </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Node(<span style="background-color:#e0e0ff">&#34;2&#34;</span>);
+<span style="color:#f00;background-color:#faa">Node node3 </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Node(<span style="background-color:#e0e0ff">&#34;3&#34;</span>);
+<span style="color:#f00;background-color:#faa">Node node4 </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Node(<span style="background-color:#e0e0ff">&#34;4&#34;</span>);
+<span style="color:#f00;background-color:#faa">Node node5 </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Node(<span style="background-color:#e0e0ff">&#34;5&#34;</span>);
 
 nodeA.<span style="color:#007">add</span>(node1);
 nodeA.<span style="color:#007">add</span>(node2);
@@ -244,18 +244,18 @@ nodeC.<span style="color:#007">add</span>(node5);</code></pre></div>
 
 <p>Implementácia v Jave je potom priamočiara:</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#666;font-style:italic">// vytvoríme front
-</span><span style="color:#666;font-style:italic"></span>Queue<span style="color:#333">&lt;</span>Node<span style="color:#333">&gt;</span> <span style="color:#5ed;font-weight:bold">queue</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> LinkedList<span style="color:#333">&lt;</span>Node<span style="color:#333">&gt;</span>();
+</span><span style="color:#666;font-style:italic"></span><span style="color:#f00;background-color:#faa">Queue&lt;Node&gt; queue </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> LinkedList<span style="color:#333">&lt;</span>Node<span style="color:#333">&gt;</span>();
 <span style="color:#666;font-style:italic">// pridáme koreň do frontu
 </span><span style="color:#666;font-style:italic"></span>queue.<span style="color:#007">add</span>(root);
 
 <span style="color:#666;font-style:italic">//pokiaľ front nie je prázdny
 </span><span style="color:#666;font-style:italic"></span><span style="color:#289;font-weight:bold">while</span> (<span style="color:#333">!</span>queue.<span style="color:#007">isEmpty</span>()) {
     <span style="color:#666;font-style:italic">// vyberieme uzol zo začiatku frontu
-</span><span style="color:#666;font-style:italic"></span>    Node <span style="color:#5ed;font-weight:bold">node</span> <span style="color:#333">=</span> queue.<span style="color:#007">poll</span>();
+</span><span style="color:#666;font-style:italic"></span>    <span style="color:#f00;background-color:#faa">Node node </span><span style="color:#333">=</span> queue.<span style="color:#007">poll</span>();
     <span style="color:#666;font-style:italic">// vypíšeme ho / vybavíme ho
 </span><span style="color:#666;font-style:italic"></span>    System.<span style="color:#007">out</span>.<span style="color:#007">println</span>(node.<span style="color:#007">getLabel</span>());
     <span style="color:#666;font-style:italic">// potomkov zaradíme do frontu
-</span><span style="color:#666;font-style:italic"></span>    <span style="color:#289;font-weight:bold">for</span> (Node <span style="color:#5ed;font-weight:bold">childNode</span> <span style="color:#333">:</span> node.<span style="color:#007">getChildren</span>()) {
+</span><span style="color:#666;font-style:italic"></span>    <span style="color:#289;font-weight:bold">for</span> (<span style="color:#f00;background-color:#faa">Node childNode </span><span style="color:#333">:</span> node.<span style="color:#007">getChildren</span>()) {
         queue.<span style="color:#007">offer</span>(childNode);
     }
 }</code></pre></div>
@@ -264,21 +264,21 @@ nodeC.<span style="color:#007">add</span>(node5);</code></pre></div>
 <h2 id="dátové-štruktúry-1">Dátové štruktúry</h2>
 
 <p>Java poskytuje podporu stromové štruktúry, aj keď pravdupovediac na úplne nečakanom mieste — v balíčku pre používateľské rozhranie Swing. Trieda <a href="https://docs.oracle.com/javase/7/docs/api/javax/swing/tree/DefaultMutableTreeNode.html"><code>javax.swing.tree.DefaultMutableTreeNode</code></a> predstavuje uzol stromu, do ktorého môžeme pridávať potomkov. Náš príklad s budovaním stromu môžeme prepísať nasledovne:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">DefaultMutableTreeNode <span style="color:#5ed;font-weight:bold">root</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> DefaultMutableTreeNode(<span style="background-color:#e0e0ff">&#34;koreň&#34;</span>);
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">DefaultMutableTreeNode root </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> DefaultMutableTreeNode(<span style="background-color:#e0e0ff">&#34;koreň&#34;</span>);
 
-DefaultMutableTreeNode <span style="color:#5ed;font-weight:bold">nodeA</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> DefaultMutableTreeNode(<span style="background-color:#e0e0ff">&#34;A&#34;</span>);
-DefaultMutableTreeNode <span style="color:#5ed;font-weight:bold">nodeB</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> DefaultMutableTreeNode(<span style="background-color:#e0e0ff">&#34;B&#34;</span>);
-DefaultMutableTreeNode <span style="color:#5ed;font-weight:bold">nodeC</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> DefaultMutableTreeNode(<span style="background-color:#e0e0ff">&#34;C&#34;</span>);
+<span style="color:#f00;background-color:#faa">DefaultMutableTreeNode nodeA </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> DefaultMutableTreeNode(<span style="background-color:#e0e0ff">&#34;A&#34;</span>);
+<span style="color:#f00;background-color:#faa">DefaultMutableTreeNode nodeB </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> DefaultMutableTreeNode(<span style="background-color:#e0e0ff">&#34;B&#34;</span>);
+<span style="color:#f00;background-color:#faa">DefaultMutableTreeNode nodeC </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> DefaultMutableTreeNode(<span style="background-color:#e0e0ff">&#34;C&#34;</span>);
 
 root.<span style="color:#007">add</span>(nodeA);
 root.<span style="color:#007">add</span>(nodeB);
 root.<span style="color:#007">add</span>(nodeC);
 
-DefaultMutableTreeNode <span style="color:#5ed;font-weight:bold">node1</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> DefaultMutableTreeNode(<span style="background-color:#e0e0ff">&#34;1&#34;</span>);
-DefaultMutableTreeNode <span style="color:#5ed;font-weight:bold">node2</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> DefaultMutableTreeNode(<span style="background-color:#e0e0ff">&#34;2&#34;</span>);
-DefaultMutableTreeNode <span style="color:#5ed;font-weight:bold">node3</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> DefaultMutableTreeNode(<span style="background-color:#e0e0ff">&#34;3&#34;</span>);
-DefaultMutableTreeNode <span style="color:#5ed;font-weight:bold">node4</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> DefaultMutableTreeNode(<span style="background-color:#e0e0ff">&#34;4&#34;</span>);
-DefaultMutableTreeNode <span style="color:#5ed;font-weight:bold">node5</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> DefaultMutableTreeNode(<span style="background-color:#e0e0ff">&#34;5&#34;</span>);
+<span style="color:#f00;background-color:#faa">DefaultMutableTreeNode node1 </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> DefaultMutableTreeNode(<span style="background-color:#e0e0ff">&#34;1&#34;</span>);
+<span style="color:#f00;background-color:#faa">DefaultMutableTreeNode node2 </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> DefaultMutableTreeNode(<span style="background-color:#e0e0ff">&#34;2&#34;</span>);
+<span style="color:#f00;background-color:#faa">DefaultMutableTreeNode node3 </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> DefaultMutableTreeNode(<span style="background-color:#e0e0ff">&#34;3&#34;</span>);
+<span style="color:#f00;background-color:#faa">DefaultMutableTreeNode node4 </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> DefaultMutableTreeNode(<span style="background-color:#e0e0ff">&#34;4&#34;</span>);
+<span style="color:#f00;background-color:#faa">DefaultMutableTreeNode node5 </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> DefaultMutableTreeNode(<span style="background-color:#e0e0ff">&#34;5&#34;</span>);
 
 nodeA.<span style="color:#007">add</span>(node1);
 nodeA.<span style="color:#007">add</span>(node2);
@@ -288,17 +288,17 @@ nodeB.<span style="color:#007">add</span>(node4);
 
 nodeC.<span style="color:#007">add</span>(node5);</code></pre></div>
 <p>K zoznamu detí sa pristupuje pomocou metódy <code>children()</code>, ktorá vracia enumeráciu <a href="https://docs.oracle.com/javase/7/docs/api/java/util/Enumeration.html"><code>Enumeration</code></a> potomkov. Metóda pre traverzovanie stromu potom vyzerá nasledovne:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Queue<span style="color:#333">&lt;</span>DefaultMutableTreeNode<span style="color:#333">&gt;</span> <span style="color:#5ed;font-weight:bold">queue</span>
-        <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> LinkedList<span style="color:#333">&lt;</span>DefaultMutableTreeNode<span style="color:#333">&gt;</span>();
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">Queue&lt;DefaultMutableTreeNode&gt; queue
+</span><span style="color:#f00;background-color:#faa">        </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> LinkedList<span style="color:#333">&lt;</span>DefaultMutableTreeNode<span style="color:#333">&gt;</span>();
 queue.<span style="color:#007">add</span>(root);
 
 <span style="color:#289;font-weight:bold">while</span>(<span style="color:#333">!</span>queue.<span style="color:#007">isEmpty</span>()) {
-    DefaultMutableTreeNode <span style="color:#5ed;font-weight:bold">node</span> <span style="color:#333">=</span> queue.<span style="color:#007">poll</span>();
+    <span style="color:#f00;background-color:#faa">DefaultMutableTreeNode node </span><span style="color:#333">=</span> queue.<span style="color:#007">poll</span>();
 
   	<span style="color:#666;font-style:italic">// vybavíme uzol
 </span><span style="color:#666;font-style:italic"></span>    System.<span style="color:#007">out</span>.<span style="color:#007">println</span>(node.<span style="color:#007">getUserObject</span>());
 
-    Enumeration<span style="color:#333">&lt;</span>DefaultMutableTreeNode<span style="color:#333">&gt;</span> <span style="color:#5ed;font-weight:bold">children</span> <span style="color:#333">=</span> node.<span style="color:#007">children</span>();
+    <span style="color:#f00;background-color:#faa">Enumeration&lt;DefaultMutableTreeNode&gt; children </span><span style="color:#333">=</span> node.<span style="color:#007">children</span>();
     <span style="color:#289;font-weight:bold">while</span>(children.<span style="color:#007">hasMoreElements</span>()) {
         queue.<span style="color:#007">offer</span>(children.<span style="color:#007">nextElement</span>());
     }
@@ -306,10 +306,10 @@ queue.<span style="color:#007">add</span>(root);
 <h2 id="prehľadávanie-do-šírky-zo-škatule">Prehľadávanie do šírky zo škatule</h2>
 
 <p><code>DefaultMutableTreeNode</code> poskytuje prehľadávanie do šírky ako jednu zo svojich metód. Na koreňovom uzle stačí zavolať <code>breadthFirstEnumeration()</code>, ktorá vráti enumeráciu uzlov v usporiadaní po vrstvách.</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Enumeration <span style="color:#5ed;font-weight:bold">bfsEnum</span> <span style="color:#333">=</span> root.<span style="color:#007">breadthFirstEnumeration</span>();
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">Enumeration bfsEnum </span><span style="color:#333">=</span> root.<span style="color:#007">breadthFirstEnumeration</span>();
 <span style="color:#289;font-weight:bold">while</span>(bfsEnum.<span style="color:#007">hasMoreElements</span>()) {
-		DefaultMutableTreeNode <span style="color:#5ed;font-weight:bold">treeNode</span> 
-    		<span style="color:#333">=</span> (DefaultMutableTreeNode) bfsEnum.<span style="color:#007">nextElement</span>();
+		<span style="color:#f00;background-color:#faa">DefaultMutableTreeNode treeNode 
+</span><span style="color:#f00;background-color:#faa">    		</span><span style="color:#333">=</span> (DefaultMutableTreeNode) bfsEnum.<span style="color:#007">nextElement</span>();
 	  <span style="color:#666;font-style:italic">// vybavíme uzol
 </span><span style="color:#666;font-style:italic"></span>  	System.<span style="color:#007">out</span>.<span style="color:#007">println</span>(treeNode.<span style="color:#007">getUserObject</span>());
 }</code></pre></div>

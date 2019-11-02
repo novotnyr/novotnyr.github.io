@@ -82,49 +82,49 @@
 1.  z nej získame novú inštanciu <code>Transformer</code>a pomocou metódy <code>newTransformer()</code>
 1.  na inštancii transformera voláme príslušné metódy
 Príklad kódu, ktorý vezme vstupný reťazec s XML a v transformácii nespraví nič:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">static</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">main</span>(String[] <span style="color:#5ed;font-weight:bold">args</span>) {
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">public static void main</span>(<span style="color:#f00;background-color:#faa">String[] args</span>) {
   <span style="color:#289;font-weight:bold">try</span> {
-    String <span style="color:#5ed;font-weight:bold">xml</span> <span style="color:#333">=</span> <span style="background-color:#e0e0ff">&#34;&lt;document&gt;&lt;text&gt;Hello&lt;/text&gt;&lt;/document&gt;&#34;</span>;
+    <span style="color:#f00;background-color:#faa">String xml </span><span style="color:#333">=</span> <span style="background-color:#e0e0ff">&#34;&lt;document&gt;&lt;text&gt;Hello&lt;/text&gt;&lt;/document&gt;&#34;</span>;
 
-    TransformerFactory <span style="color:#5ed;font-weight:bold">transformerFactory</span> 
-      <span style="color:#333">=</span> TransformerFactory.<span style="color:#007">newInstance</span>();
-    Transformer <span style="color:#5ed;font-weight:bold">serializer</span> <span style="color:#333">=</span> transformerFactory.<span style="color:#007">newTransformer</span>();
+    <span style="color:#f00;background-color:#faa">TransformerFactory transformerFactory 
+</span><span style="color:#f00;background-color:#faa">      </span><span style="color:#333">=</span> TransformerFactory.<span style="color:#007">newInstance</span>();
+    <span style="color:#f00;background-color:#faa">Transformer serializer </span><span style="color:#333">=</span> transformerFactory.<span style="color:#007">newTransformer</span>();
 
     <span style="color:#666;font-style:italic">// zdrojom je prúd dát zo Stringu
-</span><span style="color:#666;font-style:italic"></span>    Source <span style="color:#5ed;font-weight:bold">source</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> StreamSource(<span style="color:#289;font-weight:bold">new</span> StringReader(xml));
+</span><span style="color:#666;font-style:italic"></span>    <span style="color:#f00;background-color:#faa">Source source </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> StreamSource(<span style="color:#289;font-weight:bold">new</span> StringReader(xml));
     <span style="color:#666;font-style:italic">// cieľom je prúd dát do konzoly
-</span><span style="color:#666;font-style:italic"></span>    Result <span style="color:#5ed;font-weight:bold">result</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> StreamResult(System.<span style="color:#007">out</span>));
+</span><span style="color:#666;font-style:italic"></span>    <span style="color:#f00;background-color:#faa">Result result </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> StreamResult(System.<span style="color:#007">out</span>));
 
     serializer.<span style="color:#007">transform</span>(source, result);
-  } <span style="color:#289;font-weight:bold">catch</span> (TransformerConfigurationException <span style="color:#5ed;font-weight:bold">e</span>) {
+  } <span style="color:#289;font-weight:bold">catch</span> (<span style="color:#f00;background-color:#faa">TransformerConfigurationException e</span>) {
     e.<span style="color:#007">printStackTrace</span>();
-  } <span style="color:#289;font-weight:bold">catch</span> (TransformerFactoryConfigurationError <span style="color:#5ed;font-weight:bold">e</span>) {
+  } <span style="color:#289;font-weight:bold">catch</span> (<span style="color:#f00;background-color:#faa">TransformerFactoryConfigurationError e</span>) {
     e.<span style="color:#007">printStackTrace</span>();
-  } <span style="color:#289;font-weight:bold">catch</span> (TransformerException <span style="color:#5ed;font-weight:bold">e</span>) {
+  } <span style="color:#289;font-weight:bold">catch</span> (<span style="color:#f00;background-color:#faa">TransformerException e</span>) {
     e.<span style="color:#007">printStackTrace</span>();
   }
 }</code></pre></div>
 <p>Je dôležité vedieť, že inštanciu <code>TransformerFactory</code> môžeme znovupoužiť na vytvorenie viacerých transformátorov. Rovnako jednu inštanciu transformátora môžeme znovupoužiť na viacero transformácií. Dôležité je vedieť, že obe triedy <strong>nie sú</strong> <em>thread-safe</em>, teda stavané na prácu s viacerými vláknami. To sa prejaví najčastejšie v servletoch. Je nebezpečné mať servlet</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#666;font-style:italic">// Tento servlet je NEKOREKTNÝ. Nastanú chyby pri práci s viacerými vláknami.
-</span><span style="color:#666;font-style:italic"></span><span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> TransformerServlet <span style="color:#5ed;font-weight:bold">extends</span> HttpServlet {
+</span><span style="color:#666;font-style:italic"></span><span style="color:#f00;background-color:#faa">public class TransformerServlet extends </span>HttpServlet {
   <span style="color:#555;font-weight:bold">@Override</span>
-  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">void</span> init() <span style="color:#289;font-weight:bold">throws</span> <span style="color:#5ed;font-weight:bold">ServletException</span> {
+  <span style="color:#f00;background-color:#faa">public void </span>init() <span style="color:#f00;background-color:#faa">throws ServletException </span>{
     <span style="color:#289;font-weight:bold">try</span> {
       transformer <span style="color:#333">=</span> TransformerFactory.<span style="color:#007">newInstance</span>().<span style="color:#007">newTransformer</span>();
-    } <span style="color:#289;font-weight:bold">catch</span> (Exception <span style="color:#5ed;font-weight:bold">e</span>) {
+    } <span style="color:#289;font-weight:bold">catch</span> (<span style="color:#f00;background-color:#faa">Exception e</span>) {
       <span style="color:#289;font-weight:bold">throw</span> <span style="color:#289;font-weight:bold">new</span> ServletException(<span style="background-color:#e0e0ff">&#34;Nemôžem vytvoriť transformátor.&#34;</span>);
     }
   }
 
   <span style="color:#555;font-weight:bold">@Override</span>
-  <span style="color:#289;font-weight:bold">protected</span> <span style="color:#5ed;font-weight:bold">void</span> doGet(HttpServletRequest <span style="color:#5ed;font-weight:bold">req</span>, 
-                       HttpServletResponse <span style="color:#5ed;font-weight:bold">resp</span>)
-    <span style="color:#289;font-weight:bold">throws</span> <span style="color:#5ed;font-weight:bold">ServletException</span>, IOException 
+  <span style="color:#f00;background-color:#faa">protected void </span>doGet(<span style="color:#f00;background-color:#faa">HttpServletRequest req</span>, 
+                       <span style="color:#f00;background-color:#faa">HttpServletResponse resp</span>)
+    <span style="color:#f00;background-color:#faa">throws ServletException</span>, IOException 
   {
     <span style="color:#666;font-style:italic">//tu pracujeme s transformerom
 </span><span style="color:#666;font-style:italic"></span>  }
 
-  <span style="color:#289;font-weight:bold">private</span> <span style="color:#5ed;font-weight:bold">Transformer</span> transformer;
+  <span style="color:#f00;background-color:#faa">private Transformer </span>transformer;
 
 }</code></pre></div>
 <p>Pokojne sa môže stať, že viacero požiadaviek pracuje súčasne nad inštanciou transformátora, z čoho môžu vyplynúť ťažko odladiteľné chyby.</p>
@@ -134,7 +134,7 @@ Príklad kódu, ktorý vezme vstupný reťazec s XML a v transformácii nesprav�
 <h2 id="konfigurácia-transformácie">Konfigurácia transformácie</h2>
 
 <p>Transformáciu si môžeme do istej miery prispôsobiť.</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Transformer <span style="color:#5ed;font-weight:bold">t</span> <span style="color:#333">=</span> transformerFactory.<span style="color:#007">newTransformer</span>();
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">Transformer t </span><span style="color:#333">=</span> transformerFactory.<span style="color:#007">newTransformer</span>();
 <span style="color:#666;font-style:italic">// vynecháme XML prológ
 </span><span style="color:#666;font-style:italic"></span>t.<span style="color:#007">setOutputProperty</span>(OutputKeys.<span style="color:#007">OMIT_XML_DECLARATION</span>, <span style="background-color:#e0e0ff">&#34;yes&#34;</span>);
 <span style="color:#666;font-style:italic">// zapneme odsadenie textu
@@ -156,57 +156,57 @@ t.<span style="color:#007">transform</span>(source, result);</code></pre></div>
 Hello
 (:codeend:)
 Metóda <code>newTransformer()</code> v továrni na transformátory môže brať parameter typu <code>Source</code>, ktorý obsahuje zdroj transformačnej šablóny.</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Source <span style="color:#5ed;font-weight:bold">xslt</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> StreamSource(<span style="color:#289;font-weight:bold">new</span> File(<span style="background-color:#e0e0ff">&#34;template.xslt&#34;</span>));
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">Source xslt </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> StreamSource(<span style="color:#289;font-weight:bold">new</span> File(<span style="background-color:#e0e0ff">&#34;template.xslt&#34;</span>));
 
 <span style="color:#666;font-style:italic">// vytvoríme transformátor riadiaci sa šablónou XSLT
-</span><span style="color:#666;font-style:italic"></span>Transformer <span style="color:#5ed;font-weight:bold">serializer</span> 
-  <span style="color:#333">=</span> transformerFactory.<span style="color:#007">newTransformer</span>(xslt);
+</span><span style="color:#666;font-style:italic"></span><span style="color:#f00;background-color:#faa">Transformer serializer 
+</span><span style="color:#f00;background-color:#faa">  </span><span style="color:#333">=</span> transformerFactory.<span style="color:#007">newTransformer</span>(xslt);
 
 <span style="color:#666;font-style:italic">// zdrojom je prúd dát zo Stringu
-</span><span style="color:#666;font-style:italic"></span>Source <span style="color:#5ed;font-weight:bold">source</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> StreamSource(<span style="color:#289;font-weight:bold">new</span> StringReader(xml));
+</span><span style="color:#666;font-style:italic"></span><span style="color:#f00;background-color:#faa">Source source </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> StreamSource(<span style="color:#289;font-weight:bold">new</span> StringReader(xml));
 <span style="color:#666;font-style:italic">// cieľom je prúd dát do konzoly
-</span><span style="color:#666;font-style:italic"></span>Result <span style="color:#5ed;font-weight:bold">result</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> StreamResult(System.<span style="color:#007">out</span>));
+</span><span style="color:#666;font-style:italic"></span><span style="color:#f00;background-color:#faa">Result result </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> StreamResult(System.<span style="color:#007">out</span>));
 
 serializer.<span style="color:#007">transform</span>(source, result);</code></pre></div>
 <h2 id="predpripravené-transformácie">Predpripravené transformácie</h2>
 
 <p>Ak sme si istí, že XSLT šablóna je nemenná, môžeme urýchliť proces transformácie tým, že ju predkompilujeme. Skompilovaná XSLT šablóna je reprezentovaná inštanciou triedy <code>Templates</code>.</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Source <span style="color:#5ed;font-weight:bold">xslt</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> StreamSource(<span style="color:#289;font-weight:bold">new</span> File(<span style="background-color:#e0e0ff">&#34;template.xslt&#34;</span>));
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">Source xslt </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> StreamSource(<span style="color:#289;font-weight:bold">new</span> File(<span style="background-color:#e0e0ff">&#34;template.xslt&#34;</span>));
 
-TransformerFactory <span style="color:#5ed;font-weight:bold">transformerFactory</span> 
-  <span style="color:#333">=</span> TransformerFactory.<span style="color:#007">newInstance</span>();
+<span style="color:#f00;background-color:#faa">TransformerFactory transformerFactory 
+</span><span style="color:#f00;background-color:#faa">  </span><span style="color:#333">=</span> TransformerFactory.<span style="color:#007">newInstance</span>();
 <span style="color:#666;font-style:italic">// vytvoríme skompilovanú šablónu
-</span><span style="color:#666;font-style:italic"></span>Templates <span style="color:#5ed;font-weight:bold">templates</span> <span style="color:#333">=</span> transformerFactory.<span style="color:#007">newTemplates</span>(xslt);
+</span><span style="color:#666;font-style:italic"></span><span style="color:#f00;background-color:#faa">Templates templates </span><span style="color:#333">=</span> transformerFactory.<span style="color:#007">newTemplates</span>(xslt);
 <span style="color:#666;font-style:italic">// zo šablóny vieme získať transformátor
-</span><span style="color:#666;font-style:italic"></span>Transformer <span style="color:#5ed;font-weight:bold">t</span> <span style="color:#333">=</span> templates.<span style="color:#007">newTransformer</span>();
+</span><span style="color:#666;font-style:italic"></span><span style="color:#f00;background-color:#faa">Transformer t </span><span style="color:#333">=</span> templates.<span style="color:#007">newTransformer</span>();
 t.<span style="color:#007">transform</span>(source, result);</code></pre></div>
 <p>Inštancia <code>Templates</code> je znovupoužiteľná a je navyše <strong>thread-safe</strong>. Na tejto inštancii potom môžeme doladiť výstup pomocou <code>setOutputProperty()</code>, ktorý sa potom aplikuje na transformátory získané pomocou nej.</p>
 
 <h1 id="časté-chyby">Časté chyby</h1>
 
 <p>Metóda <code>newTransformer()</code> nesmie podľa dokumentácie nikdy vrátiť <code>null</code>.</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">TransformerFactory <span style="color:#5ed;font-weight:bold">tfactory</span> <span style="color:#333">=</span> TransformerFactory.<span style="color:#007">newInstance</span>();
-Transformer <span style="color:#5ed;font-weight:bold">transformer</span> <span style="color:#333">=</span> tfactory.<span style="color:#007">newTransformer</span>(xslSource);</code></pre></div>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">TransformerFactory tfactory </span><span style="color:#333">=</span> TransformerFactory.<span style="color:#007">newInstance</span>();
+<span style="color:#f00;background-color:#faa">Transformer transformer </span><span style="color:#333">=</span> tfactory.<span style="color:#007">newTransformer</span>(xslSource);</code></pre></div>
 <p>Xalan 2.7.1 má však chybu XALANJ-1549, kde pri použití neexistujúceho súboru XSLT šablóny vypíše chybu do <code>System.err</code> a vráti <code>null</code>ovú hodnotu transformera.</p>
 
 <p>Odporúčaným riešením je registrácia inštancie <code>ErrorListenera</code> na transformačnej factory. Inštancia prevezme výnimku z parametra a vyhodí ju klasickým spôsobom:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">TransformerFactory <span style="color:#5ed;font-weight:bold">tfactory</span> <span style="color:#333">=</span> TransformerFactory.<span style="color:#007">newInstance</span>();
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">TransformerFactory tfactory </span><span style="color:#333">=</span> TransformerFactory.<span style="color:#007">newInstance</span>();
 <span style="color:#666;font-style:italic">// due to XALANJ-1549
 </span><span style="color:#666;font-style:italic"></span>tfactory.<span style="color:#007">setErrorListener</span>(<span style="color:#289;font-weight:bold">new</span> ErrorListener() {
 <span style="color:#555;font-weight:bold">@Override</span>
-<span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">void</span> fatalError(TransformerException <span style="color:#5ed;font-weight:bold">exception</span>)
-    <span style="color:#289;font-weight:bold">throws</span> <span style="color:#5ed;font-weight:bold">TransformerException</span> {
+<span style="color:#f00;background-color:#faa">public void </span>fatalError(<span style="color:#f00;background-color:#faa">TransformerException exception</span>)
+    <span style="color:#f00;background-color:#faa">throws TransformerException </span>{
   <span style="color:#289;font-weight:bold">throw</span> <span style="color:#289;font-weight:bold">new</span> TransformationException(exception);
 }
 
 <span style="color:#555;font-weight:bold">@Override</span>
-<span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">void</span> warning(TransformerException <span style="color:#5ed;font-weight:bold">exception</span>)
-    <span style="color:#289;font-weight:bold">throws</span> <span style="color:#5ed;font-weight:bold">TransformerException</span> {
+<span style="color:#f00;background-color:#faa">public void </span>warning(<span style="color:#f00;background-color:#faa">TransformerException exception</span>)
+    <span style="color:#f00;background-color:#faa">throws TransformerException </span>{
 }
 
 <span style="color:#555;font-weight:bold">@Override</span>
-<span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">void</span> error(TransformerException <span style="color:#5ed;font-weight:bold">exception</span>)
-    <span style="color:#289;font-weight:bold">throws</span> <span style="color:#5ed;font-weight:bold">TransformerException</span> {
+<span style="color:#f00;background-color:#faa">public void </span>error(<span style="color:#f00;background-color:#faa">TransformerException exception</span>)
+    <span style="color:#f00;background-color:#faa">throws TransformerException </span>{
 }
 });</code></pre></div>
 <h1 id="referencie">Referencie</h1>

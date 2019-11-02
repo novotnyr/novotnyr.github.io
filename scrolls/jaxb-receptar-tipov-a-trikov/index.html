@@ -80,16 +80,16 @@
     <span style="color:#070">&lt;/jaxb:globalBindings&gt;</span>
 <span style="color:#070">&lt;/jaxb:bindings&gt;</span></code></pre></div>
 <p>Typ <code>xsd:date</code> bude mapovaný na <code>java.sql.Date</code>. Na konverziu sa použije trieda <code>ws.util.JavaSqlDateAdapter</code> a jej metódy <code>parseDate()</code>, resp. <code>printDate()</code>. Tried vyzerá nasledovne:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> JavaSqlDateAdapter {
-  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">static</span> Date <span style="color:#5ed;font-weight:bold">parseDate</span>(String <span style="color:#5ed;font-weight:bold">s</span>) {
-    Calendar <span style="color:#5ed;font-weight:bold">calendar</span> <span style="color:#333">=</span> DatatypeConverter.<span style="color:#007">parseDate</span>(s);
-    Date <span style="color:#5ed;font-weight:bold">date</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Date(calendar.<span style="color:#007">getTimeInMillis</span>());
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">public class </span>JavaSqlDateAdapter {
+  <span style="color:#f00;background-color:#faa">public static Date parseDate</span>(<span style="color:#f00;background-color:#faa">String s</span>) {
+    <span style="color:#f00;background-color:#faa">Calendar calendar </span><span style="color:#333">=</span> DatatypeConverter.<span style="color:#007">parseDate</span>(s);
+    <span style="color:#f00;background-color:#faa">Date date </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Date(calendar.<span style="color:#007">getTimeInMillis</span>());
     
     <span style="color:#289;font-weight:bold">return</span> date;
   }
 
-  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">static</span> String <span style="color:#5ed;font-weight:bold">printDate</span>(Date <span style="color:#5ed;font-weight:bold">date</span>) {
-    Calendar <span style="color:#5ed;font-weight:bold">cal</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> GregorianCalendar();
+  <span style="color:#f00;background-color:#faa">public static String printDate</span>(<span style="color:#f00;background-color:#faa">Date date</span>) {
+    <span style="color:#f00;background-color:#faa">Calendar cal </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> GregorianCalendar();
     cal.<span style="color:#007">setTime</span>(date);
     <span style="color:#289;font-weight:bold">return</span> DatatypeConverter.<span style="color:#007">printDate</span>(cal);
   }
@@ -101,13 +101,13 @@
 
 <p>Po vygenerovaní uvidíme, že <code>xjc</code> vytvoril prapodivnú triedu
 <code>org.w3/_2001.xmlschema.Adapter1.java</code>, ktorá vyzerá nasledovne:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> Adapter1 <span style="color:#5ed;font-weight:bold">extends</span> XmlAdapter<span style="color:#333">&lt;</span>String, Date<span style="color:#333">&gt;</span> {
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">public class Adapter1 extends </span>XmlAdapter<span style="color:#333">&lt;</span>String, Date<span style="color:#333">&gt;</span> {
 
-    <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">Date</span> unmarshal(String <span style="color:#5ed;font-weight:bold">value</span>) {
+    <span style="color:#f00;background-color:#faa">public Date </span>unmarshal(<span style="color:#f00;background-color:#faa">String value</span>) {
         <span style="color:#289;font-weight:bold">return</span> (ais.<span style="color:#007">ws</span>.<span style="color:#007">util</span>.<span style="color:#007">JavaSqlDateAdapter</span>.<span style="color:#007">parseDate</span>(value));
     }
 
-    <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">String</span> marshal(Date <span style="color:#5ed;font-weight:bold">value</span>) {
+    <span style="color:#f00;background-color:#faa">public String </span>marshal(<span style="color:#f00;background-color:#faa">Date value</span>) {
         <span style="color:#289;font-weight:bold">return</span> (ais.<span style="color:#007">ws</span>.<span style="color:#007">util</span>.<span style="color:#007">JavaSqlDateAdapter</span>.<span style="color:#007">printDate</span>(value));
     }
 

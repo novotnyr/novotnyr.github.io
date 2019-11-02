@@ -174,9 +174,9 @@ Swingom:</p>
 <p>Ukážme si príklad, čo sa stane, ak to nedodržíme. Predstavme si kód v
 listeneri tlačidla, ktorý vykonáva dlhotrvajúcu operáciu, napríklad
 výpočet najväčšieho prvočísla.</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">JButton <span style="color:#5ed;font-weight:bold">button</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> JButton(<span style="background-color:#e0e0ff">&#34;Hello!&#34;</span>);
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">JButton button </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> JButton(<span style="background-color:#e0e0ff">&#34;Hello!&#34;</span>);
 button.<span style="color:#007">addActionListener</span>(<span style="color:#289;font-weight:bold">new</span> ActionListener() {
-    <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">void</span> actionPerformed(ActionEvent <span style="color:#5ed;font-weight:bold">e</span>) {
+    <span style="color:#f00;background-color:#faa">public void </span>actionPerformed(<span style="color:#f00;background-color:#faa">ActionEvent e</span>) {
         <span style="color:#666;font-style:italic">/* dlhotrvajúci výpočet... */</span>
         stiahniSúbor(<span style="background-color:#e0e0ff">&#34;http://en.wikipedia.org/wiki/File:Java_logo.svg&#34;</span>);
     }
@@ -246,9 +246,9 @@ dostupná v podobe dodatočného projektu zo stránok
 <a href="http://swingworker.dev.java.net">dev.java.net</a>. Ak chceme vytvoriť
 <code>SwingWorker</code>, ktorý spustí sťahovanie súboru mimo vlákna EDT, vieme
 použiť nasledovnú konštrukciu:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">SwingWorker<span style="color:#333">&lt;</span>Void, Void<span style="color:#333">&gt;</span> <span style="color:#5ed;font-weight:bold">swingWorker</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> SwingWorker<span style="color:#333">&lt;</span>Void, Void<span style="color:#333">&gt;</span>() {
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">SwingWorker<span style="color:#333">&lt;</span>Void, <span style="color:#f00;background-color:#faa">Void&gt; swingWorker </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> SwingWorker<span style="color:#333">&lt;</span>Void, Void<span style="color:#333">&gt;</span>() {
     <span style="color:#555;font-weight:bold">@Override</span>
-        <span style="color:#289;font-weight:bold">protected</span> <span style="color:#5ed;font-weight:bold">Void</span> doInBackground() <span style="color:#289;font-weight:bold">throws</span> <span style="color:#5ed;font-weight:bold">Exception</span> {
+        <span style="color:#f00;background-color:#faa">protected Void </span>doInBackground() <span style="color:#f00;background-color:#faa">throws Exception </span>{
             stiahniSúbor(
                 <span style="background-color:#e0e0ff">&#34;http://en.wikipedia.org/wiki/File:Java_logo.svg&#34;</span>);
             <span style="color:#289;font-weight:bold">return</span> <span style="color:#289;font-weight:bold">null</span>;
@@ -287,30 +287,30 @@ listeneri</em>.</p>
 <p>V prípade, že je <code>SwingWorker</code> komplexnejší a plánuje sa jeho použitie v
 rámci volania action listenera, môžeme vytvoriť samostatnú triedu, ktorá
 bude dediť od <code>SwingWorkera</code> a implementovať interfejs <code>ActionListener</code>:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> DownloadActionListener <span style="color:#5ed;font-weight:bold">extends</span> SwingWorker<span style="color:#333">&lt;</span>Void, Void<span style="color:#333">&gt;</span> 
-    <span style="color:#5ed;font-weight:bold">implements</span> ActionListener 
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">public class DownloadActionListener extends </span>SwingWorker<span style="color:#333">&lt;</span>Void, <span style="color:#f00;background-color:#faa">Void&gt; 
+</span><span style="color:#f00;background-color:#faa">    implements </span>ActionListener 
 {
-    <span style="color:#289;font-weight:bold">private</span> <span style="color:#5ed;font-weight:bold">URL</span> url;
+    <span style="color:#f00;background-color:#faa">private URL </span>url;
     
-    <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">DownloadActionListener</span>(String <span style="color:#5ed;font-weight:bold">url</span>) {
+    <span style="color:#f00;background-color:#faa">public DownloadActionListener</span>(<span style="color:#f00;background-color:#faa">String url</span>) {
         <span style="color:#289;font-weight:bold">try</span> {
             <span style="color:#289;font-weight:bold">this</span>.<span style="color:#007">url</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> URL(url);
-        } <span style="color:#289;font-weight:bold">catch</span> (MalformedURLException <span style="color:#5ed;font-weight:bold">e</span>) {
+        } <span style="color:#289;font-weight:bold">catch</span> (<span style="color:#f00;background-color:#faa">MalformedURLException e</span>) {
             <span style="color:#289;font-weight:bold">throw</span> <span style="color:#289;font-weight:bold">new</span> IllegalArgumentException(
                 <span style="background-color:#e0e0ff">&#34;Illegal protocol in URL.&#34;</span>, e);
         }
     }
 
-    <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">DownloadActionListener</span>(URL <span style="color:#5ed;font-weight:bold">url</span>) {
+    <span style="color:#f00;background-color:#faa">public DownloadActionListener</span>(<span style="color:#f00;background-color:#faa">URL url</span>) {
         <span style="color:#289;font-weight:bold">this</span>.<span style="color:#007">url</span> <span style="color:#333">=</span> url;
     }
     
-    <span style="color:#289;font-weight:bold">protected</span> <span style="color:#5ed;font-weight:bold">Void</span> doInBackground() <span style="color:#289;font-weight:bold">throws</span> <span style="color:#5ed;font-weight:bold">Exception</span> {
+    <span style="color:#f00;background-color:#faa">protected Void </span>doInBackground() <span style="color:#f00;background-color:#faa">throws Exception </span>{
         <span style="color:#666;font-style:italic">// dlhý výpočet
 </span><span style="color:#666;font-style:italic"></span>        <span style="color:#289;font-weight:bold">return</span> <span style="color:#289;font-weight:bold">null</span>;
     }
 
-    <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">void</span> actionPerformed(ActionEvent <span style="color:#5ed;font-weight:bold">e</span>) {
+    <span style="color:#f00;background-color:#faa">public void </span>actionPerformed(<span style="color:#f00;background-color:#faa">ActionEvent e</span>) {
         <span style="color:#289;font-weight:bold">new</span> DownloadActionListener(url).<span style="color:#007">execute</span>();
     }
 }</code></pre></div>
@@ -335,19 +335,19 @@ SwingWorker dáva k dispozícii metódu <code>done()</code>, ktorú možno prekr
 realizovať v nej kód, ktorý sa má vykonať po dobehnutí operácie v
 <code>doInBackground()</code>. Typickým príkladom je aktualizácia používateľského
 rozhrania, napr. zmenou textu v nejakom popisku <code>label</code>.</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> DownloadActionListener <span style="color:#5ed;font-weight:bold">extends</span> SwingWorker<span style="color:#333">&lt;</span>Void, Void<span style="color:#333">&gt;</span>
-    <span style="color:#5ed;font-weight:bold">implements</span> ActionListener 
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">public class DownloadActionListener extends </span>SwingWorker<span style="color:#333">&lt;</span>Void, <span style="color:#f00;background-color:#faa">Void&gt;
+</span><span style="color:#f00;background-color:#faa">    implements </span>ActionListener 
 {
 
-    <span style="color:#289;font-weight:bold">private</span> <span style="color:#5ed;font-weight:bold">JLabel</span> label;
+    <span style="color:#f00;background-color:#faa">private JLabel </span>label;
 
-    <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">DownloadActionListener</span>(String <span style="color:#5ed;font-weight:bold">url</span>, JLabel <span style="color:#5ed;font-weight:bold">labe</span>) {
+    <span style="color:#f00;background-color:#faa">public DownloadActionListener</span>(<span style="color:#f00;background-color:#faa">String url</span>, <span style="color:#f00;background-color:#faa">JLabel labe</span>) {
         <span style="color:#666;font-style:italic">//...
 </span><span style="color:#666;font-style:italic"></span>    }
 
     <span style="color:#666;font-style:italic">// ...
 </span><span style="color:#666;font-style:italic"></span>
-    <span style="color:#289;font-weight:bold">protected</span> <span style="color:#5ed;font-weight:bold">void</span> done() {
+    <span style="color:#f00;background-color:#faa">protected void </span>done() {
         label.<span style="color:#007">setText</span>(<span style="background-color:#e0e0ff">&#34;Hotovo.&#34;</span>);
     }
 }</code></pre></div>
@@ -366,7 +366,7 @@ svojich properties, a jednou z nich je <code>status</code>. Ak zaregistrujeme na
 či vlastnosť <code>status</code> má hodnotu DONE, vieme následne aktualizovať
 používateľské rozhranie.</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">swingWorker.<span style="color:#007">addPropertyChangeListener</span>(<span style="color:#289;font-weight:bold">new</span> PropertyChangeListener() {
-    <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">void</span> propertyChange(PropertyChangeEvent <span style="color:#5ed;font-weight:bold">event</span>) {
+    <span style="color:#f00;background-color:#faa">public void </span>propertyChange(<span style="color:#f00;background-color:#faa">PropertyChangeEvent event</span>) {
         <span style="color:#289;font-weight:bold">if</span> (<span style="background-color:#e0e0ff">&#34;state&#34;</span>.<span style="color:#007">equals</span>(event.<span style="color:#007">getPropertyName</span>())
             <span style="color:#333">&amp;&amp;</span> SwingWorker.<span style="color:#007">StateValue</span>.<span style="color:#007">DONE</span> <span style="color:#333">==</span> event.<span style="color:#007">getNewValue</span>()) {
             label.<span style="color:#007">setText</span>(<span style="background-color:#e0e0ff">&#34;Hotovo.&#34;</span>);
@@ -389,13 +389,13 @@ Túto vlastnosť možno využiť pri modifikovaní stavu komponentov.</p>
 <p>Metóda <code>done()</code> slúži na notifikáciu ukončenia úlohy. Ako však informovať
 o priebežnom stave? Zoberme si kus kódu, ktorý začne sťahovať dáta z
 webovej adresy:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">protected</span> <span style="color:#5ed;font-weight:bold">Void</span> doInBackground() <span style="color:#289;font-weight:bold">throws</span> <span style="color:#5ed;font-weight:bold">Exception</span> {
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">protected Void </span>doInBackground() <span style="color:#f00;background-color:#faa">throws Exception </span>{
     <span style="color:#666;font-style:italic">//...
-</span><span style="color:#666;font-style:italic"></span>    InputStream <span style="color:#5ed;font-weight:bold">stream</span> <span style="color:#333">=</span> ...
-    BufferedOutputStream <span style="color:#5ed;font-weight:bold">out</span> <span style="color:#333">=</span> ...
+</span><span style="color:#666;font-style:italic"></span>    <span style="color:#f00;background-color:#faa">InputStream stream </span><span style="color:#333">=</span> ...
+    <span style="color:#f00;background-color:#faa">BufferedOutputStream out </span><span style="color:#333">=</span> ...
     
-    <span style="color:#66f;font-weight:bold">int</span> <span style="color:#5ed;font-weight:bold">b</span> <span style="color:#333">=</span> <span style="color:#333">-</span>1;
-    <span style="color:#66f;font-weight:bold">int</span> <span style="color:#5ed;font-weight:bold">progress</span> <span style="color:#333">=</span> 0;
+    <span style="color:#f00;background-color:#faa">int b </span><span style="color:#333">=</span> <span style="color:#333">-</span>1;
+    <span style="color:#f00;background-color:#faa">int progress </span><span style="color:#333">=</span> 0;
     <span style="color:#289;font-weight:bold">while</span>((b <span style="color:#333">=</span> stream.<span style="color:#007">read</span>()) <span style="color:#333">!=</span> <span style="color:#333">-</span>1) {
         out.<span style="color:#007">write</span>(b);
         <span style="color:#666;font-style:italic">// priebežne aktualizujeme UI
@@ -415,8 +415,8 @@ nasledovne:</p>
 <p>Pretypovávacie vúdú je potrebné kvôli celočíselnému deleniu: delenie
 dvoch <code>int</code>ov vedie k <code>int</code>u, čo má dôsledky v podobe výpočtu <code>2 / 3 == 0</code>.
 Metóda <code>aktualizujUI()</code> by mohla vyzerať nasledovne:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">private</span> <span style="color:#5ed;font-weight:bold">void</span> aktualizujUI(<span style="color:#66f;font-weight:bold">double</span> <span style="color:#5ed;font-weight:bold">progress</span>, <span style="color:#66f;font-weight:bold">double</span> <span style="color:#5ed;font-weight:bold">length</span>) {
-    <span style="color:#66f;font-weight:bold">int</span> <span style="color:#5ed;font-weight:bold">percents</span> <span style="color:#333">=</span> (<span style="color:#66f;font-weight:bold">int</span>) ((progress <span style="color:#333">/</span> contentLength) <span style="color:#333">*</span> 100);
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">private void </span>aktualizujUI(<span style="color:#f00;background-color:#faa">double progress</span>, <span style="color:#f00;background-color:#faa">double length</span>) {
+    <span style="color:#f00;background-color:#faa">int percents </span><span style="color:#333">=</span> (<span style="color:#66f;font-weight:bold">int</span>) ((progress <span style="color:#333">/</span> contentLength) <span style="color:#333">*</span> 100);
     progressBar.<span style="color:#007">setValue</span>(percents);
 }</code></pre></div>
 <p>Uvedený kus kódu je na prvý pohľad korektný, ale je v ňom jedna zásadná
@@ -472,7 +472,7 @@ uvedenom pri vytváraní inštancie <code>SwingWorker</code>a.</p>
 v rámci metódy <code>process()</code>. Tá beží v rámci vlákna EDT, a teda je vhodným
 miestom, kde môžeme aktualizovať komponenty bez toho, aby sme porušili
 vyššieuvedenú zásadu. Táto metóda má svojskú signatúru:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">protected</span> <span style="color:#5ed;font-weight:bold">void</span> process(List<span style="color:#333">&lt;</span>Integer<span style="color:#333">&gt;</span> <span style="color:#5ed;font-weight:bold">chunks</span>)</code></pre></div>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">protected void </span>process(<span style="color:#f00;background-color:#faa">List&lt;Integer&gt; chunks</span>)</code></pre></div>
 <p>Jej parametrom je zoznam, ktorý obsahuje prvky toho typu, ktorý bol
 deklarovaný v generickom argumente, resp. v parametri metódy <code>publish()</code>.
 V zozname sa ocitnú všetky <em>publikované dáta</em>. Za normálnych okolností
@@ -501,8 +501,8 @@ priebehu to nemá zmysel.</p>
 <p>Ak sledujeme priebeh, bude nás zaujímať len posledná publikovaná
 hodnota, teda posledný prvok zoznamu. V rámci metódy vypočítame percento
 priebehu a nastavíme ho na zozname.</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">protected</span> <span style="color:#5ed;font-weight:bold">void</span> process(List<span style="color:#333">&lt;</span>Integer<span style="color:#333">&gt;</span> <span style="color:#5ed;font-weight:bold">chunks</span>) {
-    <span style="color:#66f;font-weight:bold">double</span> <span style="color:#5ed;font-weight:bold">progress</span> <span style="color:#333">=</span> chunks.<span style="color:#007">get</span>(chunks.<span style="color:#007">size</span>() <span style="color:#333">-</span> 1);
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">protected void </span>process(<span style="color:#f00;background-color:#faa">List&lt;Integer&gt; chunks</span>) {
+    <span style="color:#f00;background-color:#faa">double progress </span><span style="color:#333">=</span> chunks.<span style="color:#007">get</span>(chunks.<span style="color:#007">size</span>() <span style="color:#333">-</span> 1);
     progressBar.<span style="color:#007">setValue</span>((<span style="color:#66f;font-weight:bold">int</span>) (progress <span style="color:#333">/</span> contentLength) <span style="color:#333">*</span> 100));
 }</code></pre></div>
 <h2 id="swingworker-a-sledovanie-priebehu"><code>SwingWorker</code> a sledovanie priebehu</h2>
@@ -511,7 +511,7 @@ priebehu a nastavíme ho na zozname.</p>
 použiť alternatívny spôsob, ktorý využíva metódu setProgress()
 zabudovanú v SwingWorkeri. Má jeden parameter v intervale 0..100, ktorý
 vieme nastaviť <em>property</em> s názvom <code>progress</code>.</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">protected</span> <span style="color:#5ed;font-weight:bold">Void</span> doInBackground() <span style="color:#289;font-weight:bold">throws</span> <span style="color:#5ed;font-weight:bold">Exception</span> {
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">protected Void </span>doInBackground() <span style="color:#f00;background-color:#faa">throws Exception </span>{
     <span style="color:#666;font-style:italic">//...
 </span><span style="color:#666;font-style:italic"></span>    <span style="color:#289;font-weight:bold">while</span>((b <span style="color:#333">=</span> stream.<span style="color:#007">read</span>()) <span style="color:#333">!=</span> <span style="color:#333">-</span>1) {
         <span style="color:#666;font-style:italic">// .. priebežne publikujeme progres
@@ -535,16 +535,16 @@ a toto okno (modálne okno „vyblokuje“ používateľské rozhranie). Zárove
 však budeme v <em>property change listeneri</em> priebežne sledovať, či ešte
 operácia beží. Ak už dobehla, okno zatvoríme. Zmienený <em>property change
 listener</em> vyzerá nasledovne a podobá sa na listener zo sekcie <em>Úloha dobehla</em>.</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">private</span> <span style="color:#5ed;font-weight:bold">final</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#5ed;font-weight:bold">SwingWorkerCompletionWaiter</span> 
-    <span style="color:#289;font-weight:bold">implements</span> <span style="color:#5ed;font-weight:bold">PropertyChangeListener</span> 
-{
-    <span style="color:#289;font-weight:bold">private</span> <span style="color:#5ed;font-weight:bold">JDialog</span> dialog;
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">private final class SwingWorkerCompletionWaiter 
+</span><span style="color:#f00;background-color:#faa">    implements PropertyChangeListener 
+</span><span style="color:#f00;background-color:#faa"></span>{
+    <span style="color:#f00;background-color:#faa">private JDialog </span>dialog;
 
-    <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">SwingWorkerCompletionWaiter</span>(JDialog <span style="color:#5ed;font-weight:bold">dialog</span>) {
+    <span style="color:#f00;background-color:#faa">public SwingWorkerCompletionWaiter</span>(<span style="color:#f00;background-color:#faa">JDialog dialog</span>) {
         <span style="color:#289;font-weight:bold">this</span>.<span style="color:#007">dialog</span> <span style="color:#333">=</span> dialog;
     }
 
-    <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">void</span> propertyChange(PropertyChangeEvent <span style="color:#5ed;font-weight:bold">event</span>) {
+    <span style="color:#f00;background-color:#faa">public void </span>propertyChange(<span style="color:#f00;background-color:#faa">PropertyChangeEvent event</span>) {
         <span style="color:#289;font-weight:bold">if</span> (<span style="background-color:#e0e0ff">&#34;state&#34;</span>.<span style="color:#007">equals</span>(event.<span style="color:#007">getPropertyName</span>())
             <span style="color:#333">&amp;&amp;</span> SwingWorker.<span style="color:#007">StateValue</span>.<span style="color:#007">DONE</span> <span style="color:#333">==</span> event.<span style="color:#007">getNewValue</span>()) {
             dialog.<span style="color:#007">setVisible</span>(<span style="color:#289;font-weight:bold">false</span>);
@@ -554,9 +554,9 @@ listener</em> vyzerá nasledovne a podobá sa na listener zo sekcie <em>Úloha d
 }</code></pre></div>
 <p>Použitie na príklade <em>action listenera</em> je nasledovné:</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">button.<span style="color:#007">addActionListener</span>(<span style="color:#289;font-weight:bold">new</span> ActionListener() {
-    <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">void</span> actionPerformed(ActionEvent <span style="color:#5ed;font-weight:bold">e</span>) {
-        SwingWorker<span style="color:#333">&lt;</span>Void, Void<span style="color:#333">&gt;</span> <span style="color:#5ed;font-weight:bold">worker</span> <span style="color:#333">=</span> ...
-        JDialog <span style="color:#5ed;font-weight:bold">dialog</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> JDialog(MainForm.<span style="color:#007">this</span>, <span style="color:#289;font-weight:bold">true</span>);
+    <span style="color:#f00;background-color:#faa">public void </span>actionPerformed(<span style="color:#f00;background-color:#faa">ActionEvent e</span>) {
+        SwingWorker<span style="color:#333">&lt;</span>Void, <span style="color:#f00;background-color:#faa">Void&gt; worker </span><span style="color:#333">=</span> ...
+        <span style="color:#f00;background-color:#faa">JDialog dialog </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> JDialog(MainForm.<span style="color:#007">this</span>, <span style="color:#289;font-weight:bold">true</span>);
         worker.<span style="color:#007">addPropertyChangeListener</span>(
             <span style="color:#289;font-weight:bold">new</span> SwingWorkerCompletionWaiter(dialog));
         worker.<span style="color:#007">execute</span>();
@@ -587,8 +587,8 @@ asynchrónne spúšťanej úlohy. Trieda implementuje interfejs
 <code>SwingWorker</code>a pomocou klasickej triedy vlákna <code>Thread</code>. Nasledovný kód
 spustí vo vlákne <code>Thread</code> inštanciu <em>workera</em> presne tak, ako akúkoľvek
 inú inštanciu Runnable:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">SwingWorker<span style="color:#333">&lt;</span>Void, Integer<span style="color:#333">&gt;</span> <span style="color:#5ed;font-weight:bold">worker</span> <span style="color:#333">=</span> ...
-Thread <span style="color:#5ed;font-weight:bold">thread</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Thread(worker);
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">SwingWorker<span style="color:#333">&lt;</span>Void, <span style="color:#f00;background-color:#faa">Integer&gt; worker </span><span style="color:#333">=</span> ...
+<span style="color:#f00;background-color:#faa">Thread thread </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Thread(worker);
 thread.<span style="color:#007">start</span>();</code></pre></div>
 <p>Tento kód je zhruba ekvivalentný štandardnému spusteniu cez
 <code>worker.execute()</code>. V tomto prípade však explicitne určíme vlákno, ktoré
@@ -620,25 +620,25 @@ ich dobehnutí zatvoríme okno. Drobným nedostatkom je fakt, že
 volaním <code>Executors.callable()</code> vieme previesť <code>Runnable</code> na <code>Callable</code>.</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">setVisible(<span style="color:#289;font-weight:bold">true</span>);
 <span style="color:#289;font-weight:bold">try</span> {
-    ExecutorService <span style="color:#5ed;font-weight:bold">executor</span> <span style="color:#333">=</span> Executors.<span style="color:#007">newCachedThreadPool</span>();
-    List<span style="color:#333">&lt;</span>Callable<span style="color:#333">&lt;</span>Object<span style="color:#333">&gt;&gt;</span> <span style="color:#5ed;font-weight:bold">tasks</span> 
-        <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> LinkedList<span style="color:#333">&lt;</span>Callable<span style="color:#333">&lt;</span>Object<span style="color:#333">&gt;&gt;</span>();
-    <span style="color:#289;font-weight:bold">for</span> (Component <span style="color:#5ed;font-weight:bold">c</span> <span style="color:#333">:</span> <span style="color:#289;font-weight:bold">this</span>.<span style="color:#007">getContentPane</span>().<span style="color:#007">getComponents</span>()) {
-        <span style="color:#289;font-weight:bold">if</span> (c <span style="color:#5ed;font-weight:bold">instanceof</span> DownloadProgressPanel) {
+    <span style="color:#f00;background-color:#faa">ExecutorService executor </span><span style="color:#333">=</span> Executors.<span style="color:#007">newCachedThreadPool</span>();
+    <span style="color:#f00;background-color:#faa">List&lt;Callable&lt;Object&gt;&gt; tasks 
+</span><span style="color:#f00;background-color:#faa">        </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> LinkedList<span style="color:#333">&lt;</span>Callable<span style="color:#333">&lt;</span>Object<span style="color:#333">&gt;&gt;</span>();
+    <span style="color:#289;font-weight:bold">for</span> (<span style="color:#f00;background-color:#faa">Component c </span><span style="color:#333">:</span> <span style="color:#289;font-weight:bold">this</span>.<span style="color:#007">getContentPane</span>().<span style="color:#007">getComponents</span>()) {
+        <span style="color:#289;font-weight:bold">if</span> (<span style="color:#f00;background-color:#faa">c instanceof </span>DownloadProgressPanel) {
             <span style="color:#666;font-style:italic">// panel s progress barom a popiskom
-</span><span style="color:#666;font-style:italic"></span>            DownloadProgressPanel <span style="color:#5ed;font-weight:bold">panel</span> <span style="color:#333">=</span> (DownloadProgressPanel) c;
+</span><span style="color:#666;font-style:italic"></span>            <span style="color:#f00;background-color:#faa">DownloadProgressPanel panel </span><span style="color:#333">=</span> (DownloadProgressPanel) c;
             <span style="color:#666;font-style:italic">// vytvoríme inštanciu SwingWorkera
-</span><span style="color:#666;font-style:italic"></span>            DownloadTask <span style="color:#5ed;font-weight:bold">task</span>
-            <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> DownloadTask(panel.<span style="color:#007">getUrl</span>(),
+</span><span style="color:#666;font-style:italic"></span>            <span style="color:#f00;background-color:#faa">DownloadTask task
+</span><span style="color:#f00;background-color:#faa">            </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> DownloadTask(panel.<span style="color:#007">getUrl</span>(),
                 panel.<span style="color:#007">getProgressBar</span>());
             <span style="color:#666;font-style:italic">// prevedieme ho na Callable a zaradíme do zoznamu úloh
-</span><span style="color:#666;font-style:italic"></span>            Callable<span style="color:#333">&lt;</span>Object<span style="color:#333">&gt;</span> <span style="color:#5ed;font-weight:bold">callable</span> <span style="color:#333">=</span> Executors.<span style="color:#007">callable</span>(task);
+</span><span style="color:#666;font-style:italic"></span>            <span style="color:#f00;background-color:#faa">Callable&lt;Object&gt; callable </span><span style="color:#333">=</span> Executors.<span style="color:#007">callable</span>(task);
             tasks.<span style="color:#007">add</span>(callable);
         }
     }
     <span style="color:#666;font-style:italic">// vykonáme všetky úlohy. Volanie metódy čaká, kým nedobehnú úlohy.
 </span><span style="color:#666;font-style:italic"></span>    executor.<span style="color:#007">invokeAll</span>(tasks);
-} <span style="color:#289;font-weight:bold">catch</span> (InterruptedException <span style="color:#5ed;font-weight:bold">e</span>) {
+} <span style="color:#289;font-weight:bold">catch</span> (<span style="color:#f00;background-color:#faa">InterruptedException e</span>) {
     e.<span style="color:#007">printStackTrace</span>();
 } <span style="color:#289;font-weight:bold">finally</span> {
     setVisible(<span style="color:#289;font-weight:bold">false</span>);
@@ -676,7 +676,7 @@ zaručí vykonanie kódu vo vlákne EDT a teda možnosť meniť komponenty.
 sa kód v úlohe <code>Runnable</code> vykoná až potom, čo sa spracujú ostatné úlohy
 čakajúce vo fronte EDT. Niekedy sa oplatí vedieť, či vykonávaný kód
 beží v EDT alebo nie, čo zistíme nasledovne:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66f;font-weight:bold">boolean</span> <span style="color:#5ed;font-weight:bold">smeVoVnutriEDT</span> <span style="color:#333">=</span> SwingUtilities.<span style="color:#007">isEventDispatchThread</span>()</code></pre></div>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">boolean smeVoVnutriEDT </span><span style="color:#333">=</span> SwingUtilities.<span style="color:#007">isEventDispatchThread</span>()</code></pre></div>
 <p>Doplnkom metódy <code>invokeLater()</code> je <code>SwingUtilities.invokeAndWait()</code>, ktorý
 funguje rovnako, ale blokuje do chvíle, kým nedobehne úloha odoslaná do
 EDT.</p>

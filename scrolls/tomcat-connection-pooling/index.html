@@ -293,20 +293,20 @@ Container
 
 <p>Uviedeme úsek kódu, v ktorom je ukázaná, ako sa získa objekt <code>java.sql.Connection</code> z poolu:</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#666;font-style:italic">//inicializujeme kontext pre JNDI
-</span><span style="color:#666;font-style:italic"></span>Context <span style="color:#5ed;font-weight:bold">ctx</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> InitialContext();
+</span><span style="color:#666;font-style:italic"></span><span style="color:#f00;background-color:#faa">Context ctx </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> InitialContext();
 <span style="color:#666;font-style:italic">/* získame objekt typu DataSource -- poskytovateľa pripojení. Získame
 </span><span style="color:#666;font-style:italic">   ho podľa jednoznačného identifikátora, ktorý sme nastavili
 </span><span style="color:#666;font-style:italic">   v kontexte webaplikácie. java:comp/env/ je štandardná predpona
 </span><span style="color:#666;font-style:italic">   v Tomcate
 </span><span style="color:#666;font-style:italic">*/</span>
-DataSource <span style="color:#5ed;font-weight:bold">ds</span> <span style="color:#333">=</span> (DataSource) ctx.<span style="color:#007">lookup</span>(<span style="background-color:#e0e0ff">&#34;java:comp/env/jdbc/db2Test&#34;</span>);
+<span style="color:#f00;background-color:#faa">DataSource ds </span><span style="color:#333">=</span> (DataSource) ctx.<span style="color:#007">lookup</span>(<span style="background-color:#e0e0ff">&#34;java:comp/env/jdbc/db2Test&#34;</span>);
 
-Connection <span style="color:#5ed;font-weight:bold">con</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">null</span>;
+<span style="color:#f00;background-color:#faa">Connection con </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">null</span>;
 <span style="color:#289;font-weight:bold">try</span> {
   <span style="color:#666;font-style:italic">// DataSource nám poskytne Connection
 </span><span style="color:#666;font-style:italic"></span>  con <span style="color:#333">=</span> ds.<span style="color:#007">getConnection</span>();
   ... 
-  tu <span style="color:#5ed;font-weight:bold">využívame</span> Connection
+  <span style="color:#f00;background-color:#faa">tu využívame </span>Connection
   ...
 } <span style="color:#289;font-weight:bold">finally</span> {
   <span style="color:#289;font-weight:bold">if</span> (con <span style="color:#333">!=</span> <span style="color:#289;font-weight:bold">null</span>)

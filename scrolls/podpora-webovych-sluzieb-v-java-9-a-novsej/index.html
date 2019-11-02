@@ -110,18 +110,18 @@
 <h2 id="kód-serverovskej-časti">Kód serverovskej časti</h2>
 
 <p>Serverovský časť je úplne bežná trieda, s úplne bežnými metódami:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> DefaultTermService {
-    <span style="color:#289;font-weight:bold">private</span> <span style="color:#5ed;font-weight:bold">List</span><span style="color:#333">&lt;</span>Term<span style="color:#333">&gt;</span> <span style="color:#5ed;font-weight:bold">terms</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> ArrayList<span style="color:#333">&lt;</span>Term<span style="color:#333">&gt;</span>();
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">public class </span>DefaultTermService {
+    <span style="color:#f00;background-color:#faa">private List</span><span style="color:#333">&lt;</span><span style="color:#f00;background-color:#faa">Term&gt; terms </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> ArrayList<span style="color:#333">&lt;</span>Term<span style="color:#333">&gt;</span>();
 
-    <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">DefaultTermService</span>() {
+    <span style="color:#f00;background-color:#faa">public DefaultTermService</span>() {
         terms.<span style="color:#007">add</span>(<span style="color:#289;font-weight:bold">new</span> Term(<span style="color:#289;font-weight:bold">new</span> Date(107, 12, 12), <span style="background-color:#e0e0ff">&#34;UINF/PAZ1c&#34;</span>, 100));
         terms.<span style="color:#007">add</span>(<span style="color:#289;font-weight:bold">new</span> Term(<span style="color:#289;font-weight:bold">new</span> Date(107, 12, 15), <span style="background-color:#e0e0ff">&#34;UINF/PAZ1c&#34;</span>, 75));
         terms.<span style="color:#007">add</span>(<span style="color:#289;font-weight:bold">new</span> Term(<span style="color:#289;font-weight:bold">new</span> Date(107, 12, 12), <span style="background-color:#e0e0ff">&#34;UINF/TVY1a&#34;</span>, 50));
     }
 
-    <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">List</span><span style="color:#333">&lt;</span>Term<span style="color:#333">&gt;</span> <span style="color:#5ed;font-weight:bold">getTerms</span>(String <span style="color:#5ed;font-weight:bold">courseCode</span>) {
-        List<span style="color:#333">&lt;</span>Term<span style="color:#333">&gt;</span> <span style="color:#5ed;font-weight:bold">filteredTerms</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> ArrayList<span style="color:#333">&lt;</span>Term<span style="color:#333">&gt;</span>();
-        <span style="color:#289;font-weight:bold">for</span> (Term <span style="color:#5ed;font-weight:bold">term</span> <span style="color:#333">:</span> terms) {
+    <span style="color:#f00;background-color:#faa">public List</span><span style="color:#333">&lt;</span><span style="color:#f00;background-color:#faa">Term&gt; getTerms</span>(<span style="color:#f00;background-color:#faa">String courseCode</span>) {
+        <span style="color:#f00;background-color:#faa">List&lt;Term&gt; filteredTerms </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> ArrayList<span style="color:#333">&lt;</span>Term<span style="color:#333">&gt;</span>();
+        <span style="color:#289;font-weight:bold">for</span> (<span style="color:#f00;background-color:#faa">Term term </span><span style="color:#333">:</span> terms) {
             <span style="color:#289;font-weight:bold">if</span> (term.<span style="color:#007">getCourseCode</span>().<span style="color:#007">equals</span>(courseCode)) {
                 filteredTerms.<span style="color:#007">add</span>(term);
             }
@@ -129,9 +129,9 @@
         <span style="color:#289;font-weight:bold">return</span> filteredTerms;
     }
 
-    <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">boolean</span> signup(
-            String <span style="color:#5ed;font-weight:bold">courseCode</span>, Date <span style="color:#5ed;font-weight:bold">date</span>) {
-        <span style="color:#289;font-weight:bold">for</span> (Term <span style="color:#5ed;font-weight:bold">term</span> <span style="color:#333">:</span> terms) {
+    <span style="color:#f00;background-color:#faa">public boolean </span>signup(
+            <span style="color:#f00;background-color:#faa">String courseCode</span>, <span style="color:#f00;background-color:#faa">Date date</span>) {
+        <span style="color:#289;font-weight:bold">for</span> (<span style="color:#f00;background-color:#faa">Term term </span><span style="color:#333">:</span> terms) {
             <span style="color:#289;font-weight:bold">if</span> (term.<span style="color:#007">getCourseCode</span>().<span style="color:#007">equals</span>(courseCode)
                     <span style="color:#333">&amp;&amp;</span> term.<span style="color:#007">getDate</span>().<span style="color:#007">equals</span>(date)
                     <span style="color:#333">&amp;&amp;</span> term.<span style="color:#007">getFreeSlots</span>() <span style="color:#333">&gt;</span> 0) {
@@ -231,12 +231,12 @@ public class Server {
 <h3 id="použitie-klienta-v-kóde">Použitie klienta v kóde</h3>
 
 <p>Klienta použijeme jednoducho:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> Client {
-    <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">static</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">main</span>(String[] <span style="color:#5ed;font-weight:bold">args</span>) {
-        DefaultTermServiceService <span style="color:#5ed;font-weight:bold">serviceLocator</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> DefaultTermServiceService();
-        DefaultTermService <span style="color:#5ed;font-weight:bold">termService</span> <span style="color:#333">=</span> serviceLocator.<span style="color:#007">getDefaultTermServicePort</span>();
-        List<span style="color:#333">&lt;</span>Term<span style="color:#333">&gt;</span> <span style="color:#5ed;font-weight:bold">terms</span> <span style="color:#333">=</span> termService.<span style="color:#007">getTerms</span>(<span style="background-color:#e0e0ff">&#34;UINF/PAZ1c&#34;</span>);
-        <span style="color:#289;font-weight:bold">for</span> (Term <span style="color:#5ed;font-weight:bold">term</span> <span style="color:#333">:</span> terms) {
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">public class </span>Client {
+    <span style="color:#f00;background-color:#faa">public static void main</span>(<span style="color:#f00;background-color:#faa">String[] args</span>) {
+        <span style="color:#f00;background-color:#faa">DefaultTermServiceService serviceLocator </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> DefaultTermServiceService();
+        <span style="color:#f00;background-color:#faa">DefaultTermService termService </span><span style="color:#333">=</span> serviceLocator.<span style="color:#007">getDefaultTermServicePort</span>();
+        <span style="color:#f00;background-color:#faa">List&lt;Term&gt; terms </span><span style="color:#333">=</span> termService.<span style="color:#007">getTerms</span>(<span style="background-color:#e0e0ff">&#34;UINF/PAZ1c&#34;</span>);
+        <span style="color:#289;font-weight:bold">for</span> (<span style="color:#f00;background-color:#faa">Term term </span><span style="color:#333">:</span> terms) {
             System.<span style="color:#007">out</span>.<span style="color:#007">printf</span>(<span style="background-color:#e0e0ff">&#34;%s - %d slots left\n&#34;</span>, term.<span style="color:#007">getDate</span>(), term.<span style="color:#007">getFreeSlots</span>());
         }
     }

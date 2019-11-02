@@ -148,30 +148,30 @@ WARN:  failed SelectChannelConnector@0.0.0.0:8080
 <h1 id="programové-spustenie-jetty">Programové spustenie Jetty</h1>
 
 <p>Jetty je možné pohodlne naštartovať aj v rámci webovej aplikácie. Prepokladajme, že máme servlet:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> HelloServlet <span style="color:#5ed;font-weight:bold">extends</span> HttpServlet {
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">public class HelloServlet extends </span>HttpServlet {
 
   <span style="color:#555;font-weight:bold">@Override</span>
-  <span style="color:#289;font-weight:bold">protected</span> <span style="color:#5ed;font-weight:bold">void</span> doGet(HttpServletRequest <span style="color:#5ed;font-weight:bold">req</span>,
-                       HttpServletResponse <span style="color:#5ed;font-weight:bold">resp</span>)
-      <span style="color:#289;font-weight:bold">throws</span> <span style="color:#5ed;font-weight:bold">ServletException</span>, IOException 
+  <span style="color:#f00;background-color:#faa">protected void </span>doGet(<span style="color:#f00;background-color:#faa">HttpServletRequest req</span>,
+                       <span style="color:#f00;background-color:#faa">HttpServletResponse resp</span>)
+      <span style="color:#f00;background-color:#faa">throws ServletException</span>, IOException 
   {
     System.<span style="color:#007">out</span>.<span style="color:#007">println</span>(<span style="background-color:#e0e0ff">&#34;Hello world.&#34;</span>);     
   }
 
 }</code></pre></div>
 <p>Jetty, v ktorej beží jeden jednoduchý servlet (ktorý nepotrebuje celú webovú aplikáciu, ani konfigurovanie cez <code>web.xml</code>), naštartujeme:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">javax</span>.<span style="color:#007">servlet</span>.<span style="color:#007">ServletException</span>;
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">javax</span>.<span style="color:#007">servlet</span>.<span style="color:#007">http</span>.<span style="color:#007">HttpServlet</span>;
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">javax</span>.<span style="color:#007">servlet</span>.<span style="color:#007">http</span>.<span style="color:#007">HttpServletRequest</span>;
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">javax</span>.<span style="color:#007">servlet</span>.<span style="color:#007">http</span>.<span style="color:#007">HttpServletResponse</span>;
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">import javax</span>.<span style="color:#007">servlet</span>.<span style="color:#007">ServletException</span>;
+<span style="color:#f00;background-color:#faa">import javax</span>.<span style="color:#007">servlet</span>.<span style="color:#007">http</span>.<span style="color:#007">HttpServlet</span>;
+<span style="color:#f00;background-color:#faa">import javax</span>.<span style="color:#007">servlet</span>.<span style="color:#007">http</span>.<span style="color:#007">HttpServletRequest</span>;
+<span style="color:#f00;background-color:#faa">import javax</span>.<span style="color:#007">servlet</span>.<span style="color:#007">http</span>.<span style="color:#007">HttpServletResponse</span>;
 
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">org</span>.<span style="color:#007">mortbay</span>.<span style="color:#007">jetty</span>.<span style="color:#007">Server</span>;
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">org</span>.<span style="color:#007">mortbay</span>.<span style="color:#007">jetty</span>.<span style="color:#007">servlet</span>.<span style="color:#007">ServletHandler</span>;
+<span style="color:#f00;background-color:#faa">import org</span>.<span style="color:#007">mortbay</span>.<span style="color:#007">jetty</span>.<span style="color:#007">Server</span>;
+<span style="color:#f00;background-color:#faa">import org</span>.<span style="color:#007">mortbay</span>.<span style="color:#007">jetty</span>.<span style="color:#007">servlet</span>.<span style="color:#007">ServletHandler</span>;
 
-<span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> ClassicServer {
-  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">static</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">main</span>(String[] <span style="color:#5ed;font-weight:bold">args</span>) <span style="color:#289;font-weight:bold">throws</span> <span style="color:#5ed;font-weight:bold">Exception</span> {
-    Server <span style="color:#5ed;font-weight:bold">server</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Server(8080);
-    ServletHandler <span style="color:#5ed;font-weight:bold">servletHandler</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> ServletHandler();
+<span style="color:#f00;background-color:#faa">public class </span>ClassicServer {
+  <span style="color:#f00;background-color:#faa">public static void main</span>(<span style="color:#f00;background-color:#faa">String[] args</span>) <span style="color:#f00;background-color:#faa">throws Exception </span>{
+    <span style="color:#f00;background-color:#faa">Server server </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Server(8080);
+    <span style="color:#f00;background-color:#faa">ServletHandler servletHandler </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> ServletHandler();
     servletHandler.<span style="color:#007">addServletWithMapping</span>(HelloServlet.<span style="color:#007">class</span>,
                                          <span style="background-color:#e0e0ff">&#34;/hello&#34;</span>);
     

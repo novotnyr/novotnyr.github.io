@@ -60,7 +60,7 @@
 
 <main>
 <p>V jednom z projektov používame JAXB, čo je nástroj na mapovanie XML schémy na Java triedy. Jedného pekného rána sme dostali nápad použiť plugin <a href="https://jaxb2-commons.dev.java.net/fluent-api/">FluentAPI</a>, ktorý vie dodať triedam vygenerovaným zo schémy metódy <code>with...</code>. Potom vieme používať</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">USAddress <span style="color:#5ed;font-weight:bold">address</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> USAddress()
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">USAddress address </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> USAddress()
 			.<span style="color:#007">withName</span>(name)
 			.<span style="color:#007">withStreet</span>(street)
 			.<span style="color:#007">withCity</span>(city)

@@ -61,15 +61,15 @@
 <main>
 
 
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">package</span> <span style="color:#5ed;font-weight:bold">sk</span>.<span style="color:#007">novotnyr</span>.<span style="color:#007">movie</span>;
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">package sk</span>.<span style="color:#007">novotnyr</span>.<span style="color:#007">movie</span>;
 
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">java</span>.<span style="color:#007">util</span>.<span style="color:#007">Date</span>;
+<span style="color:#f00;background-color:#faa">import java</span>.<span style="color:#007">util</span>.<span style="color:#007">Date</span>;
 
-<span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> MovieReservation {
+<span style="color:#f00;background-color:#faa">public class </span>MovieReservation {
 
-  <span style="color:#289;font-weight:bold">protected</span> <span style="color:#5ed;font-weight:bold">String</span> title;
-  <span style="color:#289;font-weight:bold">protected</span> <span style="color:#5ed;font-weight:bold">Date</span> date;
-  <span style="color:#289;font-weight:bold">protected</span> <span style="color:#5ed;font-weight:bold">int</span> numberOfTickets;
+  <span style="color:#f00;background-color:#faa">protected String </span>title;
+  <span style="color:#f00;background-color:#faa">protected Date </span>date;
+  <span style="color:#f00;background-color:#faa">protected int </span>numberOfTickets;
 
   <span style="color:#666;font-style:italic">// gettre a settre
 </span><span style="color:#666;font-style:italic"></span>}</code></pre></div>
@@ -145,21 +145,21 @@ log4j.appender.stdout.layout.ConversionPattern=%p [%c{3}] %m%n
 </code></pre>
 
 <h1 id="endpoint">Endpoint</h1>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">package</span> <span style="color:#5ed;font-weight:bold">sk</span>.<span style="color:#007">novotnyr</span>.<span style="color:#007">movie</span>.<span style="color:#007">ws</span>;
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">package sk</span>.<span style="color:#007">novotnyr</span>.<span style="color:#007">movie</span>.<span style="color:#007">ws</span>;
 
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">org</span>.<span style="color:#007">springframework</span>.<span style="color:#007">oxm</span>.<span style="color:#007">xstream</span>.<span style="color:#007">XStreamMarshaller</span>;
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">org</span>.<span style="color:#007">springframework</span>.<span style="color:#007">ws</span>.<span style="color:#007">server</span>.<span style="color:#007">endpoint</span>.<span style="color:#007">AbstractMarshallingPayloadEndpoint</span>;
+<span style="color:#f00;background-color:#faa">import org</span>.<span style="color:#007">springframework</span>.<span style="color:#007">oxm</span>.<span style="color:#007">xstream</span>.<span style="color:#007">XStreamMarshaller</span>;
+<span style="color:#f00;background-color:#faa">import org</span>.<span style="color:#007">springframework</span>.<span style="color:#007">ws</span>.<span style="color:#007">server</span>.<span style="color:#007">endpoint</span>.<span style="color:#007">AbstractMarshallingPayloadEndpoint</span>;
 
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">sk</span>.<span style="color:#007">novotnyr</span>.<span style="color:#007">movie</span>.<span style="color:#007">MovieReservation</span>;
+<span style="color:#f00;background-color:#faa">import sk</span>.<span style="color:#007">novotnyr</span>.<span style="color:#007">movie</span>.<span style="color:#007">MovieReservation</span>;
 
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">com</span>.<span style="color:#007">thoughtworks</span>.<span style="color:#007">xstream</span>.<span style="color:#007">converters</span>.<span style="color:#007">basic</span>.<span style="color:#007">DateConverter</span>;
+<span style="color:#f00;background-color:#faa">import com</span>.<span style="color:#007">thoughtworks</span>.<span style="color:#007">xstream</span>.<span style="color:#007">converters</span>.<span style="color:#007">basic</span>.<span style="color:#007">DateConverter</span>;
 
-<span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> XStreamMovieReservationEndpoint <span style="color:#5ed;font-weight:bold">extends</span> AbstractMarshallingPayloadEndpoint {
+<span style="color:#f00;background-color:#faa">public class XStreamMovieReservationEndpoint extends </span>AbstractMarshallingPayloadEndpoint {
   
   <span style="color:#555;font-weight:bold">@Override</span>
-  <span style="color:#289;font-weight:bold">protected</span> <span style="color:#5ed;font-weight:bold">Object</span> invokeInternal(Object <span style="color:#5ed;font-weight:bold">object</span>) <span style="color:#289;font-weight:bold">throws</span> <span style="color:#5ed;font-weight:bold">Exception</span> {
+  <span style="color:#f00;background-color:#faa">protected Object </span>invokeInternal(<span style="color:#f00;background-color:#faa">Object object</span>) <span style="color:#f00;background-color:#faa">throws Exception </span>{
 
-    MovieReservation <span style="color:#5ed;font-weight:bold">movieReservationRequest</span> <span style="color:#333">=</span> (MovieReservation) object;
+    <span style="color:#f00;background-color:#faa">MovieReservation movieReservationRequest </span><span style="color:#333">=</span> (MovieReservation) object;
     System.<span style="color:#007">out</span>.<span style="color:#007">println</span>(movieReservationRequest.<span style="color:#007">getTitle</span>());
     System.<span style="color:#007">out</span>.<span style="color:#007">println</span>(movieReservationRequest.<span style="color:#007">getDate</span>());
     System.<span style="color:#007">out</span>.<span style="color:#007">println</span>(movieReservationRequest.<span style="color:#007">getNumberOfTickets</span>());
@@ -169,10 +169,10 @@ log4j.appender.stdout.layout.ConversionPattern=%p [%c{3}] %m%n
   }
 
   <span style="color:#555;font-weight:bold">@Override</span>
-  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">void</span> afterPropertiesSet() <span style="color:#289;font-weight:bold">throws</span> <span style="color:#5ed;font-weight:bold">Exception</span> {
+  <span style="color:#f00;background-color:#faa">public void </span>afterPropertiesSet() <span style="color:#f00;background-color:#faa">throws Exception </span>{
     <span style="color:#289;font-weight:bold">super</span>.<span style="color:#007">afterPropertiesSet</span>();
 
-    XStreamMarshaller <span style="color:#5ed;font-weight:bold">marshaller</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> XStreamMarshaller();
+    <span style="color:#f00;background-color:#faa">XStreamMarshaller marshaller </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> XStreamMarshaller();
     marshaller.<span style="color:#007">addAlias</span>(<span style="background-color:#e0e0ff">&#34;movieReservationRequest&#34;</span>, MovieReservation.<span style="color:#007">class</span>);
     marshaller.<span style="color:#007">getXStream</span>().<span style="color:#007">registerConverter</span>(<span style="color:#289;font-weight:bold">new</span> DateConverter(<span style="background-color:#e0e0ff">&#34;yyyy-DD-mm&#34;</span>, <span style="color:#289;font-weight:bold">new</span> String[]{}));
     
@@ -183,24 +183,24 @@ log4j.appender.stdout.layout.ConversionPattern=%p [%c{3}] %m%n
   
 }</code></pre></div>
 <h1 id="klient">Klient</h1>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">package</span> <span style="color:#5ed;font-weight:bold">sk</span>.<span style="color:#007">novotnyr</span>.<span style="color:#007">movie</span>.<span style="color:#007">ws</span>;
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">package sk</span>.<span style="color:#007">novotnyr</span>.<span style="color:#007">movie</span>.<span style="color:#007">ws</span>;
 
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">java</span>.<span style="color:#007">io</span>.<span style="color:#007">FileReader</span>;
+<span style="color:#f00;background-color:#faa">import java</span>.<span style="color:#007">io</span>.<span style="color:#007">FileReader</span>;
 
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">javax</span>.<span style="color:#007">xml</span>.<span style="color:#007">transform</span>.<span style="color:#007">stream</span>.<span style="color:#007">StreamResult</span>;
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">javax</span>.<span style="color:#007">xml</span>.<span style="color:#007">transform</span>.<span style="color:#007">stream</span>.<span style="color:#007">StreamSource</span>;
+<span style="color:#f00;background-color:#faa">import javax</span>.<span style="color:#007">xml</span>.<span style="color:#007">transform</span>.<span style="color:#007">stream</span>.<span style="color:#007">StreamResult</span>;
+<span style="color:#f00;background-color:#faa">import javax</span>.<span style="color:#007">xml</span>.<span style="color:#007">transform</span>.<span style="color:#007">stream</span>.<span style="color:#007">StreamSource</span>;
 
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">org</span>.<span style="color:#007">springframework</span>.<span style="color:#007">ws</span>.<span style="color:#007">client</span>.<span style="color:#007">core</span>.<span style="color:#007">WebServiceTemplate</span>;
+<span style="color:#f00;background-color:#faa">import org</span>.<span style="color:#007">springframework</span>.<span style="color:#007">ws</span>.<span style="color:#007">client</span>.<span style="color:#007">core</span>.<span style="color:#007">WebServiceTemplate</span>;
 
-<span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> Client {
+<span style="color:#f00;background-color:#faa">public class </span>Client {
   
-  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">static</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">main</span>(String[] <span style="color:#5ed;font-weight:bold">args</span>) <span style="color:#289;font-weight:bold">throws</span> <span style="color:#5ed;font-weight:bold">Exception</span> {
-    WebServiceTemplate <span style="color:#5ed;font-weight:bold">webServiceTemplate</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> WebServiceTemplate();
+  <span style="color:#f00;background-color:#faa">public static void main</span>(<span style="color:#f00;background-color:#faa">String[] args</span>) <span style="color:#f00;background-color:#faa">throws Exception </span>{
+    <span style="color:#f00;background-color:#faa">WebServiceTemplate webServiceTemplate </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> WebServiceTemplate();
     webServiceTemplate.<span style="color:#007">setDefaultUri</span>(<span style="background-color:#e0e0ff">&#34;http://localhost:8080/movie/ws/reservation&#34;</span>);
     
    
-    StreamSource <span style="color:#5ed;font-weight:bold">source</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> StreamSource(<span style="color:#289;font-weight:bold">new</span> FileReader(<span style="background-color:#e0e0ff">&#34;D:\\Projects\\movie-ws\\web\\WEB-INF\\xml\\movieReservationRequest.xml&#34;</span>));
-    StreamResult <span style="color:#5ed;font-weight:bold">result</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> StreamResult(System.<span style="color:#007">out</span>);
+    <span style="color:#f00;background-color:#faa">StreamSource source </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> StreamSource(<span style="color:#289;font-weight:bold">new</span> FileReader(<span style="background-color:#e0e0ff">&#34;D:\\Projects\\movie-ws\\web\\WEB-INF\\xml\\movieReservationRequest.xml&#34;</span>));
+    <span style="color:#f00;background-color:#faa">StreamResult result </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> StreamResult(System.<span style="color:#007">out</span>);
     webServiceTemplate.<span style="color:#007">sendSourceAndReceiveToResult</span>(source, result);        
 
   }

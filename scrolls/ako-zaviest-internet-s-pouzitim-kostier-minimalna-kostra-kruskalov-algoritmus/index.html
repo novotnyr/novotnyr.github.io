@@ -222,17 +222,17 @@ Vyberme si napríklad Bratislavu-Trnavu a zvýraznime ju.</p>
 <p>Implementácia v Jave je opäť jednoduchá, dôležité je si ale premyslieť dátové štruktúry, ktoré budú použité.</p>
 
 <p>Predovšetkým definujeme triedu pre hranu <code>Edge</code>, ktorá bude obsahovať dva uzly (reprezentované ako reťazce) a váhu.</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> Edge {
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">public class </span>Edge {
   <span style="color:#666;font-style:italic">// uzol 1
-</span><span style="color:#666;font-style:italic"></span>  <span style="color:#289;font-weight:bold">private</span> <span style="color:#5ed;font-weight:bold">String</span> node1;
+</span><span style="color:#666;font-style:italic"></span>  <span style="color:#f00;background-color:#faa">private String </span>node1;
 
   <span style="color:#666;font-style:italic">// uzol 2
-</span><span style="color:#666;font-style:italic"></span>  <span style="color:#289;font-weight:bold">private</span> <span style="color:#5ed;font-weight:bold">String</span> node2;
+</span><span style="color:#666;font-style:italic"></span>  <span style="color:#f00;background-color:#faa">private String </span>node2;
 
   <span style="color:#666;font-style:italic">// váha
-</span><span style="color:#666;font-style:italic"></span>  <span style="color:#289;font-weight:bold">private</span> <span style="color:#5ed;font-weight:bold">int</span> weight;
+</span><span style="color:#666;font-style:italic"></span>  <span style="color:#f00;background-color:#faa">private int </span>weight;
 
-  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">Edge</span>(String <span style="color:#5ed;font-weight:bold">node1</span>, String <span style="color:#5ed;font-weight:bold">node2</span>, <span style="color:#66f;font-weight:bold">int</span> <span style="color:#5ed;font-weight:bold">weight</span>) {
+  <span style="color:#f00;background-color:#faa">public Edge</span>(<span style="color:#f00;background-color:#faa">String node1</span>, <span style="color:#f00;background-color:#faa">String node2</span>, <span style="color:#f00;background-color:#faa">int weight</span>) {
     <span style="color:#289;font-weight:bold">super</span>();
     <span style="color:#289;font-weight:bold">this</span>.<span style="color:#007">node1</span> <span style="color:#333">=</span> node1;
     <span style="color:#289;font-weight:bold">this</span>.<span style="color:#007">node2</span> <span style="color:#333">=</span> node2;
@@ -242,16 +242,16 @@ Vyberme si napríklad Bratislavu-Trnavu a zvýraznime ju.</p>
   <span style="color:#666;font-style:italic">// gettre a settre
 </span><span style="color:#666;font-style:italic"></span>
   <span style="color:#555;font-weight:bold">@Override</span>
-  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">String</span> toString() {
+  <span style="color:#f00;background-color:#faa">public String </span>toString() {
     <span style="color:#289;font-weight:bold">return</span> node1 <span style="color:#333">+</span> <span style="background-color:#e0e0ff">&#34;--&#34;</span> <span style="color:#333">+</span> node2 <span style="color:#333">+</span> <span style="background-color:#e0e0ff">&#34; [&#34;</span> <span style="color:#333">+</span> weight <span style="color:#333">+</span> <span style="background-color:#e0e0ff">&#34; ]&#34;</span>;
   }
 }</code></pre></div>
 <p>Ďalej si vytvoríme triedu <code>SpanningTree</code>, ktorá bude obsahovať operácie na pridanie hrán a na nájdenie minimálnej kostry. Predovšetkým vyvstáva otázka, kde budeme uchovávať zoznam hrán. Vystačili by sme si s klasickým zoznamom <code>java.util.List</code>, kde by sme hranu s najmenšou váhou našli pomocnou metódou, ktorá by prešla zoznam a vrátila požadovaný prvok.</p>
 
 <p>V jave však môžeme použiť špeciálny prípad zoznamu — <strong>prioritný front</strong> (implementácia <code>java.util.PriorityQueue</code>), čo je front, ktorý automaticky usporiadava hrany na základe požadovaného kritéria. Toto kritérium môžeme ustanoviť implementáciou interfejsu <code>java.util.Comparator</code>, ktorá umožňuje vzájomne porovnať dve inštancie hrán. V našom prípade platí, že hrana je „menšia“ ako iná hrana, ak má menšiu váhu.</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">static</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#5ed;font-weight:bold">EdgeByWeightComparator</span> <span style="color:#289;font-weight:bold">implements</span> <span style="color:#5ed;font-weight:bold">Comparator</span><span style="color:#333">&lt;</span>Edge<span style="color:#333">&gt;</span> {
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">public static class EdgeByWeightComparator implements Comparator</span><span style="color:#333">&lt;</span>Edge<span style="color:#333">&gt;</span> {
 
-    <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">int</span> compare(Edge <span style="color:#5ed;font-weight:bold">edge1</span>, Edge <span style="color:#5ed;font-weight:bold">edge2</span>) {
+    <span style="color:#f00;background-color:#faa">public int </span>compare(<span style="color:#f00;background-color:#faa">Edge edge1</span>, <span style="color:#f00;background-color:#faa">Edge edge2</span>) {
       <span style="color:#666;font-style:italic">// vezmeme obe hrany a porovnáme ich pomocou metódy java.lang.Integer
 </span><span style="color:#666;font-style:italic"></span>        <span style="color:#289;font-weight:bold">return</span> <span style="color:#289;font-weight:bold">new</span> Integer(edge1.<span style="color:#007">getWeight</span>())
               .<span style="color:#007">compareTo</span>(edge2.<span style="color:#007">getWeight</span>());
@@ -259,13 +259,13 @@ Vyberme si napríklad Bratislavu-Trnavu a zvýraznime ju.</p>
 
 }</code></pre></div>
 <p>Prioritný front potom deklarujeme v triede <code>SpanningTree</code> nasledovne:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">private</span> <span style="color:#5ed;font-weight:bold">PriorityQueue</span><span style="color:#333">&lt;</span>Edge<span style="color:#333">&gt;</span> <span style="color:#5ed;font-weight:bold">edges</span> 
-  <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> PriorityQueue<span style="color:#333">&lt;</span>Edge<span style="color:#333">&gt;</span>(10, <span style="color:#289;font-weight:bold">new</span> EdgeByWeightComparator());</code></pre></div>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">private PriorityQueue</span><span style="color:#333">&lt;</span><span style="color:#f00;background-color:#faa">Edge&gt; edges 
+</span><span style="color:#f00;background-color:#faa">  </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> PriorityQueue<span style="color:#333">&lt;</span>Edge<span style="color:#333">&gt;</span>(10, <span style="color:#289;font-weight:bold">new</span> EdgeByWeightComparator());</code></pre></div>
 <p>Prvý parameter udáva iniciálnu kapacitu fronty a druhý parameter ustanovuje usporiadané určené komparátorom.</p>
 
 <p>Ako budeme reprezentovať naše stromy (v príklade majúce samostatnú farbu?)  Pre každý uzol v grafe si môžeme pamätať množinu uzlov s rovnakou farbou. Vieme si teda urobiť mapovanie z uzlov do množín uzlov, čiže</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">private</span> <span style="color:#5ed;font-weight:bold">Map</span><span style="color:#333">&lt;</span>String, Set<span style="color:#333">&lt;</span>String<span style="color:#333">&gt;&gt;</span> <span style="color:#5ed;font-weight:bold">mapping</span> 
-  <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> HashMap<span style="color:#333">&lt;</span>String, Set<span style="color:#333">&lt;</span>String<span style="color:#333">&gt;&gt;</span>();</code></pre></div>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">private Map</span><span style="color:#333">&lt;</span>String, <span style="color:#f00;background-color:#faa">Set&lt;String&gt;&gt; mapping 
+</span><span style="color:#f00;background-color:#faa">  </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> HashMap<span style="color:#333">&lt;</span>String, Set<span style="color:#333">&lt;</span>String<span style="color:#333">&gt;&gt;</span>();</code></pre></div>
 <p>Napríklad v treťom kroku algoritmu budeme mať v mape:</p>
 
 <pre><code>Bratislava  =&gt; {Bratislava, Trnava, Nitra}
@@ -281,9 +281,9 @@ B. Bystrica =&gt; {B. Bystrica}
 1. pridanie hrany do prioritného frontu
 2. vytvorenie stromu pre prvý vrchol. Tento strom obsahuje zatiaľ len prvý vrchol.
 3. vytvorenie stromu pre druhý vrchol. Tento strom obsahuje zatiaľ len druhý vrchol.</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">void</span> addPair(String <span style="color:#5ed;font-weight:bold">node1</span>, String <span style="color:#5ed;font-weight:bold">node2</span>, <span style="color:#66f;font-weight:bold">int</span> <span style="color:#5ed;font-weight:bold">weight</span>) {
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">public void </span>addPair(<span style="color:#f00;background-color:#faa">String node1</span>, <span style="color:#f00;background-color:#faa">String node2</span>, <span style="color:#f00;background-color:#faa">int weight</span>) {
   <span style="color:#666;font-style:italic">// vytvor hranu
-</span><span style="color:#666;font-style:italic"></span>  Edge <span style="color:#5ed;font-weight:bold">edge</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Edge(node1, node2, weight);
+</span><span style="color:#666;font-style:italic"></span>  <span style="color:#f00;background-color:#faa">Edge edge </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Edge(node1, node2, weight);
   <span style="color:#666;font-style:italic">// pridaj ju do prioritného frontu
 </span><span style="color:#666;font-style:italic"></span>  edges.<span style="color:#007">add</span>(edge);
   <span style="color:#666;font-style:italic">// pridaj dvojicu node1 =&gt; {node1}
@@ -298,15 +298,15 @@ B. Bystrica =&gt; {B. Bystrica}
 <p>Hľadanie minimálnej kostry potom spočíva v prejdení prvkov prioritnej fronty (tá je usporiadaná podľa váh hrán). Pre každú hranu sa pozrieme do stromu prvého uzla a do stromu druhého uzla. Ak sú množiny uzlov rovnaké, znamená to, že uzly sú v rovnakom strome (podľa nášho príkladu majú rovnakú farbu) a teda hrana medzi nimi by utvorila cyklus.</p>
 
 <p>V opačnom prípade vezmeme všetky uzly zo stromu druhého uzla a pridáme ich medzi uzly stromu druhého uzla. To je jednoduchá množinová operácia (keďže stromy reprezentujeme ako množiny).</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">Set</span><span style="color:#333">&lt;</span>Edge<span style="color:#333">&gt;</span> <span style="color:#5ed;font-weight:bold">getSpanningTree</span>() {
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">public Set</span><span style="color:#333">&lt;</span><span style="color:#f00;background-color:#faa">Edge&gt; getSpanningTree</span>() {
   <span style="color:#666;font-style:italic">// výsledná množina hrán kostry
-</span><span style="color:#666;font-style:italic"></span>  Set<span style="color:#333">&lt;</span>Edge<span style="color:#333">&gt;</span> <span style="color:#5ed;font-weight:bold">spanningTreeEdges</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> HashSet<span style="color:#333">&lt;</span>Edge<span style="color:#333">&gt;</span>();
+</span><span style="color:#666;font-style:italic"></span>  <span style="color:#f00;background-color:#faa">Set&lt;Edge&gt; spanningTreeEdges </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> HashSet<span style="color:#333">&lt;</span>Edge<span style="color:#333">&gt;</span>();
   <span style="color:#666;font-style:italic">// hrany získavame v správnom poradí
-</span><span style="color:#666;font-style:italic"></span>  <span style="color:#289;font-weight:bold">for</span> (Edge <span style="color:#5ed;font-weight:bold">edge</span> <span style="color:#333">:</span> edges) {
+</span><span style="color:#666;font-style:italic"></span>  <span style="color:#289;font-weight:bold">for</span> (<span style="color:#f00;background-color:#faa">Edge edge </span><span style="color:#333">:</span> edges) {
     <span style="color:#666;font-style:italic">// množina uzlov v strome prvého uzla
-</span><span style="color:#666;font-style:italic"></span>    Set<span style="color:#333">&lt;</span>String<span style="color:#333">&gt;</span> <span style="color:#5ed;font-weight:bold">tree1Nodes</span> <span style="color:#333">=</span> mapping.<span style="color:#007">get</span>(edge.<span style="color:#007">getNode1</span>());
+</span><span style="color:#666;font-style:italic"></span>    <span style="color:#f00;background-color:#faa">Set&lt;String&gt; tree1Nodes </span><span style="color:#333">=</span> mapping.<span style="color:#007">get</span>(edge.<span style="color:#007">getNode1</span>());
     <span style="color:#666;font-style:italic">// množina uzlov v strome prvého uzla
-</span><span style="color:#666;font-style:italic"></span>    Set<span style="color:#333">&lt;</span>String<span style="color:#333">&gt;</span> <span style="color:#5ed;font-weight:bold">tree2Nodes</span> <span style="color:#333">=</span> mapping.<span style="color:#007">get</span>(edge.<span style="color:#007">getNode2</span>());
+</span><span style="color:#666;font-style:italic"></span>    <span style="color:#f00;background-color:#faa">Set&lt;String&gt; tree2Nodes </span><span style="color:#333">=</span> mapping.<span style="color:#007">get</span>(edge.<span style="color:#007">getNode2</span>());
 
     <span style="color:#289;font-weight:bold">if</span>(tree1Nodes.<span style="color:#007">equals</span>(tree2Nodes)) {
       <span style="color:#666;font-style:italic">// množina uzlov v prvom strome je rovnaká

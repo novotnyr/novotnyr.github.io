@@ -72,33 +72,33 @@
 <h1 id="vytvorenie-servletov">Vytvorenie servletov</h1>
 
 <p>Webová aplikácia bude minimalistická. Budú ju totiž tvoriť len dva servlety: jeden reprezentujúci verejne dostupnú zónu a iný predstavujúci zónu určenú len pre správcov.</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">package</span> <span style="color:#5ed;font-weight:bold">webapp</span>;
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">package webapp</span>;
 <span style="color:#666;font-style:italic">/* .. importy .. */</span>
-<span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> PublicServlet <span style="color:#5ed;font-weight:bold">extends</span> HttpServlet {
+<span style="color:#f00;background-color:#faa">public class PublicServlet extends </span>HttpServlet {
 
   <span style="color:#555;font-weight:bold">@Override</span>
-  <span style="color:#289;font-weight:bold">protected</span> <span style="color:#5ed;font-weight:bold">void</span> doGet(HttpServletRequest <span style="color:#5ed;font-weight:bold">request</span>,  
-                       HttpServletResponse <span style="color:#5ed;font-weight:bold">response</span>) 
-  <span style="color:#289;font-weight:bold">throws</span> <span style="color:#5ed;font-weight:bold">ServletException</span>, IOException
+  <span style="color:#f00;background-color:#faa">protected void </span>doGet(<span style="color:#f00;background-color:#faa">HttpServletRequest request</span>,  
+                       <span style="color:#f00;background-color:#faa">HttpServletResponse response</span>) 
+  <span style="color:#f00;background-color:#faa">throws ServletException</span>, IOException
   {
-    PrintWriter <span style="color:#5ed;font-weight:bold">out</span> <span style="color:#333">=</span> response.<span style="color:#007">getWriter</span>();
+    <span style="color:#f00;background-color:#faa">PrintWriter out </span><span style="color:#333">=</span> response.<span style="color:#007">getWriter</span>();
     out.<span style="color:#007">println</span>(<span style="background-color:#e0e0ff">&#34;&lt;h1&gt;Public zone&lt;/h1&gt;&#34;</span>);
     out.<span style="color:#007">println</span>(<span style="background-color:#e0e0ff">&#34;&lt;p&gt;This is a public servlet&lt;/p&gt;&#34;</span>);
     out.<span style="color:#007">flush</span>();
   }  
 }</code></pre></div>
 <p>a</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">package</span> <span style="color:#5ed;font-weight:bold">webapp</span>;
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">package webapp</span>;
 <span style="color:#666;font-style:italic">/* .. importy .. */</span>
 
-<span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> PrivateServlet <span style="color:#5ed;font-weight:bold">extends</span> HttpServlet {
+<span style="color:#f00;background-color:#faa">public class PrivateServlet extends </span>HttpServlet {
 
   <span style="color:#555;font-weight:bold">@Override</span>
-  <span style="color:#289;font-weight:bold">protected</span> <span style="color:#5ed;font-weight:bold">void</span> doGet(HttpServletRequest <span style="color:#5ed;font-weight:bold">request</span>, 
-                       HttpServletResponse <span style="color:#5ed;font-weight:bold">response</span>) 
-  <span style="color:#289;font-weight:bold">throws</span> <span style="color:#5ed;font-weight:bold">ServletException</span>, IOException 
+  <span style="color:#f00;background-color:#faa">protected void </span>doGet(<span style="color:#f00;background-color:#faa">HttpServletRequest request</span>, 
+                       <span style="color:#f00;background-color:#faa">HttpServletResponse response</span>) 
+  <span style="color:#f00;background-color:#faa">throws ServletException</span>, IOException 
   {
-    PrintWriter <span style="color:#5ed;font-weight:bold">out</span> <span style="color:#333">=</span> response.<span style="color:#007">getWriter</span>();
+    <span style="color:#f00;background-color:#faa">PrintWriter out </span><span style="color:#333">=</span> response.<span style="color:#007">getWriter</span>();
     out.<span style="color:#007">println</span>(<span style="background-color:#e0e0ff">&#34;&lt;h1&gt;Private zone&lt;/h1&gt;&#34;</span>);
     out.<span style="color:#007">println</span>(<span style="background-color:#e0e0ff">&#34;&lt;p&gt;This is a servlet in a private zone&lt;/p&gt;&#34;</span>);
     out.<span style="color:#007">flush</span>();
@@ -498,7 +498,7 @@ Zadali ste nesprávne meno alebo heslo.
 
 <ul>
 <li><p><a href="http://java.sun.com/j2ee/1.4/docs/api/javax/servlet/http/HttpServletRequest.html#getUserPrincipal()"><code>getUserPrincipal()</code></a> vráti objekt <code>Principal</code> obsahujúci meno aktuálne prihláseného používateľa. V prípade, že používateľ nie je prihlásený, vráti <code>null</code>. Použiť ho teda môžeme napr. takto:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Principal <span style="color:#5ed;font-weight:bold">principal</span> <span style="color:#333">=</span> request.<span style="color:#007">getUserPrincipal</span>();
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">Principal principal </span><span style="color:#333">=</span> request.<span style="color:#007">getUserPrincipal</span>();
 <span style="color:#289;font-weight:bold">if</span>(principal <span style="color:#333">!=</span> <span style="color:#289;font-weight:bold">null</span>) {
 		out.<span style="color:#007">println</span>(<span style="background-color:#e0e0ff">&#34;Prihlásený používateľ: &#34;</span> <span style="color:#333">+</span> principal.<span style="color:#007">getName</span>());
 }</code></pre></div></li>

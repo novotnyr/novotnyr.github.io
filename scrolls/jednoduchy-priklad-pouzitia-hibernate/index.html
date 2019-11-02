@@ -68,42 +68,42 @@
 <h1 id="príklad">Príklad</h1>
 
 <p>Uvažujme niekoľko jednoduchých tried, ktoré sa zaoberajú mačkami. Majme koncept mačky: mačka má meno a deti. Teda môžeme ju reprezentovať triedou <code>Cat</code>.</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">package</span> <span style="color:#5ed;font-weight:bold">catology</span>;
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">package catology</span>;
 
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">java</span>.<span style="color:#007">util</span>.<span style="color:#007">HashSet</span>;
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">java</span>.<span style="color:#007">util</span>.<span style="color:#007">Set</span>;
+<span style="color:#f00;background-color:#faa">import java</span>.<span style="color:#007">util</span>.<span style="color:#007">HashSet</span>;
+<span style="color:#f00;background-color:#faa">import java</span>.<span style="color:#007">util</span>.<span style="color:#007">Set</span>;
 
-<span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> Cat {
-  <span style="color:#289;font-weight:bold">private</span> <span style="color:#5ed;font-weight:bold">String</span> name;
+<span style="color:#f00;background-color:#faa">public class </span>Cat {
+  <span style="color:#f00;background-color:#faa">private String </span>name;
   
-  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">String</span> getName() {
+  <span style="color:#f00;background-color:#faa">public String </span>getName() {
     <span style="color:#289;font-weight:bold">return</span> name;
   }
 
-  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">void</span> setName(String <span style="color:#5ed;font-weight:bold">name</span>) {
+  <span style="color:#f00;background-color:#faa">public void </span>setName(<span style="color:#f00;background-color:#faa">String name</span>) {
     <span style="color:#289;font-weight:bold">this</span>.<span style="color:#007">name</span> <span style="color:#333">=</span> name;
   }
  
   
-  <span style="color:#289;font-weight:bold">protected</span> <span style="color:#5ed;font-weight:bold">Set</span> children <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> HashSet();
+  <span style="color:#f00;background-color:#faa">protected Set </span>children <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> HashSet();
 
-  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">Set</span> getChildren() {
+  <span style="color:#f00;background-color:#faa">public Set </span>getChildren() {
     <span style="color:#289;font-weight:bold">return</span> <span style="color:#289;font-weight:bold">this</span>.<span style="color:#007">children</span>;
   }
 
-  <span style="color:#289;font-weight:bold">private</span> <span style="color:#5ed;font-weight:bold">void</span> setChildren(Set <span style="color:#5ed;font-weight:bold">children</span>) {
+  <span style="color:#f00;background-color:#faa">private void </span>setChildren(<span style="color:#f00;background-color:#faa">Set children</span>) {
     <span style="color:#289;font-weight:bold">this</span>.<span style="color:#007">children</span> <span style="color:#333">=</span> children;
   } 
   
-  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">void</span> addChild(Cat <span style="color:#5ed;font-weight:bold">child</span>) {   
+  <span style="color:#f00;background-color:#faa">public void </span>addChild(<span style="color:#f00;background-color:#faa">Cat child</span>) {   
     <span style="color:#289;font-weight:bold">this</span>.<span style="color:#007">children</span>.<span style="color:#007">add</span>(child);   
   }
 }</code></pre></div>
 <p>Táto trieda je veľmi jednoduchá, vidíme, že neimplementuje žiadny špeciálny interfejs. Jej použitie je tiež priamočiare.</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Cat <span style="color:#5ed;font-weight:bold">parent</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Cat();
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">Cat parent </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Cat();
 parent.<span style="color:#007">setName</span>(<span style="background-color:#e0e0ff">&#34;Pigislav&#34;</span>);
 
-Cat <span style="color:#5ed;font-weight:bold">child</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Cat();
+<span style="color:#f00;background-color:#faa">Cat child </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Cat();
 child.<span style="color:#007">setName</span>(<span style="background-color:#e0e0ff">&#34;Poldo&#34;</span>);   
 
 parent.<span style="color:#007">addChild</span>(child);</code></pre></div>
@@ -217,16 +217,16 @@ Element <code>set</code> reprezentuje množinu. Dátový člen <code>children</c
   .<span style="color:#007">buildSessionFactory</span>();
 
 <span style="color:#666;font-style:italic">//vytvorime triedy, ktore chceme hibernovat
-</span><span style="color:#666;font-style:italic"></span>Cat <span style="color:#5ed;font-weight:bold">parent</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Cat();
+</span><span style="color:#666;font-style:italic"></span><span style="color:#f00;background-color:#faa">Cat parent </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Cat();
 parent.<span style="color:#007">setName</span>(<span style="background-color:#e0e0ff">&#34;Pigislav&#34;</span>);
-Cat <span style="color:#5ed;font-weight:bold">child</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Cat();
+<span style="color:#f00;background-color:#faa">Cat child </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Cat();
 child.<span style="color:#007">setName</span>(<span style="background-color:#e0e0ff">&#34;Poldo&#34;</span>); 
 parent.<span style="color:#007">addChild</span>(child);
 
 <span style="color:#666;font-style:italic">//vyziadame si session
-</span><span style="color:#666;font-style:italic"></span>Session <span style="color:#5ed;font-weight:bold">session</span> <span style="color:#333">=</span> sessionFactory.<span style="color:#007">openSession</span>();
+</span><span style="color:#666;font-style:italic"></span><span style="color:#f00;background-color:#faa">Session session </span><span style="color:#333">=</span> sessionFactory.<span style="color:#007">openSession</span>();
 <span style="color:#666;font-style:italic">//zacneme transakciu (v duchu transakcii v DB)
-</span><span style="color:#666;font-style:italic"></span>Transaction <span style="color:#5ed;font-weight:bold">tx</span> <span style="color:#333">=</span> session.<span style="color:#007">beginTransaction</span>();
+</span><span style="color:#666;font-style:italic"></span><span style="color:#f00;background-color:#faa">Transaction tx </span><span style="color:#333">=</span> session.<span style="color:#007">beginTransaction</span>();
 
 <span style="color:#666;font-style:italic">//hibernujeme triedu (to je vsetko!)
 </span><span style="color:#666;font-style:italic"></span>session.<span style="color:#007">save</span>(parent);
@@ -243,23 +243,23 @@ parent.<span style="color:#007">addChild</span>(child);
   .<span style="color:#007">buildSessionFactory</span>();
 
 <span style="color:#666;font-style:italic">//vyziadame si session
-</span><span style="color:#666;font-style:italic"></span>Session <span style="color:#5ed;font-weight:bold">session</span> <span style="color:#333">=</span> sessionFactory.<span style="color:#007">openSession</span>();
+</span><span style="color:#666;font-style:italic"></span><span style="color:#f00;background-color:#faa">Session session </span><span style="color:#333">=</span> sessionFactory.<span style="color:#007">openSession</span>();
 <span style="color:#666;font-style:italic">//zacneme transakciu (v duchu transakcii v DB)
-</span><span style="color:#666;font-style:italic"></span>Transaction <span style="color:#5ed;font-weight:bold">tx</span> <span style="color:#333">=</span> session.<span style="color:#007">beginTransaction</span>();
+</span><span style="color:#666;font-style:italic"></span><span style="color:#f00;background-color:#faa">Transaction tx </span><span style="color:#333">=</span> session.<span style="color:#007">beginTransaction</span>();
 
 <span style="color:#666;font-style:italic">//chcem vsetky macky! (&#34;from Cat&#34;) je vyraz dopytovacieho jazyka
-</span><span style="color:#666;font-style:italic"></span>List <span style="color:#5ed;font-weight:bold">result</span> <span style="color:#333">=</span> session.<span style="color:#007">find</span>(<span style="background-color:#e0e0ff">&#34;from Cat&#34;</span>);         
+</span><span style="color:#666;font-style:italic"></span><span style="color:#f00;background-color:#faa">List result </span><span style="color:#333">=</span> session.<span style="color:#007">find</span>(<span style="background-color:#e0e0ff">&#34;from Cat&#34;</span>);         
 
-Cat <span style="color:#5ed;font-weight:bold">c</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">null</span>;
-Cat <span style="color:#5ed;font-weight:bold">kitten</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">null</span>;
+<span style="color:#f00;background-color:#faa">Cat c </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">null</span>;
+<span style="color:#f00;background-color:#faa">Cat kitten </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">null</span>;
 
 <span style="color:#666;font-style:italic">//iterujeme zoznam maciek
-</span><span style="color:#666;font-style:italic"></span><span style="color:#289;font-weight:bold">for</span>(<span style="color:#66f;font-weight:bold">int</span> <span style="color:#5ed;font-weight:bold">i</span> <span style="color:#333">=</span> 0; i <span style="color:#333">&lt;</span> result.<span style="color:#007">size</span>(); i<span style="color:#333">++</span>) {
+</span><span style="color:#666;font-style:italic"></span><span style="color:#289;font-weight:bold">for</span>(<span style="color:#f00;background-color:#faa">int i </span><span style="color:#333">=</span> 0; i <span style="color:#333">&lt;</span> result.<span style="color:#007">size</span>(); i<span style="color:#333">++</span>) {
   c <span style="color:#333">=</span> (Cat) result.<span style="color:#007">get</span>(i);            
   System.<span style="color:#007">out</span>.<span style="color:#007">println</span>(c.<span style="color:#007">getName</span>());
 
   <span style="color:#666;font-style:italic">//iterujeme cez deti macky a vypisujeme ich
-</span><span style="color:#666;font-style:italic"></span>  Iterator <span style="color:#5ed;font-weight:bold">it</span> <span style="color:#333">=</span> c.<span style="color:#007">getChildren</span>().<span style="color:#007">iterator</span>(); 
+</span><span style="color:#666;font-style:italic"></span>  <span style="color:#f00;background-color:#faa">Iterator it </span><span style="color:#333">=</span> c.<span style="color:#007">getChildren</span>().<span style="color:#007">iterator</span>(); 
   <span style="color:#289;font-weight:bold">while</span>(it.<span style="color:#007">hasNext</span>()) {
     kitten <span style="color:#333">=</span> (Cat)it.<span style="color:#007">next</span>();
     System.<span style="color:#007">out</span>.<span style="color:#007">println</span>(<span style="background-color:#e0e0ff">&#34;  &#34;</span> <span style="color:#333">+</span> kitten.<span style="color:#007">getName</span>());
@@ -321,14 +321,14 @@ podrobnosti napr. na <a href="http://www.eclipseplugincentral.com/PNphpBB2+file-
 <p><strong>Riešenie:</strong> Atribut <code>unsaved-value</code> nie je nastaveny. Ak identifikacny atribut nema implicitnu hodnotu <code>null</code> (to je v pripade primitivnych typov ako napr. <code>long</code>), je potrebné uviesť implicitnu hodnotu.</p>
 
 <p><strong>Riešenie 2:</strong> Alternativne je uzitocne pouzivate neprimitivne typy:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> Cat {
-  <span style="color:#289;font-weight:bold">private</span> <span style="color:#5ed;font-weight:bold">Long</span> id;
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">public class </span>Cat {
+  <span style="color:#f00;background-color:#faa">private Long </span>id;
   
-  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">Long</span> getId() {
+  <span style="color:#f00;background-color:#faa">public Long </span>getId() {
      <span style="color:#289;font-weight:bold">return</span> id;
   }
   
-  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">void</span> setId(Long <span style="color:#5ed;font-weight:bold">id</span>) {
+  <span style="color:#f00;background-color:#faa">public void </span>setId(<span style="color:#f00;background-color:#faa">Long id</span>) {
      <span style="color:#289;font-weight:bold">this</span>.<span style="color:#007">id</span> <span style="color:#333">=</span> id;
   }
 }</code></pre></div><div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#070">&lt;id</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;id&#34;</span> <span style="color:#007">column=</span><span style="background-color:#e0e0ff">&#34;id&#34;</span> <span style="color:#007">type=</span><span style="background-color:#e0e0ff">&#34;java.lang.Long&#34;</span><span style="color:#070">&gt;</span></code></pre></div>
@@ -342,12 +342,12 @@ podrobnosti napr. na <a href="http://www.eclipseplugincentral.com/PNphpBB2+file-
 </code></pre>
 
 <p>a pred uzatvorením sessionu ho flushnite (Hibernate totiž kvôli optimalizácii zoskupuje dopyty a odošle ich až v prípade potreby)</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Session <span style="color:#5ed;font-weight:bold">session</span> <span style="color:#333">=</span> factory.<span style="color:#007">openSession</span>();
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">Session session </span><span style="color:#333">=</span> factory.<span style="color:#007">openSession</span>();
 <span style="color:#289;font-weight:bold">try</span> {
-  Hotel <span style="color:#5ed;font-weight:bold">hotel</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Hotel(<span style="background-color:#e0e0ff">&#34;Plaza&#34;</span>, <span style="background-color:#e0e0ff">&#34;Main Street 1&#34;</span>, 4);
+  <span style="color:#f00;background-color:#faa">Hotel hotel </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Hotel(<span style="background-color:#e0e0ff">&#34;Plaza&#34;</span>, <span style="background-color:#e0e0ff">&#34;Main Street 1&#34;</span>, 4);
   session.<span style="color:#007">saveOrUpdate</span>(hotel);
 			
-  Hotel <span style="color:#5ed;font-weight:bold">hotel2</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Hotel(<span style="background-color:#e0e0ff">&#34;Continental&#34;</span>, <span style="background-color:#e0e0ff">&#34;Turing Street 1&#34;</span>, 5);
+  <span style="color:#f00;background-color:#faa">Hotel hotel2 </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Hotel(<span style="background-color:#e0e0ff">&#34;Continental&#34;</span>, <span style="background-color:#e0e0ff">&#34;Turing Street 1&#34;</span>, 5);
   session.<span style="color:#007">saveOrUpdate</span>(hotel2);
 } <span style="color:#289;font-weight:bold">finally</span> {
   session.<span style="color:#007">flush</span>();

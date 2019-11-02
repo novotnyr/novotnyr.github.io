@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>WebElement #46 – zápisky | robonovotny</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    <link rel="stylesheet" href="https://novotnyr.github.io/asciidoctor.css">
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.css" integrity="sha384-D+9gmBxUQogRLqvARvNLmA9hS2x//eK1FhVb9PiU86gmcrBrJAQT8okdJ4LMp2uv" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.js" integrity="sha384-483A6DwYfKeDa0Q52fJmxFXkcPCFfnXMoXblOkJ4JcA8zATN6Tm78UNL72AKk+0O" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/contrib/auto-render.min.js" integrity="sha384-yACMu8JWxKzSp/C1YV86pzGiQ/l1YUfE8oPuahJQxzehAjEt2GiQuy/BIvl9KyeF" crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body);
+        });
+    </script>
+
+<header>
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <nav>
+    <ul>
+      
+      
+      <li class="pull-left ">
+        <a href="https://novotnyr.github.io/">/home/robonovotny</a>
+      </li>
+      
+
+      
+
+    </ul>
+  </nav>
+</header>
+
+  </head>
+
+  <body>
+    <br/>
+
+<div class="article-meta">
+<h1><span class="title">WebElement #46 – zápisky</span></h1>
+
+<h2 class="date">2019/11/02</h2>
+<p class="terms">
+  
+  
+  
+  
+  
+</p>
+</div>
+
+
+
+<main>
+
+
+<p><em>Dátum: 30. október 2019, Wave Prešov</em></p>
+
+<h1 id="comeback-prvýkrát">Comeback (prvýkrát)!</h1>
+
+<p><a href="https://www.webelement.sk/event/">WebElement</a> v Prešove rozhodne nie je neznáma vec. Od roku 2011 mali už štyridsaťšesť meetupov (a ani raz sa mi ho nepodarilo stihnúť; vina je jednoznačne (!!!) na strane národných dopravcov, kde je nemožné sa večer dostať z Prešova do Košíc).</p>
+
+<p>Tentokrát som sa odhodlal a vpadol rovno na „comeback“ (pretože to bol len druhý meetup po deväťmesačnej prestávke) a rovno som videl <del>tri</del> dve prednášky.</p>
+
+<p>Prešovský Wave je skvelé miesto vždy pripravené na kultúru a logicky <code>if koncert then wave</code>. Je tam bar, je tam pódium, je tam projektor, je tam veľké plátno, je tam zvuková technika, prakticky sa len postaviť a prednášať. (Kiež by sme aj u nás v Košiciach mali takýchto Wavov.)</p>
+
+<p><img src="webelement-46-umenie.jpg" alt="webelement-46-umenie" /></p>
+
+<h1 id="prestaňme-už-konečne-robiť-yolo-development-jany-koščo">Prestaňme už konečne robiť YOLO development (Jany Koščo)</h1>
+
+<p>Za starých dobrých čias PHP stačilo vyhodiť <code>index.php</code> na server cez FTP na jediné prostredie (produkcia) a dúfať, že všetko pobeží. Lenže doba je krutá, a zrazu treba všetky tie bundlery, gitlaby/githuby, CI/CD, monitoringy, dokery, kubernetesy, newrelicy a zrazu nie je jasné, kde človeku hlava stojí.</p>
+
+<p>Inak povedané, ešte včera som si žil slobodne ako developer a od zajtra potrebujem zmáknuť 7 rozličných devops technológií a filozofických prístupov a rozpočet projektu letí do nebies.</p>
+
+<p>Prednášateľ naložil prehľad všetkého užitočného, čo sa do projektu zmestí. Git, release z master branche, CI/CD, ktoré builduje a následne releasuje, dockery ako releasovateľné artefakty, logovanie, trasovanie, monitoring a stručne ku všetkému. Ako prehľad výborne.</p>
+
+<p>Na dudravú nôtu: prednášky typu „pozrite sa, čo všetko musíte zvládnuť“ majú tendenciu vypnúť poslucháčov. Samotný Footshop podľa prednášajúceho zobral 2 roky, kým to nahodili, a majú dedikovaného jedného človeka. Robiť devops poriadne nie je ľahké a robiť ho parttime je takmer nemožné, o to viac na projektoch o troch fullstackových ľuďoch.</p>
+
+<p>Ale: na malých projektoch je rozhodne užitočné ukazovať smerovanie a stav toho, kde sa súčasný devops nachádza a táto prednáška to dala.</p>
+
+<p><img src="webelement-46-jany.jpg" alt="webelement-46-jany" /></p>
+
+<h1 id="ako-na-naozaj-natívne-aplikácie-v-react-native-marián-opiela">Ako na naozaj natívne aplikácie v React Native? (Marián Opiela)</h1>
+
+<p>Podľa popisu udalostí mal ísť Marián až posledný, ale organizátor prednášky strategicky vymenil, čo bolo užitočné.</p>
+
+<p>React Native je — spolu s Reactom bežným — hitovica. Svätý grál, kde z jedného zdrojáku vybuildujem aj Android, aj iOS, mal v histórii už viac pokusov a toto je ďalší z nich.</p>
+
+<p>Marián začal propagáciou Vacuumlabsov, kde prešiel cez <em>Hello World</em> k jadru veci zo zákopov. Googlacky TensorFlow Lite je knižnica na rozpoznávanie obrázkov cez neurónové siete, ktorý má rozličné implementácie pre Android aj iOS. Keďže React Native zatiaľ nemá na to dedikovanú knižnicu, je to skvelá ukážka problému, kde treba siahnuť pod kapotu.</p>
+
+<p>TLDR;: v Androide sa definuje interfejs a medzi Reactom Native a Androidom beží niečo ako RPC, kde si vieme vymieňať dáta. (iOS bol opísaný len slovne.)</p>
+
+<p>Príklad bol doslova z praxe a Marián ukázal, na čo si treba dať pozor a čím všetkým si prešli, navyše na zaujímavej ukážke.</p>
+
+<p>Za mňa azda len mentálna poznámka pre speakera: scrollovanie zdrojákmi z GitHubu môže byť chaotické, ale zase: ukazovanie zdrojákov na prednáške rozumným spôsobom je tiež zatiaľ nedosiahnuteľný svätý grál.</p>
+
+<p><img src="webelement-46-marian.jpg" alt="webelement-46-marian" /></p>
+
+<h1 id="novinky-zo-sveta-laravelu-ivan-ivančo">Novinky zo sveta Laravelu (Ivan Ivančo)</h1>
+
+<p>Laravel a ekosystém PHP ide mimo mňa, takže vzhľadom na pokročilý čas som prednášku vynechal.</p>
+
+<p>Na odchode som zachytil pozoruhodný koncept: <em>Laracon Tribute Band</em>. Ivan sa zúčastnil na amsterdaskom Laracone a publiku podal <em>highlighty</em>. Vlastne to by som aj ja mohol podať v Košiciach novinky zo sveta WebElementu!</p>
+
+<h1 id="záver">Záver</h1>
+
+<p>Podľa miestnych veteránov bol tento WebElement úspech. Tri prednášky neboli zvykom, účasť bola hustá 30+ („bývali časy, keď sme sa zišli piati na pive“ riekol staršina) a témy boli elegantne frontend-backend-infraštruktúra.</p>
+
+<p>Verím, že comeback vydrží!</p>
+
+</main>
+
+    <footer>
+      
+<script>
+(function() {
+  function center_el(tagName) {
+    var tags = document.getElementsByTagName(tagName), i, tag;
+    for (i = 0; i < tags.length; i++) {
+      tag = tags[i];
+      var parent = tag.parentElement;
+      
+      if (parent.childNodes.length === 1) {
+        
+        if (parent.nodeName === 'A') {
+          parent = parent.parentElement;
+          if (parent.childNodes.length != 1) continue;
+        }
+        if (parent.nodeName === 'P') parent.style.textAlign = 'center';
+      }
+    }
+  }
+  var tagNames = ['img', 'embed', 'object'];
+  for (var i = 0; i < tagNames.length; i++) {
+    center_el(tagNames[i]);
+  }
+})();
+</script>
+
+      
+    </footer>
+  </body>
+</html>
+

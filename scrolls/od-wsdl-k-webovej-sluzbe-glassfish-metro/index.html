@@ -104,11 +104,11 @@ wsimport -keep -s src -d bin movie.wsdl
 <p>Balíček <code>sk.novotnyr.movie.ws.types</code> obsahuje triedy, ktoré zodpovedajú elementom a typom definovaným v XML schéme. Názov tohto balíčka je odvodený od cieľového menného priestoru (targetNamespace) v schéme. V schéme sme mali <code>http://movie.novotnyr.sk/ws/]</code>, čo  sa priamo namapuje na názov balíčka.</p>
 
 <p>Na mapovanie medzi inštanciami XML schémy a objektami v Jave sa v Metre používa technológia JAXB 2.0. Vygenerované triedy presne zodpovedajú tomu, čo by sme získali použitím kompilátora <code>xjc</code> z implementácie JAXB. Príkladom triedy je:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">package</span> <span style="color:#5ed;font-weight:bold">sk</span>.<span style="color:#007">novotnyr</span>.<span style="color:#007">movie</span>.<span style="color:#007">ws</span>.<span style="color:#007">types</span>;
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">package sk</span>.<span style="color:#007">novotnyr</span>.<span style="color:#007">movie</span>.<span style="color:#007">ws</span>.<span style="color:#007">types</span>;
 
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">java</span>.<span style="color:#007">util</span>.<span style="color:#333">*</span>;
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">java</span>.<span style="color:#007">util</span>.<span style="color:#007">List</span>;
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">javax</span>.<span style="color:#007">xml</span>.<span style="color:#007">bind</span>.<span style="color:#007">annotation</span>.<span style="color:#333">*</span>;
+<span style="color:#f00;background-color:#faa">import java</span>.<span style="color:#007">util</span>.<span style="color:#333">*</span>;
+<span style="color:#f00;background-color:#faa">import java</span>.<span style="color:#007">util</span>.<span style="color:#007">List</span>;
+<span style="color:#f00;background-color:#faa">import javax</span>.<span style="color:#007">xml</span>.<span style="color:#007">bind</span>.<span style="color:#007">annotation</span>.<span style="color:#333">*</span>;
 
 <span style="color:#555;font-weight:bold">@XmlAccessorType</span>(XmlAccessType.<span style="color:#007">FIELD</span>)
 <span style="color:#555;font-weight:bold">@XmlType</span>(name <span style="color:#333">=</span> <span style="background-color:#e0e0ff">&#34;&#34;</span>, propOrder <span style="color:#333">=</span> {
@@ -116,21 +116,21 @@ wsimport -keep -s src -d bin movie.wsdl
     <span style="background-color:#e0e0ff">&#34;reservedSeats&#34;</span>
 })
 <span style="color:#555;font-weight:bold">@XmlRootElement</span>(name <span style="color:#333">=</span> <span style="background-color:#e0e0ff">&#34;movieReservationResponse&#34;</span>)
-<span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> MovieReservationResponse {
+<span style="color:#f00;background-color:#faa">public class </span>MovieReservationResponse {
 
-    <span style="color:#289;font-weight:bold">protected</span> <span style="color:#5ed;font-weight:bold">int</span> id;
+    <span style="color:#f00;background-color:#faa">protected int </span>id;
     <span style="color:#555;font-weight:bold">@XmlElement</span>(type <span style="color:#333">=</span> Integer.<span style="color:#007">class</span>)
-    <span style="color:#289;font-weight:bold">protected</span> <span style="color:#5ed;font-weight:bold">List</span><span style="color:#333">&lt;</span>Integer<span style="color:#333">&gt;</span> <span style="color:#5ed;font-weight:bold">reservedSeats</span>;
+    <span style="color:#f00;background-color:#faa">protected List</span><span style="color:#333">&lt;</span><span style="color:#f00;background-color:#faa">Integer&gt; reservedSeats</span>;
 
-    <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">int</span> getId() {
+    <span style="color:#f00;background-color:#faa">public int </span>getId() {
         <span style="color:#289;font-weight:bold">return</span> id;
     }
 
-    <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">void</span> setId(<span style="color:#66f;font-weight:bold">int</span> <span style="color:#5ed;font-weight:bold">value</span>) {
+    <span style="color:#f00;background-color:#faa">public void </span>setId(<span style="color:#f00;background-color:#faa">int value</span>) {
         <span style="color:#289;font-weight:bold">this</span>.<span style="color:#007">id</span> <span style="color:#333">=</span> value;
     }
 
-    <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">List</span><span style="color:#333">&lt;</span>Integer<span style="color:#333">&gt;</span> <span style="color:#5ed;font-weight:bold">getReservedSeats</span>() {
+    <span style="color:#f00;background-color:#faa">public List</span><span style="color:#333">&lt;</span><span style="color:#f00;background-color:#faa">Integer&gt; getReservedSeats</span>() {
         <span style="color:#289;font-weight:bold">if</span> (reservedSeats <span style="color:#333">==</span> <span style="color:#289;font-weight:bold">null</span>) {
             reservedSeats <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> ArrayList<span style="color:#333">&lt;</span>Integer<span style="color:#333">&gt;</span>();
         }
@@ -143,12 +143,12 @@ wsimport -keep -s src -d bin movie.wsdl
 <p>V balíčku <code>sk.novotnyr.movie.wsdl</code> sa nachádzajú interfejsy a triedy, ktoré súvisia s elementom <code>service</code>, resp. <code>portType</code> vo WSDL. Každý <code>service</code> sa namapuje na samostatnú triedu a každý <code>portType</code> tiež. Názov balíčka sa odvodí od cieľového menného priestoru WSDL súboru.</p>
 
 <p>Ako sme spomínali, abstraktný port vo WSDL predstavuje množinu operácií, ktoré je možné volať. Jeho analógiou je interfejs v Jave. <code>wsimport</code> vygeneruje nasledovnú triedu:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">package</span> <span style="color:#5ed;font-weight:bold">sk</span>.<span style="color:#007">novotnyr</span>.<span style="color:#007">movie</span>.<span style="color:#007">wsdl</span>;
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">package sk</span>.<span style="color:#007">novotnyr</span>.<span style="color:#007">movie</span>.<span style="color:#007">wsdl</span>;
 
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">javax</span>.<span style="color:#007">jws</span>.<span style="color:#333">*</span>;
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">javax</span>.<span style="color:#007">jws</span>.<span style="color:#007">soap</span>.<span style="color:#f00;background-color:#faa">´</span><span style="color:#333">*</span>;
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">javax</span>.<span style="color:#007">xml</span>.<span style="color:#007">bind</span>.<span style="color:#007">annotation</span>.<span style="color:#333">*</span>;
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">sk</span>.<span style="color:#007">novotnyr</span>.<span style="color:#007">movie</span>.<span style="color:#007">ws</span>.<span style="color:#007">types</span>.<span style="color:#333">*</span>;
+<span style="color:#f00;background-color:#faa">import javax</span>.<span style="color:#007">jws</span>.<span style="color:#333">*</span>;
+<span style="color:#f00;background-color:#faa">import javax</span>.<span style="color:#007">jws</span>.<span style="color:#007">soap</span>.<span style="color:#f00;background-color:#faa">´</span><span style="color:#333">*</span>;
+<span style="color:#f00;background-color:#faa">import javax</span>.<span style="color:#007">xml</span>.<span style="color:#007">bind</span>.<span style="color:#007">annotation</span>.<span style="color:#333">*</span>;
+<span style="color:#f00;background-color:#faa">import sk</span>.<span style="color:#007">novotnyr</span>.<span style="color:#007">movie</span>.<span style="color:#007">ws</span>.<span style="color:#007">types</span>.<span style="color:#333">*</span>;
 
 <span style="color:#555;font-weight:bold">@WebService</span>(name <span style="color:#333">=</span> <span style="background-color:#e0e0ff">&#34;movieReservationPortType&#34;</span>, 
             targetNamespace <span style="color:#333">=</span> <span style="background-color:#e0e0ff">&#34;http://movie.novotnyr.sk/wsdl&#34;</span>)
@@ -156,16 +156,16 @@ wsimport -keep -s src -d bin movie.wsdl
 <span style="color:#555;font-weight:bold">@XmlSeeAlso</span>({
     ObjectFactory.<span style="color:#007">class</span>
 })
-<span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">interface</span> MovieReservationPortType {
+<span style="color:#f00;background-color:#faa">public interface </span>MovieReservationPortType {
   <span style="color:#555;font-weight:bold">@WebMethod</span>
   <span style="color:#555;font-weight:bold">@WebResult</span>(name <span style="color:#333">=</span> <span style="background-color:#e0e0ff">&#34;movieReservationResponse&#34;</span>, 
              targetNamespace <span style="color:#333">=</span> <span style="background-color:#e0e0ff">&#34;http://movie.novotnyr.sk/ws/types&#34;</span>, 
              partName <span style="color:#333">=</span> <span style="background-color:#e0e0ff">&#34;part1&#34;</span>)
-  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">MovieReservationResponse</span> movieReservation(
+  <span style="color:#f00;background-color:#faa">public MovieReservationResponse </span>movieReservation(
         <span style="color:#555;font-weight:bold">@WebParam</span>(name <span style="color:#333">=</span> <span style="background-color:#e0e0ff">&#34;movieReservationRequest&#34;</span>, 
                   targetNamespace <span style="color:#333">=</span> <span style="background-color:#e0e0ff">&#34;http://movie.novotnyr.sk/ws/types&#34;</span>, 
                   partName <span style="color:#333">=</span> <span style="background-color:#e0e0ff">&#34;part1&#34;</span>)
-        MovieReservationRequest <span style="color:#5ed;font-weight:bold">part1</span>);
+        <span style="color:#f00;background-color:#faa">MovieReservationRequest part1</span>);
 
 }</code></pre></div>
 <p>Máme teda interfejs webovej služby, potrebujeme však aj jeho implementáciu. V princípe máme dve možnosti:</p>
@@ -176,24 +176,24 @@ wsimport -keep -s src -d bin movie.wsdl
 </ol>
 
 <p>Zvolíme si druhú možnosť:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">package</span> <span style="color:#5ed;font-weight:bold">sk</span>.<span style="color:#007">novotnyr</span>.<span style="color:#007">movie</span>.<span style="color:#007">ws</span>;
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">package sk</span>.<span style="color:#007">novotnyr</span>.<span style="color:#007">movie</span>.<span style="color:#007">ws</span>;
 
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">java</span>.<span style="color:#007">util</span>.<span style="color:#007">Arrays</span>;
+<span style="color:#f00;background-color:#faa">import java</span>.<span style="color:#007">util</span>.<span style="color:#007">Arrays</span>;
 
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">javax</span>.<span style="color:#007">jws</span>.<span style="color:#007">WebService</span>;
+<span style="color:#f00;background-color:#faa">import javax</span>.<span style="color:#007">jws</span>.<span style="color:#007">WebService</span>;
 
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">sk</span>.<span style="color:#007">novotnyr</span>.<span style="color:#007">movie</span>.<span style="color:#007">ws</span>.<span style="color:#007">types</span>.<span style="color:#007">MovieReservationRequest</span>;
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">sk</span>.<span style="color:#007">novotnyr</span>.<span style="color:#007">movie</span>.<span style="color:#007">ws</span>.<span style="color:#007">types</span>.<span style="color:#007">MovieReservationResponse</span>;
+<span style="color:#f00;background-color:#faa">import sk</span>.<span style="color:#007">novotnyr</span>.<span style="color:#007">movie</span>.<span style="color:#007">ws</span>.<span style="color:#007">types</span>.<span style="color:#007">MovieReservationRequest</span>;
+<span style="color:#f00;background-color:#faa">import sk</span>.<span style="color:#007">novotnyr</span>.<span style="color:#007">movie</span>.<span style="color:#007">ws</span>.<span style="color:#007">types</span>.<span style="color:#007">MovieReservationResponse</span>;
 
 <span style="color:#555;font-weight:bold">@WebService</span>(
   endpointInterface<span style="color:#333">=</span><span style="background-color:#e0e0ff">&#34;sk.novotnyr.movie.wsdl.MovieReservationPortType&#34;</span>,
 )
-<span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> DefaultMovieReservationService {
-  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">MovieReservationResponse</span> movieReservation
-    (MovieReservationRequest <span style="color:#5ed;font-weight:bold">part1</span>) 
+<span style="color:#f00;background-color:#faa">public class </span>DefaultMovieReservationService {
+  <span style="color:#f00;background-color:#faa">public MovieReservationResponse </span>movieReservation
+    (<span style="color:#f00;background-color:#faa">MovieReservationRequest part1</span>) 
   {
-    MovieReservationResponse <span style="color:#5ed;font-weight:bold">confirmation</span> 
-      <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> MovieReservationResponse();
+    <span style="color:#f00;background-color:#faa">MovieReservationResponse confirmation 
+</span><span style="color:#f00;background-color:#faa">      </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> MovieReservationResponse();
     confirmation.<span style="color:#007">setId</span>(23456674);
     confirmation.<span style="color:#007">getReservedSeats</span>().<span style="color:#007">addAll</span>(Arrays.<span style="color:#007">asList</span>(2, 3, 2));
     
@@ -201,14 +201,14 @@ wsimport -keep -s src -d bin movie.wsdl
   }
 }</code></pre></div>
 <p>Týmto máme všetky potrebné komponenty na to, aby sme mohli spustiť a naštartovať webovú službu. V Metre je k dispozícii trieda <code>Endpoint</code>, ktorá dokáže naštartovať interný HTTP server a spustiť v ňom príslušnú triedu tak, že na to postačí jediný riadok:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">package</span> <span style="color:#5ed;font-weight:bold">sk</span>.<span style="color:#007">novotnyr</span>.<span style="color:#007">movie</span>;
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">package sk</span>.<span style="color:#007">novotnyr</span>.<span style="color:#007">movie</span>;
 
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">javax</span>.<span style="color:#007">xml</span>.<span style="color:#007">ws</span>.<span style="color:#007">Endpoint</span>;
+<span style="color:#f00;background-color:#faa">import javax</span>.<span style="color:#007">xml</span>.<span style="color:#007">ws</span>.<span style="color:#007">Endpoint</span>;
 
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">sk</span>.<span style="color:#007">novotnyr</span>.<span style="color:#007">movie</span>.<span style="color:#007">ws</span>.<span style="color:#007">DefaultMovieReservationService</span>;
+<span style="color:#f00;background-color:#faa">import sk</span>.<span style="color:#007">novotnyr</span>.<span style="color:#007">movie</span>.<span style="color:#007">ws</span>.<span style="color:#007">DefaultMovieReservationService</span>;
 
-<span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> Server {
-  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">static</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">main</span>(String[] <span style="color:#5ed;font-weight:bold">args</span>) {
+<span style="color:#f00;background-color:#faa">public class </span>Server {
+  <span style="color:#f00;background-color:#faa">public static void main</span>(<span style="color:#f00;background-color:#faa">String[] args</span>) {
     Endpoint.<span style="color:#007">publish</span>(<span style="background-color:#e0e0ff">&#34;http://localhost:8080/movies/ws&#34;</span>, 
                      <span style="color:#289;font-weight:bold">new</span> DefaultMovieReservationService());
    }
@@ -263,44 +263,44 @@ serviceName<span style="color:#333">=</span><span style="background-color:#e0e0f
 portName<span style="color:#333">=</span><span style="background-color:#e0e0ff">&#34;movieReservationPort&#34;</span>,
 wsdlLocation<span style="color:#333">=</span><span style="background-color:#e0e0ff">&#34;META-INF/movie.wsdl&#34;</span>
 )
-<span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> DefaultMovieReservationService {
+<span style="color:#f00;background-color:#faa">public class </span>DefaultMovieReservationService {
 <span style="color:#333">//</span>...</code></pre></div>
 <h1 id="generovanie-klientskej-časti">Generovanie klientskej časti</h1>
 
 <p>Generovanie klientskej časti je jednoduché. Použitím <code>wsimport</code> na WSDL dostaneme nielen serverovské triedy, ale aj klientské. Klientská časť je predstavovaná triedou <code>MovieReservationService</code> (tá dedí od <code>javax.xml.Service</code>), ktorá je okorenená mnohými anotáciami.</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">package</span> <span style="color:#5ed;font-weight:bold">sk</span>.<span style="color:#007">novotnyr</span>.<span style="color:#007">movie</span>.<span style="color:#007">wsdl</span>;
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">package sk</span>.<span style="color:#007">novotnyr</span>.<span style="color:#007">movie</span>.<span style="color:#007">wsdl</span>;
 
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">java</span>.<span style="color:#007">net</span>.<span style="color:#007">MalformedURLException</span>;
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">java</span>.<span style="color:#007">net</span>.<span style="color:#007">URL</span>;
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">java</span>.<span style="color:#007">util</span>.<span style="color:#007">logging</span>.<span style="color:#007">Logger</span>;
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">javax</span>.<span style="color:#007">xml</span>.<span style="color:#007">namespace</span>.<span style="color:#007">QName</span>;
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">javax</span>.<span style="color:#007">xml</span>.<span style="color:#007">ws</span>.<span style="color:#333">*</span>;
+<span style="color:#f00;background-color:#faa">import java</span>.<span style="color:#007">net</span>.<span style="color:#007">MalformedURLException</span>;
+<span style="color:#f00;background-color:#faa">import java</span>.<span style="color:#007">net</span>.<span style="color:#007">URL</span>;
+<span style="color:#f00;background-color:#faa">import java</span>.<span style="color:#007">util</span>.<span style="color:#007">logging</span>.<span style="color:#007">Logger</span>;
+<span style="color:#f00;background-color:#faa">import javax</span>.<span style="color:#007">xml</span>.<span style="color:#007">namespace</span>.<span style="color:#007">QName</span>;
+<span style="color:#f00;background-color:#faa">import javax</span>.<span style="color:#007">xml</span>.<span style="color:#007">ws</span>.<span style="color:#333">*</span>;
 
 <span style="color:#555;font-weight:bold">@WebServiceClient</span>(name <span style="color:#333">=</span> <span style="background-color:#e0e0ff">&#34;movieReservationService&#34;</span>, 
               targetNamespace <span style="color:#333">=</span> <span style="background-color:#e0e0ff">&#34;http://movie.novotnyr.sk/wsdl&#34;</span>, 
               wsdlLocation <span style="color:#333">=</span> <span style="background-color:#e0e0ff">&#34;file:/D:/Projects/metro/movie.wsdl&#34;</span>)
-<span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> MovieReservationService <span style="color:#5ed;font-weight:bold">extends</span> Service
+<span style="color:#f00;background-color:#faa">public class MovieReservationService extends </span>Service
 {
 
 <span style="color:#666;font-style:italic">// .. vygenerovaný kód vynechaný
 </span><span style="color:#666;font-style:italic"></span>    
-<span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">MovieReservationService</span>(URL <span style="color:#5ed;font-weight:bold">wsdlLocation</span>,
-                               QName <span style="color:#5ed;font-weight:bold">serviceName</span>) {
+<span style="color:#f00;background-color:#faa">public MovieReservationService</span>(<span style="color:#f00;background-color:#faa">URL wsdlLocation</span>,
+                               <span style="color:#f00;background-color:#faa">QName serviceName</span>) {
     <span style="color:#666;font-style:italic">// .. vygenerovaný kód vynechaný
 </span><span style="color:#666;font-style:italic"></span>}
 
-<span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">MovieReservationService</span>() {
-    <span style="color:#666;font-style:italic">// .. vygenerovaný kód vynechaný
-</span><span style="color:#666;font-style:italic"></span>}
-
-<span style="color:#555;font-weight:bold">@WebEndpoint</span>(name <span style="color:#333">=</span> <span style="background-color:#e0e0ff">&#34;movieReservationPort&#34;</span>)
-<span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">MovieReservationPortType</span> getMovieReservationPort() {
+<span style="color:#f00;background-color:#faa">public MovieReservationService</span>() {
     <span style="color:#666;font-style:italic">// .. vygenerovaný kód vynechaný
 </span><span style="color:#666;font-style:italic"></span>}
 
 <span style="color:#555;font-weight:bold">@WebEndpoint</span>(name <span style="color:#333">=</span> <span style="background-color:#e0e0ff">&#34;movieReservationPort&#34;</span>)
-<span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">MovieReservationPortType</span> getMovieReservationPort(
-            WebServiceFeature... <span style="color:#5ed;font-weight:bold">features</span>) {
+<span style="color:#f00;background-color:#faa">public MovieReservationPortType </span>getMovieReservationPort() {
+    <span style="color:#666;font-style:italic">// .. vygenerovaný kód vynechaný
+</span><span style="color:#666;font-style:italic"></span>}
+
+<span style="color:#555;font-weight:bold">@WebEndpoint</span>(name <span style="color:#333">=</span> <span style="background-color:#e0e0ff">&#34;movieReservationPort&#34;</span>)
+<span style="color:#f00;background-color:#faa">public MovieReservationPortType </span>getMovieReservationPort(
+            <span style="color:#f00;background-color:#faa">WebServiceFeature... features</span>) {
    <span style="color:#666;font-style:italic">// .. vygenerovaný kód vynechaný
 </span><span style="color:#666;font-style:italic"></span>}
 }</code></pre></div></li>
@@ -322,39 +322,39 @@ wsdlLocation<span style="color:#333">=</span><span style="background-color:#e0e0
 <h2 id="použitie-klienta">Použitie klienta</h2>
 
 <p>Použitie klienta webovej služby je potom priamočiare. Jediným problémom je šaškovanie s dátumom. V tomto prípade <code>wsimport</code> nevygeneroval inštančné premenné s klasickými <code>java.util.Date</code>, ale s triedami zodpovedajúcimi XML typom. (Dôvodom je to, že XML typy pre prácu s dátumom a časom môžu niekedy reprezentovať väčší rozsah hodnôt než <code>java.util.Date</code>).</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">package</span> <span style="color:#5ed;font-weight:bold">sk</span>.<span style="color:#007">novotnyr</span>.<span style="color:#007">movie</span>;
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">package sk</span>.<span style="color:#007">novotnyr</span>.<span style="color:#007">movie</span>;
 
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">javax</span>.<span style="color:#007">xml</span>.<span style="color:#007">datatype</span>.<span style="color:#007">DatatypeConfigurationException</span>;
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">javax</span>.<span style="color:#007">xml</span>.<span style="color:#007">datatype</span>.<span style="color:#007">DatatypeConstants</span>;
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">javax</span>.<span style="color:#007">xml</span>.<span style="color:#007">datatype</span>.<span style="color:#007">DatatypeFactory</span>;
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">javax</span>.<span style="color:#007">xml</span>.<span style="color:#007">datatype</span>.<span style="color:#007">XMLGregorianCalendar</span>;
+<span style="color:#f00;background-color:#faa">import javax</span>.<span style="color:#007">xml</span>.<span style="color:#007">datatype</span>.<span style="color:#007">DatatypeConfigurationException</span>;
+<span style="color:#f00;background-color:#faa">import javax</span>.<span style="color:#007">xml</span>.<span style="color:#007">datatype</span>.<span style="color:#007">DatatypeConstants</span>;
+<span style="color:#f00;background-color:#faa">import javax</span>.<span style="color:#007">xml</span>.<span style="color:#007">datatype</span>.<span style="color:#007">DatatypeFactory</span>;
+<span style="color:#f00;background-color:#faa">import javax</span>.<span style="color:#007">xml</span>.<span style="color:#007">datatype</span>.<span style="color:#007">XMLGregorianCalendar</span>;
 
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">sk</span>.<span style="color:#007">novotnyr</span>.<span style="color:#007">movie</span>.<span style="color:#007">ws</span>.<span style="color:#007">types</span>.<span style="color:#007">MovieReservationRequest</span>;
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">sk</span>.<span style="color:#007">novotnyr</span>.<span style="color:#007">movie</span>.<span style="color:#007">ws</span>.<span style="color:#007">types</span>.<span style="color:#007">MovieReservationResponse</span>;
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">sk</span>.<span style="color:#007">novotnyr</span>.<span style="color:#007">movie</span>.<span style="color:#007">wsdl</span>.<span style="color:#007">MovieReservationPortType</span>;
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#5ed;font-weight:bold">sk</span>.<span style="color:#007">novotnyr</span>.<span style="color:#007">movie</span>.<span style="color:#007">wsdl</span>.<span style="color:#007">MovieReservationService</span>;
+<span style="color:#f00;background-color:#faa">import sk</span>.<span style="color:#007">novotnyr</span>.<span style="color:#007">movie</span>.<span style="color:#007">ws</span>.<span style="color:#007">types</span>.<span style="color:#007">MovieReservationRequest</span>;
+<span style="color:#f00;background-color:#faa">import sk</span>.<span style="color:#007">novotnyr</span>.<span style="color:#007">movie</span>.<span style="color:#007">ws</span>.<span style="color:#007">types</span>.<span style="color:#007">MovieReservationResponse</span>;
+<span style="color:#f00;background-color:#faa">import sk</span>.<span style="color:#007">novotnyr</span>.<span style="color:#007">movie</span>.<span style="color:#007">wsdl</span>.<span style="color:#007">MovieReservationPortType</span>;
+<span style="color:#f00;background-color:#faa">import sk</span>.<span style="color:#007">novotnyr</span>.<span style="color:#007">movie</span>.<span style="color:#007">wsdl</span>.<span style="color:#007">MovieReservationService</span>;
 
-<span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">class</span> Client {
-  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">static</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">main</span>(String[] <span style="color:#5ed;font-weight:bold">args</span>) 
-    <span style="color:#289;font-weight:bold">throws</span> <span style="color:#5ed;font-weight:bold">DatatypeConfigurationException</span> 
-  {
-    MovieReservationService <span style="color:#5ed;font-weight:bold">service</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> MovieReservationService();
-    MovieReservationPortType <span style="color:#5ed;font-weight:bold">port</span> <span style="color:#333">=</span> service.<span style="color:#007">getMovieReservationPort</span>();
+<span style="color:#f00;background-color:#faa">public class </span>Client {
+  <span style="color:#f00;background-color:#faa">public static void main</span>(<span style="color:#f00;background-color:#faa">String[] args</span>) 
+    <span style="color:#f00;background-color:#faa">throws DatatypeConfigurationException 
+</span><span style="color:#f00;background-color:#faa">  </span>{
+    <span style="color:#f00;background-color:#faa">MovieReservationService service </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> MovieReservationService();
+    <span style="color:#f00;background-color:#faa">MovieReservationPortType port </span><span style="color:#333">=</span> service.<span style="color:#007">getMovieReservationPort</span>();
     
-    MovieReservationRequest <span style="color:#5ed;font-weight:bold">request</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> MovieReservationRequest();
+    <span style="color:#f00;background-color:#faa">MovieReservationRequest request </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> MovieReservationRequest();
     request.<span style="color:#007">setTitle</span>(<span style="background-color:#e0e0ff">&#34;Godzilla&#34;</span>);
     request.<span style="color:#007">setNumberOfTickets</span>(2);
     
-    XMLGregorianCalendar <span style="color:#5ed;font-weight:bold">date</span> 
-      <span style="color:#333">=</span> DatatypeFactory
+    <span style="color:#f00;background-color:#faa">XMLGregorianCalendar date 
+</span><span style="color:#f00;background-color:#faa">      </span><span style="color:#333">=</span> DatatypeFactory
         .<span style="color:#007">newInstance</span>()
         .<span style="color:#007">newXMLGregorianCalendarDate</span>(
             2008, 12, 12, 
             DatatypeConstants.<span style="color:#007">FIELD_UNDEFINED</span>);
     request.<span style="color:#007">setDate</span>(date);
     
-    MovieReservationResponse <span style="color:#5ed;font-weight:bold">response</span>
-      <span style="color:#333">=</span> port.<span style="color:#007">movieReservation</span>(request);
+    <span style="color:#f00;background-color:#faa">MovieReservationResponse response
+</span><span style="color:#f00;background-color:#faa">      </span><span style="color:#333">=</span> port.<span style="color:#007">movieReservation</span>(request);
     System.<span style="color:#007">out</span>.<span style="color:#007">println</span>(
       response.<span style="color:#007">getId</span>() 
       <span style="color:#333">+</span> <span style="background-color:#e0e0ff">&#34; &#34;</span> 
