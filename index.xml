@@ -6,10 +6,23 @@
     <description>Recent content on robonovotny</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 03 Nov 2019 23:49:50 +0100</lastBuildDate>
+    <lastBuildDate>Mon, 18 Nov 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://novotnyr.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Distribuované databázové transakcie cez Two Phase Commit (2PC)</title>
+      <link>https://novotnyr.github.io/scrolls/two-phase-commit/</link>
+      <pubDate>Mon, 18 Nov 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://novotnyr.github.io/scrolls/two-phase-commit/</guid>
+      <description>Predstavme si učebnicový prevod peňazí medzi Alicou a Bobom. Ak máme databázu na jednom stroji, implementácia je otázkou transakcie.
+Ak je transakcí mnoho a rozdelíme ich medzi viacero strojov, získame síce vyšší výkon, ale vyrobíme si ďalšie problémy.
+Algoritmus Two Phase Commit (2PC) je prastarý algoritmus na správny beh transakcií v distribuovaných databázach.
+Klasické transakcie Učebnicová transakcia vyzerá nasledovne:
+ Začneme transakciu (begin) Z Alicinho účtu odíde 20 korún. Bobovi príde 20 korún.</description>
+    </item>
     
     <item>
       <title>Building Midnight Commander on Synology NAS</title>
