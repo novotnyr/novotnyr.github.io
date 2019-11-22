@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Preverme si skripty shellcheck-om! | robonovotny</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    <link rel="stylesheet" href="https://novotnyr.github.io/asciidoctor.css">
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.css" integrity="sha384-D+9gmBxUQogRLqvARvNLmA9hS2x//eK1FhVb9PiU86gmcrBrJAQT8okdJ4LMp2uv" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.js" integrity="sha384-483A6DwYfKeDa0Q52fJmxFXkcPCFfnXMoXblOkJ4JcA8zATN6Tm78UNL72AKk+0O" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/contrib/auto-render.min.js" integrity="sha384-yACMu8JWxKzSp/C1YV86pzGiQ/l1YUfE8oPuahJQxzehAjEt2GiQuy/BIvl9KyeF" crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body);
+        });
+    </script>
+
+<header>
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <nav>
+    <ul>
+      
+      
+      <li class="pull-left ">
+        <a href="https://novotnyr.github.io/">/home/robonovotny</a>
+      </li>
+      
+
+      
+
+    </ul>
+  </nav>
+</header>
+
+  </head>
+
+  <body>
+    <br/>
+
+<div class="article-meta">
+<h1><span class="title">Preverme si skripty shellcheck-om!</span></h1>
+
+<h2 class="date">2019/11/22</h2>
+<p class="terms">
+  
+  
+  
+  
+  
+</p>
+</div>
+
+
+
+<main>
+
+
+<p>Linuxové shelly pochádzajú čias, keď <em>boli starí tvorcovia krutí a malicherní</em> a tomu zodpovedá aj syntax. (Nehovoriac o tom, že v tých časoch ešte ani Linux nebol.)</p>
+
+<p>Nejedna noc bola premárnená hľadaním nadbytočnej medzery, a nejedna klávesnica rozmlátená pri zistení, že skript vymazal to, čo nemal.</p>
+
+<p>Okrem toho, <em>best practices</em> pripomínajú zaklínadlá zo stredoveku, než logické rady. (“Pri čítaní obsahu premenných dajte pred názov premennej dolár a celé to obaľte do úvodzoviek”.)</p>
+
+<p>Našťastie, je tu <em>shellcheck</em>, ktorý posunie skriptovanie z druhohôr.</p>
+
+<h1 id="čo-je-shellcheck">Čo je <code>shellcheck</code>?</h1>
+
+<p>Shellcheck je <em>linter</em>, teda nástroj, ktorý skontroluje skript a overí, či neporušuje niektorú  z 338 typických priekakov. Je natoľko vyladený, že predíde nielen bežným začiatočníckym omylim, ale vyvaruje pred úplne obskúrnymi situáciami, ktoré zaskočia aj veteránov.</p>
+
+<p>Je k dispozícii na Linuxe aj MacOS, a je napísaný v Haskelli.</p>
+
+<h1 id="inštalácia">Inštalácia</h1>
+
+<p><code>shellcheck</code> je dostupný prakticky všade. Na Fedore cez <code>yum</code> či <code>dnf</code>, na Debiane cez <code>apk</code>, na MacOS cez <code>brew</code> a možností je <a href="https://github.com/koalaman/shellcheck#installing">mnoho.</a></p>
+
+<p>Okrem toho má pluginy pre Visual Studio Code, Atom, vim, Emacs a milión ďalších editorov.</p>
+
+<p>A v prípade núdze je tu <a href="https://www.shellcheck.net/">https://www.shellcheck.net/</a>, kde stačí capnúť svoj skript a dozvieme sa výsledok cez browser.</p>
+
+<h1 id="použitie">Použitie</h1>
+
+<p>Stačí vytvoriť skript a overiť ho:</p>
+
+<pre><code>shellcheck skript.sh
+</code></pre>
+
+<p>Shellcheck sám odhadne typ shellu, podľa riadku <em>shebang</em> a prispôsobí kontrolu.</p>
+
+<p>Dajme si totálne zlo:</p>
+
+<pre><code>#!/bin/sh
+if [$1 == &quot;hello&quot;]
+then
+  echo $1
+fi
+</code></pre>
+
+<p>Shellchecknutie rovno poradí, že „okolo premennej majú byť úvodzovky“ (chyba SC2086).</p>
+
+<p><img src="image-20191122222144752.png" alt="image-20191122222144752" /></p>
+
+<p>Vidíme, že okolo hranatých zátvoriek majú byť medzery. (Ide o parametre pre test)</p>
+
+<p>Ak to opravíme, shellcheck pokračuje ďalej:</p>
+
+<pre><code>if [ $1 == &quot;hello&quot; ]
+     ^-- SC2086: Double quote to prevent globbing and word splitting.
+        ^-- SC2039: In POSIX sh, == in place of = is undefined.
+</code></pre>
+
+<p>Okolo čítania premennej 1 majú byť medzery, čo opravíme na dvoch miestach.</p>
+
+<p>Finálna chyba:</p>
+
+<pre><code>if [ &quot;$1&quot; == &quot;hello&quot; ]
+          ^-- SC2039: In POSIX sh, == in place of = is undefined.
+</code></pre>
+
+<p>Porovnávanie reťazcov v posixovom shelli nie je cez dve „rovná sa“, ale cez jedno.</p>
+
+<p>Finálny skript vyzerá nasledovne:</p>
+
+<pre><code>#!/bin/sh
+if [ &quot;$1&quot; = &quot;hello&quot; ]
+then
+  echo &quot;$1&quot;
+fi
+</code></pre>
+
+<h1 id="bežné-trampoty-a-obskúrne-trampoty">Bežné trampoty a obskúrne trampoty</h1>
+
+<p>Shellcheck kontroluje myriády bežných chýb:</p>
+
+<ul>
+<li><p>chýbajúce úvodzovky pri čítaní z premenných, napr.</p>
+
+<pre><code>echo $USER
+</code></pre></li>
+
+<li><p>zbytočné doláriky pri zápise do premenných</p>
+
+<pre><code>$USER = 1
+</code></pre></li>
+
+<li><p>zbytočné medzery pri zápise do premenných</p>
+
+<pre><code>USER = 1
+</code></pre></li>
+
+<li><p>guľaté zátvorky (miesto hranatých) pri if</p>
+
+<pre><code>if ($USER = 1)
+</code></pre></li>
+
+<li><p>zlé použitie úvodzoviek a globbingu: iterovanie cyklom for , kde sú úvodzovky naviac alebo hľadanie cez find s chýbajúcimi úvodzovkami.</p>
+
+<pre><code>for FILE in &quot;*.mp3&quot;
+# a
+find . -name *.mp3
+</code></pre></li>
+
+<li><p>zle postavený globbing</p>
+
+<pre><code>echo *.mp3
+</code></pre></li>
+</ul>
+
+<p>Samozrejme, kontroluje aj obskúrnejšie záležitosti:</p>
+
+<ul>
+<li>zle umiestnené unicodové úvodzovky, či biele miesta (typografia z MacOSu do shellu nepatrí)</li>
+<li>iterácie cez výstup <code>find</code>-u, ktoré sa môžu rozbiť na bielych miestach</li>
+<li>a ostatných 300+ potenciálnych chýb</li>
+</ul>
+
+<h1 id="zdroje">Zdroje</h1>
+
+<ul>
+<li><a href="https://www.shellcheck.net/">https://www.shellcheck.net/</a></li>
+<li>repozitár <a href="https://github.com/koalaman/shellcheck">koalaman/shellcheck</a> na GitHube</li>
+<li>popis <a href="https://github.com/koalaman/shellcheck/wiki/SC1003">vzorovej chyby vo Wiki</a></li>
+</ul>
+
+</main>
+
+    <footer>
+      
+<script>
+(function() {
+  function center_el(tagName) {
+    var tags = document.getElementsByTagName(tagName), i, tag;
+    for (i = 0; i < tags.length; i++) {
+      tag = tags[i];
+      var parent = tag.parentElement;
+      
+      if (parent.childNodes.length === 1) {
+        
+        if (parent.nodeName === 'A') {
+          parent = parent.parentElement;
+          if (parent.childNodes.length != 1) continue;
+        }
+        if (parent.nodeName === 'P') parent.style.textAlign = 'center';
+      }
+    }
+  }
+  var tagNames = ['img', 'embed', 'object'];
+  for (var i = 0; i < tagNames.length; i++) {
+    center_el(tagNames[i]);
+  }
+})();
+</script>
+
+      
+    </footer>
+  </body>
+</html>
+
