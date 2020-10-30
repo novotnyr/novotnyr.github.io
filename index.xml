@@ -6,10 +6,22 @@
     <description>Recent content on robonovotny</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 23 Nov 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 30 Oct 2020 21:11:50 +0100</lastBuildDate>
     
 	<atom:link href="https://novotnyr.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Ako zmeniť `SHELL` v súboroch `Makefile`?</title>
+      <link>https://novotnyr.github.io/scrolls/zmena-shell-v-makefile/</link>
+      <pubDate>Fri, 30 Oct 2020 21:11:50 +0100</pubDate>
+      
+      <guid>https://novotnyr.github.io/scrolls/zmena-shell-v-makefile/</guid>
+      <description>Makefile prevezme použitý shell zo svojej internej premennej SHELL (pozri sekcia 5.3.2 v dokumentácii GNU Make). Štandardná hodnota je /bin/sh.
+Premennú môžeme zmeniť klasickým spôsobom:
+export SHELL = /bin/bash .PHONY: all all: echo ${SHELL}  Použitie klauzuly export je nutné, pretože bez neho sa premenná neexportuje do externých skriptov, ani do sub-makeov.
+Načo vlastne predefinovávať? Nápad zmeniť shell je málokedy dobrý. Moderné distribúcie očakávajú, že skripty budú implementované v norme POSIX a nebudú používať žiadne špeciality bashizmy, ani konštrukcie zo zsh či nebodaj fish.</description>
+    </item>
     
     <item>
       <title>Saga – distribuované transakcie v nezávislých databázach</title>
