@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Integrácia Thunderbird a Office 365 | robonovotny</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    <link rel="stylesheet" href="https://novotnyr.github.io/asciidoctor.css">
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.css" integrity="sha384-D+9gmBxUQogRLqvARvNLmA9hS2x//eK1FhVb9PiU86gmcrBrJAQT8okdJ4LMp2uv" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.js" integrity="sha384-483A6DwYfKeDa0Q52fJmxFXkcPCFfnXMoXblOkJ4JcA8zATN6Tm78UNL72AKk+0O" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/contrib/auto-render.min.js" integrity="sha384-yACMu8JWxKzSp/C1YV86pzGiQ/l1YUfE8oPuahJQxzehAjEt2GiQuy/BIvl9KyeF" crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body);
+        });
+    </script>
+
+<header>
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <nav>
+    <ul>
+      
+      
+      <li class="pull-left ">
+        <a href="https://novotnyr.github.io/">/home/robonovotny</a>
+      </li>
+      
+
+      
+
+    </ul>
+  </nav>
+</header>
+
+  </head>
+
+  <body>
+    <br/>
+
+<div class="article-meta">
+<h1><span class="title">Integrácia Thunderbird a Office 365</span></h1>
+
+<h2 class="date">2020/10/31</h2>
+<p class="terms">
+  
+  
+  
+  
+  
+</p>
+</div>
+
+
+
+<main>
+
+
+<p>Thunderbird sa dokáže integrovať s Office 365 podobným spôsobom ako Outlook.</p>
+
+<p>Budeme potrebovať tri doplnky (add-ons):</p>
+
+<ul>
+<li><a href="https://addons.thunderbird.net/en-US/thunderbird/addon/tbsync/">TBSync</a> &ndash;  integrácia kontaktov, kalendáre a úlohy</li>
+<li><a href="https://github.com/jobisoft/EAS-4-TbSync/wiki/Compatibility-list-(EAS)">EAS Sync pre TBSync</a> &ndash; podpora pre Exchange ActiveSync, ktorou z Office 365 vytiahneme kontakty</li>
+<li><a href="https://addons.thunderbird.net/en-US/thunderbird/addon/owl-for-exchange/">OWL for Exchange</a> &ndash; platený plugin pre e-maily a pozvánky na udalosti pre protokol Outlook Web Access (OWA).</li>
+</ul>
+
+<h2 id="tbsync-eas-sync-adresár-kontaktov">TBSync + EAS Sync: adresár kontaktov</h2>
+
+<p>Hoci TBSync vieme použiť pre kalendáre a služby založené na protokole ActiveSync, mnoho zamestnávateľov využívajúcich Office 365 tento protokol nepovoľuje a tým redukuje tento add-on na adresár s kontaktami.</p>
+
+<p>Kalendár síce vieme prepojiť a zobraziť do rozhrania Thunderbirdu, ale udalosti v mailoch nebudeme vedieť ani schváliť ani zamietnuť. Vždy keď príde pozvánka na udalosť, dostaneme mail s textom:</p>
+
+<blockquote>
+<p>To receive meeting invitations as .iCalendar attachments instead of Outlook Web App links, go to <a href="https://outlook.office365.com/owa/upjs.sk/?path=/options/popandimap">https://outlook.office365.com/owa/upjs.sk/?path=/options/popandimap</a> and select Send meeting invitations in iCalendar format.</p>
+</blockquote>
+
+<p>Na jeseň 2020 je podpora zvláštna &ndash; toto nastavenie sa v Outloooku na webovej verzii Office 365 vôbec nenachádza.</p>
+
+<p>Kalendár / úlohy radšej prepojíme v ďalšej sekcii cez add-on Owl.</p>
+
+<h3 id="konfigurácia">Konfigurácia</h3>
+
+<p>Konfigurácia add-onu sa rieši cez separátny dialóg. V hlavnom menu <em>Tools -&gt; Synchronization Settings (TBSync)</em> pridáme nový účet <em>Exchange ActiveSync</em> a vyberieme si konfiguráciu typu <strong>Microsoft Office 365</strong>.</p>
+
+<p><img src="tbsync-office365.png" alt="TBSync a účet Office365" /></p>
+
+<p>Prihlásime sa do účtu a akceptujeme dialógové okna implementujúce login cez protokol OAuth - čo pravdepodobne vyvolá autentifikáciu cez prihlasovacie okno vášho zamestnávateľa.</p>
+
+<p>V následnom dialógu vypneme synchronizáciu položiek a ponecháme len kontakty (Contacts). Kalendár a ostatné položky vyriešime iným add-onom (cez Owl), a ak by sme na to zabudli, zistili by sme, že máme duplicitné kalendáre (z Owl a TBSync).</p>
+
+<p><img src="tbsync-config.png" alt="TBSync a účet Office365" /></p>
+
+<p>Nezabudneme nastaviť periódu synchronizácie &ndash; štandardná nula zodpovedá ručnej synchronizácii, ale je lepšie použiť napr. hodinový interval.</p>
+
+<h2 id="owl-for-exchange-maily-kalendár-a-udalosti">Owl For Exchange: maily, kalendár a udalosti</h2>
+
+<p>Owl for Exchange je platený add-on pre integráciu mailov, kalendárov a udalostí cez protokol OWA. Stojí síce 10 dolárov ročne (s mesačnou skúšobnou lehotou), ale podporíte dlhoročného prispievateľa do zdrojákov Thunderbirdu.</p>
+
+<p>Okrem toho získame podporu pre obsluhu pozvánok na udalosti priamo z okna Thunderbirdu.</p>
+
+<p><img src="thunderbird-owl.png" alt="UI s pozvánkami cez Owl" /></p>
+
+<p>Owl je dokonca propagovaný v Thunderbirde. Ak vytvárame nový účet a zvolíme typ Exchange, dostaneme ponuku pre inštaláciu tohto add-onu.</p>
+
+<p><img src="owl-new-account.png" alt="Zakladanie nového účtu cez Owl" /></p>
+
+<p>Prihlásenie sa realizuje rovnako cez OAuth, čiže zrejme opäť uvidíme prihlasovací screen svojho zamestnávateľa.</p>
+
+<p>Owl zavedie účet medzi štandardné účty spravovateľné cez <em>Tools -&gt; Account Settings</em> presne tak ako akýkoľvek iný účet. Prihlásenie je riešené špecificky, cez metódu <strong>Open Login web page</strong>.</p>
+
+<h1 id="záver">Záver</h1>
+
+<p>Kolujú anektodálne historky, ako používatelia rozbehali podporu pre pozvánky aj iným spôsobom. Problém je však v šťastnej kombinácii add-onov a verzie Thunderbirdu.</p>
+
+<p>Thunderbird verzie 78 je značne odlišný od predošlých verzií a TBSync rovnako nedoimplementoval podporu pre všetky okrajové prípady.</p>
+
+<p>Kombinácia týchto troch doplnkov je preverená a funguje aj na modernom Thunderbirde, čo sa výmenou za pár eúr ročne oplatí.</p>
+
+</main>
+
+    <footer>
+      
+<script>
+(function() {
+  function center_el(tagName) {
+    var tags = document.getElementsByTagName(tagName), i, tag;
+    for (i = 0; i < tags.length; i++) {
+      tag = tags[i];
+      var parent = tag.parentElement;
+      
+      if (parent.childNodes.length === 1) {
+        
+        if (parent.nodeName === 'A') {
+          parent = parent.parentElement;
+          if (parent.childNodes.length != 1) continue;
+        }
+        if (parent.nodeName === 'P') parent.style.textAlign = 'center';
+      }
+    }
+  }
+  var tagNames = ['img', 'embed', 'object'];
+  for (var i = 0; i < tagNames.length; i++) {
+    center_el(tagNames[i]);
+  }
+})();
+</script>
+
+      
+    </footer>
+  </body>
+</html>
+
