@@ -6,10 +6,22 @@
     <description>Recent content in Scrolls on robonovotny</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 31 Oct 2020 00:50:08 +0100</lastBuildDate>
+    <lastBuildDate>Tue, 17 Nov 2020 21:09:01 +0100</lastBuildDate>
     
 	<atom:link href="https://novotnyr.github.io/scrolls/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Pokročilé funkcie v Powershelli</title>
+      <link>https://novotnyr.github.io/scrolls/powershell-pokrocile-funkcie/</link>
+      <pubDate>Tue, 17 Nov 2020 21:09:01 +0100</pubDate>
+      
+      <guid>https://novotnyr.github.io/scrolls/powershell-pokrocile-funkcie/</guid>
+      <description>Funkcie v PowerShelli sa dajú zapisovať rozličnými spôsobmi. Ukážme si jednoduchú funkciu, ktorá zráta veľkost súborov v aktuálnom adresári:
+function Get-Size($Unit) { Get-ChildItem -File | Measure-Object -Property Length -Sum | Select-Object -ExpandProperty Sum | ForEach-Object { $_ / (&amp;#34;1&amp;#34; + $Unit)} } Funkcia má jeden netypovaný parameter s názvom $Unit a vieme ju použiť nasledovne:
+Get-Size MB  Konvencie však odporúčajú zapisovať parametre v sekcii param:
+function Get-Size { param ( [String] $Unit = &amp;#34;MB&amp;#34; ) Get-ChildItem -File | Measure-Object -Property Length -Sum | Select-Object -ExpandProperty Sum | ForEach-Object { $_ / (&amp;#34;1&amp;#34; + $Unit)} } Parameter $Unit má implicitnú hodnotu MB a je typu String.</description>
+    </item>
     
     <item>
       <title>Integrácia Thunderbird a Office 365</title>
