@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Migrácia medzi dvoma MacOS pomocou `rsync` | robonovotny</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    <link rel="stylesheet" href="https://novotnyr.github.io/asciidoctor.css">
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.css" integrity="sha384-D+9gmBxUQogRLqvARvNLmA9hS2x//eK1FhVb9PiU86gmcrBrJAQT8okdJ4LMp2uv" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.js" integrity="sha384-483A6DwYfKeDa0Q52fJmxFXkcPCFfnXMoXblOkJ4JcA8zATN6Tm78UNL72AKk+0O" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/contrib/auto-render.min.js" integrity="sha384-yACMu8JWxKzSp/C1YV86pzGiQ/l1YUfE8oPuahJQxzehAjEt2GiQuy/BIvl9KyeF" crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body);
+        });
+    </script>
+
+<header>
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <nav>
+    <ul>
+      
+      
+      <li class="pull-left ">
+        <a href="https://novotnyr.github.io/">/home/robonovotny</a>
+      </li>
+      
+
+      
+
+    </ul>
+  </nav>
+</header>
+
+  </head>
+
+  <body>
+    <br/>
+
+<div class="article-meta">
+<h1><span class="title">Migrácia medzi dvoma MacOS pomocou <code>rsync</code></span></h1>
+
+<h2 class="date">2021/01/01</h2>
+<p class="terms">
+  
+  
+  
+  
+  
+</p>
+</div>
+
+
+
+<main>
+
+
+<p>Migrácia na nový MacBook Pro je malina. Naozaj sa nestratia žiadne dáta?</p>
+
+<p>Štandardný postup je jednoduchý</p>
+
+<ol>
+<li>Oba stroje sa pripoja k rovnakej WiFi.</li>
+<li>Na každom stroji sa pustí <em>Migration Assistant</em>.</li>
+<li>Po pár hodinách je všetko magicky zmigrované.</li>
+</ol>
+
+<p>Akurát pri mojej migrácii Macbook Pro zahlásil:</p>
+
+<blockquote>
+<p>Niektoré súbory sa nepodarilo zmigrovať.</p>
+</blockquote>
+
+<p>Ktoré? Všetky? Niektoré náhodné? Nik nevie.</p>
+
+<h2 id="nový-stroj-jede-jenom-neseje">Nový stroj jede&hellip; Jenom neseje.</h2>
+
+<p>Nový stroj zdanlivo išiel bez problémov - až zázračne. A to sa migrovala High Sierra na Big Sur! Všetky nastavenia sa zmigrovali úplne magicky - WiFi, aplikácie, používateľské kontá&hellip; až do momentu, kým iTerm2 nezahlásil, že nevie nájsť symlinky na <em>dotfiles</em>.</p>
+
+<p>Vysvitlo, že adresár s projektami sa zmigroval len z jednej pätiny, čo je trochu viac ako „niektoré súbory“. Stovky binárok <code>.class</code> a <code>node_modules</code> asi spôsobili migračnému asistentovi bolehlav a rovno to vzdal s tým, že &ldquo;niektoré súbory&hellip;&rdquo;</p>
+
+<h2 id="biedne-pokusy">Biedne pokusy</h2>
+
+<p>Pokusy s Forkliftom a podobne rovno zlyhali &ndash; opäť tisícky súborov boli nad sily.</p>
+
+<h2 id="rsync">RSync!</h2>
+
+<p>Nástroj <code>rsync</code> je starý dobrý unixoidný systém na synchronizáciu medzi dvoma adresármi s rozumným protokolom.</p>
+
+<p>Dokonca je k dispozícii aj natívne na MacOS, ale v prastarej verzii. Silne odporúčam doinštalovať aktuálnu verziu cez <code>homebrew</code></p>
+
+<pre><code>brew install rsync
+</code></pre>
+
+<p>V tomto prípade využijeme optimalizáciu s <code>rsync</code> démonom, teda v duchu klient-server architektúry.</p>
+
+<h3 id="na-strane-servera-pôvodného-stroja">Na strane „servera“ &ndash; pôvodného stroja</h3>
+
+<p>Na strane pôvodného servera vytvorme konfigurák pre démona <code>rsyncu</code>:</p>
+
+<pre><code>vim /tmp/rsyncd.conf
+</code></pre>
+
+<p>Obsah:</p>
+
+<pre><code>list = yes
+read only = yes
+use chroot = false
+[projects]
+path = /Users/novotnyr/projects
+exclude = /Users/novotnyr/Library/Caches
+</code></pre>
+
+<p>Dôležité nastavenia:</p>
+
+<ul>
+<li>vypneme <code>chroot</code> - klientovi sa to nepáči.</li>
+<li>nastavíme režim len na čítanie</li>
+</ul>
+
+<p>Sekcie sa mapujú na adresáre. Definujeme adresár <code>projects</code>, kde uvedieme vypublikovaný adresár a vynecháme zbytočné adresáre, ktoré nechceme synchronizovať.</p>
+
+<p>Démona spustíme:</p>
+
+<pre><code>rsync --daemon --config=/tmp/rsyncd.conf
+</code></pre>
+
+<h3 id="na-strane-klienta-nového-stroja">Na strane klienta - nového stroja</h3>
+
+<p>Na strane klienta spustíme:</p>
+
+<pre><code>rsync -avc rsync://192.168.1.240/novotnyr/ /Users/novotnyr
+</code></pre>
+
+<p>Prepínače:</p>
+
+<ul>
+<li><code>-a</code> - zapne rekurzívnu sychronizáciu a uchová atribúty súborov</li>
+<li><code>-v</code> - zapne ukecaný <em>verbose</em> výstup</li>
+<li><code>-c</code> - porovná rovnaké súbory na základe kontrolného súčtu namiesto času</li>
+</ul>
+
+<p>Dá sa skúsiť aj beh „nasucho“ - stačí zapnúť prepínač <code>-n</code>.</p>
+
+<p>Pri prvej ceste je <strong>dôležitá</strong> lomka na konci (<code>novotnyr/</code>), pretože v opačnom prípade sa nakopíruje adresár do klientovho <code>/Users/novotnyr</code>.</p>
+
+<p>Synchronizácia beží značne rýchlo - <code>rsync</code> je totiž naozaj dobre vymyslený protokol</p>
+
+<h2 id="porovnanie-obsahu">Porovnanie obsahu</h2>
+
+<p>Voliteľne môžeme aj porovnať obsahy:</p>
+
+<pre><code>rsync -avun rsync://192.168.1.240/novotnyr/ /Users/novotnyr 
+</code></pre>
+
+<p>Prepínač <code>-u</code> preskočí súbory, ktoré sú novšie v cieli &ndash;  v tomto prípade na novšom stroji,</p>
+
+</main>
+
+    <footer>
+      
+<script>
+(function() {
+  function center_el(tagName) {
+    var tags = document.getElementsByTagName(tagName), i, tag;
+    for (i = 0; i < tags.length; i++) {
+      tag = tags[i];
+      var parent = tag.parentElement;
+      
+      if (parent.childNodes.length === 1) {
+        
+        if (parent.nodeName === 'A') {
+          parent = parent.parentElement;
+          if (parent.childNodes.length != 1) continue;
+        }
+        if (parent.nodeName === 'P') parent.style.textAlign = 'center';
+      }
+    }
+  }
+  var tagNames = ['img', 'embed', 'object'];
+  for (var i = 0; i < tagNames.length; i++) {
+    center_el(tagNames[i]);
+  }
+})();
+</script>
+
+      
+    </footer>
+  </body>
+</html>
+
