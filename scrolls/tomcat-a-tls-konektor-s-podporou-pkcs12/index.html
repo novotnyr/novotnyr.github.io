@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Tomcat a TLS konektor s podporou PKCS#12 | robonovotny</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    <link rel="stylesheet" href="https://novotnyr.github.io/asciidoctor.css">
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.css" integrity="sha384-D+9gmBxUQogRLqvARvNLmA9hS2x//eK1FhVb9PiU86gmcrBrJAQT8okdJ4LMp2uv" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.js" integrity="sha384-483A6DwYfKeDa0Q52fJmxFXkcPCFfnXMoXblOkJ4JcA8zATN6Tm78UNL72AKk+0O" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/contrib/auto-render.min.js" integrity="sha384-yACMu8JWxKzSp/C1YV86pzGiQ/l1YUfE8oPuahJQxzehAjEt2GiQuy/BIvl9KyeF" crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body);
+        });
+    </script>
+
+<header>
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <nav>
+    <ul>
+      
+      
+      <li class="pull-left ">
+        <a href="https://novotnyr.github.io/">/home/robonovotny</a>
+      </li>
+      
+
+      
+
+    </ul>
+  </nav>
+</header>
+
+  </head>
+
+  <body>
+    <br/>
+
+<div class="article-meta">
+<h1><span class="title">Tomcat a TLS konektor s podporou PKCS#12</span></h1>
+
+<h2 class="date">2021/02/09</h2>
+<p class="terms">
+  
+  
+  
+  
+  
+</p>
+</div>
+
+
+
+<main>
+
+
+<p>Tomcat 8.5 a novší už obsahujú vysokovýkonné konektory založené na neblokujúcim API Java.NIO. Výhodou je výkon porovnateľný s použitím natívnej knižnice APR (ktorú využíva hlavne Apache HTTPD server).</p>
+
+<p>Ak používame SSL/TLS, máme ďalšiu výhodu. Certifikáty a privátne kľúče nemusíme ukladať do ťarbavých JKS keystorov, ale vieme použiť univerzálny formát známy z OpenSSL (PEM) vo formáte PKCS#12. Inými slovami, súbory typu <code>-----BEGIN CERTIFICATE</code> a <code>-----BEGIN PRIVATE KEY</code> vieme použiť priamo.</p>
+
+<h1 id="konfigurácia">Konfigurácia</h1>
+
+<p>V Tomcate, v súbore <code>server.xml</code> definujeme dva konektory pre komunikáciu nad HTTP.</p>
+
+<ul>
+<li>konektor pre otvorenú (<em>plaintext</em>) komunikáciu na porte 8080</li>
+<li>zabezpečený konektor nad TLS na porte 8443.</li>
+</ul>
+
+<p>Plaintextový konektor je jednoduchý:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#070">&lt;Connector</span> <span style="color:#007">port=</span><span style="background-color:#e0e0ff">&#34;8080&#34;</span> <span style="color:#007">protocol=</span><span style="background-color:#e0e0ff">&#34;HTTP/1.1&#34;</span>
+           <span style="color:#007">connectionTimeout=</span><span style="background-color:#e0e0ff">&#34;20000&#34;</span>
+           <span style="color:#007">redirectPort=</span><span style="background-color:#e0e0ff">&#34;8443&#34;</span> <span style="color:#070">/&gt;</span></code></pre></div>
+<p>Zabezpečený konektor používa nový zápis s využitím elementu <code>SSLHostConfig</code>, ktorý nahrádza obvyklý mix atribútov SSL/TLS definovaných v elemente <code>&lt;Connector&gt;</code>:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#070">&lt;Connector</span> <span style="color:#007">port=</span><span style="background-color:#e0e0ff">&#34;8443&#34;</span>
+           <span style="color:#007">protocol=</span><span style="background-color:#e0e0ff">&#34;org.apache.coyote.http11.Http11Nio2Protocol&#34;</span>
+           <span style="color:#007">maxThreads=</span><span style="background-color:#e0e0ff">&#34;150&#34;</span>
+           <span style="color:#007">SSLEnabled=</span><span style="background-color:#e0e0ff">&#34;true&#34;</span><span style="color:#070">&gt;</span>
+    <span style="color:#070">&lt;SSLHostConfig&gt;</span>
+        <span style="color:#070">&lt;Certificate</span>
+            <span style="color:#007">certificateFile=</span><span style="background-color:#e0e0ff">&#34;conf/tls/localhost.crt&#34;</span>
+            <span style="color:#007">certificateKeyFile=</span><span style="background-color:#e0e0ff">&#34;conf/tls/localhost.key&#34;</span> <span style="color:#070">/&gt;</span>
+    <span style="color:#070">&lt;/SSLHostConfig&gt;</span>
+<span style="color:#070">&lt;/Connector&gt;</span></code></pre></div>
+<p>Konektor využíva neblokujúci protokol NIO implementovaný v Jave.
+Ak je zapnutá podpora pre knižnicu APR (pomocou <a href="https://tomcat.apache.org/tomcat-9.0-doc/api/org/apache/catalina/core/AprLifecycleListener.html"><code>AprLifecycleListener</code></a>, použije sa implementácia OpenSSL.
+Ak APR nie je k dispozícii, alebo je zakázaná, použije sa Java implementácia (JSSE), ktorá však bez problémov podporuje certifikáty a privátne kľúče vo formáte PKCS#12.</p>
+
+<h1 id="minimalistický-server-xml">Minimalistický <code>server.xml</code></h1>
+
+<p>Takto si vieme definovať úplne minimalistický konfiguračný súbor <code>server.xml</code>. Má nasledovné vlastnosti:</p>
+
+<ul>
+<li>natívna podpora pre APR je úplne vypnutá</li>
+<li>používame rýdzu Java implementáciu protokolu HTTP i TLS</li>
+<li>certifikáty a privátne kľúče sú v tvare PKCS#12</li>
+
+<li><p>integrácia s <code>mod_proxy</code> cez protokol AJP je zakázaná.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#579">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
+<span style="color:#070">&lt;Server</span> <span style="color:#007">port=</span><span style="background-color:#e0e0ff">&#34;8005&#34;</span> <span style="color:#007">shutdown=</span><span style="background-color:#e0e0ff">&#34;SHUTDOWN&#34;</span><span style="color:#070">&gt;</span>
+<span style="color:#070">&lt;Listener</span> <span style="color:#007">className=</span><span style="background-color:#e0e0ff">&#34;org.apache.catalina.startup.VersionLoggerListener&#34;</span><span style="color:#070">/&gt;</span>
+<span style="color:#070">&lt;Listener</span> <span style="color:#007">className=</span><span style="background-color:#e0e0ff">&#34;org.apache.catalina.core.JreMemoryLeakPreventionListener&#34;</span><span style="color:#070">/&gt;</span>
+<span style="color:#070">&lt;Listener</span> <span style="color:#007">className=</span><span style="background-color:#e0e0ff">&#34;org.apache.catalina.mbeans.GlobalResourcesLifecycleListener&#34;</span><span style="color:#070">/&gt;</span>
+<span style="color:#070">&lt;Listener</span> <span style="color:#007">className=</span><span style="background-color:#e0e0ff">&#34;org.apache.catalina.core.ThreadLocalLeakPreventionListener&#34;</span><span style="color:#070">/&gt;</span>
+
+<span style="color:#070">&lt;Service</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;Catalina&#34;</span><span style="color:#070">&gt;</span>
+    <span style="color:#070">&lt;Connector</span> <span style="color:#007">port=</span><span style="background-color:#e0e0ff">&#34;8080&#34;</span> <span style="color:#007">protocol=</span><span style="background-color:#e0e0ff">&#34;HTTP/1.1&#34;</span>
+               <span style="color:#007">connectionTimeout=</span><span style="background-color:#e0e0ff">&#34;20000&#34;</span>
+               <span style="color:#007">redirectPort=</span><span style="background-color:#e0e0ff">&#34;8443&#34;</span><span style="color:#070">/&gt;</span>
+    <span style="color:#070">&lt;Connector</span> <span style="color:#007">port=</span><span style="background-color:#e0e0ff">&#34;8443&#34;</span>
+               <span style="color:#007">protocol=</span><span style="background-color:#e0e0ff">&#34;org.apache.coyote.http11.Http11Nio2Protocol&#34;</span>
+               <span style="color:#007">maxThreads=</span><span style="background-color:#e0e0ff">&#34;150&#34;</span>
+               <span style="color:#007">SSLEnabled=</span><span style="background-color:#e0e0ff">&#34;true&#34;</span><span style="color:#070">&gt;</span>
+        <span style="color:#070">&lt;SSLHostConfig&gt;</span>
+            <span style="color:#070">&lt;Certificate</span> <span style="color:#007">certificateFile=</span><span style="background-color:#e0e0ff">&#34;conf/tls/localhost.crt&#34;</span>
+                         <span style="color:#007">certificateKeyFile=</span><span style="background-color:#e0e0ff">&#34;conf/tls/localhost.key&#34;</span><span style="color:#070">/&gt;</span>
+        <span style="color:#070">&lt;/SSLHostConfig&gt;</span>
+    <span style="color:#070">&lt;/Connector&gt;</span>
+
+    <span style="color:#070">&lt;Engine</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;Catalina&#34;</span> <span style="color:#007">defaultHost=</span><span style="background-color:#e0e0ff">&#34;localhost&#34;</span><span style="color:#070">&gt;</span>
+        <span style="color:#070">&lt;Host</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;localhost&#34;</span>
+              <span style="color:#007">appBase=</span><span style="background-color:#e0e0ff">&#34;webapps&#34;</span>
+              <span style="color:#007">unpackWARs=</span><span style="background-color:#e0e0ff">&#34;true&#34;</span>
+              <span style="color:#007">autoDeploy=</span><span style="background-color:#e0e0ff">&#34;true&#34;</span><span style="color:#070">&gt;</span>
+            <span style="color:#070">&lt;Valve</span> <span style="color:#007">className=</span><span style="background-color:#e0e0ff">&#34;org.apache.catalina.valves.AccessLogValve&#34;</span>
+                   <span style="color:#007">directory=</span><span style="background-color:#e0e0ff">&#34;logs&#34;</span>
+                   <span style="color:#007">prefix=</span><span style="background-color:#e0e0ff">&#34;localhost_access_log&#34;</span> <span style="color:#007">suffix=</span><span style="background-color:#e0e0ff">&#34;.txt&#34;</span>
+                   <span style="color:#007">pattern=</span><span style="background-color:#e0e0ff">&#34;%h %l %u %t &amp;quot;%r&amp;quot; %s %b&#34;</span><span style="color:#070">/&gt;</span>
+        <span style="color:#070">&lt;/Host&gt;</span>
+    <span style="color:#070">&lt;/Engine&gt;</span>
+<span style="color:#070">&lt;/Service&gt;</span>
+<span style="color:#070">&lt;/Server&gt;</span></code></pre></div></li>
+</ul>
+
+</main>
+
+    <footer>
+      
+<script>
+(function() {
+  function center_el(tagName) {
+    var tags = document.getElementsByTagName(tagName), i, tag;
+    for (i = 0; i < tags.length; i++) {
+      tag = tags[i];
+      var parent = tag.parentElement;
+      
+      if (parent.childNodes.length === 1) {
+        
+        if (parent.nodeName === 'A') {
+          parent = parent.parentElement;
+          if (parent.childNodes.length != 1) continue;
+        }
+        if (parent.nodeName === 'P') parent.style.textAlign = 'center';
+      }
+    }
+  }
+  var tagNames = ['img', 'embed', 'object'];
+  for (var i = 0; i < tagNames.length; i++) {
+    center_el(tagNames[i]);
+  }
+})();
+</script>
+
+      
+    </footer>
+  </body>
+</html>
+

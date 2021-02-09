@@ -6,10 +6,20 @@
     <description>Recent content on robonovotny</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 01 Jan 2021 23:27:50 +0100</lastBuildDate>
+    <lastBuildDate>Tue, 09 Feb 2021 22:40:41 +0100</lastBuildDate>
     
 	<atom:link href="https://novotnyr.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Tomcat a TLS konektor s podporou PKCS#12</title>
+      <link>https://novotnyr.github.io/scrolls/tomcat-a-tls-konektor-s-podporou-pkcs12/</link>
+      <pubDate>Tue, 09 Feb 2021 22:40:41 +0100</pubDate>
+      
+      <guid>https://novotnyr.github.io/scrolls/tomcat-a-tls-konektor-s-podporou-pkcs12/</guid>
+      <description>Tomcat 8.5 a novší už obsahujú vysokovýkonné konektory založené na neblokujúcim API Java.NIO. Výhodou je výkon porovnateľný s použitím natívnej knižnice APR (ktorú využíva hlavne Apache HTTPD server).
+Ak používame SSL/TLS, máme ďalšiu výhodu. Certifikáty a privátne kľúče nemusíme ukladať do ťarbavých JKS keystorov, ale vieme použiť univerzálny formát známy z OpenSSL (PEM) vo formáte PKCS#12. Inými slovami, súbory typu -----BEGIN CERTIFICATE a -----BEGIN PRIVATE KEY vieme použiť priamo.</description>
+    </item>
     
     <item>
       <title>Migrácia medzi dvoma MacOS pomocou `rsync`</title>
