@@ -6,10 +6,23 @@
     <description>Recent content in Scrolls on robonovotny</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 12 Sep 2021 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 13 Sep 2021 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://novotnyr.github.io/scrolls/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Funkcie s korením -- curry a iné príchute</title>
+      <link>https://novotnyr.github.io/scrolls/curry-funkcie-s-korenim/</link>
+      <pubDate>Mon, 13 Sep 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://novotnyr.github.io/scrolls/curry-funkcie-s-korenim/</guid>
+      <description>Lemon curry?
+— Monty Python&amp;rsquo;s Flying Circus, Ep. 33 — Salad Days, 30. 11. 1972
+ Naklepávame a koreníme funkcie V predošlom dieli sme videli, ako možno v Scale 3 jednoducho pretvárať viacparametrové funkcie na menej parametrové pomocou čiastočnej aplikácie (partial application).
+Spomeňme si na funkciu wc z predošlého dielu:
+def wc(countType: String, lines: List[String]): Int = // ...  Funkcia wc, ktorá berie dva parametre &amp;ndash; typ a zoznam riadkov &amp;ndash; sa dá zmeniť na funkciu WC s jedným parametrom countType typu String , ktorá vracia funkciu s jedným parametrom typu List[String].</description>
+    </item>
     
     <item>
       <title>Šok! Funkcie v Scale sú objekty!</title>

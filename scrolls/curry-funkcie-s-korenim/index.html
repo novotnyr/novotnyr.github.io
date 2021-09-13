@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Funkcie s korením -- curry a iné príchute | robonovotny</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    <link rel="stylesheet" href="https://novotnyr.github.io/asciidoctor.css">
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.css" integrity="sha384-D+9gmBxUQogRLqvARvNLmA9hS2x//eK1FhVb9PiU86gmcrBrJAQT8okdJ4LMp2uv" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.js" integrity="sha384-483A6DwYfKeDa0Q52fJmxFXkcPCFfnXMoXblOkJ4JcA8zATN6Tm78UNL72AKk+0O" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/contrib/auto-render.min.js" integrity="sha384-yACMu8JWxKzSp/C1YV86pzGiQ/l1YUfE8oPuahJQxzehAjEt2GiQuy/BIvl9KyeF" crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body);
+        });
+    </script>
+
+<header>
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <nav>
+    <ul>
+      
+      
+      <li class="pull-left ">
+        <a href="https://novotnyr.github.io/">/home/robonovotny</a>
+      </li>
+      
+
+      
+
+    </ul>
+  </nav>
+</header>
+
+  </head>
+
+  <body>
+    <br/>
+
+<div class="article-meta">
+<h1><span class="title">Funkcie s korením &ndash; curry a iné príchute</span></h1>
+
+<h2 class="date">2021/09/13</h2>
+<p class="terms">
+  
+  
+  
+  
+  
+</p>
+</div>
+
+
+
+<main>
+
+
+<blockquote>
+<p>Lemon curry?</p>
+
+<p>— Monty Python&rsquo;s Flying Circus, Ep. 33 — Salad Days, 30. 11. 1972</p>
+</blockquote>
+
+<h1 id="naklepávame-a-koreníme-funkcie">Naklepávame a koreníme funkcie</h1>
+
+<p>V predošlom dieli sme videli, ako možno v Scale 3 jednoducho pretvárať viacparametrové funkcie na menej parametrové pomocou čiastočnej aplikácie (<em>partial application</em>).</p>
+
+<p>Spomeňme si na funkciu <code>wc</code> z predošlého dielu:</p>
+
+<pre><code>def wc(countType: String, lines: List[String]): Int = // ...
+</code></pre>
+
+<p>Funkcia <code>wc</code>, ktorá berie dva parametre &ndash; typ a zoznam riadkov &ndash; sa dá zmeniť na funkciu <code>WC</code> s jedným parametrom <code>countType</code> typu <code>String</code> , ktorá vracia funkciu s jedným parametrom typu <code>List[String]</code>.</p>
+
+<pre><code>def WC(countType: String) = 
+    wc(countType, _)
+</code></pre>
+
+<p>Všimnime si, ako sme zafixovali vo funkcii <code>wc</code> jeden parameter a jeden nechali voľný. Takto sme prakticky zredukovali počet argumentov funkcie <code>wc</code> z dvoch na jeden!</p>
+
+<p>Takto vieme postaviť novú kolónu:</p>
+
+<pre><code>val pipeline = cat.andThen(WC(&quot;-w&quot;)).andThen(println)
+pipeline(File(&quot;/etc/passwd&quot;))
+</code></pre>
+
+<p>V kolóne rovno zavoláme jednoparametrovú funkciu <code>WC</code> s jedným pevným parametrom <code>-w</code>. Funkcia <code>WC</code> vráti unárnu funkciu (s neznámym menom) a táto unárna funkcia prevezme do argumentu zoznam riadkov, čím ju vieme zakomponovať do kolóny!</p>
+
+<h2 id="čo-sa-presne-stalo">Čo sa presne stalo?</h2>
+
+<p>Ako vidno, binárnu funkciu môžeme premeniť na unárnu funkciu, ktorá vracia unárnu funkciu. V našom príklade sme binárnu funkciu <code>wc</code> previedli na unárnu funkciu <code>WC</code>, ktorá vracia unárnu funkciu.</p>
+
+<p>Ak by sme chceli byť úplne presní a uviedli dátový typ pre výsledok, zápis by bol:</p>
+
+<pre><code>def WC(countType: String): List[String] =&gt; Int =
+    wc(countType, _)
+</code></pre>
+
+<p><code>WC</code> je funkcia z reťazcov do <em>funkcií zo zoznamov reťazcov do celých čísiel</em>: a naozaj, dátový typ výsledku je zapísaný ako dátový typ funkcie <code>List[String] =&gt; Int</code>.</p>
+
+<p>Ak to celé zapíšeme dohromady, funkcia <code>WC</code> má dátový typ:</p>
+
+<pre><code>String =&gt; (List[String] =&gt; Int)
+-------    --------------------
+parameter    funkcia ako
+             návratová hodnota
+</code></pre>
+
+<p>V Scale 3, ale aj iných jazykoch platí, že <em>hrubá šípka asociuje sprava</em> a teda zátvorky môžeme vynechať:</p>
+
+<pre><code>String =&gt; List[String] =&gt; Int
+</code></pre>
+
+<h2 id="aký-je-rozdiel-od-čiastočnej-aplikácie">Aký je rozdiel od čiastočnej aplikácie?</h2>
+
+<p>Ak sa pýtame, čím sa to líši od čiastočnej aplikácie&hellip; odpoveď je, že zatiaľ ničím.
+Je to úplne rovnaké ako v nasledovnom prípade &ndash; veď koniec koncov, funkciu <code>WC</code> sme si zadefinovali úplne rovnako.</p>
+
+<pre><code>val WC = wc(&quot;-w&quot;, _)
+val pipeline = cat.andThen(WC).andThen(println)
+pipeline(File(&quot;/etc/passwd&quot;))
+</code></pre>
+
+<p>Zábava však začne pri funkciách viacerých premenných, teda pri viacerých parametroch!</p>
+
+<pre><code>def grep(pattern: String, inverse: Boolean, lines: List[String]): List[String]
+</code></pre>
+
+<p>Ak má funkcia <code>grep</code> tri argumenty, môžeme ju rozbiť do troch unárnych funkcií!</p>
+
+<p>Rozbime to postupne. V prvom kroku:</p>
+
+<pre><code>def grepPattern(pattern: String) =
+  grep(pattern, _, _)
+</code></pre>
+
+<p>Unárna funkcia <code>grepPattern</code> zafixuje jeden parameter v ternárnej funkcii <code>grep</code> a teda vráti tri-mínus-1-árnu funkciu s neznámym menom. Jej dátový typ je:</p>
+
+<pre><code>(Boolean, List[String]) =&gt; List[String]
+</code></pre>
+
+<p>Keďže po zafixovaní parametra <code>pattern</code> nám ostali už len dva parametre: príznak inverznosti <code>Boolean</code> a zoznam riadkov <code>List[String]</code>, máme binárnu funkciu, ktorá berie usporiadanú dvojicu príznakov <code>Boolean</code> a zoznamov riadkov a vracia zoznam riadkov.</p>
+
+<p>Použime to nasledovne:</p>
+
+<pre><code>  // grepWithRoot je binárna funkcia s booleovským príznakom a zoznamom riadkkov
+  val grepWithRoot = grepPattern(&quot;root&quot;)
+
+  // grepWithRootRegularly je unárna funkcia so zoznamom riadkov      
+  val grepWithRootRegularly = grepWithRoot(false, _)
+
+  val pipeline = cat.andThen(grepWithRootRegularly).andThen(println)
+  pipeline(File(&quot;/etc/passwd&quot;))
+</code></pre>
+
+<p>Ak to prepíšeme do konkrétnych krokov, tak:</p>
+
+<pre><code>def grepPattern(pattern: String) =
+  val grepInverseAndLines = (inverse, lines) =&gt; grep(pattern, inverse, lines)
+  grepInverseAndLines
+</code></pre>
+
+<p>Funkcia <code>grepInverseAndLines</code> je binárna: berie príznak inverznosti a zoznam riadkov, ktorý pošle do funkcie <code>grep</code>. Prvý parameter je zafixovaný &ndash; získame ho z parametra <code>pattern</code> funkcie <code>grepPattern</code>.</p>
+
+<p>Tento atletický obrat môžeme zopakovať aj pre funkciu <code>grepInverseAndLines</code>: z binárnej funkcie urobíme unárnu funkciu (s príznakom inverznosti), ktorá vracia unárnu funkciu zo zoznamu riadkov do zoznamu riadkov.</p>
+
+<pre><code>def grepPattern(pattern: String) =
+  val grepInverse = (inverse: Boolean) =&gt;
+    val grepInverseAndLines = (lines: List[String]) =&gt;
+      grep(pattern, inverse, lines)
+    grepInverseAndLines
+  grepInverse
+</code></pre>
+
+<p>Ak vynecháme pomocné premenné, zápis vyzerá nasledovne:</p>
+
+<pre><code>def grepPattern(pattern: String) =
+  (inverse: Boolean) =&gt;
+    (lines: List[String]) =&gt;
+      grep(pattern, inverse, lines)
+</code></pre>
+
+<p>Hoci sme videli množstvo akrobacie, pôvodná kolóna sa nezmenila:</p>
+
+<pre><code>val grepWithRoot = grepPattern(&quot;root&quot;)
+val grepWithRootRegularly = grepWithRoot(false)
+
+val pipeline = cat.andThen(grepWithRootRegularly).andThen(println)
+</code></pre>
+
+<p>Načo je toto všetko dobré? Teoretickí matematici a logici majú radosť: vďaka tomuto procesu prepisu <em>n</em>-árnej funkcie na reťaz unárnych funkcií sa mnoho úvah zjednodušuje, pretože stačí meditovať nad unárnymi funkciami, ktoré vracajú unárne funkcie.</p>
+
+<p>Tento proces má aj oficiálne meno: volá sa <em>currying</em> (<strong>kariovanie</strong>).</p>
+
+<p>My, Scala programátori, to môžeme používať na skvelé triky. Ale najprv ešte trochu zmätku.</p>
+
+<p>Funkcia <code>grepPattern</code> je kariovaná a ak by sme ju chceli zavolať so všetkými troma parametrami, musíme použiť trojzátvorkový zápis:</p>
+
+<pre><code>val lines: List[String] = grepPattern(&quot;root&quot;)(false)(List(&quot;Lorem&quot;, &quot;ipsum&quot;))
+</code></pre>
+
+<p>To zodpovedá postupnosti volaní troch funkcií:</p>
+
+<pre><code>grepPattern(&quot;root&quot;)(false)(List(&quot;Lorem&quot;, &quot;ipsum&quot;))
+-------------------
+        grepInverse(....)
+        ------------------
+        grepInverseAndLines(.....................)
+</code></pre>
+
+<p>V Scale to vyzerá komplikovane, ale existujú jazyky, kde stačí vynechať zátvorky a zápis sa mimoriadne zjednoduší. Napríklad v Haskelli je každá funkcia kariovaná a zápis by vyzeral nasledovne:</p>
+
+<pre><code>// Haskell
+grepPattern &quot;root&quot; false [&quot;Lorem&quot;, &quot;ipsum&quot;]
+</code></pre>
+
+<p>V Scale 3 samotné kariovanie nie je až také používané, pretože sa dá takmer vždy nahradiť čiastočnou aplikáciou pomocou podtržníkov, ale existuje jedno veľmi užitočné použitie.</p>
+
+<p>Kariovanie sa v Scale potichu používa pri viacerých zoznamoch parametrov! Funkcia v Scale totiž môže mať viacero sád parametrov (<em>multiple parameter lists</em>).</p>
+
+<p>Vytvorme si funkciu <code>linesOf</code>, ktorá zoberie jeden súbor <code>File</code> a jednu funkciu &ndash; procesor &ndash; , ktorá spracuje zoznam riadkov a vráti zoznam riadkov. Funkcia <code>linesOf</code> má za úlohu korektne zatvoriť súbor po dokončení spracovávania.</p>
+
+<pre><code>def linesOf(file: File)(processor: List[String] =&gt; List[String]): Unit = {
+  val source = Source.fromFile(file)
+  try
+    val lines = source.getLines().toList
+    processor(lines)
+  finally
+    source.close()
+}
+</code></pre>
+
+<p>Funkciu <code>linesOf</code> môžeme zavolať jednoducho:</p>
+
+<pre><code>linesOf(File(&quot;/etc/passwd&quot;))(println)
+</code></pre>
+
+<p>Toto je doslova volanie karifikovanej funkcie! Do prvej sady parametrov pošleme súbor a do druhej sady parametrov funkciu <code>printnl</code>, ktorá zoberie zoznam riadkov a vytlačí ju na konzolu.</p>
+
+<p>Scala však podporuje špeciálny zápis pre prípady, že v sade parametrov je funkcia na poslednom mieste:</p>
+
+<pre><code>val file = File(&quot;/etc/passwd&quot;)
+linesOf(file) { lines =&gt;
+    println(lines)
+    lines
+}
+</code></pre>
+
+<p>Všimnime si, že z funkcie predstavujúcej procesor v <code>linesOf</code> sa stalo niečo ako „blok“, kde sa funkcia dá zapísať v kučeravých zátvorkách, akurát musíme uviesť parameter a hrubú šípku <code>=&gt;</code>. Posledný riadok <code>lines</code> musíme uviesť, pretože sa očakáva, že procesor vráti zoznam riadkov.</p>
+
+<p>Vďaka kariovaniu máme viacnásobné parametre a vďaka nim máme možnosť vytvárať vlastné bloky!</p>
+
+<h2 id="triky-pre-profesionálov-kariovanie-a-odkariovanie">Triky pre profesionálov: kariovanie a odkariovanie</h2>
+
+<p>Samotná definícia kariovania je jednoduchá:</p>
+
+<blockquote>
+<p>Každú <em>n</em>-árnu funkciu vieme previesť na postupné volanie <em>n</em> kusov unárnych funkcií.</p>
+</blockquote>
+
+<p>Ak máme funkciu s dvoma argumentami typu <code>A</code> a <code>B</code> a výsledkom typu <code>VÝSLEDKY</code>:</p>
+
+<pre><code>(A, B) =&gt; VÝSLEDKY
+</code></pre>
+
+<p>Vieme ju previesť na kariovanú formu:</p>
+
+<pre><code>A =&gt; (B =&gt; VÝSLEDKY) 
+</code></pre>
+
+<p>Formálne:</p>
+
+<pre><code>f(a) = g
+g(b) = výsledok
+</code></pre>
+
+<p>To platí aj pre ternárnu funkciu:</p>
+
+<pre><code>(A, B, C) =&gt; VÝSLEDKY
+</code></pre>
+
+<p>Vieme ju previesť na:</p>
+
+<pre><code>A =&gt; (B =&gt; (C =&gt; VÝSLEDKY))
+</code></pre>
+
+<p>Keďže hrubá šípka asociuje sprava, je to rovnaké ako:</p>
+
+<pre><code>A =&gt; B =&gt; C =&gt; VÝSLEDKY         
+</code></pre>
+
+<p>Formálne:</p>
+
+<pre><code>f(a) = g
+g(b) = h
+h(c) = výsledok
+</code></pre>
+
+<p>Všimnime si ešte ako bonus, že kariovanie binárnej funkcie je rovnaké ako čiastočná aplikácia binárnej funkcie: výsledkom po prvom kroku je unárna funkcia a po druhom výsledok.
+Pri ternárnych a viacargumentových funkciách to už nemusí platiť!</p>
+
+<h2 id="prevody-v-kóde">Prevody v kóde</h2>
+
+<p>Tento prevod &ndash; kariovanie &ndash; môžeme zveriť Scale!</p>
+
+<h3 id="kariovanie-v-scale-3">Kariovanie v Scale 3</h3>
+
+<p>Binárne, ternárne a <em>n</em>-árne funkcie v Scale majú metódu <code>curried</code>, ktorá automaticky urobí prevod.</p>
+
+<pre><code>val grepPattern = grep.curried
+</code></pre>
+
+<p>Ak bola funkcia <code>grep</code> ternárna, s parametrami <code>String</code>, ďalej <code>Boolean</code> a <code>List[String]</code>, výsledkom bude objekt typu</p>
+
+<pre><code>String =&gt; Boolean =&gt; List[String] =&gt; List[String]
+</code></pre>
+
+<p>Čítame to zľava doprava: ide o funkciu, ktorá berie reťazec <code>String</code> a vracia funkciu z <code>Boolean</code> do funkcií, ktoré berú zoznam reťazcov a vracajú zoznam reťazcov.</p>
+
+<p>Úprimne povedané, v Scale nemá takáto karifikácia valný zmysel, keďže je prakticky stále zastúpená čiastočnou aplikáciou, ale sú jazyky (napr. Haskell), kde to má veľmi hlboký zmysel.</p>
+
+<h3 id="odstránenie-kariovania-v-scale-3">Odstránenie kariovania v Scale 3</h3>
+
+<p>Existuje aj možnosť odstránenia korenia &ndash; dekariovanie (<em>uncurry</em>), kde poskladáme reťaz funkcií naspäť do starej dobrej viacparametrovej funkcie.</p>
+
+<p>Zoberme opäť našu funkciu <code>linesOf</code> s dvoma sadami parametrov, čo je prakticky iný zápis kariovanej funkcie</p>
+
+<pre><code>def linesOf(file: File)(processor: List[String] =&gt; List[String]): Unit
+</code></pre>
+
+<p>Ak zavoláme metódu <code>uncurried</code> na objekte <code>Function</code> a do parametra uvedieme kariovanú funkciu, získame dekariovanú funkciu.</p>
+
+<pre><code>val linesOfFileWithProcessor = Function.uncurried(linesOf)
+</code></pre>
+
+<p>Dátovým typom dekariovanej funkcie <code>linesOfFileWithProcessor</code> bude <code>(File, List[String] =&gt; List[String]) =&gt; Unit</code>, čiže funkcia zo súborov a funkcií zo zoznamov reťazcov do zoznamov reťazcov do „ničoho“.</p>
+
+<pre><code> súbor          procesor               výsledok
+ ----- ----------------------------    ------
+(File, List[String] =&gt; List[String]) =&gt; Unit
+       ----------------------------
+           funkcia zo zoznamov
+           riadkov do zoznamov 
+           riadkov
+</code></pre>
+
+<p>Dekariovaná funkcia má dva parametre, ktoré použijeme obvyklým spôsobom, napr. s použitím zabudovanej funkcie <code>identity</code>, ktorá mapuje ľubovoľný objekt na seba samého.</p>
+
+<pre><code>linesOfFileWithProcessor(File(&quot;/etc/passwd&quot;), identity)    
+</code></pre>
+
+<h1 id="kde-to-má-naozajstný-zmysel">Kde to má naozajstný zmysel?</h1>
+
+<p>V Scale sa oplatí používať kariovanie pre funkcie, ktoré používajú často opakovaný parameter.
+V našich funkciách sa neustále používa parameter pre zoznam riadkov, ktorý môžeme vyčleniť do samostatného zoznamu parametrov a teda funkcie automaticky považovať za kariované.</p>
+
+<p>Kariované počítanie slov, či riadkov:</p>
+
+<pre><code>def wc(countType: String)(lines: List[String]): Int =
+  val wordsInLine = (line: String) =&gt; line.split(&quot; &quot;).length
+  countType match
+    case &quot;-l&quot; =&gt; lines.length
+    case &quot;-w&quot; =&gt;
+      val words = lines
+        .map(wordsInLine)
+        .sum
+      words
+    case _ =&gt; -1
+</code></pre>
+
+<p>Vyhľadávanie slov, teda citrusové ovocie s korením:</p>
+
+<pre><code>def grep(pattern: String, inverse: Boolean)(lines: List[String]): List[String] =
+  val shouldMatch = (line: String) =&gt;
+    val matchFound = line.contains(pattern)
+    (matchFound &amp;&amp; !inverse) || (!matchFound &amp;&amp; inverse)
+
+  lines.filter(shouldMatch)
+</code></pre>
+
+<p>Kolónu príkazu potom vieme zapísať:</p>
+
+<pre><code>val file = File(&quot;/etc/passwd&quot;)
+val pipeline = cat.andThen(grep(&quot;root&quot;, false)).andThen(wc(&quot;-l&quot;)).andThen(println)
+</code></pre>
+
+<p>Všimnime si, ako sa posledný parameter vždy zamlčí:</p>
+
+<ul>
+<li><code>grep(&quot;root&quot;, false)</code> v kariovanej forme bez uvedeného posledného parametra vracia funkciu zo zoznamu riadkov do zoznamu riadkov</li>
+<li><code>wc(&quot;-l&quot;)</code> v kariovanej forme bez uvedeného posledného parametra vracia takisto funkciu zo zoznamu riadkov do zoznamu riadkov</li>
+</ul>
+
+<p>Takéto funkcie môžeme elegantne poskladať do kolóny.</p>
+
+<p>Ak použijeme utajený infixný zápis a vynecháme bodky a zátvorky, uvidíme takmer shellový zápis:</p>
+
+<pre><code>val pipeline = cat andThen grep(&quot;root&quot;, false) andThen wc(&quot;-l&quot;) andThen println
+</code></pre>
+
+<p>Tento zápis je „point-free“ (bezbodový) a využíva kariovanie.</p>
+
+<h1 id="záver">Záver</h1>
+
+<p>Kariovanie zjednodušuje formálne uvažovanie nad funkciami &ndash; stačí uvažovať nad unárnymi funkciami, ktoré vracajú unárne funkcie.
+V Scale 3 to samozrejme môžeme elegantne nasimulovať:</p>
+
+<ul>
+<li>použitím podtržníka na vhodných miestach</li>
+<li>v núdzi použitím funkcie <code>curried</code></li>
+<li>a najmä s využitím viacnásobných zoznamov parametrov, ktoré sa často používajú na viacero účelov, napr. pre opakované parametre.</li>
+</ul>
+
+</main>
+
+    <footer>
+      
+<script>
+(function() {
+  function center_el(tagName) {
+    var tags = document.getElementsByTagName(tagName), i, tag;
+    for (i = 0; i < tags.length; i++) {
+      tag = tags[i];
+      var parent = tag.parentElement;
+      
+      if (parent.childNodes.length === 1) {
+        
+        if (parent.nodeName === 'A') {
+          parent = parent.parentElement;
+          if (parent.childNodes.length != 1) continue;
+        }
+        if (parent.nodeName === 'P') parent.style.textAlign = 'center';
+      }
+    }
+  }
+  var tagNames = ['img', 'embed', 'object'];
+  for (var i = 0; i < tagNames.length; i++) {
+    center_el(tagNames[i]);
+  }
+})();
+</script>
+
+      
+    </footer>
+  </body>
+</html>
+
