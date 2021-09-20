@@ -6,10 +6,22 @@
     <description>Recent content in Scrolls on robonovotny</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 13 Sep 2021 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 20 Sep 2021 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://novotnyr.github.io/scrolls/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Škatule na `null` a pyramídy hrôzy</title>
+      <link>https://novotnyr.github.io/scrolls/skatule-null-pyramida-hrozy/</link>
+      <pubDate>Mon, 20 Sep 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://novotnyr.github.io/scrolls/skatule-null-pyramida-hrozy/</guid>
+      <description>Predstavme si, že chceme parsovať súbor s nasledovnými vlastnosťami:
+ po riadkoch sú uvedené údaje o používateľoch systému každý riadok obsahuje položky oddelené dvojbodkami piata položka obsahuje kontaktné údaje oddelené čiarkou  Príklad riadku?
+root:*:0:0:System Administrator,42A,555-798-4765,555-291-3511,root@example.com:/var/root:/bin/sh  Áno, je to riadok z unixového súboru /etc/passwd.
+ Prvá položka predstavuje login používateľa: root. Druhá, tretia a štvrtá položka nie je zaujímavá. Piata položka &amp;ndash; záznam GECOS obsahuje:  popis používateľa číslo miestnosti pracovné telefónne číslo súkromné telefónne číslo mailovú adresu   Urobme si triedu s metódou, ktorá zistí e-mailovú adresu používateľa.</description>
+    </item>
     
     <item>
       <title>Funkcie s korením -- curry a iné príchute</title>
