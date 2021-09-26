@@ -82,13 +82,13 @@
 <p>Vyrobme si teraz monadický zoznam prvkov a nazvime ho <strong>superzoznam</strong> <code>SuperList</code>, pretože bude omnoho lepší než klasický zoznam!</p>
 
 <ul>
-<li>obalíme ľubovoľný typ <code>T</code> a pripravíme si:
+<li>obalíme ľubovoľný dátový typ <code>T</code> a pripravíme si:
 
 <ul>
 <li>konštruktor, ktorý vie prevziať kolekciu prvkov typu <code>T</code></li>
 <li>pomocnú statickú metódu, ktorou vybudujeme superlist na základe viacerých prvkov</li>
 </ul></li>
-<li>pripravíme si zabaľovaco-vybaľovaco-spracovateľskú metódu, ale teraz sa nebude volať <code>then</code>, ale <code>bind</code>.</li>
+<li>pripravíme si zabaľovaco-vybaľovaco-spracovateľskú metódu, ale teraz sa nebude volať <code>then</code>, ale <code>bind</code> (bude to lepšie vyzerať).</li>
 </ul>
 
 <h2 id="metóda-bind">Metóda <code>bind</code></h2>
@@ -222,7 +222,7 @@ Keďže máme superzoznam, neváhajme ho použiť!</p>
 
 <p>Funkcia <code>bind</code> zoberie tri čiastkové superzoznamy a zlepí ich dohromady do jedného veľkého superzoznamu:</p>
 
-<p>## Susedia a duplikácie!</p>
+<h1 id="susedia-a-duplikácie">Susedia a duplikácie!</h1>
 
 <p>Môžeme si urobiť aj iný test, kde zistíme susedov a každého z nich zduplikujeme!</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#555;font-weight:bold">@Test</span>
@@ -237,7 +237,7 @@ Keďže máme superzoznam, neváhajme ho použiť!</p>
 }</code></pre></div>
 <p>Z čísla 7 vzniknú susedia 6, 7 a 8, a keď ich zduplikujeme, očakávame 12, 14 a 16!</p>
 
-<h1 id="alternatívny-bind-skratka-pre-prevod-prvku-na-prvok">Alternatívny bind - skratka pre prevod prvku na prvok</h1>
+<h1 id="jednoduchší-bind-skratka-pre-prevod-prvku-na-prvok">Jednoduchší bind - skratka pre prevod prvku na prvok</h1>
 
 <p>Metóda <code>bind</code> očakávala funkciu, ktorá vráti superzoznam, teda monadický zoznam.
 Mnohokrát sme však leniví a vieme, že každý prvok zoznamu budeme premieňať na iný prvok zoznamu.</p>
