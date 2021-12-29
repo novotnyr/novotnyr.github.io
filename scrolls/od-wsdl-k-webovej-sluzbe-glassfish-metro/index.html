@@ -168,14 +168,8 @@ wsimport -keep -s src -d bin movie.wsdl
         <span style="color:#f00;background-color:#faa">MovieReservationRequest part1</span>);
 
 }</code></pre></div>
-<p>Máme teda interfejs webovej služby, potrebujeme však aj jeho implementáciu. V princípe máme dve možnosti:</p>
-
-<ol>
-<li>vytvoriť triedu, ktorá implementuje interfejs <code>MovieReservationType</code> a dopísať príslušný kód</li>
-<li>vytvoriť triedu s príslušnými metódami a anotovať tu tak, aby ukazovala na interfej, ktorá má anotáciu <code>@WebService</code>.</li>
-</ol>
-
-<p>Zvolíme si druhú možnosť:</p>
+<p>Máme teda interfejs webovej služby, potrebujeme však aj jeho implementáciu.
+Vytvoríme triedu s príslušnými metódami a anotujeme tu tak, aby ukazovala na interfejs, ktorá má anotáciu <code>@WebService</code>.</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">package sk</span>.<span style="color:#007">novotnyr</span>.<span style="color:#007">movie</span>.<span style="color:#007">ws</span>;
 
 <span style="color:#f00;background-color:#faa">import java</span>.<span style="color:#007">util</span>.<span style="color:#007">Arrays</span>;
