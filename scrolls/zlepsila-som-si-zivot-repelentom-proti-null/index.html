@@ -59,82 +59,56 @@
 
 
 <main>
-
-
 <p>V predošlom dieli sme videli použitie návrhového vzoru <strong>monáda</strong> na príklade škatule, ktorá dokázala obaliť ľubovoľný reťazec.</p>
-
 <p>Teraz je čas to trochu vylepšiť.</p>
-
 <ul>
 <li>Vytvoríme triedu, ktorá dokáže obaliť ľubovoľný dátový typ &ndash; nielen reťazec.</li>
 <li>Pomenujeme ju <code>Maybe</code>, pretože „možno bude obsahovať objekt, možno nie“.</li>
 <li>Vylepšíme funkciu <code>then</code>, ktorá umožní premeniť obsah vnútra z jedného dátového typu na druhý.</li>
 </ul>
-
 <h1 id="načo-je-trieda-maybe">Načo je trieda <code>Maybe</code>?</h1>
-
 <p>Keďže <code>null</code> je <a href="https://www.infoq.com/presentations/Null-References-The-Billion-Dollar-Mistake-Tony-Hoare/">chyba za miliardu dolárov</a>, skúsme to odstrániť.</p>
-
 <p>Vždy, keď by metóda mala vracať <code>null</code>, radšej nech vráti objekt <code>Maybe</code>, ktorý buď obsahuje alebo <em>neobsahuje</em> hodnotu.
 A toto vieme poľahky implementovať návrhovým vzorom <strong>monáda</strong>!</p>
-
 <p>To, že <code>Maybe</code> obsahuje hodnotu alebo neobsahuje môžeme programovať dvojako:</p>
-
 <ul>
 <li>buď v podobnom duchu ako škatuľa <code>Box</code>, kde v jedinej triede určíme, či obsahuje alebo neobsahuje hodnotu</li>
-
-<li><p>alebo moderne, pomocou dvoch podtried: pre prípad, že objekt obsahuje hodnotu a pre prípad že nie. Tento druhý spôsob je možno zložitejší, ale nakoniec vyrieši mnoho problémov.</p>
-
-<pre><code>--------
+<li>alebo moderne, pomocou dvoch podtried: pre prípad, že objekt obsahuje hodnotu a pre prípad že nie. Tento druhý spôsob je možno zložitejší, ale nakoniec vyrieši mnoho problémov.</li>
+</ul>
+<pre tabindex="0"><code>--------
 | Maybe |
 --------
-A    A
-|      \
+    A    A
+    |      \
 --------     --------     
 | Some |     |  None |
 --------     ---------
-</code></pre></li>
-</ul>
-
-<h1 id="podtriedy-dačo-a-nič">Podtriedy „dačo“ a „nič“</h1>
-
+</code></pre><h1 id="podtriedy-dačo-a-nič">Podtriedy „dačo“ a „nič“</h1>
 <p>Trieda <code>Maybe</code> bude mať dve podtriedy: <code>Some</code> pre objekty s hodnotou („nejaká hodnota“) alebo <code>None</code> pre prípad, že hodnota nie je, čo je ekvivalent chýbajúcej, nedostupnej, alebo <code>null</code> hodnoty.</p>
-
 <blockquote>
 <p> Toto je v skutočnosti variant návrhového vzoru <strong>Null Object</strong>, ale s mnohými vylepšeniami.</p>
 </blockquote>
-
 <p>Trieda <code>Maybe</code> bude mať jedinú metódu: <code>then</code>, ktorá &hellip; presne ako v predošlom dieli:</p>
-
 <blockquote>
 <p>&hellip; vie na svoj obsah aplikovať Java funkciu a vrátiť novú škatuľu, ale len vtedy, ak nie je prázdna. Ak je škatuľa prázdna, vráti prázdnu škatuľu.</p>
 </blockquote>
-
 <p>Inými slovami: na svoj obsah aplikuje <em>funkciu</em> a vráti nové <em>Maybe</em> s novým obsahom, ale len vtedy, ak nie je <code>None</code>. Ak je to <code>None</code>, vráti <code>None</code>.</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">    <span style="color:#f00;background-color:#faa">public abstract class Maybe</span><span style="color:#333">&lt;</span>V<span style="color:#333">&gt;</span> {
-        <span style="color:#f00;background-color:#faa">public abstract </span><span style="color:#333">&lt;</span><span style="color:#f00;background-color:#faa">R&gt; Maybe</span><span style="color:#333">&lt;</span><span style="color:#f00;background-color:#faa">R&gt; then</span>(Function<span style="color:#333">&lt;</span>V, <span style="color:#f00;background-color:#faa">Maybe&lt;R&gt;&gt; handler</span>);
-    }</code></pre></div>
-<p>Oproti škatuli <code>Box</code> vie trieda <code>Maybe</code> obaliť generický dátový typ <code>V</code>, teda vie obaliť ľubovoľný objekt &ndash; <code>V</code> ako <em>value</em>, alebo „vé ako vnútro“.</p>
-
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">    <span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">abstract</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">Maybe</span><span style="color:#333">&lt;</span>V<span style="color:#333">&gt;</span> <span style="color:#333">{</span>
+        <span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">abstract</span> <span style="color:#333">&lt;</span>R<span style="color:#333">&gt;</span> Maybe<span style="color:#333">&lt;</span>R<span style="color:#333">&gt;</span> <span style="color:#5ed;font-weight:bold">then</span><span style="color:#333">(</span>Function<span style="color:#333">&lt;</span>V<span style="color:#333">,</span> Maybe<span style="color:#333">&lt;</span>R<span style="color:#333">&gt;&gt;</span> handler<span style="color:#333">);</span>
+    <span style="color:#333">}</span>
+</code></pre></div><p>Oproti škatuli <code>Box</code> vie trieda <code>Maybe</code> obaliť generický dátový typ <code>V</code>, teda vie obaliť ľubovoľný objekt &ndash; <code>V</code> ako <em>value</em>, alebo „vé ako vnútro“.</p>
 <p>Metóda <code>then</code> berie funkciu, čo zoberie vnútro <code>V</code> a vráti iný objekt <code>Maybe</code>, ktorý obalí výslednú hodnotu typu <code>R</code> &ndash; <code>R</code> ako <em>result</em>. Z „možno vé“ sa tak stane „možno er“.</p>
-
 <p>Na to, aby to fungovalo, musíme definovať dve podtriedy &ndash; ideálne vo vnútri triedy <code>Maybe</code> &ndash; triedu <code>None</code> a triedu <code>Some</code>.</p>
-
-<h2 id="podtrieda-nič-none">Podtrieda „nič“ &ndash; <code>None</code></h2>
-
+<h2 id="podtrieda-nič----none">Podtrieda „nič“ &ndash; <code>None</code></h2>
 <p>Trieda <code>None</code> je jednoduchá: keďže nemá vnútro, nemá zmysel naň aplikovať funkciu. Ak sa o to pokúsime, dostaneme z ničoho&hellip; nič.</p>
-
 <pre><code>public static class None&lt;V&gt; extends Maybe&lt;V&gt; {
     public &lt;R&gt; Maybe&lt;R&gt; then(Function&lt;V, Maybe&lt;R&gt;&gt; handler) {
         return new None&lt;&gt;();
     }
 }   
 </code></pre>
-
-<h2 id="podtrieda-dačo-some">Podtrieda „dačo“ &ndash; <code>Some</code></h2>
-
+<h2 id="podtrieda-dačo----some">Podtrieda „dačo“ &ndash; <code>Some</code></h2>
 <p>Trieda <code>Some</code> je zase podobná škatuli <code>Box</code>:</p>
-
 <pre><code>public static class Some&lt;V&gt; extends Maybe&lt;V&gt; {
     private final V value;
 
@@ -148,15 +122,10 @@ A    A
     }
 }
 </code></pre>
-
 <p>Objekt <code>Some</code> <em>čosi</em> obaľuje, a ak naň použijeme funkciu, zoberieme ono „čosi“, aplikujeme naň funkciu, ktorá vráti iný objekt, čo má „možno hodnotu, možno nie“.</p>
-
 <h1 id="obalenie-ľubovoľnej-hodnoty">Obalenie ľubovoľnej hodnoty</h1>
-
 <p>Okrem metódy <code>then()</code> potrebujeme možnosť zabaliť ľubovoľnú hodnotu, čo dokážeme cez konštruktor <code>Some()</code>.</p>
-
 <p>Ukážme si však ukážku testu, v ktorom použijeme náš kód:</p>
-
 <pre><code>package com.github.novotnyr.monad;
 
 import com.github.novotnyr.monad.maybe.Maybe.Some;
@@ -180,22 +149,15 @@ class MaybeTest {
     }
 }
 </code></pre>
-
 <p>Kód veľmi pripomína používanie škatule <code>Box</code>, akurát musíme použiť generický dátový typ. Našťastie, Java sa postará o automatické odvodzovanie (<em>inferenciu</em>), takže namiesto <code>new Some&lt;String&gt;</code> stačí písať <code>new Some&lt;&gt;</code>.</p>
-
 <h1 id="opravujeme-ukecaný-kód">Opravujeme ukecaný kód</h1>
-
 <p>Kód je aj tak ukecaný, takže ho vylepšíme a rovno z dvoch koncov. Oba súvisia so spracovaním <code>null</code> hodnôt.</p>
-
 <ul>
 <li>zavedieme si pomocnú statickú metódu, ktorá vráti rovno hotový <code>Maybe</code> a ušetríme si písanie slova <code>new</code>.</li>
 <li>upravíme <code>EtcPasswd</code>, keďže <code>null</code> hodnoty už nie sú potrebné!</li>
 </ul>
-
 <h2 id="obalenie-priamo-v-maybe">Obalenie priamo v <code>Maybe</code></h2>
-
 <p>Do <code>Maybe</code> dodajme pomocnú metódu, ktorá automaticky rozhodne, či je vstup <code>null</code> alebo nie:</p>
-
 <pre><code>public static &lt;V&gt; Maybe&lt;V&gt; of(V value) {
     if (value == null) {
         return new None&lt;&gt;();
@@ -204,9 +166,7 @@ class MaybeTest {
     }
 }
 </code></pre>
-
 <p>Test následne upravme:</p>
-
 <pre><code>@Test
 void testRegularRun() {
     EtcPasswd etcPasswd = new EtcPasswd();
@@ -221,20 +181,14 @@ void testRegularRun() {
             });
 }
 </code></pre>
-
 <h2 id="zbavme-sa-null-v-triede-etcpasswd">Zbavme sa <code>null</code> v triede <code>EtcPasswd</code></h2>
-
 <p>Ak sa chceme zbaviť <code>null</code> aj z opačného konca, musíme upraviť <code>EtcPasswd</code>. Táto trieda totiž nikdy nebude vracať z metód <code>null</code>, ale vždy nejaké <code>Maybe</code>!</p>
-
 <p>Najprv si však do <code>Maybe</code> dodajme ešte jednu pomocnú metódu:</p>
-
 <pre><code>public static &lt;V&gt; Maybe&lt;V&gt; none() {
     return new None&lt;&gt;();
 }
 </code></pre>
-
 <p>Následne si vytvorme vylepšenú triedu <code>SafeEtcPasswd</code>, kde všetky metódy vracajú <code>Maybe</code>. Napr. metóda <code>getGecos()</code>:</p>
-
 <pre><code>public Maybe&lt;String&gt; getGecos(String line) {
     String[] components = line.split(FIELD_SEPARATOR);
     if (components.length &lt; 7) {
@@ -247,17 +201,12 @@ void testRegularRun() {
     return Maybe.of(gecos);
 }
 </code></pre>
-
 <p>Ostatné metódy necháme na pozorného čitateľa!</p>
-
 <p>Ak si vytvoríme nový test, tak uvidíme, že výsledky volania metód na <code>SafeEtcPasswd</code> už nemusíme obaľovať do <code>Maybe</code>, pretože sa to deje automaticky &ndash; každá metóda vždy vracia objekt <code>Maybe</code>.</p>
-
 <pre><code>    Maybe.of(&quot;root&quot;)
             .then(login -&gt; etcPasswd.findEntry(login))
 </code></pre>
-
 <p>Keďže do metódy <code>then</code> posielame funkciu, ktorá je priamym volaním metódy na objekte, môžeme použiť odkaz na metódu, <strong>method reference</strong>:</p>
-
 <pre><code>@Test
 void testSafeEtcPasswd() {
     SafeEtcPasswd etcPasswd = new SafeEtcPasswd();
@@ -272,15 +221,10 @@ void testSafeEtcPasswd() {
         });
 }
 </code></pre>
-
 <p>Zápis je teraz už omnoho krajší ako na začiatku, nehovoriac o pyramíde hrôzy!</p>
-
 <h1 id="a-čo-so-zlyhanými-výsledkami">A čo so zlyhanými výsledkami?</h1>
-
 <p>Toto platí aj pre prípad, že postupnosť volaní zlyhá, a teda, že niektorý krok vráti <code>None</code>.</p>
-
 <p>Aha, test, kde zámerne vyrobíme nespracovateľný riadok, kde je položka GECOS prázdna:</p>
-
 <pre><code>@Test
 void testWithUnparsableLine() {
     AtomicBoolean testFailed = new AtomicBoolean(false);
@@ -295,17 +239,11 @@ void testWithUnparsableLine() {
     assertFalse(testFailed.get());
 }
 </code></pre>
-
 <p>Test sa nikdy nedopracuje k spracovaniu emailu, ba dokonca ani k volaniu metódy <code>getEmail</code>! Keďže položka <code>GECOS</code> je prázdna, výsledkom volania <code>getGecos()</code> je hodnota <code>None</code> a zvyšok zreťazených volaní metódy <code>then</code> sa nepoužije.</p>
-
 <p>Máme tak elegantný objekt <code>Maybe</code>, ktorá nikdy nenarazí na <code>null</code> a nikdy sa ním nemusíme zapodievať.</p>
-
 <p>A samozrejme nezabudnime, že metóda <code>then()</code> podporuje aj iné dátové typy!</p>
-
 <h1 id="premieňame-čísla-na-reťazce">Premieňame čísla na reťazce</h1>
-
 <p>Dopracujme do <code>SafeEtcPasswd</code> metódu na spracovanie identifikátora používateľa z tretej položky riadku:</p>
-
 <pre><code>public Maybe&lt;Integer&gt; getUid(String line) {
     String[] components = line.split(FIELD_SEPARATOR);
     if (components.length &lt; 7) {
@@ -321,9 +259,7 @@ void testWithUnparsableLine() {
 
 }
 </code></pre>
-
 <p>Test potom vyzerá úplne rovnako ako v predošlom prípade &ndash; metóda <code>getUid()</code> vracia možno číslo &ndash; možno nie, ale vždy ho vráti obalené v objekte <code>Maybe&lt;Integer&gt;</code>. Ten pošleme na ďalšie spracovanie do <code>then</code> a ak je všetko v poriadku, výsledok je <code>null</code>.</p>
-
 <pre><code>@Test
 void testUid() {
     SafeEtcPasswd etcPasswd = new SafeEtcPasswd();
@@ -337,25 +273,19 @@ void testUid() {
             });
 }    
 </code></pre>
-
 <h1 id="čo-sme-teda-dostali">Čo sme teda dostali?</h1>
-
 <p>Máme teda triedu <code>Maybe</code> reprezentovanú ako monádu:</p>
-
 <ul>
 <li>obaliť ľubovoľný objekt môžeme pomocou metódy <code>of()</code></li>
 <li>v metóde <code>then()</code> dokážeme zmeniť „možno reťazec“, na „možno číslo“</li>
 <li>ukázali sme si iný spôsob, ako možno reprezentovať situácie, keď hodnota existuje alebo neexistuje.</li>
 </ul>
-
 <p>Naša trieda má však stále priestor na vylepšenie:</p>
-
 <ul>
 <li>prečo sa vlastne oplatilo vytvárať podtriedy <code>Some</code> a <code>None</code>?</li>
 <li>čo keď sa vpašuje omylom do výsledkov <code>null</code>?</li>
 <li>nemôžeme si predsa len urobiť metódu, ktorá mapuje vnútro na vnútro bez nutnosti obaľovať výsledok do <code>Maybe</code>?</li>
 </ul>
-
 <p>To si ukážeme nabudúce!</p>
 
 </main>

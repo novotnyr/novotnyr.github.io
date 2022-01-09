@@ -70,7 +70,7 @@
 <div class="sectionbody">
 <div class="imageblock">
 <div class="content">
-<img src="eclipse-wsit-validate.png" alt="eclipse wsit validate">
+<img src="eclipse-wsit-validate.png" alt="eclipse wsit validate"/>
 </div>
 </div>
 <div class="paragraph">
@@ -142,7 +142,7 @@ We can symlink the <code>Testing</code> directory to the <code>/Library/WebServe
 <h4 id="_running_elsewhere">Running elsewhere</h4>
 <div class="paragraph">
 <p>With Python 3 available, we can run the embedded Python server.
-From the Git clone root, let&#8217;s run:</p>
+From the Git clone root, let’s run:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -154,8 +154,8 @@ From the Git clone root, let&#8217;s run:</p>
 <div class="sect2">
 <h3 id="_setup_domain_name">Setup domain name</h3>
 <div class="paragraph">
-<p>In <code>/etc/hosts</code>, let&#8217;s alias <code>www.ws-it.org</code> to localhost.
-Let&#8217;s add the following entry:</p>
+<p>In <code>/etc/hosts</code>, let’s alias <code>www.ws-it.org</code> to localhost.
+Let’s add the following entry:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -169,48 +169,48 @@ Let&#8217;s add the following entry:</p>
 <h2 id="_testing_the_validation">Testing the Validation</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Let&#8217;s use a minimalistic, although noncompliant WSDL:</p>
+<p>Let’s use a minimalistic, although noncompliant WSDL:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
-&lt;definitions xmlns:e="urn:example:echo"
-	xmlns="http://schemas.xmlsoap.org/wsdl/"
-	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-	targetNamespace="urn:example:echo" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"&gt;
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34; standalone=&#34;no&#34;?&gt;
+&lt;definitions xmlns:e=&#34;urn:example:echo&#34;
+	xmlns=&#34;http://schemas.xmlsoap.org/wsdl/&#34;
+	xmlns:xsd=&#34;http://www.w3.org/2001/XMLSchema&#34;
+	targetNamespace=&#34;urn:example:echo&#34; xmlns:soap=&#34;http://schemas.xmlsoap.org/wsdl/soap/&#34;&gt;
 
-	&lt;message name="Request"&gt;
-		&lt;part name="body" type="xsd:string" /&gt;
+	&lt;message name=&#34;Request&#34;&gt;
+		&lt;part name=&#34;body&#34; type=&#34;xsd:string&#34; /&gt;
 	&lt;/message&gt;
 
-	&lt;message name="Response"&gt;
-		&lt;part name="body" type="xsd:string" /&gt;
+	&lt;message name=&#34;Response&#34;&gt;
+		&lt;part name=&#34;body&#34; type=&#34;xsd:string&#34; /&gt;
 	&lt;/message&gt;
 
-	&lt;portType name="PortType"&gt;
-		&lt;operation name="echo"&gt;
-			&lt;input message="e:Request" /&gt;
-			&lt;output message="e:Response" /&gt;
+	&lt;portType name=&#34;PortType&#34;&gt;
+		&lt;operation name=&#34;echo&#34;&gt;
+			&lt;input message=&#34;e:Request&#34; /&gt;
+			&lt;output message=&#34;e:Response&#34; /&gt;
 		&lt;/operation&gt;
 	&lt;/portType&gt;
 
-    &lt;binding name="Binding"
-    	type="e:PortType"&gt;
-    	&lt;soap:binding style="document"
-    		transport="http://schemas.xmlsoap.org/soap/http" /&gt;
-    	&lt;operation name="echo"&gt;
+    &lt;binding name=&#34;Binding&#34;
+    	type=&#34;e:PortType&#34;&gt;
+    	&lt;soap:binding style=&#34;document&#34;
+    		transport=&#34;http://schemas.xmlsoap.org/soap/http&#34; /&gt;
+    	&lt;operation name=&#34;echo&#34;&gt;
     		&lt;input&gt;
-    			&lt;soap:body use="literal" /&gt;
+    			&lt;soap:body use=&#34;literal&#34; /&gt;
     		&lt;/input&gt;
     		&lt;output&gt;
-    			&lt;soap:body use="literal" /&gt;
+    			&lt;soap:body use=&#34;literal&#34; /&gt;
     		&lt;/output&gt;
     	&lt;/operation&gt;
     &lt;/binding&gt;
 
-    &lt;service name="Service"&gt;
-    	&lt;port name="Port" binding="e:Binding"&gt;
-    		&lt;soap:address location="http://localhost" /&gt;
+    &lt;service name=&#34;Service&#34;&gt;
+    	&lt;port name=&#34;Port&#34; binding=&#34;e:Binding&#34;&gt;
+    		&lt;soap:address location=&#34;http://localhost&#34; /&gt;
     	&lt;/port&gt;
     &lt;/service&gt;
 &lt;/definitions&gt;</code></pre>
@@ -221,7 +221,7 @@ Let&#8217;s add the following entry:</p>
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="wsi-warning.png" alt="wsi warning">
+<img src="wsi-warning.png" alt="wsi warning"/>
 </div>
 </div>
 <div class="listingblock">

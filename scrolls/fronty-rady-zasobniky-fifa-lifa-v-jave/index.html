@@ -64,164 +64,116 @@
 
 <main>
 <p>Zásobníky a rady nie sú práve najčastejšie používanou dátovou štruktúrou Java aplikácií, ale z času na čas dôjde na i na ne. Ako ich elegantne a ľahko použiť bez toho, aby sme zabili kopu času ich reimplementáciou?</p>
-
 <h1 id="rekapitulácia">Rekapitulácia</h1>
-
 <p>Zrekapitulujme si terminológiu:</p>
-
 <ul>
 <li><strong>zásobník</strong> a.k.a. <em>stack</em> a.k.a. <em>LIFO</em> je nafukovací zoznam, kde elementy možno vkladať a vyberať len z jedného konca (vrcholu zásobníka). Krásny príklad je hŕba tanierov: tanier možno položiť len na iný tanier. Ak chceme vybrať tanier zo spodku zásobníka, musíme vybrať najprv všetky taniere nad ním. Je to teda filozofia „posledný dnu, prvý von”´, čiže zmienené <em>last in-first out</em>.</li>
 <li><strong>rad</strong> a.k.a. <em>front</em> (a. k. a. nespisovne fronta) a.k.a. <em>FIFO</em> je zoznam, kde prvky pcháme na jeden koniec a vyberáme z opačného konca. Príklad: front na mäso. Prichádzajúci sa radia na koniec frontu a odchádzajú z jeho začiatku: v opačnom prípade nastane hádka, krik a ruvačka. FIFO analogicky vychádza z <em>first in-first out</em>, čiže kto prv príde, ten prv odchádza s mäsom.</li>
 </ul>
-
 <h1 id="implementácie-v-jave">Implementácie v Jave</h1>
-
 <p>Neopovážte sa implementovať rad a zásobník po svojom! (Pokiaľ fakt neviete, čo robíte.)</p>
-
 <p>K dispozícii je totiž pestrá paleta tried pre obe situácie.</p>
-
-<h2 id="starý-dobrý-java-util-stack">Starý dobrý <code>java.util.Stack</code></h2>
-
+<h2 id="starý-dobrý-javautilstack">Starý dobrý <code>java.util.Stack</code></h2>
 <p>Rýchle prehľadanie tried odhalí triedu <a href="http://docs.oracle.com/javase/6/docs/api/java/util/Stack.html"><code>java.util.Stack</code></a>. Táto trieda je s nami od čias Javy 1.0. (Kto neverí, nech pozrie <a href="http://www.aquaphoenix.com/ref/jdk1.0.2_api/java.util.Stack.html">do praJavadocu</a>.) Z dnešného pohľadu je táto trieda, slušne povedané, svojská, ale v tých časoch vývojári azda ani netušili, čo sa z Javy vykľuje. (Našťastie existuje jej krajšia verzia.)</p>
-
 <p>K dispozícii sú predovšetkým klasické metódy:</p>
-
 <ul>
-<li><code>push()</code> vloží prvok na vrchol zásobníka. Ako bonus vráti aktuálne vložený prvok, čo sa málokedy používa, ale nejaký rozumný dôvod za touto voľbou sa nepochybne nájde.</li>
-<li><code>pop()</code> nie je názov pravoslávneho kňaza, ale metóda, ktorá vráti objekt na vrchole zásobníka a zároveň ho zo zásobníka vyhodí. V prípade prázdneho zásobníka sa metóda správa pozoruhodne: oblaží nás výnimkou <a href="http://docs.oracle.com/javase/6/docs/api/java/util/EmptyStackException.html"><code>EmptyStackException</code></a>. S odstupom času to možno nebola najšťastnejšia voľba &ndash; vyžaduje to totiž <code>try</code>-<code>catch</code>ovanie, ale v tejto triede s tým veľa neurobíme. Ak vás to otravuje, použite <code>Deque</code> (deku ;-)), ale o tom o chvíľu.</li>
-<li><code>peek()</code> je slabšia forma <code>pop()</code>a: vráti objekt z vrcholu zásobníka bez toho, aby ho zo zásobníka vyhodila. Platí to isté čo pre predošlú metódu: <code>peek()</code>ovanie z prázdneho zásobníka vyhodí <a href="http://docs.oracle.com/javase/6/docs/api/java/util/EmptyStackException.html"><code>EmptyStackException</code></a>.</li>
-<li><code>empty()</code> zistí, či je zásobník prázdny. Ak predošlé metódy hádžu výnimku, znamená to, že korektné používanie zásobníka evokuje pri každom vyberaní nutnosť testovať prázdnosť a až keď sa ukáže, že nejaké dáta v ňom predsa len sú, môžeme korektne <code>peek()</code>/<code>pop()</code>ovať.</li>
-
-<li><p><code>search()</code> vráti pozíciu elementu od vrcholu zásobníka. Ale pozor: pozícia je indexovaná od jednotky (na rozdiel od „tradičného” indexovania od nuly).</p>
-
-<pre><code>#!java
-Stack&lt;String&gt; zásobník = new Stack&lt;String&gt;();
-zásobník.push(&quot;Java&quot;);
-int pozícia = zásobník.search(&quot;Java&quot;);
-System.out.println(pozícia); // 1
-</code></pre></li>
+<li>
+<p><code>push()</code> vloží prvok na vrchol zásobníka. Ako bonus vráti aktuálne vložený prvok, čo sa málokedy používa, ale nejaký rozumný dôvod za touto voľbou sa nepochybne nájde.</p>
+</li>
+<li>
+<p><code>pop()</code> nie je názov pravoslávneho kňaza, ale metóda, ktorá vráti objekt na vrchole zásobníka a zároveň ho zo zásobníka vyhodí. V prípade prázdneho zásobníka sa metóda správa pozoruhodne: oblaží nás výnimkou <a href="http://docs.oracle.com/javase/6/docs/api/java/util/EmptyStackException.html"><code>EmptyStackException</code></a>. S odstupom času to možno nebola najšťastnejšia voľba &ndash; vyžaduje to totiž <code>try</code>-<code>catch</code>ovanie, ale v tejto triede s tým veľa neurobíme. Ak vás to otravuje, použite <code>Deque</code> (deku ;-)), ale o tom o chvíľu.</p>
+</li>
+<li>
+<p><code>peek()</code> je slabšia forma <code>pop()</code>a: vráti objekt z vrcholu zásobníka bez toho, aby ho zo zásobníka vyhodila. Platí to isté čo pre predošlú metódu: <code>peek()</code>ovanie z prázdneho zásobníka vyhodí <a href="http://docs.oracle.com/javase/6/docs/api/java/util/EmptyStackException.html"><code>EmptyStackException</code></a>.</p>
+</li>
+<li>
+<p><code>empty()</code> zistí, či je zásobník prázdny. Ak predošlé metódy hádžu výnimku, znamená to, že korektné používanie zásobníka evokuje pri každom vyberaní nutnosť testovať prázdnosť a až keď sa ukáže, že nejaké dáta v ňom predsa len sú, môžeme korektne <code>peek()</code>/<code>pop()</code>ovať.</p>
+</li>
+<li>
+<p><code>search()</code> vráti pozíciu elementu od vrcholu zásobníka. Ale pozor: pozícia je indexovaná od jednotky (na rozdiel od „tradičného” indexovania od nuly).</p>
+<pre><code>  #!java
+  Stack&lt;String&gt; zásobník = new Stack&lt;String&gt;();
+  zásobník.push(&quot;Java&quot;);
+  int pozícia = zásobník.search(&quot;Java&quot;);
+  System.out.println(pozícia); // 1
+</code></pre>
+</li>
 </ul>
-
 <p>Ešte podrobnejší pohľad na <code>java.util.Stack</code> ukáže kúzelnú dedičnosť</p>
-
 <pre><code>public class Stack extends java.util.Vector
 </code></pre>
-
 <p>Rozhodne to nie je učebnicový príklad dedičnosti: <code>Vector</code> je prakticky ekvivalent <code>ArrayListu</code> a overenie starých materí <em>„Je každý zásobník zoznamom založeným na poli?”</em> jednoducho nefunguje. Poburovanie však je pomerne zbytočné: je to daň Javy 1.0, kde finty typu <code>LinkedList</code> ešte neexistovali.</p>
-
 <p>Tak či onak, <code>Stack</code> zdedí všetky <code>vector</code>ovské metódy: môžete radostne pridávať doprostred zoznamu, mazať, hľadať, atď&hellip; akurát, že nie vždy to má celkom logický zmysel.</p>
-
 <p>Pri vymýšľaní <em>Java Collections Framework</em> sa síce udiali s touto triedou niektoré pozitívne zmeny, ale veľa sa toho už zachrániť nedalo.</p>
-
 <p>Jeden rozumný bočný efekt <code>Stack</code>u spočíva v <em>thread-safety</em> (vláknovej bezpečnosti) triedy. Keďže <code>Vector</code> je thread-safe, je takým aj zásobník&hellip; i keď i v tomto prípade už existujú oveľa lepšie a efektívnejšie kolekcie.</p>
-
 <p>Vyčkajte chvíľu, rozoberieme si rad a k zásobníku sa ešte vrátime.</p>
-
-<h2 id="rad-java-util-queue">Rad <code>java.util.Queue</code></h2>
-
+<h2 id="rad-javautilqueue">Rad <code>java.util.Queue</code></h2>
 <p>V Javách pred verziou 5 by ste márne hľadali triedu pre rad &ndash; neostávalo vám nič iné, než zneužiť na to niektorý z klasických zoznamov. Po upratovaní v Jave päť vznikol interfejs <a href="http://docs.oracle.com/javase/6/docs/api/java/util/Queue.html"><code>java.util.Queue</code></a> (nemenovaným známym vyslovovaným ako <em>kveve</em>, ale neradím vám po ňom opakovať). Ten rozširuje interfejs <code>java.util.Collection</code> o 6 metód. V skutočnosti ide o tri páry metód pre štandardné operácie vkladania, vyberania a nakúkania na začiatok radu. (Táto duplicita adresuje <code>Stack</code>ovský problém pri manipulácii s prázdnym stackom.)</p>
-
 <p>Ešte spomeniem drobné terminologické ujasnenie: <em>hlava</em> (<em>head</em>) radu je začiatok (z ktorého sa odoberajú prvky) a <em>chvost</em> (<em>tail</em>) je koniec, kam sa pridáva.</p>
-
 <h3 id="pridávanie">Pridávanie</h3>
-
 <ul>
 <li><code>add()</code> pridá prvok na koniec radu a vráti <code>true</code> ak sa prvok skutočne pridal. (Táto metóda prakticky prekrýva rodičovskú metódu z <code>Collection</code>.)
 Metóda môže vyhodiť <code>IllegalStateException</code> v prípade, že pridanie presiahne kapacitné možnosti radu.</li>
 <li><code>offer()</code> prekvapivo tiež pridáva prvky. Na rozdiel od klasického pridávania však táto metóda nebude vyhadzovať výnimky o nesprávnom stave: ak sa prvok nevie vložiť kvôli kapacitným možnostiam, vráti <code>false</code>.</li>
 </ul>
-
 <p>Obe metódy však môžu vyhodiť <code>NullPointerException</code> pri pokuse vložiť <code>null</code> do radu, ktorý takéto elementy nepodporuje; a tiež môže otrieskať používateľovi o hlavu <code>IllegalArgumentException</code>, ak sa element nepodarí vložiť kvôli iným špecifickým obmedzeniam implementácie radu.</p>
-
 <h3 id="odoberanie">Odoberanie</h3>
-
 <p>Opäť máme dvojicu metód:</p>
-
 <ul>
 <li><code>remove()</code> vyhodí prvok z hlavy radu a vráti ho. Ak je rad prázdny, oblaží nás výnimkou <code>NoSuchElementException</code>.</li>
 <li><code>poll()</code> funguje identicky, akurát v prípade prázdneho radu vráti kultúrnejší <code>null</code>.</li>
 </ul>
-
 <h3 id="nakúkanie">Nakúkanie</h3>
-
 <p>A ešte raz: ak chceme len nazrieť na hlavu radu bez jej vyhadzovania, máme:</p>
-
 <ul>
 <li><code>element()</code> vráti hlavu radu bez toho, aby ju rušila. Ak je rad prázdny, už viete čo sa stane&hellip; <code>NoSuchElementException</code>.</li>
 <li><code>peek()</code> je indigová kópia, akurát prázdny rad = vráti <code>null</code>.</li>
 </ul>
-
 <h3 id="implementácie">Implementácie</h3>
-
 <p>Ak nahliadnete <a href="http://docs.oracle.com/javase/6/docs/api/java/util/Queue.html">do JavaDoc</a>u, odhalíte haldu rozličných implementácií. Do tejto roly možno rovno použiť <code>java.util.LinkedList</code> (alias <em>spojový zoznam</em>), aj keď sa to zdá možno zvláštne.</p>
-
 <p>Ak chcete poľovo zameraný rad, skúste <code>java.util.ArrayDeque</code>. A ak sa vám žiada vláknovo bezpečnej verzie, skúste napríklad <code>ConcurrentLinkedQueue</code>.</p>
-
 <p>Bonusom sú implementácie pre zopár úloh konkurentného programovania:</p>
-
 <ul>
 <li><code>ArrayBlockingQueue</code> resp. <code>LinkedBlockingQueue</code> sa dajú použiť na problém producenta a konzumenta</li>
 <li><code>PriorityQueue</code> je zase priamočiara možnosť implementácie prioritných frontov.</li>
 </ul>
-
 <p>Teraz však&hellip;</p>
-
-<h2 id="naspäť-k-zásobníkom-back-to-the-stack">Naspäť k zásobníkom! (<em>Back to the stack</em>)</h2>
-
+<h2 id="naspäť-k-zásobníkom-_back-to-the-stack_">Naspäť k zásobníkom! (<em>Back to the stack</em>)</h2>
 <p>Hore sme si povedali, že <code>Stack</code> je nešťastná trieda s neveľkými možnosťami úprav API. V rámci kampane „do Javy 5 s úpravami” sa vymyslel jeden interfejs, ktorým sa mali zabiť dve muchy jednou ranou.</p>
-
 <p><code>java.util.Deque</code> (nečítajte ako dekve, ale ako „dek”) je <em>double ended queue</em>, teda, prepytujem, rad o dvoch koncoch. Implementácie tohto interfejsu môžu pridávať a uberať podľa potreby elementy z oboch koncov, čiže sa vedia správať buď ako zásobníky alebo ako rady.</p>
-
 <p>Ekvivalentné metódy vyzerajú nasledovne:</p>
-
 <h3 id="vkladanie">Vkladanie</h3>
-
 <ul>
 <li><code>push()</code> je to isté, čo <code>addFirst()</code>: vložia element na začiatok deque. Platí to, čo pre pridávanie v klasickej <code>Queue</code>. Ak je kapacita presiahnutá, dostanete <code>IllegalStateException</code> atď.</li>
 <li><code>offerFirst()</code> rovnako vkladá element na začiatok, ale bez nechutnej <code>IllegalStateException</code> &ndash; namiesto toho vráti v prípade nemožnosti vkladania <code>false</code>.</li>
 </ul>
-
 <h3 id="vyberanie">Vyberanie</h3>
-
 <ul>
 <li><code>pop()</code> je to isté, čo <code>removeFirst()</code>: vrátia a vyhodia element z hlavy/vrchola zásobníka. Pozor na rozdielny typ výnimky: ak je zásobník prázdny, dostanete <code>NoSuchElementException</code> (starý <code>Stack</code> vracal <code>EmptyStackException</code>)</li>
 <li><code>pollFirst()</code> analogicky vráti a vyhodí element, akurát bez vyhodenej výnimky. Ak je zásobník prázdny, vráti <code>null</code>.</li>
 </ul>
-
 <h3 id="nakúkanie-1">Nakúkanie</h3>
-
 <p>Tu nastáva trošku chaos:</p>
-
 <ul>
 <li><code>peek()</code>/<code>peekFirst()</code> vráti vrchol zásobníka (= hlavu radu) alebo <code>null</code>, ak je kolekcia prázdna. To je rozdiel oproti starému <code>Stack</code>u, kde sa vracala výnimka. Ak predsa len chcete odchytávať výnimky, je tu&hellip;</li>
 <li><code>getFirst()</code>, ktorá vráti vrchol zásobníka alebo vyhodí <code>NoSuchElementException</code>.</li>
 </ul>
-
 <h3 id="sumár-zásobníka">Sumár zásobníka</h3>
-
 <p>Ak sa na to pozrieme ešte raz, vieme si vymyslieť mnemotechnickú pomôcku:</p>
-
 <ol>
 <li>v prípade zásobníka pracujeme stále s hlavou <em>deque</em>. Hlava = vrchol = prvý prvok.</li>
 <li>metódy <code>addFirst()</code>, <code>removeFirst()</code> a <code>getFirst()</code> vyhadzujú výnimky</li>
 <li>metódy <code>offerFirst()</code>, <code>pollFirst()</code> a <code>peekFirst()</code> vracajú <code>null</code>, resp. <code>false</code>, ak sa operácia nepodarí.</li>
 </ol>
-
 <h1 id="implementácie-1">Implementácie</h1>
-
 <p>Mnoho prípadov pokryje implementácia <code>java.util.LinkedList</code>. Nepatrným problémom je neexistencia implementácie konkurentného zásobníka, ale v prípade núdze môžete použiť <code>java.util.concurrent.CopyOnWriteArrayList</code>.</p>
-
 <h2 id="a-ešte-raz-naspäť-k-radom">A ešte raz naspäť k radom!</h2>
-
 <p>„Dvojkoncový rad” deque rozširuje interface <code>Queue</code> a pridáva aliasy k zdedeným metódam. Zároveň poskytuje metódy na prácu s chvostom, kde platí rovnaká mnemotechnika ako pri radoch:</p>
-
 <ol>
 <li>metódy <code>addLast()</code>, <code>removeLast()</code> a <code>getLast()</code> vracajú prvky z chvosta a vyhadzujú výnimky</li>
 <li>metódy <code>offerLast()</code>, <code>pollLast()</code> a <code>peekLast()</code> vracajú <code>null</code>, resp. <code>false</code>, ak sa operácia nepodarí.</li>
 </ol>
-
 <p>Aliasy sú nasledovné:</p>
-
 <ul>
 <li><code>add()</code> je to isté, čo <code>addLast()</code> &ndash; je to v súlade s filozofiou kolekcií, že <code>add()</code> vždy pridáva na koniec zoznamu (vyhadzujú sa výnimk.y)</li>
 <li><code>offer()</code> = <code>offerLast()</code> &ndash; takisto pridávame na koniec zoznamu.</li>
@@ -230,28 +182,19 @@ Metóda môže vyhodiť <code>IllegalStateException</code> v prípade, že prida
 <li><code>element()</code> = <code>getFirst()</code> &ndash; nakúkame na hlavu (s hádzaním výnimiek)</li>
 <li><code>peek()</code> = <code>peekFirst()</code> &ndash; nakúkame na hlavu (bez výnimkovania)</li>
 </ul>
-
 <h2 id="implementácie-2">Implementácie</h2>
-
 <ul>
 <li>Už spomínaný <code>java.util.LinkedList</code> je trieda, ktorá radostne zastúpi úlohu radu i zásobníka: implementuje totiž <code>Deque</code>.</li>
 <li>Ak sa vám nehodia spojové zoznamy, máte k dispozícii <code>ArrayDeque</code> založenú na nafukovacom poli. (Podobne ako je <code>ArrayList</code> poľovým variantom zoznamu.)</li>
 </ul>
-
 <h1 id="sumár">Sumár</h1>
-
 <p>Z praktického hľadiska je to jednoduché: vo väčšine prípadov stačí rad vyrobiť cez</p>
-
 <pre><code>Queue&lt;String&gt; rad = new LinkedList&lt;String&gt;();
 </code></pre>
-
 <p>a zásobník cez</p>
-
 <pre><code>Deque&lt;String&gt; zásobník = new LinkedList&lt;String&gt;();
 </code></pre>
-
 <p>a to stačí.</p>
-
 <p>Do radu vkladáte cez <code>offer()</code>, vyberáte cez <code>poll()</code> a nakúkate cez <code>peek()</code> a do zásobníka pushujete cez <code>offerFirst()</code>, popujete cez <code>pollFirst()</code> a nakúkate cez <code>peekFirst()</code>.</p>
 </main>
 

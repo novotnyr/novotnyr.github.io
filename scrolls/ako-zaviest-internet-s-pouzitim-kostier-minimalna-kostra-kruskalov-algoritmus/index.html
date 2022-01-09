@@ -59,270 +59,186 @@
 
 
 <main>
-
-
 <h1 id="zavádzame-internet">Zavádzame internet</h1>
-
 <p>Predstavte si, že ste šéfom spoločnosti, ktorá získala balík peňazí na prepojenie slovenských krajských miest internetom s použitím optickej linky. Jednou z najdôležitejších vecí, ktorá vás bude zaujímať, je celková dĺžka káblov, ktoré budete musieť zaviesť medzi mestami. Asi veľmi rýchlo si všimnete, že káblom netreba prepojiť každé s každým mestom. (Nemusíte teda prepájať Košice s Bratislavou priamo, stačí zaviesť kábel do Banskej Bystrice a z nej do Bratislavy). Aký spôsob zvoliť na nájdenie optimálneho prepojenia?</p>
-
 <p>Od subdodávateľa sme získali mapu Slovenska s krajskými mestami a vzdialenosťami medzi nimi. (Pre jednoduchosť udávame vzdialenosti v desiatkach kilometrov.)</p>
-
-<p><img src="minkostra.png" alt="Graf na ktorom nájdeme minimálnu kostru" /></p>
-
+<p><img src="minkostra.png" alt="Graf na ktorom nájdeme minimálnu kostru"></p>
 <h1 id="grafy-na-pomoc">Grafy na pomoc!</h1>
-
 <p>Absolventi diskrétnej matematiky hneď uvidia v obrázku matematickú štruktúru zvanú <strong>graf</strong>. Jednotlivé mestá (ovály) zodpovedajú <strong>uzlom</strong> a čiary natiahnuté medzi nimi <strong>hranám</strong>. Tento graf je ohodnotený (keďže hrany majú váhy zodpovedajúce vzdialenostiam medzi uzlami) a neorientovaný (čiara medzi Bratislavou a Trnavou znamená, že sa vieme dostať aj jedným aj druhým smerom).</p>
-
 <p>Zavádzanie najlacnejšieho internetu znamená, že musíme zabezpečiť, aby do každého mesta viedol kábel a aby celkový súčet dĺžok káblov medzi mestami bol najmenší možný. Jedným z optimálnych riešení je nasledovná možnosť:</p>
-
-<p><img src="minkostra2.png" alt="Minimálna kostra grafu" /></p>
-
+<p><img src="minkostra2.png" alt="Minimálna kostra grafu"></p>
 <p>V ňom je celková dĺžka kábla je 5 + 5 + 8 + 8 + 9 + 25 + 3 = 63, teda 630 kilometrov kábla. Ako sme na to prišli?</p>
-
 <h1 id="kostry-kostry-kostričky">Kostry, kostry, kostričky</h1>
-
 <p>To, čo sme ukázali na predošlom obrázku, sa nazýva <strong>minimálna kostra grafu</strong>. <strong>Kostra grafu</strong> je tvorená hranami a vrcholmi pôvodného grafu (je teda <strong>podgrafom</strong>), pričom sú v nej zahrnuté všetky vrcholy pôvodného grafu. Dôležitou vlastnosťou kostry je to, že je to <strong>strom</strong>, teda nemôže sa stať, že z jedného uzlu vyjdeme jedným smerom a vieme sa doňho vrátiť po inej hrane (inak povedané v strome nie sú cykly). Ak sa pozrieme na obrázok, je vidieť, že kostier v grafe môže byť viacero. Príklad jednej kostry máme na obrázku. Daľším príkladom, ktorý môžeme nazvať <strong>plánom diaľnicoe D1</strong> je prepojenie Bratislavy s Košicami cez Trnavu, Trenčín, Žilinu a Prešov s odbočkami Trnava-Nitra a Žilina-Banská Bystrica.</p>
-
 <p><strong>Minimálna kostra</strong> ohodnoteného grafu je taká kostra, ktorá má najmenší možný súčet váh hrán.</p>
-
 <p>Predošlý obrázok ukazuje presne minimálnu kostru. Ako sme ju však vytvorili?</p>
-
 <p>Na nájdenie minimálnej kostry ohodnotené grafu existujú hneď tri algoritmy: Jarníkov-Primov-Dijkstrov, Kruskalov a Borůvkov-Sollinov algoritmus. My si ukážeme použitie Kruskalovho algoritmu.</p>
-
 <h2 id="kruskalov-algoritmus">Kruskalov algoritmus</h2>
-
 <p>Ten je pomerne jednoduchý:</p>
-
 <ol>
 <li>Vezmime v grafe hranu s najmenšou váhou a zvýraznime ju.</li>
 <li>Hrana však nesmie po zvýraznení tvoriť cyklus (uzavretú cestu) s inými zvýraznenými hranami.</li>
 <li>Ak hrany zvýraznené hrany spájajú všetky vrcholy, končíme. Inak prejdeme na krok 1.</li>
 </ol>
-
 <p>Ukážme si to na príklade obrázku.</p>
-
 <h1 id="príklad">Príklad</h1>
-
 <h2 id="iterácia-1">Iterácia 1</h2>
-
 <p>Hrana s najmenšou váhou je cesta medzi Košicami a Prešovom (30 km), teda zvýrazníme ju.</p>
-
-<p><img src="minkostra-krok1.png" alt="Výber hrany KE-PO" /></p>
-
+<p><img src="minkostra-krok1.png" alt="Výber hrany KE-PO"></p>
 <h2 id="iterácia-2">Iterácia 2</h2>
-
 <p>Ďalej máme dve hrany s váhou 5: medzi Bratislavou a Trnavou a Trnavou a Nitrou.
 Vyberme si napríklad Bratislavu-Trnavu a zvýraznime ju.</p>
-
-<p><img src="minkostra-krok2.png" alt="Výber hrany BA-TT" /></p>
-
+<p><img src="minkostra-krok2.png" alt="Výber hrany BA-TT"></p>
 <h2 id="iterácia-3">Iterácia 3</h2>
-
 <p>Vezmime ďalšiu hranu s váhou 5 medzi Trnavou a Nitrou a zvýraznime ju.</p>
-
-<p><img src="minkostra-krok3.png" alt="Výber hrany NR-TT" /></p>
-
+<p><img src="minkostra-krok3.png" alt="Výber hrany NR-TT"></p>
 <h2 id="iterácia-4">Iterácia 4</h2>
-
 <p>Hrana s najmenšou váhou je osmičková. Máme opäť dve možnosti na výber: medzi Trnavou a Trenčínom a Trenčínom a Žilinou. Vyberme si Trenčín-Žilina.</p>
-
-<p><img src="minkostra-krok4.png" alt="Výber hrany TN-ZA" /></p>
-
+<p><img src="minkostra-krok4.png" alt="Výber hrany TN-ZA"></p>
 <h2 id="iterácia-5">Iterácia 5</h2>
-
 <p>Vezmime ďalšiu hranu váhou 8, medzi Trnavou a Trenčínom.</p>
-
-<p><img src="minkostra-krok5.png" alt="Výber hrany TT-TN" /></p>
-
+<p><img src="minkostra-krok5.png" alt="Výber hrany TT-TN"></p>
 <h2 id="iterácia-6">Iterácia 6</h2>
-
 <p>Ďalšia minimálna hrana má váhu 9 a zase máme dve možnosti: Bratislavu-Nitru a Žilinu-Banskú Bystricu. Bratislava-Nitra však nepripadá do úvahy, pretože by sme si vytvorili cyklus Bratislava-Trnava-Nitra-Bratislava, čo by porušilo vlastnosť kostry. Preto nám ostáva len druhá možnosť.</p>
-
-<p><img src="minkostra-krok6.png" alt="Výber hrany ZA-BB" /></p>
-
+<p><img src="minkostra-krok6.png" alt="Výber hrany ZA-BB"></p>
 <h2 id="iterácia-7">Iterácia 7</h2>
-
 <p>Ďalšia hrana má dĺžku 13. Jej výber však opäť nie je korektný, keďže by sme získali cyklus Trnava-Trenčín-Nitra-Žilina-Bystrica-Nitra. Túto hranu teda preskočíme.</p>
-
 <p>Nasledovnou hranou je Bratislava-Banská Bystrica dĺžky 22. Tá je však opäť ilegálna, keďže by sme mali cyklus Bratislava-Trnava-Trenčín-Žilina-Banská Bystrica-Bratislava.</p>
-
 <p>Ostávajú nám dve hrany dĺžky 25: Žilina-Prešov a Banská Bystrica-Košice.</p>
-
 <p>Vyberme si košickú vetvu:</p>
-
-<p><img src="minkostra-krok7.png" alt="Výber hrany BB-KE" /></p>
-
+<p><img src="minkostra-krok7.png" alt="Výber hrany BB-KE"></p>
 <p>Posledná nespracovaná hrana Žilina-Prešov už neprichádza do úvahy, keďže by vytvorila cyklus Žilina-Prešov-Košice-Banská Bystrica.</p>
-
 <p>Algoritmus teda končí.</p>
-
 <h1 id="ako-zisťovať-cykly">Ako zisťovať cykly?</h1>
-
 <p>Vidíme, že algoritmus je jednoduchý a naprogramovať ho by nebol problém. Otázka ale je, ako detegovať, či skúmaná hrana nevytvorí cyklus. Na detekciu cyklov by sa dalo použiť napríklad jedno z prehľadávaní grafu (do šírky alebo do hĺbky), ale je lepšie použiť trik spomínaný v literatúre.</p>
-
-<p>Na začiatku vytvoríme toľko „zárodkov&rdquo; stromov, koľko máme vrcholov (pričom každý strom bude na začiatku tvorený jediným vrcholom.) Ak odobratá hrana v algoritme prepojí dva uzly v rôznych stromoch, tieto dva stromy spojíme do jedného. Ak spája dva uzly v rovnakom strome, nerobíme nič, pretože by to znamenalo cyklus. Ukážme si to na príklade, v ktorom jednotlivé stromy budú farebne odlíšené.</p>
-
+<p>Na začiatku vytvoríme toľko „zárodkov&quot; stromov, koľko máme vrcholov (pričom každý strom bude na začiatku tvorený jediným vrcholom.) Ak odobratá hrana v algoritme prepojí dva uzly v rôznych stromoch, tieto dva stromy spojíme do jedného. Ak spája dva uzly v rovnakom strome, nerobíme nič, pretože by to znamenalo cyklus. Ukážme si to na príklade, v ktorom jednotlivé stromy budú farebne odlíšené.</p>
 <h1 id="príklad-1">Príklad</h1>
-
 <h2 id="iterácia-1-1">Iterácia 1</h2>
-
 <p>Hrana s najmenšou váhou je cesta medzi Košicami a Prešovom (30 km), teda zvýrazníme ju. Keďže hrana prepája dva rôzne stromy, zlúčime ich do jedného.</p>
-
-<p><img src="stromy1.png" alt="Stromy PO-KE" /></p>
-
+<p><img src="stromy1.png" alt="Stromy PO-KE"></p>
 <h2 id="iterácia-2-1">Iterácia 2</h2>
-
 <p>Ďalej vybavíme hranu Bratislava-Trnava, ktorá opäť prepája dva rôzne stromy, ktoré zlúčime.</p>
-
-<p><img src="stromy2.png" alt="Stromy BA-TT" /></p>
-
+<p><img src="stromy2.png" alt="Stromy BA-TT"></p>
 <h2 id="iterácia-3-1">Iterácia 3</h2>
-
 <p>Vezmime ďalšiu hranu s váhou 5 medzi Trnavou a Nitrou a prepojme oba stromy.</p>
-
-<p><img src="stromy3.png" alt="Stromy TN-NR" /></p>
-
+<p><img src="stromy3.png" alt="Stromy TN-NR"></p>
 <h2 id="iterácia-4-1">Iterácia 4</h2>
-
 <p>Vezmime osmičkovú hranu Trenčín-Žilina a zlúčme ich do žltého stromu.</p>
-
-<p><img src="stromy4.png" alt="Stromy TN-ZA" /></p>
-
+<p><img src="stromy4.png" alt="Stromy TN-ZA"></p>
 <h2 id="iterácia-5-1">Iterácia 5</h2>
-
 <p>Vezmime ďalšiu hranu váhou 8, medzi Trnavou a Trenčínom. Opäť zlúčime dva stromy: žltý a ružový do jedného ružového.</p>
-
-<p><img src="stromy5.png" alt="Stromy TT-TN" /></p>
-
+<p><img src="stromy5.png" alt="Stromy TT-TN"></p>
 <h2 id="iterácia-6-1">Iterácia 6</h2>
-
 <p>Ďalšia minimálna hrana má váhu 9 a zase máme dve možnosti: Bratislavu-Nitru a Žilinu-Banskú Bystricu. Uzly Bratislava a Nitra však majú rovnakú farbu a teda by vytvorili cyklus. Preto nám ostáva len druhá možnosť.</p>
-
-<p><img src="stromy6.png" alt="Stromy ZA-BB" /></p>
-
+<p><img src="stromy6.png" alt="Stromy ZA-BB"></p>
 <h2 id="iterácia-7-1">Iterácia 7</h2>
-
 <p>Ďalšia hrana má dĺžku 13 (Nitra-Banská Bystrica). Tá je však opäť medzi uzlami v rovnakom strome (teda rovnakej farby), preto nie je povolená. To isté je prípad Bratislava-Banská Bystrica dĺžky 22.</p>
-
 <p>Ostávajú nám dve hrany dĺžky 25: Žilina-Prešov a Banská Bystrica-Košice.</p>
-
 <p>Vyberme si košickú vetvu a zlúčme oba stromy. Tým sme ukončili algoritmus, keďže sme pokryli všetky uzlami (všetky ostatné hrany vedú medzi uzlami rovnakej farby, teda z rovnakého podstromu.)</p>
-
-<p><img src="stromy7.png" alt="Stromy BB-KE" /></p>
-
+<p><img src="stromy7.png" alt="Stromy BB-KE"></p>
 <h1 id="poznámky-k-algoritmu">Poznámky k algoritmu</h1>
-
 <p>Tento algoritmus sa nazýva <strong>pažravým</strong> (greedy), keďže sa v každej iterácii snaží zobrať hranu, ktorá je preňho najvýhodnejšia.</p>
-
 <p>Pažravý prístup však vo všeobecnosti nemusí byť ideálny — predstavte si, že vám niekto dá na výber: buď dostanete tento mesiac 100€ a o ďalší mesiac 500€ alebo dostanete teraz 500€ a budúci mesiac 2000€.
 Čo by ste si vybrali? Pažravý algoritmus by si vybral samozrejme 100€ hneď teraz (aj keď je to z celkového hľadiska nevýhodné). V prípade Kruskalovho algoritmu sa však dá dokázať, že takýto nevýhodný prípad nikdy nenastane a teda, že pažravý prístup je efektívny.</p>
-
 <h1 id="implementácia-v-jave">Implementácia v Jave</h1>
-
 <p>Implementácia v Jave je opäť jednoduchá, dôležité je si ale premyslieť dátové štruktúry, ktoré budú použité.</p>
-
 <p>Predovšetkým definujeme triedu pre hranu <code>Edge</code>, ktorá bude obsahovať dva uzly (reprezentované ako reťazce) a váhu.</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">public class </span>Edge {
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">Edge</span> <span style="color:#333">{</span>
   <span style="color:#666;font-style:italic">// uzol 1
-</span><span style="color:#666;font-style:italic"></span>  <span style="color:#f00;background-color:#faa">private String </span>node1;
+</span><span style="color:#666;font-style:italic"></span>  <span style="color:#289;font-weight:bold">private</span> String node1<span style="color:#333">;</span>
 
   <span style="color:#666;font-style:italic">// uzol 2
-</span><span style="color:#666;font-style:italic"></span>  <span style="color:#f00;background-color:#faa">private String </span>node2;
+</span><span style="color:#666;font-style:italic"></span>  <span style="color:#289;font-weight:bold">private</span> String node2<span style="color:#333">;</span>
 
   <span style="color:#666;font-style:italic">// váha
-</span><span style="color:#666;font-style:italic"></span>  <span style="color:#f00;background-color:#faa">private int </span>weight;
+</span><span style="color:#666;font-style:italic"></span>  <span style="color:#289;font-weight:bold">private</span> <span style="color:#66f;font-weight:bold">int</span> weight<span style="color:#333">;</span>
 
-  <span style="color:#f00;background-color:#faa">public Edge</span>(<span style="color:#f00;background-color:#faa">String node1</span>, <span style="color:#f00;background-color:#faa">String node2</span>, <span style="color:#f00;background-color:#faa">int weight</span>) {
-    <span style="color:#289;font-weight:bold">super</span>();
-    <span style="color:#289;font-weight:bold">this</span>.<span style="color:#007">node1</span> <span style="color:#333">=</span> node1;
-    <span style="color:#289;font-weight:bold">this</span>.<span style="color:#007">node2</span> <span style="color:#333">=</span> node2;
-    <span style="color:#289;font-weight:bold">this</span>.<span style="color:#007">weight</span> <span style="color:#333">=</span> weight;
-  }
+  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">Edge</span><span style="color:#333">(</span>String node1<span style="color:#333">,</span> String node2<span style="color:#333">,</span> <span style="color:#66f;font-weight:bold">int</span> weight<span style="color:#333">)</span> <span style="color:#333">{</span>
+    <span style="color:#289;font-weight:bold">super</span><span style="color:#333">();</span>
+    <span style="color:#289;font-weight:bold">this</span><span style="color:#333">.</span><span style="color:#007">node1</span> <span style="color:#333">=</span> node1<span style="color:#333">;</span>
+    <span style="color:#289;font-weight:bold">this</span><span style="color:#333">.</span><span style="color:#007">node2</span> <span style="color:#333">=</span> node2<span style="color:#333">;</span>
+    <span style="color:#289;font-weight:bold">this</span><span style="color:#333">.</span><span style="color:#007">weight</span> <span style="color:#333">=</span> weight<span style="color:#333">;</span>
+  <span style="color:#333">}</span>
 
   <span style="color:#666;font-style:italic">// gettre a settre
 </span><span style="color:#666;font-style:italic"></span>
   <span style="color:#555;font-weight:bold">@Override</span>
-  <span style="color:#f00;background-color:#faa">public String </span>toString() {
-    <span style="color:#289;font-weight:bold">return</span> node1 <span style="color:#333">+</span> <span style="background-color:#e0e0ff">&#34;--&#34;</span> <span style="color:#333">+</span> node2 <span style="color:#333">+</span> <span style="background-color:#e0e0ff">&#34; [&#34;</span> <span style="color:#333">+</span> weight <span style="color:#333">+</span> <span style="background-color:#e0e0ff">&#34; ]&#34;</span>;
-  }
-}</code></pre></div>
-<p>Ďalej si vytvoríme triedu <code>SpanningTree</code>, ktorá bude obsahovať operácie na pridanie hrán a na nájdenie minimálnej kostry. Predovšetkým vyvstáva otázka, kde budeme uchovávať zoznam hrán. Vystačili by sme si s klasickým zoznamom <code>java.util.List</code>, kde by sme hranu s najmenšou váhou našli pomocnou metódou, ktorá by prešla zoznam a vrátila požadovaný prvok.</p>
-
+  <span style="color:#289;font-weight:bold">public</span> String <span style="color:#5ed;font-weight:bold">toString</span><span style="color:#333">()</span> <span style="color:#333">{</span>
+    <span style="color:#289;font-weight:bold">return</span> node1 <span style="color:#333">+</span> <span style="background-color:#e0e0ff">&#34;--&#34;</span> <span style="color:#333">+</span> node2 <span style="color:#333">+</span> <span style="background-color:#e0e0ff">&#34; [&#34;</span> <span style="color:#333">+</span> weight <span style="color:#333">+</span> <span style="background-color:#e0e0ff">&#34; ]&#34;</span><span style="color:#333">;</span>
+  <span style="color:#333">}</span>
+<span style="color:#333">}</span>
+</code></pre></div><p>Ďalej si vytvoríme triedu <code>SpanningTree</code>, ktorá bude obsahovať operácie na pridanie hrán a na nájdenie minimálnej kostry. Predovšetkým vyvstáva otázka, kde budeme uchovávať zoznam hrán. Vystačili by sme si s klasickým zoznamom <code>java.util.List</code>, kde by sme hranu s najmenšou váhou našli pomocnou metódou, ktorá by prešla zoznam a vrátila požadovaný prvok.</p>
 <p>V jave však môžeme použiť špeciálny prípad zoznamu — <strong>prioritný front</strong> (implementácia <code>java.util.PriorityQueue</code>), čo je front, ktorý automaticky usporiadava hrany na základe požadovaného kritéria. Toto kritérium môžeme ustanoviť implementáciou interfejsu <code>java.util.Comparator</code>, ktorá umožňuje vzájomne porovnať dve inštancie hrán. V našom prípade platí, že hrana je „menšia“ ako iná hrana, ak má menšiu váhu.</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">public static class EdgeByWeightComparator implements Comparator</span><span style="color:#333">&lt;</span>Edge<span style="color:#333">&gt;</span> {
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">static</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">EdgeByWeightComparator</span> <span style="color:#289;font-weight:bold">implements</span> Comparator<span style="color:#333">&lt;</span>Edge<span style="color:#333">&gt;</span> <span style="color:#333">{</span>
 
-    <span style="color:#f00;background-color:#faa">public int </span>compare(<span style="color:#f00;background-color:#faa">Edge edge1</span>, <span style="color:#f00;background-color:#faa">Edge edge2</span>) {
+    <span style="color:#289;font-weight:bold">public</span> <span style="color:#66f;font-weight:bold">int</span> <span style="color:#5ed;font-weight:bold">compare</span><span style="color:#333">(</span>Edge edge1<span style="color:#333">,</span> Edge edge2<span style="color:#333">)</span> <span style="color:#333">{</span>
       <span style="color:#666;font-style:italic">// vezmeme obe hrany a porovnáme ich pomocou metódy java.lang.Integer
-</span><span style="color:#666;font-style:italic"></span>        <span style="color:#289;font-weight:bold">return</span> <span style="color:#289;font-weight:bold">new</span> Integer(edge1.<span style="color:#007">getWeight</span>())
-              .<span style="color:#007">compareTo</span>(edge2.<span style="color:#007">getWeight</span>());
-    }
+</span><span style="color:#666;font-style:italic"></span>        <span style="color:#289;font-weight:bold">return</span> <span style="color:#289;font-weight:bold">new</span> Integer<span style="color:#333">(</span>edge1<span style="color:#333">.</span><span style="color:#007">getWeight</span><span style="color:#333">())</span>
+              <span style="color:#333">.</span><span style="color:#007">compareTo</span><span style="color:#333">(</span>edge2<span style="color:#333">.</span><span style="color:#007">getWeight</span><span style="color:#333">());</span>
+    <span style="color:#333">}</span>
 
-}</code></pre></div>
-<p>Prioritný front potom deklarujeme v triede <code>SpanningTree</code> nasledovne:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">private PriorityQueue</span><span style="color:#333">&lt;</span><span style="color:#f00;background-color:#faa">Edge&gt; edges 
-</span><span style="color:#f00;background-color:#faa">  </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> PriorityQueue<span style="color:#333">&lt;</span>Edge<span style="color:#333">&gt;</span>(10, <span style="color:#289;font-weight:bold">new</span> EdgeByWeightComparator());</code></pre></div>
-<p>Prvý parameter udáva iniciálnu kapacitu fronty a druhý parameter ustanovuje usporiadané určené komparátorom.</p>
-
+<span style="color:#333">}</span>
+</code></pre></div><p>Prioritný front potom deklarujeme v triede <code>SpanningTree</code> nasledovne:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">private</span> PriorityQueue<span style="color:#333">&lt;</span>Edge<span style="color:#333">&gt;</span> edges 
+  <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> PriorityQueue<span style="color:#333">&lt;</span>Edge<span style="color:#333">&gt;(</span>10<span style="color:#333">,</span> <span style="color:#289;font-weight:bold">new</span> EdgeByWeightComparator<span style="color:#333">());</span>
+</code></pre></div><p>Prvý parameter udáva iniciálnu kapacitu fronty a druhý parameter ustanovuje usporiadané určené komparátorom.</p>
 <p>Ako budeme reprezentovať naše stromy (v príklade majúce samostatnú farbu?)  Pre každý uzol v grafe si môžeme pamätať množinu uzlov s rovnakou farbou. Vieme si teda urobiť mapovanie z uzlov do množín uzlov, čiže</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">private Map</span><span style="color:#333">&lt;</span>String, <span style="color:#f00;background-color:#faa">Set&lt;String&gt;&gt; mapping 
-</span><span style="color:#f00;background-color:#faa">  </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> HashMap<span style="color:#333">&lt;</span>String, Set<span style="color:#333">&lt;</span>String<span style="color:#333">&gt;&gt;</span>();</code></pre></div>
-<p>Napríklad v treťom kroku algoritmu budeme mať v mape:</p>
-
-<pre><code>Bratislava  =&gt; {Bratislava, Trnava, Nitra}
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">private</span> Map<span style="color:#333">&lt;</span>String<span style="color:#333">,</span> Set<span style="color:#333">&lt;</span>String<span style="color:#333">&gt;&gt;</span> mapping 
+  <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> HashMap<span style="color:#333">&lt;</span>String<span style="color:#333">,</span> Set<span style="color:#333">&lt;</span>String<span style="color:#333">&gt;&gt;();</span>
+</code></pre></div><p>Napríklad v treťom kroku algoritmu budeme mať v mape:</p>
+<pre tabindex="0"><code>Bratislava  =&gt; {Bratislava, Trnava, Nitra}
 Prešov      =&gt; {Prešov, Košice}
 Trenčín     =&gt; {Trenčín}
 Žilina      =&gt; {Žilina}
 B. Bystrica =&gt; {B. Bystrica}
-</code></pre>
-
-<h2 id="pridávanie-hrán">Pridávanie hrán</h2>
-
-<p>Metóda na pridanie hrany bude pozostávať z troch krokov:
-1. pridanie hrany do prioritného frontu
-2. vytvorenie stromu pre prvý vrchol. Tento strom obsahuje zatiaľ len prvý vrchol.
-3. vytvorenie stromu pre druhý vrchol. Tento strom obsahuje zatiaľ len druhý vrchol.</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">public void </span>addPair(<span style="color:#f00;background-color:#faa">String node1</span>, <span style="color:#f00;background-color:#faa">String node2</span>, <span style="color:#f00;background-color:#faa">int weight</span>) {
+</code></pre><h2 id="pridávanie-hrán">Pridávanie hrán</h2>
+<p>Metóda na pridanie hrany bude pozostávať z troch krokov:</p>
+<ol>
+<li>pridanie hrany do prioritného frontu</li>
+<li>vytvorenie stromu pre prvý vrchol. Tento strom obsahuje zatiaľ len prvý vrchol.</li>
+<li>vytvorenie stromu pre druhý vrchol. Tento strom obsahuje zatiaľ len druhý vrchol.</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">addPair</span><span style="color:#333">(</span>String node1<span style="color:#333">,</span> String node2<span style="color:#333">,</span> <span style="color:#66f;font-weight:bold">int</span> weight<span style="color:#333">)</span> <span style="color:#333">{</span>
   <span style="color:#666;font-style:italic">// vytvor hranu
-</span><span style="color:#666;font-style:italic"></span>  <span style="color:#f00;background-color:#faa">Edge edge </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Edge(node1, node2, weight);
+</span><span style="color:#666;font-style:italic"></span>  Edge edge <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Edge<span style="color:#333">(</span>node1<span style="color:#333">,</span> node2<span style="color:#333">,</span> weight<span style="color:#333">);</span>
   <span style="color:#666;font-style:italic">// pridaj ju do prioritného frontu
-</span><span style="color:#666;font-style:italic"></span>  edges.<span style="color:#007">add</span>(edge);
+</span><span style="color:#666;font-style:italic"></span>  edges<span style="color:#333">.</span><span style="color:#007">add</span><span style="color:#333">(</span>edge<span style="color:#333">);</span>
   <span style="color:#666;font-style:italic">// pridaj dvojicu node1 =&gt; {node1}
-</span><span style="color:#666;font-style:italic"></span>  mapping.<span style="color:#007">put</span>(node1, 
-    <span style="color:#289;font-weight:bold">new</span> HashSet<span style="color:#333">&lt;</span>String<span style="color:#333">&gt;</span>(Collections.<span style="color:#007">singleton</span>(node1)));
+</span><span style="color:#666;font-style:italic"></span>  mapping<span style="color:#333">.</span><span style="color:#007">put</span><span style="color:#333">(</span>node1<span style="color:#333">,</span> 
+    <span style="color:#289;font-weight:bold">new</span> HashSet<span style="color:#333">&lt;</span>String<span style="color:#333">&gt;(</span>Collections<span style="color:#333">.</span><span style="color:#007">singleton</span><span style="color:#333">(</span>node1<span style="color:#333">)));</span>
   <span style="color:#666;font-style:italic">// pridaj dvojicu node2 =&gt; {node2}
-</span><span style="color:#666;font-style:italic"></span>  mapping.<span style="color:#007">put</span>(node2, 
-    <span style="color:#289;font-weight:bold">new</span> HashSet<span style="color:#333">&lt;</span>String<span style="color:#333">&gt;</span>(Collections.<span style="color:#007">singleton</span>(node2)));
-}</code></pre></div>
-<h2 id="hľadanie-minimálnej-kostry">Hľadanie minimálnej kostry</h2>
-
+</span><span style="color:#666;font-style:italic"></span>  mapping<span style="color:#333">.</span><span style="color:#007">put</span><span style="color:#333">(</span>node2<span style="color:#333">,</span> 
+    <span style="color:#289;font-weight:bold">new</span> HashSet<span style="color:#333">&lt;</span>String<span style="color:#333">&gt;(</span>Collections<span style="color:#333">.</span><span style="color:#007">singleton</span><span style="color:#333">(</span>node2<span style="color:#333">)));</span>
+<span style="color:#333">}</span>
+</code></pre></div><h2 id="hľadanie-minimálnej-kostry">Hľadanie minimálnej kostry</h2>
 <p>Hľadanie minimálnej kostry potom spočíva v prejdení prvkov prioritnej fronty (tá je usporiadaná podľa váh hrán). Pre každú hranu sa pozrieme do stromu prvého uzla a do stromu druhého uzla. Ak sú množiny uzlov rovnaké, znamená to, že uzly sú v rovnakom strome (podľa nášho príkladu majú rovnakú farbu) a teda hrana medzi nimi by utvorila cyklus.</p>
-
 <p>V opačnom prípade vezmeme všetky uzly zo stromu druhého uzla a pridáme ich medzi uzly stromu druhého uzla. To je jednoduchá množinová operácia (keďže stromy reprezentujeme ako množiny).</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">public Set</span><span style="color:#333">&lt;</span><span style="color:#f00;background-color:#faa">Edge&gt; getSpanningTree</span>() {
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> Set<span style="color:#333">&lt;</span>Edge<span style="color:#333">&gt;</span> <span style="color:#5ed;font-weight:bold">getSpanningTree</span><span style="color:#333">()</span> <span style="color:#333">{</span>
   <span style="color:#666;font-style:italic">// výsledná množina hrán kostry
-</span><span style="color:#666;font-style:italic"></span>  <span style="color:#f00;background-color:#faa">Set&lt;Edge&gt; spanningTreeEdges </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> HashSet<span style="color:#333">&lt;</span>Edge<span style="color:#333">&gt;</span>();
+</span><span style="color:#666;font-style:italic"></span>  Set<span style="color:#333">&lt;</span>Edge<span style="color:#333">&gt;</span> spanningTreeEdges <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> HashSet<span style="color:#333">&lt;</span>Edge<span style="color:#333">&gt;();</span>
   <span style="color:#666;font-style:italic">// hrany získavame v správnom poradí
-</span><span style="color:#666;font-style:italic"></span>  <span style="color:#289;font-weight:bold">for</span> (<span style="color:#f00;background-color:#faa">Edge edge </span><span style="color:#333">:</span> edges) {
+</span><span style="color:#666;font-style:italic"></span>  <span style="color:#289;font-weight:bold">for</span> <span style="color:#333">(</span>Edge edge <span style="color:#333">:</span> edges<span style="color:#333">)</span> <span style="color:#333">{</span>
     <span style="color:#666;font-style:italic">// množina uzlov v strome prvého uzla
-</span><span style="color:#666;font-style:italic"></span>    <span style="color:#f00;background-color:#faa">Set&lt;String&gt; tree1Nodes </span><span style="color:#333">=</span> mapping.<span style="color:#007">get</span>(edge.<span style="color:#007">getNode1</span>());
+</span><span style="color:#666;font-style:italic"></span>    Set<span style="color:#333">&lt;</span>String<span style="color:#333">&gt;</span> tree1Nodes <span style="color:#333">=</span> mapping<span style="color:#333">.</span><span style="color:#007">get</span><span style="color:#333">(</span>edge<span style="color:#333">.</span><span style="color:#007">getNode1</span><span style="color:#333">());</span>
     <span style="color:#666;font-style:italic">// množina uzlov v strome prvého uzla
-</span><span style="color:#666;font-style:italic"></span>    <span style="color:#f00;background-color:#faa">Set&lt;String&gt; tree2Nodes </span><span style="color:#333">=</span> mapping.<span style="color:#007">get</span>(edge.<span style="color:#007">getNode2</span>());
+</span><span style="color:#666;font-style:italic"></span>    Set<span style="color:#333">&lt;</span>String<span style="color:#333">&gt;</span> tree2Nodes <span style="color:#333">=</span> mapping<span style="color:#333">.</span><span style="color:#007">get</span><span style="color:#333">(</span>edge<span style="color:#333">.</span><span style="color:#007">getNode2</span><span style="color:#333">());</span>
 
-    <span style="color:#289;font-weight:bold">if</span>(tree1Nodes.<span style="color:#007">equals</span>(tree2Nodes)) {
+    <span style="color:#289;font-weight:bold">if</span><span style="color:#333">(</span>tree1Nodes<span style="color:#333">.</span><span style="color:#007">equals</span><span style="color:#333">(</span>tree2Nodes<span style="color:#333">))</span> <span style="color:#333">{</span>
       <span style="color:#666;font-style:italic">// množina uzlov v prvom strome je rovnaká
 </span><span style="color:#666;font-style:italic"></span>      <span style="color:#666;font-style:italic">// ako množina uzlov v druhom strome,
 </span><span style="color:#666;font-style:italic"></span>      <span style="color:#666;font-style:italic">// hranu preskočíme
-</span><span style="color:#666;font-style:italic"></span>    } <span style="color:#289;font-weight:bold">else</span> {
+</span><span style="color:#666;font-style:italic"></span>    <span style="color:#333">}</span> <span style="color:#289;font-weight:bold">else</span> <span style="color:#333">{</span>
       <span style="color:#666;font-style:italic">// vezmeme všetky uzly zo stromu
 </span><span style="color:#666;font-style:italic"></span>      <span style="color:#666;font-style:italic">// druhého uzla a presunieme ich medzi uzly stromu druhého uzla.
-</span><span style="color:#666;font-style:italic"></span>      tree1Nodes.<span style="color:#007">addAll</span>(tree2Nodes);
-      tree2Nodes.<span style="color:#007">clear</span>();
+</span><span style="color:#666;font-style:italic"></span>      tree1Nodes<span style="color:#333">.</span><span style="color:#007">addAll</span><span style="color:#333">(</span>tree2Nodes<span style="color:#333">);</span>
+      tree2Nodes<span style="color:#333">.</span><span style="color:#007">clear</span><span style="color:#333">();</span>
 
-      spanningTreeEdges.<span style="color:#007">add</span>(edge);
-    }
-  }
-  <span style="color:#289;font-weight:bold">return</span> spanningTreeEdges;
-}</code></pre></div>
+      spanningTreeEdges<span style="color:#333">.</span><span style="color:#007">add</span><span style="color:#333">(</span>edge<span style="color:#333">);</span>
+    <span style="color:#333">}</span>
+  <span style="color:#333">}</span>
+  <span style="color:#289;font-weight:bold">return</span> spanningTreeEdges<span style="color:#333">;</span>
+<span style="color:#333">}</span>
+</code></pre></div>
 </main>
 
     <footer>

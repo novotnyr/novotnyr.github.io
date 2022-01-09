@@ -59,30 +59,20 @@
 
 
 <main>
-<p>Reactome WS API dava k dispozicii <a href="http://www.reactome.org:8080/caBIOWebApp/services/caBIOService?wsdl | WSDL subor]], ktory sa odkazuje na [[http://www.reactome.org:8080/caBIOWebApp/docs/caBIOExtensionsXMLSchema.xsd">XSD schemu prenasanych dat</a>.</p>
-
+<p>Reactome WS API dava k dispozicii [XSD schemu prenasanych dat](<a href="http://www.reactome.org:8080/caBIOWebApp/services/caBIOService?wsdl">http://www.reactome.org:8080/caBIOWebApp/services/caBIOService?wsdl</a> | WSDL subor]], ktory sa odkazuje na [[http://www.reactome.org:8080/caBIOWebApp/docs/caBIOExtensionsXMLSchema.xsd ).</p>
 <p>Problem s publikovanym WSDL je v pouzivanom bindingu. WSDL vzniklo zjavne automatickym generovanim z Java tried publikovanych v stacku Axis1. Tento stack je vsak prastary a jediny styl sprav, ktory podporuje, je RPC/encoded.</p>
-
 <p>Kamenom urazu je to, ze ziadny z modernych frameworkov uz nepodporuje tento binding a ak podporuje (prikladom je Metro), tak len velmi limitovane.</p>
-
 <p>Dalsim problemom tohto WSDL je divne definovana schema - komplexne typy su prapodivne a CXF aj Metro na nich zlyhaju.</p>
-
-<p>Tretou nevyhodou je zapnutie sendMultiRefs v Axis2, ktora posiela spravy v kvazi „efektivnom tvare&rdquo; - data, ktore sa opakuju, su posielane len raz a namiesto nich je v SOAP sprave len odkaz na prislusny jedinecny element (atribut <code>href</code>). Tento mechanizmus je umozneny v pripade stylu rpc/encoded. Problem je, ze ziadny z frameworkov (okrem Axis1) nepodporuje odkazy na elementy.</p>
-
+<p>Tretou nevyhodou je zapnutie sendMultiRefs v Axis2, ktora posiela spravy v kvazi „efektivnom tvare&quot; - data, ktore sa opakuju, su posielane len raz a namiesto nich je v SOAP sprave len odkaz na prislusny jedinecny element (atribut <code>href</code>). Tento mechanizmus je umozneny v pripade stylu rpc/encoded. Problem je, ze ziadny z frameworkov (okrem Axis1) nepodporuje odkazy na elementy.</p>
 <p>Jedinym riesenim, ako spracovavat odpovede na Reactome WS, je pouzit stary Axis1 a vygenerovat z neho klienta automaticky.</p>
-
 <ul>
 <li>stiahneme si Axis1 (vo verzii 1.4 z aprila 2006)</li>
 <li>pridame si kniznice do CLASSPATH</li>
-
-<li><p>klienta vygenerujeme nasledovnym BATkom:</p>
-
-<pre><code>java -cp axis.jar;axis-ant.jar;commons-discovery-0.2.jar;commons-logging-1.0.4.jar;jaxrpc.jar;log4j-1.2.8.jar;saaj.jar;wsdl4j-1.5.1.jar org.apache.axis.wsdl.WSDL2Java http://www.reactome.org:8080/caBIOWebApp/services/caBIOService?wsdl
-</code></pre>
-
-<p>Vysledkom bude velky pocet <code>.java</code> suborov, ktore tvoria zdrojaky klienta. Tu sa vsak prejavi dalsia nekompatibilita WSDL suboru. Vacsina tried dedi od <code>Object[]</code> (ano, od pola objektov), co je zjavna hlupost. V <a href="http://www.reactome.org:8080/caBIOWebApp/docs/caBIG_Reactome_User_Guide.pdf">dokumentacii</a> k Reactome WS sa odporuca urobit hromadny search-and-replace, kde sa pole objektov nahradi <code>ArrayList</code>om. Inak povedane, treba urobit replace <code>extends java.lang.Object[]</code> na <code>extends java.util.ArrayList</code>. Pouzitie klienta je potom priamociare:</p>
-
-<pre><code>public class Reactome {
+<li>klienta vygenerujeme nasledovnym BATkom:</li>
+</ul>
+<pre tabindex="0"><code>java -cp axis.jar;axis-ant.jar;commons-discovery-0.2.jar;commons-logging-1.0.4.jar;jaxrpc.jar;log4j-1.2.8.jar;saaj.jar;wsdl4j-1.5.1.jar org.apache.axis.wsdl.WSDL2Java http://www.reactome.org:8080/caBIOWebApp/services/caBIOService?wsdl
+</code></pre><p>Vysledkom bude velky pocet <code>.java</code> suborov, ktore tvoria zdrojaky klienta. Tu sa vsak prejavi dalsia nekompatibilita WSDL suboru. Vacsina tried dedi od <code>Object[]</code> (ano, od pola objektov), co je zjavna hlupost. V <a href="http://www.reactome.org:8080/caBIOWebApp/docs/caBIG_Reactome_User_Guide.pdf">dokumentacii</a> k Reactome WS sa odporuca urobit hromadny search-and-replace, kde sa pole objektov nahradi <code>ArrayList</code>om. Inak povedane, treba urobit replace <code>extends java.lang.Object[]</code> na <code>extends java.util.ArrayList</code>. Pouzitie klienta je potom priamociare:</p>
+<pre tabindex="0"><code>public class Reactome {
 	public static void main(String[] args) throws Exception {
 		CaBioDomainWSEndPointServiceLocator locator = new CaBioDomainWSEndPointServiceLocator();
 		CaBioDomainWSEndPoint service = locator.getcaBIOService();
@@ -90,9 +80,7 @@
 		System.out.println(reaction.getName());
 	}
 }
-</code></pre></li>
-</ul>
-
+</code></pre>
 </main>
 
     <footer>

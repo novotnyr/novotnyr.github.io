@@ -63,22 +63,15 @@
 
 
 <main>
-
-
 <h1 id="setting-up-camel-via-maven">Setting up Camel via Maven</h1>
-
 <h2 id="create-a-new-project">Create a new project</h2>
-
 <p>Within shell, move to your Eclipse workspace and create a new project.</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">mvn archetype:generate</code></pre></div>
-<p>In the interactive mode, use the default archetype (press <code>Enter</code>) with latest version (press <code>Enter</code>), fill in the group ID (<code>sk.upjs.ics.novotnyr</code>), artifact ID (<code>camel-xmpp-example</code>) and use the default values for version and package.</p>
-
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">mvn archetype:generate
+</code></pre></div><p>In the interactive mode, use the default archetype (press <code>Enter</code>) with latest version (press <code>Enter</code>), fill in the group ID (<code>sk.upjs.ics.novotnyr</code>), artifact ID (<code>camel-xmpp-example</code>) and use the default values for version and package.</p>
 <p>A directory <code>camel-xmpp-example</code>·is created with a conventional subdirectory structure and a <code>pom.xml</code>.</p>
-
 <h2 id="upgrade-to-jdk6">Upgrade to JDK6</h2>
-
 <p>Camel is built upon JDK6. However, Maven uses JDK5 by default and therefore the default target is JDK5. Upgrade your configuration to create JDK6 compatible files.</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#070">&lt;plugins&gt;</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#070">&lt;plugins&gt;</span>
     <span style="color:#070">&lt;plugin&gt;</span>
         <span style="color:#070">&lt;groupId&gt;</span>org.apache.maven.plugins<span style="color:#070">&lt;/groupId&gt;</span>
         <span style="color:#070">&lt;artifactId&gt;</span>maven-compiler-plugin<span style="color:#070">&lt;/artifactId&gt;</span>
@@ -88,38 +81,29 @@
             <span style="color:#070">&lt;target&gt;</span>1.6<span style="color:#070">&lt;/target&gt;</span>
         <span style="color:#070">&lt;/configuration&gt;</span>
     <span style="color:#070">&lt;/plugin&gt;</span>
-<span style="color:#070">&lt;/plugins&gt;</span></code></pre></div>
-<h2 id="camel-dependencies">Camel dependencies</h2>
-
+<span style="color:#070">&lt;/plugins&gt;</span>
+</code></pre></div><h2 id="camel-dependencies">Camel dependencies</h2>
 <p>Add the following Camel dependency into <code>pom.xml</code></p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#070">&lt;dependency&gt;</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#070">&lt;dependency&gt;</span>
   <span style="color:#070">&lt;groupId&gt;</span>org.apache.camel<span style="color:#070">&lt;/groupId&gt;</span>
   <span style="color:#070">&lt;artifactId&gt;</span>camel-core<span style="color:#070">&lt;/artifactId&gt;</span>
   <span style="color:#070">&lt;version&gt;</span>2.9.0<span style="color:#070">&lt;/version&gt;</span>
-<span style="color:#070">&lt;/dependency&gt;</span></code></pre></div>
-<p>and compile project.</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">mvn compile</code></pre></div>
-<p>Maven will download dependencies from Maven Central repository.</p>
-
+<span style="color:#070">&lt;/dependency&gt;</span>
+</code></pre></div><p>and compile project.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">mvn compile
+</code></pre></div><p>Maven will download dependencies from Maven Central repository.</p>
 <h1 id="testing-a-simple-route">Testing a simple route</h1>
-
 <p>For test, we will use a simple stdin-stdout route according to the example code on <a href="http://camel.apache.org/walk-through-an-example.html">the Camel website</a>. We will type into the console, thus generating messages and Camel will route via <a href="http://camel.apache.org/stream.html">Stream Component</a> and print them to the <code>System.out</code>.</p>
-
 <h2 id="add-a-stream-component-dependency">Add a Stream Component dependency</h2>
-
 <p>Add a dependendy into your <code>pom.xml</code></p>
-
 <pre><code>&lt;dependency&gt;
     &lt;groupId&gt;org.apache.camel&lt;/groupId&gt;
     &lt;artifactId&gt;camel-stream&lt;/artifactId&gt;
     &lt;version&gt;2.9.0&lt;/version&gt;
 &lt;/dependency&gt;
 </code></pre>
-
 <h2 id="code-the-client">Code the client</h2>
-
 <p>Instead of <code>DefaultCamelContext</code>, we use the utility class <code>org.apache.camel.main.Main</code>, which allows us to spawn a Camel context and keep it running, while receiving our messages from stdin,.</p>
-
 <pre><code>package sk.upjs.ics.novotnyr;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.main.Main;
@@ -137,29 +121,22 @@ public class CamelTest {
     }
 }
 </code></pre>
-
 <p>Running the code produces a strange logging error:</p>
-
 <pre><code>SLF4J: Failed to load class &quot;org.slf4j.impl.StaticLoggerBinder&quot;.
 SLF4J: Defaulting to no-operation (NOP) logger implementation
 SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
 </code></pre>
-
 <p>Resolve it by adding a proper SLF4J logging implementation, for example <a href="http://logback.qos.ch/"><code>logback</code></a>.</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#070">&lt;dependency&gt;</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#070">&lt;dependency&gt;</span>
     <span style="color:#070">&lt;groupId&gt;</span>ch.qos.logback<span style="color:#070">&lt;/groupId&gt;</span>
     <span style="color:#070">&lt;artifactId&gt;</span>logback-classic<span style="color:#070">&lt;/artifactId&gt;</span>
     <span style="color:#070">&lt;version&gt;</span>1.0.0<span style="color:#070">&lt;/version&gt;</span>
-<span style="color:#070">&lt;/dependency&gt;</span></code></pre></div>
-<p>Running the example once again launches a context. Now we can submit messages by typing into the console. Camel will log each message delivery.</p>
-
+<span style="color:#070">&lt;/dependency&gt;</span>
+</code></pre></div><p>Running the example once again launches a context. Now we can submit messages by typing into the console. Camel will log each message delivery.</p>
 <p>Typing</p>
-
 <pre><code>Hello World
 </code></pre>
-
 <p>will log</p>
-
 <pre><code>14:20:13.356 [Camel (camel-1) thread #1 - stream://in] DEBUG o.a.camel.processor.SendProcessor - &gt;&gt;&gt;&gt; Endpoint[stream://out] Exchange[Message: Hello World]
 14:20:13.356 [Camel (camel-1) thread #1 - stream://in] DEBUG o.a.c.c.stream.StreamProducer - Writing as text: Hello World to java.io.PrintStream@1ee29820 using encoding: UTF-8
 Hello World

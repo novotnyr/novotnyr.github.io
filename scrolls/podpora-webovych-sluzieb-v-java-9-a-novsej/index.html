@@ -59,140 +59,102 @@
 
 
 <main>
-
-
 <p>Ak chceme v Jave zverejniť webovú službu v protokole SOAP, máme k dispozícii základnú špecifikáciu  <a href="http://jcp.org/en/jsr/detail?id=224">JSR 224: JavaTM API for XML-Based Web Services (JAX-WS) 2.0</a>. Stačí si vybrať jednu zo štyroch knižníc alebo bezpočtu aplikačných serverov, v ktorej službu implementujeme.</p>
-
 <p>Rokmi overená istota, ktorú si ukážeme, je SOAP služba implementovaná v knižnici <strong>Metro</strong>.</p>
-
 <p>Ukážeme si:</p>
-
 <ol>
 <li>Vytvorenie serverovskej časti: od kódu ku automaticky generovanému popisu služby cez WSDL.</li>
 <li>Vytvorenie klientskej časti: vygenerovaním kódu klienta na základe WSDL.</li>
 </ol>
-
 <h1 id="historické-okienko">Historické okienko</h1>
-
 <p>Knižnica <a href="https://github.com/eclipse-ee4j/metro-jax-ws">Metro</a> je odpradávna referenčnou implementáciou JAX-WS 2.0/JSR 224.</p>
-
 <p>Programátorov však viac zasiahli následné zmeny:</p>
-
 <ul>
 <li><strong>Java 6 (2006)</strong> pridala podporu pre SOAP do základnej knižnice. Kód Metra bol dodávaný priamo s Javou.</li>
 <li><strong>Java 9 (sept. 2017)</strong> vyhlásila JAX-WS 2.0 v základnej knižnici za zrelý na odstránenie.</li>
 <li><strong>Java 11 (sept. 2018)</strong> už JAX-WS 2.0 neobsahuje.</li>
 </ul>
-
 <p><em>Metro</em> prešlo aj politickými zmenami: pôvodne bolo vyvíjané v rámci projektu <strong>Glassfish</strong>, ale na konci októbra 2018 bolo presunuté pod nadáciu Eclipse,</p>
-
 <h1 id="serverovská-časť">Serverovská časť</h1>
-
 <p>Server vytvoríme v štyroch krokoch:</p>
-
 <ol>
 <li>Pridáme závislosti na knižnici Metro.</li>
 <li>Vytvoríme triedu so serverovským kódom.</li>
 <li>Pridáme anotáciu <code>@WebService</code></li>
 <li>Pripravíme triedu s metódou <code>main()</code>, kde spustíme server a publikujeme ho cez HTTP.</li>
 </ol>
-
 <h2 id="závislosti-v-mavene">Závislosti v Mavene</h2>
-
 <p>Serverovskú časť vytvoríme s použitím Mavenu, ktorý zavedie všetky nutné knižnice. Do <code>pom.xml</code> stačí pridať jedinú závislosť pre Metro.</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#070">&lt;dependency&gt;</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#070">&lt;dependency&gt;</span>
     <span style="color:#070">&lt;groupId&gt;</span>com.sun.xml.ws<span style="color:#070">&lt;/groupId&gt;</span>
     <span style="color:#070">&lt;artifactId&gt;</span>jaxws-rt<span style="color:#070">&lt;/artifactId&gt;</span>
     <span style="color:#070">&lt;version&gt;</span>2.3.3<span style="color:#070">&lt;/version&gt;</span>
-<span style="color:#070">&lt;/dependency&gt;</span></code></pre></div>
-<p>Netreba sa čudovať, hoci názov skupiny (<em>group id</em>) je staručký <code>com.sun.xml.ws</code>, samotný kód verzie 2.3.3 už pochádza z nadácie Eclipse.</p>
-
+<span style="color:#070">&lt;/dependency&gt;</span>
+</code></pre></div><p>Netreba sa čudovať, hoci názov skupiny (<em>group id</em>) je staručký <code>com.sun.xml.ws</code>, samotný kód verzie 2.3.3 už pochádza z nadácie Eclipse.</p>
 <h2 id="nastavenie-použitia-javy-11">Nastavenie použitia Javy 11</h2>
-
 <p>V <code>pom.xml</code> nezabudnime zapnúť podporu pre Javu 11:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#070">&lt;properties&gt;</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#070">&lt;properties&gt;</span>
     <span style="color:#070">&lt;maven.compiler.source&gt;</span>11<span style="color:#070">&lt;/maven.compiler.source&gt;</span>
     <span style="color:#070">&lt;maven.compiler.target&gt;</span>11<span style="color:#070">&lt;/maven.compiler.target&gt;</span>
-<span style="color:#070">&lt;/properties&gt;</span></code></pre></div>
-<h2 id="kód-serverovskej-časti">Kód serverovskej časti</h2>
-
+<span style="color:#070">&lt;/properties&gt;</span>
+</code></pre></div><h2 id="kód-serverovskej-časti">Kód serverovskej časti</h2>
 <p>Serverovská časť je úplne bežná trieda, s úplne bežnými metódami:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">package sk</span>.<span style="color:#007">upjs</span>.<span style="color:#007">ics</span>.<span style="color:#007">kopr</span>.<span style="color:#007">soap</span>.<span style="color:#007">server</span>;
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">package</span> <span style="color:#0e84b5;font-weight:bold">sk.upjs.ics.kopr.soap.server</span><span style="color:#333">;</span>
 
-<span style="color:#f00;background-color:#faa">import javax</span>.<span style="color:#007">jws</span>.<span style="color:#007">WebService</span>;
-<span style="color:#f00;background-color:#faa">import java</span>.<span style="color:#007">time</span>.<span style="color:#007">LocalDate</span>;
-<span style="color:#f00;background-color:#faa">import java</span>.<span style="color:#007">util</span>.<span style="color:#007">ArrayList</span>;
-<span style="color:#f00;background-color:#faa">import java</span>.<span style="color:#007">util</span>.<span style="color:#007">List</span>;
-<span style="color:#f00;background-color:#faa">import java</span>.<span style="color:#007">util</span>.<span style="color:#007">stream</span>.<span style="color:#007">Collectors</span>;
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">javax.jws.WebService</span><span style="color:#333">;</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">java.time.LocalDate</span><span style="color:#333">;</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">java.util.ArrayList</span><span style="color:#333">;</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">java.util.List</span><span style="color:#333">;</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">java.util.stream.Collectors</span><span style="color:#333">;</span>
 
 <span style="color:#555;font-weight:bold">@WebService</span>
-<span style="color:#f00;background-color:#faa">public class </span>DefaultTermService {
-    <span style="color:#f00;background-color:#faa">private List</span><span style="color:#333">&lt;</span><span style="color:#f00;background-color:#faa">Term&gt; terms </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> ArrayList<span style="color:#333">&lt;</span>Term<span style="color:#333">&gt;</span>();
+<span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">DefaultTermService</span> <span style="color:#333">{</span>
+    <span style="color:#289;font-weight:bold">private</span> List<span style="color:#333">&lt;</span>Term<span style="color:#333">&gt;</span> terms <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> ArrayList<span style="color:#333">&lt;</span>Term<span style="color:#333">&gt;();</span>
 
-    <span style="color:#f00;background-color:#faa">public DefaultTermService</span>() {
-        terms.<span style="color:#007">add</span>(<span style="color:#289;font-weight:bold">new</span> Term(LocalDate.<span style="color:#007">of</span>(2020, 12, 12), <span style="background-color:#e0e0ff">&#34;UINF/PAZ1c&#34;</span>, 100));
-        terms.<span style="color:#007">add</span>(<span style="color:#289;font-weight:bold">new</span> Term(LocalDate.<span style="color:#007">of</span>(2020, 12, 15), <span style="background-color:#e0e0ff">&#34;UINF/PAZ1c&#34;</span>, 75));
-        terms.<span style="color:#007">add</span>(<span style="color:#289;font-weight:bold">new</span> Term(LocalDate.<span style="color:#007">of</span>(2021, 1, 5), <span style="background-color:#e0e0ff">&#34;UINF/TVY1a&#34;</span>, 50));
-    }
+    <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">DefaultTermService</span><span style="color:#333">()</span> <span style="color:#333">{</span>
+        terms<span style="color:#333">.</span><span style="color:#007">add</span><span style="color:#333">(</span><span style="color:#289;font-weight:bold">new</span> Term<span style="color:#333">(</span>LocalDate<span style="color:#333">.</span><span style="color:#007">of</span><span style="color:#333">(</span>2020<span style="color:#333">,</span> 12<span style="color:#333">,</span> 12<span style="color:#333">),</span> <span style="background-color:#e0e0ff">&#34;UINF/PAZ1c&#34;</span><span style="color:#333">,</span> 100<span style="color:#333">));</span>
+        terms<span style="color:#333">.</span><span style="color:#007">add</span><span style="color:#333">(</span><span style="color:#289;font-weight:bold">new</span> Term<span style="color:#333">(</span>LocalDate<span style="color:#333">.</span><span style="color:#007">of</span><span style="color:#333">(</span>2020<span style="color:#333">,</span> 12<span style="color:#333">,</span> 15<span style="color:#333">),</span> <span style="background-color:#e0e0ff">&#34;UINF/PAZ1c&#34;</span><span style="color:#333">,</span> 75<span style="color:#333">));</span>
+        terms<span style="color:#333">.</span><span style="color:#007">add</span><span style="color:#333">(</span><span style="color:#289;font-weight:bold">new</span> Term<span style="color:#333">(</span>LocalDate<span style="color:#333">.</span><span style="color:#007">of</span><span style="color:#333">(</span>2021<span style="color:#333">,</span> 1<span style="color:#333">,</span> 5<span style="color:#333">),</span> <span style="background-color:#e0e0ff">&#34;UINF/TVY1a&#34;</span><span style="color:#333">,</span> 50<span style="color:#333">));</span>
+    <span style="color:#333">}</span>
 
-    <span style="color:#f00;background-color:#faa">public List</span><span style="color:#333">&lt;</span><span style="color:#f00;background-color:#faa">Term&gt; getTerms</span>(<span style="color:#f00;background-color:#faa">String courseCode</span>) {
-        <span style="color:#289;font-weight:bold">return</span> terms.<span style="color:#007">stream</span>()
-                .<span style="color:#007">filter</span>(term <span style="color:#333">-&gt;</span> term.<span style="color:#007">getCourseCode</span>().<span style="color:#007">equals</span>(courseCode))
-                .<span style="color:#007">collect</span>(Collectors.<span style="color:#007">toList</span>());
-    }
-}</code></pre></div>
-<h2 id="pridanie-anotácie-webservice">Pridanie anotácie <code>@WebService</code></h2>
-
+    <span style="color:#289;font-weight:bold">public</span> List<span style="color:#333">&lt;</span>Term<span style="color:#333">&gt;</span> <span style="color:#5ed;font-weight:bold">getTerms</span><span style="color:#333">(</span>String courseCode<span style="color:#333">)</span> <span style="color:#333">{</span>
+        <span style="color:#289;font-weight:bold">return</span> terms<span style="color:#333">.</span><span style="color:#007">stream</span><span style="color:#333">()</span>
+                <span style="color:#333">.</span><span style="color:#007">filter</span><span style="color:#333">(</span>term <span style="color:#333">-&gt;</span> term<span style="color:#333">.</span><span style="color:#007">getCourseCode</span><span style="color:#333">().</span><span style="color:#007">equals</span><span style="color:#333">(</span>courseCode<span style="color:#333">))</span>
+                <span style="color:#333">.</span><span style="color:#007">collect</span><span style="color:#333">(</span>Collectors<span style="color:#333">.</span><span style="color:#007">toList</span><span style="color:#333">());</span>
+    <span style="color:#333">}</span>
+<span style="color:#333">}</span>
+</code></pre></div><h2 id="pridanie-anotácie-webservice">Pridanie anotácie <code>@WebService</code></h2>
 <p>Ak chceme zverejniť triedu ako SOAPovú webovú službu, dodáme anotáciu <code>@javax.jws.WebService</code>.</p>
-
-<pre><code>@WebService
+<pre tabindex="0"><code>@WebService
 public class DefaultTermService {
-</code></pre>
-
-<h2 id="publikovanie-služby">Publikovanie služby</h2>
-
+</code></pre><h2 id="publikovanie-služby">Publikovanie služby</h2>
 <p>Službu vypublikujeme zavolaním statickej metódy <code>publish</code> na triede <code>Endpoint</code>.</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">import javax</span>.<span style="color:#007">xml</span>.<span style="color:#007">ws</span>.<span style="color:#007">Endpoint</span>;
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">javax.xml.ws.Endpoint</span><span style="color:#333">;</span>
 
-<span style="color:#f00;background-color:#faa">public class </span>Server {
-    <span style="color:#f00;background-color:#faa">public static void main</span>(<span style="color:#f00;background-color:#faa">String[] args</span>) {
-        Endpoint.<span style="color:#007">publish</span>(<span style="background-color:#e0e0ff">&#34;http://localhost:8888/terms&#34;</span>, <span style="color:#289;font-weight:bold">new</span> DefaultTermService());
-    }
-}</code></pre></div>
-<p>Publikovanie potrebuje dva parametre:</p>
-
+<span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">Server</span> <span style="color:#333">{</span>
+    <span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">static</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">main</span><span style="color:#333">(</span>String<span style="color:#333">[]</span> args<span style="color:#333">)</span> <span style="color:#333">{</span>
+        Endpoint<span style="color:#333">.</span><span style="color:#007">publish</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;http://localhost:8888/terms&#34;</span><span style="color:#333">,</span> <span style="color:#289;font-weight:bold">new</span> DefaultTermService<span style="color:#333">());</span>
+    <span style="color:#333">}</span>
+<span style="color:#333">}</span>
+</code></pre></div><p>Publikovanie potrebuje dva parametre:</p>
 <ul>
 <li>URL adresu, na ktorej pobeží server. V ukážke máme lokálny server na porte 8888.</li>
 <li>objekt služby s anotáciou <code>@WebService</code>, ktorá obslúži požiadavky.</li>
 </ul>
-
-<p>Triedu s metódou <code>main()</code> teraz môžeme spustiť, čím naštartujeme interný server nad HTTP. Cez prehliadač môžeme navštíviť adresu <a href="http://localhost:8888/terms">http://localhost:8888/terms</a>. Uvidíme informačnú stránku, ktorá obsahuje odkaz na popisovač webovej služby WSDL.</p>
-
+<p>Triedu s metódou <code>main()</code> teraz môžeme spustiť, čím naštartujeme interný server nad HTTP. Cez prehliadač môžeme navštíviť adresu http://localhost:8888/terms. Uvidíme informačnú stránku, ktorá obsahuje odkaz na popisovač webovej služby WSDL.</p>
 <h3 id="chybové-hlášky">Chybové hlášky?</h3>
-
 <p>Pri spustení možno uvidíme varovanie:</p>
-
-<pre><code>WARNING: Illegal reflective access by com.sun.xml.ws.model.Injector (file:/Users/novotnyr/.m2/repository/com/sun/xml/ws/jaxws-rt/2.3.2/jaxws-rt-2.3.2.jar) to method java.lang.ClassLoader.defineClass(java.lang.String,byte[],int,int)
-</code></pre>
-
-<p>Ide o známu <a href="https://github.com/eclipse-ee4j/metro-jax-ws/issues/60">chybu č. 60</a> v knižnici Metro, ktorú stačí ignorovať.</p>
-
+<pre tabindex="0"><code>WARNING: Illegal reflective access by com.sun.xml.ws.model.Injector (file:/Users/novotnyr/.m2/repository/com/sun/xml/ws/jaxws-rt/2.3.2/jaxws-rt-2.3.2.jar) to method java.lang.ClassLoader.defineClass(java.lang.String,byte[],int,int)
+</code></pre><p>Ide o známu <a href="https://github.com/eclipse-ee4j/metro-jax-ws/issues/60">chybu č. 60</a> v knižnici Metro, ktorú stačí ignorovať.</p>
 <h1 id="klientska-časť">Klientska časť</h1>
-
 <p>Server zverejnil svoju službu na adrese <code>http://localhost:8888/terms</code>, a zároveň poskytol aj WSDL. Vďaka tomu vieme automaticky vygenerovať klientsky kód!</p>
-
 <p>Vytvoríme si extra projekt, <code>metro-java11-client</code>, v ktorom budeme udržiavať zdrojáky klientskej časti.</p>
-
 <h2 id="kde-je-wsimport">Kde je <code>wsimport</code>?</h2>
-
 <p>V predošlých verziách Javy existoval nástroj <code>wsimport</code>. Ten už v bežnej distribúcii nie je tak ľahko dostupný (zmenil sa na shellskripty).</p>
-
 <p>Namiesto neho použijeme mavenovský plugin.</p>
-
 <h3 id="generujeme-zdrojáky-mavenovským-pluginom">Generujeme zdrojáky mavenovským pluginom</h3>
-
 <p>Na generovanie použijeme mavenovský plugin <code>jaxws-maven-plugin</code>. Do klientskeho <code>pom.xml</code> dodáme:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#070">&lt;plugins&gt;</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#070">&lt;plugins&gt;</span>
     <span style="color:#070">&lt;plugin&gt;</span>
         <span style="color:#070">&lt;groupId&gt;</span>org.codehaus.mojo<span style="color:#070">&lt;/groupId&gt;</span>
         <span style="color:#070">&lt;artifactId&gt;</span>jaxws-maven-plugin<span style="color:#070">&lt;/artifactId&gt;</span>
@@ -203,46 +165,33 @@ public class DefaultTermService {
             <span style="color:#070">&lt;/wsdlUrls&gt;</span>
         <span style="color:#070">&lt;/configuration&gt;</span>
     <span style="color:#070">&lt;/plugin&gt;</span>
-<span style="color:#070">&lt;/plugins&gt;</span></code></pre></div>
-<p>Samozrejme, predpokladáme, že i klientsky projekt obsahuje:</p>
-
+<span style="color:#070">&lt;/plugins&gt;</span>
+</code></pre></div><p>Samozrejme, predpokladáme, že i klientsky projekt obsahuje:</p>
 <ul>
 <li>závislosť na <code>com.sun.xml.ws:jaxws-rt:2.3.3</code></li>
 <li>a je pripravený pre zostavenie nad Javou 11</li>
 </ul>
-
 <p>Nechajme si vygenerovať zdrojové kódy pre klienta:</p>
-
-<pre><code>mvn clean jaxws:wsimport compile
-</code></pre>
-
-<p>Plugin vygeneruje niekoľko súborov, ktoré sa ocitnú v adresári <code>target/generated-sources/wsimport</code>. Keďže ide o automaticky generované triedy, niektoré názvy môžu byť čudesné (napríklad <code>DefaultTermServiceService</code>).</p>
-
+<pre tabindex="0"><code>mvn clean jaxws:wsimport compile
+</code></pre><p>Plugin vygeneruje niekoľko súborov, ktoré sa ocitnú v adresári <code>target/generated-sources/wsimport</code>. Keďže ide o automaticky generované triedy, niektoré názvy môžu byť čudesné (napríklad <code>DefaultTermServiceService</code>).</p>
 <p>Následne ich priamo skompiluje, čím ich sprístupní v zdrojových kódoch klienta, ktorého ihneď vytvoríme.</p>
-
 <h3 id="použitie-klienta-v-kóde">Použitie klienta v kóde</h3>
-
 <p>Klienta použijeme jednoducho:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">public class </span>Client {
-    <span style="color:#f00;background-color:#faa">public static void main</span>(<span style="color:#f00;background-color:#faa">String[] args</span>) {
-        <span style="color:#f00;background-color:#faa">DefaultTermServiceService serviceLocator </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> DefaultTermServiceService();
-        <span style="color:#f00;background-color:#faa">DefaultTermService termService </span><span style="color:#333">=</span> serviceLocator.<span style="color:#007">getDefaultTermServicePort</span>();
-        <span style="color:#f00;background-color:#faa">List&lt;Term&gt; terms </span><span style="color:#333">=</span> termService.<span style="color:#007">getTerms</span>(<span style="background-color:#e0e0ff">&#34;UINF/PAZ1c&#34;</span>);
-        <span style="color:#289;font-weight:bold">for</span> (<span style="color:#f00;background-color:#faa">Term term </span><span style="color:#333">:</span> terms) {
-            System.<span style="color:#007">out</span>.<span style="color:#007">printf</span>(<span style="background-color:#e0e0ff">&#34;%s - %d slots left\n&#34;</span>, term.<span style="color:#007">getDate</span>(), term.<span style="color:#007">getFreeSlots</span>());
-        }
-    }
-}</code></pre></div>
-<p>Klient sa bude pripájať k URL, ktorá sa prevezme z WSDL.</p>
-
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">Client</span> <span style="color:#333">{</span>
+    <span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">static</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">main</span><span style="color:#333">(</span>String<span style="color:#333">[]</span> args<span style="color:#333">)</span> <span style="color:#333">{</span>
+        DefaultTermServiceService serviceLocator <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> DefaultTermServiceService<span style="color:#333">();</span>
+        DefaultTermService termService <span style="color:#333">=</span> serviceLocator<span style="color:#333">.</span><span style="color:#007">getDefaultTermServicePort</span><span style="color:#333">();</span>
+        List<span style="color:#333">&lt;</span>Term<span style="color:#333">&gt;</span> terms <span style="color:#333">=</span> termService<span style="color:#333">.</span><span style="color:#007">getTerms</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;UINF/PAZ1c&#34;</span><span style="color:#333">);</span>
+        <span style="color:#289;font-weight:bold">for</span> <span style="color:#333">(</span>Term term <span style="color:#333">:</span> terms<span style="color:#333">)</span> <span style="color:#333">{</span>
+            System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">printf</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;%s - %d slots left\n&#34;</span><span style="color:#333">,</span> term<span style="color:#333">.</span><span style="color:#007">getDate</span><span style="color:#333">(),</span> term<span style="color:#333">.</span><span style="color:#007">getFreeSlots</span><span style="color:#333">());</span>
+        <span style="color:#333">}</span>
+    <span style="color:#333">}</span>
+<span style="color:#333">}</span>
+</code></pre></div><p>Klient sa bude pripájať k URL, ktorá sa prevezme z WSDL.</p>
 <h1 id="záver">Záver</h1>
-
 <p>Takúto podporu webových služieb môžeme považovať za vhodnú pre mnoho jednoduchých prípadov (jednoduchá trieda, málo metód, HTTP binding, vyhovujúci HTTP server, žiadne závislosti). Samozrejme, v komplexnejších prípadoch si asi s touto verziou nevystačíme a budeme potrebovať použiť niektorú z ťažkotonážnejších implementácií, alebo jej zahrnutie do aplikačného servera s Java EE.</p>
-
 <p>Napriek tomu je však už i takáto jednoduchá podpora minimálne ekvivalentná s použitím technológie RMI.</p>
-
 <h1 id="ukážkové-projekty">Ukážkové projekty</h1>
-
 <ul>
 <li><strong>Serverovský</strong> repozitár <a href="https://github.com/novotnyr/kopr-soap-server-2020">novotnyr/kopr-soap-server-2020)</a> obsahuje SOAP server</li>
 <li><strong>Klientsky</strong> repozitár  <a href="https://github.com/novotnyr/kopr-soap-server-2020">novotnyr/kopr-soap-klient-2020)</a> obsahuje podporu pre generovanie kódu klienta s ukážkovým použitím.</li>

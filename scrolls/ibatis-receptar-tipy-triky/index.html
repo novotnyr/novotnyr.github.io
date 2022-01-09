@@ -59,16 +59,11 @@
 
 
 <main>
-
-
 <h1 id="používanie-bodkočiarok">Používanie bodkočiarok</h1>
-
 <p>Zvážte používanie bodkočiarok v dopytoch - môže to pôsobiť veľa problémov. Napr. ovládač typu NET pre DB2 spokojne skonzumuje dopyt ukončený bodkočiarkou. Žiaľ, JCC verzia ovládača sa zakusne a vyhlási syntaktickú chybu.</p>
-
-<h1 id="vzťahy-1-1-s-použitím-resultmapy-a-explicitné-vzťahy">Vzťahy 1:1 s použitím ResultMapy a explicitné vzťahy</h1>
-
+<h1 id="vzťahy-11-s-použitím-resultmapy-a-explicitné-vzťahy">Vzťahy 1:1 s použitím ResultMapy a explicitné vzťahy</h1>
 <p>Majme</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#070">&lt;resultMap</span> <span style="color:#007">class=</span><span style="background-color:#e0e0ff">&#34;libris.Book&#34;</span> <span style="color:#007">id=</span><span style="background-color:#e0e0ff">&#34;bookRM&#34;</span> <span style="color:#007">groupBy=</span><span style="background-color:#e0e0ff">&#34;id&#34;</span> <span style="color:#070">&gt;</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#070">&lt;resultMap</span> <span style="color:#007">class=</span><span style="background-color:#e0e0ff">&#34;libris.Book&#34;</span> <span style="color:#007">id=</span><span style="background-color:#e0e0ff">&#34;bookRM&#34;</span> <span style="color:#007">groupBy=</span><span style="background-color:#e0e0ff">&#34;id&#34;</span> <span style="color:#070">&gt;</span>
   <span style="color:#070">&lt;result</span> <span style="color:#007">property=</span><span style="background-color:#e0e0ff">&#34;id&#34;</span> <span style="color:#007">column=</span><span style="background-color:#e0e0ff">&#34;id_book&#34;</span><span style="color:#070">/&gt;</span>
   <span style="color:#070">&lt;result</span> <span style="color:#007">property=</span><span style="background-color:#e0e0ff">&#34;title&#34;</span> <span style="color:#007">column=</span><span style="background-color:#e0e0ff">&#34;title&#34;</span><span style="color:#070">/&gt;</span>   
 
@@ -76,26 +71,24 @@
   <span style="color:#070">&lt;result</span> <span style="color:#007">property=</span><span style="background-color:#e0e0ff">&#34;status.borrowedTo&#34;</span> <span style="color:#007">column=</span><span style="background-color:#e0e0ff">&#34;borrowee&#34;</span><span style="color:#070">/&gt;</span>    
 
   <span style="color:#070">&lt;result</span> <span style="color:#007">property=</span><span style="background-color:#e0e0ff">&#34;series&#34;</span> <span style="color:#007">resultMap=</span><span style="background-color:#e0e0ff">&#34;Book.seriesRM&#34;</span><span style="color:#070">/&gt;</span>       
-<span style="color:#070">&lt;/resultMap&gt;</span></code></pre></div>
-<p>a triedu</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">public class Book implements </span>Serializable {
-  <span style="color:#f00;background-color:#faa">protected Integer </span>id;
+<span style="color:#070">&lt;/resultMap&gt;</span>
+</code></pre></div><p>a triedu</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">Book</span> <span style="color:#289;font-weight:bold">implements</span> Serializable <span style="color:#333">{</span>
+  <span style="color:#289;font-weight:bold">protected</span> Integer id<span style="color:#333">;</span>
   
-  <span style="color:#f00;background-color:#faa">protected String </span>title <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> String();
+  <span style="color:#289;font-weight:bold">protected</span> String title <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> String<span style="color:#333">();</span>
 
-  <span style="color:#f00;background-color:#faa">private BookStatus </span>status;
+  <span style="color:#289;font-weight:bold">private</span> BookStatus status<span style="color:#333">;</span>
 
-  <span style="color:#f00;background-color:#faa">private SimpleSeries </span>series <span style="color:#333">=</span> SimpleSeries.<span style="color:#007">EMPTY_SERIES</span>;</code></pre></div>
-<p>Všimnime si dve situácie:</p>
-
+  <span style="color:#289;font-weight:bold">private</span> SimpleSeries series <span style="color:#333">=</span> SimpleSeries<span style="color:#333">.</span><span style="color:#007">EMPTY_SERIES</span><span style="color:#333">;</span>
+</code></pre></div><p>Všimnime si dve situácie:</p>
 <ol>
 <li>premenná <code>status</code> je v <code>Book</code>u nastavená na <code>null</code> a v mapovaní je reprezentovaná pomocou explicitného stĺpcového mapovania. iBatis v tomto prípade vytvorí novú inštanciu <code>BookStatus</code>u a nastaví jej <code>requestCount</code> a <code>borrowedTo</code> zo stĺpcov <code>request_count</code> a <code>borrowee</code>.</li>
-
-<li><p>premenná <code>series</code> nie je v <code>Book</code>u nastavená na <code>null</code>. Ak by sme mapovali pomocou explicitného stĺpcového mapovania, iBatis podľa všetkého nevie nastaviť hodnoty z príslušných stĺpcov na už existujúcej inštancii triedy <code>SimpleSeries</code>.
-Obísť to možno pomocou použitia ďalšej <code>resultMap</code>y, čiže pomocou</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#070">&lt;result</span> <span style="color:#007">property=</span><span style="background-color:#e0e0ff">&#34;series&#34;</span> <span style="color:#007">resultMap=</span><span style="background-color:#e0e0ff">&#34;Book.seriesRM&#34;</span><span style="color:#070">/&gt;</span>       </code></pre></div></li>
+<li>premenná <code>series</code> nie je v <code>Book</code>u nastavená na <code>null</code>. Ak by sme mapovali pomocou explicitného stĺpcového mapovania, iBatis podľa všetkého nevie nastaviť hodnoty z príslušných stĺpcov na už existujúcej inštancii triedy <code>SimpleSeries</code>.
+Obísť to možno pomocou použitia ďalšej <code>resultMap</code>y, čiže pomocou</li>
 </ol>
-
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml">  <span style="color:#070">&lt;result</span> <span style="color:#007">property=</span><span style="background-color:#e0e0ff">&#34;series&#34;</span> <span style="color:#007">resultMap=</span><span style="background-color:#e0e0ff">&#34;Book.seriesRM&#34;</span><span style="color:#070">/&gt;</span>       
+</code></pre></div>
 </main>
 
     <footer>

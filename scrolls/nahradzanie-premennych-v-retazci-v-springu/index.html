@@ -59,62 +59,43 @@
 
 
 <main>
-
-
 <p>Spring má geniálne vymyslený systém <em>properties</em>, kde možno ukladať rozličné konfiguračné nastavenia v <em>prostredí</em> (<code>Environment</code>) a robiť s tým kdejaké finty. Čo keď však potrebujeme úplne hlúpu vec: nahradiť premenné v reťazci konkrétnymi namapovanými hodnotami?</p>
-
 <p>Zoberme si reťazec:</p>
-
-<pre><code>http://${hostname}/${path}
-</code></pre>
-
-<p>Zoberme si dve premenné — <strong>host</strong> s hodnotou <code>localhost</code> a <strong>path</strong> s hodnotou <code>qofola</code>.</p>
-
+<pre tabindex="0"><code>http://${hostname}/${path}
+</code></pre><p>Zoberme si dve premenné — <strong>host</strong> s hodnotou <code>localhost</code> a <strong>path</strong> s hodnotou <code>qofola</code>.</p>
 <p>Po nahradení by sme chceli získať krásnu URL:</p>
-
-<pre><code>http://localhost/qofola
-</code></pre>
-
-<h2 id="spring">Spring!</h2>
-
+<pre tabindex="0"><code>http://localhost/qofola
+</code></pre><h2 id="spring">Spring!</h2>
 <p>Trieda <a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/util/PropertyPlaceholderHelper.html#replacePlaceholders-java.lang.String-org.springframework.util.PropertyPlaceholderHelper.PlaceholderResolver-"><code>PropertyPlaceholderHelper</code></a> síce nemá úplne ideálny názov, ale má dve základné metódy:</p>
-
 <ul>
 <li><a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/util/PropertyPlaceholderHelper.html#replacePlaceholders-java.lang.String-java.util.Properties-"><code>replacePlaceholders(String, java.util.Properties)</code></a></li>
 <li><a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/util/PropertyPlaceholderHelper.html#replacePlaceholders-java.lang.String-org.springframework.util.PropertyPlaceholderHelper.PlaceholderResolver-"><code>replacePlaceholders(String, PlaceholderResolver)</code></a></li>
 </ul>
-
 <p>Obe dokážu zobrať reťazec a mapovanie medzi názvami premenných a ich hodnotami. Mapovanie môže byť buď v podobe starých dobrých javáckych <code>Properties</code>, alebo v podobe <em>resolvera</em>, čo je prakticky jednometódový interfejs (lambda!) kde zadefinujeme mapovanie.</p>
-
 <p>Okrem toho má aj dva konštruktory, kde môžeme povedať:</p>
-
 <ul>
 <li>reťazec uvádzajúci premennú (<em>prefix</em>). V našom prípade ide o <code>${</code>, alebo konštantu <a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/util/SystemPropertyUtils.html#PLACEHOLDER_PREFIX"><code>SystemPropertyUtils.PLACEHOLDER_PREFIX</code></a></li>
 <li>reťazec ukončujúci premennú (<em>suffix</em>) — teda o <code>}</code>, či konštantu <a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/util/SystemPropertyUtils.html#PLACEHOLDER_SUFFIX"><code>SystemPropertyUtils.PLACEHOLDER_SUFFIX</code></a>.</li>
 </ul>
-
 <p>Môžeme si tak vytvoriť helper pre klasický vzhľad <code>${premennej}</code>, alebo zadefinovať napríklad mustachovský <code>{{spôsob}}</code>.</p>
-
 <p>Klasika známa zo shellu či Mavenu má v Springu už zadefinované konštanty a teda môžeme si helper vytvoriť nasledovne:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">PropertyPlaceholderHelper helper 
-</span><span style="color:#f00;background-color:#faa">  </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> PropertyPlaceholderHelper(
-      SystemPropertyUtils.<span style="color:#007">PLACEHOLDER_PREFIX</span>,
-      SystemPropertyUtils.<span style="color:#007">PLACEHOLDER_SUFFIX</span>);</code></pre></div>
-<p>Nahrádzanie je potom hračka:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">Properties properties </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Properties();
-properties.<span style="color:#007">setProperty</span>(<span style="background-color:#e0e0ff">&#34;host&#34;</span>, <span style="background-color:#e0e0ff">&#34;localhost&#34;</span>);
-properties.<span style="color:#007">setProperty</span>(<span style="background-color:#e0e0ff">&#34;path&#34;</span>, <span style="background-color:#e0e0ff">&#34;qofola&#34;</span>);
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">PropertyPlaceholderHelper helper 
+  <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> PropertyPlaceholderHelper<span style="color:#333">(</span>
+      SystemPropertyUtils<span style="color:#333">.</span><span style="color:#007">PLACEHOLDER_PREFIX</span><span style="color:#333">,</span>
+      SystemPropertyUtils<span style="color:#333">.</span><span style="color:#007">PLACEHOLDER_SUFFIX</span><span style="color:#333">);</span>
+</code></pre></div><p>Nahrádzanie je potom hračka:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Properties properties <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Properties<span style="color:#333">();</span>
+properties<span style="color:#333">.</span><span style="color:#007">setProperty</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;host&#34;</span><span style="color:#333">,</span> <span style="background-color:#e0e0ff">&#34;localhost&#34;</span><span style="color:#333">);</span>
+properties<span style="color:#333">.</span><span style="color:#007">setProperty</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;path&#34;</span><span style="color:#333">,</span> <span style="background-color:#e0e0ff">&#34;qofola&#34;</span><span style="color:#333">);</span>
 
-<span style="color:#f00;background-color:#faa">String url </span><span style="color:#333">=</span> helper.<span style="color:#007">replacePlaceholders</span>(urlTemplate, properties);</code></pre></div>
-<p>Bonusový konštruktor podporuje aj ďalšie argumenty:</p>
-
+String url <span style="color:#333">=</span> helper<span style="color:#333">.</span><span style="color:#007">replacePlaceholders</span><span style="color:#333">(</span>urlTemplate<span style="color:#333">,</span> properties<span style="color:#333">);</span>
+</code></pre></div><p>Bonusový konštruktor podporuje aj ďalšie argumenty:</p>
 <ul>
 <li>prefix (zmienený hore)</li>
 <li>suffix (ten sme tiež už videli)</li>
 <li>oddeľovač hodnoty: ak ho nastavíme správne, môžu premenné obsahovať aj implicitné (<em>default</em>) hodnoty. Takto môžeme mať: <code>${host:localhost}</code>, čo znamená, že <code>localhost</code> sa použije, ak nenastavíme žiadne špeciálne mapovanie pre premennú <code>host</code>.</li>
 <li>ignorovanie nedefinovaných premenných. Ak sa premenná nenájde v mapovaní, začne <em>helper</em> frflať a hádzať výnimky. Ak použijeme <strong>true</strong>, helper jednoducho nechá nedefinované premenné bez zmeny.</li>
 </ul>
-
 <p><em>Helper</em> automaticky podporuje rekurzívne kľúče aj hodnoty. Ak akýkoľvek kľúč či hodnota obsahuje vnorené kľúče, tie sa budú “rozbaľovať”, kým sa celý reťazec nepodarí úspešne ponahrádzať hodnotami.</p>
 
 </main>

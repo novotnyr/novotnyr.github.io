@@ -59,72 +59,53 @@
 
 
 <main>
-
-
 <p>AMQP protocol is a useful mechanism to tackle cross-component integration features. When running integration tests, sometimes it’s useful to run integration tests without a full-fledged broker at hand. Especially, when RabbitMQ is an Erlang-based binary expected to run besides a Java-powered application.</p>
-
 <p>Let’s use an alternative solution. <a href="https://qpid.apache.org/index.html">Apache Qpid</a> is a messaging solution and broker that is implemented in Java. In addition, it supports the following features:</p>
-
 <ul>
 <li>Supports the AMQP 0.9.1 provided by RabbitMQ,</li>
 <li>It’s embeddable,</li>
 <li>It’s able to run fully in RAM.</li>
 </ul>
-
 <h1 id="creating-embeddable-in-memory-qpid">Creating Embeddable In Memory QPid</h1>
-
 <p>There are multiple examples that embed an in-memory instance of Qpid. However, most of them are focused on the older 6.x line. More recent Qpid 7.x has changed the API rather dramatically.</p>
-
 <p>The roadmap will be as follows:</p>
-
 <ol>
 <li>Add the necessary Maven dependencies,</li>
 <li>Add the configuration file,</li>
 <li>Add the <em>runner</em> code that will launch an embedded instance of Qpid.</li>
 </ol>
-
 <h2 id="maven-dependencies">Maven Dependencies</h2>
-
 <p>Apache Qpid consists of multiple modules, that are to be added as <code>pom.xml</code> dependencies. All dependencies belong to the <code>org.apache.qpid</code> group ID.</p>
-
 <ul>
 <li><code>qpid-broker-core</code> with the core classes of the broker</li>
 <li><code>qpid-broker-plugins-amqp-0-8-protocol</code> . Despite the misleading name, this module adds support for the ancient AMQP 0.8, but also for AMQP 0.9 and AMQP 0.9.1 that are supported by RabbitMQ.</li>
-
-<li><p><code>qpid-broker-plugins-memory-store</code> add support for in-memory message handling.</p>
-
-<pre><code>&lt;dependency&gt;
-&lt;groupId&gt;org.apache.qpid&lt;/groupId&gt;
-&lt;artifactId&gt;qpid-broker-core&lt;/artifactId&gt;
-&lt;version&gt;7.1.0&lt;/version&gt;
-&lt;/dependency&gt;
-&lt;dependency&gt;
-&lt;groupId&gt;org.apache.qpid&lt;/groupId&gt;
-&lt;artifactId&gt;qpid-broker-plugins-amqp-0-8-protocol&lt;/artifactId&gt;
-&lt;version&gt;7.1.0&lt;/version&gt;
-&lt;/dependency&gt;
-&lt;dependency&gt;
-&lt;groupId&gt;org.apache.qpid&lt;/groupId&gt;
-&lt;artifactId&gt;qpid-broker-plugins-memory-store&lt;/artifactId&gt;
-&lt;version&gt;7.1.0&lt;/version&gt;
-&lt;/dependency&gt;
-</code></pre></li>
+<li><code>qpid-broker-plugins-memory-store</code> add support for in-memory message handling.</li>
 </ul>
-
-<h2 id="broker-configuration">Broker Configuration</h2>
-
+<pre tabindex="0"><code>&lt;dependency&gt;
+    &lt;groupId&gt;org.apache.qpid&lt;/groupId&gt;
+    &lt;artifactId&gt;qpid-broker-core&lt;/artifactId&gt;
+    &lt;version&gt;7.1.0&lt;/version&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.apache.qpid&lt;/groupId&gt;
+    &lt;artifactId&gt;qpid-broker-plugins-amqp-0-8-protocol&lt;/artifactId&gt;
+    &lt;version&gt;7.1.0&lt;/version&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.apache.qpid&lt;/groupId&gt;
+    &lt;artifactId&gt;qpid-broker-plugins-memory-store&lt;/artifactId&gt;
+    &lt;version&gt;7.1.0&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre><h2 id="broker-configuration">Broker Configuration</h2>
 <p>Qpid is configured from a JSON file. This file provides a configuration for three basic components:</p>
-
 <ul>
 <li><strong>authentication providers</strong> indicating a security mechanism for client authentication.</li>
 <li><strong>virtual hosts</strong>, indicating independent and isolated environments for exchanges, queues and bindings.</li>
 <li><strong>ports</strong> denoting network specific configuration, such as TCP/IP port, supported protocols. Each port is associated with a specific set of virtual hosts. Additionally, a port indicates an authentication provider that will be used.</li>
 </ul>
-
 <p>Let’s create a configuration file, such as <code>qpid-embedded-inmemory-configuration.json</code> and let’s put it into <code>CLASSPATH</code> root.</p>
-
 <p>Aside from the descriptive <code>name</code> and the Qpid Model Version, there are three blocks that we have just described: authentication providers, ports and virtual host nodes.</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
   <span style="color:#070">&#34;name&#34;</span>: <span style="background-color:#e0e0ff">&#34;Embedded Broker&#34;</span>,
   <span style="color:#070">&#34;modelVersion&#34;</span>: <span style="background-color:#e0e0ff">&#34;7.0&#34;</span>,
   <span style="color:#070">&#34;authenticationproviders&#34;</span>: [
@@ -166,113 +147,90 @@
       <span style="color:#070">&#34;virtualHostInitialConfiguration&#34;</span>: <span style="background-color:#e0e0ff">&#34;{\&#34;type\&#34;: \&#34;Memory\&#34;}&#34;</span>
     }
   ]
-}</code></pre></div>
-<p>Let’s dissect this rather large configuration.</p>
-
+}
+</code></pre></div><p>Let’s dissect this rather large configuration.</p>
 <h3 id="authentication-provider">Authentication Provider</h3>
-
 <p>We declare a <code>Plain</code> authentication provider, while specifying hardcoded <code>users</code>. This provider will be identified by a logical name <code>hardcoded</code> (we can pick any name we want).</p>
-
 <p>We will provide just a single user, with dedicated name (<code>guest</code>) and a plaintext password (<code>guest</code>).</p>
-
 <p>Finally, we declare an empty set of <code>secureOnlyMechanisms</code>, essentially disabling any advanced security mechanism, such as SASL.</p>
-
 <h3 id="port">Port</h3>
-
 <p>We declare a single port, running on a default port number provided by Qpid. We will assign an explicit <strong>binding address</strong>, thus limiting the broker to listen on the localhost only.</p>
-
 <p>Then, let’s enumerate a list of supported protocols. Since we need to emulate the RabbitMQ, we declare just the AMQP 0.9.1 protocol.</p>
-
 <p>As seen above, we need to associate a port with an authentication provider. By providing a <code>authenticationProvider</code>, we will provide a reference to our <code>hardcoded</code> plain provider.</p>
-
 <p>Finally, we need to declare mapping between virtual hosts provided in the connection string to the virtual host that will be used. By declaring a <em>virtual host alias</em> of type <code>defaultAlias</code>, the empty virtual host of the connection string the will be mapped to the default virtual host of the broker.</p>
-
 <h3 id="virtual-host">Virtual Host</h3>
-
 <p>Let’s configure a single Virtual Host. We’ll add a <strong>name</strong>, declare the type as <code>Memory</code>, and we will treat it as a <strong>default virtual host</strong> (<code>defaultVirtualHostNode</code>).  Finally, let’s add an <strong>initial configuration</strong>, by embedding a JSON into String (doh!) with in-memory specification for this virtualhost.</p>
-
 <h2 id="creating-an-embedded-broker-runner">Creating an Embedded Broker Runner</h2>
-
 <p>Let’s code the Qpid Wrapper or Runner that will allow easy-starting of the Broker.</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">public class </span>EmbeddedInMemoryQpidBroker {
-    <span style="color:#f00;background-color:#faa">public static final Logger </span>logger <span style="color:#333">=</span> getLogger(EmbeddedInMemoryQpidBroker.<span style="color:#007">class</span>);
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">EmbeddedInMemoryQpidBroker</span> <span style="color:#333">{</span>
+    <span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">static</span> <span style="color:#289;font-weight:bold">final</span> Logger logger <span style="color:#333">=</span> getLogger<span style="color:#333">(</span>EmbeddedInMemoryQpidBroker<span style="color:#333">.</span><span style="color:#007">class</span><span style="color:#333">);</span>
 
-    <span style="color:#f00;background-color:#faa">private static final String </span>DEFAULT_INITIAL_CONFIGURATION_LOCATION <span style="color:#333">=</span> <span style="background-color:#e0e0ff">&#34;qpid-embedded-inmemory-configuration.json&#34;</span>;
+    <span style="color:#289;font-weight:bold">private</span> <span style="color:#289;font-weight:bold">static</span> <span style="color:#289;font-weight:bold">final</span> String DEFAULT_INITIAL_CONFIGURATION_LOCATION <span style="color:#333">=</span> <span style="background-color:#e0e0ff">&#34;qpid-embedded-inmemory-configuration.json&#34;</span><span style="color:#333">;</span>
 
-    <span style="color:#f00;background-color:#faa">private SystemLauncher </span>systemLauncher;
+    <span style="color:#289;font-weight:bold">private</span> SystemLauncher systemLauncher<span style="color:#333">;</span>
 
-    <span style="color:#f00;background-color:#faa">public EmbeddedInMemoryQpidBroker</span>() {
-        <span style="color:#289;font-weight:bold">this</span>.<span style="color:#007">systemLauncher</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> SystemLauncher();
-    }
+    <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">EmbeddedInMemoryQpidBroker</span><span style="color:#333">()</span> <span style="color:#333">{</span>
+        <span style="color:#289;font-weight:bold">this</span><span style="color:#333">.</span><span style="color:#007">systemLauncher</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> SystemLauncher<span style="color:#333">();</span>
+    <span style="color:#333">}</span>
 
-    <span style="color:#f00;background-color:#faa">public void </span>start() <span style="color:#f00;background-color:#faa">throws Exception </span>{
-        <span style="color:#289;font-weight:bold">this</span>.<span style="color:#007">systemLauncher</span>.<span style="color:#007">startup</span>(createSystemConfig());
-    }
+    <span style="color:#289;font-weight:bold">public</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">start</span><span style="color:#333">()</span> <span style="color:#289;font-weight:bold">throws</span> Exception <span style="color:#333">{</span>
+        <span style="color:#289;font-weight:bold">this</span><span style="color:#333">.</span><span style="color:#007">systemLauncher</span><span style="color:#333">.</span><span style="color:#007">startup</span><span style="color:#333">(</span>createSystemConfig<span style="color:#333">());</span>
+    <span style="color:#333">}</span>
 
-    <span style="color:#f00;background-color:#faa">public void </span>shutdown() {
-        <span style="color:#289;font-weight:bold">this</span>.<span style="color:#007">systemLauncher</span>.<span style="color:#007">shutdown</span>();
-    }
+    <span style="color:#289;font-weight:bold">public</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">shutdown</span><span style="color:#333">()</span> <span style="color:#333">{</span>
+        <span style="color:#289;font-weight:bold">this</span><span style="color:#333">.</span><span style="color:#007">systemLauncher</span><span style="color:#333">.</span><span style="color:#007">shutdown</span><span style="color:#333">();</span>
+    <span style="color:#333">}</span>
 
-    <span style="color:#f00;background-color:#faa">private Map</span><span style="color:#333">&lt;</span>String, <span style="color:#f00;background-color:#faa">Object&gt; createSystemConfig</span>() <span style="color:#f00;background-color:#faa">throws IllegalConfigurationException </span>{
-        Map<span style="color:#333">&lt;</span>String, <span style="color:#f00;background-color:#faa">Object&gt; attributes </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> HashMap<span style="color:#333">&lt;&gt;</span>();
-        <span style="color:#f00;background-color:#faa">URL initialConfigUrl </span><span style="color:#333">=</span> EmbeddedInMemoryQpidBroker.<span style="color:#007">class</span>.<span style="color:#007">getClassLoader</span>().<span style="color:#007">getResource</span>(DEFAULT_INITIAL_CONFIGURATION_LOCATION);
-        }
-        <span style="color:#289;font-weight:bold">if</span> (initialConfigUrl <span style="color:#333">==</span> <span style="color:#289;font-weight:bold">null</span>) {
-            <span style="color:#289;font-weight:bold">throw</span> <span style="color:#289;font-weight:bold">new</span> IllegalConfigurationException(<span style="background-color:#e0e0ff">&#34;Configuration location &#39;&#34;</span> <span style="color:#333">+</span> DEFAULT_INITIAL_CONFIGURATION_LOCATION <span style="color:#333">+</span> <span style="background-color:#e0e0ff">&#34;&#39; not found&#34;</span>);
-        }
-        attributes.<span style="color:#007">put</span>(SystemConfig.<span style="color:#007">TYPE</span>, <span style="background-color:#e0e0ff">&#34;Memory&#34;</span>);
-        attributes.<span style="color:#007">put</span>(SystemConfig.<span style="color:#007">INITIAL_CONFIGURATION_LOCATION</span>, initialConfigUrl.<span style="color:#007">toExternalForm</span>());
-        attributes.<span style="color:#007">put</span>(SystemConfig.<span style="color:#007">STARTUP_LOGGED_TO_SYSTEM_OUT</span>, <span style="color:#289;font-weight:bold">true</span>);
-        <span style="color:#289;font-weight:bold">return</span> attributes;
-    }
-}</code></pre></div>
-<p>Essentially, we provide two methods: <code>start</code> and <code>shutdown</code>. The former method will initialize Qpid <code>SystemLauncher</code>, provide the system configuration as a <code>HashMap</code> and launch it.</p>
-
+    <span style="color:#289;font-weight:bold">private</span> Map<span style="color:#333">&lt;</span>String<span style="color:#333">,</span> Object<span style="color:#333">&gt;</span> <span style="color:#5ed;font-weight:bold">createSystemConfig</span><span style="color:#333">()</span> <span style="color:#289;font-weight:bold">throws</span> IllegalConfigurationException <span style="color:#333">{</span>
+        Map<span style="color:#333">&lt;</span>String<span style="color:#333">,</span> Object<span style="color:#333">&gt;</span> attributes <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> HashMap<span style="color:#333">&lt;&gt;();</span>
+        URL initialConfigUrl <span style="color:#333">=</span> EmbeddedInMemoryQpidBroker<span style="color:#333">.</span><span style="color:#007">class</span><span style="color:#333">.</span><span style="color:#007">getClassLoader</span><span style="color:#333">().</span><span style="color:#007">getResource</span><span style="color:#333">(</span>DEFAULT_INITIAL_CONFIGURATION_LOCATION<span style="color:#333">);</span>
+        <span style="color:#333">}</span>
+        <span style="color:#289;font-weight:bold">if</span> <span style="color:#333">(</span>initialConfigUrl <span style="color:#333">==</span> <span style="color:#289;font-weight:bold">null</span><span style="color:#333">)</span> <span style="color:#333">{</span>
+            <span style="color:#289;font-weight:bold">throw</span> <span style="color:#289;font-weight:bold">new</span> IllegalConfigurationException<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;Configuration location &#39;&#34;</span> <span style="color:#333">+</span> DEFAULT_INITIAL_CONFIGURATION_LOCATION <span style="color:#333">+</span> <span style="background-color:#e0e0ff">&#34;&#39; not found&#34;</span><span style="color:#333">);</span>
+        <span style="color:#333">}</span>
+        attributes<span style="color:#333">.</span><span style="color:#007">put</span><span style="color:#333">(</span>SystemConfig<span style="color:#333">.</span><span style="color:#007">TYPE</span><span style="color:#333">,</span> <span style="background-color:#e0e0ff">&#34;Memory&#34;</span><span style="color:#333">);</span>
+        attributes<span style="color:#333">.</span><span style="color:#007">put</span><span style="color:#333">(</span>SystemConfig<span style="color:#333">.</span><span style="color:#007">INITIAL_CONFIGURATION_LOCATION</span><span style="color:#333">,</span> initialConfigUrl<span style="color:#333">.</span><span style="color:#007">toExternalForm</span><span style="color:#333">());</span>
+        attributes<span style="color:#333">.</span><span style="color:#007">put</span><span style="color:#333">(</span>SystemConfig<span style="color:#333">.</span><span style="color:#007">STARTUP_LOGGED_TO_SYSTEM_OUT</span><span style="color:#333">,</span> <span style="color:#289;font-weight:bold">true</span><span style="color:#333">);</span>
+        <span style="color:#289;font-weight:bold">return</span> attributes<span style="color:#333">;</span>
+    <span style="color:#333">}</span>
+<span style="color:#333">}</span>
+</code></pre></div><p>Essentially, we provide two methods: <code>start</code> and <code>shutdown</code>. The former method will initialize Qpid <code>SystemLauncher</code>, provide the system configuration as a <code>HashMap</code> and launch it.</p>
 <p>In the configuration map, we provide the following configuration options:</p>
-
 <ul>
 <li><strong>type</strong>, indicating an in-memory <code>Memory</code> broker</li>
 <li><strong>initial configuration location</strong>, providing an URL of the JSON config file. We will resolve this URL from the <code>CLASSPATH</code> resource.</li>
 <li><strong>startup logged to stdout</strong>, improving logging messages on startup.</li>
 </ul>
-
 <p>For the future reference, the full and enhanced code for this class is available in the <a href="https://github.com/novotnyr/qpid-embedded-junit4-rule/blob/master/src/main/java/com/github/novotnyr/qpid/junit4/EmbeddedInMemoryQpidBroker.java">Git Repository</a>.</p>
-
 <h1 id="embedded-broker-in-a-junit-4-rule">Embedded Broker in a JUnit 4 Rule</h1>
-
 <h2 id="creating-a-junit-4-rule">Creating a JUnit 4 Rule</h2>
-
 <p>To make our lives easier in the integration tests, let’s create a JUnit 4 Rule that will manage a broker lifecycle. Thus, we can start a broker when a unit test launches, and shutdown the same broker when the unit tests terminates.</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">import org</span>.<span style="color:#007">junit</span>.<span style="color:#007">rules</span>.<span style="color:#007">ExternalResource</span>;
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">org.junit.rules.ExternalResource</span><span style="color:#333">;</span>
 
-<span style="color:#f00;background-color:#faa">public class EmbeddedInMemoryQpidBrokerRule extends </span>ExternalResource {
-    <span style="color:#f00;background-color:#faa">private EmbeddedInMemoryQpidBroker </span>broker;
-
-    <span style="color:#555;font-weight:bold">@Override</span>
-    <span style="color:#f00;background-color:#faa">protected void </span>before() <span style="color:#f00;background-color:#faa">throws Throwable </span>{
-        <span style="color:#289;font-weight:bold">this</span>.<span style="color:#007">broker</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> EmbeddedInMemoryQpidBroker();
-        <span style="color:#289;font-weight:bold">this</span>.<span style="color:#007">broker</span>.<span style="color:#007">start</span>();
-    }
+<span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">EmbeddedInMemoryQpidBrokerRule</span> <span style="color:#289;font-weight:bold">extends</span> ExternalResource <span style="color:#333">{</span>
+    <span style="color:#289;font-weight:bold">private</span> EmbeddedInMemoryQpidBroker broker<span style="color:#333">;</span>
 
     <span style="color:#555;font-weight:bold">@Override</span>
-    <span style="color:#f00;background-color:#faa">protected void </span>after() {
-        <span style="color:#289;font-weight:bold">this</span>.<span style="color:#007">broker</span>.<span style="color:#007">shutdown</span>();
-    }
-}</code></pre></div>
-<h2 id="using-a-rule-in-the-integration-tests">Using a Rule In the Integration Tests</h2>
+    <span style="color:#289;font-weight:bold">protected</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">before</span><span style="color:#333">()</span> <span style="color:#289;font-weight:bold">throws</span> Throwable <span style="color:#333">{</span>
+        <span style="color:#289;font-weight:bold">this</span><span style="color:#333">.</span><span style="color:#007">broker</span> <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> EmbeddedInMemoryQpidBroker<span style="color:#333">();</span>
+        <span style="color:#289;font-weight:bold">this</span><span style="color:#333">.</span><span style="color:#007">broker</span><span style="color:#333">.</span><span style="color:#007">start</span><span style="color:#333">();</span>
+    <span style="color:#333">}</span>
 
+    <span style="color:#555;font-weight:bold">@Override</span>
+    <span style="color:#289;font-weight:bold">protected</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">after</span><span style="color:#333">()</span> <span style="color:#333">{</span>
+        <span style="color:#289;font-weight:bold">this</span><span style="color:#333">.</span><span style="color:#007">broker</span><span style="color:#333">.</span><span style="color:#007">shutdown</span><span style="color:#333">();</span>
+    <span style="color:#333">}</span>
+<span style="color:#333">}</span>
+
+</code></pre></div><h2 id="using-a-rule-in-the-integration-tests">Using a Rule In the Integration Tests</h2>
 <p>Now, we can easily add this rule as a <code>ClassRule</code>. This will allow us to launch a broker in the <code>@BeforeClass</code> manner and terminate it in the <code>@AfterClass</code> style.</p>
-
-<pre><code>public class Test {
+<pre tabindex="0"><code>public class Test {
     @ClassRule
     public static EmbeddedInMemoryQpidBrokerRule qpidBrokerRule = new EmbeddedInMemoryQpidBrokerRule();
 
     ...
 }
-</code></pre>
-
-<h1 id="resources">Resources</h1>
-
+</code></pre><h1 id="resources">Resources</h1>
 <ul>
 <li><a href="https://github.com/novotnyr/qpid-embedded-junit4-rule">GitHub repository with the implementation</a>. The full implementation of the concept in the <code>novotnyr/qpid-embedded-junit4-rule</code> repository.</li>
 <li><a href="https://gist.github.com/AlejandroRivera/34235c35bb62ab572932b373444420a0">Gist</a> by AlejandroRivera with an alternative implementation.</li>

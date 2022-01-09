@@ -59,25 +59,16 @@
 
 
 <main>
-
-
 <p>Od čias Springu 2.5 je k dispozícii sada anotácií, ktoré riešia <em>dependency injection</em>. (Viď <a href="Java/AnotacieVSpring25">existujúci článok</a>.) V nej boli dané k dispozícii jednak springovské anotácie (<code>@Component</code> a pod.) a jednak anotácie z JSR-250 (najmä <code>@Resource</code>).</p>
-
-<p>Od tých čias sa situácia ešte „skomplikovala&rdquo;. Medzičasom totiž vyšla finálna špecifikácia JEE6, ktorá rieši dependency injection v rámci dvoch JSR.</p>
-
+<p>Od tých čias sa situácia ešte „skomplikovala&quot;. Medzičasom totiž vyšla finálna špecifikácia JEE6, ktorá rieši dependency injection v rámci dvoch JSR.</p>
 <ul>
 <li><strong>JSR-330</strong>: Dependency Injection for Java vznikla z potrieb DI frameworkov Spring a Google Guice, kde dali hlavy dohromady Rod Johnson a Crazy Bob Lee.</li>
 <li><strong>JSR-299</strong>: Contexts and Dependency Injection for the Java EE platform (alias Web Beans, pod vedením Gavina Kinga z JBossu), ktoré stavajú na JSR-330, a obohacujú DI o ďalšie vlastnosti. Táto JSR je v podstate abstrakciou funkcionality, ktorú poskytuje JBoss Seam.</li>
 </ul>
-
-<p>Spočiatku to vyzeralo tak, že špecifikácie vznikli vzájomne „na truc&rdquo;. Vo úvodnej fáze <em>review</em> Red Hat (teda JBoss) vyjadril hlboké pochybnosti o zmysle JSR-330 (niet divu, veď sa to isté snažil riešiť po svojom). Po troche politických bojov sa však obe špecifikácie zladili, a Red Hat ju odsúhlasil s dodatkom, že očakáva ďalšiu spoluprácu medzi oboma štandardmi. Ako tvrdí viacero článkov, oba treba chápať ako vzťah známy JDBC a JPA. Existuje v nich prienik, ale jedna (299) je nadstavbou druhej (330). (Je len zaujímavé, že <a href="http://jcp.org/en/jsr/results?id=4992">IBM neskôr zmenila svoj názor</a>, pretože vidí v JSR-330 značné technické nedostatky a nesplnenie zámeru.)</p>
-
+<p>Spočiatku to vyzeralo tak, že špecifikácie vznikli vzájomne „na truc&quot;. Vo úvodnej fáze <em>review</em> Red Hat (teda JBoss) vyjadril hlboké pochybnosti o zmysle JSR-330 (niet divu, veď sa to isté snažil riešiť po svojom). Po troche politických bojov sa však obe špecifikácie zladili, a Red Hat ju odsúhlasil s dodatkom, že očakáva ďalšiu spoluprácu medzi oboma štandardmi. Ako tvrdí viacero článkov, oba treba chápať ako vzťah známy JDBC a JPA. Existuje v nich prienik, ale jedna (299) je nadstavbou druhej (330). (Je len zaujímavé, že <a href="http://jcp.org/en/jsr/results?id=4992">IBM neskôr zmenila svoj názor</a>, pretože vidí v JSR-330 značné technické nedostatky a nesplnenie zámeru.)</p>
 <h1 id="jsr-330">JSR-330</h1>
-
 <p>Táto špecifikácia definuje päť anotácií a jeden interfejs, ktorými možno dosiahnuť DI. Samotnú implementáciu a spôsob prepájania však ponecháva na konkrétnu implementáciu prislušného DI frameworku.</p>
-
 <p>Všetky anotácie sú z balíčka <code>javax.inject</code>.</p>
-
 <ul>
 <li><code>@Inject</code> – anotuje konštruktory, metódy či inštančné premenné, do ktorých majú byť injektnuté inštancie beanov.</li>
 <li><code>@Qualifier</code> – anotácia anotácií, ktorými možno bližšie obmedziť / špecifikovať injektovanie.</li>
@@ -85,93 +76,79 @@
 <li><code>@Singleton</code> – anotácia typu <code>@Scope</code>, ktorá indikuje, že anotovaný typ bude pri injektovaní používaný ako singleton.</li>
 <li><code>@Named</code> – umožní bližšie špecifikovať injektovaný bean. Odporúča sa používať len v prípade kontajnerov, ktoré označujú beany identifikátorom (čo je prípad Springu). V špecifikácii JEE6 má ešte jeden význam: ak je ňou anotovaná trieda, možno k nej pristupovať v rámci expression language (napr. v JSF šablónach).</li>
 </ul>
-
 <p>Ukážme si jednoduchý príklad v ktorom sa používajú anotácie.</p>
-
 <h1 id="springovské-anotácie">Springovské anotácie</h1>
-
 <p>Majme interfejs na generovanie citátov:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">package sk</span>.<span style="color:#007">novotnyr</span>.<span style="color:#007">quotes</span>;
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">package</span> <span style="color:#0e84b5;font-weight:bold">sk.novotnyr.quotes</span><span style="color:#333">;</span>
 
-<span style="color:#f00;background-color:#faa">public interface </span>QuoteGenerator {
-  <span style="color:#f00;background-color:#faa">public String </span>getQuote();
-}</code></pre></div>
-<p>a jeho jednoduchú implementáciu:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">package sk</span>.<span style="color:#007">novotnyr</span>.<span style="color:#007">quotes</span>;
+<span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">interface</span> <span style="color:#e9e;font-weight:bold">QuoteGenerator</span> <span style="color:#333">{</span>
+  <span style="color:#289;font-weight:bold">public</span> String <span style="color:#5ed;font-weight:bold">getQuote</span><span style="color:#333">();</span>
+<span style="color:#333">}</span>
+</code></pre></div><p>a jeho jednoduchú implementáciu:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">package</span> <span style="color:#0e84b5;font-weight:bold">sk.novotnyr.quotes</span><span style="color:#333">;</span>
 
-<span style="color:#f00;background-color:#faa">public class HardwiredQuoteGenerator implements </span>QuoteGenerator {
+<span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">HardwiredQuoteGenerator</span> <span style="color:#289;font-weight:bold">implements</span> QuoteGenerator <span style="color:#333">{</span>
 
-  <span style="color:#f00;background-color:#faa">public String </span>getQuote() {
-    <span style="color:#289;font-weight:bold">return</span> <span style="background-color:#e0e0ff">&#34;Spring is gr8&#34;</span>;
-  }
+  <span style="color:#289;font-weight:bold">public</span> String <span style="color:#5ed;font-weight:bold">getQuote</span><span style="color:#333">()</span> <span style="color:#333">{</span>
+    <span style="color:#289;font-weight:bold">return</span> <span style="background-color:#e0e0ff">&#34;Spring is gr8&#34;</span><span style="color:#333">;</span>
+  <span style="color:#333">}</span>
 
-}</code></pre></div>
-<p>A okrem toho majme triedu, ktorá bude vypisovať citáty na štandardný výstup:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">public class </span>QuotePrinter {
-  <span style="color:#f00;background-color:#faa">private QuoteGenerator </span>quoteGenerator;
+<span style="color:#333">}</span>
+</code></pre></div><p>A okrem toho majme triedu, ktorá bude vypisovať citáty na štandardný výstup:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">QuotePrinter</span> <span style="color:#333">{</span>
+  <span style="color:#289;font-weight:bold">private</span> QuoteGenerator quoteGenerator<span style="color:#333">;</span>
   
-  <span style="color:#f00;background-color:#faa">public void </span>print() {
-    <span style="color:#f00;background-color:#faa">String quote </span><span style="color:#333">=</span> quoteGenerator.<span style="color:#007">getQuote</span>();
-    System.<span style="color:#007">out</span>.<span style="color:#007">println</span>(quote);
-  }
+  <span style="color:#289;font-weight:bold">public</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">print</span><span style="color:#333">()</span> <span style="color:#333">{</span>
+    String quote <span style="color:#333">=</span> quoteGenerator<span style="color:#333">.</span><span style="color:#007">getQuote</span><span style="color:#333">();</span>
+    System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span>quote<span style="color:#333">);</span>
+  <span style="color:#333">}</span>
 
   <span style="color:#666;font-style:italic">// gettre a settre
-</span><span style="color:#666;font-style:italic"></span>}</code></pre></div>
-<p>V JSR-330 je k dispozícii anotácia <code>@Inject</code>, ktorá indikuje nutnosť injektovania inštancie. Keďže <code>QuotePrinter</code> vyžaduje inštanciu <code>QuoteGenerator</code>a, injektovanie označíme anotáciou.</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">public class </span>QuotePrinter {
+</span><span style="color:#666;font-style:italic"></span><span style="color:#333">}</span>
+</code></pre></div><p>V JSR-330 je k dispozícii anotácia <code>@Inject</code>, ktorá indikuje nutnosť injektovania inštancie. Keďže <code>QuotePrinter</code> vyžaduje inštanciu <code>QuoteGenerator</code>a, injektovanie označíme anotáciou.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">QuotePrinter</span> <span style="color:#333">{</span>
   <span style="color:#555;font-weight:bold">@Inject</span>
-  <span style="color:#f00;background-color:#faa">private QuoteGenerator </span>quoteGenerator;
+  <span style="color:#289;font-weight:bold">private</span> QuoteGenerator quoteGenerator<span style="color:#333">;</span>
   
-  <span style="color:#f00;background-color:#faa">public void </span>print() {
-    <span style="color:#f00;background-color:#faa">String quote </span><span style="color:#333">=</span> quoteGenerator.<span style="color:#007">getQuote</span>();
-    System.<span style="color:#007">out</span>.<span style="color:#007">println</span>(quote);
-  }
-}</code></pre></div>
-<p>Do <code>quoteGeneratora</code> sa automaticky nawireuje implementácia príslušného rozhrania (prebieha detekcia podľa typu, v kontexte sa musí nájsť práve jedna implementácia, inak nastane výnimka). Ak použijeme <code>@Inject</code> na inštančnej premennej, nemusíme dokonca poskytnúť gettre a settre.</p>
-
+  <span style="color:#289;font-weight:bold">public</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">print</span><span style="color:#333">()</span> <span style="color:#333">{</span>
+    String quote <span style="color:#333">=</span> quoteGenerator<span style="color:#333">.</span><span style="color:#007">getQuote</span><span style="color:#333">();</span>
+    System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span>quote<span style="color:#333">);</span>
+  <span style="color:#333">}</span>
+<span style="color:#333">}</span>
+</code></pre></div><p>Do <code>quoteGeneratora</code> sa automaticky nawireuje implementácia príslušného rozhrania (prebieha detekcia podľa typu, v kontexte sa musí nájsť práve jedna implementácia, inak nastane výnimka). Ak použijeme <code>@Inject</code> na inštančnej premennej, nemusíme dokonca poskytnúť gettre a settre.</p>
 <p>Ostáva ešte jedna „drobnosť: ako zaregistrovať beany v aplikačnom kontexte? Klasických možností je viac:</p>
-
 <ul>
 <li>buď ich uvedieme do XML deskriptora aplikačného kontextu</li>
-
-<li><p>alebo ich anotujeme pomocou springovskej anotácie <code>@Component</code>
-Treťou možnosťou je využitie JSR-330 anotácie <code>Named</code>. Ak je ňou anotovaný typ, Spring ho automaticky odhalí a zaradí do aplikačného kontextu.</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#555;font-weight:bold">@Named</span>
-<span style="color:#f00;background-color:#faa">public class </span>QuotePrinter {</code></pre></div>
-<p>a</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#555;font-weight:bold">@Named</span>
-<span style="color:#f00;background-color:#faa">public class </span>QuoteGenerator {</code></pre></div></li>
+<li>alebo ich anotujeme pomocou springovskej anotácie <code>@Component</code>
+Treťou možnosťou je využitie JSR-330 anotácie <code>Named</code>. Ak je ňou anotovaný typ, Spring ho automaticky odhalí a zaradí do aplikačného kontextu.</li>
 </ul>
-
-<p>Teraz už môžeme vytvoriť aplikačný kontext. V tomto prípade môžeme s výhodou využiť triedu <code>AnnotationConfigApplicationContext</code>:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">AnnotationConfigApplicationContext context 
-</span><span style="color:#f00;background-color:#faa">   </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> AnnotationConfigApplicationContext(<span style="background-color:#e0e0ff">&#34;sk.novotnyr.quotes&#34;</span>);
-<span style="color:#f00;background-color:#faa">QuotePrinter printer </span><span style="color:#333">=</span> context.<span style="color:#007">getBean</span>(QuotePrinter.<span style="color:#007">class</span>);
-<span style="color:#289;font-weight:bold">for</span> (<span style="color:#f00;background-color:#faa">int i </span><span style="color:#333">=</span> 0; i <span style="color:#333">&lt;</span> 3; i<span style="color:#333">++</span>) {
-  printer.<span style="color:#007">print</span>();
-}</code></pre></div>
-<p>Trieda automaticky vyhľadá v balíčku <code>sk.novotnyr.quote</code> nielen triedy anotované ako <code>Named</code>, ale aj všetky triedy so springovským stereotypom <code>@Component</code> (teda všetky triedy anotované ako <code>@Component</code>, <code>@Repository</code>, <code>@Service</code> a <code>@Controller</code>).</p>
-
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#555;font-weight:bold">@Named</span>
+<span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">QuotePrinter</span> <span style="color:#333">{</span>
+</code></pre></div><p>a</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#555;font-weight:bold">@Named</span>
+<span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">QuoteGenerator</span> <span style="color:#333">{</span>
+</code></pre></div><p>Teraz už môžeme vytvoriť aplikačný kontext. V tomto prípade môžeme s výhodou využiť triedu <code>AnnotationConfigApplicationContext</code>:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">AnnotationConfigApplicationContext context 
+   <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> AnnotationConfigApplicationContext<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;sk.novotnyr.quotes&#34;</span><span style="color:#333">);</span>
+QuotePrinter printer <span style="color:#333">=</span> context<span style="color:#333">.</span><span style="color:#007">getBean</span><span style="color:#333">(</span>QuotePrinter<span style="color:#333">.</span><span style="color:#007">class</span><span style="color:#333">);</span>
+<span style="color:#289;font-weight:bold">for</span> <span style="color:#333">(</span><span style="color:#66f;font-weight:bold">int</span> i <span style="color:#333">=</span> 0<span style="color:#333">;</span> i <span style="color:#333">&lt;</span> 3<span style="color:#333">;</span> i<span style="color:#333">++)</span> <span style="color:#333">{</span>
+  printer<span style="color:#333">.</span><span style="color:#007">print</span><span style="color:#333">();</span>
+<span style="color:#333">}</span>
+</code></pre></div><p>Trieda automaticky vyhľadá v balíčku <code>sk.novotnyr.quote</code> nielen triedy anotované ako <code>Named</code>, ale aj všetky triedy so springovským stereotypom <code>@Component</code> (teda všetky triedy anotované ako <code>@Component</code>, <code>@Repository</code>, <code>@Service</code> a <code>@Controller</code>).</p>
 <p>Anotácia <code>@Named</code> môže byť použitá v prípade, že chceme pri injektovaní presnejšie vyšpecifikovať použitý bean (napr. v prípade, že sa v aplikačnom kontexte nachádza viacero implementácií daného interfejsu):</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#555;font-weight:bold">@Inject</span>
-<span style="color:#555;font-weight:bold">@Named</span>(<span style="background-color:#e0e0ff">&#34;HardwiredQuoteGenerator&#34;</span>)
-<span style="color:#f00;background-color:#faa">private QuoteGenerator </span>quoteGenerator;</code></pre></div>
-<p>V tomto prípade sa injektne ten bean, ktorý má v triede anotáciu <code>@Named(&quot;HardwiredQuoteGenerator&quot;)</code>.</p>
-
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#555;font-weight:bold">@Inject</span>
+<span style="color:#555;font-weight:bold">@Named</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;HardwiredQuoteGenerator&#34;</span><span style="color:#333">)</span>
+<span style="color:#289;font-weight:bold">private</span> QuoteGenerator quoteGenerator<span style="color:#333">;</span>
+</code></pre></div><p>V tomto prípade sa injektne ten bean, ktorý má v triede anotáciu <code>@Named(&quot;HardwiredQuoteGenerator&quot;)</code>.</p>
 <p>Nezabúdajme na to, že v tomto prípade prebehne §§prototype§§ injektovanie. Vytvorí sa teda toľko inštancií <code>QuoteGeneratora</code>, koľko je inštancií <code>QuotePrintera</code>. Ak chceme mať <code>QuoteGenerator</code> ako singleton, musíme ho tak označiť.</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#555;font-weight:bold">@Named</span>(<span style="background-color:#e0e0ff">&#34;HardwiredQuoteGenerator&#34;</span>)
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#555;font-weight:bold">@Named</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;HardwiredQuoteGenerator&#34;</span><span style="color:#333">)</span>
 <span style="color:#555;font-weight:bold">@Singleton</span>
-<span style="color:#f00;background-color:#faa">public class </span>HardwiredQuoteGenerator</code></pre></div>
-<h1 id="vzťah-k-jsr-250">Vzťah k JSR-250</h1>
-
+<span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">HardwiredQuoteGenerator</span>
+</code></pre></div><h1 id="vzťah-k-jsr-250">Vzťah k JSR-250</h1>
 <p>Z predošlého článku si pamätáme, že injektovanie možno dosiahnuť aj pomocou anotácií <code>javax.annotation.Resource</code> a <code>javax.annotation.WebServiceRef</code>, kde prvá z nich slúžila jednak v úlohe anotovania beanu, ktorý sa má zaviesť do kontextu, jednak v úlohe anotácie <code>@Inject</code> a zároveň v nej bolo možné pomenovávať beany a bližšie špecifikovať odkaz na ne (teda obe úlohy <code>@Named</code>).</p>
-
-<p>Špecifikácia JSR-250 však uvádza, že <em>„The <code>@Resource</code> annotation is used to declare a reference to a resource such as a data source, an enterprise bean, or an environment entry,&rdquo;</em> teda anotácia <code>@Resource</code> deklaruje odkaz na zdroj/prostriedok, ako napr. dátový zdroj enterprise bean či premenná prostredia.</p>
-
+<p>Špecifikácia JSR-250 však uvádza, že <em>„The <code>@Resource</code> annotation is used to declare a reference to a resource such as a data source, an enterprise bean, or an environment entry,&quot;</em> teda anotácia <code>@Resource</code> deklaruje odkaz na zdroj/prostriedok, ako napr. dátový zdroj enterprise bean či premenná prostredia.</p>
 <p>Podľa dokumentácie (<em>The Java EE 6 Tutorial, Volume I</em>) a špecifikácie JSR-250 je úloha tejto anotácie skôr spätá s JNDI. V prípade jej použitia na triede sa z atribútu <code>name</code> odvodí JNDI meno, pod ktorým sa inštancia zaregistruje do JNDI kontextu. Ak je použitá na mene, z názvu premennej sa odvodí kľúč do JNDI kontextu, z ktorého sa inštancia vytiahne.</p>
-
 <h1 id="vzťah-k-springu">Vzťah k Springu</h1>
-
 <table>
 <thead>
 <tr>
@@ -179,27 +156,22 @@ Treťou možnosťou je využitie JSR-330 anotácie <code>Named</code>. Ak je ňo
 <th>JSR-330</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td><code>@Component</code></td>
 <td><code>@Named</code> nad triedou</td>
 </tr>
-
 <tr>
 <td><code>@Autowire</code></td>
 <td><code>@Inject</code></td>
 </tr>
-
 <tr>
 <td><code>@Qualifier</code> na inštančnej premennej či metóde</td>
 <td><code>@Named</code></td>
 </tr>
 </tbody>
 </table>
-
 <h1 id="referencie">Referencie</h1>
-
 <ul>
 <li><a href="http://docs.sun.com/app/docs/doc/820-7627/gjbnr?a=view">Introduction to Contexts and Dependency Injection for the Java EE Platform</a></li>
 <li><a href="http://crazybob.org/2009/05/announcing-javaxinjectinject.html">Announcing @javax.inject.Inject</a> &ndash; pôvodné oznámenie Crazy Bob Leeho</li>

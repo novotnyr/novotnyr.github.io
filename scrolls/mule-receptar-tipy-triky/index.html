@@ -59,55 +59,30 @@
 
 
 <main>
-
-
 <h1 id="práca-s-payloadom">Práca s payloadom</h1>
-
 <ul>
 <li>expressiony typu jxpath a bean pracujú štandardne nad samotným payloadom, vyhodnocovanie sa deje nad payloadom</li>
 <li>terminológia: Mule: message property, HTTP: message header</li>
 </ul>
-
 <h2 id="pridanie-crlf">Pridanie CRLF</h2>
-
 <p>Al chceme pridať do správy CR-LF pomocou StringAppenderTransformera, stačí do XML použiť <code>&amp;#010;</code></p>
-
 <h2 id="získanie-obsahu-payloadu">Získanie obsahu payloadu</h2>
-
 <p>V <code>MessagePayloadExpressionEvaluator</code>: ak sa vynecha expression</p>
-
-<pre><code>#[payload:] 
-</code></pre>
-
-<p>(pozor na dvojbodku!) vrati sa obsah payloadu</p>
-
+<pre tabindex="0"><code>#[payload:] 
+</code></pre><p>(pozor na dvojbodku!) vrati sa obsah payloadu</p>
 <h2 id="outbound-http-a-telo-správy">Outbound HTTP a telo správy</h2>
-
 <h3 id="get-http">GET HTTP</h3>
-
 <p>Ak používame HTTP outbound, telo správy sa pridá za GET parameter <code>body</code>:</p>
-
-<pre><code>www.google.com?body=HELLO
-</code></pre>
-
-<h2 id="inbound-http">Inbound HTTP</h2>
-
+<pre tabindex="0"><code>www.google.com?body=HELLO
+</code></pre><h2 id="inbound-http">Inbound HTTP</h2>
 <p>Ak pri inbound HTTP parametri neexistuje telo správy, do payloadu sa vloží prípona URL adresy, ktorú voláme. Ak mám</p>
-
-<pre><code>&lt;http:inbound-endpoint path=&quot;search&quot; .../&gt;
-</code></pre>
-
-<p>a zavolám bez tela</p>
-
-<pre><code>http://localhost/search
-</code></pre>
-
-<p>Do payloadu sa vloží String <code>/search</code>.</p>
-
-<h1 id="mule-2-2-x-a-http-outbound-konektory-idú-len-postom">Mule 2.2.x a HTTP outbound konektory idú len POSTom!</h1>
-
+<pre tabindex="0"><code>&lt;http:inbound-endpoint path=&quot;search&quot; .../&gt;
+</code></pre><p>a zavolám bez tela</p>
+<pre tabindex="0"><code>http://localhost/search
+</code></pre><p>Do payloadu sa vloží String <code>/search</code>.</p>
+<h1 id="mule-22x-a-http-outbound-konektory-idú-len-postom">Mule 2.2.x a HTTP outbound konektory idú len POSTom!</h1>
 <p>Riešenie: dodať vlastnosť správy</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml">    <span style="color:#070">&lt;inbound&gt;</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml">    <span style="color:#070">&lt;inbound&gt;</span>
       <span style="color:#070">&lt;stdio:inbound-endpoint</span> <span style="color:#007">system=</span><span style="background-color:#e0e0ff">&#34;IN&#34;</span><span style="color:#070">&gt;</span>
         <span style="color:#070">&lt;message-properties-transformer&gt;</span>
           <span style="color:#070">&lt;add-message-property</span> <span style="color:#007">key=</span><span style="background-color:#e0e0ff">&#34;query&#34;</span> <span style="color:#007">value=</span><span style="background-color:#e0e0ff">&#34;#[payload:]&#34;</span><span style="color:#070">/&gt;</span>            
@@ -115,9 +90,9 @@
         <span style="color:#070">&lt;/message-properties-transformer&gt;</span>
       <span style="color:#070">&lt;/stdio:inbound-endpoint&gt;</span>
       
-    <span style="color:#070">&lt;/inbound&gt;</span></code></pre></div>
-<h1 id="príklad-parametrickej-outbound-http-požiadavky">Príklad parametrickej outbound HTTP požiadavky</h1>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#070">&lt;model</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;echoSample&#34;</span><span style="color:#070">&gt;</span>
+    <span style="color:#070">&lt;/inbound&gt;</span>
+</code></pre></div><h1 id="príklad-parametrickej-outbound-http-požiadavky">Príklad parametrickej outbound HTTP požiadavky</h1>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#070">&lt;model</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;echoSample&#34;</span><span style="color:#070">&gt;</span>
   <span style="color:#070">&lt;service</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;retrieve&#34;</span><span style="color:#070">&gt;</span>
     <span style="color:#070">&lt;inbound&gt;</span>
       <span style="color:#070">&lt;stdio:inbound-endpoint</span> <span style="color:#007">system=</span><span style="background-color:#e0e0ff">&#34;IN&#34;</span><span style="color:#070">&gt;</span>
@@ -135,23 +110,22 @@
       
     <span style="color:#070">&lt;/outbound&gt;</span>
   <span style="color:#070">&lt;/service&gt;</span>
-<span style="color:#070">&lt;/model&gt;</span></code></pre></div>
-<h1 id="parametrický-názov-súboru">Parametrický názov súboru</h1>
-
+<span style="color:#070">&lt;/model&gt;</span>
+</code></pre></div><h1 id="parametrický-názov-súboru">Parametrický názov súboru</h1>
 <ul>
-<li><p>nad <code>&lt;model&gt;</code>om definovať globálny parameter konektora <code>file</code></p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#070">&lt;file:connector</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;FileConnector&#34;</span><span style="color:#070">&gt;</span>
-<span style="color:#070">&lt;file:expression-filename-parser/&gt;</span>
-<span style="color:#070">&lt;/file:connector&gt;</span></code></pre></div>
-<p>a potom</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#070">&lt;file:outbound-endpoint</span> <span style="color:#007">path=</span><span style="background-color:#e0e0ff">&#34;./&#34;</span> <span style="color:#007">outputPattern=</span><span style="background-color:#e0e0ff">&#34;SNAPSHOT-#[function:dateStamp]&#34;</span> <span style="color:#070">/&gt;</span></code></pre></div></li>
+<li>nad <code>&lt;model&gt;</code>om definovať globálny parameter konektora <code>file</code></li>
 </ul>
-
-<h1 id="transformer-ktorý-zahodí-payload-správy">Transformer, ktorý zahodí payload správy</h1>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#070">&lt;expression-transformer</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;DiscardBodyTransformer&#34;</span> 
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#070">&lt;file:connector</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;FileConnector&#34;</span><span style="color:#070">&gt;</span>
+  <span style="color:#070">&lt;file:expression-filename-parser/&gt;</span>
+<span style="color:#070">&lt;/file:connector&gt;</span>
+</code></pre></div><p>a potom</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#070">&lt;file:outbound-endpoint</span> <span style="color:#007">path=</span><span style="background-color:#e0e0ff">&#34;./&#34;</span> <span style="color:#007">outputPattern=</span><span style="background-color:#e0e0ff">&#34;SNAPSHOT-#[function:dateStamp]&#34;</span> <span style="color:#070">/&gt;</span>
+</code></pre></div><h1 id="transformer-ktorý-zahodí-payload-správy">Transformer, ktorý zahodí payload správy</h1>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#070">&lt;expression-transformer</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;DiscardBodyTransformer&#34;</span> 
                         <span style="color:#007">returnSourceIfNull=</span><span style="background-color:#e0e0ff">&#34;false&#34;</span><span style="color:#070">&gt;</span>
   <span style="color:#070">&lt;return-argument</span> <span style="color:#007">expression=</span><span style="background-color:#e0e0ff">&#34;null&#34;</span> <span style="color:#007">evaluator=</span><span style="background-color:#e0e0ff">&#34;groovy&#34;</span><span style="color:#070">/&gt;</span>
-<span style="color:#070">&lt;/expression-transformer&gt;</span></code></pre></div>
+<span style="color:#070">&lt;/expression-transformer&gt;</span>
+</code></pre></div>
 </main>
 
     <footer>

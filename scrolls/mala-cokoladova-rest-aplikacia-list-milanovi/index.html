@@ -59,20 +59,13 @@
 
 
 <main>
-
-
 <p>Milý Milan,
 chcel si vedieť, ako vyzerá minimalistická RESTovská aplikácia postavená na aplikačnom rámci <strong>Spring Boot</strong>.</p>
-
 <p>Tu je.</p>
-
 <p>Predovšetkým, zíde sa ti Maven. Nielenže sa vysporiada so závislosťami v Springu, ale dá ti k dispozícii fajnový plugin pre Jetty, v ktorom bude spúšťanie servera vecou na 10 znakov.</p>
-
 <h1 id="závislosti">Závislosti</h1>
-
 <p>Začni teda POMkom, ktorý oddeď od rodičovského POM súboru a zároveň dodaj
 závislosť pre podporu webu a modulu <em>Spring Web MVC</em>.</p>
-
 <pre><code>&lt;parent&gt;
     &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
     &lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;
@@ -85,16 +78,11 @@ závislosť pre podporu webu a modulu <em>Spring Web MVC</em>.</p>
     &lt;/dependency&gt;
 &lt;/dependencies&gt;
 </code></pre>
-
 <p>Element <code>&lt;parent&gt;</code> vďaka dedičnosti dodá do nášho projektu množstvo užitočných závislostí a pluginov, vďaka ktorým sa spúšťanie projektu výrazne zjednoduší.</p>
-
 <h1 id="nastavenie-springu-a-jadra-webu">Nastavenie Springu a jadra webu</h1>
-
 <p>Základná trieda nášho projektu bude obsahovať metódu <code>main()</code> a anotáciu
 <code>@SpringBootApplication</code>, ktorá plní množstvo úloh popísaných nižšie.</p>
-
 <p>Kód, ktorý využijeme bude nasledovný:</p>
-
 <pre><code>package sk.upjs.ics.novotnyr.chocolate;
 
 import org.springframework.boot.SpringApplication;
@@ -107,15 +95,10 @@ public class ApplicationConfiguration {
     }
 }
 </code></pre>
-
-<p>Anotácia <code>@SpringBootApplication</code> plní viacero úloh. Pre jednoduchosť ti spomeniem len to, že takto anotovaná trieda predstavuje vstupný bod aplikácie založenej na *Spring Boot*e. Okrem toho ešte nastaví automatické vyhľadávanie REST endpointov (<em>kontrolérov</em>) a ich registráciu v Springu.</p>
-
+<p>Anotácia <code>@SpringBootApplication</code> plní viacero úloh. Pre jednoduchosť ti spomeniem len to, že takto anotovaná trieda predstavuje vstupný bod aplikácie založenej na <em>Spring Boot</em>e. Okrem toho ešte nastaví automatické vyhľadávanie REST endpointov (<em>kontrolérov</em>) a ich registráciu v Springu.</p>
 <h1 id="nastavenie-kontroléra">Nastavenie kontroléra</h1>
-
 <p><strong>Kontrolér</strong> je trieda, ktorej metódy budú obsluhovať URL adresy pre RESTovské požiadavky.</p>
-
 <p>Minimalistický kontrolér môže vyzerať takto:</p>
-
 <pre><code>import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -125,142 +108,92 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping(&quot;/chocolates&quot;)
 public class ChocolateController {
-    private List&lt;Chocolate&gt; chocolates = new CopyOnWriteArrayList&lt;Chocolate&gt;();
+	private List&lt;Chocolate&gt; chocolates = new CopyOnWriteArrayList&lt;Chocolate&gt;();
 
-    public ChocolateController() {
-        chocolates.add(new Chocolate(&quot;lindt&quot;, &quot;Lindt&quot;, 72));
-        chocolates.add(new Chocolate(&quot;choc-o-crap&quot;, &quot;Choc'o'crap&quot;, 10));
-        chocolates.add(new Chocolate(&quot;brownella&quot;, &quot;Brownella&quot;, 52));
-    }
+	public ChocolateController() {
+		chocolates.add(new Chocolate(&quot;lindt&quot;, &quot;Lindt&quot;, 72));
+		chocolates.add(new Chocolate(&quot;choc-o-crap&quot;, &quot;Choc'o'crap&quot;, 10));
+		chocolates.add(new Chocolate(&quot;brownella&quot;, &quot;Brownella&quot;, 52));
+	}
 
-    @GetMapping
-    public List&lt;Chocolate&gt; list() {
-        return chocolates;
-    }
+	@GetMapping
+	public List&lt;Chocolate&gt; list() {
+		return chocolates;
+	}
 }
 </code></pre>
-
 <h2 id="anotácie-kontroléra">Anotácie kontroléra</h2>
-
 <p>Začnime zhora: <code>@RestController</code> znamená, že táto trieda predstavuje kontrolér pre REST požiadavky, že návratové hodnoty jej metód budú automaticky serializované do výstupu pre klienta (prehliadač), a že sa má automaticky zaregistrovať v springovskom kontexte pri pátraní spôsobenom anotáciou <code>@SpringBootApplication</code>.</p>
-
 <p>Druhá anotácia, <code>@RequestMapping</code> hovorí, že základná prípona v URL adrese pre tento kontrolér bude <code>/chocolates</code>.</p>
-
 <p>V konštruktore si vytvoríš a naplníš inštanciu zoznamu s ukážkovými dátami: a tento zoznam musí byť vláknovo bezpečný, pretože kontrolér v Springu bude singleton a budú k nemu pristupovať viaceré vlákna súčasne (zodpovedajúce súčasným HTTP požiadavkam).</p>
-
 <h2 id="anotácie-metódy-pre-get">Anotácie metódy pre GET</h2>
-
 <p>Pozri sa teraz na metódu <code>list()</code>. Anotácia <code>@GetMapping</code> ti naznačí, že táto metóda sa má volať vo chvíli, keď klientská aplikácia navštívi adresu s použitím HTTP slovesa <code>GET</code> — čo je presne prípad bežného webového prehliadača.</p>
-
 <p>Celá cesta v adrese sa určí zlúčením informácie z anotácie <code>@RequestMapping</code> nad triedou a prípadnou cestou uvedenou v anotácii <code>@GetMapping</code> nad metódou <code>list()</code>. Vidíme, že v metódovej anotácii nie je žiadna cesta, preto metóda <code>list</code> sa zavolá v momente, keď klient navštívi nasledovnú adresu s použitím HTTP GET:</p>
-
-<pre><code>http://localhost:8080/chocolates
-</code></pre>
-
-<p>Návratová hodnota metódy je <em>zoznam čokolád</em>, čo je bežný Java objekt. Pamätáš si však na Jacksona v <code>CLASSPATH</code>e? Vďaka nemu sa tento zoznam automagicky premení na JSONovský reťazec v HTTP odpovedi. (A Jackson nepotrebuje žiadnu špeciálnu konfiguráciu ani anotácie.)</p>
-
+<pre tabindex="0"><code>http://localhost:8080/chocolates
+</code></pre><p>Návratová hodnota metódy je <em>zoznam čokolád</em>, čo je bežný Java objekt. Pamätáš si však na Jacksona v <code>CLASSPATH</code>e? Vďaka nemu sa tento zoznam automagicky premení na JSONovský reťazec v HTTP odpovedi. (A Jackson nepotrebuje žiadnu špeciálnu konfiguráciu ani anotácie.)</p>
 <h2 id="spustenie">Spustenie</h2>
-
 <p>Môžeš si to skúsiť: spusti si:</p>
-
-<pre><code>mvn spring-boot:run
-</code></pre>
-
-<p><em>Spring Boot</em> automaticky spustí HTTP server na porte 8080 a rovno môžeš navštíviť <a href="http://localhost:8080/chocolates">http://localhost:8080/chocolates</a>. Uvidíš odpoveď:</p>
-
+<pre tabindex="0"><code>mvn spring-boot:run
+</code></pre><p><em>Spring Boot</em> automaticky spustí HTTP server na porte 8080 a rovno môžeš navštíviť http://localhost:8080/chocolates. Uvidíš odpoveď:</p>
 <pre><code>[{&quot;id&quot;:&quot;lindt&quot;,&quot;title&quot;:&quot;Lindt&quot;,&quot;percentage&quot;:72},{&quot;id&quot;:&quot;choc-o-crap&quot;,&quot;title&quot;:&quot;Choc'o'crap&quot;,&quot;percentage&quot;:10},{&quot;id&quot;:&quot;brownella&quot;,&quot;title&quot;:&quot;Brownella&quot;,&quot;percentage&quot;:52}]
 </code></pre>
-
 <h2 id="anotácie-metódy-pre-post">Anotácie metódy pre POST</h2>
-
 <p>Teraz si skúsme aj opačný postup: dodajme metódu, ktorá <em>prijme</em> JSONovský string a vytvorí novú entitu. (V REST filozofii pôjde o mapovanie na HTTP POST).</p>
-
 <pre><code>@PostMapping
 public Chocolate add(@RequestBody Chocolate chocolate) {
-    chocolates.add(chocolate);
-    return chocolate;
+	chocolates.add(chocolate);
+	return chocolate;
 }
 </code></pre>
-
 <p>Ako vidíš, anotácia <code>@PostMapping</code> hovorí, že metóda bude sprístupnená na adrese <code>http:/…/chocolates</code>, ale v tomto prípade len pre prístup cez HTTP POST.</p>
-
 <p>Pozorovať môžeš ešte jednu anotáciu: parameter metódy objektu <code>@RequestBody</code> hovorí, že celé telo v HTTP požiadavke sa má automaticky namapovať na objekt typu <code>Chocolate</code>. A keďže máme v <code>CLASSPATH</code>e Jacksona, Spring sa automaticky postará o to, aby akákoľvek HTTP POST požiadavka, ktorá má uvedený <code>Content-Type</code> ako JSON (teda <code>application/json</code>), sa pomocou tohto mŕtveho speváka deserializovala na bežný čokoládový objekt.</p>
-
-<p>Žiaľ, toto sa už nedá vyskúšať pomocou čistého browsera (ten funguje len cez HTTP GET). Na testovanie je najlepšie zobrať niektorý z pluginov prehliadača: napríklad Firefox má svoj <strong><em>Poster</em></strong>, či <strong><em>HTTP Requester</em></strong>. Dôležité je, že požiadavka musí ísť tiež na adresu <a href="http://localhost:8080/chocolates">http://localhost:8080/chocolates</a>, a musí mať správny <em>Content Type</em>.</p>
-
+<p>Žiaľ, toto sa už nedá vyskúšať pomocou čistého browsera (ten funguje len cez HTTP GET). Na testovanie je najlepšie zobrať niektorý z pluginov prehliadača: napríklad Firefox má svoj <em><strong>Poster</strong></em>, či <em><strong>HTTP Requester</strong></em>. Dôležité je, že požiadavka musí ísť tiež na adresu http://localhost:8080/chocolates, a musí mať správny <em>Content Type</em>.</p>
 <p>Len bokom ti podotknem, že metóda vracia <code>Chocolate</code>. To nie je povinné, ale podľa RESTovských zásad je užitočné, ak sa klientovi na požiadavku vráti nejaký neprázdny obsah: v tomto prípade, keďže sa hrajkáme, stačí vrátiť to, čo prišlo na vstupe: teda čokoládu.</p>
-
 <h2 id="vylepšenie-http-postu">Vylepšenie HTTP POSTu</h2>
-
 <p>Príklad by si mohol ešte vylepšiť. Hovorí sa, že ak sa úspešne podarí vytvoriť RESTovský <em>resource</em>, server má odpovedať so stavovým kódom <code>HTTP 201 Created</code>. Nie je nič ľahšie: stačí dodať nad metódu <code>add()</code> anotáciu <code>@ResponseStatus</code> s príslušným stavovým kódom:</p>
-
 <pre><code>@PostMapping
 @ResponseStatus(value = HttpStatus.CREATED)
 public Chocolate add(@RequestBody Chocolate chocolate) {
 </code></pre>
-
 <h2 id="metódy-s-parametrami-url-adries">Metódy s parametrami URL adries</h2>
-
 <p>Zatiaľ si videl len dve metódy: jednu na získanie zoznamu všetkých čokolád a druhú na vytvorenie novej čokolády. Pri RESTe však často budeš potrebovať získať informácie o <em>jedinej</em> čokoláde. Podľa restovaných zásad sa takáto informácia o čokoláde Lindt namapuje napr. URL adresu:</p>
-
 <pre><code>http://localhost:8080/chocolates/lindt
 </code></pre>
-
 <p>Obslúžiť takéto volanie v REST kontroléri možno vytvorením novej metódy, ktorá zároveň dokáže inteligentne vytiahnuť z URL adresy identifikátor čokolády.</p>
-
 <pre><code>@GetMapping(&quot;/{id}&quot;)
 public Chocolate get(@PathVariable String id) {
-    Chocolate chocolate = findById(id);
-    if(chocolate == null) {
-        throw new ChocolateNotFoundException();
-    }
-    return chocolate;
+	Chocolate chocolate = findById(id);
+	if(chocolate == null) {
+		throw new ChocolateNotFoundException();
+	}
+	return chocolate;
 }
 </code></pre>
-
 <p>Opäť si všimni anotáciu <code>@GetMapping</code>: tá teraz udáva už aj parameter <code>/{id}</code>. Všetko, čo je v kučeravých zátvorkách (<code>id</code>) udáva tzv. <em>path parameter</em> alebo <em>path variable</em>, teda premennú cesty. Ak klient navštívi adresu <code>http://localhost:8080/chocolates/lindt</code>, Spring sa snaží vypátrať metódu v kontroléri, ktorá dokáže obslúžiť požiadavku s touto URL, a používa pri tom anotácie <code>@***Mapping</code> nad triedou a <code>***Mapping</code> nad metódami. Ako som Ti spomenul vyššie, prípony ciest v anotácii nad triedou a nad metódou sa snaží „zlepiť“ dohromady.</p>
-
 <p>Prípona URL v <code>@RequestMapping</code>-u na kontroléri zlepená s hodnotou <code>@PostMapping</code>-u na metóde dá dohromady <code>/chocolates/{id}</code>.</p>
-
 <p>Ak si chceš vyzdvihnúť hodnotu parametra cesty <code>id</code> v metóde, použi na to štandardný parameter metódy <code>String id</code>. Aby bolo jasné, že sa do parametra má napchať hodnota z URL adresy&hellip; tiež na to použiješ anotáciu. V tomto prípade pôjde o anotáciu <code>@PathVariable</code>.</p>
-
 <p>Iste sa pýtaš, ako sa odhadne názov parametra. Spring používa vúdú, ktoré toto hádanie urobí automaticky (premenná cesty <code>id</code> sa namapuje na rovnomenný parameter metódy).</p>
-
 <p>Zvyšok metódy by mal byť jasný: vrátime bežnú inštanciu čokolády serializovanú na JSON.</p>
-
 <p>S jedinou špecialitou: tou je prípad, že sa čokoláda s daným ID nenájde.</p>
-
 <h2 id="výnimky">Výnimky</h2>
-
 <p>Ako vidíš, v metódach kontroléra možno hádzať výnimky. REST však vôbec nepozná koncept výnimky (koniec koncov, klient môže byť implementovaný v hocijakom, aj neobjektovom jazyku.). Detekovať výnimočné stavy môžeme pomocou HTTP stavových kódov a vhodne navolenému obsahu v tele odpovede HTTP.</p>
-
 <p>Ak voláš REST adresu pre získanie objektu, ktorý neexistuje, mala by sa zjaviť stará známa klasika: stavový kód 404 (Not found).</p>
-
 <p>A ako tieto stavové kódy súvisia s výnimkami? Jednoducho. Ak si vytvoríš triedu pre vlastnú výnimku, dodáš nad ňu anotáciu <code>@ResponseStatus</code> (áno, túto anotáciu som už raz použil vyššie), a v kóde metódy túto výnimku vyhodíš, Spring ju automaticky odchytí a vráti stavový kód HTTP, ktorý uvedieš v tejto anotácii.</p>
-
 <p>Tu je príklad výnimky, ktorá sa prevedie na stavový kód 404:</p>
-
 <pre><code>@ResponseStatus(value = HttpStatus.NOT_FOUND)
 public class ChocolateNotFoundException extends RuntimeException {
-    // no body needed
+	// no body needed
 }
 </code></pre>
-
 <h1 id="záver">Záver</h1>
-
 <p>Záverom tohto listu ti už len prajem veľa šťastia a zdaru pri vlastných projektoch.</p>
-
 <p>S priateľským pozdravom</p>
-
-<p>&nbsp;&nbsp;&nbsp;Róbert</p>
-
-<p>P.&nbsp;S. Kompletné zdrojáky nájdeš na GitHube, v repozitári <a href="https://github.com/novotnyr/spring-boot-chocolate-rest-demo">novotnyr/spring-boot-chocolate-rest-demo</a>.</p>
-
+<p>   Róbert</p>
+<p>P. S. Kompletné zdrojáky nájdeš na GitHube, v repozitári <a href="https://github.com/novotnyr/spring-boot-chocolate-rest-demo">novotnyr/spring-boot-chocolate-rest-demo</a>.</p>
 <h1 id="ďalšie-zdroje-na-čítanie">Ďalšie zdroje na čítanie</h1>
-
 <ul>
 <li>Tutoriál <a href="https://spring.io/guides/tutorials/rest/">Designing and Implementing RESTful Web Services with Spring</a></li>
-<li><a href="[http://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api">Best Practices for A Pragmatic RESTFul API</a> &ndash; kolekcia odporúčaní pri zostavovaní REST API</li>
+<li><a href="%5Bhttp://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api">Best Practices for A Pragmatic RESTFul API</a> &ndash; kolekcia odporúčaní pri zostavovaní REST API</li>
 <li><a href="http://spring.io/guides/gs/rest-service/">Building a RESTful Web Service</a> &ndash; budovanie REST endpointov pomocou Springu a Spring Bootu</li>
 <li><a href="http://ics.upjs.sk/~novotnyr/blog/1235/aha-aplikacia-spring-mvc-bez-xml">Spring MVC bez <code>web.xml</code></a></li>
 <li><a href="http://ics.upjs.sk/~novotnyr/wiki/Java/SpringMVC25">Spring MVC 2.5</a>: starší článok z roku 2009 k Spring MVC 2.5, ale mnoho ideí stále platí.</li>

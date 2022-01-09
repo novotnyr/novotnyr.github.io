@@ -59,40 +59,37 @@
 
 
 <main>
-
-
-<h1 id="záverečný-projekt-spracovanie-konfiguračných-súborov">Záverečný projekt – Spracovanie konfiguračných súborov</h1>
-
+<h1 id="záverečný-projekt--spracovanie-konfiguračných-súborov">Záverečný projekt – Spracovanie konfiguračných súborov</h1>
 <p>Úlohou aplikácie je zabezpečiť pohodlnú prácu s konfiguračnými súbormi typu INI a XML. Aplikácia musí podporovať nasledovné činnosti:</p>
-
 <ul>
-<li>načítanie konfiguračného súboru zo súboru (voliteľne: načítanie konfiguračného súboru z CLASSPATH, z URL)</li>
-
-<li><p>získavanie hodnôt z jednotlivých konfiguračných kľúčov s pohodlnou automatickou konverziou medzi typmi, teda metódu na načítanie celého čísla, reálneho čísla, reťazca a booleovskej hodnoty. Aplikácia musí podporovať spôsob získania hodnoty s ošetrením situácie, keď sa daný kľúč v konfiguračnom súbore nenachádza (možnosť vrátiť nedefinovanú hodnotu alebo možnosť vrátiť užívateľom určenú implicitnú hodnotu).</p></li>
-
-<li><p>získavanie všetkých kľúčov z konfiguračného súboru</p></li>
-
-<li><p>získavanie všetkých kľúčov z danej sekcie</p></li>
-
-<li><p>získavanie párov (kľúč, hodnota) buď zo sekcie, alebo z celého súboru</p></li>
-
-<li><p>získanie všetkých sekcií zo súboru</p></li>
+<li>
+<p>načítanie konfiguračného súboru zo súboru (voliteľne: načítanie konfiguračného súboru z CLASSPATH, z URL)</p>
+</li>
+<li>
+<p>získavanie hodnôt z jednotlivých konfiguračných kľúčov s pohodlnou automatickou konverziou medzi typmi, teda metódu na načítanie celého čísla, reálneho čísla, reťazca a booleovskej hodnoty. Aplikácia musí podporovať spôsob získania hodnoty s ošetrením situácie, keď sa daný kľúč v konfiguračnom súbore nenachádza (možnosť vrátiť nedefinovanú hodnotu alebo možnosť vrátiť užívateľom určenú implicitnú hodnotu).</p>
+</li>
+<li>
+<p>získavanie všetkých kľúčov z konfiguračného súboru</p>
+</li>
+<li>
+<p>získavanie všetkých kľúčov z danej sekcie</p>
+</li>
+<li>
+<p>získavanie párov (kľúč, hodnota) buď zo sekcie, alebo z celého súboru</p>
+</li>
+<li>
+<p>získanie všetkých sekcií zo súboru</p>
+</li>
 </ul>
-
 <p>Aplikácia musí podporovať nasledovné typy konfiguračných súborov:</p>
-
 <ul>
 <li>konfiguračný súbor INI</li>
 <li>konfiguračný súbor XML</li>
 </ul>
-
 <h2 id="konfiguračný-súbor-ini">Konfiguračný súbor INI</h2>
-
 <p>Obsahuje po riadkoch dvojice <em>kľúč = hodnota</em>. Dvojice môžu byť logicky združené v sekciách (názov sekcie je uvedený v hranatých zátvorkách). Súbor môže obsahovať komentáre uvedené znakom bodkočiarky. Kvôli prenositeľnosti musí aplikácia podporovať špecifikáciu komentárového znaku.</p>
-
 <p>Príklad inicializačného súboru INI. Obsahuje koreňový element configuration, element pre sekcie section, ktorý môže obsahovať elementy pre jednotlivé konfiguračné dvojice.</p>
-
-<pre><code>; for 16-bit app support 
+<pre tabindex="0"><code>; for 16-bit app support 
 [fonts] 
 [files] 
 [Mail] 
@@ -103,10 +100,8 @@ aif=MPEGVideo
 aifc=MPEGVideo 
 aiff=MPEGVideo 
 asf=MPEGVideo
-</code></pre>
-
-<h2 id="konfiguračný-súbor-xml">Konfiguračný súbor XML</h2>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#579">&lt;?xml version=&#34;1.0&#34; ?&gt;</span>
+</code></pre><h2 id="konfiguračný-súbor-xml">Konfiguračný súbor XML</h2>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#579">&lt;?xml version=&#34;1.0&#34; ?&gt;</span>
 <span style="color:#070">&lt;configuration&gt;</span>
     <span style="color:#070">&lt;section</span> <span style="color:#007">title=</span><span style="background-color:#e0e0ff">&#34;fonts&#34;</span><span style="color:#070">&gt;&lt;/section&gt;</span> 
     <span style="color:#070">&lt;section</span> <span style="color:#007">title=</span><span style="background-color:#e0e0ff">&#34;files&#34;</span><span style="color:#070">&gt;</span> <span style="color:#070">&lt;/section&gt;</span>
@@ -118,7 +113,8 @@ asf=MPEGVideo
         <span style="color:#070">&lt;item</span> <span style="color:#007">key=</span><span style="background-color:#e0e0ff">&#34;aif&#34;</span><span style="color:#070">&gt;</span>MPEFVideo<span style="color:#070">&lt;/item&gt;</span>
         <span style="color:#070">&lt;item</span> <span style="color:#007">key=</span><span style="background-color:#e0e0ff">&#34;aifc&#34;</span><span style="color:#070">&gt;</span>MPEGVideo<span style="color:#070">&lt;/item&gt;</span>
     <span style="color:#070">&lt;/section&gt;</span>
-<span style="color:#070">&lt;/configuration&gt;</span></code></pre></div>
+<span style="color:#070">&lt;/configuration&gt;</span>
+</code></pre></div>
 </main>
 
     <footer>

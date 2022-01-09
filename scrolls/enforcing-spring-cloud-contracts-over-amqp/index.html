@@ -59,16 +59,10 @@
 
 
 <main>
-
-
 <h1 id="why-spring-cloud-and-cdc">Why Spring Cloud and CDC?</h1>
-
 <p>The <strong>Spring Cloud Contract</strong> enforces Consumer Driven Contracts (CDC) in the services. While there are various examples of the HTTP integration, let’s focus on another scenario — enforcing contracts on messages in the AMQP protocol.</p>
-
 <p>We will create a simple example where a <strong>producer</strong> will send a <strong>user presence</strong> message to a <strong>consumer</strong>. This message will be in the JSON format, send via pre-aggreed exchange.</p>
-
 <p>The roadmap is as follows:</p>
-
 <ol>
 <li><strong>Create a contract.</strong> It will be owned by the producer-side.</li>
 <li><strong>Create a consumer-side implementation</strong> of an AMQP queue that will adhere to the contract.</li>
@@ -76,32 +70,24 @@
 <li>Create <strong>Producer implementation</strong> to send AMQP messages that follow contract requirements.</li>
 <li>Prepare and <strong>autogenerate producer-side integration tests</strong> to make sure that the producer agrees with the contract as well.</li>
 </ol>
-
 <p>All of these steps are completely independent from the actual RabbitMQ broker. In other words, we can establish, enforce and test the contract without a running instance of the RabbitMQ!</p>
-
 <h3 id="source-code">Source Code</h3>
-
 <p>The final source code is available on GitHub, in the <a href="https://github.com/novotnyr/spring-cloud-contract-amqp-demo"><code>novotnyr/spring-cloud-contract-amqp-demo</code></a> repository.</p>
-
 <h1 id="setting-up-the-producer-project">Setting Up the Producer Project</h1>
-
 <p>As a first step, let’s create a <strong>producer</strong> project, corresponding to a message sending service. This project will send a simple message: it will indicate an availability of a user in some kind of chat service.</p>
-
 <p>This project will be Maven-based, with the following properties:</p>
-
 <ul>
 <li>inherit from <code>spring-boot-starter-parent</code> of the 2.x Spring Boot line</li>
 <li>use the following dependencies:
-
 <ul>
 <li><code>spring-boot-starter-amqp</code>: to send AMQP messages</li>
 <li><code>spring-boot-starter-json</code>: to serialize AMQP messages to JSON</li>
 <li><code>spring-boot-starter-test</code> (in <em>test</em> scope) to enable testing facilities in Spring</li>
-</ul></li>
 </ul>
-
+</li>
+</ul>
 <p>Most importantly, we need to depend on the Spring Cloud Contract libraries. We will import the libraries via <code>dependencyManagement</code>:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#070">&lt;dependencyManagement&gt;</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#070">&lt;dependencyManagement&gt;</span>
     <span style="color:#070">&lt;dependencies&gt;</span>
         <span style="color:#070">&lt;dependency&gt;</span>
         <span style="color:#070">&lt;groupId&gt;</span>org.springframework.cloud<span style="color:#070">&lt;/groupId&gt;</span>
@@ -111,112 +97,87 @@
             <span style="color:#070">&lt;scope&gt;</span>import<span style="color:#070">&lt;/scope&gt;</span>
         <span style="color:#070">&lt;/dependency&gt;</span>
     <span style="color:#070">&lt;/dependencies&gt;</span>
-<span style="color:#070">&lt;/dependencyManagement&gt;</span></code></pre></div>
-<p>Then, let’s add additional <code>&lt;dependency&gt;</code> :</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#070">&lt;dependency&gt;</span>
+<span style="color:#070">&lt;/dependencyManagement&gt;</span>
+</code></pre></div><p>Then, let’s add additional <code>&lt;dependency&gt;</code> :</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#070">&lt;dependency&gt;</span>
     <span style="color:#070">&lt;groupId&gt;</span>org.springframework.cloud<span style="color:#070">&lt;/groupId&gt;</span>
     <span style="color:#070">&lt;artifactId&gt;</span>spring-cloud-starter-contract-verifier<span style="color:#070">&lt;/artifactId&gt;</span>
     <span style="color:#070">&lt;scope&gt;</span>test<span style="color:#070">&lt;/scope&gt;</span>
-<span style="color:#070">&lt;/dependency&gt;</span></code></pre></div>
-<p>In addition, this will allow us to add the most important component: Maven plugin that will handle contract management, publishing and upload.</p>
-
-<pre><code>&lt;plugin&gt;
+<span style="color:#070">&lt;/dependency&gt;</span>
+</code></pre></div><p>In addition, this will allow us to add the most important component: Maven plugin that will handle contract management, publishing and upload.</p>
+<pre tabindex="0"><code>&lt;plugin&gt;
     &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
     &lt;artifactId&gt;spring-cloud-contract-maven-plugin&lt;/artifactId&gt;
     &lt;version&gt;2.0.2.RELEASE&lt;/version&gt;
     &lt;extensions&gt;true&lt;/extensions&gt;
 &lt;/plugin&gt;
-</code></pre>
-
-<p>The final <code>pom.xml</code> that can be used as a reference is available in <a href="https://github.com/novotnyr/spring-cloud-contract-amqp-demo/tree/master/producer">Github <code>producer</code> project</a>.</p>
-
+</code></pre><p>The final <code>pom.xml</code> that can be used as a reference is available in <a href="https://github.com/novotnyr/spring-cloud-contract-amqp-demo/tree/master/producer">Github <code>producer</code> project</a>.</p>
 <h1 id="creating-a-contract">Creating a Contract</h1>
-
 <p>The actual contract in the <em>Spring Cloud Contract</em> can be written either in Groovy DSL or in YAML. Let’s use YAML now.</p>
-
 <p>The contract file <code>user-presence.yaml</code> should be put into <code>src/test/resources/contracts</code>, where it would be automatically picked up by Maven plugin.</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">label:<span style="color:#bbb"> </span>user-goes-online<span style="color:#bbb">
-</span><span style="color:#bbb"></span>input:<span style="color:#bbb">
-</span><span style="color:#bbb">  </span>triggeredBy:<span style="color:#bbb"> </span>onUserIsOnline()<span style="color:#bbb">
-</span><span style="color:#bbb"></span>outputMessage:<span style="color:#bbb">
-</span><span style="color:#bbb">  </span>sentTo:<span style="color:#bbb"> </span>user-presence<span style="color:#bbb">
-</span><span style="color:#bbb">  </span>body:<span style="color:#bbb">
-</span><span style="color:#bbb">    </span>user:<span style="color:#bbb"> </span>amadeus<span style="color:#bbb">
-</span><span style="color:#bbb">  </span>headers:<span style="color:#bbb">
-</span><span style="color:#bbb">    </span>contentType:<span style="color:#bbb"> </span>application/json</code></pre></div>
-<p>We declare a contract where the message will be triggered by a method call.</p>
-
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#070">label</span>:<span style="color:#bbb"> </span>user-goes-online<span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#070">input</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#070">triggeredBy</span>:<span style="color:#bbb"> </span>onUserIsOnline()<span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#070">outputMessage</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#070">sentTo</span>:<span style="color:#bbb"> </span>user-presence<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#070">body</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#070">user</span>:<span style="color:#bbb"> </span>amadeus<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#070">headers</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#070">contentType</span>:<span style="color:#bbb"> </span>application/json<span style="color:#bbb">
+</span></code></pre></div><p>We declare a contract where the message will be triggered by a method call.</p>
 <p>To be specific, on a <code>onUserIsOnline()</code> method call, an AQMP message will be sent to the <code>user-presence</code> exchange. The body will be in the JSON format <code>{ “user” : “amadeus” }</code> and the message will contain a necessary JSON content-type header.</p>
-
 <p>Additionally, we need to put a label to this contract statement, so we can reference that particular contract stanza in the integration tests.</p>
-
 <h2 id="publishing-a-contract">Publishing a Contract</h2>
-
 <p>Now that the contract has been completed, we can publish that to the local Maven repository:</p>
-
-<pre><code>mvn install -DskipTests
-</code></pre>
-
-<p>This command will build, package and deploy the contract files to the local Maven repository. These files will be published in an artifact with the dedicated Maven classifier —  <code>stubs</code> — in order not to interfere with the main module artifact.</p>
-
+<pre tabindex="0"><code>mvn install -DskipTests
+</code></pre><p>This command will build, package and deploy the contract files to the local Maven repository. These files will be published in an artifact with the dedicated Maven classifier —  <code>stubs</code> — in order not to interfere with the main module artifact.</p>
 <p>We will intentionally skip tests, as there are no reasonable tests to execute. However, we will fix that later.</p>
-
 <h1 id="setting-up-the-consumer-project">Setting Up the Consumer Project</h1>
-
 <h2 id="initializing-consumer-project">Initializing Consumer Project</h2>
-
 <p>Time to move on to the opposite side of the contract, which will consume AMQP messages. Since we have our contract ready, we will prepare a consumer-side project.</p>
-
 <p>Let’s create another Maven-based project, with the following setup:</p>
-
 <ul>
-<li><p>inherit from <code>spring-boot-starter-parent</code> of the 2.0 Spring Boot line</p></li>
-
-<li><p>import <em>Spring Cloud Contract</em> dependencies via <code>dependencyManagement</code> in the same vein as in the <em>Producer</em> project.</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#070">&lt;dependencyManagement&gt;</span>
-  <span style="color:#070">&lt;dependencies&gt;</span>
-      <span style="color:#070">&lt;dependency&gt;</span>
-          <span style="color:#070">&lt;groupId&gt;</span>org.springframework.cloud<span style="color:#070">&lt;/groupId&gt;</span>
-          <span style="color:#070">&lt;artifactId&gt;</span>spring-cloud-dependencies<span style="color:#070">&lt;/artifactId&gt;</span>
-          <span style="color:#070">&lt;version&gt;</span>Finchley.SR2<span style="color:#070">&lt;/version&gt;</span>
-          <span style="color:#070">&lt;type&gt;</span>pom<span style="color:#070">&lt;/type&gt;</span>
-          <span style="color:#070">&lt;scope&gt;</span>import<span style="color:#070">&lt;/scope&gt;</span>
-      <span style="color:#070">&lt;/dependency&gt;</span>
-  <span style="color:#070">&lt;/dependencies&gt;</span>
-<span style="color:#070">&lt;/dependencyManagement&gt;</span></code></pre></div></li>
-
-<li><p>use the following dependencies:</p>
-
+<li>
+<p>inherit from <code>spring-boot-starter-parent</code> of the 2.0 Spring Boot line</p>
+</li>
+<li>
+<p>import <em>Spring Cloud Contract</em> dependencies via <code>dependencyManagement</code> in the same vein as in the <em>Producer</em> project.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#070">&lt;dependencyManagement&gt;</span>
+    <span style="color:#070">&lt;dependencies&gt;</span>
+        <span style="color:#070">&lt;dependency&gt;</span>
+            <span style="color:#070">&lt;groupId&gt;</span>org.springframework.cloud<span style="color:#070">&lt;/groupId&gt;</span>
+            <span style="color:#070">&lt;artifactId&gt;</span>spring-cloud-dependencies<span style="color:#070">&lt;/artifactId&gt;</span>
+            <span style="color:#070">&lt;version&gt;</span>Finchley.SR2<span style="color:#070">&lt;/version&gt;</span>
+            <span style="color:#070">&lt;type&gt;</span>pom<span style="color:#070">&lt;/type&gt;</span>
+            <span style="color:#070">&lt;scope&gt;</span>import<span style="color:#070">&lt;/scope&gt;</span>
+        <span style="color:#070">&lt;/dependency&gt;</span>
+    <span style="color:#070">&lt;/dependencies&gt;</span>
+<span style="color:#070">&lt;/dependencyManagement&gt;</span>
+</code></pre></div></li>
+<li>
+<p>use the following dependencies:</p>
 <ul>
 <li><code>spring-boot-starter-amqp</code>: to send AMQP messages</li>
 <li><code>spring-boot-starter-json</code>: to serialize AMQP messages to JSON</li>
 <li><code>spring-boot-starter-test</code> (in <em>test</em> scope) to enable testing facilities in Spring</li>
 <li><code>org.springframework.cloud:spring-cloud-starter-contract-stub-runner</code> (in <em>test</em> scope) to handle remote contracts</li>
-</ul></li>
 </ul>
-
 <p>In this <em>Consumer</em> project we can omit the <code>spring-cloud-contract-maven-plugin</code> , as we will not need to upload contracts to the remote repo.</p>
-
 <p>The final stage of the <code>pom.xml</code> in the <a href="https://github.com/novotnyr/spring-cloud-contract-amqp-demo/blob/master/consumer/pom.xml">Consumer</a> project is available on Github.</p>
-
+</li>
+</ul>
 <h2 id="preparing-consumer-codebase">Preparing Consumer Codebase</h2>
-
 <p>Now, let’s create a proper consumer project infrastructure. In other words, let’s create a proper <em>Spring AMQP</em>-based project that will handle AMQP messages as if they were sent by RabbitMQ broker.</p>
-
 <p>This is a process that is completely independent from the Spring Cloud Contract classes!</p>
-
 <h3 id="message-class">Message Class</h3>
-
 <p>The inbound message will be mapped to a proper domain object:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">  <span style="color:#f00;background-color:#faa">public class </span>UserGoesOnlineMessage {
-      <span style="color:#f00;background-color:#faa">private String </span>user;
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">  <span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">UserGoesOnlineMessage</span> <span style="color:#333">{</span>
+      <span style="color:#289;font-weight:bold">private</span> String user<span style="color:#333">;</span>
   	<span style="color:#666;font-style:italic">/* ..getters and setters */</span>
-  }</code></pre></div>
-<h3 id="message-listener">Message Listener</h3>
-
+  <span style="color:#333">}</span>
+</code></pre></div><h3 id="message-listener">Message Listener</h3>
 <p>Inbound AMQP message will be handled by a usual <code>@RabbitListener</code>-annotated method in a <code>@Component</code>:</p>
-
-<pre><code>  @Component
+<pre tabindex="0"><code>  @Component
   public class UserPresenceListener {
       private List&lt;String&gt; availableUsers = new ArrayList&lt;&gt;();
   
@@ -229,89 +190,67 @@
           return availableUsers;
       }
   }
-</code></pre>
-
-<p>Obviously, this is a very stupid mechanism: the listener will just take any incoming available user and it will put it into the “log”, or list of available users. This is just to have something testable.</p>
-
+</code></pre><p>Obviously, this is a very stupid mechanism: the listener will just take any incoming available user and it will put it into the “log”, or list of available users. This is just to have something testable.</p>
 <h3 id="main-class">Main Class</h3>
-
 <p>Now it’s time to code the main application class.</p>
-
 <ul>
 <li>We will create a usual <strong>main</strong> method to launch our application.</li>
 <li>We will declare a <code>Jackson2JsonMessageConverter</code> to handle message conversion from JSON to domain object.</li>
-
-<li><p>And finally, we will configure AMQP infrastructure:</p>
-
+<li>And finally, we will configure AMQP infrastructure:
 <ul>
 <li>Create an <strong>exchange</strong> <code>user-presence</code> (used by the Producer to send messages.)</li>
 <li>Create a message <strong>queue</strong> <code>user-presence</code> to receive AMQP messages. This is the queue that is referenced in the <code>UserPresenceListener</code>, namely in the <code>@RabbitListener</code> annotation.</li>
-
-<li><p>Create a <strong>binding</strong> between declared exchange and the queue. The binding is very important, as it is used by <em>Spring Cloud Contract Stub Runner</em> to discover message routes used in the integration tests.</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#555;font-weight:bold">@SpringBootApplication</span>
-<span style="color:#f00;background-color:#faa">public class </span>ConsumerApplication {
-<span style="color:#555;font-weight:bold">@Bean</span>
-<span style="color:#f00;background-color:#faa">public Binding </span>binding() {
-<span style="color:#289;font-weight:bold">return</span> BindingBuilder
-        .<span style="color:#007">bind</span>(userPresenceQueue())
-        .<span style="color:#007">to</span>(userPresenceExchange())
-        .<span style="color:#007">with</span>(<span style="background-color:#e0e0ff">&#34;#&#34;</span>);
-}
-
-<span style="color:#f00;background-color:#faa">private DirectExchange </span>userPresenceExchange() {
-<span style="color:#289;font-weight:bold">return</span> <span style="color:#289;font-weight:bold">new</span> DirectExchange(<span style="background-color:#e0e0ff">&#34;user-presence&#34;</span>);
-}
-
-<span style="color:#555;font-weight:bold">@Bean</span>
-<span style="color:#f00;background-color:#faa">Queue userPresenceQueue</span>() {
-<span style="color:#289;font-weight:bold">return</span> <span style="color:#289;font-weight:bold">new</span> Queue(<span style="background-color:#e0e0ff">&#34;user-presence&#34;</span>);
-}
-
-<span style="color:#555;font-weight:bold">@Bean</span>
-<span style="color:#f00;background-color:#faa">public MessageConverter </span>jackson2JsonMessageConverter() {
-<span style="color:#289;font-weight:bold">return</span> <span style="color:#289;font-weight:bold">new</span> Jackson2JsonMessageConverter();
-}
-
-<span style="color:#f00;background-color:#faa">public static void main</span>(<span style="color:#f00;background-color:#faa">String[] args</span>) {
-SpringApplication.<span style="color:#007">run</span>(ConsumerApplication.<span style="color:#007">class</span>, args);
-}
-
-}</code></pre></div></li>
-</ul></li>
+<li>Create a <strong>binding</strong> between declared exchange and the queue. The binding is very important, as it is used by <em>Spring Cloud Contract Stub Runner</em> to discover message routes used in the integration tests.</li>
 </ul>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#555;font-weight:bold">@SpringBootApplication</span>
+<span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">ConsumerApplication</span> <span style="color:#333">{</span>
+    <span style="color:#555;font-weight:bold">@Bean</span>
+    <span style="color:#289;font-weight:bold">public</span> Binding <span style="color:#5ed;font-weight:bold">binding</span><span style="color:#333">()</span> <span style="color:#333">{</span>
+        <span style="color:#289;font-weight:bold">return</span> BindingBuilder
+                <span style="color:#333">.</span><span style="color:#007">bind</span><span style="color:#333">(</span>userPresenceQueue<span style="color:#333">())</span>
+                <span style="color:#333">.</span><span style="color:#007">to</span><span style="color:#333">(</span>userPresenceExchange<span style="color:#333">())</span>
+                <span style="color:#333">.</span><span style="color:#007">with</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;#&#34;</span><span style="color:#333">);</span>
+    <span style="color:#333">}</span>
 
-<p>Obviously, we might be tempted to run this application. This is okay, however, this won’t help us in the verification of the contract that we created.</p>
+    <span style="color:#289;font-weight:bold">private</span> DirectExchange <span style="color:#5ed;font-weight:bold">userPresenceExchange</span><span style="color:#333">()</span> <span style="color:#333">{</span>
+        <span style="color:#289;font-weight:bold">return</span> <span style="color:#289;font-weight:bold">new</span> DirectExchange<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;user-presence&#34;</span><span style="color:#333">);</span>
+    <span style="color:#333">}</span>
 
+    <span style="color:#555;font-weight:bold">@Bean</span>
+    Queue <span style="color:#5ed;font-weight:bold">userPresenceQueue</span><span style="color:#333">()</span> <span style="color:#333">{</span>
+        <span style="color:#289;font-weight:bold">return</span> <span style="color:#289;font-weight:bold">new</span> Queue<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;user-presence&#34;</span><span style="color:#333">);</span>
+    <span style="color:#333">}</span>
+
+    <span style="color:#555;font-weight:bold">@Bean</span>
+    <span style="color:#289;font-weight:bold">public</span> MessageConverter <span style="color:#5ed;font-weight:bold">jackson2JsonMessageConverter</span><span style="color:#333">()</span> <span style="color:#333">{</span>
+        <span style="color:#289;font-weight:bold">return</span> <span style="color:#289;font-weight:bold">new</span> Jackson2JsonMessageConverter<span style="color:#333">();</span>
+    <span style="color:#333">}</span>
+
+    <span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">static</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">main</span><span style="color:#333">(</span>String<span style="color:#333">[]</span> args<span style="color:#333">)</span> <span style="color:#333">{</span>
+        SpringApplication<span style="color:#333">.</span><span style="color:#007">run</span><span style="color:#333">(</span>ConsumerApplication<span style="color:#333">.</span><span style="color:#007">class</span><span style="color:#333">,</span> args<span style="color:#333">);</span>
+    <span style="color:#333">}</span>
+
+<span style="color:#333">}</span>
+</code></pre></div><p>Obviously, we might be tempted to run this application. This is okay, however, this won’t help us in the verification of the contract that we created.</p>
 <p>Let’s create a proper integration test instead!</p>
-
 <h1 id="consumer-side-integration-tests">Consumer-Side Integration Tests</h1>
-
 <p>In this stage we are ready to create the integration tests. But wait, there is no running RabbitMQ to integrate! That is not a problem, since we <em>do</em> have the contract that describes all messages that our consumer should receive.</p>
-
 <p>The <strong>Stub Runner</strong> will mimic the RabbitMQ broker message flow in memory, being guided by the Contract.</p>
-
 <p>To prepare the integration tests, we will need two things:</p>
-
 <ul>
 <li>configuration of the Stub Runner</li>
 <li>the actual integration test</li>
 </ul>
-
 <h2 id="configuring-the-stub-runner">Configuring the Stub Runner</h2>
-
 <p>Let’s configure the Stub Runner in the traditional Spring-Boot way: let’s create an <code>application.properties</code> file. Since this file is test-specific, it should go to <code>src/test/resources</code>.</p>
-
 <p>In this file, we will explicitly enable the Stub Runner for AMQP protocol. To be on the safe side, we will disable the <em>Cloud Stream Stub Runner</em>, which might be enabled by default for Stream-Based AMQP integration.</p>
-
-<pre><code>stubrunner.amqp.enabled=true
+<pre tabindex="0"><code>stubrunner.amqp.enabled=true
 stubrunner.stream.enabled=false
-</code></pre>
-
-<h2 id="creating-the-consumer-side-integration-test">Creating the Consumer-Side Integration Test</h2>
-
+</code></pre><h2 id="creating-the-consumer-side-integration-test">Creating the Consumer-Side Integration Test</h2>
 <p>The integration test is basically a standard cookie-cutter Spring-Boot integration test, with additional features.</p>
-
-<pre><code>@RunWith(SpringRunner.class)
+<pre tabindex="0"><code>@RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @AutoConfigureStubRunner(ids = {&quot;com.github.novotnyr:spring-cloud-contract-server:+&quot;}, stubsMode = StubRunnerProperties.StubsMode.LOCAL)
 public class ListenerTest {
@@ -328,83 +267,62 @@ public class ListenerTest {
         assertTrue(this.userPresenceListener.getAvailableUsers().size() &gt; 0);
     }
 }
-</code></pre>
-
-<p>Mainly, we will use the <code>@AutoConfigureStubRunner</code> to declare the location of contract files. We are using:</p>
-
+</code></pre><p>Mainly, we will use the <code>@AutoConfigureStubRunner</code> to declare the location of contract files. We are using:</p>
 <ul>
 <li><code>ids</code> that indicate Ivy/Gradle-like coordinates of the published artifact that holds the contract files. In our cases, we indicate the most recent version with the <code>+</code> character.</li>
 <li><code>stubsMode</code> denotes the location of the artifacts, specifically being available in our local Maven repository.</li>
 </ul>
-
 <p>Now, we need to emulate the following scenario: a message will be sent to the RabbitMQ broker, then routed to a queue, and finally processed by the Consumer. We can autowire an <code>StubTrigger</code> that is able to emulate other-party message interactions.</p>
-
 <p>Via <code>trigger</code> method we launch the required contract scenario. We will refer to the particular part of the scenario via <code>label</code> that was specified way back in the YAML.</p>
-
 <p>Within this integration test, the <em>StubRunner</em> will find the proper AMQP binding, configure in-memory RabbitMQ mock and create the necessary RabbitMQ client infrastructure behind the scenes. Shortly, this will allow the <code>UserPresenceListener</code> to handle AMQP messages as if they were routed by the proper RabbitMQ broker.</p>
-
 <p>To test the listener, we just <code>trigger</code> the message, and make sure that the number of the available users is not empty, thus indicating a delivered message.</p>
-
 <h1 id="server-side-implementation-and-tests">Server-Side Implementation and Tests</h1>
-
 <p>Having completed consumer-side tests, we can return to the producer side. Let’s code two remaining features:</p>
-
 <ol>
 <li>Implement a proper server-side code which dispatches messages to AMQP exchanges and queues.</li>
 <li>Create integration tests that verify the contract on the producer side.</li>
 </ol>
-
 <h2 id="producer-side-implementation">Producer-Side Implementation</h2>
-
 <p>Let’s create a minimalistic all-in-one class that handles both Spring Boot configuration and message dispatch:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#555;font-weight:bold">@SpringBootApplication</span>
-<span style="color:#f00;background-color:#faa">public class </span>Application {
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#555;font-weight:bold">@SpringBootApplication</span>
+<span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">Application</span> <span style="color:#333">{</span>
     <span style="color:#555;font-weight:bold">@Autowired</span>
-    <span style="color:#f00;background-color:#faa">AmqpTemplate amqpTemplate</span>;
+    AmqpTemplate amqpTemplate<span style="color:#333">;</span>
 
-    <span style="color:#f00;background-color:#faa">public void </span>sendNotification() {
-        amqpTemplate.<span style="color:#007">convertAndSend</span>(<span style="background-color:#e0e0ff">&#34;user-presence&#34;</span>, <span style="background-color:#e0e0ff">&#34;&#34;</span> , <span style="color:#289;font-weight:bold">new</span> Notification(<span style="background-color:#e0e0ff">&#34;amadeus&#34;</span>));
-    }
+    <span style="color:#289;font-weight:bold">public</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">sendNotification</span><span style="color:#333">()</span> <span style="color:#333">{</span>
+        amqpTemplate<span style="color:#333">.</span><span style="color:#007">convertAndSend</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;user-presence&#34;</span><span style="color:#333">,</span> <span style="background-color:#e0e0ff">&#34;&#34;</span> <span style="color:#333">,</span> <span style="color:#289;font-weight:bold">new</span> Notification<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;amadeus&#34;</span><span style="color:#333">));</span>
+    <span style="color:#333">}</span>
 
     <span style="color:#555;font-weight:bold">@Bean</span>
-    <span style="color:#f00;background-color:#faa">public MessageConverter </span>jackson2JsonMessageConverter() {
-        <span style="color:#289;font-weight:bold">return</span> <span style="color:#289;font-weight:bold">new</span> Jackson2JsonMessageConverter();
-    }
+    <span style="color:#289;font-weight:bold">public</span> MessageConverter <span style="color:#5ed;font-weight:bold">jackson2JsonMessageConverter</span><span style="color:#333">()</span> <span style="color:#333">{</span>
+        <span style="color:#289;font-weight:bold">return</span> <span style="color:#289;font-weight:bold">new</span> Jackson2JsonMessageConverter<span style="color:#333">();</span>
+    <span style="color:#333">}</span>
 
-    <span style="color:#f00;background-color:#faa">public static void main</span>(<span style="color:#f00;background-color:#faa">String[] args</span>) {
-        SpringApplication.<span style="color:#007">run</span>(Application.<span style="color:#007">class</span>, args);
-    }
-}</code></pre></div>
-<p>We configure a <code>MessageConverter</code> that will automatically convert payloads to JSON format.</p>
-
+    <span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">static</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">main</span><span style="color:#333">(</span>String<span style="color:#333">[]</span> args<span style="color:#333">)</span> <span style="color:#333">{</span>
+        SpringApplication<span style="color:#333">.</span><span style="color:#007">run</span><span style="color:#333">(</span>Application<span style="color:#333">.</span><span style="color:#007">class</span><span style="color:#333">,</span> args<span style="color:#333">);</span>
+    <span style="color:#333">}</span>
+<span style="color:#333">}</span>
+</code></pre></div><p>We configure a <code>MessageConverter</code> that will automatically convert payloads to JSON format.</p>
 <p>Then, we create a <code>sendNotification()</code> method that will send an AMQP message via autowired <code>AmqpTemplate</code>. This message is represented by a simple domain object:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">package com</span>.<span style="color:#007">github</span>.<span style="color:#007">novotnyr</span>.<span style="color:#007">contract</span>;
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">package</span> <span style="color:#0e84b5;font-weight:bold">com.github.novotnyr.contract</span><span style="color:#333">;</span>
 
-<span style="color:#f00;background-color:#faa">public class </span>Notification {
-    <span style="color:#f00;background-color:#faa">private String </span>user;
+<span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">Notification</span> <span style="color:#333">{</span>
+    <span style="color:#289;font-weight:bold">private</span> String user<span style="color:#333">;</span>
     <span style="color:#666;font-style:italic">/* ... */</span>
-}</code></pre></div>
-<p>Finally, since this is a standalone Spring Boot app, we provide a <code>main</code> method.</p>
-
+<span style="color:#333">}</span>
+</code></pre></div><p>Finally, since this is a standalone Spring Boot app, we provide a <code>main</code> method.</p>
 <h2 id="producer-side-integration-tests">Producer-Side Integration Tests</h2>
-
 <p>Having completed consumer-side tests, we can return to the producer side and implement contract-based integration tests as well. We should make sure that producer-side is honoring the established contract in the same way as the consumer does.</p>
-
 <p>The plan for this part is as follows:</p>
-
 <ul>
 <li>Configure the <em>Cloud Contract Maven Plugin</em> with autogenerated integration tests.</li>
 <li>Implement a base class for contract-based tests.</li>
 <li>Configure mock RabbitMQ <em>Stub Runner</em> for the server side.</li>
 </ul>
-
 <h2 id="configuring-maven-plugin">Configuring Maven Plugin</h2>
-
 <p>We will do that via integration tests, but these tests will be partially autogenerated by the Maven plugin. To achieve this, we will need to adjust the plugin configuration. We need to introduce the <code>configuration</code> section where we state the base parent class for contract-based tests.</p>
-
-<h3 id="adding-base-classes-pom-xml">Adding base classes <code>pom.xml</code></h3>
-
-<pre><code>&lt;plugin&gt;
+<h3 id="adding-base-classes-pomxml">Adding base classes <code>pom.xml</code></h3>
+<pre tabindex="0"><code>&lt;plugin&gt;
     &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
     &lt;artifactId&gt;spring-cloud-contract-maven-plugin&lt;/artifactId&gt;
     &lt;version&gt;${spring-cloud-contract.version}&lt;/version&gt;
@@ -413,45 +331,31 @@ public class ListenerTest {
         &lt;baseClassForTests&gt;com.github.novotnyr.contract.TestBase&lt;/baseClassForTests&gt;
     &lt;/configuration&gt;
 &lt;/plugin&gt;
-</code></pre>
-
-<h3 id="configuring-stubrunner">Configuring StubRunner</h3>
-
+</code></pre><h3 id="configuring-stubrunner">Configuring StubRunner</h3>
 <p>Additionally, we need to configure the <em>StubRunner</em>. Specifically, we need to enable AMQP-based StubRunner for integration tests. Let’s create <code>src/test/resources/application.properties</code> with the following content:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-properties" data-lang="properties">stubrunner.amqp.enabled=true</code></pre></div>
-<h2 id="configuring-base-test-class">Configuring Base Test Class</h2>
-
+<pre tabindex="0"><code class="language-properties" data-lang="properties">stubrunner.amqp.enabled=true
+</code></pre><h2 id="configuring-base-test-class">Configuring Base Test Class</h2>
 <p>We will now declare the base class <code>TestBase</code> that we specified in the <code>pom.xml</code>. This is an <em>abstract</em> class which covers:</p>
-
 <ul>
 <li>an annotation <code>@AutoConfigureMessageVerifier</code> denoting a base class for integration tests</li>
 <li>the usual <code>@RunWith</code> and <code>@SpringBootTest</code> annotations indicating a usual Spring Boot-based test class</li>
-
-<li><p>an implementation of the method that is triggering the message. Since the contract specifies <code>triggeredBy: onUserIsOnline()</code>, we need to provide the implementation of this method. We will use the <code>Application</code> instance and its <code>sendNotification</code> method to dispatch a message to the AMQP exchange.</p>
-
-<pre><code>@RunWith(SpringRunner.class)
+<li>an implementation of the method that is triggering the message. Since the contract specifies <code>triggeredBy: onUserIsOnline()</code>, we need to provide the implementation of this method. We will use the <code>Application</code> instance and its <code>sendNotification</code> method to dispatch a message to the AMQP exchange.</li>
+</ul>
+<pre tabindex="0"><code>@RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMessageVerifier
 public abstract class TestBase {
-@Autowired Application application;
+    @Autowired Application application;
 
-protected void onUserIsOnline() {
-    application.sendNotification();
+    protected void onUserIsOnline() {
+        application.sendNotification();
+    }
 }
-}
-</code></pre></li>
-</ul>
-
-<p>Now that we have prepared the base class <code>TestBase</code>, we can launch Maven <code>install</code> goal. Since our integration tests are ready, we can install the producer artifact properly, without disabled unit tests!</p>
-
-<pre><code>mvn install
-</code></pre>
-
-<p><em>Spring Cloud Contract Maven Plugin</em> will autogenerate integration tests according to the Contract. These tests will be compiled and ran along the other unit tests.</p>
-
+</code></pre><p>Now that we have prepared the base class <code>TestBase</code>, we can launch Maven <code>install</code> goal. Since our integration tests are ready, we can install the producer artifact properly, without disabled unit tests!</p>
+<pre tabindex="0"><code>mvn install
+</code></pre><p><em>Spring Cloud Contract Maven Plugin</em> will autogenerate integration tests according to the Contract. These tests will be compiled and ran along the other unit tests.</p>
 <p>The following code shows an autogenerated test class:</p>
-
-<pre><code>public class ContractVerifierTest extends TestBase {
+<pre tabindex="0"><code>public class ContractVerifierTest extends TestBase {
 
 	@Inject ContractVerifierMessaging contractVerifierMessaging;
 	@Inject ContractVerifierObjectMapper contractVerifierObjectMapper;
@@ -472,33 +376,20 @@ protected void onUserIsOnline() {
 	}
 
 }
-</code></pre>
-
-<p>The Contract Maven plugin has created a <code>validate_user_presence</code> method. First, the <code>onUserOnline()</code> method is called to trigger the AMQP message. Since the plugin does not now, how the implementation of this method should look like, he have to provide it in the <code>TestBase</code> class.</p>
-
+</code></pre><p>The Contract Maven plugin has created a <code>validate_user_presence</code> method. First, the <code>onUserOnline()</code> method is called to trigger the AMQP message. Since the plugin does not now, how the implementation of this method should look like, he have to provide it in the <code>TestBase</code> class.</p>
 <p>Then, the RabbitMQ message processing is done via <em>Spring Cloud Contract</em> <code>ContractVerifierMessaging</code> object that is able to emulate message reception.</p>
-
 <p>Finally, the assertions are acquired via static methods of <code>SpringCloudContractAssertions</code> class, in the same spirit as the assertions on the traditional JUnit classes.</p>
-
 <h2 id="launching-integration-tests">Launching Integration Tests</h2>
-
 <p>When we <code>mvn install</code> the producer-side project, all integration tests will be generated and launched.</p>
-
 <p>As we have seen in the Consumer-side project, we have configured AMQP StubRunner. Behind the scenes, this stub runner will essentially mock the RabbitMQ broker and verify that the proper messages, with the proper JSON structure, are sent.</p>
-
 <h1 id="summary">Summary</h1>
-
 <p>Now we have successfully covered both sides of the queue:</p>
-
 <ul>
 <li><strong>producer</strong> that owns the contract and autogenerates integration tests.</li>
 <li><strong>consumer</strong> that downloads the contract from the Maven repo.</li>
 </ul>
-
 <p>Both sides rely on the <strong>StubRunner</strong>, implemented as an essential <strong>RabbitMQ</strong> mock that will verify that the contract is properly honored!</p>
-
 <h1 id="sources">Sources</h1>
-
 <ul>
 <li><a href="https://cloud.spring.io/spring-cloud-contract/multi/multi__spring_cloud_contract_verifier_messaging.html">Spring Cloud Contract Verifier Messaging Documentation</a> in the <strong>Spring Cloud Contract</strong> project documentation</li>
 <li><a href="https://github.com/spring-cloud-samples/spring-cloud-contract-samples">Spring Cloud Contract Samples</a>, especially <code>producer</code> and <code>consumer</code> project</li>

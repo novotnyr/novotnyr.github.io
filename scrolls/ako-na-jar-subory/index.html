@@ -59,21 +59,13 @@
 
 
 <main>
-
-
 <h1 id="úvod">Úvod</h1>
-
 <p>JAR súbory plnia úlohu kompaktného úložiska <code>.class</code> súborov v Jave. Ich výhodou je šetrenie miestom (<code>.class</code> súbory sú zväčša malé a zaberali by tak veľa nadbytočného miesta), ľahké prenášanie a manipulácia.</p>
-
 <p>Z technického hľadiska sú JAR súbory ničím iným, než premenovanými ZIP archívmi (áno, naozaj je to tak!). Možno ich teda vytvoriť pomocou ľubovoľného ZIP nástroja.</p>
-
 <p>Vo vývojovom prostredí Javy sa však nachádza nástroj <code>jar.exe</code>, ktorý uľahčuje manipuláciu s JAR súbormi.</p>
-
 <h1 id="vytvorenie-jar-súboru-z-príkazového-riadku">Vytvorenie JAR súboru z príkazového riadku</h1>
-
 <p>Predpokladajme, že máme nasledovnú hierarchiu adresárov a súborov:</p>
-
-<pre><code>|--bin
+<pre tabindex="0"><code>|--bin
 |--|--sk
 |--|--|--java
 |--|--|--|--MatrixSolver.class
@@ -81,95 +73,51 @@
 |--|--|--|--SpringBasedMatrixSolver.class
 |--OpustenaTriedaMimoHierarchie.class
 |--commons-logging.jar (JAR pre výpočet matíc)
-</code></pre>
-
-<h2 id="pridanie-jediného-súboru-do-archívu">Pridanie jediného súboru do archívu</h2>
-
-<pre><code>jar -cf javacp.jar OpustenaTriedaMimoHierarchie.class
-</code></pre>
-
-<p>Parametre sú prosté:</p>
-
+</code></pre><h2 id="pridanie-jediného-súboru-do-archívu">Pridanie jediného súboru do archívu</h2>
+<pre tabindex="0"><code>jar -cf javacp.jar OpustenaTriedaMimoHierarchie.class
+</code></pre><p>Parametre sú prosté:</p>
 <ul>
 <li><code>-c</code> – vytvoriť nový archív</li>
 <li><code>-f</code> – nový archív bude mať dané meno (<code>javacp.jar</code>)</li>
 <li><code>-C</code> – presuň sa do špecifikovaného adresára (<code>bin</code>)
 Treba dať pozor na to dodržiavanie balíčkovej štruktúry. Výsledný archív bude obsahovať na najvyššej úrovni jeden súbor a adresár <code>META-INF</code> (o ňom nižšie). Archív bude korektný len vtedy, ak <code>OpustenaTriedaMimoHierarchie</code> neprislúcha žiadnemu balíčku (teda nemá vo svojom zdrojovom kóde deklaráciu <code>package</code>. V opačnom prípade môžu nastať problémy s <code>ClassNotFoundException</code>&gt;</li>
 </ul>
-
-<h2 id="pridanie-adresárovej-balíčkovej-štruktúry-do-jar-súboru">Pridanie adresárovej/balíčkovej štruktúry do JAR súboru</h2>
-
-<pre><code>jar -cf javacp.jar -C bin .
-</code></pre>
-
-<p>Parametre sú prosté:</p>
-
+<h2 id="pridanie-adresárovejbalíčkovej-štruktúry-do-jar-súboru">Pridanie adresárovej/balíčkovej štruktúry do JAR súboru</h2>
+<pre tabindex="0"><code>jar -cf javacp.jar -C bin .
+</code></pre><p>Parametre sú prosté:</p>
 <ul>
 <li><code>-c</code> – vytvoriť nový archív</li>
 <li><code>-f</code> – nový archív bude mať dané meno (<code>javacp.jar</code>)</li>
 <li><code>-C</code> – presuň sa do špecifikovaného adresára (<code>bin</code>) a zahrň do spracovania daný súbor (čiže aktuálny adresár <code>.</code>)</li>
 </ul>
-
 <p>Treba upozorniť, že jednoduchý príkaz</p>
-
-<pre><code>jar -cf javacp.jar bin
-</code></pre>
-
-<p>by nefungoval, pretože na najvyššej úrovni archívu by bol adresár <code>bin</code>, čo by nezodpovedalo správnej hierarchii balíčkov (získali by sme mylnú hierarchiu <code>bin.sk.java</code>).</p>
-
+<pre tabindex="0"><code>jar -cf javacp.jar bin
+</code></pre><p>by nefungoval, pretože na najvyššej úrovni archívu by bol adresár <code>bin</code>, čo by nezodpovedalo správnej hierarchii balíčkov (získali by sme mylnú hierarchiu <code>bin.sk.java</code>).</p>
 <h1 id="pridanie-manifest-súboru">Pridanie <code>manifest</code> súboru.</h1>
-
 <p>Každý JAR by mal obsahovať <code>manifest</code> súbor, čo je popisovač obsahu archívu (nie je to však povinné). Tento súbor, ak existuje, sa musí nachádzať v adresári <code>META-INF</code> pod názvom <code>MANIFEST.MF</code> (pozor na veľké písmená!)</p>
-
 <p><code>jar.exe</code> pridá do každého JAR súboru štandardný prázdny manifest, ktorý vyzerá napr. takto:</p>
-
-<pre><code>Manifest-Version: 1.0
+<pre tabindex="0"><code>Manifest-Version: 1.0
 Created-By: 1.5.0_09 (Sun Microsystems Inc.)
-</code></pre>
-
-<p>Niekedy je vhodné špecifikovať vlastný manifest a to napríklad v prípade, že chceme získať automaticky spustiteľný JAR. Vytvorme prázdny súbor <code>manifest</code> a dodajme doňho</p>
-
-<pre><code>Main-Class: sk.java.MatrixSolver
-</code></pre>
-
-<p>(pre istotu je treba na koniec súboru vložiť prázdny riadok).</p>
-
+</code></pre><p>Niekedy je vhodné špecifikovať vlastný manifest a to napríklad v prípade, že chceme získať automaticky spustiteľný JAR. Vytvorme prázdny súbor <code>manifest</code> a dodajme doňho</p>
+<pre tabindex="0"><code>Main-Class: sk.java.MatrixSolver
+</code></pre><p>(pre istotu je treba na koniec súboru vložiť prázdny riadok).</p>
 <p>JAR súbor vytvoríme pomocou</p>
-
-<pre><code>c:\Projects\javacp&gt;jar cfm javacp.jar manifest -C bin .
-</code></pre>
-
-<p>Parameter <code>m</code> vraví, že dodávame vlastný súbor manifestu pod názvom <code>manifest</code>. <code>jar.exe</code> automaticky zahrnie tento súbor do archívu, ktorý v konečnej podobe bude vyzerať nasledovne:</p>
-
-<pre><code>Manifest-Version: 1.0
+<pre tabindex="0"><code>c:\Projects\javacp&gt;jar cfm javacp.jar manifest -C bin .
+</code></pre><p>Parameter <code>m</code> vraví, že dodávame vlastný súbor manifestu pod názvom <code>manifest</code>. <code>jar.exe</code> automaticky zahrnie tento súbor do archívu, ktorý v konečnej podobe bude vyzerať nasledovne:</p>
+<pre tabindex="0"><code>Manifest-Version: 1.0
 Created-By: 1.5.0_09 (Sun Microsystems Inc.)
 Main-Class: sk.java.MatrixSolver
-</code></pre>
-
-<p>Automaticky spustiteľný súbor JAR môžeme spustiť pomocou parametra <code>-jar</code> v <code>java.exe</code>.</p>
-
-<pre><code>C:\Projects\javacp&gt;java -jar javacp.jar
-</code></pre>
-
-<h1 id="automaticky-spustiteľné-jary-so-závislosťami">Automaticky spustiteľné JARy so závislosťami</h1>
-
+</code></pre><p>Automaticky spustiteľný súbor JAR môžeme spustiť pomocou parametra <code>-jar</code> v <code>java.exe</code>.</p>
+<pre tabindex="0"><code>C:\Projects\javacp&gt;java -jar javacp.jar
+</code></pre><h1 id="automaticky-spustiteľné-jary-so-závislosťami">Automaticky spustiteľné JARy so závislosťami</h1>
 <p>Často sa stáva, že automaticky spustiteľný JAR súbor vyžaduje na svoje fungovanie závislosti, typicky ďalšie JAR súbory. Napr. trieda <code>sk.java.MatrixSolver</code> vyžaduje na svoje fungovanie <code>commons-math-1.1.jar</code>. Jednoduché spustenie pomocou parametra <code>-jar</code> nebude fungovať, pretože <a href="http://ics.upjs.sk/~novotnyr/wiki/Java/ClasspathAClassNotFoundException">treba vyriešiť problémy s <code>CLASSPATH</code></a></p>
-
 <p>Zrejme jediný spôsob, ako vytvoriť automaticky spustiteľný JAR súbor so závislosťami, je definícia závislostí v manifeste.</p>
-
 <p>Príkladom je nasledovný manifest:</p>
-
-<pre><code>Main-Class: sk.java.MatrixSolver
+<pre tabindex="0"><code>Main-Class: sk.java.MatrixSolver
 Class-Path: commons-math-1.1.jar
-</code></pre>
-
-<p>V ňom uvádzame, že JAR súbor závisí na knižnici <code>commons-math</code>. Manifest zabalíme do JAR súboru pomocou predošlého postupu a výsledný JAR spustíme:</p>
-
-<pre><code>C:\Projects\javacp&gt;java -jar javacp.jar
-</code></pre>
-
-<p>Vo virtuálnom stroji sa spustí trieda <code>sk.java.MatrixSolver</code>. Tá závisí na triedach z <code>commons-math</code>. Tie sa začnú vyhľadávať v súbore <code>commons-math-1.1.jar</code> (na základe manifestu), ktorý sa musí nachádzať v rovnakom adresári, ako <code>javacp.jar</code>.</p>
-
+</code></pre><p>V ňom uvádzame, že JAR súbor závisí na knižnici <code>commons-math</code>. Manifest zabalíme do JAR súboru pomocou predošlého postupu a výsledný JAR spustíme:</p>
+<pre tabindex="0"><code>C:\Projects\javacp&gt;java -jar javacp.jar
+</code></pre><p>Vo virtuálnom stroji sa spustí trieda <code>sk.java.MatrixSolver</code>. Tá závisí na triedach z <code>commons-math</code>. Tie sa začnú vyhľadávať v súbore <code>commons-math-1.1.jar</code> (na základe manifestu), ktorý sa musí nachádzať v rovnakom adresári, ako <code>javacp.jar</code>.</p>
 <p>Takýmto spôsobom je možné pripraviť aplikáciu, ktorú možno u klienta spustiť jednoriadkovým príkazom.</p>
 
 </main>

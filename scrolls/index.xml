@@ -6,11 +6,7 @@
     <description>Recent content in Scrolls on robonovotny</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 01 Oct 2021 00:00:00 +0000</lastBuildDate>
-    
-	<atom:link href="https://novotnyr.github.io/scrolls/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Fri, 01 Oct 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://novotnyr.github.io/scrolls/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Od WSDL k webovej službe — generovanie servera a klienta pomocou Metro na Java 11</title>
       <link>https://novotnyr.github.io/scrolls/od-wsdl-k-webovej-sluzbe-metro-pre-java-11/</link>
@@ -68,7 +64,7 @@ Teraz je čas to trochu vylepšiť.
       <description>Predstavme si, že chceme parsovať súbor s nasledovnými vlastnosťami:
  po riadkoch sú uvedené údaje o používateľoch systému každý riadok obsahuje položky oddelené dvojbodkami piata položka obsahuje kontaktné údaje oddelené čiarkou  Príklad riadku?
 root:*:0:0:System Administrator,42A,555-798-4765,555-291-3511,root@example.com:/var/root:/bin/sh  Áno, je to riadok z unixového súboru /etc/passwd.
- Prvá položka predstavuje login používateľa: root. Druhá, tretia a štvrtá položka nie je zaujímavá. Piata položka &amp;ndash; záznam GECOS obsahuje:  popis používateľa číslo miestnosti pracovné telefónne číslo súkromné telefónne číslo mailovú adresu   Urobme si triedu s metódou, ktorá zistí e-mailovú adresu používateľa.</description>
+ Prvá položka predstavuje login používateľa: root. Druhá, tretia a štvrtá položka nie je zaujímavá. Piata položka &amp;ndash; záznam GECOS obsahuje:  popis používateľa číslo miestnosti pracovné telefónne číslo súkromné telefónne číslo mailovú adresu    Urobme si triedu s metódou, ktorá zistí e-mailovú adresu používateľa.</description>
     </item>
     
     <item>
@@ -104,7 +100,8 @@ import java.io.File import scala.io.Source def cat(file: File): List[String] = v
       
       <guid>https://novotnyr.github.io/scrolls/tomcat-a-tls-konektor-s-podporou-pkcs12/</guid>
       <description>Tomcat 8.5 a novší už obsahujú vysokovýkonné konektory založené na neblokujúcim API Java.NIO. Výhodou je výkon porovnateľný s použitím natívnej knižnice APR (ktorú využíva hlavne Apache HTTPD server).
-Ak používame SSL/TLS, máme ďalšiu výhodu. Certifikáty a privátne kľúče nemusíme ukladať do ťarbavých JKS keystorov, ale vieme použiť univerzálny formát známy z OpenSSL (PEM) vo formáte PKCS#12. Inými slovami, súbory typu -----BEGIN CERTIFICATE a -----BEGIN PRIVATE KEY vieme použiť priamo.</description>
+Ak používame SSL/TLS, máme ďalšiu výhodu. Certifikáty a privátne kľúče nemusíme ukladať do ťarbavých JKS keystorov, ale vieme použiť univerzálny formát známy z OpenSSL (PEM) vo formáte PKCS#12. Inými slovami, súbory typu -----BEGIN CERTIFICATE a -----BEGIN PRIVATE KEY vieme použiť priamo.
+Konfigurácia V Tomcate, v súbore server.</description>
     </item>
     
     <item>
@@ -129,7 +126,7 @@ Nový stroj jede&amp;hellip; Jenom neseje. Nový stroj zdanlivo išiel bez probl
       <guid>https://novotnyr.github.io/scrolls/powershell-pokrocile-funkcie/</guid>
       <description>Funkcie v PowerShelli sa dajú zapisovať rozličnými spôsobmi. Ukážme si jednoduchú funkciu, ktorá zráta veľkost súborov v aktuálnom adresári:
 function Get-Size($Unit) { Get-ChildItem -File | Measure-Object -Property Length -Sum | Select-Object -ExpandProperty Sum | ForEach-Object { $_ / (&amp;#34;1&amp;#34; + $Unit)} } Funkcia má jeden netypovaný parameter s názvom $Unit a vieme ju použiť nasledovne:
-Get-Size MB  Konvencie však odporúčajú zapisovať parametre v sekcii param:
+Get-Size MB Konvencie však odporúčajú zapisovať parametre v sekcii param:
 function Get-Size { param ( [String] $Unit = &amp;#34;MB&amp;#34; ) Get-ChildItem -File | Measure-Object -Property Length -Sum | Select-Object -ExpandProperty Sum | ForEach-Object { $_ / (&amp;#34;1&amp;#34; + $Unit)} } Parameter $Unit má implicitnú hodnotu MB a je typu String.</description>
     </item>
     
@@ -153,7 +150,7 @@ Budeme pracovať s troma add-onmi (doplnkami).
       <guid>https://novotnyr.github.io/scrolls/zmena-shell-v-makefile/</guid>
       <description>Makefile prevezme použitý shell zo svojej internej premennej SHELL (pozri sekcia 5.3.2 v dokumentácii GNU Make). Štandardná hodnota je /bin/sh.
 Premennú môžeme zmeniť klasickým spôsobom:
-export SHELL = /bin/bash .PHONY: all all: echo ${SHELL}  Použitie klauzuly export je nutné, pretože bez neho sa premenná neexportuje do externých skriptov, ani do sub-makeov.
+export SHELL = /bin/bash .PHONY: all all: echo ${SHELL} Použitie klauzuly export je nutné, pretože bez neho sa premenná neexportuje do externých skriptov, ani do sub-makeov.
 Načo vlastne predefinovávať? Nápad zmeniť shell je málokedy dobrý. Moderné distribúcie očakávajú, že skripty budú implementované v norme POSIX a nebudú používať žiadne špeciality bashizmy, ani konštrukcie zo zsh či nebodaj fish.</description>
     </item>
     
@@ -235,7 +232,7 @@ Google Flutter (Roman Schiefer) Prvá prednáška, ktorú som navštívil bola o
       <pubDate>Tue, 29 Oct 2019 10:49:00 +0100</pubDate>
       
       <guid>https://novotnyr.github.io/scrolls/asynchronne-veci-v-javascripte-callback-promise-async-await/</guid>
-      <description>Úvod  JavaScript v browseroch sa vykonáva v jednom vlákne ale chceme riešiť veci na pozadí príklad: klient REST API  nemôžeme čakať, kým dobehne HTTP request na pozadí, trvalo by to dlho, a vlákno by bolo zablokované  príklad: výkonný server v Node.js  nebudeme pre každého klienta spúšťať nové vlákno, namiesto neho použijeme udalosťami orientovaný systém bez blokovania a čakania  JavaScript nemá analógiu javáckych Threadov, ale má iné mechanizmy  Riešení je viacero:</description>
+      <description>Úvod  JavaScript v browseroch sa vykonáva v jednom vlákne ale chceme riešiť veci na pozadí príklad: klient REST API  nemôžeme čakať, kým dobehne HTTP request na pozadí, trvalo by to dlho, a vlákno by bolo zablokované   príklad: výkonný server v Node.js nebudeme pre každého klienta spúšťať nové vlákno, namiesto neho použijeme udalosťami orientovaný systém bez blokovania a čakania JavaScript nemá analógiu javáckych Threadov, ale má iné mechanizmy  Riešení je viacero:</description>
     </item>
     
     <item>
@@ -245,12 +242,9 @@ Google Flutter (Roman Schiefer) Prvá prednáška, ktorú som navštívil bola o
       
       <guid>https://novotnyr.github.io/scrolls/wsdl-validation-with-ws-it/</guid>
       <description>Web Service Interoperability Technology (WS-IT) ensures a fundamental compatibility of SOAP Web Services across major framework implementations.
- Originally conceived as a agreement between Java and .NET, it is now supported across multiple technologies.
- There are multiple approaches to WS-IT Compatibility Checks:
-  Use Eclipse IDE with Eclipse Java Web Developer Tools.
-  Use SoapUI and WS-IT Compliance verification
-  Use ws-it.org Java/C# Compliance Tools
-  Use standalone Java-based commandline validator at Github, repo novotnyr/eclipse-wsdl-standalone-validator</description>
+Originally conceived as a agreement between Java and .NET, it is now supported across multiple technologies.
+There are multiple approaches to WS-IT Compatibility Checks:
+. Use Eclipse IDE with Eclipse Java Web Developer Tools. . Use https://www.soapui.org/[SoapUI] and WS-IT Compliance verification . Use http://www.ws-i.org/Testing/Tools/2005/06/[ws-it.org] Java/C# Compliance Tools . Use standalone Java-based commandline validator at Github, repo https://github.</description>
     </item>
     
     <item>
@@ -260,8 +254,10 @@ Google Flutter (Roman Schiefer) Prvá prednáška, ktorú som navštívil bola o
       
       <guid>https://novotnyr.github.io/scrolls/vytvaranie-wsdl-s-eclipse-web-developer-tools/</guid>
       <description>Screencast ukazuje, ako vytvárať webové služby nad protokolom SOAP s použitím Eclipse IDE a pluginu Java EE Web Developer Tools.
-Your browser does not support the video tag.  Schéma pre správy Schéma zobrazená vo videu pochádza z článku Tvoríme XML schému pomocou Eclipse IDE.
-Návrh WSDL Ak máme ujasnenú schému, môžeme navrhovať WSDL. V Eclipse môžeme zvoliť New | File | Web Services | WSDL File a vytvoriť súbor words.</description>
+Schéma pre správy Schéma zobrazená vo videu pochádza z článku Tvoríme XML schému pomocou Eclipse IDE.
+Návrh WSDL Ak máme ujasnenú schému, môžeme navrhovať WSDL. V Eclipse môžeme zvoliť New | File | Web Services | WSDL File a vytvoriť súbor words.wsdl.
+V dialógu potrebujeme vyplniť štyri základné veci:
+ cieľový menný priestor: reprezentuje jednoznačný menný priestor pre deklarácie v tomto WSDL dokumente.</description>
     </item>
     
     <item>
@@ -282,7 +278,9 @@ Návrh WSDL Ak máme ujasnenú schému, môžeme navrhovať WSDL. V Eclipse mô�
       <pubDate>Wed, 09 Oct 2019 00:00:00 +0000</pubDate>
       
       <guid>https://novotnyr.github.io/scrolls/tvorime-xml-schema-pomocou-eclipse/</guid>
-      <description>Table of Contents Úvod Požadovaný softvér Príklad: budúca webová služba Ustanovenie vstupno-výstupných dokumentov Návrh XML schémy Menné priestory   Definícia elementu pre požiadavku Typ elementu Cvičné vygenerovanie inštancie   Definícia elementu pre odpoveď Typ elementu Cvičné vygenerovanie inštancie   Výsledná schéma XML Vizuálny diagram výslednej schémy   Úvod Ukážeme si, ako je možné pomocou Eclipse IDE rýchlo vytvoriť XML schému pre dokumenty, čím si urobíme výborný základ pre budúci vývoj WSDL v SOAP službách alebo pre generovanie mapovaní medzi XML a objektami cez Java technológiu JAXB.</description>
+      <description>Úvod Ukážeme si, ako je možné pomocou Eclipse IDE rýchlo vytvoriť XML schému pre dokumenty, čím si urobíme výborný základ pre budúci vývoj WSDL v SOAP službách alebo pre generovanie mapovaní medzi XML a objektami cez Java technológiu JAXB.
+   Požadovaný softvér Budeme potrebovať Eclipse IDE a modul Eclipse Java Web Developer Tools. Jeho súčasťou je podpora pre vývoj webových služieb protokolu SOAP (Web Service Tools).
+     Príklad: budúca webová služba Ustanovenie vstupno-výstupných dokumentov Predstavme si, že chceme vyvinúť službu pre pre prekladový slovník, ktorá bude prijímať nasledovný dokument:</description>
     </item>
     
     <item>
@@ -293,7 +291,7 @@ Návrh WSDL Ak máme ujasnenú schému, môžeme navrhovať WSDL. V Eclipse mô�
       <guid>https://novotnyr.github.io/scrolls/od-wsdl-k-webovej-sluzbe-tvorime-vlastne-wsdl/</guid>
       <description>Úvod Pri návrhu webových služieb nad protokolom SOAP sa môžeme vydať dvoma rozličnými cestami. Pri tom jednoduchšom postavíme webovú službu vo vhodnej technológii (JAX-WS, či PHP-WSDL Creator, a WSDL si necháme vygenerovať automaticky, čím dosiahneme tzv. contract-last spôsob.
  Opačný spôsob, contract-first spočíva v nadefinovaní WSDL, na základe ktorého si necháme vygenerovať jednak kostru pre server, a neskôr i klienta.
- Postup od WSDL k triedam má mnohé výhody. Ota &#39;tapik&#39; Buchta napr.</description>
+ Postup od WSDL k triedam má mnohé výhody. Ota &amp;#39;tapik&amp;#39; Buchta napr.</description>
     </item>
     
     <item>
@@ -338,7 +336,7 @@ title: httpd a Tomcat – loadbalancing a ladenie výkonu class: animation-fade 
       <description>Ako rozdeliť sieť na podsiete? V letný podvečer zoberieme sekerku, sajder do ruky a počneme rozsekávať počítačovú sieť na podsiete.
 ISO, osy a sieťový model Sieťová vrstva (network layer), alias tretia vrstva (L3) v ISO-OSI modeli vymieňa medzi stanicami instadatagramy s údajmi.
 Každá stanica v sieti je na tejto vrstve identifikovaná IP adresou, čo je:
- buď štvorica čísiel v rozsahu 0–255, napr. 158.197.31.35 alebo jej analogický binárny prepis:</description>
+ buď štvorica čísiel v rozsahu 0–255, napr. 158.197.31.35 alebo jej analogický binárny prepis:  10011110 11000101 00011111 00100011 Alebo ak ste Sandra Bullock v archívnom filme The Network, máte aj vyššie IP adresy.</description>
     </item>
     
     <item>
@@ -399,7 +397,7 @@ Stiahnutie pre platformy Windows Binárky pre gnuplot sú k dispozícii v podobe
       <guid>https://novotnyr.github.io/scrolls/dijkstrov-algoritmus-a-krasna-syntax-kotlinu/</guid>
       <description>Dijkstrov algoritmus na hľadanie najkratšej cesty v neorientovanom grafe s nezápornými hranami je skvelá možnosť, ako si ukázať učebnicový grafový algoritmus… ale aj krásnu syntax Kotlinu.
 Budeme potrebovať:
- Reprezentáciu grafu: 1ks Funkciu na výpočet najväčšej vzdialenosti A korenie  Reprezentácia uzlov Prevody medzi uzlami a číslami.   Reprezentácia grafu Graf s uzlami a hranami má milión reprezentácií. My si zvolíme tú najhlúpejšiu: maticu incidencií. Ak máme dva uzly, U a V, do tabuľky na U-ty riadok a V-ty stĺpec uvedieme vzdialenosť medzi nimi.</description>
+ Reprezentáciu grafu: 1ks Funkciu na výpočet najväčšej vzdialenosti A korenie  Reprezentácia uzlov Prevody medzi uzlami a číslami.    Reprezentácia grafu Graf s uzlami a hranami má milión reprezentácií. My si zvolíme tú najhlúpejšiu: maticu incidencií. Ak máme dva uzly, U a V, do tabuľky na U-ty riadok a V-ty stĺpec uvedieme vzdialenosť medzi nimi.</description>
     </item>
     
     <item>
@@ -409,13 +407,12 @@ Budeme potrebovať:
       
       <guid>https://novotnyr.github.io/scrolls/ed1-je-standardny-editor-komedia-v-troch-dejstvach/</guid>
       <description>Ako píše @Bodil:
-pic.twitter.com/Ut1KV7mx39
-&amp;mdash; 🌯 Bodil 🌯 (@bodil) May 24, 2018 
 Dajme si teda ed.
 Introitus Najprv ukážkový fajl:
 printf &amp;#34;%s\n&amp;#34; Lorem ipsum dolor sit amet &amp;gt; lorem.txt Pome na to!
-ed lorem.txt  Uvidíme tretie najlepšie UI ever:
-/tmp⟩ ed lorem.txt 27  ed je REPL. Akurát neni čas na blbosti ako prompt. Jediné, čo vidno, je 27, čo nie je zmysel života, ale počet znakov v súbore.</description>
+ed lorem.txt Uvidíme tretie najlepšie UI ever:
+/tmp⟩ ed lorem.txt 27 ed je REPL. Akurát neni čas na blbosti ako prompt. Jediné, čo vidno, je 27, čo nie je zmysel života, ale počet znakov v súbore. Vrátane finálneho lomeno n na konci
+Ako z toho preboha vybehnem?</description>
     </item>
     
     <item>
@@ -426,7 +423,7 @@ ed lorem.txt  Uvidíme tretie najlepšie UI ever:
       <guid>https://novotnyr.github.io/scrolls/postavme-kotlinovsky-projekt-v-gradle-cez-kotlin/</guid>
       <description>Budovanie kotlinovských projektov Čo ak chceme vybudovať projekt, ktorého zdrojáky sú v Kotline a gradloidný build script je&amp;hellip; v Kotline? (Vložte yo-dawg-meme.png). Poďme na to!
 V prvom rade potrebujeme deklarovať plugin, ktorý zapne podporu pre zostavovanie zdrojových kódov napísaných v Kotline. Do nového build scriptu uvedieme tri sekcie.
-plugins { kotlin(&amp;#34;jvm&amp;#34;) version &amp;#34;1.3.41&amp;#34; } repositories { mavenCentral() } dependencies { implementation(kotlin(&amp;#34;stdlib&amp;#34;)) }  plugins: sekcia plugins slúži na zavádzanie pluginov.</description>
+plugins { kotlin(&amp;#34;jvm&amp;#34;) version &amp;#34;1.3.41&amp;#34; } repositories { mavenCentral() } dependencies { implementation(kotlin(&amp;#34;stdlib&amp;#34;)) }  plugins: sekcia plugins slúži na zavádzanie pluginov. A keďže kotlinovský build script je skvelý, použijeme špecifický zápis pre kotlinovské projekty.</description>
     </item>
     
     <item>
@@ -470,9 +467,9 @@ Máme viacero možnosti:
       <guid>https://novotnyr.github.io/scrolls/nahradzanie-premennych-v-retazci-v-springu/</guid>
       <description>Spring má geniálne vymyslený systém properties, kde možno ukladať rozličné konfiguračné nastavenia v prostredí (Environment) a robiť s tým kdejaké finty. Čo keď však potrebujeme úplne hlúpu vec: nahradiť premenné v reťazci konkrétnymi namapovanými hodnotami?
 Zoberme si reťazec:
-http://${hostname}/${path}  Zoberme si dve premenné — host s hodnotou localhost a path s hodnotou qofola.
+http://${hostname}/${path} Zoberme si dve premenné — host s hodnotou localhost a path s hodnotou qofola.
 Po nahradení by sme chceli získať krásnu URL:
-http://localhost/qofola  Spring! Trieda PropertyPlaceholderHelper síce nemá úplne ideálny názov, ale má dve základné metódy:</description>
+http://localhost/qofola Spring! Trieda PropertyPlaceholderHelper síce nemá úplne ideálny názov, ale má dve základné metódy:</description>
     </item>
     
     <item>
@@ -482,7 +479,7 @@ http://localhost/qofola  Spring! Trieda PropertyPlaceholderHelper síce nemá ú
       
       <guid>https://novotnyr.github.io/scrolls/vizitkar-shellu/</guid>
       <description>TLDR; ťaháky k shellu v tvare vizitiek 9x5cm sú zverejnené na GitHube.
-Počas zimného semestra 2018&amp;frasl;2019 bežal na PF UPJŠ kurz Seminár k operačným systémom, kde som vyučoval Powershell a Bash. Na začiatku každého shellového stretnutia som rozdal jeden A4kový handout, kde boli uverejnené syntaktické a príkazové nápovedy, ktoré sa mohli hodiť k danej téme.
+Počas zimného semestra 2018/2019 bežal na PF UPJŠ kurz Seminár k operačným systémom, kde som vyučoval Powershell a Bash. Na začiatku každého shellového stretnutia som rozdal jeden A4kový handout, kde boli uverejnené syntaktické a príkazové nápovedy, ktoré sa mohli hodiť k danej téme.
 Obsah z cvičení som následne preklopil z Wordu do LaTeXu a nasekal do formátu vizitiek 9x5cm.</description>
     </item>
     
@@ -504,7 +501,7 @@ Let’s use an alternative solution. Apache Qpid is a messaging solution and bro
       
       <guid>https://novotnyr.github.io/scrolls/saving-keystrokes-with-live-templates-in-intellij-idea/</guid>
       <description>Typing Code Over and Over? In one of the projects, we had to create many customized enumerations. Something like this:
-public class Status { ONLINE(&amp;quot;on&amp;quot;), OFFLINE(&amp;quot;off&amp;quot;); }  Each of this enum was supposed to have a findByCode method that would resolve “on” to ONLINE and “off” to offline. Something like this:
+public class Status { ONLINE(&amp;quot;on&amp;quot;), OFFLINE(&amp;quot;off&amp;quot;); } Each of this enum was supposed to have a findByCode method that would resolve “on” to ONLINE and “off” to offline. Something like this:
 public enum Status { ONLINE(&amp;quot;on&amp;quot;), OFFLINE(&amp;quot;off&amp;quot;); private final String code; Status(String code) { this.code = code; } public static Status findByCode(String code) throws IllegalArgumentException { for (Status value : Status.</description>
     </item>
     
@@ -548,10 +545,10 @@ pre každé slovo R spracuj R  Priamo for cyklus! V shellscriptingu je však for
       
       <guid>https://novotnyr.github.io/scrolls/running-mongodb-replicaset-on-localhost/</guid>
       <description>Setup Cluster Create Instances Create directories:
-mkdir -p /tmp/mongodb/rs-{0,1,2}  In shell, run:
+mkdir -p /tmp/mongodb/rs-{0,1,2} In shell, run:
 mongod --dbpath /tmp/mongodb/rs-0 --replSet rs --port 27021 --bind_ip localhost --smallfiles --oplogSize 128 mongod --dbpath /tmp/mongodb/rs-1 --replSet rs --port 27022 --bind_ip localhost --smallfiles --oplogSize 128 mongod --dbpath /tmp/mongodb/rs-2 --replSet rs --port 27023 --bind_ip localhost --smallfiles --oplogSize 128 Initiate ReplicaSet Run client to initiate ReplicaSet:
 mongo --port 27021 Create ReplicaSet configuration:
-rs.initiate({ _id : &amp;#39;rs&amp;#39;, members: [ { _id : 0, host : &amp;#34;localhost:27021&amp;#34; }, { _id : 1, host : &amp;#34;localhost:27022&amp;#34; }, { _id : 2, host : &amp;#34;localhost:27023&amp;#34; } ] })  Review with:</description>
+rs.initiate({ _id : &amp;#39;rs&amp;#39;, members: [ { _id : 0, host : &amp;#34;localhost:27021&amp;#34; }, { _id : 1, host : &amp;#34;localhost:27022&amp;#34; }, { _id : 2, host : &amp;#34;localhost:27023&amp;#34; } ] }) Review with:</description>
     </item>
     
     <item>
@@ -573,7 +570,7 @@ cat s farbami cat je ako Lada — dokonalý už od začiatku: jednoducho vypľuj
       <guid>https://novotnyr.github.io/scrolls/tri-veci-pri-praci-s-adresarmi-ktore-robite-zle-exa-fd-ag/</guid>
       <description>Trojica ls, find a grep sa v linuxovom termináli používa každý deň. Nie vždy sú však pohodlné, veď poniektoré nástroje majú azda aj 50 rokov. Ukážme si moderné alternatívy pre nové milénium!
  exa namiesto ls fd namiesto find ag namiesto find / grep  Všetky nástroje fungujú krížom cez linuxové distribúcie i na MacOS.
-exa - výpis adresára pre moderných ľudí brew install exa  Príkaz exa je ako ls, ibaže je</description>
+exa - výpis adresára pre moderných ľudí brew install exa Príkaz exa je ako ls, ibaže je</description>
     </item>
     
     <item>
@@ -605,7 +602,7 @@ Jednoduché recepty, najmä pre céčkarov Recept: overenie, že make funguje ma
       
       <guid>https://novotnyr.github.io/scrolls/materska-skola-javascriptu/</guid>
       <description>Prečo JavaScript JavaScript je mimoriadne perspektívny a populárny jazyk.
- Je to hlavný programovací jazyk pre vývoj na webe. Všetky moderné webové prehliadače podporujú JavaScript. Podporuje vývoj na všetkých platformách:  appky pre mobilné zariadenia, napr. cez React Native. serverové aplikácie, napr. cez Node.js desktopové aplikácie, napr. cez Electron   Čo je vlastne JavaScript? JavaScript má rozličné verzie a pomenovania.
+ Je to hlavný programovací jazyk pre vývoj na webe. Všetky moderné webové prehliadače podporujú JavaScript. Podporuje vývoj na všetkých platformách:  appky pre mobilné zariadenia, napr. cez React Native. serverové aplikácie, napr. cez Node.js desktopové aplikácie, napr. cez Electron    Čo je vlastne JavaScript? JavaScript má rozličné verzie a pomenovania.
  norma ECMAScript 2015 alias ES6. Moderná syntax, podporovaný v takmer všetkých moderných prehliadačoch.</description>
     </item>
     
@@ -652,7 +649,7 @@ Upgrade to JDK6 Camel is built upon JDK6.</description>
       <guid>https://novotnyr.github.io/scrolls/maven-jetty-ssl-connector/</guid>
       <description>Problém Cieľ maven jetty:run v Mavene je veľmi užitočný na rýchle nasadenie webovej aplikácie do servletového kontajnera Jetty. V štandardom nastavení počúva Jetty na porte 8080... ale nepodporuje SSL.
 Ako nastaviť pom.xml? Jetty v Mavene používa štandardne klasický konektor určený pre bežné nezabezpečené HTTP a SSL konektor ponecháva vypnutý. Ak chceme používať SSL, musíme v pom.xml explicitne zapnúť SSL konektor.
-&amp;lt;plugin&amp;gt; &amp;lt;groupId&amp;gt;org.mortbay.jetty&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;jetty-maven-plugin&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;7.4.2.v20110526&amp;lt;/version&amp;gt; &amp;lt;configuration&amp;gt; &amp;lt;connectors&amp;gt; &amp;lt;connector implementation=&amp;#34;org.eclipse.jetty.server.ssl.SslSocketConnector&amp;#34;&amp;gt; &amp;lt;port&amp;gt;8443&amp;lt;/port&amp;gt; &amp;lt;maxIdleTime&amp;gt;60000&amp;lt;/maxIdleTime&amp;gt; &amp;lt;keystore&amp;gt;etc/jetty-ssl.</description>
+&amp;lt;plugin&amp;gt; &amp;lt;groupId&amp;gt;org.mortbay.jetty&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;jetty-maven-plugin&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;7.4.2.v20110526&amp;lt;/version&amp;gt; &amp;lt;configuration&amp;gt; &amp;lt;connectors&amp;gt; &amp;lt;connector implementation=&amp;quot;org.eclipse.jetty.server.ssl.SslSocketConnector&amp;quot;&amp;gt; &amp;lt;port&amp;gt;8443&amp;lt;/port&amp;gt; &amp;lt;maxIdleTime&amp;gt;60000&amp;lt;/maxIdleTime&amp;gt; &amp;lt;keystore&amp;gt;etc/jetty-ssl.</description>
     </item>
     
     <item>
@@ -683,10 +680,8 @@ Ako rozbehať transformácie s xsltproc? Knižnica xmlib je pôvodne knižnica p
       <pubDate>Sat, 19 Mar 2011 19:59:44 +0100</pubDate>
       
       <guid>https://novotnyr.github.io/scrolls/netbeans-ubuntu-gtk/</guid>
-      <description>nainštalovať vývojárske knižnice
-apt-get install libgtk2.0-dev  nastaviť projekt: Project Properties | Build | C Compiler. V sekcii General uviesť do Additional Options:
-`pkg-config --cflags gtk+-2.0` `pkg-config --libs gtk+-2.0`  Nezabudnúť na spätné apostrofy (backticks). V prípade chyby skontrolujte, či pkg-config funguje z terminálu. Na Ubuntu 10.10 vráti napr.
--pthread -I/usr/include/gtk-2.0 -I/usr/lib/gtk-2.0/include \ -I/usr/include/atk-1.0 -I/usr/include/cairo \ -I/usr/include/gdk-pixbuf-2.0 -I/usr/include/pango-1.0 \ -I/usr/include/gio-unix-2.0/ \ -I/usr/include/glib-2.0 \ -I/usr/lib/glib-2.0/include \ -I/usr/include/pixman-1 -I/usr/include/freetype2 \ -I/usr/include/libpng12  V Tools | Options | C/C++ na karte Code Assistance nastaviť pre vhodnú Tool Collection (štandardne GNU) na karte C Compiler bonusový Include adresár:</description>
+      <description> nainštalovať vývojárske knižnice  apt-get install libgtk2.0-dev  nastaviť projekt: Project Properties | Build | C Compiler. V sekcii General uviesť do Additional Options:  `pkg-config --cflags gtk+-2.0` `pkg-config --libs gtk+-2.0` Nezabudnúť na spätné apostrofy (backticks). V prípade chyby skontrolujte, či pkg-config funguje z terminálu. Na Ubuntu 10.10 vráti napr.
+-pthread -I/usr/include/gtk-2.0 -I/usr/lib/gtk-2.0/include \ -I/usr/include/atk-1.0 -I/usr/include/cairo \ -I/usr/include/gdk-pixbuf-2.0 -I/usr/include/pango-1.0 \ -I/usr/include/gio-unix-2.0/ \ -I/usr/include/glib-2.0 \ -I/usr/lib/glib-2.0/include \ -I/usr/include/pixman-1 -I/usr/include/freetype2 \ -I/usr/include/libpng12  V Tools | Options | C/C++ na karte Code Assistance nastaviť pre vhodnú Tool Collection (štandardne GNU) na karte C Compiler bonusový Include adresár:  /usr/include </description>
     </item>
     
     <item>
@@ -707,7 +702,7 @@ Přepis Úvod Dobrý večer a dobrou chuť, mé jméno je Jiří Hradil. Jsem ze
       <guid>https://novotnyr.github.io/scrolls/mule-receptar-tipy-triky/</guid>
       <description>Práca s payloadom  expressiony typu jxpath a bean pracujú štandardne nad samotným payloadom, vyhodnocovanie sa deje nad payloadom terminológia: Mule: message property, HTTP: message header  Pridanie CRLF Al chceme pridať do správy CR-LF pomocou StringAppenderTransformera, stačí do XML použiť &amp;amp;#010;
 Získanie obsahu payloadu V MessagePayloadExpressionEvaluator: ak sa vynecha expression
-#[payload:]  (pozor na dvojbodku!) vrati sa obsah payloadu
+#[payload:] (pozor na dvojbodku!) vrati sa obsah payloadu
 Outbound HTTP a telo správy GET HTTP Ak používame HTTP outbound, telo správy sa pridá za GET parameter body:</description>
     </item>
     
@@ -726,7 +721,8 @@ Outbound HTTP a telo správy GET HTTP Ak používame HTTP outbound, telo správy
       <pubDate>Thu, 15 Apr 2010 19:59:44 +0100</pubDate>
       
       <guid>https://novotnyr.github.io/scrolls/python-criepky/</guid>
-      <description>Kalkulačka 2 + 2  4  Kalkulačka - celočíselné delenie 3 / 2  1  Kalkulačka - delenie reálnych čísiel 3.0 / 2  1.5  Kalkulačka - mocnina 10 ** 2  pow(10, 2)  100  Maximum čísiel max(4, 5, 3, 5, 7, 20)  20  Minimum čísiel min(4, 5, 3, 5, 7, 20)  20  Premenné Python je dynamicky typovaný: dátové typy netreba uvádzať, každá premenná má však exaktný typ</description>
+      <description>Kalkulačka 2 + 2 4 Kalkulačka - celočíselné delenie 3 / 2 1 Kalkulačka - delenie reálnych čísiel 3.0 / 2 1.5 Kalkulačka - mocnina 10 ** 2 pow(10, 2) 100 Maximum čísiel max(4, 5, 3, 5, 7, 20) 20 Minimum čísiel min(4, 5, 3, 5, 7, 20) 20 Premenné Python je dynamicky typovaný: dátové typy netreba uvádzať, každá premenná má však exaktný typ
+dph = 19 1000 * (dph / 100.</description>
     </item>
     
     <item>
@@ -735,10 +731,7 @@ Outbound HTTP a telo správy GET HTTP Ak používame HTTP outbound, telo správy
       <pubDate>Thu, 18 Mar 2010 23:54:45 +0100</pubDate>
       
       <guid>https://novotnyr.github.io/scrolls/instalacia-svn-pod-linuxom/</guid>
-      <description>Inštalácia pod Linuxom [svnserve]  Pridat do /etc/services:
-svnserve 3690/tcp # Subversion svnserve svnserve 3690/udp # Subversion svnserve  pridat do /etc/xinetd.d/svnserve
-1. default: on 1. Subversion server service svnserve { socket_type = stream protocol = tcp user = svn wait = no disable = no server = /usr/local/bin/svnserve server_args = -i port = 3690 }  nastavit firewall (vo Fedore): v subore /etc/rc.d/rc.firewall uviest
-1. open SVN port /sbin/iptables -A INPUT -j ACCEPT -p tcp --dport 3690  Pozor na pravidla, ktore sa vyhodnocuju zhora nadol!</description>
+      <description>Inštalácia pod Linuxom [svnserve]  Pridat do /etc/services:  svnserve 3690/tcp # Subversion svnserve svnserve 3690/udp # Subversion svnserve  pridat do /etc/xinetd.d/svnserve  1. default: on 1. Subversion server service svnserve { socket_type = stream protocol = tcp user = svn wait = no disable = no server = /usr/local/bin/svnserve server_args = -i port = 3690 }  nastavit firewall (vo Fedore): v subore /etc/rc.d/rc.firewall uviest  1. open SVN port /sbin/iptables -A INPUT -j ACCEPT -p tcp --dport 3690 Pozor na pravidla, ktore sa vyhodnocuju zhora nadol!</description>
     </item>
     
     <item>
@@ -787,7 +780,7 @@ Jednou z ich typických charakteristík je definícia používateľského rozhra
       
       <guid>https://novotnyr.github.io/scrolls/spring-java-ee-anotacie-pre-automaticke-prepajanie-komponentov/</guid>
       <description>Od čias Springu 2.5 je k dispozícii sada anotácií, ktoré riešia dependency injection. (Viď existujúci článok.) V nej boli dané k dispozícii jednak springovské anotácie (@Component a pod.) a jednak anotácie z JSR-250 (najmä @Resource).
-Od tých čias sa situácia ešte „skomplikovala&amp;rdquo;. Medzičasom totiž vyšla finálna špecifikácia JEE6, ktorá rieši dependency injection v rámci dvoch JSR.
+Od tých čias sa situácia ešte „skomplikovala&amp;quot;. Medzičasom totiž vyšla finálna špecifikácia JEE6, ktorá rieši dependency injection v rámci dvoch JSR.
  JSR-330: Dependency Injection for Java vznikla z potrieb DI frameworkov Spring a Google Guice, kde dali hlavy dohromady Rod Johnson a Crazy Bob Lee.</description>
     </item>
     
@@ -817,8 +810,8 @@ Jednoduchý bar Predstavme si, že na začiatku podnikateľskej kariéry bude ba
       <pubDate>Sun, 26 Jul 2009 00:00:00 +0100</pubDate>
       
       <guid>https://novotnyr.github.io/scrolls/mysqldb-receptar-tipy-triky/</guid>
-      <description>Zmena znakovej sady pre databazu alter database xxxxx character set cp1250  Pripojenie k databaze so specifikovanim znakovej sady pre klienta &amp;quot;c:\Program Files\MySQL\MySQL Server 4.1\bin\mysql&amp;quot; -u oldelfinnphpBB -p --default-character-set=cp1250  Import CSV súboru z Excelu mysqlimport.exe -u root -p --fields-terminated-by=; --fields-optionally-enclosed-by=\&amp;quot; davano post.txt  Dátumy by mali byť v tvare akceptovateľnom funkciou DATETIME(), napr. YYYY-MM-DD HH:mm)
-Zistenie znakovej sady tabuľky show table status from hotels like &#39;hotel_reservations&#39;  Vypíše info o tabuľke hotel_reservations v databáze hotels.</description>
+      <description>Zmena znakovej sady pre databazu alter database xxxxx character set cp1250 Pripojenie k databaze so specifikovanim znakovej sady pre klienta &amp;quot;c:\Program Files\MySQL\MySQL Server 4.1\bin\mysql&amp;quot; -u oldelfinnphpBB -p --default-character-set=cp1250 Import CSV súboru z Excelu mysqlimport.exe -u root -p --fields-terminated-by=; --fields-optionally-enclosed-by=\&amp;quot; davano post.txt Dátumy by mali byť v tvare akceptovateľnom funkciou DATETIME(), napr. YYYY-MM-DD HH:mm)
+Zistenie znakovej sady tabuľky show table status from hotels like &#39;hotel_reservations&#39; Vypíše info o tabuľke hotel_reservations v databáze hotels.</description>
     </item>
     
     <item>
@@ -830,7 +823,7 @@ Zistenie znakovej sady tabuľky show table status from hotels like &#39;hotel_re
       <description>package sk.novotnyr.movie; import java.util.Date; public class MovieReservation { protected String title; protected Date date; protected int numberOfTickets; // gettre a settre } Stiahneme Spring-WS. Do classpath:
  activation.jar commons-logging-1.1.1.jar log4j-1.2.15.jar saaj-api-1.3.jar saaj-impl-1.3.jar spring-web.jar spring-webmvc.jar spring-ws-1.5.2.jar spring.jar stax-api-1.0.1.jar xstream-1.3.jar  Kostra webovej aplikácie: web.xml
 &amp;lt;?xml version=&amp;#34;1.0&amp;#34; encoding=&amp;#34;UTF-8&amp;#34;?&amp;gt; &amp;lt;web-app xmlns=&amp;#34;http://java.sun.com/xml/ns/j2ee&amp;#34; xmlns:xsi=&amp;#34;http://www.w3.org/2001/XMLSchema-instance&amp;#34; xsi:schemaLocation=&amp;#34;http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd&amp;#34; version=&amp;#34;2.4&amp;#34;&amp;gt; &amp;lt;servlet&amp;gt; &amp;lt;servlet-name&amp;gt;spring-ws&amp;lt;/servlet-name&amp;gt; &amp;lt;servlet-class&amp;gt;org.springframework.ws.transport.http.MessageDispatcherServlet&amp;lt;/servlet-class&amp;gt; &amp;lt;/servlet&amp;gt; &amp;lt;servlet-mapping&amp;gt; &amp;lt;servlet-name&amp;gt;spring-ws&amp;lt;/servlet-name&amp;gt; &amp;lt;url-pattern&amp;gt;/*&amp;lt;/url-pattern&amp;gt; &amp;lt;/servlet-mapping&amp;gt; &amp;lt;/web-app&amp;gt; spring-ws-servlet.xml
-&amp;lt;?xml version=&amp;#34;1.0&amp;#34; encoding=&amp;#34;UTF-8&amp;#34;?&amp;gt; &amp;lt;beans xmlns=&amp;#34;http://www.springframework.org/schema/beans&amp;#34; xmlns:xsi=&amp;#34;http://www.w3.org/2001/XMLSchema-instance&amp;#34; xsi:schemaLocation=&amp;#34;http://www.springframework.org/schema/beans http://www.</description>
+&amp;lt;?xml version=&amp;#34;1.0&amp;#34; encoding=&amp;#34;UTF-8&amp;#34;?&amp;gt; &amp;lt;beans xmlns=&amp;#34;http://www.springframework.org/schema/beans&amp;#34; xmlns:xsi=&amp;#34;http://www.w3.org/2001/XMLSchema-instance&amp;#34; xsi:schemaLocation=&amp;#34;http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd&amp;#34;&amp;gt; &amp;lt;bean id=&amp;#34;movieReservationEndpoint&amp;#34; class=&amp;#34;sk.</description>
     </item>
     
     <item>
@@ -853,7 +846,8 @@ To sa mi napríklad osvedčilo pri demonštrovaní a školení rôznych webovýc
       <description>Inštalácia Exago je implementované ako rozšírenie (extension) pre Firefox 3.0 a novší. Inštaláciu realizujeme ako v každom inom rozšírení.
 Navštívením adresy rozšírenia vo Firefoxe, potvrdením inštalácie a reštartovaním Firefoxu.
 Po inštalácii si zapneme z hlavného menu View | Sidebar | Exago Sidebar. Vľavo sa zobrazí lišta s užívateľským rozhraním.
-Nastavenie servera Údaje o anotovaných stránkach sa odosielajú na server. Konfiguráciu realizujeme pomocou tlačidla Settings. Uvedieme * prihlasovacie meno (používa sa pri identifikácii anotátora) * heslo (v súčasnej verzii nepoužívané) * server: hodnota má byť http://dbserver.</description>
+Nastavenie servera Údaje o anotovaných stránkach sa odosielajú na server. Konfiguráciu realizujeme pomocou tlačidla Settings. Uvedieme
+ prihlasovacie meno (používa sa pri identifikácii anotátora) heslo (v súčasnej verzii nepoužívané) server: hodnota má byť http://dbserver.</description>
     </item>
     
     <item>
@@ -874,7 +868,7 @@ Logovanie (logging) má svoj pôvod v moreplavbe, presnejšie v spôsobe určova
       
       <guid>https://novotnyr.github.io/scrolls/xul-receptar-tipov-a-trikov/</guid>
       <description>Ako pridať riadky do stromu? &amp;lt;tree id=&amp;#34;treeXPaths&amp;#34; flex=&amp;#34;1&amp;#34; rows=&amp;#34;20&amp;#34; hidecolumnpicker=&amp;#34;true&amp;#34;&amp;gt; &amp;lt;treecols&amp;gt; &amp;lt;treecol id=&amp;#34;site&amp;#34; label=&amp;#34;Site&amp;#34; flex=&amp;#34;1&amp;#34;/&amp;gt; &amp;lt;treecol id=&amp;#34;xpath&amp;#34; label=&amp;#34;XPath&amp;#34; flex=&amp;#34;2&amp;#34;/&amp;gt; &amp;lt;/treecols&amp;gt; &amp;lt;treechildren /&amp;gt; &amp;lt;/tree&amp;gt; Kód
-var treeXPaths = document.getElementById(&amp;#34;treeXPaths&amp;#34;); // extract &amp;lt;treechildren&amp;gt; var treechildren = treeXPaths.getElementsByTagName(&amp;#34;treechildren&amp;#34;).item(0); // hierarchy is: treechildren / treeitem / treerow / treecell  var treeitem = document.createElement(&amp;#34;treeitem&amp;#34;); treechildren.appendChild(treeitem); var treerow = document.createElement(&amp;#34;treerow&amp;#34;); treeitem.appendChild(treerow); var treecellUrl = document.createElement(&amp;#34;treecell&amp;#34;); treecellUrl.setAttribute(&amp;#34;label&amp;#34;, url); treerow.appendChild(treecellUrl); var treecellXPath = document.createElement(&amp;#34;treecell&amp;#34;); treecellXPath.setAttribute(&amp;#34;label&amp;#34;, xPath); treerow.</description>
+var treeXPaths = document.getElementById(&amp;#34;treeXPaths&amp;#34;); // extract &amp;lt;treechildren&amp;gt; var treechildren = treeXPaths.getElementsByTagName(&amp;#34;treechildren&amp;#34;).item(0); // hierarchy is: treechildren / treeitem / treerow / treecell  var treeitem = document.createElement(&amp;#34;treeitem&amp;#34;); treechildren.appendChild(treeitem); var treerow = document.createElement(&amp;#34;treerow&amp;#34;); treeitem.appendChild(treerow); var treecellUrl = document.createElement(&amp;#34;treecell&amp;#34;); treecellUrl.setAttribute(&amp;#34;label&amp;#34;, url); treerow.appendChild(treecellUrl); var treecellXPath = document.createElement(&amp;#34;treecell&amp;#34;); treecellXPath.setAttribute(&amp;#34;label&amp;#34;, xPath); treerow.appendChild(treecellXPath); </description>
     </item>
     
     <item>
@@ -927,7 +921,7 @@ XML-Security 1.4.2 funguje, ale hádže výnimky, keď digest uvedený v požiad
       <pubDate>Thu, 04 Sep 2008 09:10:43 +0100</pubDate>
       
       <guid>https://novotnyr.github.io/scrolls/jaxb-receptar-tipov-a-trikov/</guid>
-      <description>Pri kompilácii XML schémy pomocou JAXB sú niektoré XML typy namapované na „neštandardné&amp;rdquo; Java triedy. Napríklad typy pre dátum a čas (xsd:date, xsd:time) nie sú mapované na java.util.Date(), ale na špeciálnu triedu javax.xml.datatype.XMLGregorianCalendar (dôvodom je vraj rozličný rozsah platnosti tried). V JAXB je však možné prispôsobiť mapovania tried pomocou XJB súboru. Na blogu jedného z autorov JAXB sa udáva možnosť priameho mapovania na java.util.Date.
+      <description>Pri kompilácii XML schémy pomocou JAXB sú niektoré XML typy namapované na „neštandardné&amp;quot; Java triedy. Napríklad typy pre dátum a čas (xsd:date, xsd:time) nie sú mapované na java.util.Date(), ale na špeciálnu triedu javax.xml.datatype.XMLGregorianCalendar (dôvodom je vraj rozličný rozsah platnosti tried). V JAXB je však možné prispôsobiť mapovania tried pomocou XJB súboru. Na [blogu jedného z autorov](http://weblogs.java.net/blog/kohsuke/archive/2006/03/how_do_i_map_xs.html |) JAXB sa udáva možnosť priameho mapovania na java.util.Date.
 V jednom z projektov sme potrebovali mapovanie na java.</description>
     </item>
     
@@ -947,9 +941,9 @@ V jednom z projektov sme potrebovali mapovanie na java.</description>
       <pubDate>Mon, 25 Aug 2008 17:22:51 +0100</pubDate>
       
       <guid>https://novotnyr.github.io/scrolls/spring-ws-sifrovane-spravy/</guid>
-      <description>Keystore Vygenerovanie dvojice privátny kľúč-verejný kľúč pre server keytool -genkey -alias ais-ws-server -keystore ais-ws-server.jks -keyalg RSA  Pozn. treba explicitne zvoliť algoritmus RSA, pretože implicitný algoritmus DSA vedie na klientskej strane k chybe:
-Can&#39;t use DSA for encryption  Export serverovského certifikátu export verejného kľúča (= serverovského certifikátu), ktorým bude klient šifrovať správy
-keytool -export -alias ais-ws-server -file ais-ws-server-public-key.crt -keystore ais-ws-server.jks  Súbor ais-ws-server-public-key.crt obsahuje certifikát servera, ktorý importneme do keystoru u klienta.</description>
+      <description>Keystore Vygenerovanie dvojice privátny kľúč-verejný kľúč pre server keytool -genkey -alias ais-ws-server -keystore ais-ws-server.jks -keyalg RSA Pozn. treba explicitne zvoliť algoritmus RSA, pretože implicitný algoritmus DSA vedie na klientskej strane k chybe:
+Can&#39;t use DSA for encryption Export serverovského certifikátu export verejného kľúča (= serverovského certifikátu), ktorým bude klient šifrovať správy
+keytool -export -alias ais-ws-server -file ais-ws-server-public-key.crt -keystore ais-ws-server.jks Súbor ais-ws-server-public-key.crt obsahuje certifikát servera, ktorý importneme do keystoru u klienta.</description>
     </item>
     
     <item>
@@ -970,9 +964,8 @@ Endpoint package ais.ws; import javax.xml.transform.Source; import javax.xml.tra
       <guid>https://novotnyr.github.io/scrolls/ako-na-rekurziu-v-databazach/</guid>
       <description>Čísla od 1 po n Vytvorte tabulku, ktora obsahuje v riadkoch cisla od 1 po N.
 V Pascale by to bol for:
-for i:=1 to N do begin writeln(i) end  Lenze my nemame for. Mame len rekurziu. My vsak vieme kazdy prvok v postupnosti odvodit z predosleho prvku.
- Prvy prvok je 0, dalsi prvok je predosly prvok + 1.
-s_0 = 0 s_i = s_i-1 + 1   Napisane vseobecne</description>
+for i:=1 to N do begin writeln(i) end Lenze my nemame for. Mame len rekurziu. My vsak vieme kazdy prvok v postupnosti odvodit z predosleho prvku.
+ Prvy prvok je 0, dalsi prvok je predosly prvok + 1.  s_0 = 0 s_i = s_i-1 + 1 Napisane vseobecne</description>
     </item>
     
     <item>
@@ -982,8 +975,7 @@ s_0 = 0 s_i = s_i-1 + 1   Napisane vseobecne</description>
       
       <guid>https://novotnyr.github.io/scrolls/od-wsdl-k-webovej-sluzbe-glassfish-metro/</guid>
       <description>V predošlom dieli sme si ukázali príklad popisovača webovej služby v podobe WSDL súboru. Ak máme tento súbor, môžeme použiť niektoré z existujúcich nástrojov na vygenerovanie zdrojového kódu pre serverovskú časť služby i pre klienta, ktorý k nej bude pristupovať.
-Tento spôsob je k dispozícii vo všetkých významných Java frameworkoch pre webové služby - teda aj v Glassfish Metro.
-Samotná Java poskytuje na prístup k webovým službám viacero API združených pod rôznymi špecifikáciami.</description>
+Tento spôsob je k dispozícii vo všetkých významných Java frameworkoch pre webové služby - teda aj v [Glassfish Metro](http://cxf.apache.org/ | Apache CXF]], [[http://ws.apache.org/axis/ | Axis1]] / [[http://ws.apache.org/axis/ | Axis2]], [[https://metro.dev.java.net/ ).</description>
     </item>
     
     <item>
@@ -992,10 +984,9 @@ Samotná Java poskytuje na prístup k webovým službám viacero API združenýc
       <pubDate>Sat, 05 Jul 2008 00:00:00 +0100</pubDate>
       
       <guid>https://novotnyr.github.io/scrolls/reactome-webservice-soap-api/</guid>
-      <description>Reactome WS API dava k dispozicii XSD schemu prenasanych dat.
+      <description>Reactome WS API dava k dispozicii [XSD schemu prenasanych dat](http://www.reactome.org:8080/caBIOWebApp/services/caBIOService?wsdl | WSDL subor]], ktory sa odkazuje na [[http://www.reactome.org:8080/caBIOWebApp/docs/caBIOExtensionsXMLSchema.xsd ).
 Problem s publikovanym WSDL je v pouzivanom bindingu. WSDL vzniklo zjavne automatickym generovanim z Java tried publikovanych v stacku Axis1. Tento stack je vsak prastary a jediny styl sprav, ktory podporuje, je RPC/encoded.
-Kamenom urazu je to, ze ziadny z modernych frameworkov uz nepodporuje tento binding a ak podporuje (prikladom je Metro), tak len velmi limitovane.
-Dalsim problemom tohto WSDL je divne definovana schema - komplexne typy su prapodivne a CXF aj Metro na nich zlyhaju.</description>
+Kamenom urazu je to, ze ziadny z modernych frameworkov uz nepodporuje tento binding a ak podporuje (prikladom je Metro), tak len velmi limitovane.</description>
     </item>
     
     <item>
@@ -1004,9 +995,7 @@ Dalsim problemom tohto WSDL je divne definovana schema - komplexne typy su prapo
       <pubDate>Tue, 24 Jun 2008 15:17:23 +0100</pubDate>
       
       <guid>https://novotnyr.github.io/scrolls/pouzitie-spring-ws-na-klasicke-java-projekty/</guid>
-      <description>Úvod dokumentácii). Rovnako je tento aplikačný rámec držaný „pri zemi&amp;rdquo;. Množstvo vecí, ktoré iné knižnice riešia automagicky, sa tuto riešia manuálne - čo však v mnohých prípadoch umožňuje mať veci pod kontrolou.
-Ukážme si však spôsob, ktorým je možné vybudovať jednoduchú webovú službu práve „ignorovaným&amp;rdquo; opačným spôsobom. Obetujeme popri tom množstvo z platformových vymožeností webových služieb, ale dosiahneme popri tom fungujúci prototyp.
-Triedy a serializácia do XML pomocou XStream V našom príklade budeme chcieť vybudovať webovú službu pre rezerváciu lístkov v kine.</description>
+      <description>Úvod [dokumentácii](http://static.springframework.org/spring-ws/site/ | Spring Web Services]] (Spring-WS) je knižnica pre podporu budovania webových služieb v Jave. Spadá teda do rodiny, v ktorej sú knižnice / aplikačné rámce ako [[http://ws.apache.org/axis2/ | Apache Axis2]], [[http://cxf.apache.org/ | Apache CXF]] alebo [[https://metro.dev.java.net/ | Glassfish Metro]]. Na rozdiel od jej bratrancov je základnou filozofiou „contract-first&amp;quot;. Pri budovaní webových služieb sa teda očakáva vybudovanie XML schémy, popisovača WSDL a tried, ktoré vychádzajú práve z týchto jazykovo a platformovo nezávislých súčastí.</description>
     </item>
     
     <item>
@@ -1064,7 +1053,7 @@ Predstavme si študijný program, čo je množina predmetov, v ktorej má každ�
       <pubDate>Wed, 07 May 2008 00:00:00 +0100</pubDate>
       
       <guid>https://novotnyr.github.io/scrolls/prehladavanie-do-hlbky-v-jazyku-java/</guid>
-      <description>Úvod V predošlom článku sme spomínali algoritmus prehľadávania do šírky, ktorý prechádzal strom ,,po vrstvách&amp;rdquo;. Okrem neho jestvuje ešte analogický algoritmus prehľadávania do hĺbky. Jeho základnou ideou je preskúmavanie ciest vedúcich k čo najhlbšiemu potomkovi daného uzla.
+      <description>Úvod V predošlom článku sme spomínali algoritmus prehľadávania do šírky, ktorý prechádzal strom ,,po vrstvách&amp;quot;. Okrem neho jestvuje ešte analogický algoritmus prehľadávania do hĺbky. Jeho základnou ideou je preskúmavanie ciest vedúcich k čo najhlbšiemu potomkovi daného uzla.
 Pekným príkladom prehľadávania do hĺbky je traverzovanie súborového systému. Ak chceme prejsť všetky súbory v danom adresári a jeho podadresároch (a v podadresároch jeho podadresárov), takéto prehľadávanie sa nám veľmi hodí.
 Zjednodušený súborový systém môže vyzerať nasledovne:</description>
     </item>
@@ -1078,7 +1067,7 @@ Zjednodušený súborový systém môže vyzerať nasledovne:</description>
       <description>Úvod Algoritmy na prehľadávanie stromov si množstvo ľudí pamätá (alebo nepamätá) z vysokej školy. Napriek tomu niekedy môže nastať situácia, keď je vhodné ich použiť a pri tej príležitosti si ich pripomenúť.
 Predstavme si jednoduchú úlohu: máme stromovú štruktúru (napr. rodostrom predkov), ktorú chceme vypísať na konzolu. Príkladom takéhoto stromu je nasledovný obrázok:
 Výpis na konzolu by znamenal, že chceme vypísať niečo takéto:
-koreň A B C 1 2 3 4 5  Ako na to?</description>
+koreň A B C 1 2 3 4 5 Ako na to?</description>
     </item>
     
     <item>
@@ -1099,7 +1088,7 @@ koreň A B C 1 2 3 4 5  Ako na to?</description>
       <description>Zmena implicitnej uvítacej stránky Tomcat 4.1.x Do web.xml stačí vložiť nový kontext
 &amp;lt;Context docBase=&amp;#34;C:\Java\Tomcat\webapps\ROOT&amp;#34; path=&amp;#34;&amp;#34; workDir=&amp;#34;work\Standalone\localhost\_&amp;#34; /&amp;gt; Tomcat 5.5.x Podľa odporúčaní je vhodné popisy kontextov ukladať do adresára %CATALINA_HOME%\conf\Catalina\localhost (a nie upravovať web.xml). Koreňový kontext zmeníme vytvorením súboru %CATALINA_HOME%\conf\Catalina\localhost\ROOT.xml s obsahom
 &amp;lt;Context docBase=&amp;#34;C:/projects/tomcat-root&amp;#34; /&amp;gt; Kompilácia jsvc na 64bitovej Fedore Do configure pre jsvc treba okolo riadku 2630 (tam, kde sa detekuje architektúra) pridať do case vetvenia riadok
-x86_64) CFLAGS=&amp;quot;$CFLAGS -DCPU=\\\&amp;quot;i686\\\&amp;quot;&amp;quot; ;;  Potom sa pokračuje v inštalácii normálne (.</description>
+x86_64) CFLAGS=&amp;quot;$CFLAGS -DCPU=\\\&amp;quot;i686\\\&amp;quot;&amp;quot; ;; Potom sa pokračuje v inštalácii normálne (.</description>
     </item>
     
     <item>
@@ -1149,8 +1138,8 @@ package sk.novotnyr.quotes; public interface QuoteGenerator { public String getQ
       <pubDate>Thu, 31 Jan 2008 00:00:00 +0100</pubDate>
       
       <guid>https://novotnyr.github.io/scrolls/php-sessions-and-security-tips-and-tricks/</guid>
-      <description>And now: 30 seconds o&amp;rsquo; fun:
-Misc notes  take MD5 of USER_AGENT into account (and possibly other HTTP headers) &amp;ndash; changing of it between sessions may be possible hijack use cookies as extra security level (put fingerprint into cookie)  Store md5 of sid, ip, login time into cookie and into db table to compare them later  use prevention of logging into existing session &amp;ndash; always generate new session ID after login.</description>
+      <description>And now: 30 seconds o&#39; fun:
+Misc notes  take MD5 of USER_AGENT into account (and possibly other HTTP headers) &amp;ndash; changing of it between sessions may be possible hijack use cookies as extra security level (put fingerprint into cookie)  Store md5 of sid, ip, login time into cookie and into db table to compare them later   use prevention of logging into existing session &amp;ndash; always generate new session ID after login.</description>
     </item>
     
     <item>
@@ -1171,7 +1160,7 @@ JAXB umožňuje mapovanie XML dokumentov na Java objekty a to v oboch smeroch. S
       
       <guid>https://novotnyr.github.io/scrolls/spring-ws-od-xsd-k-webovej-sluzbe/</guid>
       <description>Krok 1 - základná webová služba Ukážkový dokument pre požiadavku.
-&amp;lt;?xml version=&amp;#34;1.0&amp;#34; encoding=&amp;#34;UTF-8&amp;#34;?&amp;gt; &amp;lt;movieReservationRequest xmlns=&amp;#34;http://movie.novotnyr.sk/ws/types&amp;#34; &amp;gt; &amp;lt;title&amp;gt;Battlestar Galactica&amp;lt;/title&amp;gt; &amp;lt;date&amp;gt;2008-12-24&amp;lt;/date&amp;gt; &amp;lt;numberOfTickets&amp;gt;4&amp;lt;/numberOfTickets&amp;gt; &amp;lt;/movieReservationRequest&amp;gt; web.xml &amp;lt;?xml version=&amp;#34;1.0&amp;#34; encoding=&amp;#34;UTF-8&amp;#34;?&amp;gt; &amp;lt;web-app xmlns=&amp;#34;http://java.sun.com/xml/ns/j2ee&amp;#34; xmlns:xsi=&amp;#34;http://www.w3.org/2001/XMLSchema-instance&amp;#34; xsi:schemaLocation=&amp;#34;http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd&amp;#34; version=&amp;#34;2.4&amp;#34;&amp;gt; &amp;lt;servlet&amp;gt; &amp;lt;servlet-name&amp;gt;spring-ws&amp;lt;/servlet-name&amp;gt; &amp;lt;servlet-class&amp;gt; org.springframework.ws.transport.http.MessageDispatcherServlet &amp;lt;/servlet-class&amp;gt; &amp;lt;load-on-startup&amp;gt;1&amp;lt;/load-on-startup&amp;gt; &amp;lt;/servlet&amp;gt; &amp;lt;servlet-mapping&amp;gt; &amp;lt;servlet-name&amp;gt;spring-ws&amp;lt;/servlet-name&amp;gt; &amp;lt;url-pattern&amp;gt;/*&amp;lt;/url-pattern&amp;gt; &amp;lt;/servlet-mapping&amp;gt; &amp;lt;/web-app&amp;gt; spring-ws-servlet.xml &amp;lt;?xml version=&amp;#34;1.0&amp;#34; encoding=&amp;#34;UTF-8&amp;#34;?&amp;gt; &amp;lt;beans xmlns=&amp;#34;http://www.springframework.org/schema/beans&amp;#34; xmlns:xsi=&amp;#34;http://www.w3.org/2001/XMLSchema-instance&amp;#34; xmlns:context=&amp;#34;http://www.springframework.org/schema/context&amp;#34; xsi:schemaLocation=&amp;#34;http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd&amp;#34;&amp;gt; &amp;lt;context:component-scan base-package=&amp;#34;sk.novotnyr.movie&amp;#34;/&amp;gt; &amp;lt;bean class=&amp;#34;org.springframework.ws.server.endpoint.mapping .PayloadRootAnnotationMethodEndpointMapping&amp;#34;/&amp;gt; &amp;lt;/beans&amp;gt; Endpoint package sk.novotnyr.movie; import javax.xml.transform.Source; import javax.xml.transform.Transformer; import javax.</description>
+&amp;lt;?xml version=&amp;#34;1.0&amp;#34; encoding=&amp;#34;UTF-8&amp;#34;?&amp;gt; &amp;lt;movieReservationRequest xmlns=&amp;#34;http://movie.novotnyr.sk/ws/types&amp;#34; &amp;gt; &amp;lt;title&amp;gt;Battlestar Galactica&amp;lt;/title&amp;gt; &amp;lt;date&amp;gt;2008-12-24&amp;lt;/date&amp;gt; &amp;lt;numberOfTickets&amp;gt;4&amp;lt;/numberOfTickets&amp;gt; &amp;lt;/movieReservationRequest&amp;gt; web.xml &amp;lt;?xml version=&amp;#34;1.0&amp;#34; encoding=&amp;#34;UTF-8&amp;#34;?&amp;gt; &amp;lt;web-app xmlns=&amp;#34;http://java.sun.com/xml/ns/j2ee&amp;#34; xmlns:xsi=&amp;#34;http://www.w3.org/2001/XMLSchema-instance&amp;#34; xsi:schemaLocation=&amp;#34;http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd&amp;#34; version=&amp;#34;2.4&amp;#34;&amp;gt; &amp;lt;servlet&amp;gt; &amp;lt;servlet-name&amp;gt;spring-ws&amp;lt;/servlet-name&amp;gt; &amp;lt;servlet-class&amp;gt; org.springframework.ws.transport.http.MessageDispatcherServlet &amp;lt;/servlet-class&amp;gt; &amp;lt;load-on-startup&amp;gt;1&amp;lt;/load-on-startup&amp;gt; &amp;lt;/servlet&amp;gt; &amp;lt;servlet-mapping&amp;gt; &amp;lt;servlet-name&amp;gt;spring-ws&amp;lt;/servlet-name&amp;gt; &amp;lt;url-pattern&amp;gt;/*&amp;lt;/url-pattern&amp;gt; &amp;lt;/servlet-mapping&amp;gt; &amp;lt;/web-app&amp;gt; spring-ws-servlet.xml &amp;lt;?xml version=&amp;#34;1.0&amp;#34; encoding=&amp;#34;UTF-8&amp;#34;?&amp;gt; &amp;lt;beans xmlns=&amp;#34;http://www.springframework.org/schema/beans&amp;#34; xmlns:xsi=&amp;#34;http://www.w3.org/2001/XMLSchema-instance&amp;#34; xmlns:context=&amp;#34;http://www.springframework.org/schema/context&amp;#34; xsi:schemaLocation=&amp;#34;http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd&amp;#34;&amp;gt; &amp;lt;context:component-scan base-package=&amp;#34;sk.novotnyr.movie&amp;#34;/&amp;gt; &amp;lt;bean class=&amp;#34;org.springframework.ws.server.endpoint.mapping .PayloadRootAnnotationMethodEndpointMapping&amp;#34;/&amp;gt; &amp;lt;/beans&amp;gt; Endpoint package sk.novotnyr.movie; import javax.xml.transform.Source; import javax.xml.transform.Transformer; import javax.xml.transform.TransformerFactory; import javax.</description>
     </item>
     
     <item>
@@ -1226,7 +1215,7 @@ package sk.novotnyr.shapes; public interface Shape { public double getArea(); } 
       <pubDate>Tue, 02 Oct 2007 10:56:16 +0100</pubDate>
       
       <guid>https://novotnyr.github.io/scrolls/xpath-adresovaci-jazyk-pre-xml/</guid>
-      <description>Úvod XPath je programovací jazyk určený na adresáciu jednotlivých prvkov XML súboru. Umožňuje pomocou jednoduchej syntaxe riešiť problémy typu &amp;ldquo;chcem všetky title elementy&amp;rdquo;, chcem všetky elementy author, ktoré sa nachádzajú pod elementom book s atribútom id rovným 12&amp;rdquo;, chcem všetkých vnukov koreňového elementu, a pod.
+      <description>Úvod XPath je programovací jazyk určený na adresáciu jednotlivých prvkov XML súboru. Umožňuje pomocou jednoduchej syntaxe riešiť problémy typu &amp;ldquo;chcem všetky title  elementy&amp;rdquo;, chcem všetky elementy author, ktoré sa nachádzajú pod elementom book s atribútom id rovným 12&amp;quot;, chcem všetkých vnukov koreňového elementu, a pod.
 Jeho syntax je inšpirovaná syntaxou používanou v súborových systémoch - jednotlivé prvky XML stromu sú oddeľované lomkami. Je možné sa dopytovať na elementy v štruktúre, podstrome, prípadne v atribútoch.</description>
     </item>
     
@@ -1259,7 +1248,7 @@ Zadefinovanie globálneho JNDI zdroja. V Tomcate 5.5.x zadefinujeme globálny d�
       <guid>https://novotnyr.github.io/scrolls/spring-a-posielanie-udalosti/</guid>
       <description>Úvod Aplikačný kontext v Springu zjednodušuje podporu implementácie návrhového vzoru Observer (alias listener alias publish/subscribe). K dispozícii je niekoľko rozhraní a pomocných tried, ktoré uľahčujú častokrát opakované písanie tried pre registráciu listenerov a poskytuje priamu podporu pre synchrónne i asynchrónne vyvolávanie udalostí.
 Základné objekty a triedy Pri implementácii uvedeného návrhového vzoru sa využívajú nasledovné koncepty:
- udalosť – dátový typ reprezentuje druh udalosti. Objekt môže niesť dáta späté s udalosťou.</description>
+ udalosť – dátový typ reprezentuje druh udalosti. Objekt môže niesť dáta späté s udalosťou. poslucháč – v prípade, že nastane udalosť, sú mu zasielané príslušné objekty udalostí vysielač udalostí – predstavuje objekt, do ktorého sa zaregistrujú poslucháči.</description>
     </item>
     
     <item>
@@ -1302,7 +1291,7 @@ public class Book implements Serializable { protected Integer id; protected Stri
       
       <guid>https://novotnyr.github.io/scrolls/hsqldb-embedded-databaza/</guid>
       <description>Úvod hsqldb je ľahká 100% Java databáza, ktorú môžete bez problémov zahrnúť, či embeddnúť do svojho projektu. Vlastnosti:
- malá veľkosť – základný JAR má 700kB podpora značnej časti SQL štandardu  primárne a cudzie kľúče joiny vnorené SELECTy   V prípade jednoduchých Java projektov je jej použitie jednoduchšie ako inštalácia a konfigurácia najčastejšie používanej databázy MySQL. Nevyžaduje sa totiž žiadna inštalácia ani konfigurácia schém alebo užívateľských práv. &amp;hellip;</description>
+ malá veľkosť – základný JAR má 700kB podpora značnej časti SQL štandardu  primárne a cudzie kľúče joiny vnorené SELECTy    V prípade jednoduchých Java projektov je jej použitie jednoduchšie ako inštalácia a konfigurácia najčastejšie používanej databázy MySQL. Nevyžaduje sa totiž žiadna inštalácia ani konfigurácia schém alebo užívateľských práv. &amp;hellip;</description>
     </item>
     
     <item>
@@ -1311,7 +1300,7 @@ public class Book implements Serializable { protected Integer id; protected Stri
       <pubDate>Tue, 04 Sep 2007 08:20:57 +0100</pubDate>
       
       <guid>https://novotnyr.github.io/scrolls/classpath-nocna-mora/</guid>
-      <description>Úvod Asi každý pisateľ kódu v Jave sa stretol s výnimkou ClassNotFoundException, ktorá indikuje chybový stav, keď Java Virtual Machine nebola schopná nájsť binárny kód pre danú triedu (teda súbor .class). Táto výnimka je veľmi „obľúbená&amp;rdquo; hlavne v prípade, keď nie je k dispozícii žiadne integrované vývojové prostredie (IDE) a sme obmedzení len na prácu s príkazovým riadkom.
+      <description>Úvod Asi každý pisateľ kódu v Jave sa stretol s výnimkou ClassNotFoundException, ktorá indikuje chybový stav, keď Java Virtual Machine nebola schopná nájsť binárny kód pre danú triedu (teda súbor .class). Táto výnimka je veľmi „obľúbená&amp;quot; hlavne v prípade, keď nie je k dispozícii žiadne integrované vývojové prostredie (IDE) a sme obmedzení len na prácu s príkazovým riadkom.
 Vyhľadávanie .class súborov môže spôsobiť veľký hlavybôľ, ale pri prečítaní správnej dokumentácie sa ukáže, že sa riadi pevne danými pravidlami.</description>
     </item>
     
@@ -1324,7 +1313,7 @@ Vyhľadávanie .class súborov môže spôsobiť veľký hlavybôľ, ale pri pre
       <description>O Jetty Jetty je servletový a JSP kontajner, ktorý sa vyznačuje malou veľkosťou a subjektívne väčšou svižnosťou oproti klasickým kontajnerom (napr. Tomcat-u).
 Posledná verzia 6.1 spĺňa všetky najnovšie štandardy špecifikácie Servlet/JSP (teda Servlet 2.5 a JSP 2.1)
 Kde stiahnuť Jetty si možno stiahnuť napr. z CodeHausu, veľkosť ZIP archívu v prípade verzie 6.1 je cca 23 MB.
-Rozbalený ZIP archív (66 MB) však môžeme bez problémov osekať o nepoužívané komponenty.</description>
+Rozbalený ZIP archív (66 MB) však môžeme bez problémov osekať o nepoužívané komponenty. V prípade jednoduchého testovania webaplikácií sa môžeme zbaviť súčastí ako asynchrónne IO a pod.</description>
     </item>
     
     <item>
@@ -1367,8 +1356,8 @@ Java poskytuje tento repertoár v plnej miere. Na rozdiel od klasických procedu
       <pubDate>Sun, 11 Jun 2006 19:59:44 +0100</pubDate>
       
       <guid>https://novotnyr.github.io/scrolls/db2-receptar-tipov-a-trikov/</guid>
-      <description>Katalogizacia vzdialenej DB do klienta catalog tcpip node ssj_d remote dbserver.ics.upjs.sk server 50000 catalog db slovnikd at node ssj_d  SSJ_D je nazov uzla/node - lubovolny. 50000 je port sluzby. Miesto portu je mozne pouzit aj nazov sluzby - ten sa da na Windowse zistit z etc/services.
-Restore databazy zo zalohy do inej databazy restore database slovnik from d:\bak\slovnikd into slovnikd  Vytvaranie sekvencii v DB2 CREATE SEQUENCE vyznam_seq AS INT START WITH 160000 INCREMENT BY 1 MINVALUE 1 NO MAXVALUE NO CYCLE NO CACHE ORDER;  Sekvencia mozu byt pouzita ako generator primarnych klucov.</description>
+      <description>Katalogizacia vzdialenej DB do klienta catalog tcpip node ssj_d remote dbserver.ics.upjs.sk server 50000 catalog db slovnikd at node ssj_d SSJ_D je nazov uzla/node - lubovolny. 50000 je port sluzby. Miesto portu je mozne pouzit aj nazov sluzby - ten sa da na Windowse zistit z etc/services.
+Restore databazy zo zalohy do inej databazy restore database slovnik from d:\bak\slovnikd into slovnikd Vytvaranie sekvencii v DB2 CREATE SEQUENCE vyznam_seq AS INT START WITH 160000 INCREMENT BY 1 MINVALUE 1 NO MAXVALUE NO CYCLE NO CACHE ORDER; Sekvencia mozu byt pouzita ako generator primarnych klucov.</description>
     </item>
     
     <item>
@@ -1377,7 +1366,7 @@ Restore databazy zo zalohy do inej databazy restore database slovnik from d:\bak
       <pubDate>Thu, 25 May 2006 22:47:44 +0100</pubDate>
       
       <guid>https://novotnyr.github.io/scrolls/wicket-receptar-tipov-a-trikov/</guid>
-      <description>Ako vyrobit nieco ako frame v Delphi? Staci pouzit kombinaciu  a k nemu vyrobit WebMarkupContainer. Naozaj netreba pouzivat Panely.
+      <description>Ako vyrobit nieco ako frame v Delphi? Staci pouzit kombinaciu a k nemu vyrobit WebMarkupContainer. Naozaj netreba pouzivat Panely.
 Pouzivanie setVisible Skryty komponent sa vo vyrenderovanom HTML nezobrazi. To je prirodzena vlastnost. Pre skryte panely vsak plati, ze sa vobec nenacitava im zodpovedajuci HTML popis. To sa udeje az pri prvom zobrazeni.
 Modifikacia poloziek v ListView Ak sa planuju zmeny poloziek v ListView (pridavanie, uberanie), je potrebne nastavit na tomto komponente setReuseItems(true).</description>
     </item>
@@ -1407,9 +1396,7 @@ Modifikacia poloziek v ListView Ak sa planuju zmeny poloziek v ListView (pridava
       <pubDate>Thu, 02 Feb 2006 00:00:00 +0100</pubDate>
       
       <guid>https://novotnyr.github.io/scrolls/forrest-receptar-tipy-triky/</guid>
-      <description>Forrest a slovenské fonty Problém Formatting Objects (stručne: špecifikácia pre XML dokumenty s jemnými možnosťami pre formátovanie ich vzhľadu).
-Riešenie (základné r. ťažkého kalibru) Na vyriešenie problému použijeme podporný balíček pre FOP, ktorého autorom je Jiří Kosek.
- Stiahneme balíček z z http://www.kosek.cz/sw/fop/fop-cs.zip V tomto archíve rozbalíme obsah adresára conf na nejaké inteligentné miesto, napr. do %FORREST_HOME%/fonts/conf Otvoríme v tomto adresári súbor userconfig.xml, použijeme z neho obsah medzi tagmi &amp;hellip;.</description>
+      <description>Forrest a slovenské fonty Problém [Formatting Objects](http://xml.apache.org/forrest |Apache Forrest]] je nástroj na generovanie projektovej dokumentácie v rôznych formátoch zo vstupných súborov vo formáte (implicitne) DocBook. Najčastejším použitím je výstup vo forme webových stránok alebo PDFka. Príkladom siete vytvorenej Forrestom sú stránky k mojej [[http://s.ics.upjs.sk/~novotnyr/dp |diplomke]]. Jednou záludnosťou pri generovaní PDFiek je notorický problém slovenčiny - diakritika. V štandardnej distribúcii a konfigurácii nepodporuje Forrest pri generovaní PDFiek diakritiku - namiesto nej sa zobrazia mriežky #.</description>
     </item>
     
     <item>
@@ -1418,11 +1405,8 @@ Riešenie (základné r. ťažkého kalibru) Na vyriešenie problému použijeme
       <pubDate>Mon, 09 Jan 2006 00:00:00 +0100</pubDate>
       
       <guid>https://novotnyr.github.io/scrolls/maven-receptar-tipy-triky/</guid>
-      <description>Generovanie projektovych stranok pomocou Mavenu 1  Nastavime
-maven.docs.outputencoding=utf-8  v project.properties. Inak sa dockame dokumentacie v iso-8859-1, pripadne otaznikov vo vygenerovanych dokumentoch
- Stiahneme plugin sdocbook
-maven plugin:download -DgroupId=maven-plugins -DartifactId=maven-sdocbook-plugin -Dversion=1.4.1  Do maven.xml v projektovom adresari pridame / vytvorime
-&amp;lt;project xmlns:j=&amp;#34;jelly:core&amp;#34; xmlns:ant=&amp;#34;jelly:ant&amp;#34; xmlns:util=&amp;#34;jelly:util&amp;#34; xmlns:maven=&amp;#34;jelly:maven&amp;#34;&amp;gt; &amp;lt;goal name=&amp;#34;docbook2xdoc&amp;#34;&amp;gt; &amp;lt;maven:get var=&amp;#34;maven.sdocbook.generated.html&amp;#34; plugin=&amp;#34;maven-sdocbook-plugin&amp;#34; property=&amp;#34;maven.sdocbook.generated.html&amp;#34;/&amp;gt; &amp;lt;mkdir dir=&amp;#34;${maven.gen.docs}/docbook2xdoc&amp;#34;/&amp;gt; &amp;lt;j:set var=&amp;#34;maven.html2xdoc.dir.bak&amp;#34; value=&amp;#34;${maven.html2xdoc.dir}&amp;#34;/&amp;gt; &amp;lt;j:set var=&amp;#34;maven.gen.docs.bak&amp;#34; value=&amp;#34;${maven.gen.docs}&amp;#34;/&amp;gt; &amp;lt;j:set var=&amp;#34;maven.html2xdoc.dir&amp;#34; value=&amp;#34;${maven.sdocbook.generated.html}&amp;#34;/&amp;gt; &amp;lt;j:set var=&amp;#34;maven.gen.docs&amp;#34; value=&amp;#34;${maven.gen.docs}&amp;#34;/&amp;gt; &amp;lt;attainGoal name=&amp;#34;html2xdoc:transform&amp;#34;/&amp;gt; &amp;lt;j:set var=&amp;#34;maven.</description>
+      <description>Generovanie projektovych stranok pomocou Mavenu 1  Nastavime  maven.docs.outputencoding=utf-8 v project.properties. Inak sa dockame dokumentacie v iso-8859-1, pripadne otaznikov vo vygenerovanych dokumentoch
+ Stiahneme plugin sdocbook  maven plugin:download -DgroupId=maven-plugins -DartifactId=maven-sdocbook-plugin -Dversion=1.4.1  Do maven.xml v projektovom adresari pridame / vytvorime  &amp;lt;project xmlns:j=&amp;#34;jelly:core&amp;#34; xmlns:ant=&amp;#34;jelly:ant&amp;#34; xmlns:util=&amp;#34;jelly:util&amp;#34; xmlns:maven=&amp;#34;jelly:maven&amp;#34;&amp;gt; &amp;lt;goal name=&amp;#34;docbook2xdoc&amp;#34;&amp;gt; &amp;lt;maven:get var=&amp;#34;maven.sdocbook.generated.html&amp;#34; plugin=&amp;#34;maven-sdocbook-plugin&amp;#34; property=&amp;#34;maven.sdocbook.generated.html&amp;#34;/&amp;gt; &amp;lt;mkdir dir=&amp;#34;${maven.gen.docs}/docbook2xdoc&amp;#34;/&amp;gt; &amp;lt;j:set var=&amp;#34;maven.html2xdoc.dir.bak&amp;#34; value=&amp;#34;${maven.html2xdoc.dir}&amp;#34;/&amp;gt; &amp;lt;j:set var=&amp;#34;maven.gen.docs.bak&amp;#34; value=&amp;#34;${maven.gen.docs}&amp;#34;/&amp;gt; &amp;lt;j:set var=&amp;#34;maven.html2xdoc.dir&amp;#34; value=&amp;#34;${maven.sdocbook.generated.html}&amp;#34;/&amp;gt; &amp;lt;j:set var=&amp;#34;maven.gen.docs&amp;#34; value=&amp;#34;${maven.gen.docs}&amp;#34;/&amp;gt; &amp;lt;attainGoal name=&amp;#34;html2xdoc:transform&amp;#34;/&amp;gt; &amp;lt;j:set var=&amp;#34;maven.</description>
     </item>
     
     <item>
@@ -1431,7 +1415,7 @@ maven plugin:download -DgroupId=maven-plugins -DartifactId=maven-sdocbook-plugin
       <pubDate>Mon, 16 May 2005 09:10:43 +0100</pubDate>
       
       <guid>https://novotnyr.github.io/scrolls/nlite-status-report.markdown/</guid>
-      <description>nLite aktualizoval Windows XP SP1 slipstreamnutim Service Packu 2. Nasledovne bol zruseny IE (komponenty IE Core, aj IE additional). Ako bonusova volba bol zvoleny klasicky vzhlad instalatora. nastalo instalovanie vo VMWare. Instalacia prebehla OK, akurat som bol ochudobneny o pestre modre pozadie pri instalatore (jednoducho Win2K style) Okna sa otvorili. V klasickom ,,ye olde&amp;rdquo; vzhlade, a la Windows 2000. Po prestaveni plochy na ,,klasicky vzhlad&amp;rdquo; mi kupodivu chyba ikonka IE.</description>
+      <description>nLite aktualizoval Windows XP SP1 slipstreamnutim Service Packu 2. Nasledovne bol zruseny IE (komponenty IE Core, aj IE additional). Ako bonusova volba bol zvoleny klasicky vzhlad instalatora. nastalo instalovanie vo VMWare. Instalacia prebehla OK, akurat som bol ochudobneny o pestre modre pozadie pri instalatore (jednoducho Win2K style) Okna sa otvorili. V klasickom ,,ye olde&amp;quot; vzhlade, a la Windows 2000. Po prestaveni plochy na ,,klasicky vzhlad&amp;quot; mi kupodivu chyba ikonka IE.</description>
     </item>
     
     <item>
@@ -1442,7 +1426,7 @@ maven plugin:download -DgroupId=maven-plugins -DartifactId=maven-sdocbook-plugin
       <guid>https://novotnyr.github.io/scrolls/jednoduchy-priklad-pouzitia-hibernate/</guid>
       <description>Úvod Hibernate (http://www.hibernate.org) je nástroj podporujúci objektovú perzistenciu &amp;ndash; v preklade: umožňuje ukladať objekty do databázy a následne ich z nej vyberať (často sa možno stretnúť so pojmom ORM &amp;ndash; Object Relational Mapping). Výhodou je jeho ľahké používanie, stabilita a rozšírenosť.
 Príklad Uvažujme niekoľko jednoduchých tried, ktoré sa zaoberajú mačkami. Majme koncept mačky: mačka má meno a deti. Teda môžeme ju reprezentovať triedou Cat.
-package catology; import java.util.HashSet; import java.</description>
+package catology; import java.util.HashSet; import java.util.Set; public class Cat { private String name; public String getName() { return name; } public void setName(String name) { this.</description>
     </item>
     
     <item>
@@ -1451,10 +1435,10 @@ package catology; import java.util.HashSet; import java.</description>
       <pubDate>Sun, 17 Apr 2005 09:45:12 +0100</pubDate>
       
       <guid>https://novotnyr.github.io/scrolls/velocity-jednoduchy-priklad-pouzitia/</guid>
-      <description>Podľa prehľadu na stránkach tohto projektu je Velocity &amp;ldquo;šablónový „stroj&amp;rdquo; založený na Jave. Umožňuje využívať jednoduchý, ale zato mocný jazyk&amp;rdquo; na využívanie objektov definovaných v javovskom kóde.
+      <description>Podľa prehľadu na stránkach tohto projektu je Velocity &amp;lsquo;&amp;lsquo;šablónový „stroj&amp;quot; založený na Jave. Umožňuje využívať jednoduchý, ale zato mocný jazyk&amp;rsquo;&amp;rsquo; na využívanie objektov definovaných v javovskom kóde.
 Šablóny môžu byť používané na generovanie HTML stránok, hromadnej korešpondencie alebo na ľubovoľnú podobnú činnosť.
 Príkladom šablóny je napr. súbor knights.vm
-Rytieri okrúhleho stola sa dnes zišli v počte $knightsList.size(). Tu je ich presný zoznam: #foreach( $knight in $knightList ) $knight.name #end  V šablóne sa používajú direktívy (začínajúce na #), možno využívať premenné (začínajúce $), s premennými možno vykonávať rôzne operácie (bodková notácia ako v Jave).</description>
+Rytieri okrúhleho stola sa dnes zišli v počte $knightsList.size(). Tu je ich presný zoznam: #foreach( $knight in $knightList ) $knight.name #end V šablóne sa používajú direktívy (začínajúce na #), možno využívať premenné (začínajúce $), s premennými možno vykonávať rôzne operácie (bodková notácia ako v Jave).</description>
     </item>
     
     <item>
@@ -1467,7 +1451,7 @@ Rytieri okrúhleho stola sa dnes zišli v počte $knightsList.size(). Tu je ich 
 (pozn: vraj táto funkcionalita je dostupná len na Windowse&amp;hellip;)
 Toto úhľadné okienko možno vyvolať nasledovne.
 //ziskame komponent pre sluzbu AlertService var alerts = Components.classes[&amp;#34;@mozilla.org/alerts-service;1&amp;#34;].getService(Components.interfaces.nsIAlertsService); Zavolame metodu na vyvolanie okienka. Parametre su nasledovne
- prvy parameter udava adresu obrazka zobrazenenho v okienku druhy parameter udava titulok okienka treti parameter udava hlavny text v notifikacii stvrty booleovsky parameter udava, ci je text zobrazeny ako klikatelny odkaz piaty zahadny parameter ma nieco do cinenia s cookie (nejak som nenasiel blizsie info) siesty parameter udava instanciu objektu, ktory bude nacuvat udalostiam, ktore sa vykonaju pri kliknuti na odkaz v notifikacii</description>
+ prvy parameter udava adresu obrazka zobrazenenho v okienku druhy parameter udava titulok okienka treti parameter udava hlavny text v notifikacii stvrty booleovsky parameter udava, ci je text zobrazeny ako klikatelny odkaz piaty zahadny parameter ma nieco do cinenia s cookie (nejak som nenasiel blizsie info) siesty parameter udava instanciu objektu, ktory bude nacuvat udalostiam, ktore sa vykonaju pri kliknuti na odkaz v notifikacii  alerts.</description>
     </item>
     
     <item>
@@ -1478,8 +1462,8 @@ Toto úhľadné okienko možno vyvolať nasledovne.
       <guid>https://novotnyr.github.io/scrolls/xul-ecmascript/</guid>
       <description>EcmaScript je vlastne normovanou verziou jazyka, ktory vznikol z JavaScriptu. Mozilla podporuje EcmaScript verzie 3.
 Objektový model v EcmaScripte (262). V EcmaScripte neexistuje koncept triedy.
-Tvorba novych instancii Explicitne vytvaranie objektov var person = new Object; person.firstName = &amp;#34;John&amp;#34;; person.secondName = &amp;#34;Doe&amp;#34;;  „Inline&amp;rdquo; ci pristup cez literal var obj = { foreground:&amp;#34;red&amp;#34;, background:&amp;#34;blue&amp;#34; }  Vsimnime si syntax:
- datove cleny su uvedene bez var hodnota sa im priraduje cez dvojbodku (nie cez „rovna sa&amp;rdquo;)  Prototypy v ulohe tried Na vytvaranie kvazi-tried sa pouzivaju „prototypy&amp;rdquo;.</description>
+Tvorba novych instancii Explicitne vytvaranie objektov var person = new Object; person.firstName = &amp;#34;John&amp;#34;; person.secondName = &amp;#34;Doe&amp;#34;; „Inline&amp;quot; ci pristup cez literal var obj = { foreground:&amp;#34;red&amp;#34;, background:&amp;#34;blue&amp;#34; } Vsimnime si syntax:
+ datove cleny su uvedene bez var hodnota sa im priraduje cez dvojbodku (nie cez „rovna sa&amp;quot;)  Prototypy v ulohe tried Na vytvaranie kvazi-tried sa pouzivaju „prototypy&amp;quot;.</description>
     </item>
     
     <item>
@@ -1490,8 +1474,8 @@ Tvorba novych instancii Explicitne vytvaranie objektov var person = new Object; 
       <guid>https://novotnyr.github.io/scrolls/xul-vytvorenie-noveho-rozsirenia-pre-firefox/</guid>
       <description>(pozn: viacmenej okopírované z tutoriálu na XULPlanet.com)
 Úvod Na prípravu nového rozšírenia potrebujeme
- adresárovú štruktúru upraviť contents.rdf upraviť installed-chrome.txt  Adresárová štruktúra Súbory rozšírenia by sa mali nachádzať v úhľadnom JARe, ale pri ladení ich nechceme do archívu neustále zabaľovať a odbaľovať. Môžeme si založiť adresár v adresári chrome, v prípade Firefoxu napr. c:\Program Files\Mozilla Firefox\chrome. Nech sa naša aplikácia volá „textedit&amp;rdquo;. Založíme teda nasledovnú štruktúru
-c:\Program Files\Mozilla Firefox\chrome | |-textedit |-content |-skin |-locale  Adresáre skin a locale zatiaľ ponecháme prázdne.</description>
+ adresárovú štruktúru upraviť contents.rdf upraviť installed-chrome.txt  Adresárová štruktúra Súbory rozšírenia by sa mali nachádzať v úhľadnom JARe, ale pri ladení ich nechceme do archívu neustále zabaľovať a odbaľovať. Môžeme si založiť adresár v adresári chrome, v prípade Firefoxu napr. c:\Program Files\Mozilla Firefox\chrome. Nech sa naša aplikácia volá „textedit&amp;quot;. Založíme teda nasledovnú štruktúru
+c:\Program Files\Mozilla Firefox\chrome | |-textedit |-content |-skin |-locale Adresáre skin a locale zatiaľ ponecháme prázdne.</description>
     </item>
     
     <item>
@@ -1512,13 +1496,13 @@ c:\Program Files\Mozilla Firefox\chrome | |-textedit |-content |-skin |-locale  
       <guid>https://novotnyr.github.io/scrolls/latex2-html-na-windows-32/</guid>
       <description>LaTeX2HTML-2002-2-1, Windows XP SP1, MikTeX 2.4.1461
 Na pripravu potrebujeme:
- LaTeX2HTML
- Perl (napr. ActiveState Perl)
- netpbm &amp;ndash; binarky (pouzita verzia 10.8.14)
- Odbalime LaTeX2HTML do docasneho adresara
- Nainstalujeme netpbm
- Zeditujeme prefs.pm v adresari, kam sa odbalil LaTeX2HTML.
- $prefs{&#39;PREFIX&#39;} udava cestu, kam sa to nainstaluje $prefs{&#39;EXTRAPATH&#39;}] treba nastavit na cestu k nainstalovanemu ghostscriptu a netpbm.   Pravdepodobne kvoli chybe v parsovani cesty (asi vadia dvojbodky) mi fungovalo len toto riesenie &amp;ndash; netpbm, ghostscript na rovnakom disku ako instalacky LaTeX2HTML, cesty bez uvedenia pismena jednotky: $prefs{&#39;EXTRAPATH&#39;} = &#39;\\Utility\\Alladin\\GS\\gs7.</description>
+  LaTeX2HTML
+  Perl (napr. ActiveState Perl)
+  netpbm &amp;ndash; binarky (pouzita verzia 10.8.14)
+  Odbalime LaTeX2HTML do docasneho adresara
+  Nainstalujeme netpbm
+  Zeditujeme prefs.pm v adresari, kam sa odbalil LaTeX2HTML.
+ $prefs{&#39;PREFIX&#39;} udava cestu, kam sa to nainstaluje $prefs{&#39;EXTRAPATH&#39;}] treba nastavit na cestu k nainstalovanemu ghostscriptu a netpbm.  Pravdepodobne kvoli chybe v parsovani cesty (asi vadia dvojbodky) mi fungovalo len toto riesenie &amp;ndash; netpbm, ghostscript na rovnakom disku ako instalacky LaTeX2HTML, cesty bez uvedenia pismena jednotky: $prefs{&#39;EXTRAPATH&#39;} = &#39;\\Utility\\Alladin\\GS\\gs7.</description>
     </item>
     
     <item>

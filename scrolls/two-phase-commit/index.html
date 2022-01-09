@@ -59,249 +59,198 @@
 
 
 <main>
-
-
 <p>Predstavme si učebnicový prevod peňazí medzi Alicou a Bobom. Ak máme databázu na jednom stroji, implementácia je otázkou <em>transakcie</em>.</p>
-
 <p>Ak je transakcí mnoho a rozdelíme ich medzi viacero strojov, získame síce vyšší výkon, ale vyrobíme si ďalšie problémy.</p>
-
 <p>Algoritmus <em>Two Phase Commit</em> (2PC) je prastarý algoritmus na správny beh transakcií v distribuovaných databázach.</p>
-
 <h1 id="klasické-transakcie">Klasické transakcie</h1>
-
 <p>Učebnicová transakcia vyzerá nasledovne:</p>
-
 <ol>
 <li>Začneme transakciu (begin)</li>
 <li>Z Alicinho účtu odíde 20 korún.</li>
 <li>Bobovi príde 20 korún.</li>
 <li>Ukončíme transakciu
-
 <ol>
 <li>Ak všetko uspelo, transakciu komitneme (potvrdíme).</li>
 <li>V prípade chyby celú transakciu abortneme (odvoláme).</li>
-</ol></li>
 </ol>
-
+</li>
+</ol>
 <p>Transakcia musí prejsť celá alebo vôbec — je vylúčené, aby Alica prišla o peniaze a Bob nedostal na účet nič. Inak povedané, musíme garantovať <strong>atomicitu</strong> transakcie.</p>
-
 <p>Okrem toho je žiadúce dodržať aj ďalšie vlastnosti transakcií, v štýle ACID:</p>
-
 <ul>
 <li><strong>atomicity</strong>: stane sa všetko alebo nič</li>
 <li><strong>konzistentnosť</strong>: pred komitom sa dodržia invarianty (napríklad pred transakciou i po transakcii nebude Alicin účet prečerpaný)</li>
 <li><strong>izolácia:</strong> ostatné súčasne bežiace transakcie neovplyvnia tento konkrétny prevod peňazí</li>
 <li><strong>durabilita</strong> (trvácnosť): ak sa peniaze úspešne presunú, budú navždy presunuté.</li>
 </ul>
-
 <h1 id="distribuované-transakcie">Distribuované transakcie</h1>
-
 <p>Ak databáza prestane zvládať mnoho prevodov peňazí, môžeme dáta v nej rozdeliť do <strong>partícií</strong> a každú z nich umiestnime na samostatný stroj — uzol. Rozdelenie môže byť jednoduché: povieme napríklad, že všetci zákazníci začínajúci na „A“ budú na stroji A, a  Bobovia, Borisovia a Braňovia budú na uzle B.</p>
-
 <p>Každý prevod peňazí (transakcia) tak potenciílne ovplyvní viacero partícií a teda viacero uzlov.</p>
-
 <h2 id="komitovací-protokol">Komitovací protokol</h2>
-
 <p>Hoci sme zvýšili výkon systému, zároveň sme si vyrobili ďalšie problémy:</p>
-
 <ul>
 <li>ako zaručíme, že každá partícia <em>komitne</em> alebo <em>abortne</em>?</li>
 <li>čo v prípade, že jeden z uzlov havaruje?</li>
 <li>čo v prípade, že sieť medzi uzlami havaruje?</li>
 </ul>
-
 <p>Potrebujeme definovať <strong>komitovací protokol</strong> (<em>commit protocol</em>), ktorý určí pravidlá pre správanie takéhoto distribuovaného systému.</p>
-
 <h1 id="dvojfázový-komit">Dvojfázový komit</h1>
-
 <p>V prípade dvojfázového komitu zavedieme do architektúry tretí uzol — <strong>koordinátora</strong>, ktorý zdiriguje jednotlivé uzly.</p>
-
 <h2 id="vidlácky-komitovací-protokol">Vidlácky komitovací protokol</h2>
-
 <p>Optimistický protokol vyzerá nasledovne:</p>
-
 <ol>
 <li>Klient banky povie koordinátorovi: <strong>bež!</strong> (presúvaj peniaze)</li>
 <li>Koordinátor povie uzlu A: <strong>odober 20 korún!</strong></li>
 <li>Koordinátor povie uzlu B: <strong>pridaj 20 korún!</strong></li>
 <li>Koordinátor odkáže klientovi: <strong>peniaze sa presunuli!</strong></li>
 </ol>
-
 <p><em>What could possibly go wrong?</em> Zlyhať vieme na mnohých miestach:</p>
-
 <ul>
 <li>Alica nemá dosť peňazí.</li>
 <li>Bobova partícia (uzol) havarovala pred prijatím správy. Analogicky mohol havarovať aj Alicin uzol.</li>
 <li>Koordinátor odoslal správu Alici, ale pred odoslaním správy Bobovi havaroval.</li>
 <li>Pokaziť sa môže aj sieťové spojenie medzi koordinátorom a uzlom B.</li>
 </ul>
-
 <h2 id="safety-a-liveness">Safety a liveness</h2>
-
 <p>Distribuované systémy sa riadia dvoma vlastnosťami:</p>
-
 <ul>
 <li><strong>safety</strong> (bezpečnosť), v skratke „zlé veci sa nikdy nestanú“. (Deadlocky nenastanú, do chybového stavu sa nikdy nedostaneme, dva procesy nikdy nebudú naraz v kritickej sekcii.)</li>
 <li><strong>liveness</strong> (činorodosť), v skratke „nadíde čas, keď sa všetko na dobré obráti“. (Nadíde čas, keď proces B vojde do kritickej sekcie — ak ju opustí proces A. Nadíde čas — eventuálne — sa dva uzly dohodnú na platnej hodnote v databáze.)</li>
 </ul>
-
 <p>Takéto systémy musia vyvážiť požiadavky na bezpečnosť s požiadavkami na činorodosť. V bankových systémoch je obvykle dôraz na bezpečnosť, hoci potvrdenie transakcie môže chvíľu trvať. Na druhej strane, v sociálnych sieťach môžeme uprednosťovať činorodosť, najmä ak je dôležité okamžite vidieť novopribúdajúce statusy.</p>
-
 <h3 id="safety-a-liveness-v-komitovacom-protokole">Safety a liveness v komitovacom protokole</h3>
-
 <p>Požiadavky na bezpečnosť sú jednoduché:</p>
-
 <ul>
 <li>ak jeden uzol komitne, nikto nesmie abortnúť.</li>
 <li>ak jeden uzol abortne, nik nesmie komitnúť</li>
 </ul>
-
 <p>Činorodosť má tiež svoje požiadavky:</p>
-
 <ul>
 <li>ak sa nič nepokazí a všetky uzly vedia komitnúť, komitneme celú transakciu</li>
 <li>ak nastane zlyhanie, ihneď musíme vyhodnotiť transakciu vhodným spôsobom.</li>
 </ul>
-
 <p>Inými slovami, žiaden účastník nesmie komitnúť, kým sa všetci nezhodli na komite.</p>
-
 <p>Zároveň vyriešime dva aspekty:</p>
-
 <ul>
 <li>timeouty: ak správy neprichádzajú v danej lehote, znamená to, že buď spadla sieť alebo niektorý z uzlov havaroval.</li>
 <li>reštarty: nie je vylúčené, že niektorý účastník síce havaroval, ale snaží sa spamätať.</li>
 </ul>
-
 <h2 id="poriadny-komitovací-protokol">Poriadny komitovací protokol</h2>
-
 <p>Pre ujasnenie budeme v poriadnom 2PC protokole rozoznávať</p>
-
 <ul>
 <li>klient: ten, ktorý iniciuje transakciu</li>
 <li>podriadený: uzol s partíciami (nesú databázy s bankovými účtami)</li>
 <li>koordinátor: diriguje podriadených.</li>
 </ul>
-
 <p>Algoritmus bude vyzerať nasledovne:</p>
-
 <ol>
-<li>klient koordinátorovi: <strong>makaj!</strong></li>
-<li>koordinátor podriadenému A: <strong>priprav sa!</strong></li>
-<li>koordinátor podriadenému B: <strong>priprav sa!</strong></li>
-<li>Podriadený A odpovie (zahlasuje) koordinátorovi: <strong>áno</strong> alebo <strong>nie</strong>, podľa toho, či vie uskutočniť transakciu nad svojimi dátami.</li>
-<li>Podriadený B nezávisle zahlasuje <strong>áno</strong> alebo <strong>nie</strong> a odpovie koordinátorovi.</li>
-
-<li><p>Koordinátor vyhodnotí hlasovanie:</p>
-
+<li>
+<p>klient koordinátorovi: <strong>makaj!</strong></p>
+</li>
+<li>
+<p>koordinátor podriadenému A: <strong>priprav sa!</strong></p>
+</li>
+<li>
+<p>koordinátor podriadenému B: <strong>priprav sa!</strong></p>
+</li>
+<li>
+<p>Podriadený A odpovie (zahlasuje) koordinátorovi: <strong>áno</strong> alebo <strong>nie</strong>, podľa toho, či vie uskutočniť transakciu nad svojimi dátami.</p>
+</li>
+<li>
+<p>Podriadený B nezávisle zahlasuje <strong>áno</strong> alebo <strong>nie</strong> a odpovie koordinátorovi.</p>
+</li>
+<li>
+<p>Koordinátor vyhodnotí hlasovanie:</p>
 <ol>
 <li>Ak všetci podriadení zahlasovali <strong>áno</strong>, každému podriadenému pošle správu <strong>komitni!</strong> (Podriadení komitnú zmeny v dátach vo svojich partíciách.)</li>
 <li>Ak niektorý podriadený povedal <strong>nie</strong>, každému podriadenému pošle správu <strong>abortni!</strong> (Podriadení abortnú zmeny vo svojich partíciách.)</li>
-</ol></li>
-
-<li><p>Koordinátor oznámi klientovi: buď <strong>OK</strong> alebo <strong>zlyhali sme</strong>.</p></li>
 </ol>
-
+</li>
+<li>
+<p>Koordinátor oznámi klientovi: buď <strong>OK</strong> alebo <strong>zlyhali sme</strong>.</p>
+</li>
+</ol>
 <h2 id="kde-sa-čaká">Kde sa čaká?</h2>
-
 <p>Základným <em>problémom</em> dvojfázového komitu je blokovanie. Presnejšie:</p>
-
 <ol>
 <li>Koordinátor čaká na odpoveď <strong>áno</strong> / <strong>nie</strong> od každého podriadeného</li>
 <li>Podriadení čakajú na <strong>komitni!</strong> alebo <strong>abortni!</strong> od koordinátora.</li>
 </ol>
-
 <h3 id="riešenie-čakania-na-podriadených">Riešenie čakania na podriadených</h3>
-
 <p>V prvom prípade koordinátor čaká na výsledok hlasovania od podriadených. Keďže zatiaľ neposlal žiaden komit, môže <em>čakať</em> a po vypršaní timeoutu abortnúť celú transakciu.</p>
-
 <p>Toto je konzervatívny prístup, ktorý zachová korektnosť, ale obetuje výkon. (Čo keď zlyhala sieť a podriadení nemôžu odpovedať?).</p>
-
 <h3 id="riešenie-čakania-na-koordinátora">Riešenie čakania na koordinátora</h3>
-
 <p>V prípade, že podriadení zahlasovali, a čakajú na koordinátora, môžu nastať dva prípady.</p>
-
 <ol>
 <li>Ak niektorý z podriadených zahlasoval <strong>nie</strong>, môže bezpečne abortnúť (hlasovanie už nikdy neprejde.)</li>
 <li>Ak podriadený zahlasoval <strong>áno</strong>, môže <em>čakať navždy</em>, pretože bez informácie od koordinátora nevie rozhodnúť, či komitnúť alebo abortnúť. Táto situácia je charakteristickým problémom pre dvojfázový komit.</li>
 </ol>
-
 <h2 id="reštarty-po-zlyhaní">Reštarty po zlyhaní</h2>
-
 <p>Medzi možné situácie zlyhania patrí nasledovné:</p>
-
 <ol>
 <li>Koordinátor pošle <strong>komitni!</strong> a havaruje.</li>
 <li>Podriadený pošle <strong>áno</strong> a havaruje.</li>
 </ol>
-
 <h3 id="write-ahead-log">Write Ahead Log</h3>
-
 <p>Jedným z riešení je použitie <strong>write-ahead logu</strong>, teda záznamu aktivít, ktoré sa mienia vykonať. Zjednodušene povedané, WAL je debilníček s plánom činností a keď účastník úspešne dokončí danú činnosť, odčiarkne si ju. Ak ho niekto vyruší (reštartne), nemá problém sa k debilníčku vrátiť a zistiť, čo už bolo splnené a čo nie.</p>
-
 <p>Každá správa, ktorú koordinátor alebo podriadení pošlú, sa zapíše do logu, ktorý poslúži v prípade zotavenia.</p>
-
 <h3 id="reštart-koordinátora">Reštart koordinátora</h3>
-
 <p>Ak koordinátor pošle <strong>komitni!</strong> a reštartuje sa, po obnovení činnosti nahliadne do write-ahead logu.</p>
-
 <p>Ak tam nenájde príkaz <strong>komitni!</strong>, abortne transakciu. Ak sa príkaz <strong>komitni!</strong> v logu nachádza, zopakuje ho.</p>
-
 <h3 id="reštart-podriadeného">Reštart podriadeného</h3>
-
 <p>Ak podriadený nenájde vo svojom write-ahead logu hlasovanie <strong>áno</strong>, môže abortnúť (ešte nehlasoval, teda koordinátor nemohol komitnúť.)</p>
-
 <p>A naopak, ak podriadený už hlasoval <strong>áno</strong> (má to vo WAL logu), je blokovaný, pretože čaká na rozhodnutie koordinátora.</p>
-
 <h2 id="poznámky-k-implementácii">Poznámky k implementácii</h2>
-
 <p>Pri hlbšom pohľade na algoritmus sa často používa ešte jeden typ správ: vždy, keď podriadený vykoná komit alebo abort, odpovie koordinátorovi správou <strong>vykonané!</strong> (<strong>ack</strong>)</p>
-
 <p>V kombinácii s write-ahead logom vyzerá postup nasledovne:</p>
-
 <ol>
-<li>klient koordinátorovi: <strong>makaj!</strong></li>
-<li>koordinátor podriadenému A: <strong>priprav sa!</strong></li>
-<li>koordinátor podriadenému B: <strong>priprav sa!</strong></li>
-<li>Podriadený A zapíše do svojho WAL logu <strong>áno</strong> alebo <strong>nie</strong> a odpovie koordinátorovi hlasovaním <strong>áno</strong> alebo <strong>nie</strong>.</li>
-<li>Podriadený B nezávisle zapíše do vlastného WAL logu <strong>áno</strong> alebo <strong>nie</strong> a zahlasuje koordinátorovi príslušné rozhodnutie.</li>
-
-<li><p>Koordinátor vyhodnotí hlasovanie:</p>
-
+<li>
+<p>klient koordinátorovi: <strong>makaj!</strong></p>
+</li>
+<li>
+<p>koordinátor podriadenému A: <strong>priprav sa!</strong></p>
+</li>
+<li>
+<p>koordinátor podriadenému B: <strong>priprav sa!</strong></p>
+</li>
+<li>
+<p>Podriadený A zapíše do svojho WAL logu <strong>áno</strong> alebo <strong>nie</strong> a odpovie koordinátorovi hlasovaním <strong>áno</strong> alebo <strong>nie</strong>.</p>
+</li>
+<li>
+<p>Podriadený B nezávisle zapíše do vlastného WAL logu <strong>áno</strong> alebo <strong>nie</strong> a zahlasuje koordinátorovi príslušné rozhodnutie.</p>
+</li>
+<li>
+<p>Koordinátor vyhodnotí hlasovanie:</p>
 <ol>
 <li>Ak všetci podriadení zahlasovali <strong>áno</strong>,
-
 <ol>
 <li>Do svojho logu WAL zapíše <strong>komitni!</strong></li>
 <li>Každému podriadenému pošle správu <strong>komitni!</strong></li>
 <li>Každý podriadený zapíše do vlastného WAL logu správu <strong>komitni!</strong>, vykoná zmeny v dátach svojej partície a odošle koordinátorovi správu <strong>vykonané!</strong></li>
-</ol></li>
+</ol>
+</li>
 <li>Ak niektorý podriadený povedal <strong>nie</strong>,
-
 <ol>
 <li>Do svojho logu WAL zapíše <strong>abortni!</strong></li>
 <li>Každému podriadenému pošle správu <strong>abortni!</strong></li>
 <li>Každý podriadený zapíše do WAL logu správu <strong>abortni!</strong>, odvolá zmeny vo svojej partícii a odošle koordinátorovi správu <strong>vykonané!</strong></li>
-</ol></li>
-</ol></li>
-
-<li><p>Koordinátor vyzbiera všetky správy <strong>vykonané!</strong> od podriadených a oznámi klientovi: buď <strong>OK</strong> alebo <strong>zlyhali sme</strong>.</p></li>
 </ol>
-
+</li>
+</ol>
+</li>
+<li>
+<p>Koordinátor vyzbiera všetky správy <strong>vykonané!</strong> od podriadených a oznámi klientovi: buď <strong>OK</strong> alebo <strong>zlyhali sme</strong>.</p>
+</li>
+</ol>
 <p>V tomto rozšírenom správaní môžeme niektoré správy posielať opakovane.</p>
-
 <ul>
 <li>Ak koordinátor nedostal správy <strong>vykonané!</strong> (lebo podriadení sa reštartujú), vie ich opakovať, kým ich nezíska.</li>
 <li>Ak je podriadený pripravený, ale čaká na koordinátora (ktorý sa reštartuje), môže sa ho opakovane pýtať na stav transakcie.</li>
 </ul>
-
 <h2 id="bezpečnosť-a-činorodosť-v-2pc">Bezpečnosť a činorodosť v 2PC</h2>
-
 <p>Bezpečnosť (safety) je zaručená spôsobom hlasovania. Všetci podriadení sa musia zhodnúť na hlasovaní <strong>áno</strong>, inak sa ransakcia nemôže vykonať.</p>
-
 <p>Liveness (činorodosť) je dosiahnutá v prípade, že nik nezlyhal. Ak všetci hlasovali <strong>áno</strong>, potom sa transakcia ihneď komitne. V prípade zlyhaní musíme čakať (blokovať), kým sa havarovaní účastníci nereštartnú, čo je kritický moment protokolu.</p>
-
 <h1 id="pramene">Pramene</h1>
-
 <ul>
 <li><a href="https://www.cs.princeton.edu/courses/archive/fall16/cos418/docs/L6-2pc.pdf">Daniel Suo: COS 418 — Distributed Systems Lecture 6</a></li>
 <li><a href="https://www.win.tue.nl/~atif/reports/paper4ICET.pdf">Muhammad Atif: Analysis and Verification of Two-Phase Commit &amp;Three-Phase Commit Protocols</a></li>

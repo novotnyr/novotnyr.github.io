@@ -59,21 +59,14 @@
 
 
 <main>
-
-
 <blockquote>
 <p>Aký je rozdiel medzi súdruhom N. a japonskou kalkulačkou?</p>
-
 <p>Žiadny, majú rovnaký počet funkcií.</p>
-
 <p>— anektoda z polovice 20. storočia</p>
 </blockquote>
-
 <h2 id="funkcie-a-ich-skladanie">Funkcie a ich skladanie</h2>
-
 <p>Vytvorme funkciu, ktorá zoberie jeden súbor <code>File</code> a vráti zoznam riadkov, ktoré sa v ňom nachádzajú.
 Inak povedané, niečo ako nástroj <code>cat</code> z Linuxu.</p>
-
 <pre><code>import java.io.File
 import scala.io.Source
 
@@ -84,103 +77,65 @@ def cat(file: File): List[String] =
   finally
     source.close()
 </code></pre>
-
 <p>Funkcia <code>cat</code> má nasledovný dátový typ:</p>
-
 <pre><code>File =&gt; List[String]
 </code></pre>
-
 <p>Pred hrubou šípkou je dátový typ „vstupu“; za hrubou šípkou dátový typ „výstupu“, teda výsledku, teda návratovej hodnoty.</p>
-
 <p>Použiť ju vieme jednoducho:</p>
-
 <pre><code>@main def main(): Unit =
   val lines = cat(File(&quot;/etc/passwd&quot;))
   println(lines)    
 </code></pre>
-
 <p>Nástroj <code>println</code> je tiež funkcia! Berie akýkoľvek dátový typ (<code>Any</code>) a vracia dátový typ <code>Unit</code> reprezentujúci „žiadnu“ návratovú hodnotu“ (analógia <code>void</code> z Javy, či <code>C</code>).</p>
-
 <pre><code>Any =&gt; Unit
 </code></pre>
-
 <p>V ukážke sme prakticky použili skladanie funkcií — výstup z <code>cat</code> sme napojili na vstup <code>println</code>.</p>
-
 <p>To samozrejme vieme aj skrátiť, teda urobiť viac matematicky:</p>
-
 <pre><code>@main def main(): Unit =
   println(cat(File(&quot;/etc/passwd&quot;)))      
 </code></pre>
-
 <p>Výstup z funkcie <code>cat</code> sa použije priamo ako parameter funkcie <code>println</code>. To je v poriadku, pretože <code>println</code> je zhodou okolností jednoparametrová funkcia &ndash; <strong>unárna funkcia</strong>, resp. funkcia s aritou <code>1</code>.</p>
-
 <p>Funkcie v Scale sú však právoplatnými občiankami jazyka a možno s nimi narábať ako s objektami!</p>
-
 <pre><code>val catFunction = cat
 </code></pre>
-
 <p>Premenná <code>catFunction</code> zrazu obsahuje funkciu! Dátový typ prevezme z funkcie <code>cat</code>: „funkcia zo súborov do zoznamov reťazcov“. Ak chceme, môžeme ho explicitne uviesť do kódu:</p>
-
 <pre><code>val catFunction: File =&gt; List[String] = cat
 </code></pre>
-
 <p>Funkcia v premennej je zároveň objekt, s metódou <code>apply()</code>, ktorou môžeme funkciu zavolať:</p>
-
 <pre><code>val lines = catFunction.apply(File(&quot;/etc/passwd&quot;))
 println(lines)
 </code></pre>
-
 <p>Keďže volanie funkcie so vstupnými parametrami je bežná operácia, bodku a <code>apply</code> môžeme vynechať:</p>
-
 <pre><code>val lines = catFunction(File(&quot;/etc/passwd&quot;))
 println(lines)
 </code></pre>
-
 <p>Ak funkcie <code>catFunction</code> a <code>println</code> poskladáme priamo, uvidíme:</p>
-
 <pre><code>println(catFunction(File(&quot;/etc/passwd&quot;)))    
 </code></pre>
-
 <p>Funkcie v Scale však môžeme skladať aj iným spôsobom &ndash; bez použitia argumentov. Zostavíme si kolónu funkcií!</p>
-
 <pre><code>  val pipeline = cat.andThen(println)
 </code></pre>
-
 <p>Každá unárna funkcia má metódu <code>andThen</code>, ktorou vieme jej výstup napojiť na argument inej funkcie:</p>
-
 <p>Aký dátový typ má objekt v premennej <code>pipeline</code>? Vstupom je súbor <code>File</code> a výstupom <code>Unit</code>, čiže ide o funkciu zo súborov do „unitov“ („ničoho“).</p>
-
 <pre><code>val pipeline: File =&gt; Unit = cat.andThen(println)
 </code></pre>
-
 <p>Funkciu <code>pipeline</code> si môžeme zavolať a uvidíme výstup na konzole!</p>
-
 <pre><code>  pipeline(File(&quot;/etc/passwd&quot;))            
 </code></pre>
-
 <h2 id="skladanie-troch-funkcií">Skladanie troch funkcií</h2>
-
 <p>Pridajme si novú funkciu <code>wc</code>, ktorá spočíta počet riadkov. Bude trochu nezmyselná názvom i dátami, ale umožní nám ukázať dlhšiu kolónu!</p>
-
 <pre><code>def wc(lines: List[String]): Int =
   lines.length
 </code></pre>
-
 <p>Pre poriadok si povedzme, že funkcia <code>wc</code> je zo zoznamu riadkov do čísiel, teda jej typ je</p>
-
 <pre><code>List[String] =&gt; Int
 </code></pre>
-
 <p>Zaraďme ju do kolóny troch funkcií:</p>
-
 <pre><code>val pipeline = cat.andThen(wc).andThen(println)
 pipeline(File(&quot;/etc/passwd&quot;))
 </code></pre>
-
 <p>Všimnime si, že takéto skladanie funkcií pomocou <code>andThen</code> vôbec nepoužíva argumenty. Matematici sa snažia nájsť funkciu <code>f</code> v bode <code>x</code>, a my sa snažíme napríklad zistiť hodnotu funkcie <code>cat</code> v bode <code>File(&quot;/etc/passwd&quot;)</code>. Keďže v zápise <code>andThen</code> sa žiadne body (premenné) nepoužívajú, ide o bezbodový („point-free“) zápis.</p>
-
 <p>Upravme teraz funkciu <code>wc</code> tak, že ju vylepšíme na binárnu funkciu &ndash; teda funkciu s dvoma argumentami (arita 2).</p>
-
 <pre><code>def wc(countType: String, lines: List[String]): Int =
   countType match {
     case &quot;-l&quot; =&gt; lines.length
@@ -193,94 +148,66 @@ pipeline(File(&quot;/etc/passwd&quot;))
     case _ =&gt; -1
   }
 </code></pre>
-
 <p>Argument <code>countType</code> bude podobný ako v Linuxe: ak chceme počítať riadky, použijeme prepínač <code>-l</code>, ak slová, uvedieme <code>-w</code>.</p>
-
 <p>Hneď prídeme na to, že kolóna sa pokazila: riadok s volaniami <code>andThen</code> má chybu:</p>
-
 <pre><code>Found:    (String, List[String]) =&gt; Int
 Required: List[String] =&gt; Int
   val pipeline = cat.andThen(wc).andThen(println)
 </code></pre>
-
 <p>Kolóna totiž očakáva, že funkcia <code>wc</code> prijme zoznam reťazcov a vráti číslo <code>Int</code>, ale namiesto toho sme poskytli dvojicu argumentov (reťazec <code>String</code> a zoznam riadkov <code>List[String]</code>), čo prestáva dávať zmysel. Nie je jasné, na ktorý argument máme napojiť výstup z funkcie <code>cat</code> a Scala si to sama nedomyslí.</p>
-
 <p>V takejto kolóne totiž môžeme používať len unárne funkcie.</p>
-
-<h2 id="partial-application-spevňujeme-parametre-funkcie">Partial application &ndash; spevňujeme parametre funkcie</h2>
-
+<h2 id="partial-application----spevňujeme-parametre-funkcie">Partial application &ndash; spevňujeme parametre funkcie</h2>
 <p>Ako však urobíme z binárnej funkcie <code>wc</code> unárnu? Jednoducho: jeden parameter uvedieme napevno.</p>
-
 <pre><code>val wcLines = wc(&quot;-l&quot;, _)    
 </code></pre>
-
 <p>Z binárnej funkcie <code>wc</code> sme urobili unárnu: prvý parameter sme uviedli napevno a druhý parameter necháme „voľný“, čo zapíšeme podtržníkom <code>_</code>.</p>
-
 <p>Dátový typ objektu <code>wcLines</code> je funkcia zo zoznamu riadkov (<code>List[String]</code>) do celých čísiel <code>Int</code>.</p>
-
 <p>Funkcia <code>wcLines</code> je opäť unárna a teda vie prijať výsledok z funkcie <code>cat</code>, čiže ju môžeme zaradiť do kolóny:</p>
-
 <pre><code>@main def main(): Unit =
   val wcLines = wc(&quot;-l&quot;, _)
   val pipeline = cat.andThen(wcLines).andThen(println)
   pipeline(File(&quot;/etc/passwd&quot;))    
 </code></pre>
-
 <p>Trik, kde niektoré parametre funkcie uvedieme napevno a niektoré necháme voľné, sa nazýva „partial application“ &ndash; čiastočná aplikácia funkcie. Čiastočná preto, že funkciu použijeme („aplikujeme“) len na niektoré parametre.</p>
-
 <p>Treba si však všimnúť jeden dôležitý rozdiel.</p>
-
 <ul>
-<li><p>Toto vracia konkrétnu <em>hodnotu</em>: teda číslo <code>Int</code> s hodnotou 2:</p>
-
-<pre><code>wc(&quot;-l&quot;, List(&quot;hello&quot;, &quot;world&quot;))
-</code></pre></li>
-
-<li><p>Toto zas vracia <em>funkciu</em> s toľkými argumentami, koľko sme ich neuviedli napevno, teda v tomto prípade funkciu s jedným parametrom:</p>
-
-<pre><code>wc(&quot;-l&quot;, _)
-</code></pre></li>
+<li>
+<p>Toto vracia konkrétnu <em>hodnotu</em>: teda číslo <code>Int</code> s hodnotou 2:</p>
+<pre><code>  wc(&quot;-l&quot;, List(&quot;hello&quot;, &quot;world&quot;))
+</code></pre>
+</li>
+<li>
+<p>Toto zas vracia <em>funkciu</em> s toľkými argumentami, koľko sme ich neuviedli napevno, teda v tomto prípade funkciu s jedným parametrom:</p>
+<pre><code>  wc(&quot;-l&quot;, _)
+</code></pre>
+</li>
 </ul>
-
 <p>Opäť si všimnime, že tento druhý zápis je funkcia <code>wc</code>, ktorá vracia funkciu! V Scale je bežné, že funkcia môže vracať nielen bežné objekty, ale aj iné funkcie.</p>
-
 <p>Vidíme teda, že funkcie:</p>
-
 <ul>
 <li>môžeme priraďovať do premenných</li>
 <li>môžu vracať iné funkcie</li>
 <li>a ešte: môžu brať funkcie ako parametre!</li>
 </ul>
-
 <p>Pozrime sa, ako sme naprogramovali počítanie slov:</p>
-
 <pre><code>var words = 0
 for(line &lt;- lines) {
     words = words + line.split(&quot; &quot;).length
 }
 words
 </code></pre>
-
 <p>Toto je staré dobré procedurálne programovanie, ktoré vieme napísať aj inak.</p>
-
 <p>Pripravme si najprv funkciu, ktorá dokáže zrátať počet slov v riadku:</p>
-
 <pre><code>def wordsInLine(line: String): Int =
   line.split(&quot; &quot;).length
 </code></pre>
-
 <p>Zoznam riadkov &ndash; objekt typu <code>List[String]</code> &ndash; má metódu <code>.map()</code>, ktorá dokáže namapovať každý prvok zoznamu na iný prvok.
 V našom prípade namapujeme každý riadok <code>String</code> na počet slov <code>Int</code>, a na toto mapovanie využijeme funkciu <code>wordsInLine</code>.</p>
-
 <p>Povedané inými slovami: metóda <code>map()</code> na zozname <code>List[String]</code> prijíma ako parameter <em>funkciu z reťazcov</em> do iných objektov.</p>
-
 <p>Zoberme teda riadky, namapujme ich na zoznam čísiel a pomocou metódy <code>sum</code> ich sčítajme.</p>
-
 <pre><code>lines.map(wordsInLine).sum
 </code></pre>
-
 <p>Celá metóda bude nasledovná:</p>
-
 <pre><code>def wc(countType: String, lines: List[String]): Int =
   countType match {
     case &quot;-l&quot; =&gt; lines.length
@@ -292,11 +219,8 @@ V našom prípade namapujeme každý riadok <code>String</code> na počet slov <
     case _ =&gt; -1
   }
 </code></pre>
-
 <h2 id="tri-parametre-a-štyri-funkcie-v-kolóne">Tri parametre a štyri funkcie v kolóne</h2>
-
 <p>Urobme si teraz trojargumentovú funkciu na hľadanie podreťazca!</p>
-
 <pre><code>def grep(pattern: String, inverse: Boolean, lines: List[String]): List[String] =
   val newLines = ListBuffer.empty[String]
   for (line &lt;- lines)
@@ -306,73 +230,47 @@ V našom prípade namapujeme každý riadok <code>String</code> na počet slov <
 
   newLines.toList
 </code></pre>
-
 <p>Máme teraz ternárnu funkciu (arita 3), ktorú môžeme pri použití v kolóne čiastočne aplikovať nasledovne:</p>
-
 <pre><code>val grepNotRoot = grep(&quot;root&quot;, true, _)
 </code></pre>
-
 <p>Ak uvedieme dva argumenty napevno — hľadáme riadky, ktoré neobsahujú reťazec <code>root</code> —, výsledkom je unárna (tri-mínus-dva-árna) funkcia zo zoznamu riadkov do zoznamu riadkov.</p>
-
 <p>Kolóna vyzerá nasledovne:</p>
-
 <pre><code>val pipeline = cat.andThen(grepNotRoot).andThen(wcLines).andThen(println)
 </code></pre>
-
 <p>Ak by sme zafixovali len prvý argument, získali by sme binárnu funkciu:</p>
-
 <pre><code>val grepWithRoot = grep(&quot;root&quot;, _, _)
 </code></pre>
-
 <p>Funkcia <code>grepWithRoot</code> je z pravdivostných hodnôt a zoznamu reťazcov do zoznamu reťazcov.</p>
-
 <pre><code>(Boolean, List[String]) =&gt; List[String]
 </code></pre>
-
 <p>Ak by sme funkciu <code>grepWithRoot</code> chceli použiť v rúre, fungovať to nebude, pretože nesedí počet parametrov:</p>
-
 <pre><code>// nefunkčný kód
 val grepWithRoot = grep(&quot;root&quot;, _, _)
 val pipeline = cat.andThen(grepWithRoot).andThen(wcLines).andThen(println)    
 </code></pre>
-
 <p>Uvidíme chybovú hlášku, podobnú ako v prípade funkcie <code>wc</code>: nesedí ani počet, ani dátový typ parametrov v rúre:</p>
-
 <pre><code>Found:    (grepWithRoot : (Boolean, List[String]) =&gt; List[String])
 Required: List[String] =&gt; Any
   val pipeline = cat.andThen(grepWithRoot).andThen(wcLines).andThen(println)
 </code></pre>
-
 <p>Keďže výstup funkcie <code>cat</code> je tvorený zoznamom riadkov <code>List[String]</code>, očakáva sa, že tento dátový typ prijme nasledovná funkcia v kolóne <code>pipeline</code>.</p>
-
 <p>Tá je však binárna &ndash; dátový typ je <code>(Boolean, List[String]) =&gt; List[String]</code> &ndash; a nie je jasné, do ktorého parametra by sa mal zoznam riadkov napojiť.</p>
-
 <p>Čo s tým? Opäť sa očakáva, že v kolóne bude len unárna funkcia.</p>
-
 <p>Zapísať to môžeme zafixovaním niektorého z dvoch dostupných parametrov binárnej funkcie <code>grepWithRoot</code>, napr. použitím hodnoty <code>false</code> pre inverzné vyhľadávanie:</p>
-
 <pre><code>val grepWithRoot = grep(&quot;root&quot;, _, _)
 val grepWithRootRegularly = grepWithRoot(false, _)
-
+  
 val pipeline = cat.andThen(grepWithRootRegularly).andThen(wcLines).andThen(println)
 </code></pre>
-
 <p>Funkcia <code>grepWithRootRegularly</code> je teraz opäť unárna &ndash; z binárnej funkcie <code>grepWithRoot</code> sme vytvorili unárnu funkciu v premennej <code>grepWithRootRegularly</code>. Dátový typ tejto funkcie je <code>List[String] =&gt; List[String]</code>.</p>
-
 <p>Alternatívne môžeme zafixovať parametre aj priamo v kolóne &ndash; funkcie sa totiž dajú volať obvyklým spôsobom:</p>
-
 <pre><code>val grepWithRoot = grep(&quot;root&quot;, _, _)
 val pipeline = cat.andThen(grepWithRoot(false, _)).andThen(wcLines).andThen(println)
 </code></pre>
-
 <h2 id="funkcie-a-metódy">Funkcie a metódy</h2>
-
 <p>Doteraz sme v ukážke vždy využívali funkcie v tvare <code>def cat(...) =</code>.  V Scale 3 sa takéto zápisy nazývajú <strong>top-level methods</strong>, teda metódy na najvyššej úrovni.</p>
-
 <p>V klasickom objektovo-orientovanom programovaní sa metódy vždy musia vzťahovať k nejakej triede, ale v Scale 3 to nie je nutné. Metóda na najvyššej úrovni v Scale nepatrí k žiadnemu objektu a preto sa dá prakticky stotožniť s funkciou.</p>
-
 <p>Bežná funkcia je objekt, ktorý sa vytvára nasledovným spôsobom:</p>
-
 <pre><code>def grep(pattern: String, inverse: Boolean, lines: List[String]): List[String] =
   // funkcia, nie metóda!
   val isGrepped = (line: String) =&gt;
@@ -381,56 +279,35 @@ val pipeline = cat.andThen(grepWithRoot(false, _)).andThen(wcLines).andThen(prin
 
   lines.filter(isGrepped)
 </code></pre>
-
 <p>Objekt <code>isGrepped</code> je deklarovaný ako funkcia z reťazcov do pravdivostných hodnôt, a teda jeho dátový typ je</p>
-
 <pre><code>String =&gt; Boolean
 </code></pre>
-
 <p>Pred hrubou šípkou udávame parametre — ich názvy a dátové typy — a za šípkou nasleduje kód funkcie. V ukážke máme dvojriadkovú funkciu, výsledkom je hodnota druhého riadku.</p>
-
 <p>Zoznam riadkov má metódu <code>filter</code>, ktorá dokáže prijať funkciu z reťazcov do <code>Boolean</code>-ov a vyhodiť tie prvky, ktoré nespĺňajú podmienku reprezentovanú funkciou v parametri.</p>
-
 <p>Ak pošleme do metódy <code>filter</code> našu funkciu <code>isGrepped</code>, všetko zaklapne a vieme vyhľadávať!</p>
-
 <p>Metóda <code>filter</code> je <strong>funkcia vyššieho rádu</strong> (<strong>higher-order function</strong>), pretože ide o funkciu, ktorá berie do parametra inú funkciu.</p>
-
 <p>Ak by sme tento spôsob chceli zapísať metódou, museli by sme to komplikovane rozbiť na dve ternárne metódy a použiť čiastočnú aplikáciu funkcie, čo teda na tomto mieste robiť nebudeme.</p>
-
 <p>Okrem toho, Scala 3 už takmer vôbec nerozlišuje medzi použitím metódy a použitím funkcie. Vždy, keď máme funkciu vyššieho rádu, môžeme ako parameter použiť buď funkciu, alebo metódu &ndash; ak sedia dátové typy, Scala sa postará o zvyšok.</p>
-
 <p>Či už máme definíciu metódy:</p>
-
 <pre><code>def isComment(line: String) = line.startsWith(&quot;#&quot;)
 </code></pre>
-
 <p>alebo definíciu funkcie:</p>
-
 <pre><code>val isComment = (line: String) =&gt; line.startsWith(&quot;#&quot;)
 </code></pre>
-
 <p>môžeme ju použiť ako parameter vo funkcii vyššieho rádu, ktorá prijíma funkciu z reťazcov <code>String</code>  do pravdivostných hodnôť <code>Boolean</code>.</p>
-
 <p>Ak metóda <code>filter</code> na zozname reťazcov berie ako parameter funkciu typu <code>String =&gt; Boolean</code>, môžeme použiť buď metódu alebo funkciu:</p>
-
 <pre><code>lines.filter(isComment)
 </code></pre>
-
 <p>Táto vlastnosť sa oficiálne nazýva <strong>eta-redukcia</strong> (<em>η</em>-redukcia), čo je pojem z formálnej logiky, ale pri programovaní si na to ani nespomenieme.</p>
-
 <h2 id="záver">Záver</h2>
-
 <p>Funkcie v Scale majú naozaj dôležitý zmysel:</p>
-
 <ul>
 <li>pracujeme s nimi ako s objektami &ndash; majú metódu <code>apply</code></li>
 <li>môžeme ich skladať dohromady &ndash; majú metódu <code>andThen</code></li>
 <li>môžeme ich čiastočne aplikovať &ndash; vytvárať nové funkcie s nižšou aritou pri použití podtržníka <code>_</code></li>
 <li>môžeme vytvárať funkcie vyššieho rádu &ndash; funkcie, ktoré berú do parametrov funkcie</li>
 <li>môžeme ich vytvárať ako funkcie alebo ako metódy</li>
-<li>rozdiel medzi funkciami a metódami sa v Scale 3 stiera
-<br />
-<br /></li>
+<li>rozdiel medzi funkciami a metódami sa v Scale 3 stiera</li>
 </ul>
 
 </main>

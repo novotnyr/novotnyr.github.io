@@ -59,20 +59,17 @@
 
 
 <main>
-
-
-<h1 id="krok-1-základná-webová-služba">Krok 1 - základná webová služba</h1>
-
+<h1 id="krok-1---základná-webová-služba">Krok 1 - základná webová služba</h1>
 <p>Ukážkový dokument pre požiadavku.</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#579">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#579">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
 
 <span style="color:#070">&lt;movieReservationRequest</span> <span style="color:#007">xmlns=</span><span style="background-color:#e0e0ff">&#34;http://movie.novotnyr.sk/ws/types&#34;</span> <span style="color:#070">&gt;</span>
   <span style="color:#070">&lt;title&gt;</span>Battlestar Galactica<span style="color:#070">&lt;/title&gt;</span>
   <span style="color:#070">&lt;date&gt;</span>2008-12-24<span style="color:#070">&lt;/date&gt;</span>
   <span style="color:#070">&lt;numberOfTickets&gt;</span>4<span style="color:#070">&lt;/numberOfTickets&gt;</span>  
-<span style="color:#070">&lt;/movieReservationRequest&gt;</span></code></pre></div>
-<h2 id="web-xml"><code>web.xml</code></h2>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#579">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
+<span style="color:#070">&lt;/movieReservationRequest&gt;</span>
+</code></pre></div><h2 id="webxml"><code>web.xml</code></h2>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#579">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
 <span style="color:#070">&lt;web-app</span> <span style="color:#007">xmlns=</span><span style="background-color:#e0e0ff">&#34;http://java.sun.com/xml/ns/j2ee&#34;</span> <span style="color:#007">xmlns:xsi=</span><span style="background-color:#e0e0ff">&#34;http://www.w3.org/2001/XMLSchema-instance&#34;</span>
          <span style="color:#007">xsi:schemaLocation=</span><span style="background-color:#e0e0ff">&#34;http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd&#34;</span>
          <span style="color:#007">version=</span><span style="background-color:#e0e0ff">&#34;2.4&#34;</span><span style="color:#070">&gt;</span>
@@ -90,9 +87,10 @@
     <span style="color:#070">&lt;url-pattern&gt;</span>/*<span style="color:#070">&lt;/url-pattern&gt;</span>
   <span style="color:#070">&lt;/servlet-mapping&gt;</span>
 
-<span style="color:#070">&lt;/web-app&gt;</span></code></pre></div>
-<h2 id="spring-ws-servlet-xml">spring-ws-servlet.xml</h2>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#579">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
+<span style="color:#070">&lt;/web-app&gt;</span>
+
+</code></pre></div><h2 id="spring-ws-servletxml">spring-ws-servlet.xml</h2>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#579">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
 <span style="color:#070">&lt;beans</span> <span style="color:#007">xmlns=</span><span style="background-color:#e0e0ff">&#34;http://www.springframework.org/schema/beans&#34;</span> <span style="color:#007">xmlns:xsi=</span><span style="background-color:#e0e0ff">&#34;http://www.w3.org/2001/XMLSchema-instance&#34;</span>
      <span style="color:#007">xmlns:context=</span><span style="background-color:#e0e0ff">&#34;http://www.springframework.org/schema/context&#34;</span>
      <span style="color:#007">xsi:schemaLocation=</span><span style="background-color:#e0e0ff">&#34;http://www.springframework.org/schema/beans 
@@ -104,45 +102,44 @@
  
   <span style="color:#070">&lt;bean</span> <span style="color:#007">class=</span><span style="background-color:#e0e0ff">&#34;org.springframework.ws.server.endpoint.mapping
 </span><span style="background-color:#e0e0ff">               .PayloadRootAnnotationMethodEndpointMapping&#34;</span><span style="color:#070">/&gt;</span> 
-<span style="color:#070">&lt;/beans&gt;</span></code></pre></div>
-<h2 id="endpoint">Endpoint</h2>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">package sk</span>.<span style="color:#007">novotnyr</span>.<span style="color:#007">movie</span>;
+<span style="color:#070">&lt;/beans&gt;</span>
+</code></pre></div><h2 id="endpoint">Endpoint</h2>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">package</span> <span style="color:#0e84b5;font-weight:bold">sk.novotnyr.movie</span><span style="color:#333">;</span>
 
-<span style="color:#f00;background-color:#faa">import javax</span>.<span style="color:#007">xml</span>.<span style="color:#007">transform</span>.<span style="color:#007">Source</span>;
-<span style="color:#f00;background-color:#faa">import javax</span>.<span style="color:#007">xml</span>.<span style="color:#007">transform</span>.<span style="color:#007">Transformer</span>;
-<span style="color:#f00;background-color:#faa">import javax</span>.<span style="color:#007">xml</span>.<span style="color:#007">transform</span>.<span style="color:#007">TransformerFactory</span>;
-<span style="color:#f00;background-color:#faa">import javax</span>.<span style="color:#007">xml</span>.<span style="color:#007">transform</span>.<span style="color:#007">stream</span>.<span style="color:#007">StreamResult</span>;
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">javax.xml.transform.Source</span><span style="color:#333">;</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">javax.xml.transform.Transformer</span><span style="color:#333">;</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">javax.xml.transform.TransformerFactory</span><span style="color:#333">;</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">javax.xml.transform.stream.StreamResult</span><span style="color:#333">;</span>
 
-<span style="color:#f00;background-color:#faa">import org</span>.<span style="color:#007">springframework</span>.<span style="color:#007">ws</span>.<span style="color:#007">server</span>.<span style="color:#007">endpoint</span>.<span style="color:#007">annotation</span>.<span style="color:#007">Endpoint</span>;
-<span style="color:#f00;background-color:#faa">import org</span>.<span style="color:#007">springframework</span>.<span style="color:#007">ws</span>.<span style="color:#007">server</span>.<span style="color:#007">endpoint</span>.<span style="color:#007">annotation</span>.<span style="color:#007">PayloadRoot</span>;
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">org.springframework.ws.server.endpoint.annotation.Endpoint</span><span style="color:#333">;</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">org.springframework.ws.server.endpoint.annotation.PayloadRoot</span><span style="color:#333">;</span>
 
 <span style="color:#555;font-weight:bold">@Endpoint</span>
-<span style="color:#f00;background-color:#faa">public class </span>RegistrationEndPoint {
-  <span style="color:#555;font-weight:bold">@PayloadRoot</span>(namespace<span style="color:#333">=</span><span style="background-color:#e0e0ff">&#34;http://movie.novotnyr.sk/ws/types&#34;</span>, 
-               localPart<span style="color:#333">=</span><span style="background-color:#e0e0ff">&#34;movieReservationRequest&#34;</span>)
-  <span style="color:#f00;background-color:#faa">public void </span>register(<span style="color:#f00;background-color:#faa">Source messageSource</span>) {
-    <span style="color:#289;font-weight:bold">try</span> {
-      <span style="color:#f00;background-color:#faa">Transformer transformer 
-</span><span style="color:#f00;background-color:#faa">        </span><span style="color:#333">=</span> TransformerFactory.<span style="color:#007">newInstance</span>().<span style="color:#007">newTransformer</span>();
-      transformer.<span style="color:#007">transform</span>(messageSource, 
-                            <span style="color:#289;font-weight:bold">new</span> StreamResult(System.<span style="color:#007">out</span>));
-    } <span style="color:#289;font-weight:bold">catch</span> (<span style="color:#f00;background-color:#faa">Exception e</span>) {
-      e.<span style="color:#007">printStackTrace</span>();
-    } 
-  }
-}</code></pre></div>
-<h2 id="klient">Klient</h2>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">WebServiceTemplate webServiceTemplate </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> WebServiceTemplate();
-webServiceTemplate.<span style="color:#007">setDefaultUri</span>(<span style="background-color:#e0e0ff">&#34;http://localhost:8080/movie-ws/&#34;</span>);
+<span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">RegistrationEndPoint</span> <span style="color:#333">{</span>
+  <span style="color:#555;font-weight:bold">@PayloadRoot</span><span style="color:#333">(</span>namespace<span style="color:#333">=</span><span style="background-color:#e0e0ff">&#34;http://movie.novotnyr.sk/ws/types&#34;</span><span style="color:#333">,</span> 
+               localPart<span style="color:#333">=</span><span style="background-color:#e0e0ff">&#34;movieReservationRequest&#34;</span><span style="color:#333">)</span>
+  <span style="color:#289;font-weight:bold">public</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">register</span><span style="color:#333">(</span>Source messageSource<span style="color:#333">)</span> <span style="color:#333">{</span>
+    <span style="color:#289;font-weight:bold">try</span> <span style="color:#333">{</span>
+      Transformer transformer 
+        <span style="color:#333">=</span> TransformerFactory<span style="color:#333">.</span><span style="color:#007">newInstance</span><span style="color:#333">().</span><span style="color:#007">newTransformer</span><span style="color:#333">();</span>
+      transformer<span style="color:#333">.</span><span style="color:#007">transform</span><span style="color:#333">(</span>messageSource<span style="color:#333">,</span> 
+                            <span style="color:#289;font-weight:bold">new</span> StreamResult<span style="color:#333">(</span>System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">));</span>
+    <span style="color:#333">}</span> <span style="color:#289;font-weight:bold">catch</span> <span style="color:#333">(</span>Exception e<span style="color:#333">)</span> <span style="color:#333">{</span>
+      e<span style="color:#333">.</span><span style="color:#007">printStackTrace</span><span style="color:#333">();</span>
+    <span style="color:#333">}</span> 
+  <span style="color:#333">}</span>
+<span style="color:#333">}</span>
+</code></pre></div><h2 id="klient">Klient</h2>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">WebServiceTemplate webServiceTemplate <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> WebServiceTemplate<span style="color:#333">();</span>
+webServiceTemplate<span style="color:#333">.</span><span style="color:#007">setDefaultUri</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;http://localhost:8080/movie-ws/&#34;</span><span style="color:#333">);</span>
 		
-<span style="color:#f00;background-color:#faa">StreamSource source </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> StreamSource(<span style="color:#289;font-weight:bold">new</span> FileReader(<span style="background-color:#e0e0ff">&#34;D:\\Projects\\movie-ws\\web\\WEB-INF\\xml\\movieReservationRequest.xml&#34;</span>));
-<span style="color:#f00;background-color:#faa">StreamResult result </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> StreamResult(System.<span style="color:#007">out</span>);
+StreamSource source <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> StreamSource<span style="color:#333">(</span><span style="color:#289;font-weight:bold">new</span> FileReader<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;D:\\Projects\\movie-ws\\web\\WEB-INF\\xml\\movieReservationRequest.xml&#34;</span><span style="color:#333">));</span>
+StreamResult result <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> StreamResult<span style="color:#333">(</span>System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">);</span>
 
-webServiceTemplate.<span style="color:#007">sendSourceAndReceiveToResult</span>(source, result);</code></pre></div>
-<h1 id="krok-2-dodanie-wsdl">Krok 2 - dodanie WSDL</h1>
-
+webServiceTemplate<span style="color:#333">.</span><span style="color:#007">sendSourceAndReceiveToResult</span><span style="color:#333">(</span>source<span style="color:#333">,</span> result<span style="color:#333">);</span>
+</code></pre></div><h1 id="krok-2---dodanie-wsdl">Krok 2 - dodanie WSDL</h1>
 <h2 id="xml-schema">XML schema</h2>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#579">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#579">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
 <span style="color:#070">&lt;xsd:schema</span> <span style="color:#007">xmlns=</span><span style="background-color:#e0e0ff">&#34;http://www.w3.org/2001/XMLSchema&#34;</span> <span style="color:#007">targetNamespace=</span><span style="background-color:#e0e0ff">&#34;http://movie.novotnyr.sk/ws/types&#34;</span>
    <span style="color:#007">xmlns:types=</span><span style="background-color:#e0e0ff">&#34;http://movie.novotnyr.sk/ws/types&#34;</span> <span style="color:#007">elementFormDefault=</span><span style="background-color:#e0e0ff">&#34;qualified&#34;</span> <span style="color:#007">xmlns:xsd=</span><span style="background-color:#e0e0ff">&#34;http://www.w3.org/2001/XMLSchema&#34;</span><span style="color:#070">&gt;</span>
   <span style="color:#070">&lt;xsd:complexType</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;movieReservationRequestType&#34;</span><span style="color:#070">&gt;</span>
@@ -154,7 +151,8 @@ webServiceTemplate.<span style="color:#007">sendSourceAndReceiveToResult</span>(
   <span style="color:#070">&lt;/xsd:complexType&gt;</span>
   
   <span style="color:#070">&lt;xsd:element</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;movieReservationRequest&#34;</span> <span style="color:#007">type=</span><span style="background-color:#e0e0ff">&#34;types:movieReservationRequestType&#34;</span> <span style="color:#070">/&gt;</span>
-<span style="color:#070">&lt;/xsd:schema&gt;</span></code></pre></div>
+<span style="color:#070">&lt;/xsd:schema&gt;</span>
+</code></pre></div>
 </main>
 
     <footer>

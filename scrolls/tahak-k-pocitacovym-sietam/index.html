@@ -59,10 +59,7 @@
 
 
 <main>
-
-
 <h1 id="prehľad">Prehľad</h1>
-
 <table>
 <thead>
 <tr>
@@ -74,7 +71,6 @@
 <th>Databáza</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>L5-L7</td>
@@ -84,7 +80,6 @@
 <td></td>
 <td></td>
 </tr>
-
 <tr>
 <td>L4</td>
 <td>Transportná</td>
@@ -93,7 +88,6 @@
 <td>Socket (softvérové)</td>
 <td>-</td>
 </tr>
-
 <tr>
 <td>L3</td>
 <td>Sieťová / Network</td>
@@ -102,7 +96,6 @@
 <td>Router</td>
 <td>Smerovacia tabuľka</td>
 </tr>
-
 <tr>
 <td>L2</td>
 <td>Spojová / Data Link</td>
@@ -111,7 +104,6 @@
 <td>Switch</td>
 <td>Prepínacia tabuľka</td>
 </tr>
-
 <tr>
 <td>L1</td>
 <td>Fyzická vrstva</td>
@@ -122,11 +114,8 @@
 </tr>
 </tbody>
 </table>
-
 <h1 id="internet">Internet</h1>
-
 <p>Internet je sieť sietí:</p>
-
 <ul>
 <li>postavená nad protokolom TCP/IP</li>
 <li>prepájaná metalickými káblami, optickými káblami a bezdrôtovo</li>
@@ -134,134 +123,116 @@
 <li>vo vnútri sú routery / smerovače, ktoré preposielajú dáta zo siete
 do siete</li>
 </ul>
-
 <h1 id="vrstvy-protokolov-na-internete">Vrstvy protokolov na internete</h1>
-
 <p>Internet komunikuje viacerými protokolmi na rozličných vrstvách:</p>
-
 <ul>
 <li>na najnižšej fyzickej vrstve je elektrický signál a kódovanie do núl
 a jednotiek</li>
 <li>až po najvyššiu vrstvu, kde sa vymieňajú správy medzi aplikáciami
 operačného systému</li>
 </ul>
-
 <h2 id="modely">Modely</h2>
-
 <p>Dva modely vrstiev:</p>
-
 <ul>
 <li>ISO/OSI: teoretický model, 7 vrstiev</li>
 <li>TCP/IP: 4 vrstvy, inšpirované ISO/OSI</li>
 </ul>
-
-<h3 id="model-tcp-ip">Model TCP/IP</h3>
-
+<h3 id="model-tcpip">Model TCP/IP</h3>
 <p>Doručuje kýbliky dát: pakety. Každá vrstva deklaruje konkrétny formát
 paketu.</p>
-
 <p>Vrstvy:</p>
-
 <ul>
 <li><strong>aplikačná</strong> / application: komunikácia medzi druhmi programov
-
 <ul>
 <li>webový prehliadač: protokol HTTP</li>
 <li>emaily: protokol SMTP</li>
-</ul></li>
+</ul>
+</li>
 <li><strong>transportná</strong> / transport: prepojenie dvoch procesov na rôznych
 počítačoch
-
 <ul>
 <li>uvažujú v paketoch</li>
 <li>protokoly:
-
 <ul>
 <li>TCP: spoľahlivé doručenie, kontrola zahltenia, kontrola
 prietoku</li>
 <li>UDP: jednoduché doručovanie paketov</li>
-</ul></li>
-</ul></li>
+</ul>
+</li>
+</ul>
+</li>
 <li><strong>sieťová</strong> / network: doručenie paketu na konkrétne miesto na
 internete
-
 <ul>
 <li>smerovanie paketov medzi sieťami</li>
-</ul></li>
+</ul>
+</li>
 <li><strong>sieťového rozhrania</strong> / network layer: doručenie paketu na
 konkrétne fyzické zariadenie v danej sieti konkrétnym fyzickým
 médiom
-
 <ul>
 <li>Ethernet: klasický kábel medzi dvoma počítačmi</li>
 <li>Wireless LAN / WiFi: pakety šírené vzduchom</li>
-</ul></li>
 </ul>
-
+</li>
+</ul>
 <p>Niekde sa <strong>sieťového rozhrania delí</strong>:</p>
-
 <ul>
 <li><strong>spojová</strong> / data link:
-
 <ul>
 <li>identifikuje príjemcu, garantuje korektnosť paketu, rieši, kto
 kedy môže vysielať a prijímať</li>
-</ul></li>
+</ul>
+</li>
 <li><strong>fyzická</strong> / physical:
-
 <ul>
 <li>identifikuje začiatok a koniec vysielania</li>
 <li>identifikuje nuly a jednotky v elektrickom signále</li>
-</ul></li>
 </ul>
-
+</li>
+</ul>
 <h1 id="aplikačná-vrstva-l5-l7">Aplikačná vrstva (L5-L7)</h1>
-
 <blockquote>
 <p>Ako dosiahnuť, aby dva druhy aplikácii komunikovali?</p>
 </blockquote>
-
 <ul>
 <li>prepravuje <strong>správy</strong></li>
 <li>určené pre konkrétny typ aplikácie
-
 <ul>
 <li>príklad: webový prehliadač s webovým serverom</li>
 <li>príklad: BitTorrent klienti</li>
-</ul></li>
+</ul>
+</li>
 <li>vymieňajú si <strong>správy</strong>, ktorých formát závisí od protokolu</li>
 </ul>
-
 <h2 id="črty-aplikačných-protokolov">Črty aplikačných protokolov</h2>
-
 <ul>
 <li>architektúra:
-
 <ul>
 <li>klient-server:
-
 <ul>
 <li>Server beží vždy</li>
 <li>Klienti sa pripájajú podľa potreby</li>
 <li>Klienti nekomunikujú medzi sebou</li>
 <li>Príklady: webserver, SSH pripojenie, DNS server</li>
-</ul></li>
+</ul>
+</li>
 <li>peer-to-peer:
-
 <ul>
 <li>všetci klienti sú rovnocenní, komunikujú vzájomne</li>
 <li>Príklady: Gnutella</li>
-</ul></li>
+</ul>
+</li>
 <li>hybrid:
-
 <ul>
 <li>server je registruje a vyhľadáva pripojených klientov</li>
 <li>ale peeri komunikujú medzi sebou</li>
 <li>Príklady: Skype, Torrent</li>
-</ul></li>
-</ul></li>
+</ul>
+</li>
+</ul>
+</li>
 <li>protokol: na príklade HTTP
-
 <ul>
 <li>typy správ: napr. <em>HTTP GET</em>, <em>HTTP POST</em>, <em>HTTP Reply</em></li>
 <li>syntax: HTTP má textové správy s definovaným formátom</li>
@@ -269,56 +240,51 @@ kedy môže vysielať a prijímať</li>
 adrese“</li>
 <li>kedy poslať akú správu: „ak server nevie nájsť daný obsah,
 odpovie chybovou správou so stavovým kódom 404“</li>
-</ul></li>
+</ul>
+</li>
 <li>adresácia:
-
 <ul>
 <li>logickými cieľmi: pripoj sa na uzol <code>alpha</code></li>
 <li>ale v skutočnosti adresácia s použitím transportnej vrstvy: IP
 adresa a port</li>
-</ul></li>
 </ul>
-
+</li>
+</ul>
 <h2 id="komunikácia">Komunikácia</h2>
-
 <ul>
 <li>využíva sa nižšia <em>transportná vrstva</em></li>
 <li><strong>vždy</strong> dva procesy operačného systému
-
 <ul>
 <li>klient: inicializuje komunikáciu</li>
 <li>server: očakáva pripojenia klientov</li>
-</ul></li>
+</ul>
+</li>
 <li>OS ponúka sieťové API v podobe <strong>socketu</strong> (viď nižšie)</li>
 <li>adresácia pomocou <strong>IP adresy</strong> a <strong>portu</strong></li>
 </ul>
-
-<h2 id="vzťah-s-iso-osi">Vzťah s ISO/OSI</h2>
-
+<h2 id="vzťah-s-isoosi">Vzťah s ISO/OSI</h2>
 <p>ISO/OSI delí aplikačnú vrstvu na podvrstvy. Tie sa v TCP/IP často
 prelínaju!</p>
-
 <ul>
 <li><strong>aplikačná</strong> / application (L7)
-
 <ul>
 <li>komunikácia medzi druhmi aplikácií</li>
 <li>HTTP, DNS</li>
-</ul></li>
+</ul>
+</li>
 <li><strong>prezentačná</strong> / presentation (L6)
-
 <ul>
 <li>preklad aplikačných dát do sieťového formátu</li>
 <li>niekde aj „syntaktická vrstva“: syntax layer</li>
 <li>šifrovanie: SSL/TLS</li>
 <li>serializácia dát do XML
-
 <ul>
 <li>ale napr. REST/HTTP toto robí na L7</li>
-</ul></li>
-</ul></li>
+</ul>
+</li>
+</ul>
+</li>
 <li><strong>session layer</strong> (L5)
-
 <ul>
 <li>udržiava reláciu / sessions / trvalú konverzáciu medzi dvoma
 procesmi</li>
@@ -326,111 +292,102 @@ procesmi</li>
 <li>ak relácia dlho spí, vie ju ukončiť</li>
 <li>príklad: SOCKS protokol pre proxy spojení</li>
 <li>kontrapríklad: HTTP to robí na L7 pomocou cookies</li>
-</ul></li>
 </ul>
-
+</li>
+</ul>
 <h1 id="transportná-vrstva-l4">Transportná vrstva (L4)</h1>
-
 <blockquote>
 <p>Ako prepraviť dáta do iného počítača?</p>
 </blockquote>
-
 <ul>
 <li>prepravuje <strong>segmenty</strong></li>
 <li>určené pre konkrétny <strong>port</strong></li>
 <li>rozhranie pre výmenu správ: <strong>socket</strong></li>
 <li>protokoly:
-
 <ul>
 <li>TCP</li>
 <li>UDP</li>
-</ul></li>
 </ul>
-
+</li>
+</ul>
 <h2 id="vlastnosti">Vlastnosti</h2>
-
 <ul>
-<li><p>transportná vrstva rozdelí obsah aplikačnej vrstvy (HTTP, SMTP) na
-<strong>segmenty</strong></p></li>
-
-<li><ul>
+<li>
+<p>transportná vrstva rozdelí obsah aplikačnej vrstvy (HTTP, SMTP) na
+<strong>segmenty</strong></p>
+</li>
+<li>
+<ul>
 <li>segment obsahuje hlavičku s informáciami pre cieľ</li>
-</ul></li>
-
-<li><p>segment obsahuje porty (0-65535):</p>
-
+</ul>
+</li>
+<li>
+<p>segment obsahuje porty (0-65535):</p>
 <ul>
 <li>zdrojový port</li>
 <li>cieľový port</li>
 <li>maximálna veľkosť je cca 1,5 KB</li>
-</ul></li>
-
-<li><p>adresácia:</p>
-
+</ul>
+</li>
+<li>
+<p>adresácia:</p>
 <ul>
 <li>samotný segment obsahuje len čísla portov!</li>
 <li>ale pracujeme s adresami zdrojových a cieľových staníc
-
 <ul>
 <li>IP adresy zo <strong>sieťovej vrstvy (L3)</strong></li>
-</ul></li>
-</ul></li>
 </ul>
-
+</li>
+</ul>
+</li>
+</ul>
 <h1 id="sockety-a-porty">Sockety a porty</h1>
-
 <ul>
 <li><strong>socket</strong> je API operačného systému pre sieťovú komunikáciu
-
 <ul>
 <li>operácia: vyrob socket</li>
 <li>operácia: napoj ho</li>
 <li>operácia: čítaj dáta / zapisuj dáta</li>
-</ul></li>
+</ul>
+</li>
 <li>proces operačného systému otvorí <strong>socket</strong></li>
 <li>asociuje ho s číslom portu na niektorom sieťovom rozhraní (alebo na
 viacerých rozhraniach)
-
 <ul>
 <li>buď klientsky socket:
-
 <ul>
 <li>povie IP adresu cieľovej stanice</li>
 <li>povie číslo portu cieľovej stanice</li>
 <li>povie číslo zdrojového portu, aby bolo kam posielať odpovede</li>
-</ul></li>
+</ul>
+</li>
 <li>alebo serverový socket:
-
 <ul>
 <li>povie číslo portu alebo požiada OS o voľný port</li>
 <li>segment určený pre tento socket musí uviesť tento port ako
 cieľ</li>
-</ul></li>
-</ul></li>
 </ul>
-
+</li>
+</ul>
+</li>
+</ul>
 <h2 id="protokoly">Protokoly</h2>
-
 <h3 id="udp-user-datagram-protocol">UDP: User Datagram Protocol</h3>
-
 <blockquote>
 <p>Pošlem pohľadnicu, snáď dôjde.</p>
 </blockquote>
-
 <ul>
 <li>bez spoľahlivého prenosu</li>
 <li>bez spojenia</li>
 <li>fire-and-forget</li>
 <li>žiadne quality control
-
 <ul>
 <li>žiadne detekcie zahltenia siete</li>
 <li>žiadna kontrola prietoku</li>
-</ul></li>
 </ul>
-
+</li>
+</ul>
 <h4 id="hlavička">Hlavička</h4>
-
 <ul>
 <li>zdrojový port (2 bajty)</li>
 <li>cieľový port (2b ajty)</li>
@@ -438,321 +395,274 @@ cieľ</li>
 <li>kontrolný súčet (2 bajty)</li>
 <li>dáta</li>
 </ul>
-
 <h4 id="protokoly-bežiace-nad-udp">Protokoly bežiace nad UDP</h4>
-
 <ul>
 <li>DNS: preklad IP adries na doménové mená</li>
 <li>RIP: konfigurácia smerovacích tabuliek na routeroch</li>
 <li>DHCP: prideľovanie IP adries</li>
 <li>streamovanie videí a audia</li>
 </ul>
-
 <h3 id="tcp">TCP</h3>
-
 <ul>
 <li>najpoužívanejší protokol</li>
 <li>potvrdzovaný prenos
-
 <ul>
 <li>„telefonát: <em>Si tam?</em> / <em>Áno som tu</em>.</li>
-</ul></li>
+</ul>
+</li>
 <li>dáta zo zdrojového socketu doplávajú do cieľového socketu všetky
-
 <ul>
 <li>preusporiada pakety z nižšej vrstvy do správneho poradia</li>
 <li>preveruje, či došli všetky a nepoškodené</li>
 <li>vynúti opakovaný prenos chybných paketov</li>
-</ul></li>
+</ul>
+</li>
 <li>kontroluje prietok dát
-
 <ul>
 <li>ak príjemca nestíha, zmenšíme prietok</li>
-</ul></li>
+</ul>
+</li>
 <li>kontroluje zahltenie
-
 <ul>
 <li>ak sa začnú strácať pakety, zmenšíme prietok</li>
-</ul></li>
 </ul>
-
+</li>
+</ul>
 <h4 id="základné-princípy">Základné princípy</h4>
-
 <h5 id="sekvenčné-čísla">Sekvenčné čísla</h5>
-
 <ul>
 <li>každý bajt v prúde dát od socketu k socketu má svoje vlastné
 <strong>sekvenčné číslo</strong></li>
 <li>každý odoslaný segment nesie <strong>sekvenčné číslo</strong>
-
 <ul>
 <li>na začiatku spojenia vygenerované náhodný základ</li>
 <li>klient a server majú rozličné základy</li>
 <li>sekvenčné číslo pre nasledovný segment sa odvodí pripočítaním
 dĺžky predošlého segmentu</li>
-</ul></li>
 </ul>
-
+</li>
+</ul>
 <h5 id="kumulatívne-potvrdenie">Kumulatívne potvrdenie</h5>
-
 <ul>
 <li>príjemca odošle <strong>potvrdzovací segment</strong>, tvrdí v ňom, že spracoval
 segmenty so sekvenčným číslom menším než <em>X</em></li>
 </ul>
-
 <h5 id="okná-odosielateľa-a-prijímateľa">Okná odosielateľa a prijímateľa</h5>
-
 <ul>
 <li>pipelining: posielanie viacerých segmentov bez nutnosti čakať na
 potvrdenia po jednom</li>
 <li>okno odosielateľa = LIFO buffer = queue
-
 <ul>
 <li>drží odoslané, ale nepotvrdené segmenty</li>
 <li>obe stanice majú vlastné nezávislé buffery</li>
 <li>po doručení potvrdzovacieho segmentu sa z bufferu odstránia
 všetky segmenty s číslom menším než X</li>
-</ul></li>
+</ul>
+</li>
 <li>okno príjemcu = buffer
-
 <ul>
 <li>monitorovanie segmentov doručovaných mimo poradia</li>
 <li>ako prichádzajú segmenty, výpĺňajú sa bajty v bufferi</li>
 <li>súvisle vyplnený úsek na ľavej strane sa považuje za úspešne
 prijatý, čím vieme posunúť okno „doprava“</li>
-</ul></li>
 </ul>
-
-<h5 id="nadviazanie-spojenia-tcp-handshake">Nadviazanie spojenia - TCP Handshake</h5>
-
+</li>
+</ul>
+<h5 id="nadviazanie-spojenia---tcp-handshake">Nadviazanie spojenia - TCP Handshake</h5>
 <ul>
 <li>tri fázy = tri segmenty
-
 <ul>
 <li>SYN: klient si otvorí socket, nastaví sekvenčné čísla, otvorí
 okná, pripojí sa k socketu servera</li>
 <li>ACK/ACK: server otvorí nový soket pre klienta, nastaví si
 sekvenčné čísla, otvorí okná</li>
 <li>ACK: klient potvrdí prijatie</li>
-</ul></li>
 </ul>
-
+</li>
+</ul>
 <h5 id="garantovanie-doručenia">Garantovanie doručenia</h5>
-
 <p>Strata paketov znamená</p>
-
 <ul>
 <li>ak odosielateľ dostane 3x rovnaké číslo potvrdenia</li>
 <li>ak nastane timeout pri potvrdení najstaršieho segmentu v okne
 odosielateľa</li>
 </ul>
-
 <h5 id="kontrola-toku">Kontrola toku</h5>
-
 <ul>
 <li>každý príjemca má dva buffery
-
 <ul>
 <li>okno príjemcu</li>
 <li>buffer pre nespracované dáta</li>
-</ul></li>
+</ul>
+</li>
 <li>ak príjemca nestíha spracovávať,
-
 <ul>
 <li>začne zmenšovať svoje okno príjemcu</li>
 <li>informuje opačnú stranu o veľkosti okna (chlievik <strong>window</strong> v
 TCP pakete)</li>
 <li>odosielateľ si následne primerane zmenší okno <strong>odosielateľa</strong></li>
-</ul></li>
 </ul>
-
+</li>
+</ul>
 <h5 id="kontrola-zahltenia">Kontrola zahltenia</h5>
-
 <ul>
 <li>ak sa začnú strácať pakety, zrejme je zahltená sieť</li>
 <li>zmenšíme okno odosielateľa
-
 <ul>
 <li>porekadlo: čím väčšie okno odosielateľa, tým väčšia rýchlosť
 odosielania</li>
-</ul></li>
+</ul>
+</li>
 <li>okno odosielateľa sa dynamicky nafukuje a sfukuje
-
 <ul>
 <li>jedna metóda: začínať zľahka a ak všetko ide dobre, pridáva plyn
 a zväčšuje okno</li>
 <li>druhá metóda: zväčšuje postupne a zmenšuje delením</li>
-</ul></li>
 </ul>
-
+</li>
+</ul>
 <h5 id="spravodlivosť-tcp-spojení">Spravodlivosť TCP spojení</h5>
-
 <ul>
 <li>prenosová rýchlosť sa delí medzi počet TCP spojení</li>
 <li>ak sa zahltí sieť, všetci účastníci v sieti si zmenšia okná
 odosielateľa
-
 <ul>
 <li>najrýchlejší odosielatelia sa spomalia najviac</li>
 <li>časom sa však situácia vybalansuje</li>
-</ul></li>
+</ul>
+</li>
 <li>stanica môže otvárať viacero TCP spojení
-
 <ul>
 <li>akcelerátor sťahovania: spustíme sťahovanie na X vláknach a X
 TCP spojeniach = máme väčšiu rýchlosť</li>
-</ul></li>
 </ul>
-
-<h1 id="sieťová-vrstva-network-layer-l3">Sieťová vrstva / Network Layer (L3)</h1>
-
+</li>
+</ul>
+<h1 id="sieťová-vrstva--network-layer-l3">Sieťová vrstva / Network Layer (L3)</h1>
 <ul>
 <li>Sieťová vrstva prepravuje <strong>datagramy</strong>.</li>
 <li>Datagram je určený pre všetky routery po ceste
-
 <ul>
 <li>správy aplikačnej vrstvy: pre cieľovú aplikáciu</li>
 <li>segment transportnej verstvy: pre cieľový počítač</li>
-</ul></li>
+</ul>
+</li>
 <li><strong>Adresácia</strong>: IP adresy (v TCP/IP)</li>
 <li>Bežné <strong>protokoly</strong>:
-
 <ul>
 <li>IPv4 / IPv6</li>
 <li>ICMP: pingy a traceroutry</li>
-</ul></li>
 </ul>
-
+</li>
+</ul>
 <h2 id="router-smerovač">Router (smerovač)</h2>
-
 <ul>
 <li>prijíma datagramy</li>
 <li>posiela ich správnym smerom</li>
 <li>používa <strong>smerovaciu tabuľku</strong>
-
 <ul>
 <li>pre cieľovú adresu určuje, ktorému zariadeniu a ktorému
 rozhraniu sa majú doručiť</li>
-</ul></li>
+</ul>
+</li>
 <li>využíva <strong>smerovacie algoritmy</strong>
-
 <ul>
 <li>pre optimálne doručenie</li>
-</ul></li>
 </ul>
-
+</li>
+</ul>
 <h2 id="datagramy-a-riadenie-datagramami">Datagramy a riadenie datagramami</h2>
-
 <p>Na sieťovej vrstve internetu sa nevytvára spojenie.</p>
-
 <ul>
 <li>spoľahlivosť riešia koncové zariadenia</li>
 <li>odľahčujú sa routre a ich logika</li>
 <li>nemáme garanciu prenosovej rýchlosti ani spoľahlivosť prenosu</li>
 </ul>
-
 <h2 id="sieťová-vrstva-na-internete">Sieťová vrstva na internete</h2>
-
 <p>Nasledovné protokoly:</p>
-
 <ul>
 <li>IPv4: súčasný protokol pre prenos</li>
 <li>IPv6: budúcnosť, adresuje nedostatky IPv4</li>
 <li>ICMP: podporný protokol pre riadenie siete</li>
 </ul>
-
 <h3 id="datagram-ipv4">Datagram IPv4</h3>
-
 <p>Vybrané položky datagramu IPv4:</p>
-
 <ul>
 <li>verzia</li>
 <li>dĺžka</li>
 <li>maximálna veľkosť: MTU. Minimálne 576.
-
 <ul>
 <li>router rozbije veľké datagramy na fragmenty</li>
-</ul></li>
+</ul>
+</li>
 <li>protokol:
-
 <ul>
 <li>nastavený po doručení do cieľovej stanice</li>
 <li>TCP, UDP, ICMP, …</li>
-</ul></li>
+</ul>
+</li>
 <li>zdrojová adresa: IP adresa</li>
 <li>cieľová adresa: IP adresa
-
 <ul>
 <li>datagramy môžu dôjsť do cieľa rozličnými spôsobmi</li>
-</ul></li>
+</ul>
+</li>
 <li>TTL: cez koľko routerov môže datagram prejsť? (Každý router zníži o
 1).
-
 <ul>
 <li>zabraňuje bludným Holanďanom, ktorý sa donekonečna bezcieľne
 túlajú sieťami</li>
-</ul></li>
+</ul>
+</li>
 <li>fragmentácia: info na poskladanie fragmentov segmentu</li>
 </ul>
-
 <h3 id="adresovanie-v-ipv4">Adresovanie v IPv4</h3>
-
 <ul>
 <li>IP adresa: 32 bitov</li>
 <li>každé sieťové rozhranie má vlastnú IP adresu
-
 <ul>
 <li>obvykle 1 sieťové rozhranie = 1 fyzické pripojenie = 1 sieťová
 karta</li>
-</ul></li>
+</ul>
+</li>
 <li>zariadenia z rôznych sietí komunikujú cez routery</li>
 <li>zariadenia v 1 sieti vedia bez routera
-
 <ul>
 <li>ak majú IP adresy v rovnakej sieti</li>
-</ul></li>
 </ul>
-
+</li>
+</ul>
 <h4 id="bežné-adresovanie">Bežné adresovanie</h4>
-
 <p>IP adresa má dve časti:</p>
-
 <ul>
 <li>časť pre sieť</li>
 <li>časť pre stanicu</li>
 </ul>
-
 <p>Dva počítače v jednej sieti musia mať rovnakú sieťovú časť.</p>
-
 <h5 id="triedy">Triedy</h5>
-
 <ul>
 <li>A: sieť = prvých 8 bitov, 24b stanica
-
 <ul>
-<li>môže v nej byť 2\^26 ~ 16 mil. staníc</li>
-</ul></li>
+<li>môže v nej byť 2^26 ~ 16 mil. staníc</li>
+</ul>
+</li>
 <li>B: sieť = 16b sieť, 16 stanica
-
 <ul>
 <li>65 tisíc staníc</li>
-</ul></li>
+</ul>
+</li>
 <li>C: sieť = 24b sieť, 8 stanica
-
 <ul>
 <li>254 staníc</li>
-</ul></li>
+</ul>
+</li>
 <li>D: sieť = 32 b, 0 pre zariadenie. Pre multicasty</li>
 </ul>
-
 <h5 id="cidr">CIDR</h5>
-
 <ul>
 <li>maska udáva koľko bitov z IP adresy tvorí sieť. Zvyšok tvorí stanicu</li>
 </ul>
-
 <h5 id="špeci-adresy">Špeci adresy</h5>
-
 <ul>
 <li><code>0.0.0.0/32</code> zdrojová adresa stanice v lokálnej sieti pri žiadosti
 DHCP o pridelenie IP.</li>
@@ -761,22 +671,18 @@ všetky rozhrania v lokálnej sieti.</li>
 <li><code>127.0.0.1</code> loopback. Datagram s cieľovou adresou z tohto rozsahu
 neopúšťajú počítač.</li>
 <li>Privátne siete pre NAT routre alebo VPN:
-
 <ul>
 <li><code>10.0.0.0/8</code></li>
 <li><code>172.16.0.0/12</code></li>
 <li><code>192.168.0.0/16</code></li>
-</ul></li>
 </ul>
-
+</li>
+</ul>
 <h3 id="smerovacia-tabuľka">Smerovacia tabuľka</h3>
-
 <ul>
 <li>vďaka maskám sa redukuje zložitosť</li>
 </ul>
-
 <p>Ukážkový dump routera ASUS:</p>
-
 <table>
 <thead>
 <tr>
@@ -787,7 +693,6 @@ neopúšťajú počítač.</li>
 <th>Iface</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>10.8.110.1</td>
@@ -796,7 +701,6 @@ neopúšťajú počítač.</li>
 <td>0</td>
 <td>eth0</td>
 </tr>
-
 <tr>
 <td>192.168.1.0</td>
 <td>0.0.0.0</td>
@@ -804,7 +708,6 @@ neopúšťajú počítač.</li>
 <td>0</td>
 <td>br0</td>
 </tr>
-
 <tr>
 <td>10.8.110.0</td>
 <td>0.0.0.0</td>
@@ -812,7 +715,6 @@ neopúšťajú počítač.</li>
 <td>0</td>
 <td>eth0</td>
 </tr>
-
 <tr>
 <td>0.0.0.0</td>
 <td>10.8.110.1</td>
@@ -822,11 +724,9 @@ neopúšťajú počítač.</li>
 </tr>
 </tbody>
 </table>
-
 <ul>
 <li>Destination: cieľová adresa siete</li>
 <li>Gateway (Brána): pre spojovú vrstvu / link layer (o úroveň nižšie)
-
 <ul>
 <li><code>0.0.0.0</code> znamená, že <em>rozhranie</em> je v rovnakej sieti ako
 cieľová IP adresa z datagramu.</li>
@@ -834,36 +734,29 @@ cieľová IP adresa z datagramu.</li>
 <li>Posledný riadok tabuľky je cieľ <code>0.0.0.0</code> a maska <code>0.0.0.0</code> čiže
 sa vždy použije. Brána udáva IP adresu routera, ktorým sme
 pripojení do internetu.</li>
-</ul></li>
+</ul>
+</li>
 <li>Maska: určuje adresu siete</li>
 <li>Metrika: Ak sa zhoduje viacero riadkov, najmenšia metrika vyhráva.</li>
 <li>Interface: sieťové rozhranie, kam sa pošle datagram v prípade zhody.</li>
 <li>Riadky sú usporiadané podľa počtu jednotkových bitov v maske</li>
 </ul>
-
 <h4 id="vyhodnocovanie">Vyhodnocovanie</h4>
-
 <p>Pre každý datagram sa zhora nadol vyhodnocuje tabuľka:</p>
-
 <ol>
 <li>Cieľová adresa z datagramu <strong>AND</strong> maska z tabuľky (= adresa siete).</li>
 <li>Porovná sa s hodnotou v <em>cieľovej adresy siete</em>.</li>
 <li>Ak zhoda, pošle sa na <em>rozhranie</em> (<em>iface</em>) z tabuľky.</li>
 </ol>
-
 <h2 id="nat-network-address-translation">NAT: Network Address Translation</h2>
-
 <p>Provider pridelí domácnosti jedinú IPv4 adresu. Čo ak chceme mať doma
 viacero notebookov, mobilov, tlačiarní, atď?</p>
-
 <ul>
 <li>Riešenie 1: žiadať viacero IP adries. Provider rád poskytne za
 poplatok!</li>
 <li>Riešenie 2: NAT</li>
 </ul>
-
 <h3 id="konfigurácia-routera">Konfigurácia routera</h3>
-
 <ul>
 <li>každé rozhranie routera má svoju IP adresu</li>
 <li>sieťové rozhranie WAN (<em>Wide Area Network</em>): nastavíme na IP adresu
@@ -871,289 +764,259 @@ providera.</li>
 <li>sieťové rozhranie LAN (<em>Local Area Network</em>): nastavíme neverejnú IP
 adresu pre privátne siete (napr. <code>10.0.0.1/8</code>)</li>
 <li>stanice v domácej sieti:
-
 <ul>
 <li>buď im nastavíme IP adresy napevno</li>
 <li>alebo využijeme DHCP protokol na routeri na dynamické
 prideľovanie</li>
-</ul></li>
 </ul>
-
+</li>
+</ul>
 <h3 id="algoritmus-prekladu">Algoritmus prekladu</h3>
-
 <p>Router <strong>prekladá</strong> adresy paketov z lokálnej siete do providerovej
 siete a naopak.</p>
-
 <p>Udržiava si prekladovú tabuľku <strong>Network Address Translation Table</strong>.</p>
-
 <ul>
 <li>Počítač <code>10.0.0.2/8</code> chce získať dáta zo <code>158.197.31.35</code> a portu 80.
 Otvorí si port 3345 pre odpoveď.
-
 <ul>
 <li>Vytvorí TCP spojenie na cieľový počítač a port.</li>
 <li>Zdrojová adresa je <code>10.0.0.2</code>.</li>
 <li>Lenže TCP SYNACK zlyhá: veď vzdialený server neuvidí počítač v
 domácej sieti!</li>
-</ul></li>
+</ul>
+</li>
 <li>NAT Router s LAN <code>10.0.0.1/8</code> a WAN <code>138.76.29.7</code>
-
 <ul>
 <li>otvorí si voľný port na WAN rozhraní, napr. 5001</li>
 <li>do tabuľky uvedie:
-
 <ul>
 <li>WAN: <code>138.76.29.7</code></li>
 <li>WAN port: 5001</li>
 <li>LAN: <code>10.0.0.2</code></li>
 <li>LAN port: 3345</li>
-</ul></li>
+</ul>
+</li>
 <li><strong>prepíše paket</strong>:
-
 <ul>
 <li>nastaví zdrojovú IP adresu na <code>138.76.29.7</code></li>
 <li>nastaví zdrojový port na 5001</li>
-</ul></li>
+</ul>
+</li>
 <li>pošle ho do cieľa</li>
-</ul></li>
+</ul>
+</li>
 <li>ak príde odpoveď do NAT routera:
-
 <ul>
 <li>pristane na WAN rozhraní, na IP adrese <code>138.76.29.7</code>, na porte
 5001</li>
 <li><strong>prepíše paket</strong>:
-
 <ul>
 <li>cieľová adresa na <code>10.0.0.2</code></li>
 <li>cieľovú port na 3345</li>
-</ul></li>
-</ul></li>
 </ul>
-
+</li>
+</ul>
+</li>
+</ul>
 <h3 id="vlastnosti-1">Vlastnosti</h3>
-
 <ul>
 <li>Stanica v privátnej LAN sieti ani nevie, že je za NAT routerom.</li>
 <li>Máme limit na počet portov na NAT
-
 <ul>
 <li>max. 65535 portov</li>
 <li>typický počítač má maximálne stovky nezávislých spojení</li>
 <li>štandardne okolo 100 počítačov v privátnej sieti</li>
-</ul></li>
+</ul>
+</li>
 <li>vieme obchádzať limit na IPv4 adresy</li>
 </ul>
-
 <h3 id="limitácie">Limitácie</h3>
-
 <ul>
 <li>ak si v LAN sieti založíme server, klienti zvonku sa nevedia napájať
-
 <ul>
 <li>neexistuje verejná IP adresa</li>
 <li><strong>NAT Traversal Problem</strong></li>
 <li>v privátnej sieti si neurobíme verejný HTTP server, ani P2P
 server</li>
-</ul></li>
 </ul>
-
+</li>
+</ul>
 <h4 id="manuálne-nastavenie-nat-tabuľky">Manuálne nastavenie NAT tabuľky</h4>
-
 <ul>
 <li>ručne určíme, kam preposielať pakety</li>
 </ul>
-
 <h4 id="upnp">UPNP</h4>
-
 <ul>
 <li>služba UPNP (Universal Plug and Play) / Internet Gateway Device
 (IGD)</li>
 <li>stanica v privátnej sieti vie pracovať s NAT routerom:
-
 <ul>
 <li>zistiť verejnú IP adresu na WAN rozhraní</li>
 <li>meniť riadky prekladovej tabuľky</li>
 <li>zisťovať stav prekladovej tabuľky</li>
-</ul></li>
 </ul>
-
+</li>
+</ul>
 <h3 id="prostredník">Prostredník</h3>
-
 <ul>
 <li>preposielať komunikáciu cez počítač s verejnou IP adresou</li>
 <li>Skype: účastníci sa napoja na stanicu s verejnou adresou</li>
 </ul>
-
 <h2 id="dhcp-dynamic-host-configuration-protocol">DHCP: Dynamic Host Configuration Protocol</h2>
-
 <ul>
 <li>automatické prideľovanie IP adries staniciam</li>
 <li>protokol na aplikačnej vrstve</li>
 <li>využíva všetky tri vrstvy:
-
 <ul>
 <li>aplikačnú: rozličné príkady</li>
-<li>transportnú: UDP a porty <sup>67</sup>&frasl;<sub>68</sub></li>
+<li>transportnú: UDP a porty 67/68</li>
 <li>sieťovú: broadcastovú cieľovú adresu</li>
-</ul></li>
 </ul>
-
+</li>
+</ul>
 <h3 id="algoritmus">Algoritmus</h3>
-
 <p>Zariadenie sa chce pripojiť do siete. Vie, že <em>niekde</em> v sieti je DHCP
 server na porte 67.</p>
-
 <ol>
-<li><p>Požiadavka zariadenia: <strong>DHCP Discover</strong></p>
-
+<li>
+<p>Požiadavka zariadenia: <strong>DHCP Discover</strong></p>
 <ol>
-<li><p>na sieťovej úrovni:</p>
-
+<li>
+<p>na sieťovej úrovni:</p>
 <ul>
-<li><p>cieľová adresa: broadcastová adresa lokálnej siete
-<code>255.255.255.255</code></p></li>
-
-<li><p>zdrojová adresa: <code>0.0.0.0</code> . Máme vajce-sliepka problém,
-takže zdroj nevieme.</p></li>
-</ul></li>
-
-<li><p>na transportnej úrovni:</p>
-
+<li>
+<p>cieľová adresa: broadcastová adresa lokálnej siete
+<code>255.255.255.255</code></p>
+</li>
+<li>
+<p>zdrojová adresa: <code>0.0.0.0</code> . Máme vajce-sliepka problém,
+takže zdroj nevieme.</p>
+</li>
+</ul>
+</li>
+<li>
+<p>na transportnej úrovni:</p>
 <ul>
-<li><p>protokol UDP</p></li>
-
-<li><p>port: 67</p></li>
-</ul></li>
-
-<li><p>na aplikačnej úrovni:</p>
-
+<li>
+<p>protokol UDP</p>
+</li>
+<li>
+<p>port: 67</p>
+</li>
+</ul>
+</li>
+<li>
+<p>na aplikačnej úrovni:</p>
 <ul>
-<li><p>jednoznačný identifikátor</p></li>
-
-<li><p>údaje správy DHCP discover</p></li>
-</ul></li>
-</ol></li>
-
-<li><p>Odpoveď DHCP Servera: <strong>DHCP Lease Offer</strong> s ponúknutou IP adresou</p></li>
+<li>
+<p>jednoznačný identifikátor</p>
+</li>
+<li>
+<p>údaje správy DHCP discover</p>
+</li>
+</ul>
+</li>
 </ol>
-
+</li>
+<li>
+<p>Odpoveď DHCP Servera: <strong>DHCP Lease Offer</strong> s ponúknutou IP adresou</p>
+</li>
+</ol>
 <ul>
 <li>na sieťovej úrovni: cieľová adresa: <code>255.255.255.255</code></li>
 <li>na transportnej úrovni: UDP, cieľový port 68</li>
 <li>na aplikačnej úrovni: jednoznačný identifikátor z <em>Discovery</em></li>
 </ul>
-
 <ol>
 <li>Požiadavka klienta na pridelenie adresy: <strong>DHCP Request</strong></li>
 </ol>
-
 <ul>
 <li>na sieťovej úrovni: cieľová adresa: <code>255.255.255.255</code></li>
 <li>na transportnej úrovni: UDP, cieľový port 67 (server)</li>
 <li>na aplikačnej úrovni: všetky parametre z <em>DHCP Lease Offer</em></li>
 </ul>
-
 <ol>
 <li>Odpoveď DHCP Servera: <strong>DHCP Ack</strong></li>
 </ol>
-
 <ul>
 <li>na sieťovej úrovni: cieľová adresa: <code>255.255.255.255</code></li>
 <li>na transportnej úrovni: UDP, cieľový port 67 (server)</li>
 <li>na aplikačnej úrovni: všetky parametre z <em>DHCP Lease Offer</em></li>
 </ul>
-
 <ol>
 <li>Klient si nastaví ponúknutú IP adresu a komunikuje.</li>
 </ol>
-
 <h3 id="vlastnosti-2">Vlastnosti</h3>
-
 <h4 id="životnosť">Životnosť</h4>
-
 <ul>
 <li>pridelená IP adresa má životnosť</li>
 <li>pred vypršaním sa zopakujú <strong>DHCP Request</strong> a <strong>DHCP Lease</strong>.</li>
 <li>už netreba broadcastovať
-
 <ul>
 <li>stačí priamo poslať na IP adresu DHCP servera</li>
 <li>DHCP server nemusí odpovedať broadcastom, keďže pozná IP adresu
 zariadenia</li>
-</ul></li>
 </ul>
-
+</li>
+</ul>
 <h4 id="relaying">Relaying</h4>
-
 <ul>
 <li>v danej sieti nemusí existovať DHCP server</li>
 <li>na routroch môže byť <em>relay agent</em></li>
 <li>preposiela požiadavky a odpovede do siete, kde DHCP server je
 prítomný</li>
 </ul>
-
 <h4 id="recyklácia">Recyklácia</h4>
-
 <ul>
 <li>vďaka DHCP môžeme dynamicky recyklovať IP adresy</li>
 <li>ak sa zamestnanci pripájajú do siete notebookmi a vieme, že nikdy
 neprídu do práce naraz, môžeme alokovať menej IP adries v sieti než
 je zamestnancov</li>
 </ul>
-
 <h2 id="icmp">ICMP</h2>
-
 <ul>
 <li>sieťový (nie aplikačný!) protokol pre zisťovanie stavu siete</li>
 <li>ping: dostupnosť stanice s IP adresou</li>
 <li>traceroute / tracert: diagnostika suete
-
 <ul>
 <li>postupne posiela datagramy s narastajúcim TTL</li>
 <li>každý router zníži TTL o jedna</li>
 <li>odpovede sa s TTL o jedna nižším</li>
 <li>takto vieme zistiť, ktorý router už prestal odpovedať</li>
-</ul></li>
 </ul>
-
+</li>
+</ul>
 <h3 id="hlavička-icmp-protokolu">Hlavička ICMP protokolu</h3>
-
 <ul>
 <li>code</li>
 <li>type</li>
 </ul>
-
 <p>Príklady:</p>
-
 <ul>
 <li>Ping Echo Request = type 8, code 0</li>
 <li>Ping Echo Reply = type 0, code 0</li>
 <li>Traceroute TTL Expired = type 11, code 0</li>
 <li>Destination Port Unreachable = type 3, code 3
-
 <ul>
 <li>ak je v UDP segmente nedostupný port</li>
-</ul></li>
+</ul>
+</li>
 <li>Destination Network Unreachable = type 3, coe 0
-
 <ul>
 <li>niektorý router po ceste je vypnutý / nefunkčný</li>
-</ul></li>
 </ul>
-
+</li>
+</ul>
 <p>V tele odpovede sa môže nachádzať hlavička a 8 bajtov z tela chybového
 datagramu.</p>
-
 <h2 id="smerovacie-algoritmy">Smerovacie algoritmy</h2>
-
 <ul>
 <li>ručné nastavenie smerovacej tabuľky
-
 <ul>
 <li>ak vypadne cieľový router, smerovanie paketov prestane fungovať</li>
-</ul></li>
+</ul>
+</li>
 <li>dynamické smerovanie
-
 <ul>
 <li>cez niektorý algoritmus</li>
 <li>zistia optimálnu cestu k dostupným sieťam</li>
@@ -1161,149 +1024,134 @@ datagramu.</p>
 <li>administrátor viacerých sietí a routerov volí vhodný smerovací
 protokol vo svojom <strong>autonómnom systéme</strong></li>
 <li>používajú sa rozličné grafové algoritmy</li>
-</ul></li>
 </ul>
-
+</li>
+</ul>
 <h3 id="komunikácia-v-systémoch">Komunikácia v systémoch</h3>
-
 <ul>
 <li>routery v autonómnych systémoch vzájomne komunikujú
-
 <ul>
 <li>aplikačné protokoly RIP (Routing Information Protocol) a</li>
 <li>OSPF (Open Shortest Path First)</li>
-</ul></li>
+</ul>
+</li>
 <li>autonómne systémy vzájomne komunikujú
-
 <ul>
 <li>BGP: border gateway protocol: štandard v Internete</li>
-</ul></li>
 </ul>
-
+</li>
+</ul>
 <p>Komunikácia si dynamicky vymieňa informácie o dostupnosti a
 vzdialenostiach.</p>
-
 <h2 id="smerovacie-schémy">Smerovacie schémy</h2>
-
 <ul>
 <li><strong>unicast</strong>: datagramy smerujú k presne určenej stanici
-
 <ul>
 <li>vyžadované v TCP</li>
-</ul></li>
+</ul>
+</li>
 <li><strong>anycast</strong>: viacero potenciálnych príjemcov, doručí sa vždy len
 jednému
-
 <ul>
 <li>máme 13 koreňových DNS serverov</li>
 <li>ale jedna IP adresa je použitá pre viaceré stanice</li>
 <li>požiadavka môže prísť na jeden ľubovoľný server.</li>
-</ul></li>
+</ul>
+</li>
 <li><strong>broadcast</strong>: „amplión“: doručenie všetkým uzlom / podsieťam
-
 <ul>
 <li>Príklady:
-
 <ul>
 <li>komunikácia v smerovacích protokoloch</li>
 <li>DHCP</li>
 <li>ARP na spojovej vrstve</li>
 <li>peer-to-peer protokoly</li>
-</ul></li>
+</ul>
+</li>
 <li>problímy:
-
 <ul>
 <li>ako posielať správy, aby sme nespôsobili <em>broadcastovú
 búrku</em>, teda nekontrolované zahltenie routerov</li>
 <li>riešenie cez grafové algoritmy (minimálna kostra a pod.)</li>
-</ul></li>
-</ul></li>
+</ul>
+</li>
+</ul>
+</li>
 <li><strong>multicast</strong>: doručenie každému prihlásenému v multicastovej doméne
-
 <ul>
 <li>stanice môžu povedať, že chcú/nechcú prijímať správy</li>
 <li>streamovanie televízie a rádií</li>
 <li>videokonferencie, gridy, sieťové hry</li>
 <li>protokol <strong>IGMP</strong> (Internet Group Management Protocol)
-
 <ul>
 <li>sieťový protokol pre spravovanie členov multicastovej
 skupiny</li>
-</ul></li>
-</ul></li>
 </ul>
-
-<h1 id="spojová-vrstva-data-link-layer-l2">Spojová vrstva / Data Link Layer (L2)</h1>
-
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="spojová-vrstva--data-link-layer-l2">Spojová vrstva / Data Link Layer (L2)</h1>
 <p>Ako preniesť datagram konkrétnym prenosovým médiom?</p>
-
 <ul>
 <li>drát kovový</li>
 <li>drát optikový</li>
 <li>vzduch</li>
 </ul>
-
 <h2 id="vlastnosti-3">Vlastnosti</h2>
-
 <ul>
 <li>rieši komunikáciu v rámci <strong>jednej</strong> siete</li>
 <li>adresácia cez <strong>MAC adresy</strong></li>
 <li>datagram je obalený do <strong>rámca</strong> / <strong>frame</strong>
-
 <ul>
 <li>finálna postupnosť 0 a 1, ktorá sa pošle do spoja</li>
-</ul></li>
+</ul>
+</li>
 <li>podporuje sa odhaľovanie chýb
-
 <ul>
 <li>overenie, že príjemca dostal to, čo odosielateľ poslal</li>
-</ul></li>
+</ul>
+</li>
 <li>typické protokoly:
-
 <ul>
 <li>Ethernet: viď nižšie</li>
 <li>PPP (Point-To-Point) pre vytáčané spojenia, sériové káble a
 optiku</li>
-</ul></li>
 </ul>
-
+</li>
+</ul>
 <h2 id="adresácia-cez-mac-adresy">Adresácia cez MAC Adresy</h2>
-
 <ul>
 <li>fyzické adresy = hardvérové adresy = ethernetové adresy</li>
 <li>6 bajtov: <code>AA:BB:CC:DD:EE.FF</code></li>
 <li>sú nezávislé od siete
-
 <ul>
 <li>„napečené“ do sieťovej karty</li>
-</ul></li>
+</ul>
+</li>
 <li>organizácia IEEE prideľuje výrobcom sieťových zariadení rozsahy MAC
 adries
-
 <ul>
 <li>napríklad WiFi adaptér na MacBook Pro má prefix <code>AC:BC:32</code>, čo
 je prefix pridelený Applu</li>
-</ul></li>
+</ul>
+</li>
 <li>MAC adresa je nezávislá od siete! Metafora „rodné číslo“</li>
 </ul>
-
 <h2 id="ethernet">Ethernet</h2>
-
 <ul>
 <li>adresuje spojovú vrstvu L2 v ISO/OSI modelu, i najnižšiu fyzickú
 vrstvu L1</li>
 <li>v TCP/IP („Internet“) patrí do najnižšej vrstvy <strong>sieťového
 rozhrania</strong> (<strong>network layer</strong>)</li>
 <li>používa metódu CSMA/CD
-
 <ul>
 <li>datagramy sieťovej vrstvy sú obalené do rámcov</li>
 <li>rámce sú pomocou spojovej metódy CSMA/CD posielané do spoja</li>
-</ul></li>
 </ul>
-
-<h3 id="ethernetové-rámce-ethernet-frames">Ethernetové rámce / Ethernet Frames</h3>
-
+</li>
+</ul>
+<h3 id="ethernetové-rámce--ethernet-frames">Ethernetové rámce / Ethernet Frames</h3>
 <ul>
 <li><strong>preambula</strong>: 7 bajtov. Striedavé nuly a jednotky.</li>
 <li><strong>start frame delimiter (SFD)</strong>: 1 bajt. Striedavé 0/1 ukončené
@@ -1311,30 +1159,25 @@ dvoma jednotkami.</li>
 <li><strong>cieľová MAC adresa</strong></li>
 <li><strong>zdrojová MAC adresa</strong></li>
 <li><strong>protokol vyššej vrstvy (EtherType)</strong>:
-
 <ul>
 <li>0x0800 = IPv4</li>
 <li>0x86DD = IPv6</li>
 <li>0x0806 = ARP</li>
-</ul></li>
+</ul>
+</li>
 <li><strong>payload</strong>: telo rámca. V drôtovom Ethernete podľa MTU maximálne
 1500 bajtov</li>
 <li><strong>kontrolný súčet</strong>: CRC pre 4 bajty</li>
 </ul>
-
 <h3 id="topológia-sietí">Topológia sietí</h3>
-
 <ul>
 <li><strong>star</strong>: hviezdica. Zariadenia pripojené na centrálne zariadenie.
 Najbežnejšie súčasné:</li>
 <li><strong>bus</strong> (<strong>zbernica</strong>) pre stanice na tom istom drôte, <strong>token
 ring</strong> (kruh)</li>
 </ul>
-
 <h3 id="centrálne-zariadenia">Centrálne zariadenia</h3>
-
-<h4 id="hub-rozbočovač-l1">Hub / Rozbočovač (L1)</h4>
-
+<h4 id="hub--rozbočovač-l1">Hub / Rozbočovač (L1)</h4>
 <ul>
 <li>signál zo zásuvky vezme, zosilní a pošle do všetkých ostatných
 zásuviek</li>
@@ -1343,109 +1186,88 @@ rekonštruovať zašumený signál</li>
 <li>ak začnú vysielať viacerí, nastane kolízia. Všetci sú v jednej
 kolíznej doméne.</li>
 </ul>
-
-<h4 id="repeater-opakovač-l1">Repeater / Opakovač (L1)</h4>
-
+<h4 id="repeater--opakovač-l1">Repeater / Opakovač (L1)</h4>
 <ul>
 <li>hub s 2 zásuvkami</li>
 </ul>
-
-<h4 id="switch-prepínač-l2">Switch / Prepínač (L2)</h4>
-
+<h4 id="switch--prepínač-l2">Switch / Prepínač (L2)</h4>
 <ul>
 <li>vníma MAC adresy</li>
 <li>ak vie, na ktorej zásuvke je napojená MAC príjemcu, signál posiela
 len do nej
-
 <ul>
 <li>zariadenia v jednej sieti si nesledujú komunikáciu</li>
 <li>predchádza sa kolíziám
-
 <ul>
 <li>v kolíznej doméne je len switch a stanica</li>
 <li>ethernetové káble dokáže full-duplex (príjem a vysielanie
 separátnymi drôtikmi), takže kolízie nehrozia vôbec</li>
-</ul></li>
+</ul>
+</li>
 <li>switche <em>store-and-forward</em> posielajú frame, až keď ho dostanú
 celý
-
 <ul>
 <li>vedia switchovať megabitovú a gigabitovú sieť</li>
-</ul></li>
-</ul></li>
+</ul>
+</li>
+</ul>
+</li>
 <li>udržiava si <strong>prepínaciu tabuľku</strong> / <strong>switching table</strong></li>
 <li>je to transparentné zariadenie: stanice nevedia o jeho existencii
-
 <ul>
 <li>manažovateľné switche majú obvykle aj MAC adresu, i webové
 rozhranie na konfiguráciu</li>
-</ul></li>
 </ul>
-
+</li>
+</ul>
 <h5 id="prepínacia-tabuľka">Prepínacia tabuľka</h5>
-
 <ul>
 <li>číslo zásuvky</li>
 <li>MAC adresa uzla napojeného na zásuvku</li>
 <li>timestamp aktualizácie záznamu</li>
 </ul>
-
 <p>Switch tabuľku aktualizuje sám:</p>
-
 <ul>
 <li>Ak príde rámec do zásuvky:
-
 <ul>
 <li>prečítaj zdrojovú MAC adresu a poznač si ich do tabuľky</li>
 <li>prečítaj cieľovú MAC, dohľadaj v tabuľke:
-
 <ul>
 <li>ak si nič nedohľadal, funguj ako hub. Pošli rámec do
 všetkých ostatných zásuviek.</li>
 <li>ak sa dohľadaná zásuvka zhoduje zo zdrojovou zásuvkou, zahoď
 rámec</li>
 <li>inak pošli rámec do dohľadanej zásuvky</li>
-</ul></li>
-</ul></li>
 </ul>
-
+</li>
+</ul>
+</li>
+</ul>
 <p>Pozor, broadcastové rámce (<code>FF:FF:FF:FF:FF:FF</code>) sa posielajú v režime
 <em>hub</em>.</p>
-
-<h4 id="bridge-most-l2">Bridge / Most (L2)</h4>
-
+<h4 id="bridge--most-l2">Bridge / Most (L2)</h4>
 <ul>
 <li>switch s dvoma zásuvkami</li>
 </ul>
-
 <h3 id="arp-preklad-z-ipv4-adries-na-mac">ARP: Preklad z IPv4 adries na MAC</h3>
-
 <p>Každé zariadenie (routre, počítače) obsahuje ARP tabuľku:</p>
-
 <ul>
 <li>IPv4 adresa</li>
 <li>MAC adresa</li>
 </ul>
-
 <p>ARP tabuľka:</p>
-
 <ul>
 <li>nemusí obsahovať všetky uzly v siete</li>
 <li>pravidelne sa premazáva</li>
 </ul>
-
 <h4 id="algoritmus-1">Algoritmus</h4>
-
 <p>Počítač Lenovo chce pingovať adresu <code>192.168.1.1</code> vo svojej lokálnej
 sieti. (ICMP protokol na sieťovej vrstve L2).</p>
-
 <ol>
 <li>Pozrie sa do svojej ARP tabuľky, či nemá záznam o MAC adrese.
-
 <ol>
 <li>Ak nájde záznam, rovno ho použije. (ARP sa preskočí)</li>
 <li>Ak nenájde hodnotu, spustí sa ARP.
-
 <ol>
 <li>Pošle <strong>ARP Request</strong> broadcastový rámec s otázkou „Kto je
 <code>192.168.1.1</code>?</li>
@@ -1453,33 +1275,32 @@ sieti. (ICMP protokol na sieťovej vrstve L2).</p>
 unicastovým rámcom „Ja som <code>192.168.1.1</code> a moja MAC adresa
 je ___“ (pozná MAC adresu odosielateľa)</li>
 <li>Lenovo si poznačí do svojej tabuľky dvojicu.</li>
-</ol></li>
-</ol></li>
 </ol>
-
+</li>
+</ol>
+</li>
+</ol>
 <h4 id="vytváranie-rámca">Vytváranie rámca</h4>
-
 <p>Pri vytváraní rámca na spojovej vrstve:</p>
-
 <ul>
 <li>vieme IP adresu príjemcu</li>
 <li>vieme IP odosielateľa</li>
 <li>potrebujeme vyplniť
-
 <ul>
 <li>MAC odosielateľa: to poznáme, lebo to sme my</li>
 <li>MAC príjemcu.
-
 <ul>
 <li>Je IP adresa príjemcu z našej siete?
-
 <ul>
 <li>Ak áno, ideme ARPovať.</li>
 <li>Ak nie, zistíme zo smerovacej tabuľky na routeri (L3)
 bránu a ideme ARPovať.</li>
-</ul></li>
-</ul></li>
-</ul></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 
 </main>

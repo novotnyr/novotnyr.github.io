@@ -59,35 +59,24 @@
 
 
 <main>
-
-
 <p>EcmaScript je vlastne normovanou verziou jazyka, ktory vznikol z JavaScriptu. Mozilla podporuje <a href="http://www.ecma-international.org/publications/standards/Ecma-262.htm">EcmaScript verzie 3</a>.</p>
-
 <h1 id="objektový-model-v-ecmascripte-262">Objektový model v EcmaScripte (262).</h1>
-
 <p>V EcmaScripte neexistuje koncept triedy.</p>
-
 <h2 id="tvorba-novych-instancii">Tvorba novych instancii</h2>
-
 <h3 id="explicitne-vytvaranie-objektov">Explicitne vytvaranie objektov</h3>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#289;font-weight:bold">var</span> person <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> <span style="color:#072">Object</span>;
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#289;font-weight:bold">var</span> person <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> <span style="color:#072">Object</span>;
 person.firstName <span style="color:#333">=</span> <span style="background-color:#e0e0ff">&#34;John&#34;</span>;
 person.secondName <span style="color:#333">=</span> <span style="background-color:#e0e0ff">&#34;Doe&#34;</span>;
-</code></pre></div>
-<h3 id="inline-ci-pristup-cez-literal">„Inline&rdquo; ci pristup cez literal</h3>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#289;font-weight:bold">var</span> obj <span style="color:#333">=</span> { foreground<span style="color:#333">:</span><span style="background-color:#e0e0ff">&#34;red&#34;</span>, background<span style="color:#333">:</span><span style="background-color:#e0e0ff">&#34;blue&#34;</span> }
-</code></pre></div>
-<p>Vsimnime si syntax:</p>
-
+</code></pre></div><h3 id="inline-ci-pristup-cez-literal">„Inline&quot; ci pristup cez literal</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#289;font-weight:bold">var</span> obj <span style="color:#333">=</span> { foreground<span style="color:#333">:</span><span style="background-color:#e0e0ff">&#34;red&#34;</span>, background<span style="color:#333">:</span><span style="background-color:#e0e0ff">&#34;blue&#34;</span> }
+</code></pre></div><p>Vsimnime si syntax:</p>
 <ul>
 <li>datove cleny su uvedene bez <code>var</code></li>
-<li>hodnota sa im priraduje cez dvojbodku (nie cez „rovna sa&rdquo;)</li>
+<li>hodnota sa im priraduje cez dvojbodku (nie cez „rovna sa&quot;)</li>
 </ul>
-
 <h2 id="prototypy-v-ulohe-tried">Prototypy v ulohe tried</h2>
-
-<p>Na vytvaranie kvazi-tried sa pouzivaju „prototypy&rdquo;. Protyp specifikuje implicitne hodnoty pre metody a datove cleny novych instancii.</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#666;font-style:italic">// tato funkcia je vlastne konstruktorom triedy Person
+<p>Na vytvaranie kvazi-tried sa pouzivaju „prototypy&quot;. Protyp specifikuje implicitne hodnoty pre metody a datove cleny novych instancii.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#666;font-style:italic">// tato funkcia je vlastne konstruktorom triedy Person
 </span><span style="color:#666;font-style:italic"></span><span style="color:#289;font-weight:bold">function</span> Person() {
   print(<span style="background-color:#e0e0ff">&#39;Constructing new person...&#39;</span>);
 }

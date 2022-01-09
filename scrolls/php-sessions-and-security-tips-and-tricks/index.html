@@ -59,52 +59,39 @@
 
 
 <main>
-
-
-<p>And now: 30 seconds o&rsquo; fun:</p>
-
+<p>And now: 30 seconds o' fun:</p>
 <h2 id="misc-notes">Misc notes</h2>
-
 <ul>
 <li>take MD5 of USER_AGENT into account (and possibly other HTTP headers) &ndash; changing of it between sessions may be possible hijack</li>
 <li>use cookies as extra security level (put fingerprint into cookie)
-
 <ul>
 <li>Store md5 of sid, ip, login time into cookie and into db table to compare them later</li>
-</ul></li>
+</ul>
+</li>
 <li>use prevention of logging into existing session &ndash; always generate new session ID after login.</li>
 <li>try to issue session id only after successful authentication</li>
 <li>take note of IP-verifying. Some proxies may change your IP. However, you can limit it to C-class network.</li>
 <li>SSL is your friend</li>
 </ul>
-
 <h2 id="other-issues-in-php">Other issues in PHP</h2>
-
 <ul>
 <li>enabled transparent SID may cause problems with HTTP Content-length</li>
 <li>definition of classes stored in session must be included prior to starting session (beware of auto_start)</li>
 </ul>
-
 <h2 id="links">Links</h2>
-
-<h3 id="interval-cz">Interval.cz</h3>
-
+<h3 id="intervalcz">Interval.cz</h3>
 <ul>
 <li><a href="http://interval.cz/clanek.asp?article=2730">http://interval.cz/clanek.asp?article=2730</a></li>
 <li><a href="http://interval.cz/clanek.asp?article=1408">http://interval.cz/clanek.asp?article=1408</a> (session stealing and XSS)</li>
 <li><a href="http://interval.cz/clanek.asp?article=734">http://interval.cz/clanek.asp?article=734</a> (authorization in PHP)</li>
 </ul>
-
-<h3 id="shiflett-org">Shiflett.org</h3>
-
+<h3 id="shiflettorg">Shiflett.org</h3>
 <ul>
 <li><a href="http://shiflett.org/php-security.pdf">http://shiflett.org/php-security.pdf</a> (PHP Security Issues)</li>
 <li><a href="http://shiflett.org/articles">http://shiflett.org/articles</a> (General Articles)</li>
 <li><a href="http://shiflett.org/articles/security-corner-feb2004">http://shiflett.org/articles/security-corner-feb2004</a> (Session fixation)</li>
 </ul>
-
 <h3 id="misc">Misc</h3>
-
 <ul>
 <li><a href="http://stock.ter.dk/session.php">http://stock.ter.dk/session.php</a></li>
 <li><a href="http://www.sitepoint.com/blog-post-view.php?id=156260">http://www.sitepoint.com/blog-post-view.php?id=156260</a></li>

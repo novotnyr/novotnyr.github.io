@@ -59,98 +59,75 @@
 
 
 <main>
-
-
 <h1 id="úvod">Úvod</h1>
-
 <p><a href="http://hessian.caucho.com">Caucho Hessian</a> je protokol použiteľný na vzdialené volanie procedúr alebo na implementáciu myšlienky webových služieb. Samotný protokol je binárny a ako transportná vrstva je použitý klasické HTTP.</p>
-
 <p>Paralelne s Hessian-om jestvuje spriatelený protokol Burlap, ktorý namiesto binárnej reprezentácie prenášaných dát používa XML.</p>
-
 <p>Hessian umožňuje zverejniť na vzdialené volanie procedúr ľubovoľný interfejs, za ktorým stojí vhodná implementačná trieda.</p>
-
 <h1 id="vzťah-s-podobnými-technológiami">Vzťah s podobnými technológiami</h1>
-
 <h2 id="hessian-vs-rmi">Hessian vs RMI</h2>
-
 <ul>
 <li>oba používajú binárne protokoly a Java serializáciu</li>
 <li>RMI používa vlastnú sieťovú komunikáciu, Hessian beží nad HTTP (je teda potrebný aspoň minimalistický servletový kontajner (príklad viď nižšie))</li>
 <li>RMI je zabudovaný priamo v JDK</li>
 <li>Pre Hessian existuje interoperabilita: existujú implementácie pre iné programovacie jazyky (Python, C# a pod.), RMI je obmedzené na Javu</li>
 </ul>
-
 <h2 id="hessian-vs-soap">Hessian vs SOAP</h2>
-
 <ul>
 <li>SOAP využíva protokol založený na XML a rovnako serializáciu objektov do XML</li>
 <li>SOAP beží štandardne nad HTTP (je potrebný servletový kontajner) s možnosťou ďalších protokolov</li>
 <li>SOAP umožňuje mnohé vychytralosti (bezpečnosť a autentifikácia, správy s prílohami) a podporuje interoperabilitu medzi mnohými jazykmi</li>
 <li>kvôli tomu však SOAP vyžaduje omnoho komplexnejšiu konfiguráciu a praktická rýchlosť môže byť nižšia</li>
 </ul>
-
 <h2 id="hessian-vs-spring-http-invoker">Hessian vs Spring HTTP Invoker</h2>
-
 <ul>
 <li>oba využívajú HTTP protokol a Java serializáciu</li>
 <li>Spring HTTP Invoker nepodporuje interoperabilitu</li>
 <li>v ostatných aspektoch približne rovnaké</li>
 </ul>
-
 <h1 id="jednoduchý-príklad">Jednoduchý príklad</h1>
-
 <h2 id="server">Server</h2>
-
 <p>Vytvorme si interfejs pre službu poskytujúcu aktuálny čas na serveri.</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">public interface </span>DateService {
-    <span style="color:#f00;background-color:#faa">Date getCurrentDate</span>();
-}</code></pre></div>
-<p>a vytvorme jeho implementáciu</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">public class DateServiceImpl implements </span>DateService {
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">interface</span> <span style="color:#e9e;font-weight:bold">DateService</span> <span style="color:#333">{</span>
+    Date <span style="color:#5ed;font-weight:bold">getCurrentDate</span><span style="color:#333">();</span>
+<span style="color:#333">}</span>
+</code></pre></div><p>a vytvorme jeho implementáciu</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">DateServiceImpl</span> <span style="color:#289;font-weight:bold">implements</span> DateService <span style="color:#333">{</span>
  
-  <span style="color:#f00;background-color:#faa">public Date </span>getCurrentDate() {
-    <span style="color:#289;font-weight:bold">return</span> <span style="color:#289;font-weight:bold">new</span> Date();
-  }
+  <span style="color:#289;font-weight:bold">public</span> Date <span style="color:#5ed;font-weight:bold">getCurrentDate</span><span style="color:#333">()</span> <span style="color:#333">{</span>
+    <span style="color:#289;font-weight:bold">return</span> <span style="color:#289;font-weight:bold">new</span> Date<span style="color:#333">();</span>
+  <span style="color:#333">}</span>
   
-}</code></pre></div>
-<p>Ako sme spomenuli, Hessian beží nad protokolom HTTP, presnejšie povedané využíva technológiu servletov. Na tento účel je k dispozícii špeciálny HTTP servlet <code>com.caucho.hessian.server.HessianServlet</code>, ktorému poskytneme dva parametre:</p>
-
+<span style="color:#333">}</span>
+</code></pre></div><p>Ako sme spomenuli, Hessian beží nad protokolom HTTP, presnejšie povedané využíva technológiu servletov. Na tento účel je k dispozícii špeciálny HTTP servlet <code>com.caucho.hessian.server.HessianServlet</code>, ktorému poskytneme dva parametre:</p>
 <ul>
 <li>názov interfejsu s metódami</li>
 <li>názov implementačnej triedy
 Tie môžeme nakonfigurovať v rámci inicializačných parametrov servletu vo <code>web.xml</code>. V našom prípade však použijeme programovú konfiguráciu v kontajneri Jetty.</li>
 </ul>
-
 <p>Vytvoríme inštanciu <code>HessianServletu</code> a nakonfigurujeme ju nasledovne:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">HessianServlet hessianServlet </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> HessianServlet();
-hessianServlet.<span style="color:#007">setHomeAPI</span>(DateService.<span style="color:#007">class</span>);
-hessianServlet.<span style="color:#007">setHome</span>(<span style="color:#289;font-weight:bold">new</span> DateServiceImpl());</code></pre></div>
-<p>Následne naštartujeme a nakonfigurujeme Jetty.</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">Server server </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Server(8080);
-<span style="color:#f00;background-color:#faa">Context context </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Context(server, <span style="background-color:#e0e0ff">&#34;/&#34;</span>, Context.<span style="color:#007">SESSIONS</span>);
-context.<span style="color:#007">addServlet</span>(<span style="color:#289;font-weight:bold">new</span> ServletHolder(hessianServlet), <span style="background-color:#e0e0ff">&#34;/*&#34;</span>);
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">HessianServlet hessianServlet <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> HessianServlet<span style="color:#333">();</span>
+hessianServlet<span style="color:#333">.</span><span style="color:#007">setHomeAPI</span><span style="color:#333">(</span>DateService<span style="color:#333">.</span><span style="color:#007">class</span><span style="color:#333">);</span>
+hessianServlet<span style="color:#333">.</span><span style="color:#007">setHome</span><span style="color:#333">(</span><span style="color:#289;font-weight:bold">new</span> DateServiceImpl<span style="color:#333">());</span>
+</code></pre></div><p>Následne naštartujeme a nakonfigurujeme Jetty.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Server server <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Server<span style="color:#333">(</span>8080<span style="color:#333">);</span>
+Context context <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Context<span style="color:#333">(</span>server<span style="color:#333">,</span> <span style="background-color:#e0e0ff">&#34;/&#34;</span><span style="color:#333">,</span> Context<span style="color:#333">.</span><span style="color:#007">SESSIONS</span><span style="color:#333">);</span>
+context<span style="color:#333">.</span><span style="color:#007">addServlet</span><span style="color:#333">(</span><span style="color:#289;font-weight:bold">new</span> ServletHolder<span style="color:#333">(</span>hessianServlet<span style="color:#333">),</span> <span style="background-color:#e0e0ff">&#34;/*&#34;</span><span style="color:#333">);</span>
         
-server.<span style="color:#007">start</span>();
-server.<span style="color:#007">join</span>();</code></pre></div>
-<p><code>Server</code> predstavuje hlavnú triedu servera, do ktorej pridáme webový kontext namapovaný na koreňovú adresu (<code>/</code>). Do tohto kontextu pridáme jeden už nakonfigurovaný servlet (inštanciu <code>HessianServletu</code> obaľuje <code>ServletHolder</code>) a namapujeme ju na ľubovoľnú adresu pod webovým kontextom.</p>
-
+server<span style="color:#333">.</span><span style="color:#007">start</span><span style="color:#333">();</span>
+server<span style="color:#333">.</span><span style="color:#007">join</span><span style="color:#333">();</span>
+</code></pre></div><p><code>Server</code> predstavuje hlavnú triedu servera, do ktorej pridáme webový kontext namapovaný na koreňovú adresu (<code>/</code>). Do tohto kontextu pridáme jeden už nakonfigurovaný servlet (inštanciu <code>HessianServletu</code> obaľuje <code>ServletHolder</code>) a namapujeme ju na ľubovoľnú adresu pod webovým kontextom.</p>
 <p>Následne server naštartujeme.</p>
-
 <h2 id="klient">Klient</h2>
-
 <p>Klient je o niečo jednoduchší než server. Centrom je továreň <code>HessianProxyFactory</code>, ktorú požiadame o vytvorenie inštancie triedy implementujúcej <code>DateService</code>. Táto inštancia skrytá za interfejsom bude riešiť všetku špinavú prácu (pripojenie k serveru, serializácia a deserializácia dát a pod.)</p>
-
 <p>Továrni stačí odovzdať URL adresu, na ktorej beží serverovská časť.</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">String url </span><span style="color:#333">=</span> <span style="background-color:#e0e0ff">&#34;http://localhost:8080/&#34;</span>;
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">String url <span style="color:#333">=</span> <span style="background-color:#e0e0ff">&#34;http://localhost:8080/&#34;</span><span style="color:#333">;</span>
 	
-<span style="color:#f00;background-color:#faa">HessianProxyFactory factory </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> HessianProxyFactory();
-<span style="color:#f00;background-color:#faa">DateService dateService </span><span style="color:#333">=</span> (DateService) factory.<span style="color:#007">create</span>(DateService.<span style="color:#007">class</span>, url);</code></pre></div>
-<p>Objekt <code>dateService</code> je takto pripravený a môžeme na ňom pohodlne volať metódy.</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">System.<span style="color:#007">out</span>.<span style="color:#007">println</span>(dateService.<span style="color:#007">getCurrentDate</span>());</code></pre></div>
-<p>Všimnime si, že pracujeme so samotným interfejsom, ktorý stiera rozdiely medzi tým, či pracujeme na lokálnej alebo vzdialenej inštancii triedy <code>DateServiceImpl</code>.</p>
-
+HessianProxyFactory factory <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> HessianProxyFactory<span style="color:#333">();</span>
+DateService dateService <span style="color:#333">=</span> <span style="color:#333">(</span>DateService<span style="color:#333">)</span> factory<span style="color:#333">.</span><span style="color:#007">create</span><span style="color:#333">(</span>DateService<span style="color:#333">.</span><span style="color:#007">class</span><span style="color:#333">,</span> url<span style="color:#333">);</span>
+</code></pre></div><p>Objekt <code>dateService</code> je takto pripravený a môžeme na ňom pohodlne volať metódy.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span>dateService<span style="color:#333">.</span><span style="color:#007">getCurrentDate</span><span style="color:#333">());</span>
+</code></pre></div><p>Všimnime si, že pracujeme so samotným interfejsom, ktorý stiera rozdiely medzi tým, či pracujeme na lokálnej alebo vzdialenej inštancii triedy <code>DateServiceImpl</code>.</p>
 <h1 id="aké-triedy-je-možné-posielať-po-kábli">Aké triedy je možné posielať po kábli?</h1>
-
 <p>Hessian podporuje všetky základné dátové typy a objekty, ktoré sú serializovateľné a majú viditeľný prázdny konštruktor. Triedy určené na posielanie nie je potrebné nijak špeciálne konfigurovať ani upravovať.</p>
 
 </main>

@@ -59,39 +59,27 @@
 
 
 <main>
-
-
 <p>(pozn: viacmenej okopírované z tutoriálu na <a href="http://xulplanet.com/tutorials/xultu/xulfile.html">XULPlanet.com</a>)</p>
-
 <h2 id="úvod">Úvod</h2>
-
 <p>Na prípravu nového rozšírenia potrebujeme</p>
-
 <ul>
 <li>adresárovú štruktúru</li>
 <li>upraviť <code>contents.rdf</code></li>
 <li>upraviť <code>installed-chrome.txt</code></li>
 </ul>
-
 <h2 id="adresárová-štruktúra">Adresárová štruktúra</h2>
-
 <p>Súbory rozšírenia by sa mali nachádzať v úhľadnom JARe, ale pri ladení ich nechceme do archívu neustále zabaľovať a odbaľovať. Môžeme si založiť adresár v adresári <code>chrome</code>, v prípade Firefoxu napr. <code>c:\Program Files\Mozilla Firefox\chrome</code>.
-Nech sa naša aplikácia volá „textedit&rdquo;. Založíme teda nasledovnú štruktúru</p>
-
-<pre><code>c:\Program Files\Mozilla Firefox\chrome
+Nech sa naša aplikácia volá „textedit&quot;. Založíme teda nasledovnú štruktúru</p>
+<pre tabindex="0"><code>c:\Program Files\Mozilla Firefox\chrome
   |
   |-textedit
       |-content
       |-skin
       |-locale
-</code></pre>
-
-<p>Adresáre <code>skin</code> a <code>locale</code> zatiaľ ponecháme prázdne. Naše súbory <code>.xul</code> budeme pchať do adresára <code>content</code>.</p>
-
-<h2 id="contents-rdf">contents.rdf</h2>
-
+</code></pre><p>Adresáre <code>skin</code> a <code>locale</code> zatiaľ ponecháme prázdne. Naše súbory <code>.xul</code> budeme pchať do adresára <code>content</code>.</p>
+<h2 id="contentsrdf">contents.rdf</h2>
 <p>Súbor <code>contents.rdf</code> popisuje obsah balíčka, je to bežný XML súbor. Tento súbor uložíme (podľa mňa ako UTF-8) do adresára <code>textedit/content</code>.</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#579">&lt;?xml version=&#34;1.0&#34;?&gt;</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#579">&lt;?xml version=&#34;1.0&#34;?&gt;</span>
 
 <span style="color:#070">&lt;RDF:RDF</span> <span style="color:#007">xmlns:RDF=</span><span style="background-color:#e0e0ff">&#34;http://www.w3.org/1999/02/22-rdf-syntax-ns#&#34;</span>
          <span style="color:#007">xmlns:chrome=</span><span style="background-color:#e0e0ff">&#34;http://www.mozilla.org/rdf/chrome#&#34;</span><span style="color:#070">&gt;</span>
@@ -105,16 +93,11 @@ Nech sa naša aplikácia volá „textedit&rdquo;. Založíme teda nasledovnú �
           <span style="color:#007">chrome:author=</span><span style="background-color:#e0e0ff">&#34;Fero Tarabak&#34;</span>
           <span style="color:#007">chrome:name=</span><span style="background-color:#e0e0ff">&#34;textedit&#34;</span>
           <span style="color:#007">chrome:extension=</span><span style="background-color:#e0e0ff">&#34;true&#34;</span><span style="color:#070">/&gt;</span>
-<span style="color:#070">&lt;/RDF:RDF&gt;</span></code></pre></div>
-<h2 id="úprava-installed-chrome-txt">Úprava <code>installed-chrome.txt</code></h2>
-
+<span style="color:#070">&lt;/RDF:RDF&gt;</span>
+</code></pre></div><h2 id="úprava-installed-chrometxt">Úprava <code>installed-chrome.txt</code></h2>
 <p>Upravíme súbor <code>c:\Program Files\Mozilla Firefox\chrome\installed-chrome.txt</code>, aby sme upovedomili Firefox o našom rozšírení. Na koniec tohto súboru pridáme riadok</p>
-
-<pre><code>content,install,url,resource:/chrome/textedit/content/
-</code></pre>
-
-<p>Uistíme sa, že na konci cesty je spätná lomka a že na konci súboru je prázdny riadok. Riadok znamená, že inštalujeme súčasť <code>content</code> (podrobnosti v tutoriále).</p>
-
+<pre tabindex="0"><code>content,install,url,resource:/chrome/textedit/content/
+</code></pre><p>Uistíme sa, že na konci cesty je spätná lomka a že na konci súboru je prázdny riadok. Riadok znamená, že inštalujeme súčasť <code>content</code> (podrobnosti v tutoriále).</p>
 <p>Spustíme Firefox. Ak bola inštalácia úspešná, názov našeho rozšírenia by sa mal objaviť v súbore <code>c:\Program Files\Mozilla Firefox\chrome\chrome.rdf</code>. Ak nie, je niečo zhnité (je <code>contents.rdf</code> validné XML?)</p>
 
 </main>

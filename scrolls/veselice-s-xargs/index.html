@@ -59,195 +59,121 @@
 
 
 <main>
-
-
 <p>Každý druhý článok o <code>xargs</code> sa začína v duchu <em>„&hellip; jedným z najpodceňovanejších príkazov Unixu je&hellip;”</em>. Tento nebude iný.</p>
-
 <p>Mnohokrát sa stáva, že výstupom programu je niekoľko slov oddelených bielym miestom (napr. slová na samostatných riadkoch), ktoré chceme postupne jeden za druhým spracovávať a posielať ako parameter do iného programu. Niečo v duchu:</p>
-
 <pre><code>pre každé slovo R
-    spracuj R
+	spracuj R
 </code></pre>
-
 <p>Priamo <code>for</code> cyklus! V shellscriptingu je však <code>for</code> prekérny: vyžaduje totiž podivnú viacriadkovú syntax&hellip; a komu sa chce kvôli jednoduchým jednorazovým veciam zakladať skripty, písať shebangy, <code>chmod</code>ovať a patlať sa s editorom.</p>
-
 <p>Túto rolu vie mnohokrát zastúpiť <code>xargs</code>.</p>
-
 <h1 id="o-xargs">O <code>xargs</code></h1>
-
 <p>Stručne povedané:</p>
-
 <blockquote>
 <p><code>xargs</code> zostavuje zo štandardného vstupu príkazový riadok
- a vykonáva ho.</p>
+a vykonáva ho.</p>
 </blockquote>
-
 <p>A povedané ešte inak: ak máte na štandardnom vstupe slová oddelené bielym miestom, a v inom príkaze ich potrebujete nasekať do parametrov, <code>xargs</code> vás zachráni. A naozaj nemusíte <code>for</code>ovať.</p>
-
 <h1 id="ukážková-úloha-hromadné-sťahovanie-súborov">Ukážková úloha: hromadné sťahovanie súborov</h1>
-
 <p>Prestavme si, že chceme hromadne sťahovať súbory, pričom ich adresy máme v súbore <code>url.txt</code>:</p>
-
-<pre><code>https://google.com
+<pre tabindex="0"><code>https://google.com
 http://altavista.digital.com
 http://askjeeves.com
-</code></pre>
-
-<p>Pre každú adresu chceme zavolať <code>wget</code>, ktorý stiahne obsah do aktuálneho adresára. (Ako pekne to zodpovedá našej filozofii zhora! URL je slovo, stiahnutie súboru je operácia.)</p>
-
+</code></pre><p>Pre každú adresu chceme zavolať <code>wget</code>, ktorý stiahne obsah do aktuálneho adresára. (Ako pekne to zodpovedá našej filozofii zhora! URL je slovo, stiahnutie súboru je operácia.)</p>
 <p><code>xargs</code>, ktorý použijeme, potrebuje dve veci:</p>
-
 <ul>
 <li><strong>čo má vykonať,</strong>  teda príkaz, ktorý sa má spustiť.</li>
 <li><strong>s čím má pracovať</strong>, teda dáta, nad ktorými sa vykoná príkaz.</li>
 </ul>
-
 <p>Dáta pošleme do <code>xargs</code> cez štandardný vstup a príkaz použijeme ako argument <code>xargs</code>:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">&lt; url.txt xargs -n <span style="color:#60e;font-weight:bold">1</span> wget</code></pre></div>
-<p><code>xargs</code> má parameter <code>-n 1</code>, ktorý hovorí, že pre každé (jedno) slovo zo štandardného vstupu sa má spustiť <code>wget</code> a toto slovo sa použije ako jeho parameter.</p>
-
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">&lt; url.txt xargs -n <span style="color:#60e;font-weight:bold">1</span> wget
+</code></pre></div><p><code>xargs</code> má parameter <code>-n 1</code>, ktorý hovorí, že pre každé (jedno) slovo zo štandardného vstupu sa má spustiť <code>wget</code> a toto slovo sa použije ako jeho parameter.</p>
 <p>Keďže máme tri adresy (tri slová oddelené bielym miestom), <code>xargs</code> ich bude načítavať po jednom a pre každé z nich spustí <code>wget</code>. V skratke, <code>wget</code> sa spustí trikrát:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">wget https://google.com
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">wget https://google.com
 wget http://altavista.digital.com
-http://askjeeves.com</code></pre></div>
-<h1 id="ukážková-úloha-spracovanie-používateľov-systému">Ukážková úloha: spracovanie používateľov systému</h1>
-
+http://askjeeves.com
+</code></pre></div><h1 id="ukážková-úloha-spracovanie-používateľov-systému">Ukážková úloha: spracovanie používateľov systému</h1>
 <p><code>xargs</code> možno využiť aj pri spracovaní textu. Vypíšme zoznam všetkých používateľov v systéme na jeden riadok!</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">cut -d : -f <span style="color:#60e;font-weight:bold">1</span> /etc/passwd | xargs</code></pre></div>
-<p>Zoznam používateľov je uložený ako prvá položka záznamu v <code>/etc/passwd</code>. Použitím príkazu <code>cut</code> sme na každý riadok vypísali len používateľa.</p>
-
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">cut -d : -f <span style="color:#60e;font-weight:bold">1</span> /etc/passwd | xargs
+</code></pre></div><p>Zoznam používateľov je uložený ako prvá položka záznamu v <code>/etc/passwd</code>. Použitím príkazu <code>cut</code> sme na každý riadok vypísali len používateľa.</p>
 <p>Ak výstup pošleme na štandardný vstup príkazu <code>xargs</code>, pre každého používateľa, ktorý je považovaný za slov, sa vykoná príkaz. Aký je to však príkaz? Ak v <code>xargs</code> neuvedieme nič, použije sa implicitne <code>echo</code>.</p>
-
 <p>V tomto prípade sme neuviedli prepínač <code>-n 1</code>, to znamená, že všetci používatelia, teda všetky slová sa vezmú naraz a akoby “prilepia” na koniec príkazového riadku.</p>
-
 <p>Zoberme teda zoznam používateľov:</p>
-
-<pre><code>root
+<pre tabindex="0"><code>root
 johnpaul
 willgates
-</code></pre>
-
-<p><code>xargs</code> vezme všetky tri slová a použije ich <em>naraz</em> ako argument pre <code>xargs</code> a v skutočnosti sa vykoná:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">xargs <span style="color:#072">echo</span> root johnpaul willgates</code></pre></div>
-<p>Keďže na vstupe boli tri slová (traja používatelia, na troch riadkoch), príkaz <code>xargs</code> zavolá <code>echo</code> s troma argumentami.</p>
-
+</code></pre><p><code>xargs</code> vezme všetky tri slová a použije ich <em>naraz</em> ako argument pre <code>xargs</code> a v skutočnosti sa vykoná:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">xargs <span style="color:#072">echo</span> root johnpaul willgates
+</code></pre></div><p>Keďže na vstupe boli tri slová (traja používatelia, na troch riadkoch), príkaz <code>xargs</code> zavolá <code>echo</code> s troma argumentami.</p>
 <h2 id="limity-operačného-systému">Limity operačného systému</h2>
-
 <p><code>xargs</code> použije zo štandardného vstupu toľko slov, koľko sa zmestí na príkazový riadok. Operačný systém totiž obvykle kladie limity na maximálnu dĺžku riadku, ktorý sa dá vykonať. V súčasných systémoch to už nie je až také kritické (napr. náš debianovský server podporuje na príkazovom riadku vyše 2 miliónov znakov!) Ak by aj napriek tomu k niečomu takému došlo, <code>xargs</code> sa s tým vie vysporiadať, pretože vstupné slová primerane rozdelí do kratších skupín a príkaz zopakuje viackrát.</p>
-
 <h1 id="ukážková-úloha-rátanie-riadkov">Ukážková úloha: rátanie riadkov</h1>
-
 <p><code>xargs</code> sa dá použiť aj pri spracovaní ciest k súborom. Vypíšme počty riadkov textových súborov v aktuálnom adresári a podadresároch!</p>
-
 <p>Všetky texťáky nájdeme poľahky cez <code>find</code>:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">find . -name <span style="background-color:#e0e0ff">&#39;*.txt&#39;</span></code></pre></div>
-<p>Dáta tvoria riadky s cestami k súborom, a príkazom na rátanie bude <code>wc -l</code>.</p>
-
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">find . -name <span style="background-color:#e0e0ff">&#39;*.txt&#39;</span>
+</code></pre></div><p>Dáta tvoria riadky s cestami k súborom, a príkazom na rátanie bude <code>wc -l</code>.</p>
 <h2 id="pozor-slová-nie-sú-riadky">Pozor, slová nie sú riadky!</h2>
-
 <p>Ale pozor, v tomto prípade nemôžeme v <code>xargs</code> použiť <code>-n 1</code>! Ak by súbor obsahoval medzeru (napr. <code>diplomova praca.txt</code>), <code>xargs</code> by  zavolal príkaz dvakrát: raz pre slovo <code>diplomova</code> a druhýkrat pre <code>praca.txt</code>, čo určite nie je to, čo očakávame.</p>
-
 <h2 id="xargs-pre-rátanie-riadkov"><code>xargs</code> pre rátanie riadkov</h2>
-
 <p>Namiesto toho vie <code>xargs</code> rátať aj riadky:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">find . -name <span style="background-color:#e0e0ff">&#39;*.txt&#39;</span> | xargs -I <span style="color:#333">{}</span> wc -l <span style="color:#333">{}</span></code></pre></div>
-<p>Prepínač <code>-I</code> (veľké I) zapne postupné spracovanie riadkov namiesto slov zo štandardného vstupu. Výraz <code>{}</code> je špeciálne označenie “premennej”, v ktorej sa postupne objavia jednotlivé riadky s názvami súborov. Túto premennú môžeme použiť na vhodnom mieste ako argument príkazu, ktorý sa spracováva. To je užitočné v prípade, keď spracovávaná položka sa má v príkaze použiť inak ako posledný argument.</p>
-
-<h3 id="porovnanie-s-find-exec">Porovnanie s <code>find</code>/<code>exec</code></h3>
-
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">find . -name <span style="background-color:#e0e0ff">&#39;*.txt&#39;</span> | xargs -I <span style="color:#333">{}</span> wc -l <span style="color:#333">{}</span>
+</code></pre></div><p>Prepínač <code>-I</code> (veľké I) zapne postupné spracovanie riadkov namiesto slov zo štandardného vstupu. Výraz <code>{}</code> je špeciálne označenie “premennej”, v ktorej sa postupne objavia jednotlivé riadky s názvami súborov. Túto premennú môžeme použiť na vhodnom mieste ako argument príkazu, ktorý sa spracováva. To je užitočné v prípade, keď spracovávaná položka sa má v príkaze použiť inak ako posledný argument.</p>
+<h3 id="porovnanie-s-findexec">Porovnanie s <code>find</code>/<code>exec</code></h3>
 <p>Rovnaký výsledok dosiahneme aj klasickým zápisom <code>find</code> a jeho prepínača <code>-exec</code>:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">find -name <span style="background-color:#e0e0ff">&#39;*.txt&#39;</span> -exec wc -l <span style="color:#333">{}</span> <span style="color:#666;background-color:#e0e0ff;font-weight:bold">\;</span></code></pre></div>
-<p>Príkaz nájde všetky súbory s príponou <code>.txt</code> a pre každý z nich vykoná počítanie slov. Dokonca aj vidno, že zápis pre “aktuálny súbor” je rovnaký — pomocou <code>{}</code>.</p>
-
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">find -name <span style="background-color:#e0e0ff">&#39;*.txt&#39;</span> -exec wc -l <span style="color:#333">{}</span> <span style="color:#666;background-color:#e0e0ff;font-weight:bold">\;</span>
+</code></pre></div><p>Príkaz nájde všetky súbory s príponou <code>.txt</code> a pre každý z nich vykoná počítanie slov. Dokonca aj vidno, že zápis pre “aktuálny súbor” je rovnaký — pomocou <code>{}</code>.</p>
 <p>Rozdiel je v rýchlosti a robustnosti. Kombinácia <code>find</code> a <code>xargs</code> je omnoho rýchlejšia, ale môže mať problémy pri ošetrovaní mimoriadne neštandardných či zákerných názvov súborov.</p>
-
 <h3 id="rátanie-riadkov-bezpečným-spôsobom-nulové-znaky">Rátanie riadkov bezpečným spôsobom: nulové znaky</h3>
-
 <p>Ak máme k dispozícii GNU prostredie (na Linuxe) alebo MacOS, môžeme použiť pri spracovávaní súborov mechanizmus, ktorý ošetrí aj veľmi neštandardné názvy súborov:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">find . -name <span style="background-color:#e0e0ff">&#39;*.txt&#39;</span> -print0 | xargs -0 wc -l</code></pre></div>
-<p>V tomto prípade <code>find</code> bude vypisovať na štandardný výstup jednotlivé súbory oddelené znakom <code>NUL</code> (teda znakom s ASCII hodnotou 0). Dosiahneme to parametrom <code>-print0</code>.</p>
-
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">find . -name <span style="background-color:#e0e0ff">&#39;*.txt&#39;</span> -print0 | xargs -0 wc -l
+</code></pre></div><p>V tomto prípade <code>find</code> bude vypisovať na štandardný výstup jednotlivé súbory oddelené znakom <code>NUL</code> (teda znakom s ASCII hodnotou 0). Dosiahneme to parametrom <code>-print0</code>.</p>
 <p>Príkazu <code>xargs</code> potom môžeme povedať, že položky v štandardnom vstupe sú oddelené tým istým znakom , stačí použiť parameter <code>-0</code>.</p>
-
 <h1 id="ukážková-úloha-vytváranie-súborov">Ukážková úloha: vytváranie súborov</h1>
-
 <p>Vytvorme si naraz 10 súborov <code>kapitola1.txt</code>, <code>kapitola2.txt</code> … <code>kapitola10.txt</code>!</p>
-
 <p>Toto je obvykle situácia pre cyklus <code>for</code>, ale ten sa v shelli zapisuje mimoriadne nepríjemne. Namiesto toho si nechajme vygenerovať 10 čísiel pomocou príkazu <code>seq</code> a použime ich ako premennú v <code>xargs</code>:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">seq <span style="color:#60e;font-weight:bold">10</span> | xargs -I<span style="color:#333">{}</span> touch kapitola<span style="color:#333">{}</span>.txt</code></pre></div>
-<p>Príkaz <code>seq</code> nageneruje na každý riadok jedno číslo, a kombinácia <code>-I</code> bude brať jednotlivé riadky a zároveň poslúži na vyformátovanie názvu súboru.</p>
-
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">seq <span style="color:#60e;font-weight:bold">10</span> | xargs -I<span style="color:#333">{}</span> touch kapitola<span style="color:#333">{}</span>.txt
+</code></pre></div><p>Príkaz <code>seq</code> nageneruje na každý riadok jedno číslo, a kombinácia <code>-I</code> bude brať jednotlivé riadky a zároveň poslúži na vyformátovanie názvu súboru.</p>
 <p>Ak by sme chceli súbory <code>Kapitola 1.txt</code>, <code>Kapitola 2.txt</code> atď. (s medzerami), použijeme klasické zásady o úvodzovkovaní zo shellu.</p>
-
-<pre><code>seq 10 | xargs -I {} touch 'Kapitola {}.txt'
-</code></pre>
-
-<h2 id="iné-zvyklosti-pri-premennnej">Iné zvyklosti pri premennnej</h2>
-
+<pre tabindex="0"><code>seq 10 | xargs -I {} touch 'Kapitola {}.txt'
+</code></pre><h2 id="iné-zvyklosti-pri-premennnej">Iné zvyklosti pri premennnej</h2>
 <p>V niektorých skriptoch sa namiesto pseudopremennej <code>{}</code> používa iný, kratší symbol, a to percento <code>%</code>. Skracuje to zápis:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">seq <span style="color:#60e;font-weight:bold">10</span> | xargs -I% touch kapitola%.txt</code></pre></div>
-<h1 id="ďalšie-triky">Ďalšie triky</h1>
-
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">seq <span style="color:#60e;font-weight:bold">10</span> | xargs -I% touch kapitola%.txt
+</code></pre></div><h1 id="ďalšie-triky">Ďalšie triky</h1>
 <h2 id="trasovanie-príkazov">Trasovanie príkazov</h2>
-
 <p>Prepínač <code>-t</code> zapne trasovanie príkazov, teda výpis úplneho príkazu, ktorý <code>xargs</code> spustí.</p>
-
 <h2 id="potvrdenie-príkazu">Potvrdenie príkazu</h2>
-
 <p>Prepínač <code>-p</code> sa pri každom spustení príkazu vyvolaného <code>xargs</code> spýta používateľa na potvrdenie:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">whitehall$ ls -1 *.txt | xargs -I % -p rm %
-rm <span style="color:#60e;font-weight:bold">1</span>.txt?...y
-rm <span style="color:#60e;font-weight:bold">2</span>.txt?...n
-rm <span style="color:#60e;font-weight:bold">3</span>.txt?...y</code></pre></div>
-<p>Pre každý súbor musí používateľ zadať <code>y</code> a potvrdiť vymazanie súboru.</p>
-
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">whitehall$ ls -1 *.txt | xargs -I % -p rm %
+rm 1.txt?...y
+rm 2.txt?...n
+rm 3.txt?...y
+</code></pre></div><p>Pre každý súbor musí používateľ zadať <code>y</code> a potvrdiť vymazanie súboru.</p>
 <h2 id="prevod-riadkov-na-slová">Prevod riadkov na slová</h2>
-
 <p>Desať čísiel vieme preklopiť zo samostatných riadkov na jeden riadok, kde budú čísla oddelené medzerami:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">whitehall$ seq <span style="color:#60e;font-weight:bold">10</span> | xargs
-<span style="color:#60e;font-weight:bold">1</span> <span style="color:#60e;font-weight:bold">2</span> <span style="color:#60e;font-weight:bold">3</span> <span style="color:#60e;font-weight:bold">4</span> <span style="color:#60e;font-weight:bold">5</span> <span style="color:#60e;font-weight:bold">6</span> <span style="color:#60e;font-weight:bold">7</span> <span style="color:#60e;font-weight:bold">8</span> <span style="color:#60e;font-weight:bold">9</span> <span style="color:#60e;font-weight:bold">10</span></code></pre></div>
-<h2 id="viac-príkazov-a-viac-pseudopremenných">Viac príkazov a viac pseudopremenných</h2>
-
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">whitehall$ seq <span style="color:#60e;font-weight:bold">10</span> | xargs
+<span style="color:#60e;font-weight:bold">1</span> <span style="color:#60e;font-weight:bold">2</span> <span style="color:#60e;font-weight:bold">3</span> <span style="color:#60e;font-weight:bold">4</span> <span style="color:#60e;font-weight:bold">5</span> <span style="color:#60e;font-weight:bold">6</span> <span style="color:#60e;font-weight:bold">7</span> <span style="color:#60e;font-weight:bold">8</span> <span style="color:#60e;font-weight:bold">9</span> <span style="color:#60e;font-weight:bold">10</span>
+</code></pre></div><h2 id="viac-príkazov-a-viac-pseudopremenných">Viac príkazov a viac pseudopremenných</h2>
 <p>Ak potrebujeme vykonať nad položkou viacero príkazov, môžeme vyvolať v príkaze <code>xargs</code> celý shell, ktorému posunieme príkazy v reťazci za prepínačom <code>-c</code>:</p>
-
-<pre><code>ls *.txt | xargs -I{} sh -c 'echo {}; &lt;{} wc -l'
-</code></pre>
-
-<p>V tomto príklade nad každým textovým súborom vykonáme dva podpríkazy:</p>
-
+<pre tabindex="0"><code>ls *.txt | xargs -I{} sh -c 'echo {}; &lt;{} wc -l'
+</code></pre><p>V tomto príklade nad každým textovým súborom vykonáme dva podpríkazy:</p>
 <ul>
 <li>vypíšeme jeho názov cez <code>echo</code></li>
 <li>spočítame jeho riadky cez <code>wc</code>, do ktorého presmerujeme obsah aktuálneho súboru v pseudopremennej <code>{}</code>.</li>
 </ul>
-
 <p>Oba príkazy vykonáme v shelli, a odovzdáme ich do shellu cez <code>-c</code>.</p>
-
 <p>Ako vidno, pseudopremennú <code>{}</code> môžeme použiť aj viackrát: v tomto prípade raz na výpis a druhýkrát na presmerovanie vstupu.</p>
-
 <h1 id="funky-veci">Funky veci</h1>
-
 <p>A ako bonus, matematika:</p>
-
 <h2 id="vypíšte-maticu-3-x-3-s-prvkami-od-1-po-9">Vypíšte maticu 3 x 3 s prvkami od 1 po 9</h2>
-
 <p>Stačí použiť fintu s dávkovaním parametrom po <em>n</em>-ticiach:</p>
-
-<pre><code>seq 9 | xargs -n 3 
-</code></pre>
-
-<p>Výsledkom je</p>
-
-<pre><code>1 2 3
+<pre tabindex="0"><code>seq 9 | xargs -n 3 
+</code></pre><p>Výsledkom je</p>
+<pre tabindex="0"><code>1 2 3
 4 5 6
 7 8 9
-</code></pre>
-
-<h3 id="vypíšte-jednotkovú-maticu-3-x-3">Vypíšte jednotkovú maticu 3 x 3</h3>
-
-<pre><code>yes | head -n 9 | xargs -n 3 | tr y 1
-</code></pre>
-
-<p>Príkaz <code>yes</code> generuje <code>y</code> donekonečna, ale nám stačí odseknúť <code>head</code>om prvých 9 hodnôt (3 x 3), ktoré pošleme posekať do <code>xargs</code> a na záver nahradíme znaky <code>y</code> jednotkami. (Samozrejme, predpokladá to existenciu príkazu <code>yes</code>, ktorý nie je posixový.)</p>
+</code></pre><h3 id="vypíšte-jednotkovú-maticu-3-x-3">Vypíšte jednotkovú maticu 3 x 3</h3>
+<pre tabindex="0"><code>yes | head -n 9 | xargs -n 3 | tr y 1
+</code></pre><p>Príkaz <code>yes</code> generuje <code>y</code> donekonečna, ale nám stačí odseknúť <code>head</code>om prvých 9 hodnôt (3 x 3), ktoré pošleme posekať do <code>xargs</code> a na záver nahradíme znaky <code>y</code> jednotkami. (Samozrejme, predpokladá to existenciu príkazu <code>yes</code>, ktorý nie je posixový.)</p>
+<h3 id="heading"></h3>
 
 </main>
 

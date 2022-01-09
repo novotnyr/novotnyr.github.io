@@ -59,10 +59,7 @@
 
 
 <main>
-
-
 <h1 id="prečo-cmdlety">Prečo cmdlety?</h1>
-
 <p>Skriptovacie možnosti PowerShellu sú dostatočne silné na to, aby bolo
 možné v jeho skriptovacom jazyku napísať takmer akúkoľvek činnosť.
 Existuje mnoho prípadov, keď namiesto komplikovaných skriptov chceme
@@ -70,21 +67,17 @@ využiť svoje znalosti C# alebo iného programovacieho jazyka na
 platforme .NET a vyvinúť si vlastný cmdlet, ktorý realizuje jednu
 konkrétnu špecifickú úlohu. Náš kód sa v niektorých situáciách
 zjednoduší a sprehľadní.</p>
-
 <p>V tomto tutoriále si ukážeme, ako možno vytvoriť vlastný jednoduchý
 cmdlet typu &ldquo;Ahoj svet&rdquo;. Nebudeme však používať komplexné prostredie
 Visual Studia.NET, ale využijeme bezplatné alternatívne prostredie
 SharpDevelop, ktoré úplne postačí na riešenie tejto úlohy.</p>
-
 <h1 id="sharpdevelop">SharpDevelop</h1>
-
 <p><a href="http://www.icsharpcode.net/OpenSource/SD/Download/">SharpDevelop</a> je
 prostredie na vývoj aplikácií v .NET. Nie je také mocné, ani neponúka
 toľko predpripravených šablón a nástrojov ako Visual Studio.NET, ale
 zato je bezplatné a nie sú s ním spojené žiadne špecifické obmedzenia. K
 októbru 2011 vyšla verzia 4.1 dostupná z <a href="http://www.icsharpcode.net/OpenSource/SD/Download/#SharpDevelop4x">produktových
 stránok</a>.</p>
-
 <p>Pred inštaláciou sa uistíme, že máme vo Windowse nainštalovaný .NET
 Framework verzie 3.5 SP1 (dostupné <a href="http://www.microsoft.com/downloads/details.aspx?familyid=ab99342f-5d1a-413d-8319-81da479ab0d7&amp;displaylang=en">z webu
 Microsoftu</a>)
@@ -92,48 +85,36 @@ a zároveň .NET verzie 4.0 (opäť dostupné <a href="http://www.microsoft.com/
 Microsoftu</a>).
 Inštalátor totiž kontroluje verzie až po voľbe súčastí, ktoré majú byť
 nainštalované, čo môže byť pomerne otravné.</p>
-
 <blockquote>
 <p><strong>Note</strong></p>
-
 <p>Na rozdiel od sveta Javy v .NET Frameworku nie vždy platí, že
 inštalácia novšej verzie v sebe automaticky nesie aj moduly staršej
 verzie. .NET Framework podporuje nezávislé moduly a aplikácia si môže
 vyžiadať použitie knižnice, či modulu (v terminológii .NET <em>assembly</em>)
 konkrétnej verzie.</p>
 </blockquote>
-
 <p>Po spustení SharpDevelopera vytvoríme nový <em>solution</em>.</p>
-
 <blockquote>
 <p><strong>Note</strong></p>
-
 <p><em>Solution</em> v .NET terminológii zodpovedá skupine projektov, ktoré
 dohromady vyprodukujú spustiteľnú aplikáciu. V samotnej Jave
 neexistuje analógia tohto konceptu &ndash; jeho realizácia obvykle záleží
 na použitom IDE.</p>
 </blockquote>
-
 <p>Z ponuky zvolíme <em>solution</em> v jazyku C# a použijeme možnosť <em>Class</em>
 <em>Library</em>. Samotný skompilovaný cmdlet totiž naozaj nie je nič iné než
 bežná knižnica (DLL).</p>
-
-<p><img src="new-solution.png" alt="" /></p>
-
+<p><img src="new-solution.png" alt=""></p>
 <p><em>Solution</em> nazvime inteligentným spôsobom, napr. <code>HelloWorldCmdlets</code> a
 vyberme z rozbaľovacieho menu profil .NET Framework 3.0.</p>
-
 <blockquote>
 <p><strong>Warning</strong></p>
-
 <p>Voľba staršej verzie je veľmi podstatná! SharpDevelop nám implicitne
 ponúkne verziu .NET 4.0, s ktorou PowerShell 2 nie je kompatibilný.
 Ranou istoty je použiť .NET 3.0, či 3.5 alebo ešte starší.</p>
 </blockquote>
-
 <p>SharpDevelop automaticky vytvorí prvú triedu v mennom priestore
 HelloWorldCmdlets, ktorá po odstránení komentárov vyzerá nasledovne:</p>
-
 <pre><code>using System;
 using System.Collections.Generic;
 
@@ -141,51 +122,38 @@ namespace HelloWorldCmdlets
 {
     public class MyClass
     {
-
+        
     }
 }
 </code></pre>
-
 <p>Samotný cmdlet vytvoríme v nasledovnom kroku:</p>
-
 <h1 id="zavedenie-assemblies">Zavedenie <em>assemblies</em></h1>
-
 <p>Samotná tvorba cmdletov sa nijak mimoriadne nelíši od tvorby akejkoľvej
 inej DLL knižnice. Podobne za cmdletom netreba hľadať žiadnu mágiu:
 cmdlet je trieda, ktorá dedí od rodičovskej triedy
 <code>System.Management.Automation.PSCmdlet</code> a prekrýva jej metódy. Na to,
 aby sme vedeli použiť túto rodičovskú triedu v našom projekte, musíme
 doň zaviesť referenciu na <em>assembly</em>, ktorá ju obsahuje.</p>
-
 <blockquote>
 <p><strong>Note</strong></p>
-
 <p>V Jave je obvyklé stiahnuť JAR s knižnicou, a vložiť ho do CLASSPATH,
 čím budeme mať k dispozícii všetky jej triedy. Keďže .NET podporuje
 verzionované knižnice, musíme zaviesť referenciu (odkaz) na konkrétnu
 knižnicu v danej verzii - inými slovami, zaviesť referenciu na
 konkrétne <em>assembly.</em></p>
 </blockquote>
-
 <p>Z menu Project vyberme Add Reference a pridajme referenciu na uvedenú
 <em>assembly</em>:</p>
-
-<p><img src="add-reference.png" alt="Pridanie odkazu na *assembly*" /></p>
-
+<p><img src="add-reference.png" alt="Pridanie odkazu na assembly"></p>
 <p>Pridanie <em>assembly</em> vieme overiť v strome projektu, v uzle <em>References</em>.</p>
-
-<p><img src="inserted-reference-to-system-management-automation.png" alt="" /></p>
-
+<p><img src="inserted-reference-to-system-management-automation.png" alt=""></p>
 <h1 id="tvorba-cmdletu">Tvorba cmdletu</h1>
-
 <h2 id="tvorba-prázdneho-cmdletu">Tvorba prázdneho cmdletu</h2>
-
 <p>Teraz, keď sme zaviedli všetky požadované <em>assemblies</em>, môžeme
 dopracovať náš cmdlet. Odstráňme z projektu súbor <code>MyClass.cs</code> a
 namiesto neho vytvorme nový súbor pre triedu (<em>File | New&hellip; | File&hellip;. |</em>
 <em>C# File</em> a potvrdíme snahu vytvoriť súbor v projekte.) Súbor nazveme
 <code>HelloWorldCmdlet</code> a vložíme doňho nasledovný obsah:</p>
-
 <pre><code>using System;
 using System.Management.Automation;
 
@@ -194,60 +162,56 @@ namespace HelloWorldCmdlets
     [Cmdlet(VerbsCommon.Get, &quot;Hello&quot;)]
     public class HelloWorldCmdlet : PSCmdlet
     {
-
+        
     }
 }
 </code></pre>
-
 <p>Trieda dedí od rodičovskej triedy
 <code>System.Management.Automation.PSCmdlet</code>. To však nie je všetko - cmdlet
 musí byť označený atribútom <code>CmdletAttribute</code>, ktorý špecifikuje názov
 cmdletu, pod ktorým sa sprístupní v prostredí PowerShellu.</p>
-
 <p>Konvencia káže, aby každý cmdlet mal názov pozostávajúci zo slovesa a
 podstatného mena a nie je dôvod ju nedodržať. Náš cmdlet sa sprístupní
 pod menom Get-Hello.</p>
-
 <blockquote>
 <p><strong>Note</strong></p>
-
 <p>Všimnime si niekoľko syntaktických rozdielov oproti Jave.</p>
-
 <ul>
-<li><p>Namiesto deklarácie import používame na ten istý účel deklaráciu
-using.</p></li>
-
-<li><p>V C# sa môže v rámci jedného súboru nachádzať i viacero tried
+<li>
+<p>Namiesto deklarácie import používame na ten istý účel deklaráciu
+using.</p>
+</li>
+<li>
+<p>V C# sa môže v rámci jedného súboru nachádzať i viacero tried
 poskytnutých v rámci bloku namespace, ktorý je ekvivalentom
-balíčka (<em>package</em>) v Jave.</p></li>
-
-<li><p>Dedičnosť tried nezapisujeme kľúčovým slovom extends, ale prostou
-dvojbodkou.</p></li>
-
-<li><p>Atribúty sú .NETovským protipólom anotácií v Jave. Namiesto
-zavináčovej notácie ich uvádzame do hranatých zátvoriek.</p></li>
+balíčka (<em>package</em>) v Jave.</p>
+</li>
+<li>
+<p>Dedičnosť tried nezapisujeme kľúčovým slovom extends, ale prostou
+dvojbodkou.</p>
+</li>
+<li>
+<p>Atribúty sú .NETovským protipólom anotácií v Jave. Namiesto
+zavináčovej notácie ich uvádzame do hranatých zátvoriek.</p>
+</li>
 </ul>
-
+</blockquote>
+<blockquote>
 <p><strong>Note</strong></p>
-
 <p>Atribút CmdletAttribute potrebuje dva reťazce: sloveso a podstatné
 meno. Názov slovesa prevezmeme zo statickej inštančnej premennej
 triedy <code>VerbsCommon</code>, ktorá môže slúžiť ako vzor typicky používaných
 slovies.</p>
 </blockquote>
-
 <h2 id="prekrytie-metódy">Prekrytie metódy</h2>
-
 <p>Na to, aby cmdlet robil niečo zmysluplné, je potrebné prekryť niektorú z
 metód rodičovskej triedy. Základnou metódou je <code>ProcessRecord()</code>, ktorá sa
 zavolá jedenkrát pre každý objekt, ktorý príde z rúry do cmdletu. Ak z
 rúry prichádza napr. 5 objektov, metóda sa zavolá päťkrát.</p>
-
 <p>Dodajme túto metódu do cmdletu a dosiahnime tým najjednoduchšiu možnú
 funkcionalitu: tzv. &ldquo;Hello World&rdquo;. Cmdlet nech do rúry pošle jeden
 pozdravný reťazec. Na zápis objektu do rúry použijeme rodičovskú metódu
 <code>WriteObject()</code>.</p>
-
 <pre><code>using System;
 using System.Management.Automation;
 
@@ -260,51 +224,46 @@ namespace HelloWorldCmdlets
         {
             WriteObject(&quot;Hello World&quot;);
         }
-
+        
     }
 }
 </code></pre>
-
 <blockquote>
 <p><strong>Note</strong></p>
-
 <p>Na rozdiel od Javy treba prekryté metódy explicitne označiť kľúčovým
 slovom override.</p>
-
+</blockquote>
+<blockquote>
 <p><strong>Note</strong></p>
-
 <p>Ak hľadáte analógiu funkcie <em>Override and implement methods</em> z
 Eclipse, hľadáte v menu márne. Prekryť metódu môžete pomocou funkcie
 <em>autocomplete</em> iným spôsobom: uveďte do triedy kľúčové slovo override,
 a po stlačení Ctrl+Enter vám SharpDevelop ponúkne zoznam rodičovských
 metód určených na prekrytie.</p>
-
-<p><img src="override-autocomplete.png" alt="Automatické dopĺňanie prekrytých metód" /></p>
+<p><img src="override-autocomplete.png" alt="Automatické dopĺňanie prekrytých metód"></p>
 </blockquote>
-
 <h1 id="vytvorenie-inštalátora">Vytvorenie inštalátora</h1>
-
 <p>Na to, aby sme mohli cmdlet použiť v prostredí PowerShellu, potrebujeme
 obaliť triedu cmdletu do zásuvného modulu, tzv. snap-inu. Jeden
 <strong>snap-in</strong> môže obsahovať i viacero cmdletov, či providerov, ktoré možno
 naraz zaviesť do prostredia.</p>
-
 <p>Snap-in je opäť bežná trieda dediaca od
 <code>System.Management.Automation.PSSnapIn</code>, s povinným atribútom
 <code>RunInstallerAttribute</code> a povinným poskytnuté nasledovných <em>properties</em></p>
-
 <ul>
-<li><p><code>Name</code>: zmysluplný názov snap-inu</p></li>
-
-<li><p><code>Vendor</code>: poskytovateľ snap-inu, obvykle názov spoločnosti autora.</p></li>
-
-<li><p><code>Description</code>: používateľsky prítulný popis snap-inu</p></li>
+<li>
+<p><code>Name</code>: zmysluplný názov snap-inu</p>
+</li>
+<li>
+<p><code>Vendor</code>: poskytovateľ snap-inu, obvykle názov spoločnosti autora.</p>
+</li>
+<li>
+<p><code>Description</code>: používateľsky prítulný popis snap-inu</p>
+</li>
 </ul>
-
 <p>Snap-in musí mať zároveň povinný atribút <code>RunInstallerAttribute</code>, ktorý
 indikuje spustenie inštalátora pri nasadzovaní snap-inu do prostredia.</p>
-
-<pre><code>    [RunInstaller(true)]
+<pre tabindex="0"><code>    [RunInstaller(true)]
     public class HelloWorldSnapIns : PSSnapIn
     {
         public override string Name {
@@ -325,11 +284,8 @@ indikuje spustenie inštalátora pri nasadzovaní snap-inu do prostredia.</p>
             }
         }
     }
-</code></pre>
-
-<blockquote>
+</code></pre><blockquote>
 <p><strong>Note</strong></p>
-
 <p>Na rozdiel od Javy v C# nie je tradícia getterov a setterov v podobe
 metód. Zvyklosťou je pristupovať k inštančným premenným pomocou
 vlastností (<em>properties</em>), ktoré tvária ako priamo viditeľné verejné
@@ -337,82 +293,60 @@ inštančné premenné. Ak potrebujeme pristúpiť k premennej pomocou
 metódy (ako v príklade), použijeme na to syntax get, resp. set, ako
 vidíme v príklade <em>properties</em> Name, Description a Vendor.</p>
 </blockquote>
-
 <p>V tejto chvílu už môžeme projekt zostaviť: <em>Build | Build Solution</em>. Pri
 prvom pokuse získame chybu:</p>
-
-<pre><code>The type 'System.Configuration.Install.Installer' is
+<pre tabindex="0"><code>The type 'System.Configuration.Install.Installer' is
 defined in an assembly that is not referenced. You must add a reference
 to assembly 'System.Configuration.Install, Version=2.0.0.0, Culture=neutral,
 PublicKeyToken=b03f5f7f11d50a3a'. (CS0012) -
 C:\Users\rn\Documents\SharpDevelop Projects\HelloWorldCmdlets\HelloWorldCmdlets\HelloWorldCmdlet.cs:18,15
-</code></pre>
-
-<p>Do projektu musíme pridať <em>assembly</em>
+</code></pre><p>Do projektu musíme pridať <em>assembly</em>
 <code>System.Configuration.Install.Installer</code> podobne, ako sme to robili v
 prvom kroku.</p>
-
 <p>Teraz už zostavenie prebehne bez problémov a v adresári projektu sa
 objaví súbor DLL s knižnicou. Na našom stroji sa nachádza v adresári
-<code>c:\Users\novotnyr\Documents\SharpDevelop
-Projects\HelloWorldCmdlets\HelloWorldCmdlets\bin\Debug\HelloWorldCmdlets.dll</code>.</p>
-
+<code>c:\Users\novotnyr\Documents\SharpDevelop Projects\HelloWorldCmdlets\HelloWorldCmdlets\bin\Debug\HelloWorldCmdlets.dll</code>.</p>
 <h1 id="zavedenie-do-powershellu">Zavedenie do PowerShellu</h1>
-
 <p>Spustíme PowerShell a presunieme sa do adresára s DLL súborom. Pomocou
 cmdletu <code>Import-Module</code> zavedieme snap-in do prostredia.</p>
-
 <pre><code>PS C:\Users\novotnyr\Documents\SharpDevelop Projects\HelloWorldCmdlets\HelloWorldCmdlets\bin\Debug&gt; Import-Module .\HelloWorldCmdlets.dll
 </code></pre>
-
 <blockquote>
 <p><strong>Warning</strong></p>
-
 <p>Cmdlet <code>Import-Module</code> potrebuje absolútnu alebo relatívnu cestu k DLL
 súboru. Bodka a lomka na začiatku sa odkazujú na aktuálny adresár. V
 prípade, že ju vynecháme, bude importovací cmdlet protestovať, že
 nevie nájsť náš modul.</p>
-
+</blockquote>
+<blockquote>
 <p><strong>Warning</strong></p>
-
 <p>Ak získame chybu:</p>
-
 <pre><code>  Import-Module : Could not load file or assembly
   'file:///C:\Users\novotnyr\Documents\SharpDevelop\Projects\HelloWorldCmdlets\HelloWorldCmdlets\bin\Debug\HelloWorldCmdlets.dll' or one of its dependencies. This assembly is built by a runtime newer than the currently loaded runtime and cannot be loaded.
   At line:1 char:14 + Import-Module .\HelloWorldCmdlets.dll + CategoryInfo : NotSpecified: (:)
   [Import-Module], BadImageFormatException + FullyQualifiedErrorId : System.BadImageFormatException,Microsoft.PowerShell.Commands.ImportModuleCommand
 </code></pre>
-
 <p>znamená to, že sme pri vytváraní projektu nastavili príliš novú verziu
 .NET Frameworku.</p>
 </blockquote>
-
 <p>Overiť prítomnosť snap-inu v prostredí môžeme cmdletom <code>Get-Module</code>,
 ktorý vypíše všetky snap-iny a cmdlety, ktoré dávajú k dispozícii.</p>
-
 <p>V tejto chvíli už nič nebráni priamo spustiť z prostredia náš cmdlet
 <code>Get-Hello</code> a obdivovať výpis, ktorý sme zadeklarovali.</p>
-
-<p><img src="import-get-run.png" alt="" /></p>
-
+<p><img src="import-get-run.png" alt=""></p>
 <h1 id="rekompilácia-po-zmene">Rekompilácia po zmene</h1>
-
 <p>Po zmene súboru musíme zatvoriť PowerShell, prebudovať projekt v
 SharpDevelope a použitím <code>Install-Module</code> ho opäť zaviesť do prostredia
 a otestovať. Najlepší spôsob, akým zrýchliť túto nezáživnú činnosť, je
 vytvoriť si vlastný powershellovský skript.</p>
-
 <h1 id="ďalšie-cmdlety">Ďalšie cmdlety</h1>
-
 <p>V ukážke máme tri cmdlety v jednom snap-ine:</p>
-
 <ul>
 <li><code>Say-Hello</code> demonštrujúci parameter <code>-UserName</code> s validáciou.</li>
 <li><code>Get-Translation</code> demonštrujúci pozičný parameter, ktorý môže nadobúdať aj hodnotu z rúry.</li>
-
-<li><p><code>Add-Extension</code> pracuje so súbormi a ukazuje povinný parameter.</p>
-
-<pre><code>using System;
+<li><code>Add-Extension</code> pracuje so súbormi a ukazuje povinný parameter.</li>
+</ul>
+<pre tabindex="0"><code>using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
@@ -510,9 +444,7 @@ namespace HelloCmdlets
 		}
 	}
 }
-</code></pre></li>
-</ul>
-
+</code></pre>
 </main>
 
     <footer>

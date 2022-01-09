@@ -59,10 +59,7 @@
 
 
 <main>
-
-
 <h1 id="inštalácia">Inštalácia</h1>
-
 <ul>
 <li>sarge-i386-netinst.iso nahodene do VMWaru. Bolo treba nastavit siet z Bridged na NAT (inak sa instalator stazoval na nepritomne DHCP)</li>
 <li>po chvilke laborovania <code>nano /etc/apt/sources.list</code> dovolilo pridat
@@ -76,17 +73,12 @@
 <li><code>apt-get install php4</code></li>
 <li><code>apt-get install ssh4</code> (openSSH, vratane demona sshd)</li>
 </ul>
-
 <h1 id="xserver">XServer</h1>
-
 <p>Zakazanie prihlasovania sa rovno do Xov:</p>
-
 <ul>
 <li>premenovat /etc/rc2.d/S99?dm na /etc/rc2.d/K99?dm (? = x, k, w)</li>
 </ul>
-
 <h1 id="vmware-tools">VMWare Tools</h1>
-
 <ul>
 <li>bolo treba doinstalovat <code>gcc</code> (<code>apt-get install gcc</code>) hlavickove subory ku kernelu (podla <code>uname -a</code>) &ndash; <code>apt-get install kernel-headers-*cislo kernelu*</code></li>
 <li>ak sa XServer po instalacii stazuje, ze nevie najst pointer, skuste zmenit nastavenia mysi v <code>/etc/X11/XF86Config-4</code>: menovite

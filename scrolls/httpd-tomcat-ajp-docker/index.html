@@ -60,7 +60,6 @@
 
 <main>
 <p>In the demo, we show how one dockerized <code>httpd</code> loadbalances two dockerized Tomcats:</p>
-
 <ul>
 <li>AJP is the loadbalancing protocol</li>
 <li><code>mod_proxy</code> does the AJP proxying on the <code>httpd</code> side</li>
@@ -68,7 +67,6 @@
 <li>Tomcat AJP connector handles the AJP protocol with <code>httpd</code>.</li>
 <li>A <code>jvmRoute</code> is dynamically configured on the Tomcat side to provide sticky sessions.</li>
 </ul>
-
 <p>See <a href="https://github.com/novotnyr/httpd-tomcat-ajp-docker">GitHub README</a> for highly detailed description and tutorial.</p>
 
 </main>

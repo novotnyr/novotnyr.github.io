@@ -59,116 +59,62 @@
 
 
 <main>
-
-
 <h1 id="stiahnutie-inštalačného-súboru">Stiahnutie inštalačného súboru</h1>
-
-<h2 id="návšteva-java-sun-com">Návšteva <code>java.sun.com</code></h2>
-
+<h2 id="návšteva-javasuncom">Návšteva <code>java.sun.com</code></h2>
 <p>Navštívime stránku Sun-u (<a href="http://java.sun.com">http://java.sun.com</a>) a klikneme na odkaz <em>Java SE</em> v sekcii <em>Popular Downloads</em>:</p>
-
-<p><img src="01.gif" alt="" /></p>
-
+<p><img src="01.gif" alt=""></p>
 <h2 id="výber-správnej-verzie">Výber správnej verzie</h2>
-
 <p>Nájdeme odkaz na JDK 6 a klikneme na <em>Download</em></p>
-
-<p><img src="02.gif" alt="" /></p>
-
+<p><img src="02.gif" alt=""></p>
 <h2 id="odsúhlasenie-licencie">Odsúhlasenie licencie</h2>
-
 <p>Licenciu odsúhlasime kliknutím na <em>Accept</em></p>
-
-<p><img src="03.gif" alt="" /></p>
-
+<p><img src="03.gif" alt=""></p>
 <h2 id="výber-operačného-systému-a-typu-inštalačného-balíčka">Výber operačného systému a typu inštalačného balíčka</h2>
-
 <p>V prípade Windowsu klikneme na odkaz <em>Windows Offline Installation</em> (alternatívnou možnosťou je minibalíček pre inštaláciu z Internetu)</p>
-
-<p><img src="04.gif" alt="" /></p>
-
+<p><img src="04.gif" alt=""></p>
 <h2 id="uloženie-inštalačného-súboru">Uloženie inštalačného súboru</h2>
-
 <p>Ponúknutý inštalačný súbor stiahneme do vhodného adresára.
 a následne ho spustíme.</p>
-
-<p><img src="05.gif" alt="" /></p>
-
+<p><img src="05.gif" alt=""></p>
 <h1 id="spustenie-a-priebeh-inštalácie">Spustenie a priebeh inštalácie</h1>
-
 <h2 id="najprv-odsúhlasime-licenčnú-dohodu">Najprv odsúhlasime licenčnú dohodu</h2>
-
-<p><img src="06.gif" alt="" /></p>
-
+<p><img src="06.gif" alt=""></p>
 <h2 id="výber-komponentov-pre-inštaláciu">Výber komponentov pre inštaláciu</h2>
-
 <p>Zrejme budeme chcieť nainštalovať všetky súčasti inštalácie. Implicitne sa Java Development Kit nainštaluje do adresára <code>C:\Program Files\Java\jdk*poradovéČísloVerzie*</code>. Ak chceme zmeniť cieľový adresár, použijeme na to tlačidlo <em>Change</em>.</p>
-
-<p><img src="07.gif" alt="" /></p>
-
+<p><img src="07.gif" alt=""></p>
 <h2 id="priebeh-inštalácie">Priebeh inštalácie</h2>
-
 <p>Inštalátor začne kopírovať súbory</p>
-
-<p><img src="09.gif" alt="" /></p>
-
+<p><img src="09.gif" alt=""></p>
 <h2 id="koniec-inštalácie">Koniec inštalácie</h2>
-
 <p>Po skončení kopírovania súborov si môžeme zobraziť informácie o vydaní (ak chceme). Inštaláciu ukončíme pomocou <em>Finish</em>.</p>
-
-<p><img src="10.gif" alt="" /></p>
-
+<p><img src="10.gif" alt=""></p>
 <h1 id="kroky-po-inštalácii">Kroky po inštalácii</h1>
-
 <p>Na uľahčenie práce s Javou z príkazového riadku si môžeme pridať príkazy <code>javac.exe</code> a <code>java.exe</code> do premennej prostredia <code>PATH</code>. Rovnako je vhodné definovať premennú prostredia <code>JAVA_HOME</code>, ktorá ukazuje do adresára, v ktorom je nainštalovaná Java.</p>
-
 <h2 id="zobrazenie-ovládacieho-panelu">Zobrazenie ovládacieho panelu</h2>
-
 <p>Zobrazíme si ovládací panel pre systém:</p>
-
-<p><img src="13.gif" alt="" /></p>
-
+<p><img src="13.gif" alt=""></p>
 <h2 id="vyberieme-kartu-upresniť">Vyberieme kartu <em>Upresniť</em></h2>
-
 <p>Vyberieme kartu <em>Upresniť</em> a klikneme na tlačidlo <em>Premenné prostredia</em></p>
-
-<p><img src="15.gif" alt="" /></p>
-
-<h2 id="pridanie-premennej-java-home">Pridanie premennej <code>JAVA_HOME</code></h2>
-
+<p><img src="15.gif" alt=""></p>
+<h2 id="pridanie-premennej-java_home">Pridanie premennej <code>JAVA_HOME</code></h2>
 <p>V sekcii <em>Systémové premenné</em> klikneme na tlačidlo <em>Nová</em>.</p>
-
-<p><img src="16.gif" alt="" /></p>
-
+<p><img src="16.gif" alt=""></p>
 <p>Názov premennej je <code>JAVA_HOME</code> a hodnotou je adresár, do ktorého bola nainštalovaná Java (napr. <code>C:\Program Files\Java\jdk1.6.0_03</code>).</p>
-
-<p><img src="20.gif" alt="" /></p>
-
+<p><img src="20.gif" alt=""></p>
 <h2 id="úprava-premennej-path">Úprava premennej <code>PATH</code></h2>
-
 <p>V sekcii <em>Systémové premenné</em> vyberieme zo zoznamu premennú <code>PATH</code> a klikneme na tlačidlo <em>Upraviť</em>.</p>
-
 <p>Na koniec hodnoty dodáme cestu k adresáru <code>bin</code> v adresári, v ktorom je nainštalovaná Java (napr. <code>C:\Program Files\Java\jdk1.6.0_03\bin</code>).</p>
-
-<p><img src="19.gif" alt="" /></p>
-
+<p><img src="19.gif" alt=""></p>
 <h2 id="otestovanie-inštalácie">Otestovanie inštalácie</h2>
-
 <p>Pomocou <em>Štart | Spustiť | cmd.exe</em> si zobrazíme príkazový riadok. V ňom spustíme príkaz <code>java</code>.</p>
-
-<pre><code>C:\Documents and Settings\Administrator&gt;java
-</code></pre>
-
-<p>Mal by sa nám zobraziť dlhší výpis</p>
-
-<pre><code>Usage: java [-options] class [args...]
+<pre tabindex="0"><code>C:\Documents and Settings\Administrator&gt;java
+</code></pre><p>Mal by sa nám zobraziť dlhší výpis</p>
+<pre tabindex="0"><code>Usage: java [-options] class [args...]
            (to execute a class)
    or  java [-options] -jar jarfile [args...]
            (to execute a jar file)
 ...
-</code></pre>
-
-<p>V prípade, že získame hlásenie, že <code>java</code> nie je názvom spustiteľného súboru, prekontrolujeme nastavenie systémovej premennej <code>PATH</code>.</p>
+</code></pre><p>V prípade, že získame hlásenie, že <code>java</code> nie je názvom spustiteľného súboru, prekontrolujeme nastavenie systémovej premennej <code>PATH</code>.</p>
 
 </main>
 

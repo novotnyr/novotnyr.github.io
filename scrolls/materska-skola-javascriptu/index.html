@@ -58,71 +58,62 @@
 
 
 <nav id="TableOfContents">
-<ul>
-<li><a href="#prečo-javascript">Prečo JavaScript</a></li>
-<li><a href="#čo-je-vlastne-javascript">Čo je vlastne JavaScript?</a></li>
-<li><a href="#v-čom-vyvíjať">V čom vyvíjať?</a></li>
-<li><a href="#hrajkáme-sa-v-prehliadači">Hrajkáme sa v prehliadači</a>
-<ul>
-<li><a href="#hello-world">Hello World</a></li>
-<li><a href="#premenné">Premenné</a></li>
-<li><a href="#reťazce">Reťazce</a></li>
-<li><a href="#polia">Polia</a></li>
-<li><a href="#cykly">Cykly</a>
-<ul>
-<li><a href="#cyklus-for">Cyklus <code>for</code></a></li>
-<li><a href="#klasický-java-c-cyklus">Klasický Java/C cyklus</a></li>
-</ul></li>
-<li><a href="#podmienky">Podmienky</a></li>
-<li><a href="#funkcie">Funkcie</a></li>
-<li><a href="#objektové-programovanie">Objektové programovanie</a></li>
-<li><a href="#funkcionálne-programovanie">Funkcionálne programovanie</a>
-<ul>
-<li><a href="#skrátený-zápis-funkcií">Skrátený zápis funkcií</a></li>
-</ul></li>
-</ul></li>
-<li><a href="#javascript-a-node-js">JavaScript a Node.js</a>
-<ul>
-<li><a href="#predpoklady">Predpoklady</a></li>
-<li><a href="#vytvorenie-projektu">Vytvorenie projektu</a></li>
-<li><a href="#ukážka-lodash">Ukážka <code>lodash</code></a>
-<ul>
-<li><a href="#inštalácia-lodash">Inštalácia <code>lodash</code></a></li>
-<li><a href="#použitie-v-projekte">Použitie v projekte</a></li>
-<li><a href="#spustenie">Spustenie</a></li>
-</ul></li>
-<li><a href="#ukážka-fetch-rest-klient">Ukážka <code>fetch</code> (REST klient)</a>
-<ul>
-<li><a href="#inštalácia">Inštalácia</a></li>
-<li><a href="#použitie">Použitie</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#hello-world">Hello World</a></li>
+    <li><a href="#premenné">Premenné</a></li>
+    <li><a href="#reťazce">Reťazce</a></li>
+    <li><a href="#polia">Polia</a></li>
+    <li><a href="#cykly">Cykly</a>
+      <ul>
+        <li><a href="#cyklus-for">Cyklus <code>for</code></a></li>
+        <li><a href="#klasický-javac-cyklus">Klasický Java/C cyklus</a></li>
+      </ul>
+    </li>
+    <li><a href="#podmienky">Podmienky</a></li>
+    <li><a href="#funkcie">Funkcie</a></li>
+    <li><a href="#objektové-programovanie">Objektové programovanie</a></li>
+    <li><a href="#funkcionálne-programovanie">Funkcionálne programovanie</a>
+      <ul>
+        <li><a href="#skrátený-zápis-funkcií">Skrátený zápis funkcií</a></li>
+      </ul>
+    </li>
+  </ul>
+
+  <ul>
+    <li><a href="#predpoklady">Predpoklady</a></li>
+    <li><a href="#vytvorenie-projektu">Vytvorenie projektu</a></li>
+    <li><a href="#ukážka-lodash">Ukážka <code>lodash</code></a>
+      <ul>
+        <li><a href="#inštalácia-lodash">Inštalácia <code>lodash</code></a></li>
+        <li><a href="#použitie-v-projekte">Použitie v projekte</a></li>
+        <li><a href="#spustenie">Spustenie</a></li>
+      </ul>
+    </li>
+    <li><a href="#ukážka-fetchrest-klient">Ukážka <code>fetch</code> (REST klient)</a>
+      <ul>
+        <li><a href="#inštalácia">Inštalácia</a></li>
+        <li><a href="#použitie">Použitie</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
 
 
 <main>
-
-
 <h1 id="prečo-javascript">Prečo JavaScript</h1>
-
 <p>JavaScript je mimoriadne perspektívny a populárny jazyk.</p>
-
 <ul>
 <li>Je to hlavný programovací jazyk pre vývoj na webe. Všetky moderné webové prehliadače podporujú JavaScript.</li>
 <li>Podporuje vývoj na všetkých platformách:
-
 <ul>
 <li>appky pre mobilné zariadenia, napr. cez <a href="https://facebook.github.io/react-native/">React Native</a>.</li>
 <li>serverové aplikácie, napr. cez <a href="https://nodejs.org/en/">Node.js</a></li>
 <li>desktopové aplikácie, napr. cez <a href="https://electron.atom.io/">Electron</a></li>
-</ul></li>
 </ul>
-
+</li>
+</ul>
 <h1 id="čo-je-vlastne-javascript">Čo je vlastne JavaScript?</h1>
-
 <p>JavaScript má rozličné verzie a pomenovania.</p>
-
 <ul>
 <li>norma <em>ECMAScript 2015 alias ES6</em>. Moderná syntax, podporovaný v takmer
 všetkých moderných prehliadačoch.</li>
@@ -131,154 +122,122 @@ v pravekých prehliadačoch.</li>
 <li><em>JavaScript</em>. Voľné pomenovanie &ldquo;toho-jazyka, v ktorom sa robia weby&rdquo;,
 obvykle sa tým myslí stará známa rozšírená <em>ECMAScript 3.0</em>.</li>
 </ul>
-
 <h1 id="v-čom-vyvíjať">V čom vyvíjať?</h1>
-
 <ul>
 <li>Hračkárske programy sa dajú písať priamo na stránke <a href="https://jsfiddle.net/">JSFiddle.net</a>.</li>
 <li>alebo sa dá zvoliť ľubovoľné IDE:
-
 <ul>
 <li>skvelý platený <a href="https://www.jetbrains.com/webstorm/buy/#edition=personal">WebStorm</a></li>
 <li><a href="https://code.visualstudio.com/">Visual Studio Code</a></li>
 <li>platený editor <a href="https://www.sublimetext.com/">Sublime</a></li>
 <li>editor <a href="https://atom.io/">Atom</a> implementovaný v JavaSCripte</li>
-</ul></li>
 </ul>
-
+</li>
+</ul>
 <h1 id="hrajkáme-sa-v-prehliadači">Hrajkáme sa v prehliadači</h1>
-
 <h2 id="hello-world">Hello World</h2>
-
 <ul>
-<li>Otvorme si si <a href="https://jsfiddle.net/">JSFiddle.net</a>.</li>
-<li>Otvorme si webový prehliadač, a klávesovou skratkou F12 vyvolajme okno Vývojárskych nástrojov (<em>Developer Tools</em>). V nich si zobrazme <em>Console</em> (konzolu)</li>
-
-<li><p>Spusťme prvý program:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">console.log(<span style="background-color:#e0e0ff">&#34;Old McDonald had a farm&#34;</span>);
+<li>
+<p>Otvorme si si <a href="https://jsfiddle.net/">JSFiddle.net</a>.</p>
+</li>
+<li>
+<p>Otvorme si webový prehliadač, a klávesovou skratkou F12 vyvolajme okno Vývojárskych nástrojov (<em>Developer Tools</em>). V nich si zobrazme <em>Console</em> (konzolu)</p>
+</li>
+<li>
+<p>Spusťme prvý program:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">console.log(<span style="background-color:#e0e0ff">&#34;Old McDonald had a farm&#34;</span>);
 </code></pre></div></li>
-
-<li><p>JavaScript podporuje objektovo orientovaný prístup</p>
-
+<li>
+<p>JavaScript podporuje objektovo orientovaný prístup</p>
 <ul>
 <li>Premenná <code>console</code> je objekt s metódou <code>log()</code>.</li>
 <li>Parametrom je reťazec v úvodzovkách Povolené sú aj apostrofy: <code>'Old McDonald had a farm'</code></li>
 <li>Riadok sa končí bodkočiarkou (ale nie je to povinné).</li>
-</ul></li>
 </ul>
-
+</li>
+</ul>
 <h2 id="premenné">Premenné</h2>
-
 <p>JavaScript deklaruje premenné pomocou <code>let</code>. Dátové typy sa neuvádzajú.</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#289;font-weight:bold">let</span> song <span style="color:#333">=</span> <span style="background-color:#e0e0ff">&#34;Old McDonald had a farm. I-a-i-a-oh&#34;</span>;
-</code></pre></div>
-<p>Premenná na pozadí má typ reťazec (<code>String</code>).</p>
-
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#289;font-weight:bold">let</span> song <span style="color:#333">=</span> <span style="background-color:#e0e0ff">&#34;Old McDonald had a farm. I-a-i-a-oh&#34;</span>;
+</code></pre></div><p>Premenná na pozadí má typ reťazec (<code>String</code>).</p>
 <h2 id="reťazce">Reťazce</h2>
-
 <p>Reťazce môžu byť uvádzané v <code>&quot;úvodzovkách&quot;</code> alebo <code>'apostrofoch'</code>.</p>
-
 <p>Pre niektoré prípady je ešte alternatíva zvaná <em>template literal</em>, ktorá
 podporuje viacriadkové reťazce. Takýto reťazec
 je oddelený pomocou spätných úvodzoviek (<em>backticks</em>).</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#289;font-weight:bold">let</span> song <span style="color:#333">=</span> <span style="background-color:#e0e0ff">`Old McDonald had a farm
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#289;font-weight:bold">let</span> song <span style="color:#333">=</span> <span style="background-color:#e0e0ff">`Old McDonald had a farm
 </span><span style="background-color:#e0e0ff">I-a-i-a-oh`</span>;
-</code></pre></div>
-<p>Viacriadkové reťazce tak nemusíme lepiť / konkatenovať pomocou <code>+</code>.</p>
-
+</code></pre></div><p>Viacriadkové reťazce tak nemusíme lepiť / konkatenovať pomocou <code>+</code>.</p>
 <p>Užitočná môže byť aj interpolácia premenných:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#289;font-weight:bold">let</span> animal <span style="color:#333">=</span> <span style="background-color:#e0e0ff">&#34;cow&#34;</span>;
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#289;font-weight:bold">let</span> animal <span style="color:#333">=</span> <span style="background-color:#e0e0ff">&#34;cow&#34;</span>;
 <span style="color:#289;font-weight:bold">let</span> song <span style="color:#333">=</span> <span style="background-color:#e0e0ff">`Old McDonald had a farm. And on his farm he had some </span><span style="background-color:#eee">${</span>animal<span style="background-color:#eee">}</span><span style="background-color:#e0e0ff">`</span>.
-</code></pre></div>
-<p>V premennej <code>song</code> máme odkaz na premennú <code>animal</code>, uzavretú v dolári a zložených
+</code></pre></div><p>V premennej <code>song</code> máme odkaz na premennú <code>animal</code>, uzavretú v dolári a zložených
 zátvorkách, ktorá sa nahradí jej obsahom.</p>
-
 <h2 id="polia">Polia</h2>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#289;font-weight:bold">let</span> animals <span style="color:#333">=</span> [ <span style="background-color:#e0e0ff">&#34;cow&#34;</span>, <span style="background-color:#e0e0ff">&#34;pig&#34;</span>, <span style="background-color:#e0e0ff">&#34;t-rex&#34;</span> ];
-</code></pre></div>
-<p>Položky polí sú v hranatých zátvorkách. Pristupovať k jednotlivým prvkom
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#289;font-weight:bold">let</span> animals <span style="color:#333">=</span> [ <span style="background-color:#e0e0ff">&#34;cow&#34;</span>, <span style="background-color:#e0e0ff">&#34;pig&#34;</span>, <span style="background-color:#e0e0ff">&#34;t-rex&#34;</span> ];
+</code></pre></div><p>Položky polí sú v hranatých zátvorkách. Pristupovať k jednotlivým prvkom
 možno cez hranatozátvorkovú notáciu.</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">console.log(animals[<span style="color:#66f;font-weight:bold">0</span>]); <span style="color:#666;font-style:italic">// &#34;cow&#34;
-</span></code></pre></div>
-<p>Polia majú dĺžku definovanú vo vlastnosti (<em>property</em>) zvanej <code>length</code>.</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">console.log(animals.length)); <span style="color:#666;font-style:italic">// 3
-</span></code></pre></div>
-<h2 id="cykly">Cykly</h2>
-
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">console.log(animals[<span style="color:#66f;font-weight:bold">0</span>]); <span style="color:#666;font-style:italic">// &#34;cow&#34;
+</span></code></pre></div><p>Polia majú dĺžku definovanú vo vlastnosti (<em>property</em>) zvanej <code>length</code>.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">console.log(animals.length)); <span style="color:#666;font-style:italic">// 3
+</span></code></pre></div><h2 id="cykly">Cykly</h2>
 <h3 id="cyklus-for">Cyklus <code>for</code></h3>
-
 <p>Najčastejšie používaný je cyklus <code>for</code>, a to v zápise &ldquo;foreach&rdquo;, kde
 sa prechádzajú postupne prvky poľa.</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#289;font-weight:bold">for</span>(<span style="color:#289;font-weight:bold">let</span> animal <span style="color:#289;font-weight:bold">of</span> animals) {
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#289;font-weight:bold">for</span>(<span style="color:#289;font-weight:bold">let</span> animal <span style="color:#289;font-weight:bold">of</span> animals) {
     console.log(animal);
 }
-</code></pre></div>
-<h3 id="klasický-java-c-cyklus">Klasický Java/C cyklus</h3>
-
+</code></pre></div><h3 id="klasický-javac-cyklus">Klasický Java/C cyklus</h3>
 <p>K dispozícii je aj starý dobrý <code>for</code> cyklus s premennou</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#289;font-weight:bold">for</span>(<span style="color:#289;font-weight:bold">let</span> i <span style="color:#333">=</span> <span style="color:#66f;font-weight:bold">0</span>; i <span style="color:#333">&lt;</span> animals.length; i<span style="color:#333">++</span>) {
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#289;font-weight:bold">for</span>(<span style="color:#289;font-weight:bold">let</span> i <span style="color:#333">=</span> <span style="color:#66f;font-weight:bold">0</span>; i <span style="color:#333">&lt;</span> animals.length; i<span style="color:#333">++</span>) {
     console.log(animals[i]);
 }
-</code></pre></div>
-<h2 id="podmienky">Podmienky</h2>
-
+</code></pre></div><h2 id="podmienky">Podmienky</h2>
 <p>Podmienka <code>if</code> má tradičnú syntax známu z C/C++/Javy a pod.</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#289;font-weight:bold">if</span> (animals.length <span style="color:#333">&gt;</span> <span style="color:#66f;font-weight:bold">0</span>) {
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#289;font-weight:bold">if</span> (animals.length <span style="color:#333">&gt;</span> <span style="color:#66f;font-weight:bold">0</span>) {
     console.log(<span style="background-color:#e0e0ff">&#34;Old McDonald had a farm&#34;</span>);
 }
-</code></pre></div>
-<p>Pozor však na porovnávanie! Obvyklý operátor na porovnanie hodnôt je <code>==</code>.</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#289;font-weight:bold">if</span> (animals.length <span style="color:#333">==</span> <span style="color:#66f;font-weight:bold">0</span>) {
+</code></pre></div><p>Pozor však na porovnávanie! Obvyklý operátor na porovnanie hodnôt je <code>==</code>.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#289;font-weight:bold">if</span> (animals.length <span style="color:#333">==</span> <span style="color:#66f;font-weight:bold">0</span>) {
     console.log(<span style="background-color:#e0e0ff">&#34;Old McDonald hasn&#39;t a farm&#34;</span>);
 }
-</code></pre></div>
-<p>JavaScript však dokáže automaticky prevádzať dátové typy jeden na druhý
+</code></pre></div><p>JavaScript však dokáže automaticky prevádzať dátové typy jeden na druhý
 podľa potreby, z čoho je <a href="https://www.destroyallsoftware.com/talks/wat">množstvo vtipov</a>.</p>
-
 <p>Je to vidieť v situácii:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#289;font-weight:bold">let</span> farmCapacity <span style="color:#333">=</span> <span style="background-color:#e0e0ff">&#34;25&#34;</span>; <span style="color:#666;font-style:italic">//reťazec
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#289;font-weight:bold">let</span> farmCapacity <span style="color:#333">=</span> <span style="background-color:#e0e0ff">&#34;25&#34;</span>; <span style="color:#666;font-style:italic">//reťazec
 </span><span style="color:#666;font-style:italic"></span><span style="color:#289;font-weight:bold">if</span> (farmCapacity <span style="color:#333">==</span> <span style="color:#66f;font-weight:bold">25</span>) {
     console.log(<span style="background-color:#e0e0ff">&#34;This farm is seriously large!&#34;</span>);
 }
-</code></pre></div>
-<p>V tomto prípade JavaScript dokáže pochopiť, že kapacity farmy &ndash; napriek tomu,
+</code></pre></div><p>V tomto prípade JavaScript dokáže pochopiť, že kapacity farmy &ndash; napriek tomu,
 že je to reťazec &ndash; sa dá bez problémov porovnať s číslom.</p>
-
 <p>V niektorých prípadoch je toto správanie výhodné, ale inokedy je zdrojom prekvapení.</p>
-
 <p>Porovnaním cez tri &ldquo;rovná sa&rdquo; sa striktne porovnajú nielen hodnoty, ale
 aj dátové typy</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#289;font-weight:bold">if</span> (farmCapacity <span style="color:#333">===</span> <span style="color:#66f;font-weight:bold">25</span>) {
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#289;font-weight:bold">if</span> (farmCapacity <span style="color:#333">===</span> <span style="color:#66f;font-weight:bold">25</span>) {
     console.log(<span style="background-color:#e0e0ff">&#34;This farm is seriously large!&#34;</span>);
 }
-</code></pre></div>
-<h2 id="funkcie">Funkcie</h2>
-
+</code></pre></div><h2 id="funkcie">Funkcie</h2>
 <p>Funkcie sa zapisujú kľúčovým slovom <code>function</code>.</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#289;font-weight:bold">function</span> sing(animal, sound) {
-    <span style="color:#289;font-weight:bold">let</span> song <span style="color:#333">=</span> <span style="background-color:#e0e0ff">`Old McDonald had a farm, I-a-i-a-oh.</span><span style="color:#f00;background-color:#faa">\</span><span style="background-color:#e0e0ff">n
-</span><span style="background-color:#e0e0ff">    And on his farm he had some </span><span style="background-color:#eee">${</span>animal<span style="background-color:#eee">}</span><span style="color:#f00;background-color:#faa">\</span><span style="background-color:#e0e0ff">n
-</span><span style="background-color:#e0e0ff">    I-a-i-a-oh</span><span style="color:#f00;background-color:#faa">\</span><span style="background-color:#e0e0ff">n
-</span><span style="background-color:#e0e0ff">    </span><span style="color:#f00;background-color:#faa">\</span><span style="background-color:#e0e0ff">n
-</span><span style="background-color:#e0e0ff">    And a </span><span style="background-color:#eee">${</span>sound<span style="background-color:#eee">}</span><span style="background-color:#e0e0ff"> </span><span style="background-color:#eee">${</span>sound<span style="background-color:#eee">}</span><span style="background-color:#e0e0ff"> here</span><span style="color:#f00;background-color:#faa">\</span><span style="background-color:#e0e0ff">n
-</span><span style="background-color:#e0e0ff">    And a </span><span style="background-color:#eee">${</span>sound<span style="background-color:#eee">}</span><span style="background-color:#e0e0ff"> </span><span style="background-color:#eee">${</span>sound<span style="background-color:#eee">}</span><span style="background-color:#e0e0ff"> there</span><span style="color:#f00;background-color:#faa">\</span><span style="background-color:#e0e0ff">n
-</span><span style="background-color:#e0e0ff">    Here </span><span style="background-color:#eee">${</span>sound<span style="background-color:#eee">}</span><span style="background-color:#e0e0ff">, </span><span style="background-color:#eee">${</span>sound<span style="background-color:#eee">}</span><span style="background-color:#e0e0ff"> quack</span><span style="color:#f00;background-color:#faa">\</span><span style="background-color:#e0e0ff">n
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#289;font-weight:bold">function</span> sing(animal, sound) {
+    <span style="color:#289;font-weight:bold">let</span> song <span style="color:#333">=</span> <span style="background-color:#e0e0ff">`Old McDonald had a farm, I-a-i-a-oh.\n
+</span><span style="background-color:#e0e0ff">    And on his farm he had some </span><span style="background-color:#eee">${</span>animal<span style="background-color:#eee">}</span><span style="background-color:#e0e0ff">\n
+</span><span style="background-color:#e0e0ff">    I-a-i-a-oh\n
+</span><span style="background-color:#e0e0ff">    \n
+</span><span style="background-color:#e0e0ff">    And a </span><span style="background-color:#eee">${</span>sound<span style="background-color:#eee">}</span><span style="background-color:#e0e0ff"> </span><span style="background-color:#eee">${</span>sound<span style="background-color:#eee">}</span><span style="background-color:#e0e0ff"> here\n
+</span><span style="background-color:#e0e0ff">    And a </span><span style="background-color:#eee">${</span>sound<span style="background-color:#eee">}</span><span style="background-color:#e0e0ff"> </span><span style="background-color:#eee">${</span>sound<span style="background-color:#eee">}</span><span style="background-color:#e0e0ff"> there\n
+</span><span style="background-color:#e0e0ff">    Here </span><span style="background-color:#eee">${</span>sound<span style="background-color:#eee">}</span><span style="background-color:#e0e0ff">, </span><span style="background-color:#eee">${</span>sound<span style="background-color:#eee">}</span><span style="background-color:#e0e0ff"> quack\n
 </span><span style="background-color:#e0e0ff">    Everywhere a </span><span style="background-color:#eee">${</span>sound<span style="background-color:#eee">}</span><span style="background-color:#e0e0ff"> </span><span style="background-color:#eee">${</span>sound<span style="background-color:#eee">}</span><span style="background-color:#e0e0ff">`</span>;
     <span style="color:#289;font-weight:bold">return</span> song;
 }
-</code></pre></div>
-<ul>
+</code></pre></div><ul>
 <li>Neuvádzajú sa dátové typy pre parametre, ani pre návratovú hodnotu.</li>
 <li>Funkcia pre spievanie má dva parametre: <code>animal</code> a <code>sound</code>. Návratovú hodnotu (výsledok funkcie) vraciame pomocou <code>return</code>.</li>
 </ul>
-
 <p>Funkciu voláme klasicky:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">console.log(sing(<span style="background-color:#e0e0ff">&#34;Cow&#34;</span>, <span style="background-color:#e0e0ff">&#34;moo moo&#34;</span>));
-</code></pre></div>
-<h2 id="objektové-programovanie">Objektové programovanie</h2>
-
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">console.log(sing(<span style="background-color:#e0e0ff">&#34;Cow&#34;</span>, <span style="background-color:#e0e0ff">&#34;moo moo&#34;</span>));
+</code></pre></div><h2 id="objektové-programovanie">Objektové programovanie</h2>
 <p>V JavaScripte sú podporované triedy a objekty.</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#289;font-weight:bold">class</span> Animal {
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#289;font-weight:bold">class</span> Animal {
     constructor(name, sound) {
         <span style="color:#289;font-weight:bold">this</span>._name <span style="color:#333">=</span> name;
         <span style="color:#289;font-weight:bold">this</span>._sound <span style="color:#333">=</span> sound;
@@ -300,208 +259,162 @@ aj dátové typy</p>
         <span style="color:#289;font-weight:bold">return</span> <span style="color:#289;font-weight:bold">this</span>._name <span style="color:#333">+</span> <span style="background-color:#e0e0ff">&#34; makes &#34;</span> <span style="color:#333">+</span> <span style="color:#289;font-weight:bold">this</span>._sound;
     }
 }
-</code></pre></div>
-<p>Trieda pre kravu má:</p>
-
+</code></pre></div><p>Trieda pre kravu má:</p>
 <ul>
 <li>konštruktor, uvádzaný kľúčovým slovom <code>constructor</code></li>
 <li>metódy, uvádzané ako funkcie, ale bez kľúčového slova <code>function</code></li>
 <li>metóda <code>toString()</code> je prekrytá a vracia textovú reprezentáciu objektu, používanú napr. vo výpisoch cez <code>console.log</code>.</li>
 </ul>
-
 <p>Novú kravu vytvoríme nasledovne:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#289;font-weight:bold">let</span> cow <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Animal(<span style="background-color:#e0e0ff">&#34;cow&#34;</span>, <span style="background-color:#e0e0ff">&#34;moo&#34;</span>);
-</code></pre></div>
-<p>Použijeme ju:</p>
-
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#289;font-weight:bold">let</span> cow <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Animal(<span style="background-color:#e0e0ff">&#34;cow&#34;</span>, <span style="background-color:#e0e0ff">&#34;moo&#34;</span>);
+</code></pre></div><p>Použijeme ju:</p>
 <pre><code>console.log(cow.makeSound());
 </code></pre>
-
 <p>Modifikátory viditeľnosti v JavaScripte neexistujú. V príklade
 sme použili <code>_</code> ako predponu pre &ldquo;pseudoprivátne premenné&rdquo;.</p>
-
 <p>Existujú aj gettery a settery. Ak máme novú kravu, môžeme jej meno získať
 cez</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">cow.name
-</code></pre></div>
-<p>Toto volanie zavolá príslušnú metódu <code>get name()</code>.</p>
-
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">cow.name
+</code></pre></div><p>Toto volanie zavolá príslušnú metódu <code>get name()</code>.</p>
 <h2 id="funkcionálne-programovanie">Funkcionálne programovanie</h2>
-
 <p>S funkciami v JavaScripte sa dajú robiť skvelé veci! Funkcie sú integrálnou
 súčasťou jazyka.</p>
-
 <p>Vytvorme si funkciu:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#289;font-weight:bold">function</span> singToConsole(animal) {
-    <span style="color:#289;font-weight:bold">let</span> song <span style="color:#333">=</span> <span style="background-color:#e0e0ff">`Old McDonald had a farm, I-a-i-a-oh.</span><span style="color:#f00;background-color:#faa">\</span><span style="background-color:#e0e0ff">n
-</span><span style="background-color:#e0e0ff">    And on his farm he had some </span><span style="background-color:#eee">${</span>animal.name<span style="background-color:#eee">}</span><span style="color:#f00;background-color:#faa">\</span><span style="background-color:#e0e0ff">n
-</span><span style="background-color:#e0e0ff">    I-a-i-a-oh</span><span style="color:#f00;background-color:#faa">\</span><span style="background-color:#e0e0ff">n
-</span><span style="background-color:#e0e0ff">    </span><span style="color:#f00;background-color:#faa">\</span><span style="background-color:#e0e0ff">n
-</span><span style="background-color:#e0e0ff">    And a </span><span style="background-color:#eee">${</span>animal.sound<span style="background-color:#eee">}</span><span style="background-color:#e0e0ff"> </span><span style="background-color:#eee">${</span>animal.sound<span style="background-color:#eee">}</span><span style="background-color:#e0e0ff"> here</span><span style="color:#f00;background-color:#faa">\</span><span style="background-color:#e0e0ff">n
-</span><span style="background-color:#e0e0ff">    And a </span><span style="background-color:#eee">${</span>animal.sound<span style="background-color:#eee">}</span><span style="background-color:#e0e0ff"> </span><span style="background-color:#eee">${</span>animal.sound<span style="background-color:#eee">}</span><span style="background-color:#e0e0ff"> there</span><span style="color:#f00;background-color:#faa">\</span><span style="background-color:#e0e0ff">n
-</span><span style="background-color:#e0e0ff">    Here </span><span style="background-color:#eee">${</span>animal.sound<span style="background-color:#eee">}</span><span style="background-color:#e0e0ff">, there </span><span style="background-color:#eee">${</span>animal.sound<span style="background-color:#eee">}</span><span style="color:#f00;background-color:#faa">\</span><span style="background-color:#e0e0ff">n
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#289;font-weight:bold">function</span> singToConsole(animal) {
+    <span style="color:#289;font-weight:bold">let</span> song <span style="color:#333">=</span> <span style="background-color:#e0e0ff">`Old McDonald had a farm, I-a-i-a-oh.\n
+</span><span style="background-color:#e0e0ff">    And on his farm he had some </span><span style="background-color:#eee">${</span>animal.name<span style="background-color:#eee">}</span><span style="background-color:#e0e0ff">\n
+</span><span style="background-color:#e0e0ff">    I-a-i-a-oh\n
+</span><span style="background-color:#e0e0ff">    \n
+</span><span style="background-color:#e0e0ff">    And a </span><span style="background-color:#eee">${</span>animal.sound<span style="background-color:#eee">}</span><span style="background-color:#e0e0ff"> </span><span style="background-color:#eee">${</span>animal.sound<span style="background-color:#eee">}</span><span style="background-color:#e0e0ff"> here\n
+</span><span style="background-color:#e0e0ff">    And a </span><span style="background-color:#eee">${</span>animal.sound<span style="background-color:#eee">}</span><span style="background-color:#e0e0ff"> </span><span style="background-color:#eee">${</span>animal.sound<span style="background-color:#eee">}</span><span style="background-color:#e0e0ff"> there\n
+</span><span style="background-color:#e0e0ff">    Here </span><span style="background-color:#eee">${</span>animal.sound<span style="background-color:#eee">}</span><span style="background-color:#e0e0ff">, there </span><span style="background-color:#eee">${</span>animal.sound<span style="background-color:#eee">}</span><span style="background-color:#e0e0ff">\n
 </span><span style="background-color:#e0e0ff">    Everywhere a </span><span style="background-color:#eee">${</span>animal.sound<span style="background-color:#eee">}</span><span style="background-color:#e0e0ff"> </span><span style="background-color:#eee">${</span>animal.sound<span style="background-color:#eee">}</span><span style="background-color:#e0e0ff">`</span>;
     
     console.log(song);
 }
-</code></pre></div>
-<p>Ak máme pole, môžeme na ňom volať metódu <code>forEach</code>. V nej sa &ldquo;pre každý&rdquo;
+</code></pre></div><p>Ak máme pole, môžeme na ňom volať metódu <code>forEach</code>. V nej sa &ldquo;pre každý&rdquo;
 prvok poľa zavolá príslušná funkcia.</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#289;font-weight:bold">let</span> animals <span style="color:#333">=</span> [ <span style="color:#289;font-weight:bold">new</span> Animal(<span style="background-color:#e0e0ff">&#34;cow&#34;</span>, <span style="background-color:#e0e0ff">&#34;moo&#34;</span>), <span style="color:#289;font-weight:bold">new</span> Animal(<span style="background-color:#e0e0ff">&#34;pig&#34;</span>, <span style="background-color:#e0e0ff">&#34;oink&#34;</span>) ];
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#289;font-weight:bold">let</span> animals <span style="color:#333">=</span> [ <span style="color:#289;font-weight:bold">new</span> Animal(<span style="background-color:#e0e0ff">&#34;cow&#34;</span>, <span style="background-color:#e0e0ff">&#34;moo&#34;</span>), <span style="color:#289;font-weight:bold">new</span> Animal(<span style="background-color:#e0e0ff">&#34;pig&#34;</span>, <span style="background-color:#e0e0ff">&#34;oink&#34;</span>) ];
 animals.forEach(singToConsole);
-</code></pre></div>
-<p>Pre každé zviera sa zavolá funkcia <code>singToConsole</code>, ktorá má jeden parameter. Pre každý
+</code></pre></div><p>Pre každé zviera sa zavolá funkcia <code>singToConsole</code>, ktorá má jeden parameter. Pre každý
 prvom sa tak zaspieva jedna sloha.</p>
-
 <p>Ako vidno, metóda <code>forEach</code> má jediný parameter typu <em>funkcia</em>.</p>
-
 <h3 id="skrátený-zápis-funkcií">Skrátený zápis funkcií</h3>
-
 <p>V niektorých prípadoch chceme použiť skrátený zápis pre funkcie používané
 v parametroch.</p>
-
 <p>Predstavme si veľkú farmu</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#289;font-weight:bold">let</span> animals <span style="color:#333">=</span> [ 
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#289;font-weight:bold">let</span> animals <span style="color:#333">=</span> [ 
     <span style="color:#289;font-weight:bold">new</span> Animal(<span style="background-color:#e0e0ff">&#34;cow&#34;</span>, <span style="background-color:#e0e0ff">&#34;moo&#34;</span>), 
     <span style="color:#289;font-weight:bold">new</span> Animal(<span style="background-color:#e0e0ff">&#34;cow&#34;</span>, <span style="background-color:#e0e0ff">&#34;moo, moo, moo&#34;</span>),
     <span style="color:#289;font-weight:bold">new</span> Animal(<span style="background-color:#e0e0ff">&#34;pig&#34;</span>, <span style="background-color:#e0e0ff">&#34;oink&#34;</span>),
     <span style="color:#289;font-weight:bold">new</span> Animal(<span style="background-color:#e0e0ff">&#34;pig&#34;</span>, <span style="background-color:#e0e0ff">&#34;oink, oinky oink&#34;</span>),
 ];
-</code></pre></div>
-<p>Ak chceme vypísať len zvuky kráv, môžeme si pripraviť funkciu:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#289;font-weight:bold">function</span> isCow(animal) {
+</code></pre></div><p>Ak chceme vypísať len zvuky kráv, môžeme si pripraviť funkciu:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#289;font-weight:bold">function</span> isCow(animal) {
     <span style="color:#289;font-weight:bold">if</span> (animal.name <span style="color:#333">==</span> <span style="background-color:#e0e0ff">&#34;cow&#34;</span>) {
         <span style="color:#289;font-weight:bold">return</span> <span style="color:#289;font-weight:bold">true</span>;
     } <span style="color:#289;font-weight:bold">else</span> {
         <span style="color:#289;font-weight:bold">return</span> <span style="color:#289;font-weight:bold">false</span>;
     } 
 }
-</code></pre></div>
-<p>Tento zápis je ťažkopádny, pokojne môžeme vynechať <code>if</code>:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#289;font-weight:bold">function</span> isCow(animal) {
+</code></pre></div><p>Tento zápis je ťažkopádny, pokojne môžeme vynechať <code>if</code>:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#289;font-weight:bold">function</span> isCow(animal) {
     <span style="color:#289;font-weight:bold">return</span> animal.name <span style="color:#333">==</span> <span style="background-color:#e0e0ff">&#34;cow&#34;</span>;
 }
-</code></pre></div>
-<p>Každé javascriptové pole má metódu <code>filter</code>, ktorá slúži ako filtračný papierik.
+</code></pre></div><p>Každé javascriptové pole má metódu <code>filter</code>, ktorá slúži ako filtračný papierik.
 Do metódy vložíme funkciu s jedným parametrom. Každý prvok, ktorý funkcia
 overí a vráti preňho <code>true</code>, prejde filtrom a pošle sa na ďalšie spracovanie.</p>
-
 <p>Metóda <code>filter</code> potom vráti len pole prvkov, ktoré prešli filtráciou.</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#289;font-weight:bold">let</span> onlyCows <span style="color:#333">=</span> animals.filter(isCow);
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#289;font-weight:bold">let</span> onlyCows <span style="color:#333">=</span> animals.filter(isCow);
 console.log(onlyCows);
-</code></pre></div>
-<p>V tomto prípade môžeme použiť aj skrátený zápis funkcie:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#289;font-weight:bold">let</span> onlyCows <span style="color:#333">=</span> animals.filter(animal =&gt; animal.name <span style="color:#333">===</span> <span style="background-color:#e0e0ff">&#34;cow&#34;</span>);
-</code></pre></div>
-<p>Všimnime si skrátený zápis: máme funkciu, ktorá berie jeden parameter, nazvaný
+</code></pre></div><p>V tomto prípade môžeme použiť aj skrátený zápis funkcie:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#289;font-weight:bold">let</span> onlyCows <span style="color:#333">=</span> animals.filter(animal =&gt; animal.name <span style="color:#333">===</span> <span style="background-color:#e0e0ff">&#34;cow&#34;</span>);
+</code></pre></div><p>Všimnime si skrátený zápis: máme funkciu, ktorá berie jeden parameter, nazvaný
 <code>animal</code> a vráti <code>true</code> pre každé zviera, ktoré sa volá <code>cow</code>.</p>
-
 <p>V tomto skrátenom zápise netreba používať <code>return</code>, ten sa domyslí.</p>
-
 <p>Výsledok si môžeme nechať vypísať:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">console.log(onlyCows.toString());
-</code></pre></div>
-<p>Technická poznámka: na rozdiel od Javy/C# a pod, metóda <code>log</code> nie vždy
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">console.log(onlyCows.toString());
+</code></pre></div><p>Technická poznámka: na rozdiel od Javy/C# a pod, metóda <code>log</code> nie vždy
 volá <code>toString()</code> na poliach.</p>
-
 <p>Iný príklad, ktorý odfiltruje zvieratá a zároveň ich vypíše, je nasledovný:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">animals.filter(animal =&gt; animal.name <span style="color:#333">===</span> <span style="background-color:#e0e0ff">&#34;cow&#34;</span>)
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">animals.filter(animal =&gt; animal.name <span style="color:#333">===</span> <span style="background-color:#e0e0ff">&#34;cow&#34;</span>)
        .forEach(animal =&gt; console.log(animal));
-</code></pre></div>
-<p>Iný príklad môže vypisovať zvieratá tak, aby MÚKALI VEĽKÝMI PÍSMENAMI.
+</code></pre></div><p>Iný príklad môže vypisovať zvieratá tak, aby MÚKALI VEĽKÝMI PÍSMENAMI.
 Metóda <code>map()</code> na poli dokáže postupne brať jednotlivé prvky poľa, aplikovať
 na každý prvok konkrétnu funkciu (&ldquo;namapovať prvky na iné&rdquo;) a výsledné
 prvky pozbiera do nového poľa.</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">animals.map(animal =&gt; animal.name.toUpperCase()
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">animals.map(animal =&gt; animal.name.toUpperCase()
        .forEach(animal =&gt; console.log(animal));
-</code></pre></div>
-<h1 id="javascript-a-node-js">JavaScript a Node.js</h1>
-
+</code></pre></div><h1 id="javascript-a-nodejs">JavaScript a Node.js</h1>
 <p><strong>Node.js</strong> je platforma pre spúšťanie programov v JavaScripte mimo browsera. V súčasnosti je to veľmi populárna voľba na vývoj výkonných serverových aplikácii.</p>
-
 <p>Node.js beží na každom operačnom systéme a v srdci mu búši výkonný javascriptový engine V8 od Googlu (rovnaký ako v prehliadači Chrome).</p>
-
 <h2 id="predpoklady">Predpoklady</h2>
-
 <ul>
 <li>Nainštalujte <code>node.js</code>.</li>
 <li>Overte, že funguje správca balíčkov <code>npm</code> (Node Package Manager):</li>
 </ul>
-
 <h2 id="vytvorenie-projektu">Vytvorenie projektu</h2>
-
 <ul>
-<li><p>Vytvorme projekt založený na ECMAScript 6</p>
-
+<li>
+<p>Vytvorme projekt založený na ECMAScript 6</p>
 <ul>
 <li>Vo WebStorme, resp. v IntelliJ IDEA v <em>Preferences</em>, <em>Languages and Behaviour</em> nastaviť <em>ECMAScript 6</em>.</li>
-</ul></li>
-
-<li><p>V adresári projektu inicializujme projekt</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">npm init</code></pre></div></li>
-
-<li><p>Vznikne popisovač projektu <code>package.json</code>:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
+</ul>
+</li>
+<li>
+<p>V adresári projektu inicializujme projekt</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">npm init
+</code></pre></div></li>
+<li>
+<p>Vznikne popisovač projektu <code>package.json</code>:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
    <span style="color:#070">&#34;name&#34;</span>: <span style="background-color:#e0e0ff">&#34;kindergarten.js&#34;</span>,
    <span style="color:#070">&#34;version&#34;</span>: <span style="background-color:#e0e0ff">&#34;1.0.0&#34;</span>,
- }</code></pre></div></li>
+ }
+</code></pre></div></li>
 </ul>
-
 <h2 id="ukážka-lodash">Ukážka <code>lodash</code></h2>
-
 <p><code>lodash</code> je knižnica (<strong>modul</strong>) pre JavaScript s viacerými užitočnými funkciami pre prácu s kolekciami a pod.</p>
-
 <h3 id="inštalácia-lodash">Inštalácia <code>lodash</code></h3>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">npm install lodash --save</code></pre></div>
-<p>Z internetu sa stiahnu závislosti a do <code>package.json</code> pribudne sekcia
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">npm install lodash --save
+</code></pre></div><p>Z internetu sa stiahnu závislosti a do <code>package.json</code> pribudne sekcia
 so závislosťami (<em>dependencies</em>):</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json"><span style="background-color:#e0e0ff">&#34;dependencies&#34;</span><span style="color:#f00;background-color:#faa">:</span> {
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json"><span style="background-color:#e0e0ff">&#34;dependencies&#34;</span><span style="color:#f00;background-color:#faa">:</span> {
     <span style="color:#070">&#34;lodash&#34;</span>: <span style="background-color:#e0e0ff">&#34;^4.17.4&#34;</span>
-}</code></pre></div>
-<h3 id="použitie-v-projekte">Použitie v projekte</h3>
-
+}
+</code></pre></div><h3 id="použitie-v-projekte">Použitie v projekte</h3>
 <p>Vytvorme zdrojový súbor <code>index.js</code>, kde demonštrujeme použitie <em>lodash</em>.</p>
-
 <p>Ak píšeme JavaScript pre prostredie <code>Node.js</code>, môžeme využiť závislosť
 na module pomocou funkcie <code>require()</code>:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#289;font-weight:bold">const</span> _ <span style="color:#333">=</span> require(<span style="background-color:#e0e0ff">&#34;lodash&#34;</span>);
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#289;font-weight:bold">const</span> _ <span style="color:#333">=</span> require(<span style="background-color:#e0e0ff">&#34;lodash&#34;</span>);
 
 <span style="color:#289;font-weight:bold">let</span> temperatures <span style="color:#333">=</span> [<span style="color:#66f;font-weight:bold">10</span>, <span style="color:#66f;font-weight:bold">11</span>, <span style="color:#66f;font-weight:bold">6</span>, <span style="color:#66f;font-weight:bold">12</span>, <span style="color:#66f;font-weight:bold">18</span>, <span style="color:#66f;font-weight:bold">15</span>, <span style="color:#66f;font-weight:bold">5</span>, <span style="color:#66f;font-weight:bold">7</span>]
 <span style="color:#289;font-weight:bold">let</span> minimumTemperature <span style="color:#333">=</span> _.min(temperatures);
 
 console.log(minimumTemperature)
-</code></pre></div>
-<h3 id="spustenie">Spustenie</h3>
-
+</code></pre></div><h3 id="spustenie">Spustenie</h3>
 <p>Z príkazového riadku spusťme:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">node index.js</code></pre></div>
-<p>Uvidíme výsledok v podobe najmenšieho čísla:</p>
-
-<pre><code>5
-</code></pre>
-
-<h2 id="ukážka-fetch-rest-klient">Ukážka <code>fetch</code> (REST klient)</h2>
-
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">node index.js
+</code></pre></div><p>Uvidíme výsledok v podobe najmenšieho čísla:</p>
+<pre tabindex="0"><code>5
+</code></pre><h2 id="ukážka-fetchrest-klient">Ukážka <code>fetch</code> (REST klient)</h2>
 <p>Moderné webové prehliadače sprístupňujú klienta pre REST služby v podobe <a href="https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API"><em>Fetch API</em></a>. Tento klient sa dá použiť aj v Node.js, v module <code>node-fetch</code>.</p>
-
 <h3 id="inštalácia">Inštalácia</h3>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">npm install node-fetch --save</code></pre></div>
-<p>Stiahnu sa závislosti pre knižnicu <code>node-fetch</code> a v <code>package.json</code> pribudne nový záznam.</p>
-
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">npm install node-fetch --save
+</code></pre></div><p>Stiahnu sa závislosti pre knižnicu <code>node-fetch</code> a v <code>package.json</code> pribudne nový záznam.</p>
 <h3 id="použitie">Použitie</h3>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#289;font-weight:bold">const</span> fetch <span style="color:#333">=</span> require(<span style="background-color:#e0e0ff">&#39;node-fetch&#39;</span>);
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#289;font-weight:bold">const</span> fetch <span style="color:#333">=</span> require(<span style="background-color:#e0e0ff">&#39;node-fetch&#39;</span>);
 fetch(<span style="background-color:#e0e0ff">&#39;http://ics.upjs.sk/~novotnyr/javascript/animals&#39;</span>)
         .then(response =&gt; response.json())
         .then(json =&gt; console.log(json))
         .<span style="color:#289;font-weight:bold">catch</span>(error =&gt; console.log(error))
-</code></pre></div>
-<p>Funkcia <code>fetch</code> používa filozofiu <em>Promises</em>, ktoré skracujú zápis asynchrónnych volaní s podporou spracovania chýb. Podrobnosti možno nájsť v článku <a href="https://novotnyr.github.io/scrolls/asynchronne-veci-v-javascripte-callback-promise-async-await/">Asynchrónne veci v JavaScripte pomocou callbackov, promises a async/await</a>.</p>
-
+</code></pre></div><p>Funkcia <code>fetch</code> používa filozofiu <em>Promises</em>, ktoré skracujú zápis asynchrónnych volaní s podporou spracovania chýb. Podrobnosti možno nájsť v článku <a href="https://novotnyr.github.io/scrolls/asynchronne-veci-v-javascripte-callback-promise-async-await/">Asynchrónne veci v JavaScripte pomocou callbackov, promises a async/await</a>.</p>
 <p>Spusťme skript znovu:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">node index.js</code></pre></div>
-<p>Uvidíme výsledný JSON:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">[ { <span style="color:#f00;background-color:#faa">name:</span> <span style="color:#f00;background-color:#faa">&#39;Venus&#39;,</span> <span style="color:#f00;background-color:#faa">type:</span> <span style="color:#f00;background-color:#faa">&#39;cow&#39;</span> },
-  { <span style="color:#f00;background-color:#faa">name:</span> <span style="color:#f00;background-color:#faa">&#39;Mr</span> <span style="color:#f00;background-color:#faa">Pink&#39;,</span> <span style="color:#f00;background-color:#faa">type:</span> <span style="color:#f00;background-color:#faa">&#39;pig&#39;</span> } ]</code></pre></div>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">node index.js
+</code></pre></div><p>Uvidíme výsledný JSON:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">[ { <span style="color:#f00;background-color:#faa">name:</span> <span style="color:#f00;background-color:#faa">&#39;Venus&#39;,</span> <span style="color:#f00;background-color:#faa">type:</span> <span style="color:#f00;background-color:#faa">&#39;cow&#39;</span> },
+  { <span style="color:#f00;background-color:#faa">name:</span> <span style="color:#f00;background-color:#faa">&#39;Mr</span> <span style="color:#f00;background-color:#faa">Pink&#39;,</span> <span style="color:#f00;background-color:#faa">type:</span> <span style="color:#f00;background-color:#faa">&#39;pig&#39;</span> } ]
+</code></pre></div>
 </main>
 
     <footer>

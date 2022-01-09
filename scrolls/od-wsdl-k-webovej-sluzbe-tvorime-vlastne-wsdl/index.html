@@ -75,7 +75,7 @@ ktorého si necháme vygenerovať jednak kostru pre server, a neskôr i
 klienta.</p>
 </div>
 <div class="paragraph">
-<p>Postup od WSDL k triedam má mnohé výhody. Ota 'tapik' Buchta napr.
+<p>Postup od WSDL k triedam má mnohé výhody. Ota &#39;tapik&#39; Buchta napr.
 <a href="http://tapikuv.blogspot.com/2008/06/kdy-zat-s-wsdl-kdy-s-kdem.html">uvádza</a>:</p>
 </div>
 <div class="quoteblock">
@@ -160,7 +160,7 @@ Schema: Tutoriál nielen pre tvorcov SOAP služieb</a></p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;movieReservationRequest xmlns="urn:example:movies"&gt;<i class="conum" data-value="1"></i><b>(1)</b>
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;movieReservationRequest xmlns=&#34;urn:example:movies&#34;&gt;<i class="conum" data-value="1"></i><b>(1)</b>
   &lt;title&gt;Krv, črevá a lietajúce hlavy&lt;/title&gt;
   &lt;date&gt;2008-12-24&lt;/date&gt;
   &lt;numberOfTickets&gt;4&lt;/numberOfTickets&gt;
@@ -169,13 +169,13 @@ Schema: Tutoriál nielen pre tvorcov SOAP služieb</a></p>
 </div>
 <div class="colist arabic">
 <table>
-<tr>
+<tbody><tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
 <td>V dokumentoch, ktoré tvoria jadro správy SOAP sa silne odporúča používať
 menné priestory (<em>namespaces</em>), všetky elementy požiadavky sme priradili
 do implicitného menného priestoru <code>urn:example:movies</code>.</td>
 </tr>
-</table>
+</tbody></table>
 </div>
 </div>
 <div class="sect2">
@@ -186,7 +186,7 @@ rezervácie a zoznam miest na sedenie, ktoré boli zarezervované:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;movieReservationResponse xmlns="urn:example:movies"&gt;<i class="conum" data-value="1"></i><b>(1)</b>
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;movieReservationResponse xmlns=&#34;urn:example:movies&#34;&gt;<i class="conum" data-value="1"></i><b>(1)</b>
   &lt;id&gt;2323241&lt;/id&gt;
   &lt;reservedSeats&gt;23&lt;/reservedSeats&gt;
   &lt;reservedSeats&gt;12&lt;/reservedSeats&gt;
@@ -196,12 +196,12 @@ rezervácie a zoznam miest na sedenie, ktoré boli zarezervované:</p>
 </div>
 <div class="colist arabic">
 <table>
-<tr>
+<tbody><tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
 <td>Dokument s odpoveďou tiež priradíme do menného priestoru, a pre poriadok
 ním bude rovnaký menný priestor ako majú dokumenty s požiadavkami.</td>
 </tr>
-</table>
+</tbody></table>
 </div>
 </div>
 <div class="sect2">
@@ -225,27 +225,27 @@ priamo určíme jeho štruktúru.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
-&lt;schema xmlns="http://www.w3.org/2001/XMLSchema"
-        targetNamespace="urn:example:movies"&gt; <i class="conum" data-value="8"></i><b>(8)</b>
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;
+&lt;schema xmlns=&#34;http://www.w3.org/2001/XMLSchema&#34;
+        targetNamespace=&#34;urn:example:movies&#34;&gt; <i class="conum" data-value="8"></i><b>(8)</b>
 
-    &lt;element name="movieReservationRequest"&gt; <i class="conum" data-value="1"></i><b>(1)</b>
+    &lt;element name=&#34;movieReservationRequest&#34;&gt; <i class="conum" data-value="1"></i><b>(1)</b>
         &lt;complexType&gt;
             &lt;sequence&gt;
-                &lt;element name="title" type="string" /&gt; <i class="conum" data-value="2"></i><b>(2)</b>
-                &lt;element name="date" type="date" /&gt; <i class="conum" data-value="3"></i><b>(3)</b>
-                &lt;element name="numberOfTickets" type="int" /&gt; <i class="conum" data-value="4"></i><b>(4)</b>
+                &lt;element name=&#34;title&#34; type=&#34;string&#34; /&gt; <i class="conum" data-value="2"></i><b>(2)</b>
+                &lt;element name=&#34;date&#34; type=&#34;date&#34; /&gt; <i class="conum" data-value="3"></i><b>(3)</b>
+                &lt;element name=&#34;numberOfTickets&#34; type=&#34;int&#34; /&gt; <i class="conum" data-value="4"></i><b>(4)</b>
             &lt;/sequence&gt;
         &lt;/complexType&gt;
     &lt;/element&gt;
 
-    &lt;element name="movieReservationResponse"&gt; <i class="conum" data-value="5"></i><b>(5)</b>
+    &lt;element name=&#34;movieReservationResponse&#34;&gt; <i class="conum" data-value="5"></i><b>(5)</b>
         &lt;complexType&gt;
             &lt;sequence&gt;
-                &lt;element name="id" type="int" /&gt; <i class="conum" data-value="6"></i><b>(6)</b>
-                &lt;element name="reservedSeats"
-                         type="int"
-                         maxOccurs="unbounded" /&gt; <i class="conum" data-value="7"></i><b>(7)</b>
+                &lt;element name=&#34;id&#34; type=&#34;int&#34; /&gt; <i class="conum" data-value="6"></i><b>(6)</b>
+                &lt;element name=&#34;reservedSeats&#34;
+                         type=&#34;int&#34;
+                         maxOccurs=&#34;unbounded&#34; /&gt; <i class="conum" data-value="7"></i><b>(7)</b>
             &lt;/sequence&gt;
         &lt;/complexType&gt;
     &lt;/element&gt;
@@ -254,7 +254,7 @@ priamo určíme jeho štruktúru.</p>
 </div>
 <div class="colist arabic">
 <table>
-<tr>
+<tbody><tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
 <td>Element <code>movieReservationRequest</code> predstavuje jeden z dvoch možných koreňových elementov, v tomto prípade pre požiadavku.</td>
 </tr>
@@ -286,7 +286,7 @@ priamo určíme jeho štruktúru.</p>
 <td><i class="conum" data-value="8"></i><b>8</b></td>
 <td>Všetky deklarované elementy budú spadať do <em>cieľového menného priestoru</em>  (<em>target namespace</em>) <code>urn:example:movies</code>.</td>
 </tr>
-</table>
+</tbody></table>
 </div>
 <div class="paragraph">
 <p>Schému môžeme dokonca publikovať na konkrétnej webovej adrese, dostupnej
@@ -297,9 +297,9 @@ priamo <em>validovať</em> oproti schéme.</p>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-xml" data-lang="xml">&lt;movieReservationRequest
-      xmlns="urn:example:movies"
-      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" <i class="conum" data-value="1"></i><b>(1)</b>
-      xsi:schemaLocation="urn:example:movies http://movie.novotnyr.sk/schema.xsd"&gt; <i class="conum" data-value="2"></i><b>(2)</b>
+      xmlns=&#34;urn:example:movies&#34;
+      xmlns:xsi=&#34;http://www.w3.org/2001/XMLSchema-instance&#34; <i class="conum" data-value="1"></i><b>(1)</b>
+      xsi:schemaLocation=&#34;urn:example:movies http://movie.novotnyr.sk/schema.xsd&#34;&gt; <i class="conum" data-value="2"></i><b>(2)</b>
 
     &lt;title&gt;Krv, črevá a lietajúce hlavy&lt;/title&gt;
     &lt;date&gt;2008-12-24&lt;/date&gt;
@@ -309,7 +309,7 @@ priamo <em>validovať</em> oproti schéme.</p>
 </div>
 <div class="colist arabic">
 <table>
-<tr>
+<tbody><tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
 <td>Deklarovali sme menný priestor pre inštanciu schémy.</td>
 </tr>
@@ -319,7 +319,7 @@ priamo <em>validovať</em> oproti schéme.</p>
 validovať oproti schéme zverejnenej na adrese
 <code><a href="http://movie.novotnyr.sk/schema.xsd" class="bare">http://movie.novotnyr.sk/schema.xsd</a></code>.</td>
 </tr>
-</table>
+</tbody></table>
 </div>
 </div>
 </div>
@@ -332,19 +332,19 @@ validovať oproti schéme zverejnenej na adrese
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;?xml version="1.0" encoding="UTF-8" ?&gt;
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34; ?&gt;
 &lt;definitions
-        xmlns="http://schemas.xmlsoap.org/wsdl/" <i class="conum" data-value="1"></i><b>(1)</b>
-        targetNamespace="urn:example:movies" <i class="conum" data-value="2"></i><b>(2)</b>
-        xmlns:m="urn:example:movies" <i class="conum" data-value="3"></i><b>(3)</b>
-        xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"&gt; <i class="conum" data-value="4"></i><b>(4)</b>
+        xmlns=&#34;http://schemas.xmlsoap.org/wsdl/&#34; <i class="conum" data-value="1"></i><b>(1)</b>
+        targetNamespace=&#34;urn:example:movies&#34; <i class="conum" data-value="2"></i><b>(2)</b>
+        xmlns:m=&#34;urn:example:movies&#34; <i class="conum" data-value="3"></i><b>(3)</b>
+        xmlns:soap=&#34;http://schemas.xmlsoap.org/wsdl/soap/&#34;&gt; <i class="conum" data-value="4"></i><b>(4)</b>
 
 &lt;/definitions&gt;</code></pre>
 </div>
 </div>
 <div class="colist arabic">
 <table>
-<tr>
+<tbody><tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
 <td>implicitný menný priestor <code><a href="http://schemas.xmlsoap.org/wsdl/" class="bare">http://schemas.xmlsoap.org/wsdl/</a></code> zodpovedá <a href="http://www.w3.org/TR/wsdl">norme WSDL 1.1</a>. V niektorých WSDL je tento priestor uvedený explicitne, s prefixom <code>wsdl</code>.</td>
 </tr>
@@ -363,7 +363,7 @@ menný priestor</em> pre elementy deklarované v rámci tohto WSDL súboru.</td>
 <code><a href="http://schemas.xmlsoap.org/wsdl/soap/" class="bare">http://schemas.xmlsoap.org/wsdl/soap/</a></code> a použije sa pri definovaní
 formátu správ v sekcii <em>binding</em>.</td>
 </tr>
-</table>
+</tbody></table>
 </div>
 <div class="sect2">
 <h3 id="_schéma_a_dátové_typy">Schéma a dátové typy</h3>
@@ -388,8 +388,8 @@ z menného priestoru prináležiaceho špecifikácii <em>XML Schema</em>.</p>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-xml" data-lang="xml">&lt;types&gt;
-    &lt;schema xmlns="http://www.w3.org/2001/XMLSchema"
-            targetNamespace="urn:example:movies"&gt;
+    &lt;schema xmlns=&#34;http://www.w3.org/2001/XMLSchema&#34;
+            targetNamespace=&#34;urn:example:movies&#34;&gt;
         &lt;!-- explicitná XML schéma alebo odkaz na externú XML schému --&gt;
     &lt;/schema&gt;
 &lt;/types&gt;</code></pre>
@@ -409,17 +409,17 @@ menný priestor WSDL súboru.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;
 &lt;definitions
-        xmlns="http://schemas.xmlsoap.org/wsdl/"
-        xmlns:m="urn:example:movies"
-        targetNamespace="urn:example:movies"
-        xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"&gt;
+        xmlns=&#34;http://schemas.xmlsoap.org/wsdl/&#34;
+        xmlns:m=&#34;urn:example:movies&#34;
+        targetNamespace=&#34;urn:example:movies&#34;
+        xmlns:soap=&#34;http://schemas.xmlsoap.org/wsdl/soap/&#34;&gt;
 
     &lt;types&gt;
-        &lt;schema xmlns="http://www.w3.org/2001/XMLSchema
-                targetNamespace="urn:example:movies"&gt;
-            &lt;include schemaLocation="schema.xsd" /&gt;
+        &lt;schema xmlns=&#34;http://www.w3.org/2001/XMLSchema
+                targetNamespace=&#34;urn:example:movies&#34;&gt;
+            &lt;include schemaLocation=&#34;schema.xsd&#34; /&gt;
         &lt;/schema&gt;
     &lt;/types&gt;
 &lt;/definitions&gt;</code></pre>
@@ -458,32 +458,32 @@ súbor so schémou XML.</p>
 <h4 id="_priamo_uvedená_schéma">Priamo uvedená schéma</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
-&lt;definitions xmlns="http://schemas.xmlsoap.org/wsdl/"
-             xmlns:m="urn:example:movies"
-             targetNamespace="urn:example:movies"
-             xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"&gt;
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;
+&lt;definitions xmlns=&#34;http://schemas.xmlsoap.org/wsdl/&#34;
+             xmlns:m=&#34;urn:example:movies&#34;
+             targetNamespace=&#34;urn:example:movies&#34;
+             xmlns:soap=&#34;http://schemas.xmlsoap.org/wsdl/soap/&#34;&gt;
 
     &lt;types&gt;
-        &lt;schema xmlns="http://www.w3.org/2001/XMLSchema"
-                targetNamespace="urn:example:movies"&gt;
-            &lt;element name="movieReservationRequest"&gt;
+        &lt;schema xmlns=&#34;http://www.w3.org/2001/XMLSchema&#34;
+                targetNamespace=&#34;urn:example:movies&#34;&gt;
+            &lt;element name=&#34;movieReservationRequest&#34;&gt;
                 &lt;complexType&gt;
                     &lt;sequence&gt;
-                        &lt;element name="title" type="string" /&gt;
-                        &lt;element name="date" type="date" /&gt;
-                        &lt;element name="numberOfTickets" type="int" /&gt;
+                        &lt;element name=&#34;title&#34; type=&#34;string&#34; /&gt;
+                        &lt;element name=&#34;date&#34; type=&#34;date&#34; /&gt;
+                        &lt;element name=&#34;numberOfTickets&#34; type=&#34;int&#34; /&gt;
                     &lt;/sequence&gt;
                 &lt;/complexType&gt;
             &lt;/element&gt;
 
-            &lt;element name="movieReservationResponse"&gt;
+            &lt;element name=&#34;movieReservationResponse&#34;&gt;
                 &lt;complexType&gt;
                     &lt;sequence&gt;
-                        &lt;element name="id" type="int" /&gt;
-                        &lt;element name="reservedSeats"
-                                 type="int"
-                                 maxOccurs="unbounded" /&gt;
+                        &lt;element name=&#34;id&#34; type=&#34;int&#34; /&gt;
+                        &lt;element name=&#34;reservedSeats&#34;
+                                 type=&#34;int&#34;
+                                 maxOccurs=&#34;unbounded&#34; /&gt;
                     &lt;/sequence&gt;
                 &lt;/complexType&gt;
             &lt;/element&gt;
@@ -493,7 +493,7 @@ súbor so schémou XML.</p>
 </div>
 </div>
 <div class="paragraph">
-<p>Všimnime si, ako sme medzi elementy <code>&lt;types&gt;</code>&#8230;&#8203;<code>&lt;/types&gt;</code> bez zmeny
+<p>Všimnime si, ako sme medzi elementy <code>&lt;types&gt;</code>…​<code>&lt;/types&gt;</code> bez zmeny
 vložili celú deklaráciu XML schémy, ktorú sme definovali v predošlej
 sekcii, čím sme doslova nasimulovali deklaráciu <em>include</em>.</p>
 </div>
@@ -516,8 +516,8 @@ ktorému sme priradili prefix <code>m</code>.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;message name="movieReservationRequest"&gt;
-    &lt;part name="body" element="m:movieReservationRequest"/&gt;
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;message name=&#34;movieReservationRequest&#34;&gt;
+    &lt;part name=&#34;body&#34; element=&#34;m:movieReservationRequest&#34;/&gt;
 &lt;/message&gt;</code></pre>
 </div>
 </div>
@@ -533,8 +533,8 @@ bude vyzerať presne tak, ako element <code>movieReservationRequest</code>.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;message name="movieReservationResponse"&gt;
-    &lt;part name="body" element="m:movieReservationResponse"/&gt;
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;message name=&#34;movieReservationResponse&#34;&gt;
+    &lt;part name=&#34;body&#34; element=&#34;m:movieReservationResponse&#34;/&gt;
 &lt;/message&gt;</code></pre>
 </div>
 </div>
@@ -568,10 +568,10 @@ priestor nahradíme kratším prefixom.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;portType name="movieReservationPortType"&gt;
-    &lt;operation name="movieReservation"&gt;
-        &lt;input message="m:movieReservationRequest" /&gt;
-        &lt;output message="m:movieReservationResponse"  /&gt;
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;portType name=&#34;movieReservationPortType&#34;&gt;
+    &lt;operation name=&#34;movieReservation&#34;&gt;
+        &lt;input message=&#34;m:movieReservationRequest&#34; /&gt;
+        &lt;output message=&#34;m:movieReservationResponse&#34;  /&gt;
     &lt;/operation&gt;
 &lt;/portType&gt;</code></pre>
 </div>
@@ -608,8 +608,8 @@ SOAP nad HTTP v štýle <em>document</em>.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;soap:binding style="document"
-              transport="http://schemas.xmlsoap.org/soap/http" /&gt;</code></pre>
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;soap:binding style=&#34;document&#34;
+              transport=&#34;http://schemas.xmlsoap.org/soap/http&#34; /&gt;</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -620,7 +620,7 @@ konkrétny fyzický formát jednotlivých správ. Pre operáciu
 </div>
 <div class="admonitionblock note">
 <table>
-<tr>
+<tbody><tr>
 <td class="icon">
 <i class="fa icon-note" title="Note"></i>
 </td>
@@ -629,7 +629,7 @@ Jednotlivé štýly správ sú v tomto momente nepodstatné. Štýl, ktorý má 
 style of WSDL should I use?</a>)
 </td>
 </tr>
-</table>
+</tbody></table>
 </div>
 <div class="paragraph">
 <p>Celý <em>binding</em> vyzerá nasledovne. Všimnime si, ako sa v atribúte <code>type</code>
@@ -637,17 +637,17 @@ odkazujeme na typ portu (pomocou kvalifikovaného mena s prefixom).</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;binding name="movieReservationBinding"
-         type="m:movieReservationPortType"&gt;
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;binding name=&#34;movieReservationBinding&#34;
+         type=&#34;m:movieReservationPortType&#34;&gt;
 
-    &lt;soap:binding style="document"
-                  transport="http://schemas.xmlsoap.org/soap/http" /&gt;
-    &lt;operation name="movieReservation"&gt;
+    &lt;soap:binding style=&#34;document&#34;
+                  transport=&#34;http://schemas.xmlsoap.org/soap/http&#34; /&gt;
+    &lt;operation name=&#34;movieReservation&#34;&gt;
         &lt;input&gt;
-            &lt;soap:body use="literal"/&gt;
+            &lt;soap:body use=&#34;literal&#34;/&gt;
         &lt;/input&gt;
         &lt;output&gt;
-            &lt;soap:body use="literal"/&gt;
+            &lt;soap:body use=&#34;literal&#34;/&gt;
         &lt;/output&gt;
     &lt;/operation&gt;
 &lt;/binding&gt;</code></pre>
@@ -676,10 +676,10 @@ bude port fyzicky dostupný prostredníctvom sieťového protokolu HTTP.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;service name="movieReservationService"&gt;
-    &lt;port name="movieReservationPort"
-          binding="m:movieReservationBinding"&gt;
-        &lt;soap:address location="http://localhost:8080/movies/ws"/&gt;
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;service name=&#34;movieReservationService&#34;&gt;
+    &lt;port name=&#34;movieReservationPort&#34;
+          binding=&#34;m:movieReservationBinding&#34;&gt;
+        &lt;soap:address location=&#34;http://localhost:8080/movies/ws&#34;/&gt;
     &lt;/port&gt;
 &lt;/service&gt;</code></pre>
 </div>
@@ -718,7 +718,7 @@ protokolu k abstraktnej definícii typu portu.</p>
 </ul>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="wsdl-schema.png" alt="image"></span></p>
+<p><span class="image"><img src="wsdl-schema.png" alt="image"/></span></p>
 </div>
 </div>
 </div>
@@ -730,79 +730,79 @@ protokolu k abstraktnej definícii typu portu.</p>
 <p>WSDL si môžeme ilustrovať na obrázku:</p>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="wsdl.png" alt="Ilustračná schéma WSDL so zvýraznením elementov"></span></p>
+<p><span class="image"><img src="wsdl.png" alt="Ilustračná schéma WSDL so zvýraznením elementov"/></span></p>
 </div>
 <div class="paragraph">
 <p>Kompletné WSDL, v tvare explicitne uvedenej schémy, vyzerá nasledovne:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;
 &lt;definitions
-        xmlns="http://schemas.xmlsoap.org/wsdl/"
-        xmlns:m="urn:example:movies"
-        targetNamespace="urn:example:movies"
-        xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"&gt;
+        xmlns=&#34;http://schemas.xmlsoap.org/wsdl/&#34;
+        xmlns:m=&#34;urn:example:movies&#34;
+        targetNamespace=&#34;urn:example:movies&#34;
+        xmlns:soap=&#34;http://schemas.xmlsoap.org/wsdl/soap/&#34;&gt;
 
     &lt;types&gt;
-        &lt;schema xmlns="http://www.w3.org/2001/XMLSchema"
-                targetNamespace="urn:example:movies"&gt;
+        &lt;schema xmlns=&#34;http://www.w3.org/2001/XMLSchema&#34;
+                targetNamespace=&#34;urn:example:movies&#34;&gt;
 
-            &lt;element name="movieReservationRequest"&gt;
+            &lt;element name=&#34;movieReservationRequest&#34;&gt;
                 &lt;complexType&gt;
                     &lt;sequence&gt;
-                        &lt;element name="title" type="string"/&gt;
-                        &lt;element name="date" type="date"/&gt;
-                        &lt;element name="numberOfTickets" type="int"/&gt;
+                        &lt;element name=&#34;title&#34; type=&#34;string&#34;/&gt;
+                        &lt;element name=&#34;date&#34; type=&#34;date&#34;/&gt;
+                        &lt;element name=&#34;numberOfTickets&#34; type=&#34;int&#34;/&gt;
                     &lt;/sequence&gt;
                 &lt;/complexType&gt;
             &lt;/element&gt;
 
-            &lt;element name="movieReservationResponse"&gt;
+            &lt;element name=&#34;movieReservationResponse&#34;&gt;
                 &lt;complexType&gt;
                     &lt;sequence&gt;
-                        &lt;element name="id" type="int"/&gt;
-                        &lt;element name="reservedSeats"
-                                 type="int"
-                                 maxOccurs="unbounded"/&gt;
+                        &lt;element name=&#34;id&#34; type=&#34;int&#34;/&gt;
+                        &lt;element name=&#34;reservedSeats&#34;
+                                 type=&#34;int&#34;
+                                 maxOccurs=&#34;unbounded&#34;/&gt;
                     &lt;/sequence&gt;
                 &lt;/complexType&gt;
             &lt;/element&gt;
         &lt;/schema&gt;
     &lt;/types&gt;
 
-    &lt;message name="movieReservationRequest"&gt;
-        &lt;part name="body" element="m:movieReservationRequest"/&gt;
+    &lt;message name=&#34;movieReservationRequest&#34;&gt;
+        &lt;part name=&#34;body&#34; element=&#34;m:movieReservationRequest&#34;/&gt;
     &lt;/message&gt;
 
-    &lt;message name="movieReservationResponse"&gt;
-        &lt;part name="body" element="m:movieReservationResponse"/&gt;
+    &lt;message name=&#34;movieReservationResponse&#34;&gt;
+        &lt;part name=&#34;body&#34; element=&#34;m:movieReservationResponse&#34;/&gt;
     &lt;/message&gt;
 
-    &lt;portType name="movieReservationPortType"&gt;
-        &lt;operation name="movieReservation"&gt;
-            &lt;input message="m:movieReservationRequest"/&gt;
-            &lt;output message="m:movieReservationResponse"/&gt;
+    &lt;portType name=&#34;movieReservationPortType&#34;&gt;
+        &lt;operation name=&#34;movieReservation&#34;&gt;
+            &lt;input message=&#34;m:movieReservationRequest&#34;/&gt;
+            &lt;output message=&#34;m:movieReservationResponse&#34;/&gt;
         &lt;/operation&gt;
     &lt;/portType&gt;
 
-    &lt;binding name="movieReservationBinding" type="m:movieReservationPortType"&gt;
-        &lt;soap:binding style="document"
-                      transport="http://schemas.xmlsoap.org/soap/http"/&gt;
-        &lt;operation name="movieReservation"&gt;
+    &lt;binding name=&#34;movieReservationBinding&#34; type=&#34;m:movieReservationPortType&#34;&gt;
+        &lt;soap:binding style=&#34;document&#34;
+                      transport=&#34;http://schemas.xmlsoap.org/soap/http&#34;/&gt;
+        &lt;operation name=&#34;movieReservation&#34;&gt;
             &lt;input&gt;
-                &lt;soap:body use="literal"/&gt;
+                &lt;soap:body use=&#34;literal&#34;/&gt;
             &lt;/input&gt;
             &lt;output&gt;
-                &lt;soap:body use="literal"/&gt;
+                &lt;soap:body use=&#34;literal&#34;/&gt;
             &lt;/output&gt;
         &lt;/operation&gt;
     &lt;/binding&gt;
 
-    &lt;service name="movieReservationService"&gt;
-        &lt;port name="movieReservationPort"
-              binding="m:movieReservationBinding"&gt;
-            &lt;soap:address location="http://localhost:8080/movies/ws"/&gt;
+    &lt;service name=&#34;movieReservationService&#34;&gt;
+        &lt;port name=&#34;movieReservationPort&#34;
+              binding=&#34;m:movieReservationBinding&#34;&gt;
+            &lt;soap:address location=&#34;http://localhost:8080/movies/ws&#34;/&gt;
         &lt;/port&gt;
     &lt;/service&gt;
 &lt;/definitions&gt;</code></pre>

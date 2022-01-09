@@ -59,34 +59,7 @@
 
 
 <main>
-<div id="toc" class="toc">
-<div id="toctitle">Table of Contents</div>
-<ul class="sectlevel1">
-<li><a href="#_úvod">Úvod</a></li>
-<li><a href="#_požadovaný_softvér">Požadovaný softvér</a></li>
-<li><a href="#_príklad_budúca_webová_služba">Príklad: budúca webová služba</a>
-<ul class="sectlevel2">
-<li><a href="#_ustanovenie_vstupno_výstupných_dokumentov">Ustanovenie vstupno-výstupných dokumentov</a></li>
-<li><a href="#_návrh_xml_schémy">Návrh XML schémy</a></li>
-<li><a href="#_menné_priestory">Menné priestory</a></li>
-</ul>
-</li>
-<li><a href="#_definícia_elementu_pre_požiadavku">Definícia elementu pre požiadavku</a>
-<ul class="sectlevel2">
-<li><a href="#_typ_elementu">Typ elementu</a></li>
-<li><a href="#_cvičné_vygenerovanie_inštancie">Cvičné vygenerovanie inštancie</a></li>
-</ul>
-</li>
-<li><a href="#_definícia_elementu_pre_odpoveď">Definícia elementu pre odpoveď</a>
-<ul class="sectlevel2">
-<li><a href="#_typ_elementu_2">Typ elementu</a></li>
-<li><a href="#_cvičné_vygenerovanie_inštancie_2">Cvičné vygenerovanie inštancie</a></li>
-</ul>
-</li>
-<li><a href="#_výsledná_schéma_xml">Výsledná schéma XML</a></li>
-<li><a href="#_vizuálny_diagram_výslednej_schémy">Vizuálny diagram výslednej schémy</a></li>
-</ul>
-</div>
+
 <div class="sect1">
 <h2 id="_úvod">Úvod</h2>
 <div class="sectionbody">
@@ -103,7 +76,7 @@
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="eclipse-plugin.png" alt="eclipse plugin">
+<img src="eclipse-plugin.png" alt="eclipse plugin"/>
 </div>
 </div>
 </div>
@@ -118,7 +91,7 @@
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;word lang="sk"&gt;pes&lt;/dog&gt;</code></pre>
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;word lang=&#34;sk&#34;&gt;pes&lt;/dog&gt;</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -129,7 +102,7 @@
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;words lang="en"&gt;
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;words lang=&#34;en&#34;&gt;
     &lt;word&gt;dog&lt;/word&gt;
     &lt;word&gt;hound&lt;/word&gt;
 &lt;/word&gt;</code></pre>
@@ -149,11 +122,11 @@
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
-&lt;schema xmlns="http://www.w3.org/2001/XMLSchema"
-        targetNamespace="http://www.example.org/schema"
-        xmlns:tns="http://www.example.org/schema"
-        elementFormDefault="qualified"&gt;
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;
+&lt;schema xmlns=&#34;http://www.w3.org/2001/XMLSchema&#34;
+        targetNamespace=&#34;http://www.example.org/schema&#34;
+        xmlns:tns=&#34;http://www.example.org/schema&#34;
+        elementFormDefault=&#34;qualified&#34;&gt;
 &lt;/schema&gt;</code></pre>
 </div>
 </div>
@@ -194,7 +167,7 @@
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="schema-overview.png" alt="schema overview">
+<img src="schema-overview.png" alt="schema overview"/>
 </div>
 </div>
 </div>
@@ -218,11 +191,11 @@
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
-&lt;schema targetNamespace="urn:example:translator"
-        xmlns:x="urn:example:translator"
-        xmlns="http://www.w3.org/2001/XMLSchema"
-        elementFormDefault="qualified"&gt;
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;
+&lt;schema targetNamespace=&#34;urn:example:translator&#34;
+        xmlns:x=&#34;urn:example:translator&#34;
+        xmlns=&#34;http://www.w3.org/2001/XMLSchema&#34;
+        elementFormDefault=&#34;qualified&#34;&gt;
 
 &lt;/schema&gt;</code></pre>
 </div>
@@ -267,7 +240,7 @@
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="type-and-attributes.png" alt="type and attributes">
+<img src="type-and-attributes.png" alt="type and attributes"/>
 </div>
 </div>
 <div class="paragraph">
@@ -291,9 +264,9 @@
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;element name="word" type="x:Word"&gt;&lt;/element&gt;
-&lt;complexType name="Word"&gt;
-    &lt;attribute name="lang" type="string"&gt;&lt;/attribute&gt;
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;element name=&#34;word&#34; type=&#34;x:Word&#34;&gt;&lt;/element&gt;
+&lt;complexType name=&#34;Word&#34;&gt;
+    &lt;attribute name=&#34;lang&#34; type=&#34;string&#34;&gt;&lt;/attribute&gt;
 &lt;/complexType&gt;</code></pre>
 </div>
 </div>
@@ -317,17 +290,17 @@
 </ul>
 </div>
 <div class="paragraph">
-<p>Kliknime opäť na typ <code>Word</code> a z vlastností vyberme možnosť <strong>Inherit From</strong>. Z rozbaľovacieho menu zvolíme <strong>Browse&#8230;&#8203;</strong>, kde z následného dialógu vyberieme typ <code>string</code>.</p>
+<p>Kliknime opäť na typ <code>Word</code> a z vlastností vyberme možnosť <strong>Inherit From</strong>. Z rozbaľovacieho menu zvolíme <strong>Browse…​</strong>, kde z následného dialógu vyberieme typ <code>string</code>.</p>
 </div>
 <div class="paragraph">
 <p>Editor následne upraví kód typu:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;complexType name="Word"&gt;
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;complexType name=&#34;Word&#34;&gt;
     &lt;simpleContent&gt;
-        &lt;extension base="string"&gt;
-            &lt;attribute name="lang" type="string"&gt;&lt;/attribute&gt;
+        &lt;extension base=&#34;string&#34;&gt;
+            &lt;attribute name=&#34;lang&#34; type=&#34;string&#34;&gt;&lt;/attribute&gt;
         &lt;/extension&gt;
     &lt;/simpleContent&gt;
 &lt;/complexType&gt;</code></pre>
@@ -338,11 +311,11 @@
 <div class="sect2">
 <h3 id="_cvičné_vygenerovanie_inštancie">Cvičné vygenerovanie inštancie</h3>
 <div class="paragraph">
-<p>Eclipse umožňuje vygenerovať inštanciu XML schémy. Ak v pohľade <em>Project Explorer</em> klikneme na súbor so schémou a vyvoláme <strong>Generate | XML File&#8230;&#8203;</strong></p>
+<p>Eclipse umožňuje vygenerovať inštanciu XML schémy. Ak v pohľade <em>Project Explorer</em> klikneme na súbor so schémou a vyvoláme <strong>Generate | XML File…​</strong></p>
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="new-xml-file.png" alt="new xml file">
+<img src="new-xml-file.png" alt="new xml file"/>
 </div>
 </div>
 <div class="paragraph">
@@ -366,16 +339,16 @@
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
-&lt;x:word xmlns:x="urn:example:translator" <i class="conum" data-value="1"></i><b>(1)</b>
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="urn:example:translator schema.xsd"&gt; <i class="conum" data-value="2"></i><b>(2)</b>
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;
+&lt;x:word xmlns:x=&#34;urn:example:translator&#34; <i class="conum" data-value="1"></i><b>(1)</b>
+	xmlns:xsi=&#34;http://www.w3.org/2001/XMLSchema-instance&#34;
+	xsi:schemaLocation=&#34;urn:example:translator schema.xsd&#34;&gt; <i class="conum" data-value="2"></i><b>(2)</b>
 x:word&lt;/x:word&gt; <i class="conum" data-value="3"></i><b>(3)</b></code></pre>
 </div>
 </div>
 <div class="colist arabic">
 <table>
-<tr>
+<tbody><tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
 <td>Deklaruje menný priestor <code>urn:example:translator</code> a jeho prefix <code>x</code>.</td>
 </tr>
@@ -387,7 +360,7 @@ x:word&lt;/x:word&gt; <i class="conum" data-value="3"></i><b>(3)</b></code></pre
 <td><i class="conum" data-value="3"></i><b>3</b></td>
 <td>Predvyplní hodnotu textového obsahu.</td>
 </tr>
-</table>
+</tbody></table>
 </div>
 <div class="paragraph">
 <p>Atribút <code>lang</code>, ktorý nie je povinný, vynechá.</p>
@@ -399,7 +372,7 @@ x:word&lt;/x:word&gt; <i class="conum" data-value="3"></i><b>(3)</b></code></pre
 <h2 id="_definícia_elementu_pre_odpoveď">Definícia elementu pre odpoveď</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>V schéme XML teraz pridáme druhý element do bloku <strong>Elements</strong>. Z kontextového menu zopakujeme <strong>Add Element</strong>, kde vyplníme meno (<em>name</em>) <code>words</code> a pre typ (<em>Type</em>) vytvoríme nový typ (<em>New Type&#8230;&#8203;</em>)</p>
+<p>V schéme XML teraz pridáme druhý element do bloku <strong>Elements</strong>. Z kontextového menu zopakujeme <strong>Add Element</strong>, kde vyplníme meno (<em>name</em>) <code>words</code> a pre typ (<em>Type</em>) vytvoríme nový typ (<em>New Type…​</em>)</p>
 </div>
 <div class="sect2">
 <h3 id="_typ_elementu_2">Typ elementu</h3>
@@ -430,7 +403,7 @@ x:word&lt;/x:word&gt; <i class="conum" data-value="3"></i><b>(3)</b></code></pre
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="complex-type-words.png" alt="complex type words">
+<img src="complex-type-words.png" alt="complex type words"/>
 </div>
 </div>
 <div class="paragraph">
@@ -441,11 +414,11 @@ x:word&lt;/x:word&gt; <i class="conum" data-value="3"></i><b>(3)</b></code></pre
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;element name="words" type="x:Words"&gt;&lt;/element&gt;
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;element name=&#34;words&#34; type=&#34;x:Words&#34;&gt;&lt;/element&gt;
 
-&lt;complexType name="Words"&gt;
+&lt;complexType name=&#34;Words&#34;&gt;
     &lt;sequence&gt;
-        &lt;element name="word" type="string" minOccurs="0" maxOccurs="unbounded"&gt;&lt;/element&gt;
+        &lt;element name=&#34;word&#34; type=&#34;string&#34; minOccurs=&#34;0&#34; maxOccurs=&#34;unbounded&#34;&gt;&lt;/element&gt;
     &lt;/sequence&gt;
 &lt;/complexType&gt;</code></pre>
 </div>
@@ -472,13 +445,13 @@ Kliknime naňho, zobrazme jeho vlastnosti a nastavme:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;complexType name="Words"&gt;
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;complexType name=&#34;Words&#34;&gt;
     &lt;sequence&gt;
-        &lt;element name="word" type="string" minOccurs="0"
-            maxOccurs="unbounded"&gt;
+        &lt;element name=&#34;word&#34; type=&#34;string&#34; minOccurs=&#34;0&#34;
+            maxOccurs=&#34;unbounded&#34;&gt;
         &lt;/element&gt;
     &lt;/sequence&gt;
-    &lt;attribute name="lang" type="string" use="required"&gt;&lt;/attribute&gt;
+    &lt;attribute name=&#34;lang&#34; type=&#34;string&#34; use=&#34;required&#34;&gt;&lt;/attribute&gt;
 &lt;/complexType&gt;</code></pre>
 </div>
 </div>
@@ -486,15 +459,15 @@ Kliknime naňho, zobrazme jeho vlastnosti a nastavme:</p>
 <div class="sect2">
 <h3 id="_cvičné_vygenerovanie_inštancie_2">Cvičné vygenerovanie inštancie</h3>
 <div class="paragraph">
-<p>Ak si necháme vygenerovať inštanciu (súbor schémy <strong>| Generate | XML File&#8230;&#8203;</strong>), a ako koreňový element zvolíme <strong>words</strong>, uvidíme výsledok:</p>
+<p>Ak si necháme vygenerovať inštanciu (súbor schémy <strong>| Generate | XML File…​</strong>), a ako koreňový element zvolíme <strong>words</strong>, uvidíme výsledok:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
-&lt;x:words lang=""
-     xmlns:x="urn:example:translator"
-     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-     xsi:schemaLocation="urn:example:translator schema.xsd "&gt;&lt;/x:words&gt;</code></pre>
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;
+&lt;x:words lang=&#34;&#34;
+     xmlns:x=&#34;urn:example:translator&#34;
+     xmlns:xsi=&#34;http://www.w3.org/2001/XMLSchema-instance&#34;
+     xsi:schemaLocation=&#34;urn:example:translator schema.xsd &#34;&gt;&lt;/x:words&gt;</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -511,27 +484,27 @@ Kliknime naňho, zobrazme jeho vlastnosti a nastavme:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
-&lt;schema targetNamespace="urn:example:translator" elementFormDefault="qualified" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:x="urn:example:translator"&gt;
-    &lt;element name="word" type="x:Word"&gt;&lt;/element&gt;
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;
+&lt;schema targetNamespace=&#34;urn:example:translator&#34; elementFormDefault=&#34;qualified&#34; xmlns=&#34;http://www.w3.org/2001/XMLSchema&#34; xmlns:x=&#34;urn:example:translator&#34;&gt;
+    &lt;element name=&#34;word&#34; type=&#34;x:Word&#34;&gt;&lt;/element&gt;
 
-    &lt;complexType name="Word"&gt;
+    &lt;complexType name=&#34;Word&#34;&gt;
     	&lt;simpleContent&gt;
-    		&lt;extension base="string"&gt;
-    			&lt;attribute name="lang" type="string"&gt;&lt;/attribute&gt;
+    		&lt;extension base=&#34;string&#34;&gt;
+    			&lt;attribute name=&#34;lang&#34; type=&#34;string&#34;&gt;&lt;/attribute&gt;
     		&lt;/extension&gt;
     	&lt;/simpleContent&gt;
     &lt;/complexType&gt;
 
-    &lt;element name="words" type="x:Words"&gt;&lt;/element&gt;
+    &lt;element name=&#34;words&#34; type=&#34;x:Words&#34;&gt;&lt;/element&gt;
 
-    &lt;complexType name="Words"&gt;
+    &lt;complexType name=&#34;Words&#34;&gt;
     	&lt;sequence&gt;
-    		&lt;element name="word" type="string" minOccurs="0"
-    			maxOccurs="unbounded"&gt;
+    		&lt;element name=&#34;word&#34; type=&#34;string&#34; minOccurs=&#34;0&#34;
+    			maxOccurs=&#34;unbounded&#34;&gt;
     		&lt;/element&gt;
     	&lt;/sequence&gt;
-    	&lt;attribute name="lang" type="string" use="required"&gt;&lt;/attribute&gt;
+    	&lt;attribute name=&#34;lang&#34; type=&#34;string&#34; use=&#34;required&#34;&gt;&lt;/attribute&gt;
     &lt;/complexType&gt;
 &lt;/schema&gt;</code></pre>
 </div>
@@ -546,12 +519,12 @@ Kliknime naňho, zobrazme jeho vlastnosti a nastavme:</p>
 <div class="sectionbody">
 <div class="imageblock">
 <div class="content">
-<img src="xml-schema-visual.png" alt="xml schema visual">
+<img src="xml-schema-visual.png" alt="xml schema visual"/>
 </div>
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="xml-schema-visual.png" alt="xml schema visual">
+<img src="xml-schema-visual.png" alt="xml schema visual"/>
 </div>
 </div>
 </div>

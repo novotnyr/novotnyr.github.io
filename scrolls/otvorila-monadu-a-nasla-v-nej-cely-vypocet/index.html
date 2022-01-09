@@ -59,23 +59,17 @@
 
 
 <main>
-
-
 <blockquote>
 <p>Otvorila som monádu a ostala som v šoku! Bola v nej celá história!</p>
 </blockquote>
-
 <p>Výpočty robíme bežne, napríklad:</p>
-
 <pre><code>var message = &quot;twinkle twinkle little star&quot;;
 message = message.toUpperCase();
 message = message.replace(&quot; &quot;, &quot;&quot;);
 message = message.substring(0, 14)
 </code></pre>
-
 <p>Čo keby sme však chceli vedieť, aký je výsledok po každom kroku?
 To by sme museli všade napchať logovanie:</p>
-
 <pre><code>var message = &quot;twinkle twinkle little star&quot;;
 
 message = message.toUpperCase();
@@ -87,223 +81,194 @@ log(&quot;Bez medzier: &quot; + message);
 message = message.substring(0, 14)
 log(&quot;Prvých 14 znakov: &quot; + message);    
 </code></pre>
-
 <p>S použitím monády to môžeme spraviť oveľa lepšie: nemusíme rozsievať logovacie hlášky a už vôbec nemusíme upravovať každú z funkcií.</p>
-
 <h1 id="trieda-writer">Trieda <code>Writer</code></h1>
-
 <p>Keďže máme funkcie, ktoré vykonávame po sebe, a činnosti medzi nimi chceme obohatiť o dodatočný kód, môžeme použiť návrhový vzor <em>monáda</em>.</p>
-
 <p>Refrén po minulých dieloch:</p>
-
 <ul>
 <li>potrebujeme triedu, ktorá obalí nejaký generický dátový typ <code>R</code>.</li>
 <li>potrebujeme metódu, ktorá bežný objekt zabalí do triedy z predošlého bodu</li>
 <li>potrebujeme metódu, ktorá prijme funkciu, čo vybalí vnútro, čosi spočíta a vráti nový zabalený objekt do triedy z prvého bodu</li>
 </ul>
-
 <p>Naša trieda &ndash; nazvime ju <code>Writer</code> &ndash; bude iným prípadom oproti <code>Maybe</code> alebo zoznamu &ndash; pretože si bude pamätať dve veci:</p>
-
 <ol>
 <li>nejakú <strong>hodnotu</strong>, čo bude výsledok posledného „výpočtového kroku“ &ndash; napr. REŤAZEC s veľkými písmenami alebo <code>reťazecbezmedzier</code>.</li>
 <li><strong>log</strong>, teda zoznam logovacích hlášok, ktoré sa udiali počas predošlých výpočtových krokov.</li>
 </ol>
-
 <p>Prvý nástrel!</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">package com</span>.<span style="color:#007">github</span>.<span style="color:#007">novotnyr</span>.<span style="color:#007">monad</span>.<span style="color:#007">writer</span>;
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">package</span> <span style="color:#0e84b5;font-weight:bold">com.github.novotnyr.monad.writer</span><span style="color:#333">;</span>
 
-<span style="color:#f00;background-color:#faa">import java</span>.<span style="color:#007">util</span>.<span style="color:#007">ArrayList</span>;
-<span style="color:#f00;background-color:#faa">import java</span>.<span style="color:#007">util</span>.<span style="color:#007">List</span>;
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">java.util.ArrayList</span><span style="color:#333">;</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">java.util.List</span><span style="color:#333">;</span>
 
-<span style="color:#f00;background-color:#faa">public class </span>Writer<span style="color:#333">&lt;</span>T<span style="color:#333">&gt;</span> {
-    <span style="color:#f00;background-color:#faa">private T </span>value;
+<span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">Writer</span><span style="color:#333">&lt;</span>T<span style="color:#333">&gt;</span> <span style="color:#333">{</span>
+    <span style="color:#289;font-weight:bold">private</span> T value<span style="color:#333">;</span>
 
-    <span style="color:#f00;background-color:#faa">private List</span><span style="color:#333">&lt;</span><span style="color:#f00;background-color:#faa">String&gt; log </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> ArrayList<span style="color:#333">&lt;&gt;</span>();
+    <span style="color:#289;font-weight:bold">private</span> List<span style="color:#333">&lt;</span>String<span style="color:#333">&gt;</span> log <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> ArrayList<span style="color:#333">&lt;&gt;();</span>
 
-    <span style="color:#f00;background-color:#faa">public static </span><span style="color:#333">&lt;</span><span style="color:#f00;background-color:#faa">T&gt; Writer</span><span style="color:#333">&lt;</span><span style="color:#f00;background-color:#faa">T&gt; log</span>(<span style="color:#f00;background-color:#faa">T value</span>, <span style="color:#f00;background-color:#faa">String message</span>) {
-        <span style="color:#f00;background-color:#faa">Writer&lt;T&gt; writer </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Writer<span style="color:#333">&lt;&gt;</span>();
-        writer.<span style="color:#007">value</span> <span style="color:#333">=</span> value;
-        writer.<span style="color:#007">log</span>.<span style="color:#007">add</span>(message);
+    <span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">static</span> <span style="color:#333">&lt;</span>T<span style="color:#333">&gt;</span> Writer<span style="color:#333">&lt;</span>T<span style="color:#333">&gt;</span> <span style="color:#5ed;font-weight:bold">log</span><span style="color:#333">(</span>T value<span style="color:#333">,</span> String message<span style="color:#333">)</span> <span style="color:#333">{</span>
+        Writer<span style="color:#333">&lt;</span>T<span style="color:#333">&gt;</span> writer <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Writer<span style="color:#333">&lt;&gt;();</span>
+        writer<span style="color:#333">.</span><span style="color:#007">value</span> <span style="color:#333">=</span> value<span style="color:#333">;</span>
+        writer<span style="color:#333">.</span><span style="color:#007">log</span><span style="color:#333">.</span><span style="color:#007">add</span><span style="color:#333">(</span>message<span style="color:#333">);</span>
 
-        <span style="color:#289;font-weight:bold">return</span> writer;
-    }
-}</code></pre></div>
-<p>Trieda je len glorifikovaná usporiadaná dvojica (<em>hodnota</em> a <em>log</em>).</p>
-
+        <span style="color:#289;font-weight:bold">return</span> writer<span style="color:#333">;</span>
+    <span style="color:#333">}</span>
+<span style="color:#333">}</span>
+</code></pre></div><p>Trieda je len glorifikovaná usporiadaná dvojica (<em>hodnota</em> a <em>log</em>).</p>
 <p>Pomocná metóda <code>log</code> je zase glorifikovaný konštruktor, ale takto to bude lepšie vyzerať v testoch.</p>
-
 <h1 id="metóda-pre-zreťazenie">Metóda pre zreťazenie</h1>
-
 <p>A teraz to dôležité: metóda pre zreťazenie!</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#333">&lt;</span><span style="color:#f00;background-color:#faa">Result&gt; Writer</span><span style="color:#333">&lt;</span><span style="color:#f00;background-color:#faa">Result&gt; then</span>(Function<span style="color:#333">&lt;</span>Value, <span style="color:#f00;background-color:#faa">Writer&lt;Result&gt;&gt; transformer</span>)</code></pre></div>
-<p>Metóda zoberie hodnotu typu <code>Value</code> a funkciu z <code>Value</code> do výsledkov typu <code>Result</code> &ndash; ale v obale &ndash; a celý nový obalený výpočet vráti.</p>
-
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#333">&lt;</span>Result<span style="color:#333">&gt;</span> Writer<span style="color:#333">&lt;</span>Result<span style="color:#333">&gt;</span> <span style="color:#5ed;font-weight:bold">then</span><span style="color:#333">(</span>Function<span style="color:#333">&lt;</span>Value<span style="color:#333">,</span> Writer<span style="color:#333">&lt;</span>Result<span style="color:#333">&gt;&gt;</span> transformer<span style="color:#333">)</span>
+</code></pre></div><p>Metóda zoberie hodnotu typu <code>Value</code> a funkciu z <code>Value</code> do výsledkov typu <code>Result</code> &ndash; ale v obale &ndash; a celý nový obalený výpočet vráti.</p>
 <p>Aby sme dodržali konvencie v Jave, generické typy skrátime: <code>Result</code> na <code>R</code> a hodnoty <code>Value</code> na <code>T</code>.</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#333">&lt;</span><span style="color:#f00;background-color:#faa">R&gt; Writer</span><span style="color:#333">&lt;</span><span style="color:#f00;background-color:#faa">R&gt; then</span>(Function<span style="color:#333">&lt;</span>T, <span style="color:#f00;background-color:#faa">Writer&lt;R&gt;&gt; transformer</span>)</code></pre></div>
-<p>Idea v kóde je nasledovná:</p>
-
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#333">&lt;</span>R<span style="color:#333">&gt;</span> Writer<span style="color:#333">&lt;</span>R<span style="color:#333">&gt;</span> <span style="color:#5ed;font-weight:bold">then</span><span style="color:#333">(</span>Function<span style="color:#333">&lt;</span>T<span style="color:#333">,</span> Writer<span style="color:#333">&lt;</span>R<span style="color:#333">&gt;&gt;</span> transformer<span style="color:#333">)</span>
+</code></pre></div><p>Idea v kóde je nasledovná:</p>
 <ol>
 <li>Použijeme funkciu na vnútro, získame obalený nový <code>Writer</code>.</li>
 <li>Vytiahneme z neho hodnotu a zapamätáme si ju.</li>
 <li>Vytiahneme z neho log (je to zoznam), a nalepíme ho na koniec aktuálneho logu.</li>
 <li>Aj hodnotu, aj celý nový log zabalíme do nového <code>Writer</code>-a, ktorý pošleme von ako výsledok.</li>
 </ol>
-
 <p>Naprogramujme to!</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#333">&lt;</span><span style="color:#f00;background-color:#faa">R&gt; Writer</span><span style="color:#333">&lt;</span><span style="color:#f00;background-color:#faa">R&gt; then</span>(Function<span style="color:#333">&lt;</span>T, <span style="color:#f00;background-color:#faa">Writer&lt;R&gt;&gt; transformer</span>) {
-    <span style="color:#f00;background-color:#faa">Writer&lt;R&gt; transformedWriter </span><span style="color:#333">=</span> transformer.<span style="color:#007">apply</span>(<span style="color:#289;font-weight:bold">this</span>.<span style="color:#007">value</span>);
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#333">&lt;</span>R<span style="color:#333">&gt;</span> Writer<span style="color:#333">&lt;</span>R<span style="color:#333">&gt;</span> <span style="color:#5ed;font-weight:bold">then</span><span style="color:#333">(</span>Function<span style="color:#333">&lt;</span>T<span style="color:#333">,</span> Writer<span style="color:#333">&lt;</span>R<span style="color:#333">&gt;&gt;</span> transformer<span style="color:#333">)</span> <span style="color:#333">{</span>
+    Writer<span style="color:#333">&lt;</span>R<span style="color:#333">&gt;</span> transformedWriter <span style="color:#333">=</span> transformer<span style="color:#333">.</span><span style="color:#007">apply</span><span style="color:#333">(</span><span style="color:#289;font-weight:bold">this</span><span style="color:#333">.</span><span style="color:#007">value</span><span style="color:#333">);</span>
 
-    <span style="color:#f00;background-color:#faa">var newWriter </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Writer<span style="color:#333">&lt;</span>R<span style="color:#333">&gt;</span>();
-    newWriter.<span style="color:#007">value</span> <span style="color:#333">=</span> transformedWriter.<span style="color:#007">value</span>;
+    var newWriter <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Writer<span style="color:#333">&lt;</span>R<span style="color:#333">&gt;();</span>
+    newWriter<span style="color:#333">.</span><span style="color:#007">value</span> <span style="color:#333">=</span> transformedWriter<span style="color:#333">.</span><span style="color:#007">value</span><span style="color:#333">;</span>
 
     <span style="color:#666;font-style:italic">// zlepíme oba logy, metódu dorobíme o chvíľu!
-</span><span style="color:#666;font-style:italic"></span>    newWriter.<span style="color:#007">log</span> <span style="color:#333">=</span> concatenate(<span style="color:#289;font-weight:bold">this</span>.<span style="color:#007">log</span>, transformedWriter.<span style="color:#007">log</span>);
-    <span style="color:#289;font-weight:bold">return</span> newWriter;
-}</code></pre></div>
-<p>Celý tanec robíme hlavne preto, aby sme garantovali nemennosť (immutability) každého z objektov, čo predíde mnohým (mnohým!) problémom.</p>
-
+</span><span style="color:#666;font-style:italic"></span>    newWriter<span style="color:#333">.</span><span style="color:#007">log</span> <span style="color:#333">=</span> concatenate<span style="color:#333">(</span><span style="color:#289;font-weight:bold">this</span><span style="color:#333">.</span><span style="color:#007">log</span><span style="color:#333">,</span> transformedWriter<span style="color:#333">.</span><span style="color:#007">log</span><span style="color:#333">);</span>
+    <span style="color:#289;font-weight:bold">return</span> newWriter<span style="color:#333">;</span>
+<span style="color:#333">}</span>
+</code></pre></div><p>Celý tanec robíme hlavne preto, aby sme garantovali nemennosť (immutability) každého z objektov, čo predíde mnohým (mnohým!) problémom.</p>
 <p>Ešte musíme dopracovať metódu <code>concatenate</code>:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">private static </span><span style="color:#333">&lt;</span><span style="color:#f00;background-color:#faa">T&gt; List</span><span style="color:#333">&lt;</span><span style="color:#f00;background-color:#faa">T&gt; concatenate</span>(<span style="color:#f00;background-color:#faa">List&lt;T&gt; list1</span>, <span style="color:#f00;background-color:#faa">List&lt;T&gt; list2</span>) {
-    <span style="color:#f00;background-color:#faa">List&lt;T&gt; result </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> ArrayList<span style="color:#333">&lt;&gt;</span>(list1.<span style="color:#007">size</span>() <span style="color:#333">+</span> list2.<span style="color:#007">size</span>());
-    result.<span style="color:#007">addAll</span>(list1);
-    result.<span style="color:#007">addAll</span>(list2);
-    <span style="color:#289;font-weight:bold">return</span> result;
-}</code></pre></div>
-<p>A ako bonus, nezabudnime na <em>getter</em>, ktorým vrátime celý log:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">public List</span><span style="color:#333">&lt;</span><span style="color:#f00;background-color:#faa">String&gt; getLog</span>() {
-    <span style="color:#289;font-weight:bold">return</span> log;
-}</code></pre></div>
-<h1 id="otestujme-si-monádu">Otestujme si monádu</h1>
-
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">private</span> <span style="color:#289;font-weight:bold">static</span> <span style="color:#333">&lt;</span>T<span style="color:#333">&gt;</span> List<span style="color:#333">&lt;</span>T<span style="color:#333">&gt;</span> <span style="color:#5ed;font-weight:bold">concatenate</span><span style="color:#333">(</span>List<span style="color:#333">&lt;</span>T<span style="color:#333">&gt;</span> list1<span style="color:#333">,</span> List<span style="color:#333">&lt;</span>T<span style="color:#333">&gt;</span> list2<span style="color:#333">)</span> <span style="color:#333">{</span>
+    List<span style="color:#333">&lt;</span>T<span style="color:#333">&gt;</span> result <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> ArrayList<span style="color:#333">&lt;&gt;(</span>list1<span style="color:#333">.</span><span style="color:#007">size</span><span style="color:#333">()</span> <span style="color:#333">+</span> list2<span style="color:#333">.</span><span style="color:#007">size</span><span style="color:#333">());</span>
+    result<span style="color:#333">.</span><span style="color:#007">addAll</span><span style="color:#333">(</span>list1<span style="color:#333">);</span>
+    result<span style="color:#333">.</span><span style="color:#007">addAll</span><span style="color:#333">(</span>list2<span style="color:#333">);</span>
+    <span style="color:#289;font-weight:bold">return</span> result<span style="color:#333">;</span>
+<span style="color:#333">}</span>
+</code></pre></div><p>A ako bonus, nezabudnime na <em>getter</em>, ktorým vrátime celý log:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> List<span style="color:#333">&lt;</span>String<span style="color:#333">&gt;</span> <span style="color:#5ed;font-weight:bold">getLog</span><span style="color:#333">()</span> <span style="color:#333">{</span>
+    <span style="color:#289;font-weight:bold">return</span> log<span style="color:#333">;</span>
+<span style="color:#333">}</span>
+</code></pre></div><h1 id="otestujme-si-monádu">Otestujme si monádu</h1>
 <p>Teraz si to všetko otestujme!</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">package com</span>.<span style="color:#007">github</span>.<span style="color:#007">novotnyr</span>.<span style="color:#007">monad</span>.<span style="color:#007">writer</span>;
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">package</span> <span style="color:#0e84b5;font-weight:bold">com.github.novotnyr.monad.writer</span><span style="color:#333">;</span>
 
-<span style="color:#f00;background-color:#faa">import org</span>.<span style="color:#007">junit</span>.<span style="color:#007">jupiter</span>.<span style="color:#007">api</span>.<span style="color:#007">Test</span>;
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">org.junit.jupiter.api.Test</span><span style="color:#333">;</span>
 
-<span style="color:#f00;background-color:#faa">import java</span>.<span style="color:#007">util</span>.<span style="color:#007">List</span>;
-<span style="color:#f00;background-color:#faa">import java</span>.<span style="color:#007">util</span>.<span style="color:#007">concurrent</span>.<span style="color:#007">atomic</span>.<span style="color:#007">AtomicReference</span>;
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">java.util.List</span><span style="color:#333">;</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">java.util.concurrent.atomic.AtomicReference</span><span style="color:#333">;</span>
 
-<span style="color:#f00;background-color:#faa">import static </span>com.<span style="color:#007">github</span>.<span style="color:#007">novotnyr</span>.<span style="color:#007">monad</span>.<span style="color:#007">writer</span>.<span style="color:#007">Writer</span>.<span style="color:#007">log</span>;
-<span style="color:#f00;background-color:#faa">import static </span>org.<span style="color:#007">junit</span>.<span style="color:#007">jupiter</span>.<span style="color:#007">api</span>.<span style="color:#007">Assertions</span>.<span style="color:#007">assertEquals</span>;
+<span style="color:#289;font-weight:bold">import static</span> <span style="color:#0e84b5;font-weight:bold">com.github.novotnyr.monad.writer.Writer.log</span><span style="color:#333">;</span>
+<span style="color:#289;font-weight:bold">import static</span> <span style="color:#0e84b5;font-weight:bold">org.junit.jupiter.api.Assertions.assertEquals</span><span style="color:#333">;</span>
 
-<span style="color:#f00;background-color:#faa">class WriterTest </span>{
+<span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">WriterTest</span> <span style="color:#333">{</span>
     <span style="color:#555;font-weight:bold">@Test</span>
-    <span style="color:#f00;background-color:#faa">public void </span>test() {
-        <span style="color:#f00;background-color:#faa">AtomicReference&lt;String&gt; result </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> AtomicReference<span style="color:#333">&lt;&gt;</span>();
+    <span style="color:#289;font-weight:bold">public</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">test</span><span style="color:#333">()</span> <span style="color:#333">{</span>
+        AtomicReference<span style="color:#333">&lt;</span>String<span style="color:#333">&gt;</span> result <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> AtomicReference<span style="color:#333">&lt;&gt;();</span>
 
-        <span style="color:#f00;background-color:#faa">Writer&lt;String&gt; writer </span><span style="color:#333">=</span> log(<span style="background-color:#e0e0ff">&#34;twinkle twinkle little star&#34;</span>, <span style="background-color:#e0e0ff">&#34;START&#34;</span>)
-                .<span style="color:#007">then</span>(s <span style="color:#333">-&gt;</span> log(s.<span style="color:#007">toUpperCase</span>(), <span style="background-color:#e0e0ff">&#34;To upper case: [&#34;</span> <span style="color:#333">+</span> s <span style="color:#333">+</span> <span style="background-color:#e0e0ff">&#34;]&#34;</span>))
-                .<span style="color:#007">then</span>(s <span style="color:#333">-&gt;</span> log(s.<span style="color:#007">replace</span>(<span style="background-color:#e0e0ff">&#34; &#34;</span>, <span style="background-color:#e0e0ff">&#34;&#34;</span>), <span style="background-color:#e0e0ff">&#34;Remove spaces: [&#34;</span> <span style="color:#333">+</span> s <span style="color:#333">+</span> <span style="background-color:#e0e0ff">&#34;]&#34;</span>))
-                .<span style="color:#007">then</span>(s <span style="color:#333">-&gt;</span> log(s.<span style="color:#007">substring</span>(0, 14), <span style="background-color:#e0e0ff">&#34;First fourteen: [&#34;</span> <span style="color:#333">+</span> s <span style="color:#333">+</span> <span style="background-color:#e0e0ff">&#34;]&#34;</span>))
-                .<span style="color:#007">then</span>(s <span style="color:#333">-&gt;</span> {
-                    result.<span style="color:#007">set</span>(s);
-                    <span style="color:#289;font-weight:bold">return</span> log(s, <span style="background-color:#e0e0ff">&#34;EOF&#34;</span>);
-                });
-        <span style="color:#f00;background-color:#faa">List&lt;String&gt; log </span><span style="color:#333">=</span> writer.<span style="color:#007">getLog</span>();
+        Writer<span style="color:#333">&lt;</span>String<span style="color:#333">&gt;</span> writer <span style="color:#333">=</span> log<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;twinkle twinkle little star&#34;</span><span style="color:#333">,</span> <span style="background-color:#e0e0ff">&#34;START&#34;</span><span style="color:#333">)</span>
+                <span style="color:#333">.</span><span style="color:#007">then</span><span style="color:#333">(</span>s <span style="color:#333">-&gt;</span> log<span style="color:#333">(</span>s<span style="color:#333">.</span><span style="color:#007">toUpperCase</span><span style="color:#333">(),</span> <span style="background-color:#e0e0ff">&#34;To upper case: [&#34;</span> <span style="color:#333">+</span> s <span style="color:#333">+</span> <span style="background-color:#e0e0ff">&#34;]&#34;</span><span style="color:#333">))</span>
+                <span style="color:#333">.</span><span style="color:#007">then</span><span style="color:#333">(</span>s <span style="color:#333">-&gt;</span> log<span style="color:#333">(</span>s<span style="color:#333">.</span><span style="color:#007">replace</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34; &#34;</span><span style="color:#333">,</span> <span style="background-color:#e0e0ff">&#34;&#34;</span><span style="color:#333">),</span> <span style="background-color:#e0e0ff">&#34;Remove spaces: [&#34;</span> <span style="color:#333">+</span> s <span style="color:#333">+</span> <span style="background-color:#e0e0ff">&#34;]&#34;</span><span style="color:#333">))</span>
+                <span style="color:#333">.</span><span style="color:#007">then</span><span style="color:#333">(</span>s <span style="color:#333">-&gt;</span> log<span style="color:#333">(</span>s<span style="color:#333">.</span><span style="color:#007">substring</span><span style="color:#333">(</span>0<span style="color:#333">,</span> 14<span style="color:#333">),</span> <span style="background-color:#e0e0ff">&#34;First fourteen: [&#34;</span> <span style="color:#333">+</span> s <span style="color:#333">+</span> <span style="background-color:#e0e0ff">&#34;]&#34;</span><span style="color:#333">))</span>
+                <span style="color:#333">.</span><span style="color:#007">then</span><span style="color:#333">(</span>s <span style="color:#333">-&gt;</span> <span style="color:#333">{</span>
+                    result<span style="color:#333">.</span><span style="color:#007">set</span><span style="color:#333">(</span>s<span style="color:#333">);</span>
+                    <span style="color:#289;font-weight:bold">return</span> log<span style="color:#333">(</span>s<span style="color:#333">,</span> <span style="background-color:#e0e0ff">&#34;EOF&#34;</span><span style="color:#333">);</span>
+                <span style="color:#333">});</span>
+        List<span style="color:#333">&lt;</span>String<span style="color:#333">&gt;</span> log <span style="color:#333">=</span> writer<span style="color:#333">.</span><span style="color:#007">getLog</span><span style="color:#333">();</span>
 
-        assertEquals(<span style="background-color:#e0e0ff">&#34;TWINKLETWINKLE&#34;</span>, result.<span style="color:#007">get</span>());
-        assertEquals(5, log.<span style="color:#007">size</span>());
-        System.<span style="color:#007">out</span>.<span style="color:#007">println</span>(log);
-    }
+        assertEquals<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;TWINKLETWINKLE&#34;</span><span style="color:#333">,</span> result<span style="color:#333">.</span><span style="color:#007">get</span><span style="color:#333">());</span>
+        assertEquals<span style="color:#333">(</span>5<span style="color:#333">,</span> log<span style="color:#333">.</span><span style="color:#007">size</span><span style="color:#333">());</span>
+        System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span>log<span style="color:#333">);</span>
+    <span style="color:#333">}</span>
 
-}</code></pre></div>
-<p>Logovanie začneme pevným reťazcom, ktorý postupne transformujeme vrátane logovacích hlášok.</p>
-
+<span style="color:#333">}</span>
+</code></pre></div><p>Logovanie začneme pevným reťazcom, ktorý postupne transformujeme vrátane logovacích hlášok.</p>
 <p>Ak sa pozrieme na výsledný log, bude vyzerať nasledovne:</p>
-
 <pre><code>START
 To upper case: [twinkle twinkle little star]
 Remove spaces: [TWINKLE TWINKLE LITTLE STAR]
 First fourteen: [TWINKLETWINKLELITTLESTAR]
 EOF
 </code></pre>
-
 <h1 id="sprehľadnenie-zápisov">Sprehľadnenie zápisov</h1>
-
 <p>Zápis môžeme skrátiť ďalšou užitočnou metódou vo triede <code>Writer</code>:</p>
-
 <pre><code>public static &lt;T&gt; Writer&lt;T&gt; logResult(T result, String description) {
     return log(result, description + &quot;: [&quot; + result + &quot;]&quot;);
 }
 </code></pre>
-
 <p>Test sa potom skráti:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#555;font-weight:bold">@Test</span>
-<span style="color:#f00;background-color:#faa">public void </span>testWithHelperMethod() {
-    <span style="color:#f00;background-color:#faa">AtomicReference&lt;String&gt; result </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> AtomicReference<span style="color:#333">&lt;&gt;</span>();
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#555;font-weight:bold">@Test</span>
+<span style="color:#289;font-weight:bold">public</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">testWithHelperMethod</span><span style="color:#333">()</span> <span style="color:#333">{</span>
+    AtomicReference<span style="color:#333">&lt;</span>String<span style="color:#333">&gt;</span> result <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> AtomicReference<span style="color:#333">&lt;&gt;();</span>
 
-    <span style="color:#f00;background-color:#faa">Writer&lt;String&gt; writer </span><span style="color:#333">=</span> log(<span style="background-color:#e0e0ff">&#34;twinkle twinkle little star&#34;</span>, <span style="background-color:#e0e0ff">&#34;START&#34;</span>)
-            .<span style="color:#007">then</span>(s <span style="color:#333">-&gt;</span> logResult(s.<span style="color:#007">toUpperCase</span>(), <span style="background-color:#e0e0ff">&#34;To upper case&#34;</span>))
-            .<span style="color:#007">then</span>(s <span style="color:#333">-&gt;</span> logResult(s.<span style="color:#007">replace</span>(<span style="background-color:#e0e0ff">&#34; &#34;</span>, <span style="background-color:#e0e0ff">&#34;&#34;</span>), <span style="background-color:#e0e0ff">&#34;Remove spaces&#34;</span>))
-            .<span style="color:#007">then</span>(s <span style="color:#333">-&gt;</span> logResult(s.<span style="color:#007">substring</span>(0, 14), <span style="background-color:#e0e0ff">&#34;First fourteen&#34;</span>))
-            .<span style="color:#007">then</span>(s <span style="color:#333">-&gt;</span> {
-                result.<span style="color:#007">set</span>(s);
-                <span style="color:#289;font-weight:bold">return</span> log(s, <span style="background-color:#e0e0ff">&#34;EOF&#34;</span>);
-            });
-    <span style="color:#f00;background-color:#faa">List&lt;String&gt; log </span><span style="color:#333">=</span> writer.<span style="color:#007">getLog</span>();
+    Writer<span style="color:#333">&lt;</span>String<span style="color:#333">&gt;</span> writer <span style="color:#333">=</span> log<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;twinkle twinkle little star&#34;</span><span style="color:#333">,</span> <span style="background-color:#e0e0ff">&#34;START&#34;</span><span style="color:#333">)</span>
+            <span style="color:#333">.</span><span style="color:#007">then</span><span style="color:#333">(</span>s <span style="color:#333">-&gt;</span> logResult<span style="color:#333">(</span>s<span style="color:#333">.</span><span style="color:#007">toUpperCase</span><span style="color:#333">(),</span> <span style="background-color:#e0e0ff">&#34;To upper case&#34;</span><span style="color:#333">))</span>
+            <span style="color:#333">.</span><span style="color:#007">then</span><span style="color:#333">(</span>s <span style="color:#333">-&gt;</span> logResult<span style="color:#333">(</span>s<span style="color:#333">.</span><span style="color:#007">replace</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34; &#34;</span><span style="color:#333">,</span> <span style="background-color:#e0e0ff">&#34;&#34;</span><span style="color:#333">),</span> <span style="background-color:#e0e0ff">&#34;Remove spaces&#34;</span><span style="color:#333">))</span>
+            <span style="color:#333">.</span><span style="color:#007">then</span><span style="color:#333">(</span>s <span style="color:#333">-&gt;</span> logResult<span style="color:#333">(</span>s<span style="color:#333">.</span><span style="color:#007">substring</span><span style="color:#333">(</span>0<span style="color:#333">,</span> 14<span style="color:#333">),</span> <span style="background-color:#e0e0ff">&#34;First fourteen&#34;</span><span style="color:#333">))</span>
+            <span style="color:#333">.</span><span style="color:#007">then</span><span style="color:#333">(</span>s <span style="color:#333">-&gt;</span> <span style="color:#333">{</span>
+                result<span style="color:#333">.</span><span style="color:#007">set</span><span style="color:#333">(</span>s<span style="color:#333">);</span>
+                <span style="color:#289;font-weight:bold">return</span> log<span style="color:#333">(</span>s<span style="color:#333">,</span> <span style="background-color:#e0e0ff">&#34;EOF&#34;</span><span style="color:#333">);</span>
+            <span style="color:#333">});</span>
+    List<span style="color:#333">&lt;</span>String<span style="color:#333">&gt;</span> log <span style="color:#333">=</span> writer<span style="color:#333">.</span><span style="color:#007">getLog</span><span style="color:#333">();</span>
 
-    assertEquals(<span style="background-color:#e0e0ff">&#34;TWINKLETWINKLE&#34;</span>, result.<span style="color:#007">get</span>());
-    assertEquals(5, log.<span style="color:#007">size</span>());
+    assertEquals<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;TWINKLETWINKLE&#34;</span><span style="color:#333">,</span> result<span style="color:#333">.</span><span style="color:#007">get</span><span style="color:#333">());</span>
+    assertEquals<span style="color:#333">(</span>5<span style="color:#333">,</span> log<span style="color:#333">.</span><span style="color:#007">size</span><span style="color:#333">());</span>
 
-}   </code></pre></div>
-<h1 id="ešte-viac-sprehľadnenia">Ešte viac sprehľadnenia</h1>
-
+<span style="color:#333">}</span>   
+</code></pre></div><h1 id="ešte-viac-sprehľadnenia">Ešte viac sprehľadnenia</h1>
 <p>Tento zápis nie je úplne ideálny. Je viac spôsobov, ako ho skrátiť, a jeden z nich je vytiahnuť funkcie do premenných:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#555;font-weight:bold">@Test</span>
-<span style="color:#f00;background-color:#faa">public void </span>testWithFunctions() {
-    <span style="color:#f00;background-color:#faa">AtomicReference&lt;String&gt; result </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> AtomicReference<span style="color:#333">&lt;&gt;</span>();
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#555;font-weight:bold">@Test</span>
+<span style="color:#289;font-weight:bold">public</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">testWithFunctions</span><span style="color:#333">()</span> <span style="color:#333">{</span>
+    AtomicReference<span style="color:#333">&lt;</span>String<span style="color:#333">&gt;</span> result <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> AtomicReference<span style="color:#333">&lt;&gt;();</span>
 
-    Function<span style="color:#333">&lt;</span>String, <span style="color:#f00;background-color:#faa">Writer&lt;String&gt;&gt; toUpperCase </span><span style="color:#333">=</span> s <span style="color:#333">-&gt;</span> logResult(s.<span style="color:#007">toUpperCase</span>(), <span style="background-color:#e0e0ff">&#34;To upper case&#34;</span>);
-    Function<span style="color:#333">&lt;</span>String, <span style="color:#f00;background-color:#faa">Writer&lt;String&gt;&gt; removeSpaces </span><span style="color:#333">=</span> s <span style="color:#333">-&gt;</span> logResult(s.<span style="color:#007">replace</span>(<span style="background-color:#e0e0ff">&#34; &#34;</span>, <span style="background-color:#e0e0ff">&#34;&#34;</span>), <span style="background-color:#e0e0ff">&#34;Remove spaces&#34;</span>);
-    Function<span style="color:#333">&lt;</span>String, <span style="color:#f00;background-color:#faa">Writer&lt;String&gt;&gt; firstFourteen </span><span style="color:#333">=</span> s <span style="color:#333">-&gt;</span> logResult(s.<span style="color:#007">substring</span>(0, 14), <span style="background-color:#e0e0ff">&#34;First fourteen&#34;</span>);
+    Function<span style="color:#333">&lt;</span>String<span style="color:#333">,</span> Writer<span style="color:#333">&lt;</span>String<span style="color:#333">&gt;&gt;</span> toUpperCase <span style="color:#333">=</span> s <span style="color:#333">-&gt;</span> logResult<span style="color:#333">(</span>s<span style="color:#333">.</span><span style="color:#007">toUpperCase</span><span style="color:#333">(),</span> <span style="background-color:#e0e0ff">&#34;To upper case&#34;</span><span style="color:#333">);</span>
+    Function<span style="color:#333">&lt;</span>String<span style="color:#333">,</span> Writer<span style="color:#333">&lt;</span>String<span style="color:#333">&gt;&gt;</span> removeSpaces <span style="color:#333">=</span> s <span style="color:#333">-&gt;</span> logResult<span style="color:#333">(</span>s<span style="color:#333">.</span><span style="color:#007">replace</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34; &#34;</span><span style="color:#333">,</span> <span style="background-color:#e0e0ff">&#34;&#34;</span><span style="color:#333">),</span> <span style="background-color:#e0e0ff">&#34;Remove spaces&#34;</span><span style="color:#333">);</span>
+    Function<span style="color:#333">&lt;</span>String<span style="color:#333">,</span> Writer<span style="color:#333">&lt;</span>String<span style="color:#333">&gt;&gt;</span> firstFourteen <span style="color:#333">=</span> s <span style="color:#333">-&gt;</span> logResult<span style="color:#333">(</span>s<span style="color:#333">.</span><span style="color:#007">substring</span><span style="color:#333">(</span>0<span style="color:#333">,</span> 14<span style="color:#333">),</span> <span style="background-color:#e0e0ff">&#34;First fourteen&#34;</span><span style="color:#333">);</span>
 
-    <span style="color:#f00;background-color:#faa">Writer&lt;String&gt; writer </span><span style="color:#333">=</span> log(<span style="background-color:#e0e0ff">&#34;twinkle twinkle little star&#34;</span>, <span style="background-color:#e0e0ff">&#34;START&#34;</span>)
-            .<span style="color:#007">then</span>(toUpperCase)
-            .<span style="color:#007">then</span>(removeSpaces)
-            .<span style="color:#007">then</span>(firstFourteen)
-            .<span style="color:#007">then</span>(s <span style="color:#333">-&gt;</span> {
-                result.<span style="color:#007">set</span>(s);
-                <span style="color:#289;font-weight:bold">return</span> log(s, <span style="background-color:#e0e0ff">&#34;EOF&#34;</span>);
-            });
-    <span style="color:#f00;background-color:#faa">List&lt;String&gt; log </span><span style="color:#333">=</span> writer.<span style="color:#007">getLog</span>();
+    Writer<span style="color:#333">&lt;</span>String<span style="color:#333">&gt;</span> writer <span style="color:#333">=</span> log<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;twinkle twinkle little star&#34;</span><span style="color:#333">,</span> <span style="background-color:#e0e0ff">&#34;START&#34;</span><span style="color:#333">)</span>
+            <span style="color:#333">.</span><span style="color:#007">then</span><span style="color:#333">(</span>toUpperCase<span style="color:#333">)</span>
+            <span style="color:#333">.</span><span style="color:#007">then</span><span style="color:#333">(</span>removeSpaces<span style="color:#333">)</span>
+            <span style="color:#333">.</span><span style="color:#007">then</span><span style="color:#333">(</span>firstFourteen<span style="color:#333">)</span>
+            <span style="color:#333">.</span><span style="color:#007">then</span><span style="color:#333">(</span>s <span style="color:#333">-&gt;</span> <span style="color:#333">{</span>
+                result<span style="color:#333">.</span><span style="color:#007">set</span><span style="color:#333">(</span>s<span style="color:#333">);</span>
+                <span style="color:#289;font-weight:bold">return</span> log<span style="color:#333">(</span>s<span style="color:#333">,</span> <span style="background-color:#e0e0ff">&#34;EOF&#34;</span><span style="color:#333">);</span>
+            <span style="color:#333">});</span>
+    List<span style="color:#333">&lt;</span>String<span style="color:#333">&gt;</span> log <span style="color:#333">=</span> writer<span style="color:#333">.</span><span style="color:#007">getLog</span><span style="color:#333">();</span>
 
-    assertEquals(<span style="background-color:#e0e0ff">&#34;TWINKLETWINKLE&#34;</span>, result.<span style="color:#007">get</span>());
-    assertEquals(5, log.<span style="color:#007">size</span>());
+    assertEquals<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;TWINKLETWINKLE&#34;</span><span style="color:#333">,</span> result<span style="color:#333">.</span><span style="color:#007">get</span><span style="color:#333">());</span>
+    assertEquals<span style="color:#333">(</span>5<span style="color:#333">,</span> log<span style="color:#333">.</span><span style="color:#007">size</span><span style="color:#333">());</span>
 
-    System.<span style="color:#007">out</span>.<span style="color:#007">println</span>(log);
-}</code></pre></div>
-<p>Aj toto by sa ešte dalo skrátiť, ale to by sme sa dostali do krajiny kompozícií funkcií, na čo teraz nemáme čas.</p>
-
+    System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span>log<span style="color:#333">);</span>
+<span style="color:#333">}</span>
+</code></pre></div><p>Aj toto by sa ešte dalo skrátiť, ale to by sme sa dostali do krajiny kompozícií funkcií, na čo teraz nemáme čas.</p>
 <p>Funkcie sú teraz elegantne zreťazené a všetko sa loguje správne!</p>
-
 <h1 id="rúry-logovaných-funkcií">Rúry logovaných funkcií</h1>
-
 <p>Pre odvážlivcov môžeme pripraviť dvojicu užitočných metód: <code>start()</code> a <code>pipe()</code>:</p>
-
 <p>Metóda <code>start</code> v triede <code>Writer</code> len obalí výsledok s prázdnou hláškou.</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">public static </span><span style="color:#333">&lt;</span><span style="color:#f00;background-color:#faa">T&gt; Writer</span><span style="color:#333">&lt;</span><span style="color:#f00;background-color:#faa">T&gt; start</span>(<span style="color:#f00;background-color:#faa">T value</span>) {
-    <span style="color:#289;font-weight:bold">return</span> log(value, <span style="background-color:#e0e0ff">&#34;&#34;</span>);
-}</code></pre></div>
-<p>Metóda <code>pipe</code> zavolá reťazec funkcií a začne logovať:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#555;font-weight:bold">@SafeVarargs</span>
-<span style="color:#f00;background-color:#faa">public final Writer&lt;T&gt; pipe</span>(Function<span style="color:#333">&lt;</span>T, <span style="color:#f00;background-color:#faa">Writer&lt;T&gt;&gt;... transformers</span>) {
-    <span style="color:#f00;background-color:#faa">Writer&lt;T&gt; intermediateWriter </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">this</span>;
-    <span style="color:#289;font-weight:bold">for</span> (Function<span style="color:#333">&lt;</span>T, <span style="color:#f00;background-color:#faa">Writer&lt;T&gt;&gt; transformer </span><span style="color:#333">:</span> transformers) {
-        intermediateWriter <span style="color:#333">=</span> intermediateWriter.<span style="color:#007">then</span>(transformer);
-    }
-    <span style="color:#289;font-weight:bold">return</span> intermediateWriter;
-}</code></pre></div>
-<p>A kód potom vyzerá už celkom milo:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Function<span style="color:#333">&lt;</span>String, <span style="color:#f00;background-color:#faa">Writer&lt;String&gt;&gt; toUpperCase </span><span style="color:#333">=</span> s <span style="color:#333">-&gt;</span> logResult(s.<span style="color:#007">toUpperCase</span>(), <span style="background-color:#e0e0ff">&#34;To upper case&#34;</span>);
-Function<span style="color:#333">&lt;</span>String, <span style="color:#f00;background-color:#faa">Writer&lt;String&gt;&gt; removeSpaces </span><span style="color:#333">=</span> s <span style="color:#333">-&gt;</span> logResult(s.<span style="color:#007">replace</span>(<span style="background-color:#e0e0ff">&#34; &#34;</span>, <span style="background-color:#e0e0ff">&#34;&#34;</span>), <span style="background-color:#e0e0ff">&#34;Remove spaces&#34;</span>);
-Function<span style="color:#333">&lt;</span>String, <span style="color:#f00;background-color:#faa">Writer&lt;String&gt;&gt; firstFourteen </span><span style="color:#333">=</span> s <span style="color:#333">-&gt;</span> logResult(s.<span style="color:#007">substring</span>(0, 14), <span style="background-color:#e0e0ff">&#34;First fourteen&#34;</span>);
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">static</span> <span style="color:#333">&lt;</span>T<span style="color:#333">&gt;</span> Writer<span style="color:#333">&lt;</span>T<span style="color:#333">&gt;</span> <span style="color:#5ed;font-weight:bold">start</span><span style="color:#333">(</span>T value<span style="color:#333">)</span> <span style="color:#333">{</span>
+    <span style="color:#289;font-weight:bold">return</span> log<span style="color:#333">(</span>value<span style="color:#333">,</span> <span style="background-color:#e0e0ff">&#34;&#34;</span><span style="color:#333">);</span>
+<span style="color:#333">}</span>
+</code></pre></div><p>Metóda <code>pipe</code> zavolá reťazec funkcií a začne logovať:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#555;font-weight:bold">@SafeVarargs</span>
+<span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">final</span> Writer<span style="color:#333">&lt;</span>T<span style="color:#333">&gt;</span> <span style="color:#5ed;font-weight:bold">pipe</span><span style="color:#333">(</span>Function<span style="color:#333">&lt;</span>T<span style="color:#333">,</span> Writer<span style="color:#333">&lt;</span>T<span style="color:#333">&gt;&gt;...</span> transformers<span style="color:#333">)</span> <span style="color:#333">{</span>
+    Writer<span style="color:#333">&lt;</span>T<span style="color:#333">&gt;</span> intermediateWriter <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">this</span><span style="color:#333">;</span>
+    <span style="color:#289;font-weight:bold">for</span> <span style="color:#333">(</span>Function<span style="color:#333">&lt;</span>T<span style="color:#333">,</span> Writer<span style="color:#333">&lt;</span>T<span style="color:#333">&gt;&gt;</span> transformer <span style="color:#333">:</span> transformers<span style="color:#333">)</span> <span style="color:#333">{</span>
+        intermediateWriter <span style="color:#333">=</span> intermediateWriter<span style="color:#333">.</span><span style="color:#007">then</span><span style="color:#333">(</span>transformer<span style="color:#333">);</span>
+    <span style="color:#333">}</span>
+    <span style="color:#289;font-weight:bold">return</span> intermediateWriter<span style="color:#333">;</span>
+<span style="color:#333">}</span>
+</code></pre></div><p>A kód potom vyzerá už celkom milo:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Function<span style="color:#333">&lt;</span>String<span style="color:#333">,</span> Writer<span style="color:#333">&lt;</span>String<span style="color:#333">&gt;&gt;</span> toUpperCase <span style="color:#333">=</span> s <span style="color:#333">-&gt;</span> logResult<span style="color:#333">(</span>s<span style="color:#333">.</span><span style="color:#007">toUpperCase</span><span style="color:#333">(),</span> <span style="background-color:#e0e0ff">&#34;To upper case&#34;</span><span style="color:#333">);</span>
+Function<span style="color:#333">&lt;</span>String<span style="color:#333">,</span> Writer<span style="color:#333">&lt;</span>String<span style="color:#333">&gt;&gt;</span> removeSpaces <span style="color:#333">=</span> s <span style="color:#333">-&gt;</span> logResult<span style="color:#333">(</span>s<span style="color:#333">.</span><span style="color:#007">replace</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34; &#34;</span><span style="color:#333">,</span> <span style="background-color:#e0e0ff">&#34;&#34;</span><span style="color:#333">),</span> <span style="background-color:#e0e0ff">&#34;Remove spaces&#34;</span><span style="color:#333">);</span>
+Function<span style="color:#333">&lt;</span>String<span style="color:#333">,</span> Writer<span style="color:#333">&lt;</span>String<span style="color:#333">&gt;&gt;</span> firstFourteen <span style="color:#333">=</span> s <span style="color:#333">-&gt;</span> logResult<span style="color:#333">(</span>s<span style="color:#333">.</span><span style="color:#007">substring</span><span style="color:#333">(</span>0<span style="color:#333">,</span> 14<span style="color:#333">),</span> <span style="background-color:#e0e0ff">&#34;First fourteen&#34;</span><span style="color:#333">);</span>
 
-<span style="color:#f00;background-color:#faa">var writer </span><span style="color:#333">=</span> start(<span style="background-color:#e0e0ff">&#34;twinkle twinkle little star&#34;</span>)
-        .<span style="color:#007">pipe</span>(toUpperCase, removeSpaces, firstFourteen)</code></pre></div>
-<p>Tu si utešene vytvoríme rúru (<em>pipe</em>) a dáta prepasírujeme cez viaceré funkcie, pričom po ceste vyrábame log!</p>
-
+var writer <span style="color:#333">=</span> start<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;twinkle twinkle little star&#34;</span><span style="color:#333">)</span>
+        <span style="color:#333">.</span><span style="color:#007">pipe</span><span style="color:#333">(</span>toUpperCase<span style="color:#333">,</span> removeSpaces<span style="color:#333">,</span> firstFourteen<span style="color:#333">)</span>
+</code></pre></div><p>Tu si utešene vytvoríme rúru (<em>pipe</em>) a dáta prepasírujeme cez viaceré funkcie, pričom po ceste vyrábame log!</p>
 <h1 id="záver">Záver</h1>
-
 <p>Vidíme, že monáda môže fungovať aj nad viacerými zložkami naraz &ndash; monáda <code>Writer</code> ukazuje príklad „programovateľnej bodkočiarky“, kde sa medzi jednotlivými krokmi programu automaticky dejú ľubovoľné veci &ndash; napríklad zápis medzivýsledkov do logu.</p>
 
 </main>

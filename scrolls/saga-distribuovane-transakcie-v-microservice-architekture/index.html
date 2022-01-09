@@ -59,460 +59,317 @@
 
 
 <main>
-
-
 <blockquote>
 <p>„Povedzte učiteľovi, že nemám ságy,“ úctivo odpovedal Ostap.</p>
-
 <p>— Iľf-Petrov, Zlaté teľa (1931)</p>
 </blockquote>
-
 <h1 id="kedy-ságy">Kedy ságy?</h1>
-
 <p>Ak máme bežnú relačnú databázu na jednom stroji a chceme to mať postavené <em>dobre</em>, použijeme <strong>transakcie</strong> spĺňajúce zásady ACID.</p>
-
 <p>Ak máme bežnú relačnú databázu rozdelenú na viacero strojov (partície) a chceme to mať tiež postavené dobre, použijeme <strong>dvojfázový komit</strong> (2PC, <em>two-phase commit</em>).</p>
-
 <p>Ak máme viacero nezávislých databáz — napríklad každá mikroslužba má svoju databázu — dvojfázový komit sa nedá realizovať. (V takom prípade možno nemá zmysel ani relačná databáza&hellip;)</p>
-
 <p>To je situácia, keď distribuovanú transakciu implementujeme ako <strong>ságu</strong>.</p>
-
 <h1 id="sága">Sága</h1>
-
 <p><strong>Sága</strong> je postupnosť lokálnych transakcií v nezávislých službách.</p>
-
 <p>Každá lokálna transakcia, teda aktualizácia dát v konkrétnej nezávislej databáze jednej služby, musí:</p>
-
 <ul>
 <li>aktualizovať databázu</li>
 <li>v prípade úspechu vyvolať nasledovný krok ságy</li>
 <li>v prípade neúspechu lokálnej transakcie musí <strong>odvolať</strong> (<em>undo</em>) aktualizáciu dát vo svojej databáze a zároveň odvolať zmeny v predošlých krokoch ságy.</li>
 </ul>
-
 <h1 id="príklad-ságy">Príklad ságy</h1>
-
 <p>Predstavme si microservicovú architektúru:</p>
-
 <ul>
 <li>služba <code>Objednávky</code></li>
 <li>služba <code>Platby</code></li>
 <li>služba <code>Doručenie</code></li>
 </ul>
-
 <p>Súc systémom, očakávam, že:</p>
-
 <ol>
 <li>zákazník si objedná tovar</li>
 <li>prijmeme od neho platbu</li>
 <li>odošleme tovar.</li>
 </ol>
-
 <p>Toto je <em>distribuovaná transakcia</em>, ktorá by sa v bežnej monolitickej databáze riešila s dodržaním pravidiel ACID.</p>
-
 <p>Ako to však riešiť krížom cez viaceré nezávislé databázy?</p>
-
 <h1 id="architektúry-pre-ságy">Architektúry pre ságy</h1>
-
 <p>Implementácia má dva typické prístupy:</p>
-
 <ul>
 <li><strong>event/choreography</strong>: bez koordinátora. Každá služba vysiela udalosti a zároveň počúva na udalosti a rozhodne sa, či reagovať.</li>
 <li><strong>command/orchestration</strong> s koordinátorom, ktorý rozhoduje v ságe, vyvoláva jednotlivých účastníkov ságy, a koordinuje vykonávanie jednotlivých krokov.</li>
 </ul>
-
-<h2 id="event-choreography-choreografia">Event/Choreography: choreografia</h2>
-
+<h2 id="eventchoreography-choreografia">Event/Choreography: choreografia</h2>
 <h3 id="úspešný-scenár">Úspešný scenár</h3>
-
 <p>Služba <code>Objednávky</code> započne transakciu pre vytvorenie objednávky.</p>
-
 <ol>
 <li>Služba <code>Objednávky</code> publikuje udalosť <code>ORDER_CREATED</code>. Na túto udalosť počúvajú ďalšie služby, ktoré podľa potreby vykonajú svoje transakcie a vypublikujú nové udalosti:
-
-<ol>
-<li>Služba <code>Platby</code> vyšle <code>ORDER_BILLED</code>.</li>
-<li>Služba <code>Doručenie</code> vyšle <code>ORDER_DISPATCHED</code>.</li>
-</ol></li>
+2. Služba <code>Platby</code> vyšle <code>ORDER_BILLED</code>.
+2. Služba <code>Doručenie</code> vyšle <code>ORDER_DISPATCHED</code>.</li>
 <li>Transakcia končí, keď posledná služba dokončí svoju lokálnu transakciu.</li>
 <li>Transakcia končí i v prípade, keď na udalosť nikto nereagoval.</li>
 </ol>
-
 <p>Služba <code>Objednávky</code> vie sledovať všetky udalosti plávajúce v systéme a monitorovať stav.</p>
-
 <h3 id="rollbacky-v-neúspešnom-scenári">Rollbacky v neúspešnom scenári</h3>
-
 <p>V prípade, že niektorá z lokálnych transakcií zlyhá, treba odvolať všetky predošlé kroky ságy, teda treba spustiť <strong>kompenzácie</strong>.</p>
-
 <p>Ak služba <code>Doručenie</code> zistí, že tovar nie je na sklade, treba odvolať predošlé kroky:</p>
-
 <ol>
 <li>Služba <code>Platby</code> kompenzuje lokálnu transakciu vrátením peňazí zákazníkovi.</li>
 <li>Služba <code>Objednávky</code> povie zákazníkovi, že objednávka zlyhala (a že ju možno treba zopakovať neskôr.)</li>
 </ol>
-
 <h3 id="výhody-choreografie">Výhody choreografie</h3>
-
 <p>Choreografia sa ľahké chápe, ľahko kreslí na tabuľu, ľahko sa buduje.</p>
-
 <p>Účastníci sú <em>loosely coupled</em>, pretože vzájomne komunikujú len cez správy.</p>
-
 <p>Odporúča sa ju zvážiť pri jednoduchších ságach, ktoré majú 2 až 4 kroky.</p>
-
 <p>Z technického hľadiska treba implementovať korelačné identifikátory v správach. Všetky správy reprezentujúce udalosti v rámci jednej ságy musia mať identifikátor, aby poslucháči vedeli, na ktorú transakciu reagovať.</p>
-
 <h3 id="nevýhody-choreografie">Nevýhody choreografie</h3>
-
 <p>Ak má sága priveľa krokov, je náročné sledovať, ktorá služba má reagovať na ktoré správy.</p>
-
 <p>Navyše, môžu sa zjaviť neočakávané <em>cyklické závislosti</em>, keď si služby vzájomne počúvajú na udalosti a zacyklia sa.</p>
-
 <p>Testovanie je náročnejšie, pretože na overenie musíme mať spustené všetky služby.</p>
-
-<h2 id="command-orchestration">Command / Orchestration</h2>
-
+<h2 id="command--orchestration">Command / Orchestration</h2>
 <p>V tomto štýle zavedieme medzi služby dodatočného účastníka: <strong>saga orchestrator</strong>, ktorý zodpovedá dirigentovi v orchestri.</p>
-
 <h3 id="orchestrátor">Orchestrátor</h3>
-
 <p>Orchestrátor ovláda jednotlivé kroky na úspešné splnenie transakcie. V prípade zlyhaní vie <em>rollbacknúť</em> ságu, tým, že každej službe pošle rozkaz na odvolanie (<em>undo</em>) príslušnej lokálnej transakcie.</p>
-
 <h3 id="úspešný-scenár-1">Úspešný scenár</h3>
-
 <ol>
 <li>Služba <code>Objednávky</code> požiada orchestrátora o začatie transakcie</li>
 <li>Orchestrátor pošle <code>Platbám</code> príkaz <strong>vykonaj platbu!</strong>
-
 <ol>
 <li><code>Platby</code> odvetia <strong>platba vykonaná!</strong></li>
-</ol></li>
+</ol>
+</li>
 <li>Orchestrátor pošle <code>Doručeniam</code> príkaz <strong>doručte tovar!</strong>
-
 <ol>
 <li><code>Doručenia</code> odpovedia <strong>tovar doručený!</strong></li>
-</ol></li>
 </ol>
-
+</li>
+</ol>
 <h3 id="neúspešný-scenár">Neúspešný scenár</h3>
-
 <ol>
 <li>Služba <code>Objednávky</code> požiada orchestrátora o začatie transakcie.</li>
 <li>Orchestrátor pošle <code>Platbám</code> príkaz <strong>vykonaj platbu!</strong>
-
 <ol>
 <li><code>Platby</code> odvetia <strong>platba vykonaná!</strong></li>
-</ol></li>
+</ol>
+</li>
 <li>Orchestrátor pošle <code>Doručeniam</code> príkaz <strong>doručte tovar!</strong>
-
 <ol>
 <li><code>Doručenia</code> odpovedia <strong>nemáme tovar!</strong></li>
-</ol></li>
+</ol>
+</li>
 <li>Orchestrátor vie, že uspela len jedna lokálna transakcia (v službe<code>Platby</code>) a prikáže službe <code>Platby</code> spustiť kompenzáciu, t. j. refundovať zákazníka.</li>
 </ol>
-
 <h3 id="výhody-orchestrácie">Výhody orchestrácie</h3>
-
 <ul>
-<li><p>Orchestrácia sa podobne ľahko implementuje a dokonca ľahko testuje.</p></li>
-
-<li><p>Každá služba funguje len na požiadavkách a odpovediach.</p></li>
-
-<li><p>Orchestrátor je centrálny bod, ktorý vyvoláva jednotlivé služby. Služby sa nevolajú navzájom, čím nemôže dôjsť k cyklickým závislostiam.</p></li>
-
-<li><p>Ak pribudnú nové kroky v ságe, zložitosť implementácie je oproti choreografii omnoho jednoduchšia.</p></li>
-
-<li><p>Rollbacky sú omnoho jednoduchšie implementovateľné. Orchestrátor vie, ktoré lokálne transakcie v postupnosti ságy treba kompenzovať.</p></li>
-
-<li><p>Ak nad jednou entitou beží viacero transakcií naraz, múdry orchestrátor ich vie vhodne usporiadaať.</p></li>
+<li>
+<p>Orchestrácia sa podobne ľahko implementuje a dokonca ľahko testuje.</p>
+</li>
+<li>
+<p>Každá služba funguje len na požiadavkách a odpovediach.</p>
+</li>
+<li>
+<p>Orchestrátor je centrálny bod, ktorý vyvoláva jednotlivé služby. Služby sa nevolajú navzájom, čím nemôže dôjsť k cyklickým závislostiam.</p>
+</li>
+<li>
+<p>Ak pribudnú nové kroky v ságe, zložitosť implementácie je oproti choreografii omnoho jednoduchšia.</p>
+</li>
+<li>
+<p>Rollbacky sú omnoho jednoduchšie implementovateľné. Orchestrátor vie, ktoré lokálne transakcie v postupnosti ságy treba kompenzovať.</p>
+</li>
+<li>
+<p>Ak nad jednou entitou beží viacero transakcií naraz, múdry orchestrátor ich vie vhodne usporiadaať.</p>
+</li>
 </ul>
-
 <h3 id="nevýhody-orchestrácie">Nevýhody orchestrácie</h3>
-
 <ul>
 <li>Orchestrátor je centrálny bod, teda akýsi <em>single point of failure</em>. Do architektúry pribudol nový komponent, ktorý treba udržiavať a dbať na jeho správne fungovanie.</li>
 <li>Orchestrátor má tendenciu stať sa premúdrelým komponentom, ktorý v sebe nesie množstvo biznisovej logiky na úkor služieb, ktoré budú len hlúpi vybavovači požiadaviek.</li>
 </ul>
-
 <h3 id="implementácia">Implementácia</h3>
-
 <h4 id="implementácia-správ">Implementácia správ</h4>
-
 <p>Podobne ako v choreografii je treba používať <em>korelačné identifikátory</em> v správach prináležiacim k jednej transakcii.</p>
-
 <p><strong>Adresáta</strong> pre odpovede je dobré vložiť do samotnej správy a nepoužívať centrálne <em>napečenú</em> adresu orchestrátora.</p>
-
 <p>Treba sa vyhnúť synchrónnym volaniam v štýle RPC, napr. postaviť orchestrátora a mikroslužbu na synchrónnom HTTP. Mnoho transakcií totiž vie pokračovať aj v prípade, že je druhá strana vypnutá/havarovaná/nedostupná. Na druhej strane, <strong>asynchrónny</strong> model je náročnejší na implementáciu.</p>
-
 <p>Odporúčaná architektúra na komunikáciu využíva <strong>message brokery</strong>.</p>
-
 <p>Keďže typické <em>message brokery</em> využívajú doručenie správ v duchu <em>at least once</em> (správa bude doručená aspoň raz, teda napríklad aj 3x v prípade opakovaných pokusov), treba zaručiť <strong>idempotentnosť</strong> operácií v službách i orchestrátorovi.</p>
-
 <h4 id="implementácia-orchestrátora">Implementácia orchestrátora</h4>
-
 <p>Orchestrátor sa dá implementovať ako konečnostavový automat (<em>state machine</em>).</p>
-
 <p>Ak orchestrátor posiela <strong>požiadavku</strong>, vyvolá príslušnú službu, uloží stav entity (napr. Objednávky) v rámci ságy (napr. <em>Pending</em>, <em>Created</em>) a čaká na <strong>odpoveď</strong>.</p>
-
 <p>Pri odpovedi orchestrátor zistí stav entity z databázy, potom rozhodne, ktorého účastníka zavolá, aktualizuje stav entity.</p>
-
 <h1 id="implementácia-ságy">Implementácia ságy</h1>
-
 <h2 id="asynchrónna-komunikácia-a-message-broker">Asynchrónna komunikácia a message broker</h2>
-
 <p>Účastníci ságy komunikujú <strong>asynchrónne</strong>. Buď odosielajú udalosti a reagujú na ne (v prípade choreografie) alebo používajú asynchrónny štýl <em>request/response</em> (v prípade orchestrácie).</p>
-
 <p>Asynchrónny spôsob sa dá dosiahnuť použitím <em>message brokera</em> (RabbitMQ, Kafka a pod.)</p>
-
 <p>Potrebujeme totiž nutne garantovať, že sága skončí, aj keď je niektorý účastník vyradený. Na to potrebujeme:</p>
-
 <ul>
 <li>garantovať <strong>at least once delivery</strong>, teda vedieť reagovať na situácie, že tá istá správa je doručená viackrát. Toto dosiahneme idempotentnými metódami.</li>
 <li>podporiť <strong>durable subscriptions</strong>, teda správa musí sedieť vo fronte dovtedy, kým ju účastník nebude schopný spracovať.</li>
 </ul>
-
 <h2 id="databázy">Databázy</h2>
-
 <p>Lokálna transakcia v rámci jednej služby musí <strong>atomicky</strong>:</p>
-
 <ol>
 <li>Aktualizovať databázu</li>
 <li>A zároveň odoslať správu s udalosťou, či notifikáciou o úspechu či zlyhaní.</li>
 </ol>
-
 <p>Inými slovami, musíme sa vyhnúť situáciám:</p>
-
 <ul>
 <li>Služba nesmie aktualizovať svoju databázu a havarovať pred odoslaním správy.</li>
 <li>Služba nesmie odoslať správu a havarovať počas aktualizácie dát.</li>
 </ul>
-
 <p>To vieme zabezpečiť dvoma <em>návrhovými vzormi pre mikroslužby</em>:</p>
-
 <ul>
 <li><strong>Transactional Outbox</strong> je v stručnosti prístup, kde zmeny v databáze zapíšeme v rámci lokálnej transakcie do samostatnej tabuľky <code>OUTBOX</code>, ktorú číta <em>message broker</em>.</li>
 <li><strong>Event Sourcing</strong>, kde dáta v databáze predstavujú sekvenciu zmien nad nimi. Zmena v databáze je potom prirodzeným pridaním nového riadku so zmenami.</li>
 </ul>
-
 <h1 id="kompenzácie-ako-sa-vysporiadať-s-lokálnou-transakciou-ktorá-zlyhala">Kompenzácie: ako sa vysporiadať s lokálnou transakciou, ktorá zlyhala</h1>
-
 <p>Každá lokálna transakcia skôr či neskôr zlyhá — obvykle kvôli narušeniu pravidiel biznisovej logiky. Chceme vydať tovar, ktorý nie je na sklade? Lokálna transakcia musí zlyhať a sága sa musí zrušiť.</p>
-
 <p>Služba podieľajúca sa na ságe musí explicitne deklarovať <strong>kompenzujúcu transakciu</strong>, ktorá zodpovedá <em>undo</em> kroku, teda odvolá, či zvráti účinky lokálnej transakcie.</p>
-
 <p>Implementácia kompenzujúcej transakcie má nasledovné výzvy:</p>
-
 <ul>
 <li>narušenia ACID zásad: vzájomné prepisovanie dát a stratené zmeny</li>
 <li>čo s nevratnými operáciami: ako kompenzovať odoslanú SMSku či mail?</li>
 <li>zlyhané kompenzujúce transakcie: čo keď treba zachrániť záchranárov? Stručne povedané, kompenzujúca transakcia sa <strong>musí</strong> podariť, pretože možností na zotavenie nie je veľa.</li>
 </ul>
-
 <h2 id="škodlivé-prístupy-k-dátam">Škodlivé prístupy k dátam</h2>
-
 <p>Škodlivé prístupy k dátam, ktoré adresujú zásady ACID v bežných transakciách, sa môžu prejaviť aj v ságach.</p>
-
 <h3 id="dirty-read">Dirty Read</h3>
-
 <p>Klasický príklad je spracovanie objednávky. Ak je sága A pomalá, sága B môže v rámci kompenzácie objednávku zrušiť skôr než ju sága A úspešne dokončí („komitne“). Takto dôjde k dokončeniu už zrušenej objednávky, čo je rozhodne neželaný stav. Ukazuje fenomén <em>dirty read</em>, teda čítanie nekomitnutých dát, ktorý vieme ošetriť použitím <strong>sémantických zámkov</strong> (viď nižšie).</p>
-
 <h3 id="lost-update">Lost Update</h3>
-
 <p>Iné očividné riešenie kompenzujúcej transakcie navádza na postup:</p>
-
 <ol>
-<li><p>Pred lokálnou transakciou si zapamätáme stav entity. <em>Stav účtu je 20 korún.</em></p></li>
-
-<li><p>Vykonáme lokálnu transakciu. <em>Stav účtu po zaplatení je 10 korún</em>.</p></li>
-
-<li><p>Paralelná transakcia nastaví stav účtu na 5 korún.</p></li>
-
-<li><p>Okolnosti nás prinútia kompenzovať, čo dosiahneme pôvodnými hodnotami. <em>Nastavíme stav účtu na 20 korún</em>.</p></li>
-
-<li><p>Práve sme dali zákazníkovi viac peňazí než má právo.</p></li>
-</ol>
-
+<li>
+<p>Pred lokálnou transakciou si zapamätáme stav entity. <em>Stav účtu je 20 korún.</em></p>
+</li>
+<li>
+<p>Vykonáme lokálnu transakciu. <em>Stav účtu po zaplatení je 10 korún</em>.</p>
+</li>
+<li>
+<p>Paralelná transakcia nastaví stav účtu na 5 korún.</p>
+</li>
+<li>
+<p>Okolnosti nás prinútia kompenzovať, čo dosiahneme pôvodnými hodnotami. <em>Nastavíme stav účtu na 20 korún</em>.</p>
+</li>
+<li>
+<p>Práve sme dali zákazníkovi viac peňazí než má právo.</p>
 <p>Tento prístup zjavne nefunguje a je ukážkou fenoménu <em>lost update</em> (stratené zmeny)</p>
-
+</li>
+</ol>
 <p>Jedným z riešení je použitie <strong>komutatívnych zmien</strong> (viď nižšie.)</p>
-
 <h3 id="dirty-read-1">Dirty Read</h3>
-
 <p>Dvakrát pričítame ku kreditu zákazníka, raz z jednej, raz z druhej transakcie, hoci druhé pričítanie nie je komitnuté a bude odvolané. Medzi týmito operáciami si zákazník môže dokončiť ságu, ktorá je nad jeho reálne financie.</p>
-
 <h2 id="rodiny-lokálnych-transakcií">Rodiny lokálnych transakcií</h2>
-
 <p>Vedecké články deklarujú tri rodiny lokálnych transakcií:</p>
-
 <ul>
 <li><strong>kompenzovateľné</strong> (<em>compensatable</em>): transakcie, ktoré sa dajú zvrátiť cez kompenzáciu.</li>
 <li><strong>pivoty</strong>: po komitnutí tejto lokálnej transakcie sa celá sága dokončí. Inými slovami, pivot je <em>point of no return</em>, ak tu uspejeme, musíme uspieť v celej ságe.
-
 <ul>
 <li>Pivot nemusí byť zopakovateľný (<em>retriable</em>).</li>
 <li>Pivot nemusí byť kompenzovateľný.</li>
 <li>Pivot môže byť posledná kompenzovateľná lokálna transakcia v ságe.</li>
 <li>Alternatívne môže byť pivot prvý <em>retriable</em> (zopakovateľná) transakcia.</li>
-</ul></li>
+</ul>
+</li>
 <li><strong>zopakovateľné</strong> (<em>retriable</em>). Transakcie, ktoré majú garantovaný úspech (skôr či neskôr.) Takéto lokálne transakcie nasledujú po pivote.</li>
 </ul>
-
 <p>V príklade rezervácie stola v reštaurácii: ak <code>Autorizácia platby</code> uspeje (pivot), potom <code>Rezervácia stola</code> musí tiež uspieť (retriable).</p>
-
 <p>Iný príklad ságy navrhnutej nasledovne:</p>
-
 <ol>
 <li>Vytvorenie objednávky (a kompenzácia cez zamietnutie objednávky).</li>
 <li>Rezervácia kreditu (pivot), ktorá môže zlyhať, kompenzáciu nepotrebuje (pozri nižšie.)</li>
 <li>Schválenie objednávky (retriable): nemôže zlyhať, nepotrebuje kompenzáciu.</li>
 </ol>
-
 <p>Keďže <code>Schválenie</code> nemôže zlyhať, rezervácia kreditu nepotrebuje kompenzáciu.</p>
-
 <h3 id="rady-a-odporúčania">Rady a odporúčania</h3>
-
 <p>Kroky ságy vyslovenie závisia od činnosti, ktorú chceme dosiahnuť. Je teda vysoko aplikačne-špecifická.</p>
-
 <p>Ak krok ságy závisí na predošlom kroku, je to prirodzené. Niekedy si však môžeme vybrať poradie krokov a preusporiadať ho. Ideálne je, ak môžeme aktualizácie dát (<em>updates</em>) presunúť až za pivot, pretože tým sa zbavíme povinnosti tvoriť kompenzačné transakcie.</p>
-
 <h2 id="opatrenia-proti-acid-fenoménom">Opatrenia proti ACID fenoménom</h2>
-
 <p>Ľiteratúra deklaruje nasledovné oblastí, kde vieme zabrániť fenoménom z ACID zásad:</p>
-
 <ul>
 <li>sémantické zámky ako ochrana proti <em>dirty reads</em> a <em>dirty writes</em></li>
 <li>komutatívne zmeny a znovunačítanie hodnoty ako ochrana proti <em>lost updates</em></li>
 <li>pesimistické pohľady ako ochrana pred <em>dirty read</em></li>
 <li>verzovacie súbory ako taktika na preusporiadanie krokov ságy</li>
 </ul>
-
-<h3 id="semantic-locks-sémantické-zámky">Semantic Locks — sémantické zámky</h3>
-
+<h3 id="semantic-locks--sémantické-zámky">Semantic Locks — sémantické zámky</h3>
 <p>Pomocou <em>sémantického zámku</em> oddelíme <em>špinavé dáta</em> (zmenené, ale nekomitnuté) od ostatných dát a zabránime fenoménu <em>dirty read</em>.</p>
-
 <p>Na to sa odporúča, aby každá biznisová entita (napr. Objednávka) mala svoj evidovaný stav v rámci ságy.</p>
-
 <p>Napríklad započatá Objednávka bude mať stav <em>Pending</em> (nevyriešená). Vybavená objednávka sa po dokončení transakcie prepne do stavu <em>Approved</em> (analógia komitu) alebo <em>Rejected</em> (analógia abortu).</p>
-
 <p>Predstavme si, že paralelne bežiaca lokálna transakcia sa rozhodne zrušiť nevyriešenú objednávku. Toto nie je povolený stav a preto táto paralelná transakcia oznámi klientovi, že musí skúsiť neskôr.</p>
-
 <p>Tieto opakované pokusy:</p>
-
 <ul>
 <li>buď hodia bremeno opakovaní na plecia klienta, čím ho skomplikujú.</li>
 <li>alebo môžu blokovať na strane servera, ale v tom prípade server musí manažovať zámky a detegovať uviaznutia (<em>deadlock</em>)</li>
 </ul>
-
-<h3 id="commutative-updates-komutatívne-zmeny">Commutative Updates — komutatívne zmeny</h3>
-
+<h3 id="commutative-updates--komutatívne-zmeny">Commutative Updates — komutatívne zmeny</h3>
 <p><strong>Komutatívne zmeny</strong>  sú ochranou proti fenoménu <em>lost updates</em>, teda keď v rámci transakcie sa načítajú dáta, uložia do pamäte, následne zapíšu, ale medzičasom dáta v databáze upravila iná transakcia. Zmeny z inej transakcie sa tak stratili.</p>
-
 <ol>
 <li>Transakcia A načíta stav Heleninho účtu, ktorý je 100 korún. Poznačí si to do premennej.</li>
 <li>Transakcia B zistí, že Helena má na účte stále 100 korún.</li>
 <li>Transakcia B vyberie z Heleninho účtu 40 korún, zakúpi čln, nastaví stav účtu na 60 a komitne.</li>
 <li>Transakcia A príde na rad. Od stavu účtu v premennej odoberie 20 korún, kúpi si luk a výsledok (80 korún) zapíše do databázy a komitne.</li>
 </ol>
-
 <p>Nielenže má Helena na účte 80 korún, ale pribudol jej čln a luk v celkovej cene 60 korún. Stratila sa 40korunová zmena.</p>
-
 <p>Databázové zmeny sú komutatívne, ak sa dajú vykonať v ľubovoľnom poradí. Matematické operácie odčítania a kompenzácie v podobe čítania sú prirodzene komutatívne. Ak nebudeme zapisovať finálne stavy účtov, ale len rozdiely, vyhneme sa <em>lost updateom</em>.</p>
-
 <p>Operácie sú jednoduché: odčítam 20 v transakci A, odčítam 40 v transakcii B sa dajú vykonať aj v opačnom poradí a výsledok sa zachová.</p>
-
 <p>To platí aj pre kompenzácie. Ak zažijeme kombináciu</p>
-
-<pre><code>A: mínus 20, B: mínus 40, kompenzácia B: plus 40
-</code></pre>
-
-<p>je to to isté ako</p>
-
-<pre><code>B: mínus 40, A: mínus 20, kompenzácia B: plus 40.
-</code></pre>
-
-<p>Bežné operácie sú <em>rezervuj kredit</em>-<em>odomkni kredit</em>, alebo <em>prirátaj sumu</em>-<em>odrátaj sumu</em>.</p>
-
-<h3 id="pessimistic-view-pesimistické-pohľady">Pessimistic View — pesimistické pohľady</h3>
-
+<pre tabindex="0"><code>A: mínus 20, B: mínus 40, kompenzácia B: plus 40
+</code></pre><p>je to to isté ako</p>
+<pre tabindex="0"><code>B: mínus 40, A: mínus 20, kompenzácia B: plus 40.
+</code></pre><p>Bežné operácie sú <em>rezervuj kredit</em>-<em>odomkni kredit</em>, alebo <em>prirátaj sumu</em>-<em>odrátaj sumu</em>.</p>
+<h3 id="pessimistic-view--pesimistické-pohľady">Pessimistic View — pesimistické pohľady</h3>
 <p>Pesimistické pohľady chránia pred fenoménom <em>dirty read</em>, teda keď modrá transakcia číta zmenené, ale nekomitnuté dáta z červenej transakcie.</p>
-
 <p>V tomto prípade preusporiadame kroky ságy vhodným spôsobom.</p>
-
 <p>Typické riziko je dlhodobé držanie dát, ktoré by sa mali v jednoduchej databáze zamykať. Učebnicový príklad je kapacita voľných miest vo vlaku, kde medzi počiatočným získaním obsadenosti a predaním lístka môže uplynúť pridlhá doba a dôjde k <em>overbookingu</em>.</p>
-
 <p>Riešením sú:</p>
-
 <ul>
-<li><p>kompenzovateľné transakcie, ktoré však môžu obmedziť zákazníka – predstavme si, že si zakliká lístok, ale po zlyhanej platbe mu niekto pod nosom vyfúkne posledné miesto! Toto je dokonca príklad fenoménu <em>nonrepeatable read</em>, keď dvojité čítanie toho istého riadka (stav sedadla) v rámci jednej transakcie povedie k odlišným výsledkom.</p></li>
-
-<li><p>opakovateľné <em>retriable</em> transakcie, ktoré sú náročnejšie, ale sú pohodlnejšie pre zákazníka.</p></li>
-</ul>
-
+<li>
+<p>kompenzovateľné transakcie, ktoré však môžu obmedziť zákazníka – predstavme si, že si zakliká lístok, ale po zlyhanej platbe mu niekto pod nosom vyfúkne posledné miesto! Toto je dokonca príklad fenoménu <em>nonrepeatable read</em>, keď dvojité čítanie toho istého riadka (stav sedadla) v rámci jednej transakcie povedie k odlišným výsledkom.</p>
+</li>
+<li>
+<p>opakovateľné <em>retriable</em> transakcie, ktoré sú náročnejšie, ale sú pohodlnejšie pre zákazníka.</p>
 <p>Článok <a href="https://link.springer.com/content/pdf/10.1007/978-0-387-35501-6_11.pdf">Integrity Problems in Distributed Accounting Systems with Semantic ACID Properties</a> odporúča používať kompenzovateľné transakcie (a pivoty) na znižovanie dostupného stavu a opakovateľné transakcie na zvyšovanie dostupného stavu.</p>
-
 <p>To je príklad zrušenia objednávky. Preusporiadame kroky tak, že vrátenie peňazí (zvýšenie kreditu) odsunieme do neskoršej fázy, kde ho použijeme v opakovateľnej transakcii.</p>
-
 <ol>
 <li>Nastavíme stav entity <em>Objednávka</em> na zrušená.</li>
 <li>Zrušíme doručenie (<em>pivot</em>).</li>
 <li>Zvýšime peňažný kredit (<em>retriable</em>).</li>
 </ol>
-
-<h3 id="reread-value-znovunačítanie-hodnoty">Reread Value – znovunačítanie hodnoty</h3>
-
+</li>
+</ul>
+<h3 id="reread-value--znovunačítanie-hodnoty">Reread Value – znovunačítanie hodnoty</h3>
 <p>Znovunačítanie hodnôt chráni pred fenoménom <em>lost updates</em>, keď sa zmeny stratia.</p>
-
 <p>Pred aktualizáciou riadku načítame jeho dáta a porovnáme ich s dátami v cache, či premenných. Ak zistíme rozdiely, ságu abortneme a spustíme kompenzácie.</p>
-
 <p>Toto je variant princípu <em>optimistického uzamykania</em> (<em>optimistic offline lock</em>).</p>
-
-<h3 id="version-file-verzovací-súbor">Version File – verzovací súbor</h3>
-
+<h3 id="version-file--verzovací-súbor">Version File – verzovací súbor</h3>
 <p>Verzovací súbor sa používa v kombinácii s komutatívnymi zmenami.</p>
-
 <p>Do verzovacieho súboru sa v rámci transakcie ukladajú záznamy s nasledovnou štruktúrou:</p>
-
 <ul>
 <li>časová pečiatka</li>
 <li>buď údaje po zmene (ak sa zmení adresa, vložíme riadky s novou adresou)</li>
 <li>alebo typ transakcie a zmenový parameter (napríklad „vklad, 20 korún“).</li>
 </ul>
-
 <p>Paralelne bežiace operácie sa zaznamenajú do verzovacieho súboru, a následne sa preusporiadajú do správneho poradia.</p>
-
 <p>V prípade viacerých zmien nad tou istou entitou môžeme rozhodnúť poslednú platnú zmenu pomocou časovej pečiatky.</p>
-
 <p>V prípade duplicitných zmien môžeme optimalizovať vykonávanie krokov.</p>
-
 <p>Ak máme nasledovný sled krokov:</p>
-
 <ol>
 <li>Červená transakcia autorizuje Ireninu kartu.</li>
 <li>Modrá transakcia vytvorí novú Ireninu objednávku.</li>
 <li>Červená transakcia zistí, že Irenina karta nebola autorizovaná.</li>
 <li>Modrá transakcia autorizuje Ireninu kartu.</li>
 </ol>
-
 <p>Ak sa tieto operácie uložia do verzovacieho súboru, môžeme odstrániť duplicitnú autorizáciu karty.</p>
-
 <p><a href="https://onlinelibrary.wiley.com/doi/abs/10.1002/(SICI)1097-024X(199801)28:1%3C77::AID-SPE148%3E3.0.CO;2-R">Učebnicový príklad</a> používa príklad banky, kde sa zmeny na účtoch ukladali do verzovacieho súboru. Finálny balans účtu sa vypočítaval periodicky (raz za deň) alebo na požiadanie. Keďže zmeny na účte sú komutatívne, prepočítavalo sa len v prípade zmeny balansu z nekomutatívnej transakcie.</p>
-
 <p>Ak používame režim s typom transakcie a zmenovými parametrami, môžeme to použiť na opakovateľné i kompenzovateľné transakcie, pretože stav databázového riadku môžeme rekalkulovať pomocou starej verzie a aplikovaním príslušných zmenových parametrov.</p>
-
 <h1 id="odporúčania-pre-ságy">Odporúčania pre ságy</h1>
-
 <p>Kedže ságy sú vysoko aplikačne špecifické, nie je nutné používať ich vždy a všade.</p>
-
 <p>V prípade kritických operácií (prevod veľkých peňazí) je stále možné navrhnúť architektúru s použitím klasických distribuovaných transakcií. Ságy je zase možné využiť pri výkonných, ale menej riskantných prípadoch.</p>
-
 <p>Jednotlivé kroky ságy zároveň môžeme navrhnúť tak, aby vysoko rizikové operácie so šancou na pád sa vykonali ako prvé a s postupujúcimi krokmi riziko narastá až po transakcie za pivotom, ktoré sú opakovateľné.</p>
-
 <h1 id="zdroje">Zdroje</h1>
-
 <ul>
 <li><a href="https://blog.couchbase.com/saga-pattern-implement-business-transactions-using-microservices-part/">Saga Pattern | How to implement business transactions using Microservices - Part I | The Couchbase Blog</a></li>
 <li><a href="https://chrisrichardson.net/post/antipatterns/2019/07/09/developing-sagas-part-1.html">Managing data consistency in a microservice architecture using Sagas - part 1</a></li>
 <li><a href="https://chrisrichardson.net/post/sagas/2019/08/04/developing-sagas-part-2.html">Managing data consistency in a microservice architecture using Sagas part 2 - coordinating sagas</a></li>
 <li><a href="https://chrisrichardson.net/post/sagas/2019/08/15/developing-sagas-part-3.html">Managing data consistency in a microservice architecture using Sagas - part 3 - implementing a choreography-based saga</a></li>
-<li>Frank, L. and Zahle, T. U. (1998), Semantic acid properties in multidatabases using remote procedure calls and update propagations. Softw: Pract. Exper., 28: 77-98. doi:<a href="https://doi.org/10.1002/(SICI)1097-024X(199801)28:1&lt;77::AID-SPE148&gt;3.0.CO;2-R">10.1002/(SICI)1097-024X(199801)28:1<a href="77::AID-SPE148">77::AID-SPE148</a>3.0.CO;2-R</a></li>
+<li>Frank, L. and Zahle, T. U. (1998), Semantic acid properties in multidatabases using remote procedure calls and update propagations. Softw: Pract. Exper., 28: 77-98. doi:<a href="https://doi.org/10.1002/(SICI)1097-024X(199801)28:1%3C77::AID-SPE148%3E3.0.CO;2-R">10.1002/(SICI)1097-024X(199801)28:1&lt;77::AID-SPE148&gt;3.0.CO;2-R</a></li>
 <li>Frank L. (2000) Integrity Problems in Distributed Accounting Systems with Semantic ACID Properties. In: van Biene-Hershey M.E., Strous L. (eds) Integrity and Internal Control in Information Systems. IICIS 1999. IFIP — The International Federation for Information Processing, vol 37. Springer, Boston, MA</li>
 <li>Richardson C. (2018) Managing transactions with sagas. In: Microservice Patterns. ISBN 9781617294549. Manning</li>
 <li><a href="https://docs.microsoft.com/en-us/azure/architecture/patterns/compensating-transaction">Compensating Transaction Pattern</a>. Microsoft Azure Cloud Design Patterns.</li>

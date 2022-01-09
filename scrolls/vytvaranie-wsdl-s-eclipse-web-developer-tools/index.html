@@ -59,55 +59,40 @@
 
 
 <main>
-
-
 <p>Screencast ukazuje, ako vytvárať webové služby nad protokolom SOAP s použitím <em>Eclipse IDE</em> a pluginu <em>Java EE Web Developer Tools</em>.</p>
-
-<video width="800" height="600" controls>
-  <source src="vytvaranie-wsdl-s-eclipse-web-developer-tools.mp4" type="video/mp4">
-Your browser does not support the video tag.
-</video>
-
+<!-- raw HTML omitted -->
 <h1 id="schéma-pre-správy">Schéma pre správy</h1>
-
 <p>Schéma zobrazená vo videu pochádza z článku <a href="../tvorime-xml-schema-pomocou-eclipse/">Tvoríme XML schému pomocou Eclipse IDE</a>.</p>
-
 <h1 id="návrh-wsdl">Návrh WSDL</h1>
-
 <p>Ak máme ujasnenú schému, môžeme navrhovať WSDL. V Eclipse môžeme zvoliť <strong>New | File | Web Services | WSDL File</strong> a vytvoriť súbor <code>words.wsdl</code>.</p>
-
 <p>V dialógu potrebujeme vyplniť štyri základné veci:</p>
-
 <ul>
 <li><strong>cieľový menný priestor</strong>: reprezentuje jednoznačný menný priestor pre deklarácie v tomto WSDL dokumente. Dôležité je dbať na:
-
 <ul>
 <li><em>unikátnosť menného priestoru</em> (v celom šírom svete&hellip;): pomenovanie URL adresou ju vie automaticky zabezpečiť. V ukážkach sa odporúča použiť adresu s prefixom <code>urn:example</code> určenú pre príklady a interné dokumenty.</li>
 <li>potenciálnu možnosť <em>navštíviť</em> URL adresu a získať z nej autoritatívnu (kanonickú) podobu WSDL súboru. Toto však nie je bezpodmienečne nutné, ani vyžadované.</li>
-</ul></li>
+</ul>
+</li>
 <li><strong>prefix menného priestoru</strong>:
-
 <ul>
 <li>vzhľadom na ťažkopádnosť pomenovaní menných priestorov možno využiť skratkový &ldquo;alias&rdquo;, alebo prefix. V tomto prípade môžeme radostne použiť prefix <code>api</code> (alebo akýkoľvek iný).</li>
-</ul></li>
+</ul>
+</li>
 <li><strong>štýl webovej služby</strong>:
-
 <ul>
 <li>ak chceme zachovať portabilitu a interoperabilitu, využime jedinú možnosť: <em>document/literal</em>.</li>
-</ul></li>
+</ul>
+</li>
 <li><strong>protokol</strong>:
-
 <ul>
 <li>využime možnosť <strong>SOAP</strong>.</li>
-</ul></li>
 </ul>
-
+</li>
+</ul>
 <p>V tomto prípade však vynechajme štýl, protokol i generovanie kostry služby, pretože si ho naklikáme vo vizuálnom editore WSDL.</p>
-
-<p><img src="diagram.png" alt="" /></p>
-
+<p><img src="diagram.png" alt=""></p>
 <h1 id="výsledné-wsdl">Výsledné WSDL</h1>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#579">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34; standalone=&#34;no&#34;?&gt;</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#579">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34; standalone=&#34;no&#34;?&gt;</span>
 <span style="color:#070">&lt;wsdl:definitions</span> <span style="color:#007">xmlns:api=</span><span style="background-color:#e0e0ff">&#34;urn:example:translator&#34;</span>
 	<span style="color:#007">xmlns:wsdl=</span><span style="background-color:#e0e0ff">&#34;http://schemas.xmlsoap.org/wsdl/&#34;</span>
 	<span style="color:#007">xmlns:xsd=</span><span style="background-color:#e0e0ff">&#34;http://www.w3.org/2001/XMLSchema&#34;</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;translator&#34;</span>
@@ -154,9 +139,8 @@ Your browser does not support the video tag.
 				<span style="color:#007">location=</span><span style="background-color:#e0e0ff">&#34;http://localhost:8080/translator&#34;</span> <span style="color:#070">/&gt;</span>
 		<span style="color:#070">&lt;/wsdl:port&gt;</span>
 	<span style="color:#070">&lt;/wsdl:service&gt;</span>
-<span style="color:#070">&lt;/wsdl:definitions&gt;</span></code></pre></div>
-<h1 id="literatúra">Literatúra</h1>
-
+<span style="color:#070">&lt;/wsdl:definitions&gt;</span>
+</code></pre></div><h1 id="literatúra">Literatúra</h1>
 <ul>
 <li><a href="../od-wsdl-k-webovej-sluzbe-tvorime-vlastne-wsdl/">Od WSDL k webovej službe – tvoríme vlastné WSDL</a>. Článok o budovaní webovej služby na základe WSDL, na zelenej lúke.</li>
 <li><a href="http://oreilly.com/catalog/webservess/chapter/ch06.html">WSDL Essentials</a>, Chapter 6 in <em>Web Services Essentials [Distributed Applications with XML-RPC, SOAP, UDDI &amp; WSDL]</em>, O&rsquo;Reilly 2002.</li>

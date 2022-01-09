@@ -63,50 +63,32 @@
 
 
 <main>
-
-
 <p>Connecting to LDAP server with SSL via client side may be difficult due to Windows
 peculiarities. How to <code>ldapmodify</code> the data?</p>
-
 <h2 id="retrieve-server-certificate">Retrieve server certificate</h2>
-
 <p>Locate the server certificate on the server in:</p>
-
 <pre><code>secure/certs/server.pem 
 </code></pre>
-
 <p>Extract the parts between and including</p>
-
 <pre><code>-----BEGIN CERTIFICATE-----
 ...
 -----END CERTIFICATE-----
 </code></pre>
-
 <p>Store the certificate to the client machine to the <code>c:/etc/ldap/server.pem</code>.</p>
-
 <h2 id="prepare-client-certificate">Prepare client certificate</h2>
-
 <p>Create <code>c:/etc/ldap/ldap.conf</code> with the following contents:</p>
-
 <pre><code>TLS_CACERT c:/etc/ldap/server.pem
 </code></pre>
-
 <p>Set the location of client configuration file</p>
-
 <pre><code>SET LDAPCONF=c:/etc/ldap/ldap.conf
 </code></pre>
-
 <h2 id="fixing-cn-and-hostname-mismatch">Fixing CN and hostname mismatch</h2>
-
 <p>Connection to the LDAP server will positively fail due to certificate mismatch:</p>
-
 <pre><code>ldap_start_tls: Can't contact LDAP server (-1)
         additional info: TLS: hostname does not match CN in peer certificate
 ldap_sasl_bind(SIMPLE): Can't contact LDAP server (-1)
 </code></pre>
-
 <p>Analyzing certificate in <code>server.pem</code> leads to:</p>
-
 <ul>
 <li>Common Name: development</li>
 <li>Organization: Internet</li>
@@ -115,24 +97,16 @@ ldap_sasl_bind(SIMPLE): Can't contact LDAP server (-1)
 <li>State: Germany</li>
 <li>Country: DE</li>
 </ul>
-
 <p>Either recreate server certificates to match the host name or resolve hostname
 to <code>development</code> on the client machine.</p>
-
 <p>Add the following line to <code>c:\Windows\System32\drivers\etc\hosts</code>:</p>
-
 <pre><code>127.0.0.1 development
 </code></pre>
-
 <p>Setup is now complete.</p>
-
 <h2 id="import-data">Import data</h2>
-
 <p>Import the data</p>
-
 <pre><code>ldapmodify.exe -a -f sample.ldif -d 1 -x -D &quot;cn=root,dc=mydomain,dc=com&quot; -w iamroot -Z -H ldaps://development
 </code></pre>
-
 <ul>
 <li><code>-a</code> add the data to the LDAP database</li>
 <li><code>-f sample.ldif</code> the data source file</li>

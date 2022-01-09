@@ -59,231 +59,71 @@
 
 
 <main>
-<div class="paragraph">
 <p><strong>Web Service Interoperability Technology (WS-IT)</strong> ensures a fundamental compatibility of SOAP Web Services across major framework implementations.</p>
-</div>
-<div class="paragraph">
 <p>Originally conceived as a agreement between Java and .NET, it is now supported across multiple technologies.</p>
-</div>
-<div class="paragraph">
 <p>There are multiple approaches to WS-IT Compatibility Checks:</p>
-</div>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>Use <strong>Eclipse IDE</strong> with <strong>Eclipse Java Web Developer Tools</strong>.</p>
-</li>
-<li>
-<p>Use <a href="https://www.soapui.org/">SoapUI</a> and WS-IT Compliance verification</p>
-</li>
-<li>
-<p>Use <a href="http://www.ws-i.org/Testing/Tools/2005/06/">ws-it.org</a> Java/C# Compliance Tools</p>
-</li>
-<li>
-<p>Use standalone Java-based commandline validator at Github, repo <a href="https://github.com/novotnyr/eclipse-wsdl-standalone-validator"><code>novotnyr/eclipse-wsdl-standalone-validator</code></a></p>
-</li>
-</ol>
-</div>
-<div class="sect1">
-<h2 id="_use_eclipse_idejava_web_developer_tools">Use Eclipse IDE/Java Web Developer Tools</h2>
-<div class="sectionbody">
-<div class="paragraph">
+<p>. Use <em>Eclipse IDE</em> with <em>Eclipse Java Web Developer Tools</em>.
+. Use <a href="https://www.soapui.org/%5BSoapUI%5D">https://www.soapui.org/[SoapUI]</a> and WS-IT Compliance verification
+. Use <a href="http://www.ws-i.org/Testing/Tools/2005/06/%5Bws-it.org%5D">http://www.ws-i.org/Testing/Tools/2005/06/[ws-it.org]</a> Java/C# Compliance Tools
+. Use standalone Java-based commandline validator at Github, repo <a href="https://github.com/novotnyr/eclipse-wsdl-standalone-validator%5B%60novotnyr/eclipse-wsdl-standalone-validator%60%5D">https://github.com/novotnyr/eclipse-wsdl-standalone-validator[`novotnyr/eclipse-wsdl-standalone-validator`]</a></p>
+<p>== Use Eclipse IDE/Java Web Developer Tools</p>
 <p>Eclipse IDE/Java Web Developer Tools provides an out-of-box validation of WSDL documents.
 This includes WS-I Compliance validation.</p>
-</div>
-<div class="paragraph">
-<p>Details are thoroughly describes in a separate article <a href="#../soap-webservice-validation-wsit-eclipse/">SOAP Web Service Compliance with WS-IT in Eclipse IDE</a>.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_use_soapui">Use SOAPUI</h2>
-<div class="sectionbody">
-<div class="paragraph">
+<p>Details are thoroughly describes in a separate article &laquo;../soap-webservice-validation-wsit-eclipse/,SOAP Web Service Compliance with WS-IT in Eclipse IDE&raquo;.</p>
+<p>== Use SOAPUI</p>
 <p>SoapUI by SmartBear is a general-purpose SOAP/REST API testing tool.</p>
-</div>
-<div class="paragraph">
 <p>When working with WSDL-based projects, a WS-I compliance can be verified.</p>
-</div>
-<div class="paragraph">
 <p>SoapUI provides an out-of-box WS-I verification, with offline support.</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="soapup-wsi.png" alt="soapup wsi">
-</div>
-</div>
-<div class="paragraph">
-<p>Doubleclicking on a <strong>binding</strong> shows a separate dialog window.
+<p>image::soapup-wsi.png[]</p>
+<p>Doubleclicking on a <em>binding</em> shows a separate dialog window.
 A <em>WS-I Compliance</em> tab allows to execute WS-IT compatibility tests, with results shown in HTML.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_use_ws_it_org_commandline_tooling">Use ws-it.org commandline tooling</h2>
-<div class="sectionbody">
-<div class="paragraph">
+<p>== Use ws-it.org commandline tooling</p>
 <p>WS-IT.org site provides a set of Java/C# based commandline validators of WS-IT compliance.</p>
-</div>
-<div class="sect2">
-<h3 id="_running_java_based_tool">Running Java-based tool</h3>
-<div class="sect3">
-<h4 id="_download_unzip">Download &amp; Unzip</h4>
-<div class="paragraph">
+<p>=== Running Java-based tool</p>
+<p>==== Download &amp; Unzip</p>
 <p>To get a Java-based tool, download ZIP from the portal:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code>wget http://www.ws-i.org/Testing/Tools/2005/06/WSI_Test_Java_Final_1.1.zip</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Unzip the archive:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code>unzip WSI_Test_Java_Final_1.1.zip</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>A <code>wsi-test-tools</code> directory appears.</p>
-</div>
-<div class="admonitionblock tip">
-<table>
-<tr>
-<td class="icon">
-<div class="title">Tip</div>
-</td>
-<td class="content">
-The directory <code>wsi-test-tools/common/docs</code> contains a set of PDF documentation files.
-</td>
-</tr>
-</table>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_adjust_startup_scripts">Adjust startup scripts</h4>
-<div class="paragraph">
+<pre tabindex="0"><code>wget http://www.ws-i.org/Testing/Tools/2005/06/WSI_Test_Java_Final_1.1.zip
+</code></pre><p>Unzip the archive:</p>
+<pre tabindex="0"><code>unzip WSI_Test_Java_Final_1.1.zip
+</code></pre><p>A <code>wsi-test-tools</code> directory appears.</p>
+<p>[TIP]
+The directory <code>wsi-test-tools/common/docs</code> contains a set of PDF documentation files.</p>
+<p>==== Adjust startup scripts</p>
 <p>If running on Linux/macOS, we need to :</p>
-</div>
-<div class="ulist">
 <ul>
-<li>
-<p>make the script files executable</p>
-</li>
-<li>
-<p>convert line endings from Windows CR-LF to Linux/macOS LF.</p>
-</li>
+<li>make the script files executable</li>
+<li>convert line endings from Windows CR-LF to Linux/macOS LF.</li>
 </ul>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code>cd wsi-test-tools/java/bin
+<pre tabindex="0"><code>cd wsi-test-tools/java/bin
 chmod +x *.sh
-dos2unix *.sh</code></pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_export_environment_variables">Export environment variables</h4>
-<div class="paragraph">
+dos2unix *.sh
+</code></pre><p>==== Export environment variables</p>
 <p>Then, we need to set a <code>WSI_HOME</code> environment variable, pointing to the
 <code>wsi-test-tools</code> absolute path.</p>
-</div>
-<div class="paragraph">
-<p>In the following example, the <code>wsi-test-tools</code> is placed in the <code>/tmp</code> folder:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>/tmp/wsi-test-tools⟩ export WSI_HOME=$(pwd)
-
-===== Running the tools
-
-/tmp/wsi-test-tools⟩ java/bin/Analyzer.sh</pre>
-</div>
-</div>
-<div class="paragraph">
+<h2 id="in-the-following-example-the-wsi-test-tools-is-placed-in-the-tmp-folder">In the following example, the <code>wsi-test-tools</code> is placed in the <code>/tmp</code> folder:</h2>
+<p>/tmp/wsi-test-tools⟩ export WSI_HOME=$(pwd)</p>
+<p>===== Running the tools</p>
+<h2 id="tmpwsi-test-tools-javabinanalyzersh">/tmp/wsi-test-tools⟩ java/bin/Analyzer.sh</h2>
 <p>We will see the following output</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>Default WSI home directory
+<hr>
+<h2 id="analyzer-error-usage-analyzer--config-configfilename">Default WSI home directory
 Set classpath
 Set Java options
-Analyzer Error: Usage: Analyzer -config &lt;configFilename&gt;.</pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_configuration_files">Configuration Files</h3>
-<div class="paragraph">
+Analyzer Error: Usage: Analyzer -config <!-- raw HTML omitted -->.</h2>
+<p>=== Configuration Files</p>
 <p>The <code>Analyzer</code> is driven by XML-based configuration.
-Let&#8217;s create a minimalistic configuration file.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;configuration xmlns="http://www.ws-i.org/testing/2003/03/analyzerConfig/"&gt;
-  &lt;verbose&gt;true&lt;/verbose&gt;
-  &lt;assertionResults type="all" messageEntry="true" failureMessage="true" assertionDescription="true"/&gt;
-  &lt;testAssertionsFile&gt;/tmp/wsi-test-tools/common/profiles/SSBP10_BP11_TAD.xml&lt;/testAssertionsFile&gt; <b class="conum">(1)</b>
-  &lt;wsdlReference&gt;
-    &lt;wsdlElement type="binding" namespace="urn:example:calendar:api"&gt;binding&lt;/wsdlElement&gt;
-    &lt;wsdlURI&gt;/tmp/calendar.wsdl&lt;/wsdlURI&gt; <b class="conum">(2)</b>
-  &lt;/wsdlReference&gt;
-&lt;/configuration&gt;</code></pre>
-</div>
-</div>
-<div class="colist arabic">
-<ol>
-<li>
-<p>We provide a Test Assertion Document (TAD) indicating a WS-I compliance profile. A full path is provided. Note that the WS-I tool includes all common profiles in the <code>common/profiles</code> directory.</p>
-</li>
-<li>
-<p>We specify a full path to the WSDL file that is tested for compliance.</p>
-</li>
-</ol>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_running_the_tool">Running the tool</h3>
-<div class="paragraph">
+Let&rsquo;s create a minimalistic configuration file.</p>
+<h2 id="sourcexml">[source,xml]</h2>
+<!-- raw HTML omitted -->
+<p>=== Running the tool</p>
 <p>Now, we can run the validation tool, pointing to the configuration file:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>$WSI_HOME/java/bin/Analyzer.sh -config config.xml</pre>
-</div>
-</div>
-<div class="paragraph">
+<hr>
+<h2 id="wsi_homejavabinanalyzersh--config-configxml">$WSI_HOME/java/bin/Analyzer.sh -config config.xml</h2>
 <p>A XML Report file is created in the current directory, and a brief text summary is provided.</p>
-</div>
-<div class="admonitionblock tip">
-<table>
-<tr>
-<td class="icon">
-<div class="title">Tip</div>
-</td>
-<td class="content">
-See the <em>User Guide</em> for the detailed documentation on the configuration XML file.
-</td>
-</tr>
-</table>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_use_standalone_java_based_commandline_validator">Use standalone Java-based commandline validator</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>A <a href="https://github.com/novotnyr/eclipse-wsdl-standalone-validator"><code>novotnyr/eclipse-wsdl-standalone-validator</code></a> repository provides a standalone commandline based validator. This is based on the Eclipse IDE WSDL/WS-IT validator framework and can be used independently from Eclipse.</p>
-</div>
-<div class="paragraph">
+<p>TIP: See the <em>User Guide</em> for the detailed documentation on the configuration XML file.</p>
+<p>== Use standalone Java-based commandline validator</p>
+<p>A <a href="https://github.com/novotnyr/eclipse-wsdl-standalone-validator%5B%60novotnyr/eclipse-wsdl-standalone-validator%60%5D">https://github.com/novotnyr/eclipse-wsdl-standalone-validator[`novotnyr/eclipse-wsdl-standalone-validator`]</a> repository provides a standalone commandline based validator. This is based on the Eclipse IDE WSDL/WS-IT validator framework and can be used independently from Eclipse.</p>
 <p>Please follow the documentation in the repository on how to run the tool.</p>
-</div>
-</div>
-</div>
 
 </main>
 

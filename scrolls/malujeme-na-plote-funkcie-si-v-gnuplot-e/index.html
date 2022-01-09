@@ -59,202 +59,103 @@
 
 
 <main>
-
-
 <h1 id="čo-je-gnuplot">Čo je <code>gnuplot</code>?</h1>
-
 <p>Ako uvádza FAQ (často kladené otázky), <code>gnuplot</code> je multiplatformový nástroj, ktorý umožňuje:</p>
-
 <ul>
 <li>kreslenie dvoj- a viacrozmerných funkcií a bodov v rôznych štýloch</li>
 <li>výpočty nad celými, reálnymi a komplexnými číslami</li>
 <li>podporu veľkého množstva operačných systémov (Linux, Win32, Atari(!)&hellip;)</li>
 <li>možnosť definícií vlastných funkcií a konštánt</li>
 </ul>
-
 <p><code>gnuplot</code> je primárne nástrojom určeným pre príkazový riadok, ale existujú aj grafické užívateľské rozhrania (napr. pre X11, Win32, MacOS)</p>
-
 <h1 id="stiahnutie-pre-platformy">Stiahnutie pre platformy</h1>
-
 <h2 id="windows">Windows</h2>
-
 <p>Binárky pre <code>gnuplot</code> sú k dispozícii v podobe inštalátora z oficiálneho portálu na <a href="https://sourceforge.net/projects/gnuplot/files/gnuplot/">SourceForge.net</a>.</p>
-
 <h3 id="nastavenie-písma">Nastavenie písma</h3>
-
 <p><code>gnuplot</code> používa vo Windowse pomerne neštandardné písmo. Zmeniť ho môžeme pravým kliknutím do okna, zvolením <code>Choose Font</code> a vybratím obľúbeného písma (napr. <code>Fixedsys</code> alebo <code>Courier New</code>). Nastavenie uložíme opäť pravým kliknutím a vybratím <code>Update setting...</code></p>
-
 <h2 id="macos">MacOS</h2>
-
 <p>Najľahší spôsob je inštalácia cez <em>Homebrew</em>. MacOS fungujú najlepšie s terminálom <code>qt</code>:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">brew install gnuplot --with-qt</code></pre></div>
-<h1 id="práca-s-gnuplot-om">Práca s <code>gnuplot</code>om</h1>
-
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">brew install gnuplot --with-qt
+</code></pre></div><h1 id="práca-s-gnuplotom">Práca s <code>gnuplot</code>om</h1>
 <p>Vykresľovanie a výpočty sú riadené príkazmi, ktoré zvyknú mať parametre. Príkaz zadáme a potvrdíme Enterom.</p>
-
 <h2 id="vykreslenie-grafu-funkcie-jednej-premennej">Vykreslenie grafu funkcie jednej premennej</h2>
-
 <p>Jednoduché vykreslenie grafu funkcie <em>sin(x)</em>:</p>
-
-<pre><code>plot sin(x)
-</code></pre>
-
-<p>Vykreslenie funkcie na intervale (-π, π):</p>
-
-<pre><code>plot [x=-pi:pi] sin(x)
-</code></pre>
-
-<p><code>pi</code> je užívateľská premenná, je definovaná ako 3.14159265358979.</p>
-
+<pre tabindex="0"><code>plot sin(x)
+</code></pre><p>Vykreslenie funkcie na intervale (-π, π):</p>
+<pre tabindex="0"><code>plot [x=-pi:pi] sin(x)
+</code></pre><p><code>pi</code> je užívateľská premenná, je definovaná ako 3.14159265358979.</p>
 <p>Vykreslenie funkcia na intervale s obmedzením intervalu pre funkčných hodnôt:</p>
-
-<pre><code>plot [x=-pi:pi] [0:1] sin(x)
-</code></pre>
-
-<p>Vykreslí sa funkcia sínus, budú zobrazované len hodnoty nad osou.</p>
-
+<pre tabindex="0"><code>plot [x=-pi:pi] [0:1] sin(x)
+</code></pre><p>Vykreslí sa funkcia sínus, budú zobrazované len hodnoty nad osou.</p>
 <h2 id="funkcie-dvoch-premenných">Funkcie dvoch premenných</h2>
-
 <p>Na kreslenie funkcií viacerých premenných slúži príkaz splot</p>
-
-<pre><code>splot sin(x) * cos(y)
-</code></pre>
-
-<p>Mätež možno napraviť zakázaním vykresľovania skrytých povrchov:</p>
-
-<pre><code>set hidden3d
-</code></pre>
-
-<p>Nezabudnite po zadaní tohto príkazu vykonať</p>
-
-<pre><code>replot
-</code></pre>
-
-<p>Tento príkaz znovu vykoná posledný zadaný príkaz <code>plot</code> alebo <code>splot</code>.</p>
-
+<pre tabindex="0"><code>splot sin(x) * cos(y)
+</code></pre><p>Mätež možno napraviť zakázaním vykresľovania skrytých povrchov:</p>
+<pre tabindex="0"><code>set hidden3d
+</code></pre><p>Nezabudnite po zadaní tohto príkazu vykonať</p>
+<pre tabindex="0"><code>replot
+</code></pre><p>Tento príkaz znovu vykoná posledný zadaný príkaz <code>plot</code> alebo <code>splot</code>.</p>
 <p>Tip: posledný zadaný príkaz zobrazíte stlačením klávesu šípka hore.</p>
-
 <p>Niekedy sa môže stať, že vykreslená funkcia bude vyzerať príliš „hranato“ (napr. uvedená funkcia by mala mať „ladné krivky“). V takom prípade treba zvýšiť presnosť používanú pri vykresľovaní.</p>
-
-<pre><code>set isosamples 40
-</code></pre>
-
-<p>Podotknime, že čím vyššia presnosť, tým bude vykresľovanie trvať dlhšie.</p>
-
-<p><img src="gnuplot-3d.gif" alt="" /></p>
-
+<pre tabindex="0"><code>set isosamples 40
+</code></pre><p>Podotknime, že čím vyššia presnosť, tým bude vykresľovanie trvať dlhšie.</p>
+<p><img src="gnuplot-3d.gif" alt=""></p>
 <p>Ak chceme vykresľovať plochy ako vyplnené (nielen pomocou čiar), môžeme použiť zapnúť vyplňovací režim:</p>
-
-<pre><code>set pm3d
-</code></pre>
-
-<p><img src="gnuplot-3d-pm3d.gif" alt="" /></p>
-
+<pre tabindex="0"><code>set pm3d
+</code></pre><p><img src="gnuplot-3d-pm3d.gif" alt=""></p>
 <p>Vykresľovanie skrytých povrchov môžete zas zakázať pomocou:</p>
-
-<pre><code>unset hidden3d
-</code></pre>
-
-<p>Opäť môžeme obmedziť intervaly premenných:</p>
-
-<pre><code>splot [x=0:10] [y=0:10] sin(x) * cos(y)
-</code></pre>
-
-<p>Do jedného grafu môžeme vykresliť viacero funkcií:</p>
-
-<pre><code>plot [x=-pi:pi] [0:1] sin(x), cos(x), cos(2*x)
-</code></pre>
-
-<p>Ak používame skript (zoznam súborov obsahujúci príkazy), a potrebujeme rozdeliť jeden príkazový riadok <code>gnuplot</code>-u na viacero riadkov v textovom editore, použijeme znak spätnej lomky <code>'\'</code>.</p>
-
-<pre><code>plot [x=-pi:pi] [0:1] \
+<pre tabindex="0"><code>unset hidden3d
+</code></pre><p>Opäť môžeme obmedziť intervaly premenných:</p>
+<pre tabindex="0"><code>splot [x=0:10] [y=0:10] sin(x) * cos(y)
+</code></pre><p>Do jedného grafu môžeme vykresliť viacero funkcií:</p>
+<pre tabindex="0"><code>plot [x=-pi:pi] [0:1] sin(x), cos(x), cos(2*x)
+</code></pre><p>Ak používame skript (zoznam súborov obsahujúci príkazy), a potrebujeme rozdeliť jeden príkazový riadok <code>gnuplot</code>-u na viacero riadkov v textovom editore, použijeme znak spätnej lomky <code>'\'</code>.</p>
+<pre tabindex="0"><code>plot [x=-pi:pi] [0:1] \
 sin(x), \
 cos(x), \
 cos(2*x)
-</code></pre>
-
-<h2 id="užívateľské-premenné-a-funkcie">Užívateľské premenné a funkcie</h2>
-
+</code></pre><h2 id="užívateľské-premenné-a-funkcie">Užívateľské premenné a funkcie</h2>
 <p><code>gnuplot</code> umožňuje definíciu užívateľských funkcií a premenných:</p>
-
-<pre><code>f(x) = sin(x)
-</code></pre>
-
-<p>definuje užívateľskú funkciu &ldquo;f(x)&rdquo;. Potom môžeme používať túto funkciu nasledovne:</p>
-
-<pre><code>plot f(x)
-</code></pre>
-
-<p>čím sa vykreslí sínus.</p>
-
+<pre tabindex="0"><code>f(x) = sin(x)
+</code></pre><p>definuje užívateľskú funkciu &lsquo;&lsquo;f(x)'&rsquo;. Potom môžeme používať túto funkciu nasledovne:</p>
+<pre tabindex="0"><code>plot f(x)
+</code></pre><p>čím sa vykreslí sínus.</p>
 <p>Podobne možno definovať aj vlastné premenné:</p>
-
-<pre><code>a = 0.5
-</code></pre>
-
-<p>Potom môžeme písať:</p>
-
-<pre><code>plot a * f(x)
-</code></pre>
-
-<p>Pozor pri definícii premenných na rozdiel medzi celočíselnými a reálnymi premennými. Ak zadáte</p>
-
-<pre><code>lambda = 3
+<pre tabindex="0"><code>a = 0.5
+</code></pre><p>Potom môžeme písať:</p>
+<pre tabindex="0"><code>plot a * f(x)
+</code></pre><p>Pozor pri definícii premenných na rozdiel medzi celočíselnými a reálnymi premennými. Ak zadáte</p>
+<pre tabindex="0"><code>lambda = 3
 print 5 / lambda
-</code></pre>
-
-<p>tak výsledkom bude 1 a nie 1.666&hellip;, pretože sa delí celočíselnou premennou! Píšte radšej</p>
-
-<pre><code>lambda = 3.0
+</code></pre><p>tak výsledkom bude 1 a nie 1.666&hellip;, pretože sa delí celočíselnou premennou! Píšte radšej</p>
+<pre tabindex="0"><code>lambda = 3.0
 print 5.0 / lambda
-</code></pre>
-
-<p>Zoznam užívateľsky definovaných premenných resp. funkcií vypíšeme pomocou <code>show variables</code> resp. <code>show functions</code>.</p>
-
+</code></pre><p>Zoznam užívateľsky definovaných premenných resp. funkcií vypíšeme pomocou <code>show variables</code> resp. <code>show functions</code>.</p>
 <h2 id="najdôležitejšie-možnosti-grafu">Najdôležitejšie možnosti grafu</h2>
-
 <ul>
 <li>Nastavenie vykresľovania okrajov grafu: <code>set border</code>, resp. <code>set noborder</code></li>
 <li>Nastavenie vykresľovania mriežky: <code>set grid</code>, resp. <code>set nogrid</code></li>
 <li>Nastavenie nadpisu: <code>set title &quot;Nádherný graf funkcie sínus&quot;</code></li>
 <li>Nastavenie titulkov čiar: <code>plot sin(x) title &quot;sínus&quot;</code></li>
 <li>Nastavenie titulkov osí: <code>set xlabel &quot;názov osi&quot;</code>, resp. <code>set ylabel &quot;názov osi&quot;</code></li>
-
-<li><p>Zmena veľkosti &ndash; príkaz <code>set size</code>
+<li>Zmena veľkosti &ndash; príkaz <code>set size</code>
 ** nastavenie normálnej veľkosti: <code>set size 1,1</code>
-** nastavenie veľkosti so zachovaním pomerov:</p>
-
-<pre><code>set size ratio pomer x-veľkosť, y-veľkosť
-</code></pre>
-
-<p>kde je zadaný pomer ako číslo reprezentujúce osi y-ovej ku x-ovej <code>gnuplot</code> sa snaží vytvoriť graf so zadaným pomerom osí na ploche vymedzenej veľkosťami x-veľkosť, y-veľkosť. Napr.</p>
-
-<pre><code>set size ratio 2 0.7, 0.7
-</code></pre>
-
-<p>zabezpečí, že výška grafu bude dvojnásobok šírky. Namiesto <code>ratio 1</code> možno písať <code>square</code>. Vrátiť nastavenia na implicitné hodnoty terminálu možno pomocou <code>nosquare</code>, <code>noratio</code>.
-Ďalšie možnosti sa týkajú skupiny príkazov set, informácie sú v dokumentácii.</p></li>
+** nastavenie veľkosti so zachovaním pomerov:</li>
 </ul>
-
+<pre tabindex="0"><code>set size ratio pomer x-veľkosť, y-veľkosť
+</code></pre><p>kde je zadaný pomer ako číslo reprezentujúce osi y-ovej ku x-ovej <code>gnuplot</code> sa snaží vytvoriť graf so zadaným pomerom osí na ploche vymedzenej veľkosťami x-veľkosť, y-veľkosť. Napr.</p>
+<pre tabindex="0"><code>set size ratio 2 0.7, 0.7
+</code></pre><p>zabezpečí, že výška grafu bude dvojnásobok šírky. Namiesto <code>ratio 1</code> možno písať <code>square</code>. Vrátiť nastavenia na implicitné hodnoty terminálu možno pomocou <code>nosquare</code>, <code>noratio</code>.
+Ďalšie možnosti sa týkajú skupiny príkazov set, informácie sú v dokumentácii.</p>
 <h2 id="terminály">Terminály</h2>
-
 <p><code>gnuplot</code> podporuje výstup do rôznych formátov – hovorí sa tu o výstupných zariadeniach, či termináloch. Zoznam dostupných terminálov možno zobraziť pomocou</p>
-
-<pre><code>show terminal
-</code></pre>
-
-<p>Implicitným terminálom býva typicky <code>windows</code> (na platforme Windows), či X11 (na *ixoch). Terminál možno zmeniť pomocou</p>
-
-<pre><code>set term názov_terminálu
-</code></pre>
-
-<p>Terminál <code>windows</code> vykresľuje graf do ďalšieho okna, ostatné terminály sú vhodné na zápis do súboru.</p>
-
+<pre tabindex="0"><code>show terminal
+</code></pre><p>Implicitným terminálom býva typicky <code>windows</code> (na platforme Windows), či X11 (na *ixoch). Terminál možno zmeniť pomocou</p>
+<pre tabindex="0"><code>set term názov_terminálu
+</code></pre><p>Terminál <code>windows</code> vykresľuje graf do ďalšieho okna, ostatné terminály sú vhodné na zápis do súboru.</p>
 <h3 id="hlúpy-terminál-do-terminálu">Hlúpy terminál do terminálu</h3>
-
 <p>Na niektorých platformách je k dispozícii <strong>hlúpy</strong> terminál <code>dumb</code>, ktorý vykresľuje dáta do konzoly. Vykreslenie sínusu potom vyzerá nasledovne:</p>
-
-<pre><code>       1 +-----------------------------------------------------------------+
+<pre tabindex="0"><code>       1 +-----------------------------------------------------------------+
          |               *+ *             +   * **         +      *   *    |
      0.8 |-+            *    *               *    *         sin(x)********-|
      0.6 |-+            *     *             *     *              *     * +-|
@@ -273,45 +174,27 @@ print 5.0 / lambda
          |    *   *       +        ** *   +             *  *               |
       -1 +-----------------------------------------------------------------+
         -10              -5               0                5               10
-</code></pre>
-
-<h3 id="terminál-qt-pre-macos">Terminál <code>qt</code> pre MacOS</h3>
-
+</code></pre><h3 id="terminál-qt-pre-macos">Terminál <code>qt</code> pre MacOS</h3>
 <p>Štandardný terminál pre MacOS od Yosemite a vyššej je <code>qt</code>.</p>
-
-<p><img src="gnuplot-qt-cos-x.png" alt="" /></p>
-
+<p><img src="gnuplot-qt-cos-x.png" alt=""></p>
 <h3 id="výstup-do-formátu-pre-latex">Výstup do formátu pre LaTeX</h3>
-
 <p>Ak chceme vytvoriť obrázok vo formáte prostredia picture pre LaTeX, musíme po zmene terminálu nastaviť aj výstupný súbor, inak sa údaje zobrazia na štandardnom výstupe.</p>
-
-<pre><code>set term latex
+<pre tabindex="0"><code>set term latex
 set output 'D:\obrazok.tex'
 replot
-</code></pre>
-
-<p>Po vykonaní týchto príkazov môžeme vykonať zase <code>set term windows</code>.</p>
-
+</code></pre><p>Po vykonaní týchto príkazov môžeme vykonať zase <code>set term windows</code>.</p>
 <h3 id="výstup-do-formátu-jpg">Výstup do formátu JPG</h3>
-
 <p>JPG obrázok môžeme vytvoriť jednoducho. Stačí nastaviť správny terminál a vykresliť graf.</p>
-
-<pre><code>set term jpeg
+<pre tabindex="0"><code>set term jpeg
 set output 'D:\obrazok.jpg'
 plot sin(x)
 # alebo replot, ak chceme obrázok len vykresliť znovu
 set term windows
-</code></pre>
-
-<p>V danom adresári sa vytvorí súbor s obrázkom.</p>
-
+</code></pre><p>V danom adresári sa vytvorí súbor s obrázkom.</p>
 <p>Každý terminál môže mať ďalšie možnosti (veľkosť písma, zapnutie podpory farieb&hellip;). Bližšie informácie sú v dokumentácii.</p>
-
 <h2 id="dáta-zo-súboru">Dáta zo súboru</h2>
-
 <p><code>gnuplot</code> vie vykresľovať aj statické dáta, a to dokonca zo súboru. Namerajme si teploty a uložme do súboru <code>D:\teploty.txt</code>.</p>
-
-<pre><code>den teplota
+<pre tabindex="0"><code>den teplota
 pon 6
 uto 4
 str -2
@@ -319,37 +202,24 @@ stv -2
 pia 0
 so 5
 ne 1
-</code></pre>
-
-<p>Príkaz <code>plot</code> dokáže kresliť dáta zo súboru:</p>
-
-<pre><code>plot &quot;D:\teploty.txt&quot; using 2:xticlabels(1) with lines notitle
-</code></pre>
-
-<p>Takto sa vykreslia jednotlivé teploty, pričom</p>
-
+</code></pre><p>Príkaz <code>plot</code> dokáže kresliť dáta zo súboru:</p>
+<pre tabindex="0"><code>plot &quot;D:\teploty.txt&quot; using 2:xticlabels(1) with lines notitle
+</code></pre><p>Takto sa vykreslia jednotlivé teploty, pričom</p>
 <ul>
 <li><code>2</code> indikuje druhý stĺpec nesúci teploty</li>
 <li><code>xticlabels(1)</code> vyhlási prvý stĺpec (s dňami) za nositeľa popiskov pre <em>x</em>-ovú os</li>
 <li><code>with lines</code> nakreslí úsečky medzi bodmi, čím zvýrazní priebeh teplôt. Bez tohto nastavenia uvidíme len samotné body (aj to nie veľmi výrazne.)</li>
 <li><code>notitle</code> vypne ničnehovoriaci popisok dátovej čiary</li>
 </ul>
-
 <h3 id="plný-príklad-s-popiskami">Plný príklad s popiskami</h3>
-
 <p>V úplnom príklade môžeme ešte nastaviť titulok grafu (<code>title</code>), prispôsobiť <em>x</em>-ovú a <em>y</em>-ovú popisku osi:</p>
-
-<pre><code>set title &quot;Teploty&quot;
+<pre tabindex="0"><code>set title &quot;Teploty&quot;
 set xlabel &quot;Den&quot;
 set ylabel &quot;Teplota&quot;
 plot &quot;D:\teploty.txt&quot; using 2:xticlabels(1) with lines notitle
-</code></pre>
-
-<p><img src="teploty.svg" alt="" /></p>
-
+</code></pre><p><img src="teploty.svg" alt=""></p>
 <h1 id="zložitejší-príklad">Zložitejší príklad</h1>
-
-<pre><code>cd 'D:\test\prasta2'
+<pre tabindex="0"><code>cd 'D:\test\prasta2'
 # vypise aktualnu cestu
 pwd
 # vymaze terminal
@@ -378,7 +248,6 @@ delta = 25., exdeltadf(x) title '$\delta = 25$'
 set term win
 print 'Jobs done'
 </code></pre>
-
 </main>
 
     <footer>

@@ -59,21 +59,13 @@
 
 
 <main>
-
-
 <h1 id="úvod">Úvod</h1>
-
-<p>V predošlom článku sme spomínali algoritmus prehľadávania do šírky, ktorý prechádzal strom ,,po vrstvách&rdquo;. Okrem neho jestvuje ešte analogický algoritmus prehľadávania do hĺbky. Jeho základnou ideou je preskúmavanie ciest vedúcich k čo najhlbšiemu potomkovi daného uzla.</p>
-
+<p>V predošlom článku sme spomínali algoritmus prehľadávania do šírky, ktorý prechádzal strom ,,po vrstvách&quot;. Okrem neho jestvuje ešte analogický algoritmus prehľadávania do hĺbky. Jeho základnou ideou je preskúmavanie ciest vedúcich k čo najhlbšiemu potomkovi daného uzla.</p>
 <p>Pekným príkladom prehľadávania do hĺbky je traverzovanie súborového systému. Ak chceme prejsť všetky súbory v danom adresári a jeho podadresároch (a v podadresároch jeho podadresárov), takéto prehľadávanie sa nám veľmi hodí.</p>
-
 <p>Zjednodušený súborový systém môže vyzerať nasledovne:</p>
-
-<p><img src="tree.png" alt="" /></p>
-
+<p><img src="tree.png" alt=""></p>
 <p>Výpis na konzolu by znamenal, že chceme vypísať niečo takéto:</p>
-
-<pre><code>C:
+<pre tabindex="0"><code>C:
 MP3
 ABBA
 Elán
@@ -82,61 +74,48 @@ System32
 temp
 Data
 spam
-</code></pre>
-
-<h1 id="dátové-štruktúry">Dátové štruktúry</h1>
-
+</code></pre><h1 id="dátové-štruktúry">Dátové štruktúry</h1>
 <p>V tomto prípade nebudeme definovať žiadnu špeciálnu triedu pre uzol, ale budeme pracovať rovno s objektami <code>java.io.File</code>. Tie totiž poskytujú možnosť vrátiť svoje deti (teda súbory a podadresáre), čo presne zodpovedá stromovej štruktúre.</p>
-
 <p>Príklad použitia je nasledovný:</p>
-
-<pre><code>File fileC = new File(&quot;C:&quot;);
+<pre tabindex="0"><code>File fileC = new File(&quot;C:&quot;);
 // vypíše súbory a adresáre v C:
 File[] children = fileC.listFiles();
-</code></pre>
-
-<h1 id="algoritmy">Algoritmy</h1>
-
+</code></pre><h1 id="algoritmy">Algoritmy</h1>
 <p>Na vyriešenie tohto problému môžeme použiť dva varianty algoritmu: rekurzívnu verziu alebo klasickú verziu, v ktorej použijeme zásobník.</p>
-
 <h2 id="rekurzívna-verzia">Rekurzívna verzia</h2>
-
-<p>Rekurzívna verzia algoritmu je založená na jednoduchom pozorovaní: na prezretie potomkov ľubovoľného uzla potrebujeme prejsť každé dieťa a prezrieť jeho potomkov. Každého potomka prezrieme tak, že vezmeme jeho priame deti a prezrieme ich atď atď. Takto sa vnárame až dovtedy, kým nedôjdeme na ,,spodok&rdquo; stromu, teda k uzlom, ktoré už nemajú deti.</p>
-
-<p><code>prejdi(U)</code>:
-1. Vezmi uzol <em>U</em> a spracuj ho
-2. Ak uzol nemá deti, skonči.
-3. Inak na každom dieťati <em>D</em> zavolaj (rekurzívne) metódu <code>prejdi(D)</code></p>
-
+<p>Rekurzívna verzia algoritmu je založená na jednoduchom pozorovaní: na prezretie potomkov ľubovoľného uzla potrebujeme prejsť každé dieťa a prezrieť jeho potomkov. Každého potomka prezrieme tak, že vezmeme jeho priame deti a prezrieme ich atď atď. Takto sa vnárame až dovtedy, kým nedôjdeme na ,,spodok&quot; stromu, teda k uzlom, ktoré už nemajú deti.</p>
+<p><code>prejdi(U)</code>:</p>
+<ol>
+<li>Vezmi uzol <em>U</em> a spracuj ho</li>
+<li>Ak uzol nemá deti, skonči.</li>
+<li>Inak na každom dieťati <em>D</em> zavolaj (rekurzívne) metódu <code>prejdi(D)</code></li>
+</ol>
 <p>Ukážme si to na príklade nášho stromu:</p>
-
 <ul>
 <li>Vezmime teda uzol <code>C:</code>. Tento uzol spracujeme a postupne prejdeme jeho deti: <code>MP3</code>, <code>Windows</code> a <code>Data</code>.
-
 <ul>
 <li>Prvým dieťaťom je <code>MP3</code>. Ten spracujeme a vezmeme jeho deti: <code>ABBA</code> a <code>Elán</code>.
-
 <ul>
 <li>Na rade je <code>ABBA</code>. Tá už nemá deti, čiže ju len vypíšeme.</li>
 <li>Ďalším kandidátom je <code>Elán</code>. Ten rovnako nemá deti a vypisujeme ho.</li>
-</ul></li>
+</ul>
+</li>
 <li>Ďalším čakajúcim je <code>Windows</code>. Jeho deti sú <code>system32</code> a <code>temp</code>.
-
 <ul>
 <li>Uzol <code>system32</code> je bezdetný, čiže ho len vypíšeme.</li>
 <li>Rovnakým prípadom je <code>temp</code>, ktorý tiež len vypíšeme.</li>
-</ul></li>
-<li>Tretím dieťaťom <code>C:</code> je uzol <code>Data</code> s jediným dieťaťom.
-
-<ul>
-<li><code>spam</code> vypíšeme a končíme, keďže sa už nemáme kam ,,vynoriť&rdquo; - všetky uzly sú spracované.</li>
-</ul></li>
-</ul></li>
 </ul>
-
+</li>
+<li>Tretím dieťaťom <code>C:</code> je uzol <code>Data</code> s jediným dieťaťom.
+<ul>
+<li><code>spam</code> vypíšeme a končíme, keďže sa už nemáme kam ,,vynoriť&quot; - všetky uzly sú spracované.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
 <p>Rekurzívna verzia v Jave je potom priamym prepisom idey:</p>
-
-<pre><code>public static void traverse(File file) {
+<pre tabindex="0"><code>public static void traverse(File file) {
     // spracujeme súbor
     System.out.println(file);
     if(file.isDirectory()) {
@@ -146,83 +125,49 @@ File[] children = fileC.listFiles();
         }
     }
 }
-</code></pre>
-
-<p>Jediným vylepšením je overenie toho, či uzol má nejaké deti. Keďže v súborovom systéme majú deti len adresáre, do úvahy pri získavaní detí budeme brať len tie.</p>
-
+</code></pre><p>Jediným vylepšením je overenie toho, či uzol má nejaké deti. Keďže v súborovom systéme majú deti len adresáre, do úvahy pri získavaní detí budeme brať len tie.</p>
 <p>Pri návrhu rekurzívnych algoritmov je treba dať dôraz na to, aby sa rekurzia zastavila: teda aby sa volania metód, ktorá volajú samú seba „neodtrhli z reťaze“ a nevydali sa na nekonečný beh. Naša rekurzia je však korektná a zastaví sa ak narazíme na spodok stromu — teda buď na súbory (tie potomkov nemajú) alebo na prázdne adresáre. To je zahrnuté v podmienke, že či súbor je adresárom (<code>isDirectory()</code>).</p>
-
 <h2 id="nerekurzívna-verzia">Nerekurzívna verzia</h2>
-
 <p>Ak vás rekurzia straší, možno vám pomôže nerekurzívny variant. Spomeňme si na príklad prehľadávania do šírky. V ňom sme zobrali daný uzol, všetkých jeho potomkov zaradili do fronty a následne odbavovali ďalšie uzly čakajúce vo fronte. Prehľadávanie do hĺbky môžeme postaviť analogickým spôsobom, ibaže namiesto fronty (<em>queue</em>) použijeme <strong>zásobník</strong> (<strong>stack</strong>).</p>
-
 <p>Zásobník možno vnímať ako obyčajný zoznam prvkov, kde pridávanie a odoberanie prvkov do zoznamu funguje tzv. „LIFO“ spôsobom — „last-in first-out“, čiže „posledný dnu-prvý von“. Predstaviť si ho môžeme ako štós tanierov, kde tanier možno položiť buď na vrchol kopy alebo ho z vrchu kopy odobrať. (Odoberať tanier z prostriedka nie je možné, lebo by sa taniere mohli rozbiť.) Typický zásobník má tieto operácie:</p>
-
 <ul>
 <li><code>boolean empty()</code> — zistí, či zásobník je prázdny</li>
 <li><code>pop()</code> — odstráni objekt z vrchu zásobníka a vráti ho.</li>
 <li><code>push(Object item)</code> — vloží objekt na vrchol zásobníka.</li>
 </ul>
-
 <p>Podobne ako v prípade prehľadávania do šírky budeme prechádzať strom po jednotlivých uzloch. Pre každý uzol však môžeme vybaviť jeho súrodencov až vtedy, čo sú vybavení všetci jeho potomkovia (priami i nepriami). Potomkov uzla budeme ukladať na zásobník, z ktorého budeme zároveň vyberať uzly súce na vybavenie. Algoritmus sa skončí vo chvíli, keď je zásobník prázdny, teda že už nie je čo spracovávať.</p>
-
 <h3 id="príklad-algoritmu">Príklad algoritmu</h3>
-
 <p>Vezmime teda uzol <code>C:</code>. Tento uzol spracujeme a jeho deti <code>MP3</code>, <code>Windows</code> a <code>Data</code> vkladajme postupne na vrchol zásobníka. Pre poriadok budeme deti prechádzať v prevrátenom poradí (aby sa na vrchol zásobníka ukladali tie uzly, ktoré budeme spracovávať ako prvé).</p>
-
-<pre><code>+-----------------------
+<pre tabindex="0"><code>+-----------------------
 | Data | Windows | MP3
 +-----------------------
-</code></pre>
-
-<p>Ďalej vezmeme prvok z vrcholu zásobníka, <code>MP3</code>, vybavíme ho (vypíšeme na konzolu) a všetky jeho deti vložíme na vrchol zásobníka.</p>
-
-<pre><code>+------------------------------
+</code></pre><p>Ďalej vezmeme prvok z vrcholu zásobníka, <code>MP3</code>, vybavíme ho (vypíšeme na konzolu) a všetky jeho deti vložíme na vrchol zásobníka.</p>
+<pre tabindex="0"><code>+------------------------------
 | Data | Windows | Elán | ABBA
 +------------------------------
-</code></pre>
-
-<p>Z vrchola zásobníka vezmeme <code>Abbu</code>. Tá už nemá deti, čiže ju len spracujeme a pokračujeme ďalej.</p>
-
-<pre><code>+-----------------------
+</code></pre><p>Z vrchola zásobníka vezmeme <code>Abbu</code>. Tá už nemá deti, čiže ju len spracujeme a pokračujeme ďalej.</p>
+<pre tabindex="0"><code>+-----------------------
 | Data | Windows | Elán
 +-----------------------
-</code></pre>
-
-<p>Teraz vezmeme z vrchola zásobníka <code>Elán</code>. Ten tiež rovnako nemá deti, čiže ho spracujeme a pokračujeme ďalej.</p>
-
-<pre><code>+----------------
+</code></pre><p>Teraz vezmeme z vrchola zásobníka <code>Elán</code>. Ten tiež rovnako nemá deti, čiže ho spracujeme a pokračujeme ďalej.</p>
+<pre tabindex="0"><code>+----------------
 | Data | Windows 
 +----------------
-</code></pre>
-
-<p>Na vrchole zásobníka je <code>Windows</code>, ktorý má dvoch potomkov (<code>system32</code> a <code>temp</code>). Hodíme ich postupne na vrchol zásobníka.</p>
-
-<pre><code>+------------------------
+</code></pre><p>Na vrchole zásobníka je <code>Windows</code>, ktorý má dvoch potomkov (<code>system32</code> a <code>temp</code>). Hodíme ich postupne na vrchol zásobníka.</p>
+<pre tabindex="0"><code>+------------------------
 | Data | temp | system32
 +------------------------ 
-</code></pre>
-
-<p>Oba uzly, <code>system32</code> aj `<code>temp</code> sú bezdetné, teda ich len spracujeme.</p>
-
-<pre><code>+------
+</code></pre><p>Oba uzly, <code>system32</code> aj ``temp` sú bezdetné, teda ich len spracujeme.</p>
+<pre tabindex="0"><code>+------
 | Data 
 +------
-</code></pre>
-
-<p>Na rade je <code>Data</code> s jediným potomkom, <code>spam</code>, ktorý hodíme do (zhodou okolností prázdneho) zásobníka.</p>
-
-<pre><code>+------
+</code></pre><p>Na rade je <code>Data</code> s jediným potomkom, <code>spam</code>, ktorý hodíme do (zhodou okolností prázdneho) zásobníka.</p>
+<pre tabindex="0"><code>+------
 | spam
 +------
-</code></pre>
-
-<p>Spracovaním uzla <code>spam</code> končíme algoritmus, keďže zásobník je už prázdny.</p>
-
+</code></pre><p>Spracovaním uzla <code>spam</code> končíme algoritmus, keďže zásobník je už prázdny.</p>
 <h3 id="idea-algoritmu">Idea algoritmu</h3>
-
 <p>Idea algoritmu je potom nasledovná:</p>
-
 <ol>
 <li>vložme na vrchol zásobníka koreň stromu</li>
 <li>ak je zásobník prázdny, končíme</li>
@@ -230,40 +175,37 @@ File[] children = fileC.listFiles();
 <li>vezmime jeho deti a dajme ho na vrchol zásobníka (v obrátenom poradí).</li>
 <li>pokračujme krokom 2.</li>
 </ol>
-
-<h3 id="zásobník-java-util-stack">Zásobník <code>java.util.Stack</code></h3>
-
+<h3 id="zásobník-javautilstack">Zásobník <code>java.util.Stack</code></h3>
 <p>Zásobník je v Jave k dispozícii v podobe triedy <code>java.util.Stack</code>. Najdôležitejšie metódy boli zmienené vyššie.</p>
-
 <h3 id="algoritmus-v-jave-s-použitím-zásobníka">Algoritmus v Jave s použitím zásobníka</h3>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#666;font-style:italic">// vytvoríme zásobník
-</span><span style="color:#666;font-style:italic"></span><span style="color:#f00;background-color:#faa">Stack&lt;File&gt; zásobník </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Stack<span style="color:#333">&lt;</span>File<span style="color:#333">&gt;</span>();
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#666;font-style:italic">// vytvoríme zásobník
+</span><span style="color:#666;font-style:italic"></span>Stack<span style="color:#333">&lt;</span>File<span style="color:#333">&gt;</span> zásobník <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Stack<span style="color:#333">&lt;</span>File<span style="color:#333">&gt;();</span>
 <span style="color:#666;font-style:italic">// pridáme koreň do fronty
-</span><span style="color:#666;font-style:italic"></span>zásobník.<span style="color:#007">push</span>(root);
+</span><span style="color:#666;font-style:italic"></span>zásobník<span style="color:#333">.</span><span style="color:#007">push</span><span style="color:#333">(</span>root<span style="color:#333">);</span>
 
 <span style="color:#666;font-style:italic">//pokiaľ fronta nie je prázdna
-</span><span style="color:#666;font-style:italic"></span><span style="color:#289;font-weight:bold">while</span>(<span style="color:#333">!</span>zásobník.<span style="color:#007">isEmpty</span>()) {
+</span><span style="color:#666;font-style:italic"></span><span style="color:#289;font-weight:bold">while</span><span style="color:#333">(!</span>zásobník<span style="color:#333">.</span><span style="color:#007">isEmpty</span><span style="color:#333">())</span> <span style="color:#333">{</span>
     <span style="color:#666;font-style:italic">// vyberme uzol z vrcholu zásobníka
-</span><span style="color:#666;font-style:italic"></span>    <span style="color:#f00;background-color:#faa">File file </span><span style="color:#333">=</span> zásobník.<span style="color:#007">pop</span>();
+</span><span style="color:#666;font-style:italic"></span>    File file <span style="color:#333">=</span> zásobník<span style="color:#333">.</span><span style="color:#007">pop</span><span style="color:#333">();</span>
     <span style="color:#666;font-style:italic">// vybavme ho
-</span><span style="color:#666;font-style:italic"></span>    System.<span style="color:#007">out</span>.<span style="color:#007">println</span>(file);
+</span><span style="color:#666;font-style:italic"></span>    System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span>file<span style="color:#333">);</span>
     <span style="color:#666;font-style:italic">// potomkov zaradíme do fronty
-</span><span style="color:#666;font-style:italic"></span>    <span style="color:#289;font-weight:bold">if</span>(file.<span style="color:#007">isDirectory</span>()) {
-        <span style="color:#f00;background-color:#faa">File[] children </span><span style="color:#333">=</span> file.<span style="color:#007">listFiles</span>();
+</span><span style="color:#666;font-style:italic"></span>    <span style="color:#289;font-weight:bold">if</span><span style="color:#333">(</span>file<span style="color:#333">.</span><span style="color:#007">isDirectory</span><span style="color:#333">())</span> <span style="color:#333">{</span>
+        File<span style="color:#333">[]</span> children <span style="color:#333">=</span> file<span style="color:#333">.</span><span style="color:#007">listFiles</span><span style="color:#333">();</span>
         <span style="color:#666;font-style:italic">// hádžeme na vrchol zásobníka v opačnom poradí
-</span><span style="color:#666;font-style:italic"></span>        <span style="color:#289;font-weight:bold">for</span>(<span style="color:#f00;background-color:#faa">int i </span><span style="color:#333">=</span> children.<span style="color:#007">length</span> <span style="color:#333">-</span> 1; i <span style="color:#333">&gt;=</span> 0; i<span style="color:#333">--</span>) {
-          	zásobník.<span style="color:#007">push</span>(children[i]);
-        }       
-    }
-}</code></pre></div>
-<h1 id="zabudovaný-algoritmus-v-jave">Zabudovaný algoritmus v Jave</h1>
-
+</span><span style="color:#666;font-style:italic"></span>        <span style="color:#289;font-weight:bold">for</span><span style="color:#333">(</span><span style="color:#66f;font-weight:bold">int</span> i <span style="color:#333">=</span> children<span style="color:#333">.</span><span style="color:#007">length</span> <span style="color:#333">-</span> 1<span style="color:#333">;</span> i <span style="color:#333">&gt;=</span> 0<span style="color:#333">;</span> i<span style="color:#333">--)</span> <span style="color:#333">{</span>
+          	zásobník<span style="color:#333">.</span><span style="color:#007">push</span><span style="color:#333">(</span>children<span style="color:#333">[</span>i<span style="color:#333">]);</span>
+        <span style="color:#333">}</span>       
+    <span style="color:#333">}</span>
+<span style="color:#333">}</span>
+</code></pre></div><h1 id="zabudovaný-algoritmus-v-jave">Zabudovaný algoritmus v Jave</h1>
 <p>Trieda <code>javax.swing.tree.DefaultMutableTreeNode</code> má medzi svojimi metódami tiež prehľadávanie do hĺbky. Na koreňovom uzle stačí zavolať <code>depthFirstEnumeration()</code>, ktorá vráti enumeráciu uzlov.</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">Enumeration&lt;DefaultMutableTreeNode&gt; bfsEnum </span><span style="color:#333">=</span> root.<span style="color:#007">depthFirstEnumeration</span>();
-<span style="color:#289;font-weight:bold">while</span> (bfsEnum.<span style="color:#007">hasMoreElements</span>()) {
-  	<span style="color:#f00;background-color:#faa">DefaultMutableTreeNode treeNode  </span><span style="color:#333">=</span> bfsEnum.<span style="color:#007">nextElement</span>();
-  	System.<span style="color:#007">out</span>.<span style="color:#007">println</span>(treeNode.<span style="color:#007">getUserObject</span>());
-}</code></pre></div>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Enumeration<span style="color:#333">&lt;</span>DefaultMutableTreeNode<span style="color:#333">&gt;</span> bfsEnum <span style="color:#333">=</span> root<span style="color:#333">.</span><span style="color:#007">depthFirstEnumeration</span><span style="color:#333">();</span>
+<span style="color:#289;font-weight:bold">while</span> <span style="color:#333">(</span>bfsEnum<span style="color:#333">.</span><span style="color:#007">hasMoreElements</span><span style="color:#333">())</span> <span style="color:#333">{</span>
+  	DefaultMutableTreeNode treeNode  <span style="color:#333">=</span> bfsEnum<span style="color:#333">.</span><span style="color:#007">nextElement</span><span style="color:#333">();</span>
+  	System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span>treeNode<span style="color:#333">.</span><span style="color:#007">getUserObject</span><span style="color:#333">());</span>
+<span style="color:#333">}</span>
+</code></pre></div>
 </main>
 
     <footer>

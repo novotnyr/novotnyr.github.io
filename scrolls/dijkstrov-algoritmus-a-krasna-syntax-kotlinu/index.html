@@ -59,202 +59,135 @@
 
 
 <main>
-
-
 <p>Dijkstrov algoritmus na hľadanie najkratšej cesty v neorientovanom grafe s nezápornými hranami je skvelá možnosť, ako si ukázať učebnicový grafový algoritmus… ale aj krásnu syntax Kotlinu.</p>
-
 <p>Budeme potrebovať:</p>
-
 <ol>
 <li>Reprezentáciu grafu: 1ks</li>
 <li>Funkciu na výpočet najväčšej vzdialenosti</li>
 <li>A korenie
-
 <ol>
 <li>Reprezentácia uzlov</li>
 <li>Prevody medzi uzlami a číslami.</li>
-</ol></li>
 </ol>
-
+</li>
+</ol>
 <h1 id="reprezentácia-grafu">Reprezentácia grafu</h1>
-
 <p>Graf s uzlami a hranami má milión reprezentácií. My si zvolíme tú najhlúpejšiu: <strong>maticu incidencií</strong>. Ak máme dva uzly, <em>U</em> a <em>V</em>, do tabuľky na <em>U</em>-ty riadok a <em>V</em>-ty stĺpec uvedieme vzdialenosť medzi nimi. To isté urobíme aj naopak: na <em>V</em>-ty riadok a <em>U</em>-ty stĺpec dáme tú istú vzdialenosť, pretože či ideme z Košíc do Prešova alebo naopak, vzdialenosť je rovnaká.</p>
-
 <p>Urobíme ešte jedno zjednodušenie: uzly budú čísla! Takto môžeme reprezentovať maticu ako dvojrozmerné pole. Alebo také dačo. Uzly ako čísla budú predstavovať indexy „riadkov“ a „stĺpcov“ a hodnota v políčku bude vzdialenosť medzi nimi.</p>
-
 <h2 id="matica-incidencií-v-kotline">Matica incidencií v Kotline</h2>
-
 <p>Pole v Kotline je reprezentované triedou <code>Array</code>. Tá je skvelá: má dvojparametrový konštruktor, kde vieme uviesť rozmer poľa a dokonca ho aj nainicializovať ľubovoľným prvkom.</p>
-
 <p>Jednoprvkové pole jednotiek dĺžky 8 môžeme spraviť takto:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">val</span> numbers = Array(<span style="color:#60e;font-weight:bold">8</span>) { <span style="color:#60e;font-weight:bold">1</span> }</code></pre></div>
-<p>Guľaté zátvorky reprezentujú druhý parameter konštruktora. To vznikne nasledovným skracovaním:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">val</span> numbers = Array(<span style="color:#60e;font-weight:bold">8</span>, { index -&gt; <span style="color:#60e;font-weight:bold">1</span> })
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">val</span> numbers = Array(<span style="color:#60e;font-weight:bold">8</span>) { <span style="color:#60e;font-weight:bold">1</span> }
+</code></pre></div><p>Guľaté zátvorky reprezentujú druhý parameter konštruktora. To vznikne nasledovným skracovaním:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">val</span> numbers = Array(<span style="color:#60e;font-weight:bold">8</span>, { index <span style="color:#333">-&gt;</span> <span style="color:#60e;font-weight:bold">1</span> })
 <span style="color:#666;font-style:italic">// nepoužívaný index vynecháme
 </span><span style="color:#666;font-style:italic"></span><span style="color:#289;font-weight:bold">val</span> numbers = Array(<span style="color:#60e;font-weight:bold">8</span>, { <span style="color:#60e;font-weight:bold">1</span> })
 <span style="color:#666;font-style:italic">// ak je posledný argument lambda výraz, môžeme ho vysunúť za zátvorku
-</span><span style="color:#666;font-style:italic"></span><span style="color:#289;font-weight:bold">val</span> numbers = Array(<span style="color:#60e;font-weight:bold">8</span>) {<span style="color:#60e;font-weight:bold">1</span>}</code></pre></div>
-<h2 id="dvojrozmerné-polia">Dvojrozmerné polia</h2>
-
+</span><span style="color:#666;font-style:italic"></span><span style="color:#289;font-weight:bold">val</span> numbers = Array(<span style="color:#60e;font-weight:bold">8</span>) {<span style="color:#60e;font-weight:bold">1</span>}
+</code></pre></div><h2 id="dvojrozmerné-polia">Dvojrozmerné polia</h2>
 <p>Dvojrozmerné polia v Kotline neexistujú. Dvojrozmerné pole je v skutočnosti bežné pole, ktorého prvky sú bežné polia.</p>
-
 <p>Potrebujeme maticu, teda 2D pole veľkosti 8x8 plné núl?</p>
-
-<pre><code>val matrix = Array(8) { Array(8) { 0 } }
-</code></pre>
-
-<p>Vo vnútri zátvoriek inicializujeme prvky poľa ako polia, ktoré vnorene inicializujeme nulami. Toto je naša matica incidencií!</p>
-
+<pre tabindex="0"><code>val matrix = Array(8) { Array(8) { 0 } }
+</code></pre><p>Vo vnútri zátvoriek inicializujeme prvky poľa ako polia, ktoré vnorene inicializujeme nulami. Toto je naša matica incidencií!</p>
 <h2 id="graf-s-maticou-incidencií">Graf s maticou incidencií</h2>
-
 <p>Polia sa nedajú nafukovať a sfukovať. Raz vytvorené pole má danú dĺžku a koniec. (Ak chceme dynamické polia, musíme použiť niečo iné, napríklad <code>List</code>.)</p>
-
 <p>To nám nevadí, pretože sa budeme tváriť, že graf vytvoríme s nadrôtovanou veľkosťou.</p>
-
 <p>Môžeme si urobiť kotlinovskú triedu v súbore <code>StupidDijkstra.kt</code>:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">StupidGraph</span>(<span style="color:#289;font-weight:bold">private</span> <span style="color:#289;font-weight:bold">val</span> size: Int) {
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">StupidGraph</span>(<span style="color:#289;font-weight:bold">private</span> <span style="color:#289;font-weight:bold">val</span> size: Int) {
     <span style="color:#289;font-weight:bold">private</span> <span style="color:#289;font-weight:bold">val</span> matrix = Array(size) { Array(size) { <span style="color:#60e;font-weight:bold">0</span> } }
-}</code></pre></div>
-<p>V primárnom konštruktore povieme, že parametrom je veľkosť <code>size</code>, typu číslo <code>Int</code>. Keďže je to interná premenná, vyhlásime ju za <code>private</code>.</p>
-
+}
+</code></pre></div><p>V primárnom konštruktore povieme, že parametrom je veľkosť <code>size</code>, typu číslo <code>Int</code>. Keďže je to interná premenná, vyhlásime ju za <code>private</code>.</p>
 <p>Vo vnútri pripravíme naše dvojrozmerné pole, pričom rozmery preberieme z konštruktorovej vlastnosti (<em>property</em>) <code>size</code>.</p>
-
 <p>Graf si môžeme vytvoriť!</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">main</span>() {
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">main</span>() {
   <span style="color:#289;font-weight:bold">val</span> graph = StupidGraph(<span style="color:#60e;font-weight:bold">8</span>)
-}</code></pre></div>
-<p>To je však asi tak všetko, čo s ním môžeme robiť.</p>
-
+}
+</code></pre></div><p>To je však asi tak všetko, čo s ním môžeme robiť.</p>
 <h1 id="funkcie-pre-zábavu-s-grafmi">Funkcie pre zábavu s grafmi</h1>
-
 <h2 id="pridávanie-hrán">Pridávanie hrán</h2>
-
 <p>Na pridávanie hrán si vytvoríme metódu triedy <code>StupidGraph</code>. Zoberie tri parametre:</p>
-
 <ol>
 <li>zdrojový uzol</li>
 <li>cieľový uzol</li>
 <li>vzdialenosť.</li>
 </ol>
-
 <p>Vzdialenosť nech je celé číslo <code>Int</code>. Ale čo s uzlami? Povedali sme si, že uzly budú čísla, pretože takto sa s nimi bude lepšie narábať pri práci s maticou.</p>
-
 <h3 id="vlastné-dátové-typy-typealias">Vlastné dátové typy <code>typealias</code></h3>
-
 <p>Už teraz tušíme, že aj vzdialenosť, aj uzly sú celé čísla <code>Int</code>. Aby sa to nepoplietlo, môžeme v Kotline využiť aliasovanie typov. Aha:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">typealias Node = Int</code></pre></div>
-<p>Práve sme povedali, že dátový typ <code>Node</code> bude v skutočnosti <code>Int</code>. Úlohou aliasov je sprehľadniť zápis.</p>
-
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">typealias</span> Node = Int
+</code></pre></div><p>Práve sme povedali, že dátový typ <code>Node</code> bude v skutočnosti <code>Int</code>. Úlohou aliasov je sprehľadniť zápis.</p>
 <h3 id="funkcia-pre-pridávanie-hrán">Funkcia pre pridávanie hrán</h3>
-
 <p>Takto si môžeme pripraviť funkciu, teda metódu v triede <code>StupidGraph</code>:</p>
-
-<pre><code>class StupidGraph(private val size: Int) {
+<pre tabindex="0"><code>class StupidGraph(private val size: Int) {
 		// ...
     fun add(node1: Node, node2: Node, weight: Int) {
     
 ...
-</code></pre>
-
-<p>Vidíme krásne otypované parametre: uzly sú <code>Node</code> a váhy sú čísla!</p>
-
+</code></pre><p>Vidíme krásne otypované parametre: uzly sú <code>Node</code> a váhy sú čísla!</p>
 <p>Implementácia bude jednoduchá, prosto nastavíme obe hodnoty buniek, v jednom i druhom smere.</p>
-
-<pre><code>fun add(node1: Node, node2: Node, weight: Int) {
+<pre tabindex="0"><code>fun add(node1: Node, node2: Node, weight: Int) {
     matrix[node1][node2] = weight
     matrix[node2][node1] = weight
 }
-</code></pre>
-
-<p>Vidíme dva aspekty:</p>
-
+</code></pre><p>Vidíme dva aspekty:</p>
 <ul>
 <li>Napriek tomu, že uzol <code>node1</code> i <code>node2</code> sú typu <code>Node</code>, vďaka typovým aliasom ich vieme považovať za čísla.</li>
 <li>Vidíme prístup k dvojrozmernému poľu cez dve hranaté zátvorky.</li>
 </ul>
-
 <p>Teraz si už môžeme pripraviť graf s dvoma uzlami:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">val</span> g = StupidGraph(<span style="color:#60e;font-weight:bold">2</span>)
-g.add(<span style="color:#60e;font-weight:bold">0</span>, <span style="color:#60e;font-weight:bold">1</span>, <span style="color:#60e;font-weight:bold">20</span>)</code></pre></div>
-<p>Práve sme povedali, že z uzla <code>0</code> do uzla <code>1</code> je vzdialenosť 20 merných jednotiek, ale to platí aj naopak: z uzla <code>1</code> do uzla <code>0</code> je to rovnaké.</p>
-
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">val</span> g = StupidGraph(<span style="color:#60e;font-weight:bold">2</span>)
+g.add(<span style="color:#60e;font-weight:bold">0</span>, <span style="color:#60e;font-weight:bold">1</span>, <span style="color:#60e;font-weight:bold">20</span>)
+</code></pre></div><p>Práve sme povedali, že z uzla <code>0</code> do uzla <code>1</code> je vzdialenosť 20 merných jednotiek, ale to platí aj naopak: z uzla <code>1</code> do uzla <code>0</code> je to rovnaké.</p>
 <h2 id="zisťovanie-vzdialeností">Zisťovanie vzdialeností</h2>
-
 <p>Teraz sa nám bude hodiť funkcia pre zisťovanie vzdialeností. Dodajme ju ako metódu do našej grafovej triedy:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">getWeight</span>(node1: Node, node2: Node) = matrix[node1][node2]</code></pre></div>
-<p>Táto funkcia berie dva parametre a vracia jedno celé číslo reprezentujúce vzdialenosť. Funkcia nemá telo, pretože reprezentuje jednoduchý výraz, ktorý zistí z matice z daného koordinátu hodnotu z príslušného políčka.</p>
-
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">getWeight</span>(node1: Node, node2: Node) = matrix[node1][node2]
+</code></pre></div><p>Táto funkcia berie dva parametre a vracia jedno celé číslo reprezentujúce vzdialenosť. Funkcia nemá telo, pretože reprezentuje jednoduchý výraz, ktorý zistí z matice z daného koordinátu hodnotu z príslušného políčka.</p>
 <p>Môžeme si to overiť vo funkcii <code>main()</code>:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">println(g.getWeight(<span style="color:#60e;font-weight:bold">1</span>, <span style="color:#60e;font-weight:bold">0</span>)) <span style="color:#666;font-style:italic">// výsledok je 20</span></code></pre></div>
-<h2 id="získanie-uzlov">Získanie uzlov</h2>
-
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">println(g.getWeight(<span style="color:#60e;font-weight:bold">1</span>, <span style="color:#60e;font-weight:bold">0</span>)) <span style="color:#666;font-style:italic">// výsledok je 20
+</span></code></pre></div><h2 id="získanie-uzlov">Získanie uzlov</h2>
 <p>V kóde sa hodí získanie všetkých uzlov z grafu. To môžeme implemenovať:</p>
-
 <ul>
 <li>cez funkciu <code>getNodes()</code></li>
-
-<li><p>alebo využiť <em>properties</em> a vytvoriť kotlinovskú vlastnosť, ktorá umožní bodkovú notáciu v duchu <code>g.nodes</code>.</p>
-
-<pre><code>val nodes: Set&lt;Node&gt; = matrix.indices.toSet()
-</code></pre></li>
+<li>alebo využiť <em>properties</em> a vytvoriť kotlinovskú vlastnosť, ktorá umožní bodkovú notáciu v duchu <code>g.nodes</code>.</li>
 </ul>
-
-<p>Deklarácia mapuje vlastnosť <code>nodes</code> na volanie inej vlastnosti <code>indices</code> na našom 2D poli <code>matrix</code>.</p>
-
+<pre tabindex="0"><code>val nodes: Set&lt;Node&gt; = matrix.indices.toSet()
+</code></pre><p>Deklarácia mapuje vlastnosť <code>nodes</code> na volanie inej vlastnosti <code>indices</code> na našom 2D poli <code>matrix</code>.</p>
 <p>Keďže sme zvolili umnú implementáciu, dva uzly v grafe znamenajú maticu s dvoma riadkami a dvoma stĺpcami, a indexy týchto uzlov sú <code>0</code> a <code>1</code>. Dostupnú uzly sú takto vtipne namapované na indexy poľa, čo vieme získať presne cez <code>indices</code>.</p>
-
 <p>Na to, aby to fungovalo, potrebujeme ešte jeden prevod: indexy <code>indices</code> majú dátový typ<code>IntRange</code> (rozsah integerov), ale to radšej prevedieme na množinu, s ktorou sa robí omnoho lepšie. Prevod z rozsahu integerov na množinu uzlov je jednoduchý, pretože aliasing typov zabezpečí, že <code>Int</code> sa tvári ako <code>Node</code>.</p>
-
-<p><img src="array-of-array.svg" alt="" /></p>
-
+<p><img src="array-of-array.svg" alt=""></p>
 <p>Ako vidno na obrázku, <code>indices</code> vrátia indexy z „vodorovného“ poľa.</p>
-
 <h2 id="odstraňovanie-uzlov">Odstraňovanie uzlov</h2>
-
 <p>Pri Dijkstrovom algoritme budeme potrebovať aj odstraňovanie uzlov. Budeme to robiť hlúpym spôsobom, pretože nemáme možnosť odstraňovať položky z poľa. Namiesto toho zmazanému uzlu jednoducho nastavíme nulovú vzdialenosť do ostatných uzlov i naopak, do zmazaného uzla nastavíme 0 zo všetkých odchádzajúcich uzlov.</p>
-
-<p><img src="deleting-nodes.svg" alt="" /></p>
-
+<p><img src="deleting-nodes.svg" alt=""></p>
 <p>Prvý krok je na obrázku znázornený tmavosivým pozadím, a druhý krok nastaví svetlosivému políčku na indexe <code>0</code> vzdialenosť nula.</p>
-
 <p>Kód vyjadríme krásnou funkciou:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">remove</span>(node: Node) {
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">remove</span>(node: Node) {
     matrix[node].fill(<span style="color:#60e;font-weight:bold">0</span>)
-    matrix.forEach { it[node] = <span style="color:#60e;font-weight:bold">0</span> }
-}</code></pre></div>
-<h2 id="zisťovanie-susedov">Zisťovanie susedov</h2>
-
+    matrix.forEach { <span style="color:#289;font-weight:bold">it</span>[node] = <span style="color:#60e;font-weight:bold">0</span> }
+}
+</code></pre></div><h2 id="zisťovanie-susedov">Zisťovanie susedov</h2>
 <p>Budeme potrebovať funkciu pre zisťovanie susedov. To dosiahneme jednoducho:</p>
-
 <ol>
 <li>Získame „stĺpec“ z matice incidencií.</li>
 <li>Preiterujeme jeho prvky a vrátime tie indexy zodpovedajúce uzlom, ktorých vzdialenosti sú väčšie ako nula. Nulové indexy totiž znamenajú neexistujúcu hranu.</li>
 </ol>
-
 <p>Na obrázku tak vidíme, že pre uzol <code>0</code> zistíme susedné uzly <code>1</code> a <code>2</code>.</p>
-
-<p><img src="adjacent-nodes.svg" alt="" /></p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">getAdjacentNodes</span>(node: Node): List&lt;Node&gt; {
-    <span style="color:#289;font-weight:bold">return</span> matrix[node].mapIndexedNotNull { index, distance -&gt;
+<p><img src="adjacent-nodes.svg" alt=""></p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">getAdjacentNodes</span>(node: Node): List&lt;Node&gt; {
+    <span style="color:#289;font-weight:bold">return</span> matrix[node].mapIndexedNotNull { index, distance <span style="color:#333">-&gt;</span>
         <span style="color:#289;font-weight:bold">if</span> (distance &gt; <span style="color:#60e;font-weight:bold">0</span>) index <span style="color:#289;font-weight:bold">else</span> <span style="color:#289;font-weight:bold">null</span>
     }
-}</code></pre></div>
-<p>Funkcia <code>mapIndexedNotNull()</code> prechádza poľom a zavolá lambda výraz s dvoma parametrami, v podobnom duchu, ako by to robil bežný cyklus <code>for</code>:</p>
-
+}
+</code></pre></div><p>Funkcia <code>mapIndexedNotNull()</code> prechádza poľom a zavolá lambda výraz s dvoma parametrami, v podobnom duchu, ako by to robil bežný cyklus <code>for</code>:</p>
 <ul>
 <li><code>index</code> predstavuje index prvku, čo je zhodou okolností názov uzla</li>
 <li><code>distance</code> znamená dĺžku hrany, teda vzdialenosť.</li>
 </ul>
-
 <p>Každý prvok sa namapuje na iný prvok, ale tie prvky, ktoré sa mapujú na <code>null</code>, sa z výsledku vynechajú. V našom prípade mapujeme nulu na <code>null</code>, jednotku na <code>1</code>, a dvojku na <code>2</code>, čo po vynechaní vráti uzly/indexy <code>1</code> a <code>2</code>.</p>
-
 <p>Metóda dokonca vráti elegantný zoznam čísiel, ktoré transparentne prevedieme na zoznam uzlov <code>Node</code>.</p>
-
 <h2 id="použitie-grafu">Použitie grafu</h2>
-
 <p>Ak by sme chceli vytvoriť komplexný graf, napr. so vzdialenosťami medzi slovenskými krajskými mestami, došli by sme k niečomu takémuto:</p>
-
-<pre><code>val g = StupidGraph(8)
+<pre tabindex="0"><code>val g = StupidGraph(8)
 g.add(0, 1, 5)
 g.add(1, 2, 5)
 g.add(0, 2, 9)
@@ -266,70 +199,48 @@ g.add(2, 5, 13)
 g.add(6, 7, 3)
 g.add(5, 7, 25)
 g.add(0, 5, 22)
-</code></pre>
-
-<p>Toto vyzerá dosť šialene a ľahko sa v tom dá stratiť. Kde sme spravili chybu? V tom, že naše uzly môžu byť len čísla. Ale to sa dá ľahko napraviť!</p>
-
+</code></pre><p>Toto vyzerá dosť šialene a ľahko sa v tom dá stratiť. Kde sme spravili chybu? V tom, že naše uzly môžu byť len čísla. Ale to sa dá ľahko napraviť!</p>
 <h3 id="pomocné-triky-na-skrátenie-dsl">Pomocné triky na skrátenie (“DSL”)</h3>
-
 <p>Urobme si pomocnú triedu!</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">enum</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">City</span> {
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">enum</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">City</span> {
     BRATISLAVA, TRNAVA, NITRA, TRENCIN, ZILINA, BANSKA_BYSTRICA, PRESOV, KOSICE
-}</code></pre></div>
-<p>Tento <code>enum</code> má výhodu: elementy majú jednoznačné poradie, pretože taký Trenčín má index 3, čo vieme získať cez <code>City.TRENCIN.ordinal</code>.</p>
-
+}
+</code></pre></div><p>Tento <code>enum</code> má výhodu: elementy majú jednoznačné poradie, pretože taký Trenčín má index 3, čo vieme získať cez <code>City.TRENCIN.ordinal</code>.</p>
 <p>Môžeme to prepísať!:</p>
-
-<pre><code>val g = StupidGraph(8)
+<pre tabindex="0"><code>val g = StupidGraph(8)
 g.add(City.BRATISLAVA.ordinal, City.TRNAVA.ordinal, 5)
 ...
-</code></pre>
-
-<p>To tiež nie je ktoviečo! Vieme to vylepšiť dvoma vecami:</p>
-
+</code></pre><p>To tiež nie je ktoviečo! Vieme to vylepšiť dvoma vecami:</p>
 <ul>
 <li>pomocnou funkciou, ktorá prevedie prvok na číslo uzla</li>
 <li>a importom, ktorý skráti zápis.</li>
 </ul>
-
 <p>Na začiatok súboru môžeme dodať import všetkých položiek <code>enum</code>-u:</p>
-
-<pre><code>import com.github.novotnyr.graph.kt.stupid.City.*
-</code></pre>
-
-<p>Teraz už veselo môžeme písať:</p>
-
-<pre><code>g.add(BRATISLAVA.ordinal, TRNAVA.ordinal, 5)
-</code></pre>
-
-<h3 id="extension-funkcia-na-krajšie-pridávanie">Extension funkcia na krajšie pridávanie</h3>
-
+<pre tabindex="0"><code>import com.github.novotnyr.graph.kt.stupid.City.*
+</code></pre><p>Teraz už veselo môžeme písať:</p>
+<pre tabindex="0"><code>g.add(BRATISLAVA.ordinal, TRNAVA.ordinal, 5)
+</code></pre><h3 id="extension-funkcia-na-krajšie-pridávanie">Extension funkcia na krajšie pridávanie</h3>
 <p>Kotlin umožňuje používanie <em>extension functions</em>, akýchsi rozširujúcich funkcií, ktoré umožňujú pridávať nové metódy existujúcim triedam, na ktoré nemáme dosah alebo ktoré nechceme zaburiniť zbytočnými pomocnými metódami.</p>
-
 <p>Ak chceme triede <code>StupidGraph</code> pridať pomocnú funkciu na pridávanie vzdialenosti, vieme to dosiahnuť nasledovným spôsobom:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">StupidGraph</span>.distance(source: City, destination: City, distance: Int) {
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">StupidGraph</span>.distance(source: City, destination: City, distance: Int) {
     add(source.ordinal, destination.ordinal, distance)
-}</code></pre></div>
-<p>Všimnime si:</p>
-
+}
+</code></pre></div><p>Všimnime si:</p>
 <ul>
 <li><strong>receiver</strong>, teda triedu objektu, ktorá vyfasuje novú metódu. V našom prípade ide o <code>StupidGraph</code>.</li>
 <li>názov funkcie uvedený za bodkou, teda <code>distance</code>.</li>
 <li>dva parametre: pre zdrojové a cieľové mesto, plus tretí parameter pre vzdialenosť</li>
 <li>Objekt, ktorý prijme novú metódu, je k dispozícii pod premennou <code>this</code>. V našom prípade sme <code>this</code> vynechali a teda metódu <code>add()</code> voláme priamo.</li>
 </ul>
-
 <p>Zápis je teraz ešte krajší:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">val</span> g = StupidGraph(<span style="color:#60e;font-weight:bold">8</span>)
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">val</span> g = StupidGraph(<span style="color:#60e;font-weight:bold">8</span>)
 g.distance(BRATISLAVA, TRNAVA, <span style="color:#60e;font-weight:bold">5</span>)
 g.distance(TRNAVA, NITRA, <span style="color:#60e;font-weight:bold">5</span>)
-<span style="color:#666;font-style:italic">//...</span></code></pre></div>
-<h3 id="konštrukcia-with">Konštrukcia <code>with</code></h3>
-
+<span style="color:#666;font-style:italic">//...
+</span></code></pre></div><h3 id="konštrukcia-with">Konštrukcia <code>with</code></h3>
 <p>Konštrukcia <code>with</code> , jedna zo <a href="https://kotlinlang.org/docs/reference/scope-functions.html"><em>scope functions</em></a>, teda funkcií pre prácu s rozsahom platnosti, uľahčuje situácie, keď dokola voláme metódy na jednom objekte.</p>
-
 <p>Napríklad na našej premennej <code>g</code>. Skúsme to prepísať:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">with(StupidGraph(<span style="color:#60e;font-weight:bold">8</span>)) {
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">with(StupidGraph(<span style="color:#60e;font-weight:bold">8</span>)) {
     distance(BRATISLAVA, TRNAVA, <span style="color:#60e;font-weight:bold">5</span>)
     distance(TRNAVA, NITRA, <span style="color:#60e;font-weight:bold">5</span>)
     distance(BRATISLAVA, NITRA, <span style="color:#60e;font-weight:bold">9</span>)
@@ -341,15 +252,11 @@ g.distance(TRNAVA, NITRA, <span style="color:#60e;font-weight:bold">5</span>)
     distance(PRESOV, KOSICE, <span style="color:#60e;font-weight:bold">3</span>)
     distance(BANSKA_BYSTRICA, KOSICE, <span style="color:#60e;font-weight:bold">25</span>)
     distance(BRATISLAVA, BANSKA_BYSTRICA, <span style="color:#60e;font-weight:bold">22</span>)
-}</code></pre></div>
-<p>Premenná <code>g</code> sa stratila, resp. transformovala na <code>this</code> dostupnú vo vnútri sekcie <code>with</code>.</p>
-
+}
+</code></pre></div><p>Premenná <code>g</code> sa stratila, resp. transformovala na <code>this</code> dostupnú vo vnútri sekcie <code>with</code>.</p>
 <p>To už vyzerá elegantne!</p>
-
 <h1 id="implementácia-dijkstru">Implementácia Dijkstru</h1>
-
 <p>Na implementáciu Dijkstru použijeme inšpiráciu z <a href="https://novotnyr.github.io/scrolls/ako-naplanovat-cestu-autom-dijkstra-algoritmus/">Java kódu</a>. Budeme potrebovať:</p>
-
 <ul>
 <li>jeden graf</li>
 <li>jedno mapovanie medzi uzlami a dosiaľ nájdenými vzdialenosťami</li>
@@ -357,40 +264,30 @@ g.distance(TRNAVA, NITRA, <span style="color:#60e;font-weight:bold">5</span>)
 <li>jednu funkciu na nájdenie najbližšieho uzla</li>
 <li>a jednu funkciu</li>
 </ul>
-
 <h2 id="graf">Graf</h2>
-
 <p>Vyrobme si funkciu na výpočet podľa algoritmu. Funkciu urobme ako <em>extension</em>, aby sme nepleveli triedu grafu:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">StupidGraph</span>.findShortestPath(sourceNode: Node, destinationNode: Node): List&lt;Node&gt;</code></pre></div>
-<p>V iných jazykoch by sme vyrobili statickú funkciu, ktorá berie ako prvý parameter graf. V Kotline nič také nie je potrebné, keďže <em>extension function</em> bude fungovať presne tak, ako keby išlo o metódu triedy <code>StupidGraph</code>.</p>
-
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">StupidGraph</span>.findShortestPath(sourceNode: Node, destinationNode: Node): List&lt;Node&gt;
+</code></pre></div><p>V iných jazykoch by sme vyrobili statickú funkciu, ktorá berie ako prvý parameter graf. V Kotline nič také nie je potrebné, keďže <em>extension function</em> bude fungovať presne tak, ako keby išlo o metódu triedy <code>StupidGraph</code>.</p>
 <h2 id="mapovanie-medzi-uzlami-a-vzdialenosťami">Mapovanie medzi uzlami a vzdialenosťami</h2>
-
 <p>Vytvorme si mapu medzi uzlami a vzdialenosťami. Ako základ využime zoznam uzlov grafu, ktorý pomocou metódy <code>associateWith</code> vieme namapovať na <strong>mapu</strong>, kde indexy uzlov budú kľúčom a konštantna <code>Int.MAX_VALUE</code> bude nekonečná vzdialenosť.</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">val</span> distances = nodes
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">val</span> distances = nodes
         .associateWith { Int.MAX_VALUE }
         .toMutableMap()
-distances[sourceNode] = <span style="color:#60e;font-weight:bold">0</span></code></pre></div>
-<p>Metóda <code>associateWith</code> prevádza zoznam na mapu. Zoberie lambdu, ktorá povie, aká hodnota sa má namapovať na kľúč reprezentovaný prvkom zoznamu.</p>
-
-<p><img src="associate-with.svg" alt="" /></p>
-
+distances[sourceNode] = <span style="color:#60e;font-weight:bold">0</span>
+</code></pre></div><p>Metóda <code>associateWith</code> prevádza zoznam na mapu. Zoberie lambdu, ktorá povie, aká hodnota sa má namapovať na kľúč reprezentovaný prvkom zoznamu.</p>
+<p><img src="associate-with.svg" alt=""></p>
 <p>Výsledok prevedieme na <em>mutable</em> (meniteľnú) mapu, a zdrojovému prvku nastavíme nulovú vzdialenosť, aby sme algoritmus začali.</p>
-
 <h2 id="mapovanie-medzi-uzlami-a-ich-predchodcami">Mapovanie medzi uzlami a ich predchodcami</h2>
-
 <p>To bude jednoduché:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">val</span> predecessors = mutableMapOf&lt;Node, Node&gt;()</code></pre></div>
-<p>Zabudovaná funkcia <code>mutableMapOf()</code> vytvára <em>meniteľnú</em> mapu. V našom prípade z uzlov do uzlov.</p>
-
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">val</span> predecessors = mutableMapOf&lt;Node, Node&gt;()
+</code></pre></div><p>Zabudovaná funkcia <code>mutableMapOf()</code> vytvára <em>meniteľnú</em> mapu. V našom prípade z uzlov do uzlov.</p>
 <h2 id="hľadanie-cesty">Hľadanie cesty</h2>
-
 <p>Hľadanie cesty pôjde v zdanlivo nekonečnom cykle, ktorý však rozhodne skončí. V každom kole totiž vyhodíme jeden uzol, ktorý sme už vybavili.</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">do</span> {
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">do</span> {
     <span style="color:#289;font-weight:bold">val</span> currentNode = distances.findNearestNode() <span style="color:#333">?:</span> <span style="color:#289;font-weight:bold">break</span>
     <span style="color:#289;font-weight:bold">for</span> (adjacentNode <span style="color:#289;font-weight:bold">in</span> getAdjacentNodes(currentNode)) {
         <span style="color:#289;font-weight:bold">val</span> distance = distances.getOrDefault(currentNode, Int.MAX_VALUE)
-        <span style="color:#289;font-weight:bold">val</span> possiblyBetterDistance = <span style="color:#289;font-weight:bold">if</span> (distance == Int.MAX_VALUE) {
+        <span style="color:#289;font-weight:bold">val</span> possiblyBetterDistance = <span style="color:#289;font-weight:bold">if</span> (distance <span style="color:#333">==</span> Int.MAX_VALUE) {
             Int.MAX_VALUE
         } <span style="color:#289;font-weight:bold">else</span> {
             distance + getWeight(currentNode, adjacentNode)
@@ -400,68 +297,54 @@ distances[sourceNode] = <span style="color:#60e;font-weight:bold">0</span></code
             predecessors[adjacentNode] = currentNode
         }
     }
-    distances -= currentNode
+    distances <span style="color:#333">-=</span> currentNode
     remove(currentNode)
-} <span style="color:#289;font-weight:bold">while</span> (<span style="color:#289;font-weight:bold">true</span>)</code></pre></div>
-<ol>
+} <span style="color:#289;font-weight:bold">while</span> (<span style="color:#289;font-weight:bold">true</span>)
+
+</code></pre></div><ol>
 <li>Najprv nájdeme najbližší uzol, čo je funkcia <code>findNearestNode()</code>, ktorú nemáme, ale hneď ju dopracujeme. Všimnime si operátor <code>?:</code>, ktorý predstavuje overenie ne-<code>null</code>-ovosti. Ak by náhodou bol výsledok funkcie <code>null</code>, zavolá sa <code>break</code>, ktorý ukončí cyklus <code>do/while</code>. (Stane sa to na konci behu algoritmu).</li>
 <li>Následne prechádzame všetkými susedmi najbližšieho uzla a skúsime zistiť aktuálny odhad vzdialenosti do konkrétneho suseda.</li>
 <li>Následne skúsime odhadnúť lepšiu vzdialenosť:
-
 <ol>
 <li>Ak je predošlý odhad vzdialenosti nekonečno, tak pripočítaním vzdialenosti do suseda tomu nepomôžeme, vždy to bude len nekonečno.</li>
 <li>Inak vyrátame nový odhad vzdialenosti a poznačíme si ho, a to vrátane výpočtu predchodcu.</li>
-</ol></li>
 </ol>
-
+</li>
+</ol>
 <p>Všimnime si, ako používame <strong>if</strong> ako výraz. Kotlin nepodporuje ternárny operátor, ale to nevadí, pretože výsledok <code>if</code> sa dá priradiť do premennej.</p>
-
 <p>Zároveň si všimnime, ako pristupujeme k prvom mapy cez hranaté zátvorky<code>[…]</code>, ktoré sa mapujú na volanie metódy <code>get()</code>. Jedine pri porovnávaní vzdialeností sa môže kompilátoru zdať, že výsledok môže vracať <code>null</code>, čo mu vysvetlíme cez dva výkričníky reprezentujúce <strong>non-null assertion</strong>, teda oznam, že toto <code>null</code> nikdy nebude.</p>
-
 <p>Na záver algoritmu vyhodíme zo zoznamu vzdialeností aktuálny uzol, na čo použijeme operátor <code>-=</code> mapovaný na metódu <code>remove()</code> na mape. Okrem toho vyhodíme spracovaný uzol aj zo samotného grafu, na čo využijeme jeho metódu <code>remove()</code>. (Keďže ide o <em>extension function</em>, metóda <code>remove()</code> sa volá na <em>receiveri</em> funkcie, teda na objekte typu <code>StupidGraph</code>.)</p>
-
 <h3 id="hľadanie-najbližšieho-uzla">Hľadanie najbližšieho uzla</h3>
-
 <p>Ak máme mapu medzi uzlami a vzdialenosťami, ako nájdeme uzol s najmenšou vzdialenosťou?</p>
-
 <p>Pripravíme si ďalšiu <em>extension</em> funkciu:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">private</span> <span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">Map</span>&lt;Node, Int&gt;.findNearestNode(): Node? {
-    <span style="color:#289;font-weight:bold">return</span> minBy { it.value }<span style="color:#333">?.</span>key
-}</code></pre></div>
-<p>Funkcia v tomto prípade vracia typ <code>Node?</code>, teda buď uzol alebo <code>null</code> a receiverom je mapa medzi uzlami a vzdialenosťami.</p>
-
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">private</span> <span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">Map</span>&lt;Node, Int&gt;.findNearestNode(): Node? {
+    <span style="color:#289;font-weight:bold">return</span> minBy { <span style="color:#289;font-weight:bold">it</span>.value }<span style="color:#333">?.</span>key
+}
+</code></pre></div><p>Funkcia v tomto prípade vracia typ <code>Node?</code>, teda buď uzol alebo <code>null</code> a receiverom je mapa medzi uzlami a vzdialenosťami.</p>
 <p>Na mape môžeme zavolať funkciu <code>minBy()</code>, ktorá namapuje každú dvojicu <em>kľúč-hodnota</em> na nejaké číslo a z tohto nájde najmenší prvok.</p>
-
-<p><img src="min-by.svg" alt="" /></p>
-
+<p><img src="min-by.svg" alt=""></p>
 <p>Táto dvojica je reprezentovaná objektom <code>Entry</code>, s vlastnosťami <code>key</code> (kľúč) a <code>value</code> (hodnota). Z objektu, reprezentovaného v lambde implicitnou premennou <code>it</code>, vytiahneme hodnotu a z nej sa nájde najmenší objekt <code>Entry</code>.</p>
-
 <p>Na záver z objektu vytiahneme kľúč (teda uzol). Keďže funkcia <code>minBy()</code> môže vracať <code>null</code> (ak sa náhodou mapa stane prázdnou), použijeme operátor <strong>bezpečnej navigácie</strong> <code>?.</code>, ktorý pre <code>null</code> hodnoty zabráni navigácii do vlastnosti <code>key</code> a tým nás ochráni pred <code>NullPointerException</code>.</p>
-
 <h3 id="budovanie-cesty">Budovanie cesty</h3>
-
 <p>Posledný krok bude budovanie cesty. Algoritmus nám vybuduje mapu medzi uzlami a ich predchodcami. Cestu ako zozna vybudujeme nasledovne:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">private</span> <span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">buildPath</span>(destinationNode: Node, predecessors: Map&lt;Node, Node&gt;): List&lt;Node&gt; {
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">private</span> <span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">buildPath</span>(destinationNode: Node, predecessors: Map&lt;Node, Node&gt;): List&lt;Node&gt; {
     <span style="color:#289;font-weight:bold">val</span> path = mutableListOf(destinationNode)
     <span style="color:#289;font-weight:bold">var</span> predecessor = predecessors[destinationNode]
-    <span style="color:#289;font-weight:bold">while</span> (predecessor != <span style="color:#289;font-weight:bold">null</span>) {
-        path += predecessor
+    <span style="color:#289;font-weight:bold">while</span> (predecessor <span style="color:#333">!=</span> <span style="color:#289;font-weight:bold">null</span>) {
+        path <span style="color:#333">+=</span> predecessor
         predecessor = predecessors[predecessor]
     }
     <span style="color:#289;font-weight:bold">return</span> path.reversed()
-}</code></pre></div>
-<p>Začneme vytvorením meniteľného zoznamu cez funkciu <code>mutableListOf()</code>. Následne veselo prejdeme mapu s využitím operátora <code>[…]</code> a každého predchodcu pridáme do zoznamu pomocou operátora <code>+=</code>, ktorá je mapovaný na metódu <code>add()</code> v zozname <code>List</code>.</p>
-
+}
+</code></pre></div><p>Začneme vytvorením meniteľného zoznamu cez funkciu <code>mutableListOf()</code>. Následne veselo prejdeme mapu s využitím operátora <code>[…]</code> a každého predchodcu pridáme do zoznamu pomocou operátora <code>+=</code>, ktorá je mapovaný na metódu <code>add()</code> v zozname <code>List</code>.</p>
 <p>A veľké finále: zoznam bude usporiadaný od konca do predu, ale vďaka funkcii <code>reversed()</code> si ho môžeme otočiť!</p>
-
 <h1 id="megazhrnutie-kompletný-program">Megazhrnutie: kompletný program</h1>
-
 <p>Ak si to dáme dohromady, máme nasledovný program v súbore <code>StupidDijkstra.kt</code></p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">package</span> <span style="color:#0e84b5;font-weight:bold">com.github.novotnyr.graph.kt.stupid</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">package</span> <span style="color:#0e84b5;font-weight:bold">com.github.novotnyr.graph.kt.stupid</span>
 
 <span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">com.github.novotnyr.graph.kt.stupid.City.*</span>
 
-typealias Node = Int
+<span style="color:#289;font-weight:bold">typealias</span> Node = Int
 
 <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">StupidGraph</span>(<span style="color:#289;font-weight:bold">private</span> <span style="color:#289;font-weight:bold">val</span> size: Int) {
     <span style="color:#289;font-weight:bold">private</span> <span style="color:#289;font-weight:bold">val</span> matrix = Array(size) { Array(size) { <span style="color:#60e;font-weight:bold">0</span> } }
@@ -473,13 +356,13 @@ typealias Node = Int
 
     <span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">remove</span>(node: Node) {
         matrix[node].fill(<span style="color:#60e;font-weight:bold">0</span>)
-        matrix.forEach { it[node] = <span style="color:#60e;font-weight:bold">0</span> }
+        matrix.forEach { <span style="color:#289;font-weight:bold">it</span>[node] = <span style="color:#60e;font-weight:bold">0</span> }
     }
 
     <span style="color:#289;font-weight:bold">val</span> nodes: Set&lt;Node&gt; = matrix.indices.toSet()
 
     <span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">getAdjacentNodes</span>(node: Node): List&lt;Node&gt; {
-        <span style="color:#289;font-weight:bold">return</span> matrix[node].mapIndexedNotNull { index, distance -&gt;
+        <span style="color:#289;font-weight:bold">return</span> matrix[node].mapIndexedNotNull { index, distance <span style="color:#333">-&gt;</span>
             <span style="color:#289;font-weight:bold">if</span> (distance &gt; <span style="color:#60e;font-weight:bold">0</span>) index <span style="color:#289;font-weight:bold">else</span> <span style="color:#289;font-weight:bold">null</span>
         }
     }
@@ -498,7 +381,7 @@ typealias Node = Int
         <span style="color:#289;font-weight:bold">val</span> currentNode = distances.findNearestNode() <span style="color:#333">?:</span> <span style="color:#289;font-weight:bold">break</span>
         <span style="color:#289;font-weight:bold">for</span> (adjacentNode <span style="color:#289;font-weight:bold">in</span> getAdjacentNodes(currentNode)) {
             <span style="color:#289;font-weight:bold">val</span> distance = distances.getOrDefault(currentNode, Int.MAX_VALUE)
-            <span style="color:#289;font-weight:bold">val</span> possiblyBetterDistance = <span style="color:#289;font-weight:bold">if</span> (distance == Int.MAX_VALUE) {
+            <span style="color:#289;font-weight:bold">val</span> possiblyBetterDistance = <span style="color:#289;font-weight:bold">if</span> (distance <span style="color:#333">==</span> Int.MAX_VALUE) {
                 Int.MAX_VALUE
             } <span style="color:#289;font-weight:bold">else</span> {
                 distance + getWeight(currentNode, adjacentNode)
@@ -508,21 +391,21 @@ typealias Node = Int
                 predecessors[adjacentNode] = currentNode
             }
         }
-        distances -= currentNode
+        distances <span style="color:#333">-=</span> currentNode
         remove(currentNode)
     } <span style="color:#289;font-weight:bold">while</span> (<span style="color:#289;font-weight:bold">true</span>)
     <span style="color:#289;font-weight:bold">return</span> buildPath(destinationNode, predecessors)
 }
 
 <span style="color:#289;font-weight:bold">private</span> <span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">Map</span>&lt;Node, Int&gt;.findNearestNode(): Node? {
-    <span style="color:#289;font-weight:bold">return</span> minBy { it.value }<span style="color:#333">?.</span>key
+    <span style="color:#289;font-weight:bold">return</span> minBy { <span style="color:#289;font-weight:bold">it</span>.value }<span style="color:#333">?.</span>key
 }
 
 <span style="color:#289;font-weight:bold">private</span> <span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">buildPath</span>(destinationNode: Node, predecessors: Map&lt;Node, Node&gt;): List&lt;Node&gt; {
     <span style="color:#289;font-weight:bold">val</span> path = mutableListOf(destinationNode)
     <span style="color:#289;font-weight:bold">var</span> predecessor = predecessors[destinationNode]
-    <span style="color:#289;font-weight:bold">while</span> (predecessor != <span style="color:#289;font-weight:bold">null</span>) {
-        path += predecessor
+    <span style="color:#289;font-weight:bold">while</span> (predecessor <span style="color:#333">!=</span> <span style="color:#289;font-weight:bold">null</span>) {
+        path <span style="color:#333">+=</span> predecessor
         predecessor = predecessors[predecessor]
     }
     <span style="color:#289;font-weight:bold">return</span> path.reversed()
@@ -552,10 +435,11 @@ typealias Node = Int
 
         <span style="color:#289;font-weight:bold">val</span> shortestPath = findShortestPath(BRATISLAVA.ordinal, KOSICE.ordinal)
         shortestPath.forEach {
-            println(City.values()[it])
+            println(City.values()[<span style="color:#289;font-weight:bold">it</span>])
         }
     }
-}</code></pre></div>
+}
+</code></pre></div>
 </main>
 
     <footer>

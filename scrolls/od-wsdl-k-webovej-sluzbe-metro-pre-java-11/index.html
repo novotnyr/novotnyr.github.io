@@ -74,7 +74,7 @@ Máme teda kontrakt reprezentovaný súborom WSDL?</p>
 </div>
 <div class="admonitionblock warning">
 <table>
-<tr>
+<tbody><tr>
 <td class="icon">
 <i class="fa icon-warning" title="Warning"></i>
 </td>
@@ -84,7 +84,7 @@ Zároveň je to posledná verzia, na ktorej referenčná implementácia <em>Metr
 Keďže technická podpora tejto Javy končí v roku 2026, dúfajme, že sa to dovtedy podarí zladiť.
 </td>
 </tr>
-</table>
+</tbody></table>
 </div>
 </div>
 </div>
@@ -121,7 +121,7 @@ V požiadavke pošlem EČV vozidla a parkovaciu zónu a v odpovedi získame iden
 </div>
 <div class="admonitionblock note">
 <table>
-<tr>
+<tbody><tr>
 <td class="icon">
 <i class="fa icon-note" title="Note"></i>
 </td>
@@ -129,7 +129,7 @@ V požiadavke pošlem EČV vozidla a parkovaciu zónu a v odpovedi získame iden
 Kompletný súbor schémy <code>parking.xsd</code> nájdeme na konci článku, resp. na GitHube[<a href="https://github.com/novotnyr/kopr-wsdl-server-2021/blob/main/src/main/resources/parking.xsd" class="bare">https://github.com/novotnyr/kopr-wsdl-server-2021/blob/main/src/main/resources/parking.xsd</a>]
 </td>
 </tr>
-</table>
+</tbody></table>
 </div>
 </div>
 </div>
@@ -141,7 +141,7 @@ Kompletný súbor schémy <code>parking.xsd</code> nájdeme na konci článku, r
 </div>
 <div class="admonitionblock note">
 <table>
-<tr>
+<tbody><tr>
 <td class="icon">
 <i class="fa icon-note" title="Note"></i>
 </td>
@@ -149,7 +149,7 @@ Kompletný súbor schémy <code>parking.xsd</code> nájdeme na konci článku, r
 Kompletný súbor schémy <code>parking.wsdl</code> nájdeme na konci článku, resp. na GitHube[<a href="https://github.com/novotnyr/kopr-wsdl-server-2021/blob/main/src/main/resources/parking.wsdl" class="bare">https://github.com/novotnyr/kopr-wsdl-server-2021/blob/main/src/main/resources/parking.wsdl</a>]
 </td>
 </tr>
-</table>
+</tbody></table>
 </div>
 </div>
 </div>
@@ -234,7 +234,7 @@ Pomocou neho sme dokázali vygenerovať kód pre server ale i klienta.</p>
 </div>
 <div class="colist arabic">
 <table>
-<tr>
+<tbody><tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
 <td>Definujme odkaz na názov WSDL, z ktorého vygenerujeme kód.</td>
 </tr>
@@ -246,11 +246,11 @@ Pomocou neho sme dokázali vygenerovať kód pre server ale i klienta.</p>
 <td><i class="conum" data-value="3"></i><b>3</b></td>
 <td>Aby sa v generovanom kóde zbytočne neobjavovali celé cesty k lokálnemu súborovému systému používateľa, uveďme explicitnú adresu ku kódu.</td>
 </tr>
-</table>
+</tbody></table>
 </div>
 <div class="admonitionblock note">
 <table>
-<tr>
+<tbody><tr>
 <td class="icon">
 <i class="fa icon-note" title="Note"></i>
 </td>
@@ -261,11 +261,11 @@ Takto sa na tento súbor odkážeme z bežiaceho servera a vieme ho poskytnúť 
 </div>
 </td>
 </tr>
-</table>
+</tbody></table>
 </div>
 <div class="admonitionblock note">
 <table>
-<tr>
+<tbody><tr>
 <td class="icon">
 <i class="fa icon-note" title="Note"></i>
 </td>
@@ -273,7 +273,7 @@ Takto sa na tento súbor odkážeme z bežiaceho servera a vieme ho poskytnúť 
 Lokácia <code>wsdlLocation</code> s lomkou na začiatku znamená, že WSDL súbor pri budovaní klientskeho kódu sa vytiahne z cesty <code>CLASSPATH</code>.
 </td>
 </tr>
-</table>
+</tbody></table>
 </div>
 </div>
 <div class="sect2">
@@ -281,9 +281,9 @@ Lokácia <code>wsdlLocation</code> s lomkou na začiatku znamená, že WSDL súb
 <div class="listingblock">
 <div class="title">pom.xml</div>
 <div class="content">
-<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd"&gt;
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;project xmlns=&#34;http://maven.apache.org/POM/4.0.0&#34;
+	xmlns:xsi=&#34;http://www.w3.org/2001/XMLSchema-instance&#34;
+	xsi:schemaLocation=&#34;http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd&#34;&gt;
 	&lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
 	&lt;groupId&gt;sk.upjs.ics.kopr&lt;/groupId&gt;
 	&lt;artifactId&gt;kopr-parking-server&lt;/artifactId&gt;
@@ -329,7 +329,7 @@ Lokácia <code>wsdlLocation</code> s lomkou na začiatku znamená, že WSDL súb
 <h2 id="_rozmiestnenie_súborov">Rozmiestnenie súborov</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Oba súbory&#8201;&#8212;&#8201;<code>parking.wsdl</code> aj <code>parking.xsd</code> umiestnime do <code>src/main/resources</code>, pretože tak sme to nastavili v <code>pom.xml</code> v adresári <code>wsdlDirectory</code>.</p>
+<p>Oba súbory — <code>parking.wsdl</code> aj <code>parking.xsd</code> umiestnime do <code>src/main/resources</code>, pretože tak sme to nastavili v <code>pom.xml</code> v adresári <code>wsdlDirectory</code>.</p>
 </div>
 </div>
 </div>
@@ -346,15 +346,15 @@ Lokácia <code>wsdlLocation</code> s lomkou na začiatku znamená, že WSDL súb
 </div>
 <div class="admonitionblock caution">
 <table>
-<tr>
+<tbody><tr>
 <td class="icon">
 <i class="fa icon-caution" title="Caution"></i>
 </td>
 <td class="content">
-Ak spúšťame Maven zo shellu, dajme si pozor, aby Java, v ktorej sa spúšťal Maven, bola verzie 11&#8201;&#8212;&#8201;nie novšej (Metro tam nefunguje) a nie staršej (kompilácia očakáva verziu 11)!
+Ak spúšťame Maven zo shellu, dajme si pozor, aby Java, v ktorej sa spúšťal Maven, bola verzie 11 — nie novšej (Metro tam nefunguje) a nie staršej (kompilácia očakáva verziu 11)!
 </td>
 </tr>
-</table>
+</tbody></table>
 </div>
 <div class="paragraph">
 <p>Zdrojáky sa nagenerujú do priečinka:</p>
@@ -382,7 +382,7 @@ Ak spúšťame Maven zo shellu, dajme si pozor, aby Java, v ktorej sa spúšťal
 </div>
 <div class="admonitionblock note">
 <table>
-<tr>
+<tbody><tr>
 <td class="icon">
 <i class="fa icon-note" title="Note"></i>
 </td>
@@ -390,7 +390,7 @@ Ak spúšťame Maven zo shellu, dajme si pozor, aby Java, v ktorej sa spúšťal
 Názvy priečinkov / balíčkov sa odvodia z <code>targetNamespace</code> vo WSDL, či schéme.
 </td>
 </tr>
-</table>
+</tbody></table>
 </div>
 </div>
 </div>
@@ -402,7 +402,7 @@ Názvy priečinkov / balíčkov sa odvodia z <code>targetNamespace</code> vo WSD
 </div>
 <div class="admonitionblock tip">
 <table>
-<tr>
+<tbody><tr>
 <td class="icon">
 <i class="fa icon-tip" title="Tip"></i>
 </td>
@@ -410,7 +410,7 @@ Názvy priečinkov / balíčkov sa odvodia z <code>targetNamespace</code> vo WSD
 V Eclipse je to pravý klik na adresár v strome <strong>Package List</strong>, a z kontextového menu <strong>Build Path | Use as Source Folder</strong>.
 </td>
 </tr>
-</table>
+</tbody></table>
 </div>
 </div>
 </div>
@@ -430,7 +430,7 @@ import org.example.parking.ParkingPortType;
 import org.example.parking.ParkingRequest;
 import org.example.parking.ParkingTicket;
 
-@WebService(endpointInterface = "org.example.parking.ParkingPortType") <i class="conum" data-value="2"></i><b>(2)</b>
+@WebService(endpointInterface = &#34;org.example.parking.ParkingPortType&#34;) <i class="conum" data-value="2"></i><b>(2)</b>
 public class ParkingServiceImpl implements ParkingPortType { <i class="conum" data-value="1"></i><b>(1)</b>
 
     public ParkingTicket getTicket(ParkingRequest part) {
@@ -442,7 +442,7 @@ public class ParkingServiceImpl implements ParkingPortType { <i class="conum" da
 </div>
 <div class="colist arabic">
 <table>
-<tr>
+<tbody><tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
 <td>Implementujeme interfejs, ktorý vznikol generovaním kódu.</td>
 </tr>
@@ -452,13 +452,13 @@ public class ParkingServiceImpl implements ParkingPortType { <i class="conum" da
 </tr>
 <tr>
 <td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>Pripravíme implementáciu metódy&#8201;&#8212;&#8201;v tomto prípade veľmi jednoduchú.</td>
+<td>Pripravíme implementáciu metódy — v tomto prípade veľmi jednoduchú.</td>
 </tr>
-</table>
+</tbody></table>
 </div>
 <div class="admonitionblock important">
 <table>
-<tr>
+<tbody><tr>
 <td class="icon">
 <i class="fa icon-important" title="Important"></i>
 </td>
@@ -477,11 +477,11 @@ public class ParkingServiceImpl implements ParkingPortType { <i class="conum" da
 </ol>
 </div>
 <div class="paragraph">
-<p>Ak vynecháme atribút <code>endpointInterface</code>, môže sa stať, že server nageneruje kontrakt a WSDL na základe implementácie&#8201;&#8212;&#8201;teda „v protismere“ od kódu k WSDL, čo rozhodne nechceme!</p>
+<p>Ak vynecháme atribút <code>endpointInterface</code>, môže sa stať, že server nageneruje kontrakt a WSDL na základe implementácie — teda „v protismere“ od kódu k WSDL, čo rozhodne nechceme!</p>
 </div>
 </td>
 </tr>
-</table>
+</tbody></table>
 </div>
 </div>
 </div>
@@ -494,7 +494,7 @@ public class ParkingServiceImpl implements ParkingPortType { <i class="conum" da
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-java" data-lang="java">public static void main(String[] args) throws Exception {
-    Endpoint.publish("http://localhost:8888/parking", new ParkingServiceImpl());
+    Endpoint.publish(&#34;http://localhost:8888/parking&#34;, new ParkingServiceImpl());
 }</code></pre>
 </div>
 </div>
@@ -517,30 +517,30 @@ public class ParkingServiceImpl implements ParkingPortType { <i class="conum" da
 <pre class="highlight"><code class="language-java" data-lang="java">public static void main(String[] args) throws Exception {
     List&lt;Source&gt; metadata = new ArrayList&lt;Source&gt;(); <i class="conum" data-value="1"></i><b>(1)</b>
 
-    var wsdlSource = new StreamSource(ParkingServiceImpl.class.getResourceAsStream("/parking.wsdl")); <i class="conum" data-value="2"></i><b>(2)</b>
-    wsdlSource.setSystemId("http://www.example.org/parking(parking.wsdl"); <i class="conum" data-value="3"></i><b>(3)</b>
+    var wsdlSource = new StreamSource(ParkingServiceImpl.class.getResourceAsStream(&#34;/parking.wsdl&#34;)); <i class="conum" data-value="2"></i><b>(2)</b>
+    wsdlSource.setSystemId(&#34;http://www.example.org/parking(parking.wsdl&#34;); <i class="conum" data-value="3"></i><b>(3)</b>
     metadata.add(wsdlSource); <i class="conum" data-value="4"></i><b>(4)</b>
 
-    var xsdSource = new StreamSource(ParkingServiceImpl.class.getResourceAsStream("/parking.xsd"));<i class="conum" data-value="2"></i><b>(2)</b>
-    xsdSource.setSystemId("http://www.example.org/parking/parking.xsd");<i class="conum" data-value="3"></i><b>(3)</b>
+    var xsdSource = new StreamSource(ParkingServiceImpl.class.getResourceAsStream(&#34;/parking.xsd&#34;));<i class="conum" data-value="2"></i><b>(2)</b>
+    xsdSource.setSystemId(&#34;http://www.example.org/parking/parking.xsd&#34;);<i class="conum" data-value="3"></i><b>(3)</b>
     metadata.add(xsdSource);<i class="conum" data-value="4"></i><b>(4)</b>
 
 
     var filter = new HashMap&lt;String, Object&gt;();
-    filter.put(Endpoint.WSDL_SERVICE, new QName("http://www.example.org/parking", "ParkingServices")); <i class="conum" data-value="5"></i><b>(5)</b>
-    filter.put(Endpoint.WSDL_PORT, new QName("http://www.example.org/parking", "ParkingService")); <i class="conum" data-value="6"></i><b>(6)</b>
+    filter.put(Endpoint.WSDL_SERVICE, new QName(&#34;http://www.example.org/parking&#34;, &#34;ParkingServices&#34;)); <i class="conum" data-value="5"></i><b>(5)</b>
+    filter.put(Endpoint.WSDL_PORT, new QName(&#34;http://www.example.org/parking&#34;, &#34;ParkingService&#34;)); <i class="conum" data-value="6"></i><b>(6)</b>
 
     var endpoint = Endpoint.create(new ParkingServiceImpl()); <i class="conum" data-value="7"></i><b>(7)</b>
     endpoint.setProperties(filter); <i class="conum" data-value="8"></i><b>(8)</b>
     endpoint.setMetadata(metadata);  <i class="conum" data-value="9"></i><b>(9)</b>
 
-    endpoint.publish("http://localhost:8888/parking"); <i class="conum" data-value="10"></i><b>(10)</b>
+    endpoint.publish(&#34;http://localhost:8888/parking&#34;); <i class="conum" data-value="10"></i><b>(10)</b>
 }</code></pre>
 </div>
 </div>
 <div class="colist arabic">
 <table>
-<tr>
+<tbody><tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
 <td>Musíme si pripraviť zoznam pre metadáta: teda WSDL a XSD.</td>
 </tr>
@@ -583,14 +583,14 @@ Pomocou <code>WSDL_SERVICE</code> určíme kvalifikované meno (menný priestor 
 <td><i class="conum" data-value="10"></i><b>10</b></td>
 <td>Endpoint vypublikujeme na danej adrese.</td>
 </tr>
-</table>
+</tbody></table>
 </div>
 <div class="paragraph">
 <p>Backend teraz môžeme spustiť ako Java aplikáciu!</p>
 </div>
 <div class="admonitionblock tip">
 <table>
-<tr>
+<tbody><tr>
 <td class="icon">
 <i class="fa icon-tip" title="Tip"></i>
 </td>
@@ -598,11 +598,11 @@ Pomocou <code>WSDL_SERVICE</code> určíme kvalifikované meno (menný priestor 
 Na adrese <code><a href="http://localhost:8888/parking?wsdl" class="bare">http://localhost:8888/parking?wsdl</a></code> uvidíme našej ručne písané WSDL!
 </td>
 </tr>
-</table>
+</tbody></table>
 </div>
 <div class="admonitionblock warning">
 <table>
-<tr>
+<tbody><tr>
 <td class="icon">
 <i class="fa icon-warning" title="Warning"></i>
 </td>
@@ -615,7 +615,7 @@ Na adrese <code><a href="http://localhost:8888/parking?wsdl" class="bare">http:/
 </div>
 </td>
 </tr>
-</table>
+</tbody></table>
 </div>
 </div>
 </div>
@@ -647,25 +647,25 @@ Na adrese <code><a href="http://localhost:8888/parking?wsdl" class="bare">http:/
 <div class="listingblock">
 <div class="title">parking.xsd</div>
 <div class="content">
-<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
-&lt;schema xmlns="http://www.w3.org/2001/XMLSchema"
-        targetNamespace="http://www.example.org/parking"
-        elementFormDefault="qualified"&gt;
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;
+&lt;schema xmlns=&#34;http://www.w3.org/2001/XMLSchema&#34;
+        targetNamespace=&#34;http://www.example.org/parking&#34;
+        elementFormDefault=&#34;qualified&#34;&gt;
 
-    &lt;element name="parkingRequest"&gt;
+    &lt;element name=&#34;parkingRequest&#34;&gt;
         &lt;complexType&gt;
             &lt;sequence&gt;
-                &lt;element name="carId" type="string" /&gt;
-                &lt;element name="zone" type="int" /&gt;
+                &lt;element name=&#34;carId&#34; type=&#34;string&#34; /&gt;
+                &lt;element name=&#34;zone&#34; type=&#34;int&#34; /&gt;
             &lt;/sequence&gt;
         &lt;/complexType&gt;
     &lt;/element&gt;
 
-    &lt;element name="parkingTicket"&gt;
+    &lt;element name=&#34;parkingTicket&#34;&gt;
         &lt;complexType&gt;
             &lt;sequence&gt;
-                &lt;element name="id" type="string" /&gt;
-                &lt;element name="validUntil" type="dateTime" /&gt;
+                &lt;element name=&#34;id&#34; type=&#34;string&#34; /&gt;
+                &lt;element name=&#34;validUntil&#34; type=&#34;dateTime&#34; /&gt;
             &lt;/sequence&gt;
         &lt;/complexType&gt;
     &lt;/element&gt;
@@ -678,55 +678,55 @@ Na adrese <code><a href="http://localhost:8888/parking?wsdl" class="bare">http:/
 <div class="listingblock">
 <div class="title">parking.wsdl</div>
 <div class="content">
-<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34; standalone=&#34;no&#34;?&gt;
 &lt;wsdl:definitions
-        name="parking"
+        name=&#34;parking&#34;
 
-        xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
-        xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-        xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+        xmlns:wsdl=&#34;http://schemas.xmlsoap.org/wsdl/&#34;
+        xmlns:xsd=&#34;http://www.w3.org/2001/XMLSchema&#34;
+        xmlns:soap=&#34;http://schemas.xmlsoap.org/wsdl/soap/&#34;
 
-        targetNamespace="http://www.example.org/parking"
-        xmlns:tns="http://www.example.org/parking"
+        targetNamespace=&#34;http://www.example.org/parking&#34;
+        xmlns:tns=&#34;http://www.example.org/parking&#34;
 &gt;
 
     &lt;wsdl:types&gt;
-        &lt;xsd:schema targetNamespace="http://www.example.org/parking"&gt;
-            &lt;xsd:include schemaLocation="parking.xsd" /&gt;
+        &lt;xsd:schema targetNamespace=&#34;http://www.example.org/parking&#34;&gt;
+            &lt;xsd:include schemaLocation=&#34;parking.xsd&#34; /&gt;
         &lt;/xsd:schema&gt;
     &lt;/wsdl:types&gt;
 
-    &lt;wsdl:message name="request"&gt;
-        &lt;wsdl:part name="part" element="tns:parkingRequest" /&gt;
+    &lt;wsdl:message name=&#34;request&#34;&gt;
+        &lt;wsdl:part name=&#34;part&#34; element=&#34;tns:parkingRequest&#34; /&gt;
     &lt;/wsdl:message&gt;
 
-    &lt;wsdl:message name="response"&gt;
-        &lt;wsdl:part name="part" element="tns:parkingTicket" /&gt;
+    &lt;wsdl:message name=&#34;response&#34;&gt;
+        &lt;wsdl:part name=&#34;part&#34; element=&#34;tns:parkingTicket&#34; /&gt;
     &lt;/wsdl:message&gt;
 
-    &lt;wsdl:portType name="ParkingPortType"&gt;
-        &lt;wsdl:operation name="getTicket"&gt;
-            &lt;wsdl:input message="tns:request" /&gt;
-            &lt;wsdl:output message="tns:response" /&gt;
+    &lt;wsdl:portType name=&#34;ParkingPortType&#34;&gt;
+        &lt;wsdl:operation name=&#34;getTicket&#34;&gt;
+            &lt;wsdl:input message=&#34;tns:request&#34; /&gt;
+            &lt;wsdl:output message=&#34;tns:response&#34; /&gt;
         &lt;/wsdl:operation&gt;
     &lt;/wsdl:portType&gt;
 
-    &lt;wsdl:binding name="ParkingBinding" type="tns:ParkingPortType"&gt;
-        &lt;soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/&gt;
+    &lt;wsdl:binding name=&#34;ParkingBinding&#34; type=&#34;tns:ParkingPortType&#34;&gt;
+        &lt;soap:binding transport=&#34;http://schemas.xmlsoap.org/soap/http&#34; style=&#34;document&#34;/&gt;
 
-        &lt;wsdl:operation name="getTicket"&gt;
+        &lt;wsdl:operation name=&#34;getTicket&#34;&gt;
             &lt;wsdl:input&gt;
-                &lt;soap:body use="literal"/&gt;
+                &lt;soap:body use=&#34;literal&#34;/&gt;
             &lt;/wsdl:input&gt;
             &lt;wsdl:output&gt;
-                &lt;soap:body use="literal"/&gt;
+                &lt;soap:body use=&#34;literal&#34;/&gt;
             &lt;/wsdl:output&gt;
         &lt;/wsdl:operation&gt;
     &lt;/wsdl:binding&gt;
 
-    &lt;wsdl:service name="ParkingServices"&gt;
-        &lt;wsdl:port name="ParkingService" binding="tns:ParkingBinding"&gt;
-            &lt;soap:address location="http://localhost:8888/parking"/&gt;
+    &lt;wsdl:service name=&#34;ParkingServices&#34;&gt;
+        &lt;wsdl:port name=&#34;ParkingService&#34; binding=&#34;tns:ParkingBinding&#34;&gt;
+            &lt;soap:address location=&#34;http://localhost:8888/parking&#34;/&gt;
         &lt;/wsdl:port&gt;
     &lt;/wsdl:service&gt;
 &lt;/wsdl:definitions&gt;</code></pre>

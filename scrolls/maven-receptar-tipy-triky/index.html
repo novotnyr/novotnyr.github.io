@@ -59,51 +59,43 @@
 
 
 <main>
-
-
 <h1 id="generovanie-projektovych-stranok-pomocou-mavenu-1">Generovanie projektovych stranok pomocou Mavenu 1</h1>
-
 <ul>
-<li><p>Nastavime</p>
-
-<pre><code>maven.docs.outputencoding=utf-8
-</code></pre>
-
-<p>v <code>project.properties</code>. Inak sa dockame dokumentacie v iso-8859-1, pripadne otaznikov vo vygenerovanych dokumentoch</p></li>
-
-<li><p>Stiahneme plugin <code>sdocbook</code></p>
-
-<pre><code>maven plugin:download -DgroupId=maven-plugins -DartifactId=maven-sdocbook-plugin -Dversion=1.4.1
-</code></pre></li>
-
-<li><p>Do <code>maven.xml</code> v projektovom adresari pridame / vytvorime</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#070">&lt;project</span> <span style="color:#007">xmlns:j=</span><span style="background-color:#e0e0ff">&#34;jelly:core&#34;</span> <span style="color:#007">xmlns:ant=</span><span style="background-color:#e0e0ff">&#34;jelly:ant&#34;</span> <span style="color:#007">xmlns:util=</span><span style="background-color:#e0e0ff">&#34;jelly:util&#34;</span> <span style="color:#007">xmlns:maven=</span><span style="background-color:#e0e0ff">&#34;jelly:maven&#34;</span><span style="color:#070">&gt;</span>
-<span style="color:#070">&lt;goal</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;docbook2xdoc&#34;</span><span style="color:#070">&gt;</span>
-    <span style="color:#070">&lt;maven:get</span> <span style="color:#007">var=</span><span style="background-color:#e0e0ff">&#34;maven.sdocbook.generated.html&#34;</span>
-        <span style="color:#007">plugin=</span><span style="background-color:#e0e0ff">&#34;maven-sdocbook-plugin&#34;</span>
-        <span style="color:#007">property=</span><span style="background-color:#e0e0ff">&#34;maven.sdocbook.generated.html&#34;</span><span style="color:#070">/&gt;</span>
-    <span style="color:#070">&lt;mkdir</span> <span style="color:#007">dir=</span><span style="background-color:#e0e0ff">&#34;${maven.gen.docs}/docbook2xdoc&#34;</span><span style="color:#070">/&gt;</span>
-
-    <span style="color:#070">&lt;j:set</span> <span style="color:#007">var=</span><span style="background-color:#e0e0ff">&#34;maven.html2xdoc.dir.bak&#34;</span> <span style="color:#007">value=</span><span style="background-color:#e0e0ff">&#34;${maven.html2xdoc.dir}&#34;</span><span style="color:#070">/&gt;</span>
-    <span style="color:#070">&lt;j:set</span> <span style="color:#007">var=</span><span style="background-color:#e0e0ff">&#34;maven.gen.docs.bak&#34;</span> <span style="color:#007">value=</span><span style="background-color:#e0e0ff">&#34;${maven.gen.docs}&#34;</span><span style="color:#070">/&gt;</span>
-
-    <span style="color:#070">&lt;j:set</span> <span style="color:#007">var=</span><span style="background-color:#e0e0ff">&#34;maven.html2xdoc.dir&#34;</span> <span style="color:#007">value=</span><span style="background-color:#e0e0ff">&#34;${maven.sdocbook.generated.html}&#34;</span><span style="color:#070">/&gt;</span>
-    <span style="color:#070">&lt;j:set</span> <span style="color:#007">var=</span><span style="background-color:#e0e0ff">&#34;maven.gen.docs&#34;</span> <span style="color:#007">value=</span><span style="background-color:#e0e0ff">&#34;${maven.gen.docs}&#34;</span><span style="color:#070">/&gt;</span>
-    <span style="color:#070">&lt;attainGoal</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;html2xdoc:transform&#34;</span><span style="color:#070">/&gt;</span>
-
-    <span style="color:#070">&lt;j:set</span> <span style="color:#007">var=</span><span style="background-color:#e0e0ff">&#34;maven.html2xdoc.dir&#34;</span> <span style="color:#007">value=</span><span style="background-color:#e0e0ff">&#34;${maven.html2xdoc.dir.bak}&#34;</span><span style="color:#070">/&gt;</span>
-    <span style="color:#070">&lt;j:set</span> <span style="color:#007">var=</span><span style="background-color:#e0e0ff">&#34;maven.gen.docs&#34;</span> <span style="color:#007">value=</span><span style="background-color:#e0e0ff">&#34;${maven.gen.docs.bak}&#34;</span><span style="color:#070">/&gt;</span>
-<span style="color:#070">&lt;/goal&gt;</span>
-<span style="color:#070">&lt;/project&gt;</span>    </code></pre></div></li>
-
-<li><p>Generujeme taskom</p>
-
-<pre><code>maven clean sdocbook:generate-html docbook2xdoc xdoc`
-</code></pre></li>
+<li>Nastavime</li>
 </ul>
+<pre tabindex="0"><code>maven.docs.outputencoding=utf-8
+</code></pre><p>v <code>project.properties</code>. Inak sa dockame dokumentacie v iso-8859-1, pripadne otaznikov vo vygenerovanych dokumentoch</p>
+<ul>
+<li>Stiahneme plugin <code>sdocbook</code></li>
+</ul>
+<pre tabindex="0"><code>maven plugin:download -DgroupId=maven-plugins -DartifactId=maven-sdocbook-plugin -Dversion=1.4.1
+</code></pre><ul>
+<li>Do <code>maven.xml</code> v projektovom adresari pridame / vytvorime</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#070">&lt;project</span> <span style="color:#007">xmlns:j=</span><span style="background-color:#e0e0ff">&#34;jelly:core&#34;</span> <span style="color:#007">xmlns:ant=</span><span style="background-color:#e0e0ff">&#34;jelly:ant&#34;</span> <span style="color:#007">xmlns:util=</span><span style="background-color:#e0e0ff">&#34;jelly:util&#34;</span> <span style="color:#007">xmlns:maven=</span><span style="background-color:#e0e0ff">&#34;jelly:maven&#34;</span><span style="color:#070">&gt;</span>
+    <span style="color:#070">&lt;goal</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;docbook2xdoc&#34;</span><span style="color:#070">&gt;</span>
+        <span style="color:#070">&lt;maven:get</span> <span style="color:#007">var=</span><span style="background-color:#e0e0ff">&#34;maven.sdocbook.generated.html&#34;</span>
+            <span style="color:#007">plugin=</span><span style="background-color:#e0e0ff">&#34;maven-sdocbook-plugin&#34;</span>
+            <span style="color:#007">property=</span><span style="background-color:#e0e0ff">&#34;maven.sdocbook.generated.html&#34;</span><span style="color:#070">/&gt;</span>
+        <span style="color:#070">&lt;mkdir</span> <span style="color:#007">dir=</span><span style="background-color:#e0e0ff">&#34;${maven.gen.docs}/docbook2xdoc&#34;</span><span style="color:#070">/&gt;</span>
 
-<h1 id="kopírovanie-konfigurákov-v-prípade-viacerých-profilov">Kopírovanie konfigurákov v prípade viacerých profilov</h1>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#070">&lt;profiles&gt;</span>
+        <span style="color:#070">&lt;j:set</span> <span style="color:#007">var=</span><span style="background-color:#e0e0ff">&#34;maven.html2xdoc.dir.bak&#34;</span> <span style="color:#007">value=</span><span style="background-color:#e0e0ff">&#34;${maven.html2xdoc.dir}&#34;</span><span style="color:#070">/&gt;</span>
+        <span style="color:#070">&lt;j:set</span> <span style="color:#007">var=</span><span style="background-color:#e0e0ff">&#34;maven.gen.docs.bak&#34;</span> <span style="color:#007">value=</span><span style="background-color:#e0e0ff">&#34;${maven.gen.docs}&#34;</span><span style="color:#070">/&gt;</span>
+
+        <span style="color:#070">&lt;j:set</span> <span style="color:#007">var=</span><span style="background-color:#e0e0ff">&#34;maven.html2xdoc.dir&#34;</span> <span style="color:#007">value=</span><span style="background-color:#e0e0ff">&#34;${maven.sdocbook.generated.html}&#34;</span><span style="color:#070">/&gt;</span>
+        <span style="color:#070">&lt;j:set</span> <span style="color:#007">var=</span><span style="background-color:#e0e0ff">&#34;maven.gen.docs&#34;</span> <span style="color:#007">value=</span><span style="background-color:#e0e0ff">&#34;${maven.gen.docs}&#34;</span><span style="color:#070">/&gt;</span>
+        <span style="color:#070">&lt;attainGoal</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;html2xdoc:transform&#34;</span><span style="color:#070">/&gt;</span>
+
+        <span style="color:#070">&lt;j:set</span> <span style="color:#007">var=</span><span style="background-color:#e0e0ff">&#34;maven.html2xdoc.dir&#34;</span> <span style="color:#007">value=</span><span style="background-color:#e0e0ff">&#34;${maven.html2xdoc.dir.bak}&#34;</span><span style="color:#070">/&gt;</span>
+        <span style="color:#070">&lt;j:set</span> <span style="color:#007">var=</span><span style="background-color:#e0e0ff">&#34;maven.gen.docs&#34;</span> <span style="color:#007">value=</span><span style="background-color:#e0e0ff">&#34;${maven.gen.docs.bak}&#34;</span><span style="color:#070">/&gt;</span>
+    <span style="color:#070">&lt;/goal&gt;</span>
+<span style="color:#070">&lt;/project&gt;</span>    
+</code></pre></div><ul>
+<li>Generujeme taskom</li>
+</ul>
+<pre tabindex="0"><code>maven clean sdocbook:generate-html docbook2xdoc xdoc`
+</code></pre><h1 id="kopírovanie-konfigurákov-v-prípade-viacerých-profilov">Kopírovanie konfigurákov v prípade viacerých profilov</h1>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#070">&lt;profiles&gt;</span>
   <span style="color:#070">&lt;profile&gt;</span>
     <span style="color:#070">&lt;id&gt;</span>production<span style="color:#070">&lt;/id&gt;</span>
     <span style="color:#070">&lt;build&gt;</span>
@@ -130,12 +122,10 @@
       <span style="color:#070">&lt;/plugins&gt;</span>
     <span style="color:#070">&lt;/build&gt;</span>
   <span style="color:#070">&lt;/profile&gt;</span>
-<span style="color:#070">&lt;/profiles&gt;</span></code></pre></div>
-<p>Release potom cez</p>
-
-<pre><code>mvn clean package -Pproduction -Dmaven.test.skip=true
+<span style="color:#070">&lt;/profiles&gt;</span>
+</code></pre></div><p>Release potom cez</p>
+<pre tabindex="0"><code>mvn clean package -Pproduction -Dmaven.test.skip=true
 </code></pre>
-
 </main>
 
     <footer>

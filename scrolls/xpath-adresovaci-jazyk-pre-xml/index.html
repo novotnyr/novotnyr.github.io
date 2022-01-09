@@ -59,190 +59,160 @@
 
 
 <main>
-
-
 <h1 id="úvod">Úvod</h1>
-
-<p>XPath je programovací jazyk určený na adresáciu jednotlivých prvkov XML súboru. Umožňuje pomocou jednoduchej syntaxe riešiť problémy typu &ldquo;chcem všetky <code>title</code> elementy&rdquo;, chcem všetky elementy <code>author</code>, ktoré sa nachádzajú pod elementom <code>book</code> s atribútom <code>id</code> rovným <code>12</code>&rdquo;, chcem všetkých vnukov koreňového elementu, a pod.</p>
-
+<p>XPath je programovací jazyk určený na adresáciu jednotlivých prvkov XML súboru. Umožňuje pomocou jednoduchej syntaxe riešiť problémy typu &ldquo;chcem všetky <code>title </code> elementy&rdquo;, chcem všetky elementy <code>author</code>, ktoré sa nachádzajú pod elementom <code>book</code> s atribútom <code>id</code> rovným <code>12</code>&quot;, chcem všetkých vnukov koreňového elementu, a pod.</p>
 <p>Jeho syntax je inšpirovaná syntaxou používanou v súborových systémoch - jednotlivé prvky XML stromu sú oddeľované lomkami. Je možné sa dopytovať na elementy v štruktúre, podstrome, prípadne v atribútoch.</p>
-
 <p>Príklady dopytov v jazyku XPath sú napr.:</p>
-
 <ul>
-<li><p><code>//title</code></p></li>
-
-<li><p><code>//book[@id=12]//author</code></p></li>
-
-<li><p><code>/books/book[author=&quot;Eco&quot;]/author/firstName</code></p></li>
+<li>
+<p><code>//title</code></p>
+</li>
+<li>
+<p><code>//book[@id=12]//author</code></p>
+</li>
+<li>
+<p><code>/books/book[author=&quot;Eco&quot;]/author/firstName</code></p>
+</li>
 </ul>
-
 <p>Treba podotknúť, že jazyk umožňuje len adresovať existujúce prvky v danom dokumente XML. Nie je v jeho silách vytvárať v dopytoch nové elementy, či modifikovať existujúce. (To je doménou komplexnejších jazykov ako XQuery alebo XSLT).</p>
-
 <p>Možnosti jazyka XPath je možné preskúmať buď v peknom českom <a href="http://www.zvon.org/xxl/XPathTutorial/General_cze/examples.html">tutoriále na Zvon.org</a> alebo priamym štúdium <a href="http://www.w3.org/TR/xpath">špecifikácie</a>.</p>
-
 <p>XPath existuje v dvoch verziách - jednoduchšej a staršej verzii 1.0, ku ktorej existuje množstvo implementácií v rôznych programovacích jazykoch, a novšej značne prepracovanej verzii 2.0.</p>
-
-<h1 id="xpath-a-java-dodávateľské-implementácie">XPath a Java - dodávateľské implementácie</h1>
-
+<h1 id="xpath-a-java---dodávateľské-implementácie">XPath a Java - dodávateľské implementácie</h1>
 <h2 id="apache-xalan">Apache Xalan</h2>
-
 <p>Špecifikácia XPath 1.0 má v Jave viacero rôznych implementácii. Tradične sa využíval napr. projekt <a href="http://xml.apache.org/xalan-j/">Apache Xalan</a>.</p>
-
 <p>Stiahneme <code>xalan-j_2_7_0-bin-2jars.tar.gz</code> a do projektu pridáme <code>xalan.jar</code>. Použitie XPath v základnej verzii je potom priamočiare:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">import javax</span>.<span style="color:#007">xml</span>.<span style="color:#007">transform</span>.<span style="color:#007">TransformerException</span>;
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">javax.xml.transform.TransformerException</span><span style="color:#333">;</span>
 
-<span style="color:#f00;background-color:#faa">import org</span>.<span style="color:#007">apache</span>.<span style="color:#007">xpath</span>.<span style="color:#007">XPathAPI</span>;
-<span style="color:#f00;background-color:#faa">import org</span>.<span style="color:#007">w3c</span>.<span style="color:#007">dom</span>.<span style="color:#007">Node</span>;
-<span style="color:#f00;background-color:#faa">import org</span>.<span style="color:#007">w3c</span>.<span style="color:#007">dom</span>.<span style="color:#007">NodeList</span>;
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">org.apache.xpath.XPathAPI</span><span style="color:#333">;</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">org.w3c.dom.Node</span><span style="color:#333">;</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">org.w3c.dom.NodeList</span><span style="color:#333">;</span>
 
-...
+<span style="color:#333">...</span>
 
-<span style="color:#f00;background-color:#faa">NodeList nodeList </span><span style="color:#333">=</span> XPathAPI.<span style="color:#007">selectNodeList</span>(document, <span style="background-color:#e0e0ff">&#34;id(&#39;Gn1&#39;)&#34;</span>);
-<span style="color:#289;font-weight:bold">for</span> (<span style="color:#f00;background-color:#faa">int i </span><span style="color:#333">=</span> 0; i <span style="color:#333">&lt;</span> nodeList.<span style="color:#007">getLength</span>(); i<span style="color:#333">++</span>) {
-  <span style="color:#f00;background-color:#faa">Node node </span><span style="color:#333">=</span> nodeList.<span style="color:#007">item</span>(i);
-  System.<span style="color:#007">out</span>.<span style="color:#007">println</span>(node);
-}</code></pre></div>
-<p>Jadrom je trieda <code>org.apache.xpath.XPathAPI</code>, ktorá obsahuje metódy na vrátenie zoznamu uzlov (NodeList) alebo iterátora (NodeIterator).</p>
-
+NodeList nodeList <span style="color:#333">=</span> XPathAPI<span style="color:#333">.</span><span style="color:#007">selectNodeList</span><span style="color:#333">(</span>document<span style="color:#333">,</span> <span style="background-color:#e0e0ff">&#34;id(&#39;Gn1&#39;)&#34;</span><span style="color:#333">);</span>
+<span style="color:#289;font-weight:bold">for</span> <span style="color:#333">(</span><span style="color:#66f;font-weight:bold">int</span> i <span style="color:#333">=</span> 0<span style="color:#333">;</span> i <span style="color:#333">&lt;</span> nodeList<span style="color:#333">.</span><span style="color:#007">getLength</span><span style="color:#333">();</span> i<span style="color:#333">++)</span> <span style="color:#333">{</span>
+  Node node <span style="color:#333">=</span> nodeList<span style="color:#333">.</span><span style="color:#007">item</span><span style="color:#333">(</span>i<span style="color:#333">);</span>
+  System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span>node<span style="color:#333">);</span>
+<span style="color:#333">}</span>
+</code></pre></div><p>Jadrom je trieda <code>org.apache.xpath.XPathAPI</code>, ktorá obsahuje metódy na vrátenie zoznamu uzlov (NodeList) alebo iterátora (NodeIterator).</p>
 <p>Pre väčšiu efektivitu je možné použiť triedu <code>CachedXPathAPI</code>. Statické metódy triedy <code>XPathAPI</code> totiž s každým volaním vytvárajú nový model pre vstupný dokument. Naopak, trieda <code>CachedXPathAPI</code> môže medzi volaniami využívať stále rovnaký dokumentový model.</p>
-
-<h3 id="xalan-a-java-1-4">Xalan a Java 1.4</h3>
-
+<h3 id="xalan-a-java-14">Xalan a Java 1.4</h3>
 <p>V rámci Javy 1.4 je automaticky dodávaná staršia verzia Xalana (vo verzii 1.4.2_15 je k dispozícii Xalan 2.4.1). Vyššie uvedený postup bude fungovať aj bez stiahnutia Xalanovských knižníc. Napriek tomu sa však odporúča stiahnuť novšiu verziu Xalana zo stránok Apachu, predíde sa tým problémom s prípadnými staršími neopravenými chybami.</p>
-
 <h2 id="saxon">Saxon</h2>
-
 <p>Saxon je alternatívna implementácia XML parsera, a vyhodnocovača jazykov XPath, XSLT a XQuery. Softvér je možné stiahnuť zo stránok <a href="http://sourceforge.net/project/showfiles.php?group_id=29872">SourceForge</a>. Do <code>CLASSPATH</code> si stačí pridať <code>saxon8.jar</code>.</p>
-
 <p>Programový prístup k XPath je o niečo iný než v prípade Xercesu.</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">import java</span>.<span style="color:#007">io</span>.<span style="color:#007">FileReader</span>;
-<span style="color:#f00;background-color:#faa">import java</span>.<span style="color:#007">util</span>.<span style="color:#007">List</span>;
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">java.io.FileReader</span><span style="color:#333">;</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">java.util.List</span><span style="color:#333">;</span>
 
-<span style="color:#f00;background-color:#faa">import javax</span>.<span style="color:#007">xml</span>.<span style="color:#007">transform</span>.<span style="color:#007">sax</span>.<span style="color:#007">SAXSource</span>;
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">javax.xml.transform.sax.SAXSource</span><span style="color:#333">;</span>
 
-<span style="color:#f00;background-color:#faa">import net</span>.<span style="color:#007">sf</span>.<span style="color:#007">saxon</span>.<span style="color:#007">om</span>.<span style="color:#007">NodeInfo</span>;
-<span style="color:#f00;background-color:#faa">import net</span>.<span style="color:#007">sf</span>.<span style="color:#007">saxon</span>.<span style="color:#007">sxpath</span>.<span style="color:#007">XPathEvaluator</span>;
-<span style="color:#f00;background-color:#faa">import net</span>.<span style="color:#007">sf</span>.<span style="color:#007">saxon</span>.<span style="color:#007">sxpath</span>.<span style="color:#007">XPathExpression</span>;
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">net.sf.saxon.om.NodeInfo</span><span style="color:#333">;</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">net.sf.saxon.sxpath.XPathEvaluator</span><span style="color:#333">;</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">net.sf.saxon.sxpath.XPathExpression</span><span style="color:#333">;</span>
 
-<span style="color:#f00;background-color:#faa">import org</span>.<span style="color:#007">xml</span>.<span style="color:#007">sax</span>.<span style="color:#007">InputSource</span>;
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">org.xml.sax.InputSource</span><span style="color:#333">;</span>
 
-...
+<span style="color:#333">...</span>
 <span style="color:#666;font-style:italic">//vybudujeme dokumentový model
-</span><span style="color:#666;font-style:italic"></span><span style="color:#f00;background-color:#faa">InputSource inputSource </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> InputSource(<span style="color:#289;font-weight:bold">new</span> FileReader(<span style="background-color:#e0e0ff">&#34;d:/gnsample.xml&#34;</span>));
-<span style="color:#f00;background-color:#faa">SAXSource saxSource </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> SAXSource(inputSource);
+</span><span style="color:#666;font-style:italic"></span>InputSource inputSource <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> InputSource<span style="color:#333">(</span><span style="color:#289;font-weight:bold">new</span> FileReader<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;d:/gnsample.xml&#34;</span><span style="color:#333">));</span>
+SAXSource saxSource <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> SAXSource<span style="color:#333">(</span>inputSource<span style="color:#333">);</span>
         
-<span style="color:#f00;background-color:#faa">XPathEvaluator xPathEvaluator </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> XPathEvaluator();
-<span style="color:#f00;background-color:#faa">XPathExpression xPathExpression </span><span style="color:#333">=</span> xPathEvaluator.<span style="color:#007">createExpression</span>(<span style="background-color:#e0e0ff">&#34;id(&#39;Gn1&#39;)&#34;</span>);
-<span style="color:#f00;background-color:#faa">List result </span><span style="color:#333">=</span> xPathExpression.<span style="color:#007">evaluate</span>(saxSource);
-<span style="color:#289;font-weight:bold">for</span> (<span style="color:#f00;background-color:#faa">int i </span><span style="color:#333">=</span> 0; i <span style="color:#333">&lt;</span> result.<span style="color:#007">size</span>(); i<span style="color:#333">++</span>) {
-  <span style="color:#f00;background-color:#faa">NodeInfo node </span><span style="color:#333">=</span> (NodeInfo) result.<span style="color:#007">get</span>(i);
-  System.<span style="color:#007">out</span>.<span style="color:#007">println</span>(node.<span style="color:#007">getStringValue</span>());
-}</code></pre></div>
-<p>Základnými triedami sú <code>XPathEvaluator</code>, pomocou ktorého vytvoríme „skompilovanú&rdquo; formu výrazu v jazyku XPath (metódou <code>createExpression()</code>). Na objekte <code>XPathExpression</code> potom pomocou metódy <code>evaluate()</code> získame výsledok dopytu XPath. V našom príklade je výsledkom množina uzlov (<code>NodeInfo</code>), ktorú vypíšeme.</p>
-
+XPathEvaluator xPathEvaluator <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> XPathEvaluator<span style="color:#333">();</span>
+XPathExpression xPathExpression <span style="color:#333">=</span> xPathEvaluator<span style="color:#333">.</span><span style="color:#007">createExpression</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;id(&#39;Gn1&#39;)&#34;</span><span style="color:#333">);</span>
+List result <span style="color:#333">=</span> xPathExpression<span style="color:#333">.</span><span style="color:#007">evaluate</span><span style="color:#333">(</span>saxSource<span style="color:#333">);</span>
+<span style="color:#289;font-weight:bold">for</span> <span style="color:#333">(</span><span style="color:#66f;font-weight:bold">int</span> i <span style="color:#333">=</span> 0<span style="color:#333">;</span> i <span style="color:#333">&lt;</span> result<span style="color:#333">.</span><span style="color:#007">size</span><span style="color:#333">();</span> i<span style="color:#333">++)</span> <span style="color:#333">{</span>
+  NodeInfo node <span style="color:#333">=</span> <span style="color:#333">(</span>NodeInfo<span style="color:#333">)</span> result<span style="color:#333">.</span><span style="color:#007">get</span><span style="color:#333">(</span>i<span style="color:#333">);</span>
+  System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span>node<span style="color:#333">.</span><span style="color:#007">getStringValue</span><span style="color:#333">());</span>
+<span style="color:#333">}</span>
+</code></pre></div><p>Základnými triedami sú <code>XPathEvaluator</code>, pomocou ktorého vytvoríme „skompilovanú&quot; formu výrazu v jazyku XPath (metódou <code>createExpression()</code>). Na objekte <code>XPathExpression</code> potom pomocou metódy <code>evaluate()</code> získame výsledok dopytu XPath. V našom príklade je výsledkom množina uzlov (<code>NodeInfo</code>), ktorú vypíšeme.</p>
 <p>Od Javy 5 je podpora pre XPath dodávaná priamo v rámci JRE.</p>
-
-<h3 id="saxon-a-java-1-4">Saxon a Java 1.4</h3>
-
+<h3 id="saxon-a-java-14">Saxon a Java 1.4</h3>
 <p>Uvedený postup bude fungovať aj v prípade Javy 1.4 ako alternatíva Xalana.</p>
-
-<h1 id="xpath-a-java-prístup-pomocou-rozhrania-jaxp">XPath a Java - prístup pomocou rozhrania JAXP</h1>
-
-<p>Vyššie uvedené prístupy majú jednu nevýhodu - prístup k XPath sa líši od dodávateľa k dodávateľovi. Túto nevýhodu má za cieľ odstrániť špecifikácia <a href="http://java.sun.com/webservices/jaxp/index.jsp">JAXP</a> (Java API for XML Processing), ktorá má „umožniť aplikáciam spracovávať a transformovať dokumenty XML nezávisle od konkrétnej implementácie XML spracovávateľa&rdquo;.</p>
-
+<h1 id="xpath-a-java---prístup-pomocou-rozhrania-jaxp">XPath a Java - prístup pomocou rozhrania JAXP</h1>
+<p>Vyššie uvedené prístupy majú jednu nevýhodu - prístup k XPath sa líši od dodávateľa k dodávateľovi. Túto nevýhodu má za cieľ odstrániť špecifikácia <a href="http://java.sun.com/webservices/jaxp/index.jsp">JAXP</a> (Java API for XML Processing), ktorá má „umožniť aplikáciam spracovávať a transformovať dokumenty XML nezávisle od konkrétnej implementácie XML spracovávateľa&quot;.</p>
 <p>V Jave 1.4 je možné dodatočne <a href="https://jaxp.dev.java.net/servlets/ProjectDocumentList?folderID=4584&amp;expandFolder=4584&amp;folderID=0">stiahnuť JAXP vo verzii 1.3</a>. V Jave 5 je už JAXP priamo k dispozícii.</p>
-
 <p>Dopytovanie XPath v rámci JAXP je nasledovné:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">import java</span>.<span style="color:#007">io</span>.<span style="color:#007">File</span>;
-<span style="color:#f00;background-color:#faa">import java</span>.<span style="color:#007">io</span>.<span style="color:#007">IOException</span>;
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">java.io.File</span><span style="color:#333">;</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">java.io.IOException</span><span style="color:#333">;</span>
 
-<span style="color:#f00;background-color:#faa">import javax</span>.<span style="color:#007">xml</span>.<span style="color:#007">parsers</span>.<span style="color:#007">DocumentBuilder</span>;
-<span style="color:#f00;background-color:#faa">import javax</span>.<span style="color:#007">xml</span>.<span style="color:#007">parsers</span>.<span style="color:#007">DocumentBuilderFactory</span>;
-<span style="color:#f00;background-color:#faa">import javax</span>.<span style="color:#007">xml</span>.<span style="color:#007">parsers</span>.<span style="color:#007">ParserConfigurationException</span>;
-<span style="color:#f00;background-color:#faa">import javax</span>.<span style="color:#007">xml</span>.<span style="color:#007">xpath</span>.<span style="color:#007">XPath</span>;
-<span style="color:#f00;background-color:#faa">import javax</span>.<span style="color:#007">xml</span>.<span style="color:#007">xpath</span>.<span style="color:#007">XPathConstants</span>;
-<span style="color:#f00;background-color:#faa">import javax</span>.<span style="color:#007">xml</span>.<span style="color:#007">xpath</span>.<span style="color:#007">XPathExpressionException</span>;
-<span style="color:#f00;background-color:#faa">import javax</span>.<span style="color:#007">xml</span>.<span style="color:#007">xpath</span>.<span style="color:#007">XPathFactory</span>;
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">javax.xml.parsers.DocumentBuilder</span><span style="color:#333">;</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">javax.xml.parsers.DocumentBuilderFactory</span><span style="color:#333">;</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">javax.xml.parsers.ParserConfigurationException</span><span style="color:#333">;</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">javax.xml.xpath.XPath</span><span style="color:#333">;</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">javax.xml.xpath.XPathConstants</span><span style="color:#333">;</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">javax.xml.xpath.XPathExpressionException</span><span style="color:#333">;</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">javax.xml.xpath.XPathFactory</span><span style="color:#333">;</span>
 
-<span style="color:#f00;background-color:#faa">import org</span>.<span style="color:#007">w3c</span>.<span style="color:#007">dom</span>.<span style="color:#007">Document</span>;
-<span style="color:#f00;background-color:#faa">import org</span>.<span style="color:#007">w3c</span>.<span style="color:#007">dom</span>.<span style="color:#007">Node</span>;
-<span style="color:#f00;background-color:#faa">import org</span>.<span style="color:#007">w3c</span>.<span style="color:#007">dom</span>.<span style="color:#007">NodeList</span>;
-<span style="color:#f00;background-color:#faa">import org</span>.<span style="color:#007">xml</span>.<span style="color:#007">sax</span>.<span style="color:#007">SAXException</span>;
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">org.w3c.dom.Document</span><span style="color:#333">;</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">org.w3c.dom.Node</span><span style="color:#333">;</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">org.w3c.dom.NodeList</span><span style="color:#333">;</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">org.xml.sax.SAXException</span><span style="color:#333">;</span>
 
 
-<span style="color:#f00;background-color:#faa">public class </span>XPathApiUsage {
-  <span style="color:#f00;background-color:#faa">public static void main</span>(<span style="color:#f00;background-color:#faa">String[] args</span>) {
-    <span style="color:#289;font-weight:bold">try</span> {
+<span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">XPathApiUsage</span> <span style="color:#333">{</span>
+  <span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">static</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">main</span><span style="color:#333">(</span>String<span style="color:#333">[]</span> args<span style="color:#333">)</span> <span style="color:#333">{</span>
+    <span style="color:#289;font-weight:bold">try</span> <span style="color:#333">{</span>
       <span style="color:#666;font-style:italic">//vybudujeme dokument DOM
-</span><span style="color:#666;font-style:italic"></span>      <span style="color:#f00;background-color:#faa">DocumentBuilder documentBuilder </span><span style="color:#333">=</span> DocumentBuilderFactory.<span style="color:#007">newInstance</span>().<span style="color:#007">newDocumentBuilder</span>();
-      <span style="color:#f00;background-color:#faa">Document document </span><span style="color:#333">=</span> documentBuilder.<span style="color:#007">parse</span>(<span style="color:#289;font-weight:bold">new</span> File(<span style="background-color:#e0e0ff">&#34;D:/gnsample.xml&#34;</span>));
+</span><span style="color:#666;font-style:italic"></span>      DocumentBuilder documentBuilder <span style="color:#333">=</span> DocumentBuilderFactory<span style="color:#333">.</span><span style="color:#007">newInstance</span><span style="color:#333">().</span><span style="color:#007">newDocumentBuilder</span><span style="color:#333">();</span>
+      Document document <span style="color:#333">=</span> documentBuilder<span style="color:#333">.</span><span style="color:#007">parse</span><span style="color:#333">(</span><span style="color:#289;font-weight:bold">new</span> File<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;D:/gnsample.xml&#34;</span><span style="color:#333">));</span>
 
       <span style="color:#666;font-style:italic">//vytvorime novu instanciu tovarne na XPathy
-</span><span style="color:#666;font-style:italic"></span>      <span style="color:#f00;background-color:#faa">XPathFactory xPathFactory </span><span style="color:#333">=</span> XPathFactory.<span style="color:#007">newInstance</span>();
+</span><span style="color:#666;font-style:italic"></span>      XPathFactory xPathFactory <span style="color:#333">=</span> XPathFactory<span style="color:#333">.</span><span style="color:#007">newInstance</span><span style="color:#333">();</span>
       <span style="color:#666;font-style:italic">//vytvorime novy XPath
-</span><span style="color:#666;font-style:italic"></span>      <span style="color:#f00;background-color:#faa">XPath xPath </span><span style="color:#333">=</span> xPathFactory.<span style="color:#007">newXPath</span>();
+</span><span style="color:#666;font-style:italic"></span>      XPath xPath <span style="color:#333">=</span> xPathFactory<span style="color:#333">.</span><span style="color:#007">newXPath</span><span style="color:#333">();</span>
       
-      <span style="color:#f00;background-color:#faa">NodeList nodeList </span><span style="color:#333">=</span> (NodeList) xPath.<span style="color:#007">evaluate</span>(<span style="background-color:#e0e0ff">&#34;id(&#39;Gn1&#39;)&#34;</span>, document, XPathConstants.<span style="color:#007">NODESET</span>);
-      <span style="color:#289;font-weight:bold">for</span> (<span style="color:#f00;background-color:#faa">int i </span><span style="color:#333">=</span> 0; i <span style="color:#333">&lt;</span> nodeList.<span style="color:#007">getLength</span>(); i<span style="color:#333">++</span>) {
-        <span style="color:#f00;background-color:#faa">Node node </span><span style="color:#333">=</span> nodeList.<span style="color:#007">item</span>(i);
-        System.<span style="color:#007">out</span>.<span style="color:#007">println</span>(node);
-      }
+      NodeList nodeList <span style="color:#333">=</span> <span style="color:#333">(</span>NodeList<span style="color:#333">)</span> xPath<span style="color:#333">.</span><span style="color:#007">evaluate</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;id(&#39;Gn1&#39;)&#34;</span><span style="color:#333">,</span> document<span style="color:#333">,</span> XPathConstants<span style="color:#333">.</span><span style="color:#007">NODESET</span><span style="color:#333">);</span>
+      <span style="color:#289;font-weight:bold">for</span> <span style="color:#333">(</span><span style="color:#66f;font-weight:bold">int</span> i <span style="color:#333">=</span> 0<span style="color:#333">;</span> i <span style="color:#333">&lt;</span> nodeList<span style="color:#333">.</span><span style="color:#007">getLength</span><span style="color:#333">();</span> i<span style="color:#333">++)</span> <span style="color:#333">{</span>
+        Node node <span style="color:#333">=</span> nodeList<span style="color:#333">.</span><span style="color:#007">item</span><span style="color:#333">(</span>i<span style="color:#333">);</span>
+        System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span>node<span style="color:#333">);</span>
+      <span style="color:#333">}</span>
       
-    } <span style="color:#289;font-weight:bold">catch</span> (<span style="color:#f00;background-color:#faa">ParserConfigurationException e</span>) {
-      System.<span style="color:#007">err</span>.<span style="color:#007">println</span>(<span style="background-color:#e0e0ff">&#34;Cannot configure parser:&#34;</span>);
-      e.<span style="color:#007">printStackTrace</span>(System.<span style="color:#007">err</span>);
-    } <span style="color:#289;font-weight:bold">catch</span> (<span style="color:#f00;background-color:#faa">IOException e</span>) {
-      System.<span style="color:#007">err</span>.<span style="color:#007">println</span>(<span style="background-color:#e0e0ff">&#34;Cannot load document:&#34;</span>);
-      e.<span style="color:#007">printStackTrace</span>(System.<span style="color:#007">err</span>);
-    } <span style="color:#289;font-weight:bold">catch</span> (<span style="color:#f00;background-color:#faa">SAXException e</span>) {
-      System.<span style="color:#007">err</span>.<span style="color:#007">println</span>(<span style="background-color:#e0e0ff">&#34;Cannot parse document:&#34;</span>);
-      e.<span style="color:#007">printStackTrace</span>(System.<span style="color:#007">err</span>);
-    } <span style="color:#289;font-weight:bold">catch</span> (<span style="color:#f00;background-color:#faa">XPathExpressionException e</span>) {
-      System.<span style="color:#007">err</span>.<span style="color:#007">println</span>(<span style="background-color:#e0e0ff">&#34;Cannot execute XPath&#34;</span>);
-      e.<span style="color:#007">printStackTrace</span>(System.<span style="color:#007">err</span>);
-    }
-  }
-}</code></pre></div>
-<p>Dôležitými triedami sú:
-* <code>javax.xml.xpath.XPath</code> predstavuje objekt pre dopyt jazyka <code>XPath</code>.
-* <code>javax.xml.xpath.XPathFactory</code> je továreň pre objekty <code>XPath</code>. Táto abstraktná trieda si automaticky v systéme nájde svoju konkrétnu implementáciu (v závislosti od dodávateľa) a vráti ju. Pomocou metódy <code>newXPath()</code> vrátime nový objekt <code>XPath</code>.</p>
-
+    <span style="color:#333">}</span> <span style="color:#289;font-weight:bold">catch</span> <span style="color:#333">(</span>ParserConfigurationException e<span style="color:#333">)</span> <span style="color:#333">{</span>
+      System<span style="color:#333">.</span><span style="color:#007">err</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;Cannot configure parser:&#34;</span><span style="color:#333">);</span>
+      e<span style="color:#333">.</span><span style="color:#007">printStackTrace</span><span style="color:#333">(</span>System<span style="color:#333">.</span><span style="color:#007">err</span><span style="color:#333">);</span>
+    <span style="color:#333">}</span> <span style="color:#289;font-weight:bold">catch</span> <span style="color:#333">(</span>IOException e<span style="color:#333">)</span> <span style="color:#333">{</span>
+      System<span style="color:#333">.</span><span style="color:#007">err</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;Cannot load document:&#34;</span><span style="color:#333">);</span>
+      e<span style="color:#333">.</span><span style="color:#007">printStackTrace</span><span style="color:#333">(</span>System<span style="color:#333">.</span><span style="color:#007">err</span><span style="color:#333">);</span>
+    <span style="color:#333">}</span> <span style="color:#289;font-weight:bold">catch</span> <span style="color:#333">(</span>SAXException e<span style="color:#333">)</span> <span style="color:#333">{</span>
+      System<span style="color:#333">.</span><span style="color:#007">err</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;Cannot parse document:&#34;</span><span style="color:#333">);</span>
+      e<span style="color:#333">.</span><span style="color:#007">printStackTrace</span><span style="color:#333">(</span>System<span style="color:#333">.</span><span style="color:#007">err</span><span style="color:#333">);</span>
+    <span style="color:#333">}</span> <span style="color:#289;font-weight:bold">catch</span> <span style="color:#333">(</span>XPathExpressionException e<span style="color:#333">)</span> <span style="color:#333">{</span>
+      System<span style="color:#333">.</span><span style="color:#007">err</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;Cannot execute XPath&#34;</span><span style="color:#333">);</span>
+      e<span style="color:#333">.</span><span style="color:#007">printStackTrace</span><span style="color:#333">(</span>System<span style="color:#333">.</span><span style="color:#007">err</span><span style="color:#333">);</span>
+    <span style="color:#333">}</span>
+  <span style="color:#333">}</span>
+<span style="color:#333">}</span>
+</code></pre></div><p>Dôležitými triedami sú:</p>
+<ul>
+<li><code>javax.xml.xpath.XPath</code> predstavuje objekt pre dopyt jazyka <code>XPath</code>.</li>
+<li><code>javax.xml.xpath.XPathFactory</code> je továreň pre objekty <code>XPath</code>. Táto abstraktná trieda si automaticky v systéme nájde svoju konkrétnu implementáciu (v závislosti od dodávateľa) a vráti ju. Pomocou metódy <code>newXPath()</code> vrátime nový objekt <code>XPath</code>.</li>
+</ul>
 <p>Objekty <code>XPath</code> možno používať dvojako. Prvým spôsobom je priame zavolanie metódy <code>evaluate()</code>, ktorej dodáme dopyt v XPathe a dokument, na ktorom sa bude <code>XPath</code> vyhodnocovať. Tretím parametrom je dátový typ, ktorý sa má vrátiť (pripomeňme, že XPath rozoznáva 4 dátové typy: množinu uzlov, reťazce, čísla a booleovské hodnoty). Možné hodnoty sú definované v <code>javax.xml.xpath.XPathConstants</code>. (Tretí parameter je možné vynechať, vtedy sa očakáva vrátenie reťazca).</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">NodeList nodeList </span><span style="color:#333">=</span> (NodeList) xPath.<span style="color:#007">evaluate</span>(<span style="background-color:#e0e0ff">&#34;id(&#39;Gn1&#39;)&#34;</span>, document, XPathConstants.<span style="color:#007">NODESET</span>);
-<span style="color:#289;font-weight:bold">for</span> (<span style="color:#f00;background-color:#faa">int i </span><span style="color:#333">=</span> 0; i <span style="color:#333">&lt;</span> nodeList.<span style="color:#007">getLength</span>(); i<span style="color:#333">++</span>) {
-  <span style="color:#f00;background-color:#faa">Node node </span><span style="color:#333">=</span> nodeList.<span style="color:#007">item</span>(i);
-  System.<span style="color:#007">out</span>.<span style="color:#007">println</span>(node);
-}</code></pre></div>
-<p>Príklad dopytu vracajúceho číslo:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">double result </span><span style="color:#333">=</span> (Double) xPath.<span style="color:#007">evaluate</span>(<span style="background-color:#e0e0ff">&#34;count(//verse)&#34;</span>, document, XPathConstants.<span style="color:#007">NUMBER</span>);</code></pre></div>
-<p>Alternatívnym spôsobom použitia objektu <code>XPath</code> vhodným pre prípady, keď dopyt voláme viackrát, je použitie metódy <code>compile()</code>. Pomocou nej získame predspracovanú a skompilovanú formu dopytu, ktorú reprezentuje objekt <code>javax.xml.xpath.XPathExpression</code>. Ten má analogickú metódu <code>evaluate()</code>, ktorej môžeme dodať vstupný dokument. <code>XPathExpression</code> urýchľuje vyhodnocovanie výrazu, pretože samotné spracovanie, syntaktická kontrola a podobne sa udejú len raz (na rozdiel od priameho volania metód na objektoch <code>XPath</code>, ktoré výraz kompilujú s každým volaním nanovo).</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">XPathExpression xPathExpression </span><span style="color:#333">=</span> xPath.<span style="color:#007">compile</span>(<span style="background-color:#e0e0ff">&#34;count(id(&#39;Gn1&#39;))&#34;</span>);
-<span style="color:#f00;background-color:#faa">double result </span><span style="color:#333">=</span> (Double) xPathExpression.<span style="color:#007">evaluate</span>(document, XPathConstants.<span style="color:#007">NUMBER</span>);</code></pre></div>
-<h2 id="výmena-implementácie-jaxp">Výmena implementácie JAXP</h2>
-
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">NodeList nodeList <span style="color:#333">=</span> <span style="color:#333">(</span>NodeList<span style="color:#333">)</span> xPath<span style="color:#333">.</span><span style="color:#007">evaluate</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;id(&#39;Gn1&#39;)&#34;</span><span style="color:#333">,</span> document<span style="color:#333">,</span> XPathConstants<span style="color:#333">.</span><span style="color:#007">NODESET</span><span style="color:#333">);</span>
+<span style="color:#289;font-weight:bold">for</span> <span style="color:#333">(</span><span style="color:#66f;font-weight:bold">int</span> i <span style="color:#333">=</span> 0<span style="color:#333">;</span> i <span style="color:#333">&lt;</span> nodeList<span style="color:#333">.</span><span style="color:#007">getLength</span><span style="color:#333">();</span> i<span style="color:#333">++)</span> <span style="color:#333">{</span>
+  Node node <span style="color:#333">=</span> nodeList<span style="color:#333">.</span><span style="color:#007">item</span><span style="color:#333">(</span>i<span style="color:#333">);</span>
+  System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span>node<span style="color:#333">);</span>
+<span style="color:#333">}</span>
+</code></pre></div><p>Príklad dopytu vracajúceho číslo:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66f;font-weight:bold">double</span> result <span style="color:#333">=</span> <span style="color:#333">(</span>Double<span style="color:#333">)</span> xPath<span style="color:#333">.</span><span style="color:#007">evaluate</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;count(//verse)&#34;</span><span style="color:#333">,</span> document<span style="color:#333">,</span> XPathConstants<span style="color:#333">.</span><span style="color:#007">NUMBER</span><span style="color:#333">);</span>
+</code></pre></div><p>Alternatívnym spôsobom použitia objektu <code>XPath</code> vhodným pre prípady, keď dopyt voláme viackrát, je použitie metódy <code>compile()</code>. Pomocou nej získame predspracovanú a skompilovanú formu dopytu, ktorú reprezentuje objekt <code>javax.xml.xpath.XPathExpression</code>. Ten má analogickú metódu <code>evaluate()</code>, ktorej môžeme dodať vstupný dokument. <code>XPathExpression</code> urýchľuje vyhodnocovanie výrazu, pretože samotné spracovanie, syntaktická kontrola a podobne sa udejú len raz (na rozdiel od priameho volania metód na objektoch <code>XPath</code>, ktoré výraz kompilujú s každým volaním nanovo).</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">XPathExpression xPathExpression <span style="color:#333">=</span> xPath<span style="color:#333">.</span><span style="color:#007">compile</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;count(id(&#39;Gn1&#39;))&#34;</span><span style="color:#333">);</span>
+<span style="color:#66f;font-weight:bold">double</span> result <span style="color:#333">=</span> <span style="color:#333">(</span>Double<span style="color:#333">)</span> xPathExpression<span style="color:#333">.</span><span style="color:#007">evaluate</span><span style="color:#333">(</span>document<span style="color:#333">,</span> XPathConstants<span style="color:#333">.</span><span style="color:#007">NUMBER</span><span style="color:#333">);</span>
+</code></pre></div><h2 id="výmena-implementácie-jaxp">Výmena implementácie JAXP</h2>
 <p>Vymieňať implementácie JAXP možno jednoducho pomocou systémovej premennej. Štandardne sa ako implementácia <code>XPathFactory</code> používa trieda z vnútorností Javy:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">XPathFactory xPathFactory </span><span style="color:#333">=</span> XPathFactory.<span style="color:#007">newInstance</span>();
-System.<span style="color:#007">out</span>.<span style="color:#007">println</span>(xPathFactory.<span style="color:#007">getClass</span>());</code></pre></div>
-<p>Výpis by mal byť</p>
-
-<pre><code>class com.sun.org.apache.xpath.internal.jaxp.XPathFactoryImpl
-</code></pre>
-
-<p>Ak chceme pre XPath používať Saxon, pridáme do <code>CLASSPATH</code> knižnice <code>saxon8.jar</code>, <code>saxon8-dom.jar</code> a <code>saxon8-xpath.jar</code>. Použitie saxonovskej implementácie docielime riadkom</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">System.<span style="color:#007">setProperty</span>(XPathFactory.<span style="color:#007">DEFAULT_PROPERTY_NAME</span> <span style="color:#333">+</span> <span style="background-color:#e0e0ff">&#34;:&#34;</span> <span style="color:#333">+</span> XPathFactory.<span style="color:#007">DEFAULT_OBJECT_MODEL_URI</span>, <span style="background-color:#e0e0ff">&#34;net.sf.saxon.xpath.XPathFactoryImpl&#34;</span>);</code></pre></div>
-<p>alebo nastavením systémovej premennej pri spustení:</p>
-
-<pre><code>java -Djavax.xml.xpath.XPathFactory:http://java.sun.com/jaxp/xpath/dom=net.sf.saxon.xpath.XPathFactoryImpl
-</code></pre>
-
-<p>alebo vytvorením súboru <code>jaxp.properties</code> v podadresári <code>lib</code> v adresári, kde je nainštalovaná aktuálne používaná Java:
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">XPathFactory xPathFactory <span style="color:#333">=</span> XPathFactory<span style="color:#333">.</span><span style="color:#007">newInstance</span><span style="color:#333">();</span>
+System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span>xPathFactory<span style="color:#333">.</span><span style="color:#007">getClass</span><span style="color:#333">());</span>
+</code></pre></div><p>Výpis by mal byť</p>
+<pre tabindex="0"><code>class com.sun.org.apache.xpath.internal.jaxp.XPathFactoryImpl
+</code></pre><p>Ak chceme pre XPath používať Saxon, pridáme do <code>CLASSPATH</code> knižnice <code>saxon8.jar</code>, <code>saxon8-dom.jar</code> a <code>saxon8-xpath.jar</code>. Použitie saxonovskej implementácie docielime riadkom</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">System<span style="color:#333">.</span><span style="color:#007">setProperty</span><span style="color:#333">(</span>XPathFactory<span style="color:#333">.</span><span style="color:#007">DEFAULT_PROPERTY_NAME</span> <span style="color:#333">+</span> <span style="background-color:#e0e0ff">&#34;:&#34;</span> <span style="color:#333">+</span> XPathFactory<span style="color:#333">.</span><span style="color:#007">DEFAULT_OBJECT_MODEL_URI</span><span style="color:#333">,</span> <span style="background-color:#e0e0ff">&#34;net.sf.saxon.xpath.XPathFactoryImpl&#34;</span><span style="color:#333">);</span>
+</code></pre></div><p>alebo nastavením systémovej premennej pri spustení:</p>
+<pre tabindex="0"><code>java -Djavax.xml.xpath.XPathFactory:http://java.sun.com/jaxp/xpath/dom=net.sf.saxon.xpath.XPathFactoryImpl
+</code></pre><p>alebo vytvorením súboru <code>jaxp.properties</code> v podadresári <code>lib</code> v adresári, kde je nainštalovaná aktuálne používaná Java:
 (:code:)
 javax.xml.xpath.XPathFactory:http://java.sun.com/jaxp/xpath/dom = net.sf.saxon.xpath.XPathFactoryImpl
 (:codeend:)</p>
-
 <h1 id="odkazy">Odkazy</h1>
-
 <ul>
 <li><a href="http://www.w3.org/TR/xpath">XML Path Language 1.0</a> - špecifikácia na W3C</li>
 <li><a href="http://www.zvon.org/xxl/XPathTutorial/General_cze/examples.html">Tutoriál k XPath</a> na Zvon.org (v češtine)</li>

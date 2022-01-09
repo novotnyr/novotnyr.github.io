@@ -59,93 +59,71 @@
 
 
 <main>
-
-
 <h1 id="ako-editovať-docbook">Ako editovať DocBook?</h1>
-
 <p><a href="http://www.xmlmind.com/xmleditor/">XMLMind XML Editor</a> podporuje tvorbu dokumentov vo formáte DocBook (a tiež DITA či XHTML) vo WYSIWYG podobe. Pre nekomerčné použitie je zadarmo, i keď oproti profesionálnej verzii neobsahuje zabudované nástroje pre transformácie dokumentov.</p>
-
 <h1 id="odkiaľ-získať-xslt-šablóny">Odkiaľ získať XSLT šablóny?</h1>
-
 <p>Najlepšie <a href="http://sourceforge.net/projects/docbook/files/docbook-xsl/">z projektových stránok</a> na SourceForge.</p>
-
 <p>Šablóny stiahnite a rozbaľte do vhodného adresára (napr. <code>C:\Programs\docbook-xslt</code>).</p>
-
 <h1 id="ako-rozbehať-transformácie-s-xsltproc">Ako rozbehať transformácie s <code>xsltproc</code>?</h1>
-
 <p>Knižnica <code>xmlib</code> je pôvodne knižnica pre spracovanie XML určená pôvodne pre prostredie GNOME. Binárky sú k dispozícii pre rozličné platformy. Skompilované knižnice pre Windows sú k dispozícii na serveri <a href="http://www.zlatkovic.com/libxml.en.html">Zlatkovic.com</a>.</p>
-
-<p>XSLT transformácie potrebujú minimálne nasledovné knižnice:
-* zlib-1.2.5.win32.zip
-* iconv-1.9.2.win32.zip
-* libxslt-1.1.26.win32.zip
-* libxml2-2.7.7.win32.zip</p>
-
-<p>Všetky knižnice stiahnime a rozbaľme do vhodného adresára (napr. <code>C:\Programs\libxml</code>, pričom ich treba zhromaždiť v jedinom adresári:
-* iconv.dll
-* libexslt.dll
-* libxml2.dll
-* libxslt.dll
-* zlib1.dll
-* iconv.exe
-* minigzip.exe
-* xmlcatalog.exe
-* xmllint.exe
-* xsltproc.exe</p>
-
+<p>XSLT transformácie potrebujú minimálne nasledovné knižnice:</p>
+<ul>
+<li>zlib-1.2.5.win32.zip</li>
+<li>iconv-1.9.2.win32.zip</li>
+<li>libxslt-1.1.26.win32.zip</li>
+<li>libxml2-2.7.7.win32.zip</li>
+</ul>
+<p>Všetky knižnice stiahnime a rozbaľme do vhodného adresára (napr. <code>C:\Programs\libxml</code>, pričom ich treba zhromaždiť v jedinom adresári:</p>
+<ul>
+<li>iconv.dll</li>
+<li>libexslt.dll</li>
+<li>libxml2.dll</li>
+<li>libxslt.dll</li>
+<li>zlib1.dll</li>
+<li>iconv.exe</li>
+<li>minigzip.exe</li>
+<li>xmlcatalog.exe</li>
+<li>xmllint.exe</li>
+<li>xsltproc.exe</li>
+</ul>
 <p>Adresár s rozbalenými súbormi je vhodné pridať do premennej prostredia <code>PATH</code>.</p>
-
 <h2 id="vykonanie-transformácie">Vykonanie transformácie</h2>
-
 <p>Transformácie možno spustiť pomocou <code>xsltproc</code>:</p>
-
-<pre><code>xsltproc c:\Programs\docbook-xslt\xhtml\docbook.xsl refprirucka.xml &gt; test.xml
-</code></pre>
-
-<h1 id="ako-rozbehať-transformácie-v-jave">Ako rozbehať transformácie v Jave?</h1>
-
+<pre tabindex="0"><code>xsltproc c:\Programs\docbook-xslt\xhtml\docbook.xsl refprirucka.xml &gt; test.xml
+</code></pre><h1 id="ako-rozbehať-transformácie-v-jave">Ako rozbehať transformácie v Jave?</h1>
 <p>V JDK 1.6.0_24 sa nachádza zabudovaný transformátor Apache Xalan vo verzii 2.6.0. Táto verzia je zastaralá a spôsobuje záludné chyby. Namiesto toho silne odporúčame stiahnuť Xalan v poslednej verzii (2.7.1).</p>
-
-<h2 id="stiahnuť-xalan-2-7-1">Stiahnuť Xalan 2.7.1</h2>
-
+<h2 id="stiahnuť-xalan-271">Stiahnuť Xalan 2.7.1</h2>
 <p>Z projektových stránok stiahnite <code>xalan-j_2_7_1-bin-2jars.zip</code>.</p>
-
 <h2 id="použitie-z-príkazového-riadku">Použitie z príkazového riadku</h2>
-
-<pre><code>java -jar xalan.jar -IN c:\Users\novotnyr\Documents\refprirucka.xml -XSL c:\Programs\docbook\xhtml\docbook.xsl -OUT c:\Users\novotnyr\Documents\refprirucka.html
-</code></pre>
-
-<h2 id="použitie-z-java-projektu">Použitie z Java projektu</h2>
-
+<pre tabindex="0"><code>java -jar xalan.jar -IN c:\Users\novotnyr\Documents\refprirucka.xml -XSL c:\Programs\docbook\xhtml\docbook.xsl -OUT c:\Users\novotnyr\Documents\refprirucka.html
+</code></pre><h2 id="použitie-z-java-projektu">Použitie z Java projektu</h2>
 <p>Vytvorte nový Java projekt a do §§build path§§ pridajte <code>xalan.jar</code> a <code>serializer.jar</code>.</p>
-
 <p>Kód pre transformáciu vyzerá nasledovne:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f00;background-color:#faa">import java</span>.<span style="color:#007">io</span>.<span style="color:#007">File</span>;
-<span style="color:#f00;background-color:#faa">import java</span>.<span style="color:#007">io</span>.<span style="color:#007">FileReader</span>;
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">java.io.File</span><span style="color:#333">;</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">java.io.FileReader</span><span style="color:#333">;</span>
 
-<span style="color:#f00;background-color:#faa">import javax</span>.<span style="color:#007">xml</span>.<span style="color:#007">transform</span>.<span style="color:#007">Transformer</span>;
-<span style="color:#f00;background-color:#faa">import javax</span>.<span style="color:#007">xml</span>.<span style="color:#007">transform</span>.<span style="color:#007">TransformerFactory</span>;
-<span style="color:#f00;background-color:#faa">import javax</span>.<span style="color:#007">xml</span>.<span style="color:#007">transform</span>.<span style="color:#007">stream</span>.<span style="color:#007">StreamResult</span>;
-<span style="color:#f00;background-color:#faa">import javax</span>.<span style="color:#007">xml</span>.<span style="color:#007">transform</span>.<span style="color:#007">stream</span>.<span style="color:#007">StreamSource</span>;
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">javax.xml.transform.Transformer</span><span style="color:#333">;</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">javax.xml.transform.TransformerFactory</span><span style="color:#333">;</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">javax.xml.transform.stream.StreamResult</span><span style="color:#333">;</span>
+<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">javax.xml.transform.stream.StreamSource</span><span style="color:#333">;</span>
 
 
-<span style="color:#f00;background-color:#faa">public class </span>Transformator {
-  <span style="color:#f00;background-color:#faa">public static void main</span>(<span style="color:#f00;background-color:#faa">String[] args</span>) <span style="color:#f00;background-color:#faa">throws Exception </span>{
-    <span style="color:#f00;background-color:#faa">StreamSource sablona </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> StreamSource(<span style="color:#289;font-weight:bold">new</span> File(<span style="background-color:#e0e0ff">&#34;c:/Programs/docbook/html/docbook.xsl&#34;</span>));
+<span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">Transformator</span> <span style="color:#333">{</span>
+  <span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">static</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">main</span><span style="color:#333">(</span>String<span style="color:#333">[]</span> args<span style="color:#333">)</span> <span style="color:#289;font-weight:bold">throws</span> Exception <span style="color:#333">{</span>
+    StreamSource sablona <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> StreamSource<span style="color:#333">(</span><span style="color:#289;font-weight:bold">new</span> File<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;c:/Programs/docbook/html/docbook.xsl&#34;</span><span style="color:#333">));</span>
 				
-    <span style="color:#f00;background-color:#faa">StreamSource vstup </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> StreamSource(<span style="color:#289;font-weight:bold">new</span> File(<span style="background-color:#e0e0ff">&#34;c:/Users/rn/Documents/refprirucka.xml&#34;</span>));
-    <span style="color:#f00;background-color:#faa">StreamResult vystup </span><span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> StreamResult(<span style="color:#289;font-weight:bold">new</span> File(<span style="background-color:#e0e0ff">&#34;C:/Users/rn/Documents/refprirucka.html&#34;</span>));
+    StreamSource vstup <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> StreamSource<span style="color:#333">(</span><span style="color:#289;font-weight:bold">new</span> File<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;c:/Users/rn/Documents/refprirucka.xml&#34;</span><span style="color:#333">));</span>
+    StreamResult vystup <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> StreamResult<span style="color:#333">(</span><span style="color:#289;font-weight:bold">new</span> File<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;C:/Users/rn/Documents/refprirucka.html&#34;</span><span style="color:#333">));</span>
 
-    <span style="color:#f00;background-color:#faa">Transformer transformer </span><span style="color:#333">=</span> TransformerFactory.<span style="color:#007">newInstance</span>().<span style="color:#007">newTransformer</span>(sablona);
+    Transformer transformer <span style="color:#333">=</span> TransformerFactory<span style="color:#333">.</span><span style="color:#007">newInstance</span><span style="color:#333">().</span><span style="color:#007">newTransformer</span><span style="color:#333">(</span>sablona<span style="color:#333">);</span>
 
-    transformer.<span style="color:#007">transform</span>(vstup, vystup);
-  }
-}</code></pre></div>
-<h1 id="foreignphrase-je-obalený-medzerami"><code>&lt;foreignphrase&gt;</code> je obalený medzerami!</h1>
-
+    transformer<span style="color:#333">.</span><span style="color:#007">transform</span><span style="color:#333">(</span>vstup<span style="color:#333">,</span> vystup<span style="color:#333">);</span>
+  <span style="color:#333">}</span>
+<span style="color:#333">}</span>
+</code></pre></div><h1 id="foreignphrase-je-obalený-medzerami"><code>&lt;foreignphrase&gt;</code> je obalený medzerami!</h1>
 <p>Vypnite <code>INDENT</code> v XSLT transformátore. Ak máte</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">transformer.<span style="color:#007">setOutputProperty</span>(OutputKeys.<span style="color:#007">INDENT</span>, <span style="background-color:#e0e0ff">&#34;yes&#34;</span>);</code></pre></div>
-<p>rozbije vám to výstup.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">transformer<span style="color:#333">.</span><span style="color:#007">setOutputProperty</span><span style="color:#333">(</span>OutputKeys<span style="color:#333">.</span><span style="color:#007">INDENT</span><span style="color:#333">,</span> <span style="background-color:#e0e0ff">&#34;yes&#34;</span><span style="color:#333">);</span>
+</code></pre></div><p>rozbije vám to výstup.</p>
 
 </main>
 

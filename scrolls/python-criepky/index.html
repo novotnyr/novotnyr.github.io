@@ -59,101 +59,59 @@
 
 
 <main>
-
-
 <h1 id="kalkulačka">Kalkulačka</h1>
-
-<pre><code>2 + 2
-</code></pre>
-
-<pre><code>4
-</code></pre>
-
-<h1 id="kalkulačka-celočíselné-delenie">Kalkulačka - celočíselné delenie</h1>
-
-<pre><code>3 / 2
-</code></pre>
-
-<pre><code>1
-</code></pre>
-
-<h1 id="kalkulačka-delenie-reálnych-čísiel">Kalkulačka - delenie reálnych čísiel</h1>
-
-<pre><code>3.0 / 2
-</code></pre>
-
-<pre><code>1.5
-</code></pre>
-
-<h1 id="kalkulačka-mocnina">Kalkulačka - mocnina</h1>
-
-<pre><code>10 ** 2
-</code></pre>
-
-<pre><code>pow(10, 2)
-</code></pre>
-
-<pre><code>100
-</code></pre>
-
-<h1 id="maximum-čísiel">Maximum čísiel</h1>
-
-<pre><code>max(4, 5, 3, 5, 7, 20)
-</code></pre>
-
-<pre><code>20
-</code></pre>
-
-<h1 id="minimum-čísiel">Minimum čísiel</h1>
-
-<pre><code>min(4, 5, 3, 5, 7, 20)
-</code></pre>
-
-<pre><code>20
-</code></pre>
-
-<h1 id="premenné">Premenné</h1>
-
+<pre tabindex="0"><code>2 + 2
+</code></pre><pre tabindex="0"><code>4
+</code></pre><h1 id="kalkulačka---celočíselné-delenie">Kalkulačka - celočíselné delenie</h1>
+<pre tabindex="0"><code>3 / 2
+</code></pre><pre tabindex="0"><code>1
+</code></pre><h1 id="kalkulačka---delenie-reálnych-čísiel">Kalkulačka - delenie reálnych čísiel</h1>
+<pre tabindex="0"><code>3.0 / 2
+</code></pre><pre tabindex="0"><code>1.5
+</code></pre><h1 id="kalkulačka---mocnina">Kalkulačka - mocnina</h1>
+<pre tabindex="0"><code>10 ** 2
+</code></pre><pre tabindex="0"><code>pow(10, 2)
+</code></pre><pre tabindex="0"><code>100
+</code></pre><h1 id="maximum-čísiel">Maximum čísiel</h1>
+<pre tabindex="0"><code>max(4, 5, 3, 5, 7, 20)
+</code></pre><pre tabindex="0"><code>20
+</code></pre><h1 id="minimum-čísiel">Minimum čísiel</h1>
+<pre tabindex="0"><code>min(4, 5, 3, 5, 7, 20)
+</code></pre><pre tabindex="0"><code>20
+</code></pre><h1 id="premenné">Premenné</h1>
 <p>Python je dynamicky typovaný: dátové typy netreba uvádzať, každá premenná má však exaktný typ</p>
-
-<pre><code>dph = 19
+<pre tabindex="0"><code>dph = 19
 1000 * (dph / 100.0)
-</code></pre>
-
-<pre><code>190
-</code></pre>
-
-<h1 id="zoznamy">Zoznamy</h1>
-
+</code></pre><pre tabindex="0"><code>190
+</code></pre><h1 id="zoznamy">Zoznamy</h1>
 <p>Zoznam je kontajner/kolekcia viacerých prvkov v danom poradí.</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">parne_cisla <span style="color:#333">=</span> [<span style="color:#66f;font-weight:bold">2</span>, <span style="color:#66f;font-weight:bold">4</span>, <span style="color:#66f;font-weight:bold">6</span>, <span style="color:#66f;font-weight:bold">8</span>, <span style="color:#66f;font-weight:bold">10</span>]</code></pre></div>
-<h2 id="súčet-prvkov-v-zozname">Súčet prvkov v zozname</h2>
-
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">parne_cisla <span style="color:#333">=</span> [<span style="color:#66f;font-weight:bold">2</span>, <span style="color:#66f;font-weight:bold">4</span>, <span style="color:#66f;font-weight:bold">6</span>, <span style="color:#66f;font-weight:bold">8</span>, <span style="color:#66f;font-weight:bold">10</span>]
+</code></pre></div><h2 id="súčet-prvkov-v-zozname">Súčet prvkov v zozname</h2>
 <p>Funkcia <code>sum()</code> berie zoznam prvkov.</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#072">sum</span>([<span style="color:#66f;font-weight:bold">2</span>, <span style="color:#66f;font-weight:bold">4</span>, <span style="color:#66f;font-weight:bold">6</span>, <span style="color:#66f;font-weight:bold">8</span>, <span style="color:#66f;font-weight:bold">10</span>])</code></pre></div><div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">parne_cisla <span style="color:#333">=</span> [<span style="color:#66f;font-weight:bold">2</span>, <span style="color:#66f;font-weight:bold">4</span>, <span style="color:#66f;font-weight:bold">6</span>, <span style="color:#66f;font-weight:bold">8</span>, <span style="color:#66f;font-weight:bold">10</span>]
-<span style="color:#072">sum</span>(parne_cisla)</code></pre></div>
-<pre><code>30
-</code></pre>
-
-<h2 id="dĺžka-zoznamu">Dĺžka zoznamu</h2>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">parne_cisla <span style="color:#333">=</span> [<span style="color:#66f;font-weight:bold">2</span>, <span style="color:#66f;font-weight:bold">4</span>, <span style="color:#66f;font-weight:bold">6</span>, <span style="color:#66f;font-weight:bold">8</span>, <span style="color:#66f;font-weight:bold">10</span>]
-<span style="color:#072">len</span>(parne_cisla)</code></pre></div>
-<pre><code>5
-</code></pre>
-
-<h2 id="párujúca-funkcia-zip">Párujúca funkcia <code>zip()</code></h2>
-
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#072">sum</span>([<span style="color:#66f;font-weight:bold">2</span>, <span style="color:#66f;font-weight:bold">4</span>, <span style="color:#66f;font-weight:bold">6</span>, <span style="color:#66f;font-weight:bold">8</span>, <span style="color:#66f;font-weight:bold">10</span>])
+</code></pre></div><div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">parne_cisla <span style="color:#333">=</span> [<span style="color:#66f;font-weight:bold">2</span>, <span style="color:#66f;font-weight:bold">4</span>, <span style="color:#66f;font-weight:bold">6</span>, <span style="color:#66f;font-weight:bold">8</span>, <span style="color:#66f;font-weight:bold">10</span>]
+<span style="color:#072">sum</span>(parne_cisla)
+</code></pre></div><pre tabindex="0"><code>30
+</code></pre><h2 id="dĺžka-zoznamu">Dĺžka zoznamu</h2>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">parne_cisla <span style="color:#333">=</span> [<span style="color:#66f;font-weight:bold">2</span>, <span style="color:#66f;font-weight:bold">4</span>, <span style="color:#66f;font-weight:bold">6</span>, <span style="color:#66f;font-weight:bold">8</span>, <span style="color:#66f;font-weight:bold">10</span>]
+<span style="color:#072">len</span>(parne_cisla)
+</code></pre></div><pre tabindex="0"><code>5
+</code></pre><h2 id="párujúca-funkcia-zip">Párujúca funkcia <code>zip()</code></h2>
 <p>Funkcia <code>[zip()](http://docs.python.org/library/functions.html#zip )</code> páruje elementy z viacerých zoznamov. Vráti zoznam, ktorého <em>i</em>-ty prvok je zoznam obsahujúci <em>i</em>-te prvky zo zoznamov v parametri:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">vektor1 <span style="color:#333">=</span> [<span style="color:#66f;font-weight:bold">5</span>, <span style="color:#66f;font-weight:bold">20</span>]
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">vektor1 <span style="color:#333">=</span> [<span style="color:#66f;font-weight:bold">5</span>, <span style="color:#66f;font-weight:bold">20</span>]
 vektor2 <span style="color:#333">=</span> [<span style="color:#66f;font-weight:bold">15</span>, <span style="color:#66f;font-weight:bold">2</span>]
-<span style="color:#289;font-weight:bold">print</span> <span style="color:#072">zip</span>(vektor1, vektor2)</code></pre></div><div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">[[<span style="color:#66f;font-weight:bold">5</span>, <span style="color:#66f;font-weight:bold">15</span>], [<span style="color:#66f;font-weight:bold">20</span>, <span style="color:#66f;font-weight:bold">2</span>]]</code></pre></div>
-<h1 id="vektorový-súčet">Vektorový súčet</h1>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">vec1 <span style="color:#333">=</span> [<span style="color:#66f;font-weight:bold">5</span>, <span style="color:#66f;font-weight:bold">20</span>]
+<span style="color:#072">print</span> <span style="color:#072">zip</span>(vektor1, vektor2)
+</code></pre></div><div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">[[<span style="color:#66f;font-weight:bold">5</span>, <span style="color:#66f;font-weight:bold">15</span>], [<span style="color:#66f;font-weight:bold">20</span>, <span style="color:#66f;font-weight:bold">2</span>]]
+</code></pre></div><h1 id="vektorový-súčet">Vektorový súčet</h1>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">vec1 <span style="color:#333">=</span> [<span style="color:#66f;font-weight:bold">5</span>, <span style="color:#66f;font-weight:bold">20</span>]
 vec2 <span style="color:#333">=</span> [<span style="color:#66f;font-weight:bold">15</span>, <span style="color:#66f;font-weight:bold">2</span>]
 
-<span style="color:#289;font-weight:bold">print</span> [x <span style="color:#333">+</span> y <span style="color:#289;font-weight:bold">for</span> x, y <span style="color:#000;font-weight:bold">in</span> <span style="color:#072">zip</span>(vec1, vec2)];
-<span style="color:#289;font-weight:bold">print</span> <span style="color:#072">map</span>(<span style="color:#072">sum</span>, <span style="color:#072">zip</span>(vec1, vec2))
-(:pyend:)</code></pre></div>
+<span style="color:#072">print</span> [x <span style="color:#333">+</span> y <span style="color:#289;font-weight:bold">for</span> x, y <span style="color:#000;font-weight:bold">in</span> <span style="color:#072">zip</span>(vec1, vec2)];
+<span style="color:#072">print</span> <span style="color:#072">map</span>(<span style="color:#072">sum</span>, <span style="color:#072">zip</span>(vec1, vec2))
+(:pyend:)
+
+
+</code></pre></div>
 </main>
 
     <footer>

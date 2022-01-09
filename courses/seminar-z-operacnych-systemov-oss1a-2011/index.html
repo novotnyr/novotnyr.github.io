@@ -59,22 +59,18 @@
 
 
 <main>
-
-
 <ul>
-<li><p>Semester: zimný</p></li>
-
-<li><p>Rok: 2011</p></li>
+<li>
+<p>Semester: zimný</p>
+</li>
+<li>
+<p>Rok: 2011</p>
+</li>
 </ul>
-
 <h1 id="zadania">Zadania</h1>
-
 <p>Zadanie je potrebné poslať mailom do 6. 2. 2012 23:59.</p>
-
 <h2 id="zadania-k-powershellu">Zadania k Powershellu</h2>
-
 <p>Vytvorte skript v PowerShelli, ktorý vytvorí sumárnu informáciu o aktuálnom stroji. V sumárnej informácii uveďte nasledovné informácie.</p>
-
 <ul>
 <li>Názov aktuálneho stroja</li>
 <li>Veľkosť nainštalovanej pamäte RAM</li>
@@ -85,74 +81,52 @@
 <li>Zoznam používateľov aktuálneho stroja</li>
 <li>Pre každého používateľa veľkosť jeho domovského adresára a cestu k nemu.</li>
 </ul>
-
 <p>V skripte deklarujte vlastnú triedu <code>LocalStationInfo</code> s vhodne zvolenými inštančnými premennými.</p>
-
 <p>Vytvorte cmdlet <code>GetLocalStationInfo</code>, ktorý prijme z rúry inštanciu LocalStationInfo a do rúry pošle prehľadne naformátované informácie o aktuálnom stroji. Informácia nech je reprezentovaná v používateľsky prítulnom HTML súbore.</p>
-
 <p>Pripravte powershellovský skript, ktorý vezme ako parameter názov súboru. Po spustení skriptu nech sa do zadaného súboru zapíše uvedená HTML správa o aktuálnom stroji.</p>
-
 <h2 id="zadanie-k-shell-scriptingu">Zadanie k shell scriptingu</h2>
-
 <p>Vytvorte sadu shell skriptov, ktoré realizujú zálohovanie ľubovoľného adresára na vzdialené úložisko v duchu nástroja <code>rsync</code></p>
-
 <p>Zvoľte jeden vhodný typ vzdialeného úložiska, inšpiráciou môže byť:</p>
-
 <ul>
 <li>HTTP upload</li>
 <li>FTP</li>
 <li>SCP</li>
 </ul>
-
 <p>Odporúča sa použiť HTTP upload, pričom na strane servera vytvorte jednoduchý PHP skript a na strane shellskriptu využite nástroj <code>cURL</code>.</p>
-
 <p>Každá záloha adresára nech je vo vzdialenom úložisku identifikovaná časovou značkou, ktorá je jednoznačná.</p>
-
 <p>Nástroj nech podporuje nasledovné operácie:</p>
-
 <ul>
-<li>odzálohovanie ľubovoľného adresára zadaného z parametra do úložiska
-<br /></li>
-</ul>
-
+<li>
+<p>odzálohovanie ľubovoľného adresára zadaného z parametra do úložiska</p>
 <p>Odporúča sa využiť niektorý z komprimačných nástrojov, napr. tradičnú kombinácu <code>tar</code> a <code>gz</code>.</p>
-
-<pre><code>backup /home/novotnyr
-</code></pre>
-
-<ul>
-<li><p>výpis všetkých záloh na vzdialenom úložisku</p>
-
-<pre><code>$&gt; retrieve
+</li>
+</ul>
+<pre tabindex="0"><code>backup /home/novotnyr
+</code></pre><ul>
+<li>výpis všetkých záloh na vzdialenom úložisku</li>
+</ul>
+<pre tabindex="0"><code>$&gt; retrieve
 Zoznam zaloh:
 2011/10/10
 2011/12/1
 2012/1/2
-</code></pre></li>
-
-<li><p>obnovenie zálohy na základe zadanej časovej značky do zadaného adresára</p>
-
-<pre><code>$&gt; restore 2011/10/10 /home/tmp/backup
-</code></pre>
-
-<p>Záloha musí byť obnovená do identického stavu, v akom sa nachádzala pri zálohovaní, čo platí pri obnove súborov do existujúceho adresára. Ak používateľ obnovuje do existujúceho adresára, vyžadujte od neho potvrdenie (použite <code>read</code> alebo vyžadujte špeciálny parameter)).</p></li>
-
-<li><p>zistenie zoznamu rozdielnych súborov (pribudnutých, odbudnutých, zmenených) medzi dvoma zálohami.</p>
-
-<pre><code>$&gt; difference 2011/10/10 2012/1/2
+</code></pre><ul>
+<li>obnovenie zálohy na základe zadanej časovej značky do zadaného adresára</li>
+</ul>
+<pre tabindex="0"><code>$&gt; restore 2011/10/10 /home/tmp/backup
+</code></pre><p>Záloha musí byť obnovená do identického stavu, v akom sa nachádzala pri zálohovaní, čo platí pri obnove súborov do existujúceho adresára. Ak používateľ obnovuje do existujúceho adresára, vyžadujte od neho potvrdenie (použite <code>read</code> alebo vyžadujte špeciálny parameter)).</p>
+<ul>
+<li>zistenie zoznamu rozdielnych súborov (pribudnutých, odbudnutých, zmenených) medzi dvoma zálohami.</li>
+</ul>
+<pre tabindex="0"><code>$&gt; difference 2011/10/10 2012/1/2
 + index.html
 + wiki/wiki.html
 - chata.jpg
 - ozierka.jpg
 1.  changelog
 1.  zoznamuloh.jpg
-</code></pre>
-
-<p>Jedno z riešení odošle na server spolu s komprimovaným adresárom aj súbor obsahujúci cesty pre každý zo zoznamu súborov.</p></li>
-</ul>
-
+</code></pre><p>Jedno z riešení odošle na server spolu s komprimovaným adresárom aj súbor obsahujúci cesty pre každý zo zoznamu súborov.</p>
 <h3 id="všeobecné-zásady">Všeobecné zásady</h3>
-
 <p>Kód nech dodržuje všetky zásady POSIXového shellu. Vyhnite sa bashismom a podobným nekompatibilitám. Skripty testujte na shelli <code>dash</code> alebo <code>ash</code>, ktorý je prítomný na serveri <code>s.ics.upjs.sk</code>, uveďte do shebangu <code>/bin/dash</code>) a na debianovských distribúciách, alternatívne využite projekt <code>busybox</code>, alebo niektorý z mikrodistribúcií (napr. TinyCore Linux).</p>
 
 </main>
