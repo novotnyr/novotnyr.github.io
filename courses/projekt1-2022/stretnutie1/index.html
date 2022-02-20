@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Stretnutie 1 | robonovotny</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    <link rel="stylesheet" href="https://novotnyr.github.io/asciidoctor.css">
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.css" integrity="sha384-D+9gmBxUQogRLqvARvNLmA9hS2x//eK1FhVb9PiU86gmcrBrJAQT8okdJ4LMp2uv" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.js" integrity="sha384-483A6DwYfKeDa0Q52fJmxFXkcPCFfnXMoXblOkJ4JcA8zATN6Tm78UNL72AKk+0O" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/contrib/auto-render.min.js" integrity="sha384-yACMu8JWxKzSp/C1YV86pzGiQ/l1YUfE8oPuahJQxzehAjEt2GiQuy/BIvl9KyeF" crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body);
+        });
+    </script>
+
+<header>
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <nav>
+    <ul>
+      
+      
+      <li class="pull-left ">
+        <a href="https://novotnyr.github.io/">/home/robonovotny</a>
+      </li>
+      
+
+      
+
+    </ul>
+  </nav>
+</header>
+
+  </head>
+
+  <body>
+    <br/>
+
+<div class="article-meta">
+<h1><span class="title">Stretnutie 1</span></h1>
+
+<h2 class="date">2022/02/17</h2>
+<p class="terms">
+  
+  
+  
+  
+  
+</p>
+</div>
+
+
+
+<main>
+<div class="sect1">
+<h2 id="_gitlab">GitLab</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>GitLab je mnohoúčelová platforma pre:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>verzovací nástroj</strong> pre <a href="https://git-scm.com/">Git</a>, kde si tím môže zdieľať zdrojové kódy projektov</p>
+</li>
+<li>
+<p>sledovanie incidentov — <strong>issue tracking</strong> — úlohy/chyby/problémy, ktoré treba v projekte vyriešiť</p>
+</li>
+<li>
+<p>continuous integration / continuous delivery (<strong>CI/CD</strong>) — automatizované nasadzovanie projektov na servery a ich doručovanie zákazníkovi</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tbody><tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+Každý účastník má login a heslo do prírodovedeckého Gitlabu na <a href="https://gitlab.science.upjs.sk/" class="bare">https://gitlab.science.upjs.sk/</a>.
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="sect2">
+<h3 id="_zakladanie_projektov">Zakladanie projektov</h3>
+<div class="paragraph">
+<p>Každý účastník má svoju vlastnú skupinu (<em>group</em>), teda priestor, v ktorom si môže do vôle navytvárať vlastné projekty.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tbody><tr>
+<td class="icon">
+<div class="title">Tip</div>
+</td>
+<td class="content">
+Podrobnosti uvádza <a href="https://docs.gitlab.com/ee/user/project/working_with_projects.html#create-a-project">dokumentácia GitLabu</a>.
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="exampleblock">
+<div class="title">Example 1. Osobné projekty</div>
+<div class="content">
+<div class="paragraph">
+<p>Používateľ <code>novotnyr</code> má vlastnú skupinu <code>novotnyr</code> a môže si vytvoriť vzorový osobný projekt (<em>personal project</em>) <a href="https://gitlab.science.upjs.sk/novotnyr/sandbox" class="bare">https://gitlab.science.upjs.sk/novotnyr/sandbox</a></p>
+</div>
+<div class="paragraph">
+<p>Do tohto projektu nemá prístup nik, okrem zakladateľa.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_adresa_projektu">Adresa projektu</h3>
+<div class="paragraph">
+<p>Projekt má svoje sídlo v GitLabe a zároveň cestu k repozitáru.</p>
+</div>
+<div class="exampleblock">
+<div class="content">
+<div class="paragraph">
+<p>Ukážkový osobný projekt:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Sídlo v GitLabe</dt>
+<dd>
+<p><a href="https://gitlab.science.upjs.sk/novotnyr/sandbox" class="bare">https://gitlab.science.upjs.sk/novotnyr/sandbox</a></p>
+</dd>
+<dt class="hdlist1">Cesta k repozitáru</dt>
+<dd>
+<p><a href="https://gitlab.science.upjs.sk/novotnyr/sandbox.git" class="bare">https://gitlab.science.upjs.sk/novotnyr/sandbox.git</a></p>
+</dd>
+</dl>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_správcovia_balíčkov">Správcovia balíčkov</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Každý rozumný operačný systém má svojho správcu balíčkov (<em>package manager</em>).</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tbody><tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+Správca balíčkov automatizuje inštaláciu softvéru.
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="paragraph">
+<p>Namiesto hľadania projektového webu, sťahovania inštalačky, klikania <em>Next</em> v sprievodcovi sta použije jediný príkaz, ktorý nainštaluje celý projekt.</p>
+</div>
+<div class="paragraph">
+<p>Špeciálne je to vidno pri závislostiach: ak napríklad Tomcat potrebuje Javu, pri požiadavke na inštaláciu Tomcatu sa stiahne a nainštaluje aj Java.</p>
+</div>
+<div class="paragraph">
+<p>Operačné systémy majú svoje obľúbené inštalácie:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Linux</dt>
+<dd>
+<p>apt, yum, pacman</p>
+</dd>
+<dt class="hdlist1">Windows</dt>
+<dd>
+<p><a href="https://chocolatey.org/">Chocolatey</a></p>
+</dd>
+<dt class="hdlist1">MacOS</dt>
+<dd>
+<p><a href="https://brew.sh/">Homebrew</a></p>
+</dd>
+</dl>
+</div>
+<div class="sect2">
+<h3 id="_chocolatey">Chocolatey</h3>
+<div class="paragraph">
+<p>Chocolatey umožňuje na Windowse nainštalovať obľúbené balíčky.</p>
+</div>
+<div class="paragraph">
+<p>Nainštalujte ho podľa <a href="https://chocolatey.org/install#individual">návodu</a> kde sa využíva PowerShell.</p>
+</div>
+<div class="paragraph">
+<p>Napr. <code>git</code> možno nainštalovať:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>choco install git</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_intellij_idea">IntelliJ IDEA</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>IntelliJ IDEA je najpopulárnejšie prostredie pre vývoj aplikácií pre Java platformu.</p>
+</div>
+<div class="paragraph">
+<p>K dispozícii sú dve verzie:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>bezplatná komunitná edícia (<em>Community Edition</em>)</p>
+</li>
+<li>
+<p>platená edícia s pokročilými vlastnosťami (<em>Ultimate Edition</em>)</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tbody><tr>
+<td class="icon">
+<div class="title">Tip</div>
+</td>
+<td class="content">
+Študenti majú nárok na bezplatný prístup k <em>Ultimate Edition</em>. Podrobnosti sú v <a href="https://www.jetbrains.com/community/education/#students">licenčných podmienkach</a>.
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="paragraph">
+<p>Nainštalujte:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>choco install intellijidea-community</pre>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_inštalácia_git">Inštalácia <code>git</code></h3>
+<div class="paragraph">
+<p>Git možno na lokálny stroj nainštalovať:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>pomocou <strong>správcu balíčkov</strong></p>
+</li>
+<li>
+<p>ako lokálnu inštaláciu v IntelliJ IDEA. V nastaveniach zvoľte v strome <em>Version Control</em> &gt; <em>Git</em> a doinštalujte Git.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_inštalácia_javy">Inštalácia Javy</h3>
+<div class="paragraph">
+<p>Git možno na lokálny stroj nainštalovať:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>pomocou <strong>správcu balíčkov</strong></p>
+</li>
+<li>
+<p>ako lokálnu inštaláciu v IntelliJ IDEA. Pri vytváraní projektu zvoľte z rozbaľovacieho menu <em>Project SDK</em> možnosť <em>Download JDK</em> a stiahnite príslušnú verziu.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_vytvorenie_projektu_a_prepojenie_s_gitlabom">Vytvorenie projektu a prepojenie s GitLabom</h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Vytvorte nový projekt</p>
+</li>
+<li>
+<p>Z menu <strong>VCS</strong> zvoľte <em>Enable Version Control Integration</em> a vyberte Git</p>
+</li>
+<li>
+<p>Komitnite zmeny: <code>Commit</code> zasiela zmeny do lokálneho repozitára.</p>
+</li>
+<li>
+<p>Pomocou <code>Push</code> dostanete zmeny z lokálneho repozitára na vzdialený repozitár. Pomocou <em>Define Remote</em> definujte vzdialené úložisko na GitLabe. Uveďte cestu k repozitáriu (tú s príponou <code>git</code>)</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Sledujte, ako sa zmeny objavili na serveri pomocou prehliadača na webe projektového GitLabu.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tbody><tr>
+<td class="icon">
+<div class="title">Tip</div>
+</td>
+<td class="content">
+Nacvičte si prácu s Gitom v IntelliJ IDEA podľa <a href="https://www.jetbrains.com/help/idea/using-git-integration.html">manuálu</a>.
+</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_dokumentácia_projektu">Dokumentácia projektu</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Projektová dokumentácia — referenčná príručka, súbory README, kostra webu — sa vytvára v jednom z viacerých textových formátov.</p>
+</div>
+<div class="paragraph">
+<p>Výhodou je:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>žiadna potreba pre špeciálny editor - tvorí sa v textovom editore</p>
+</li>
+<li>
+<p>zjednodušená syntax — netreba ovládať HTML</p>
+</li>
+<li>
+<p>jednoduchá verzovanosť v Gite</p>
+</li>
+<li>
+<p>možnosť generovať výstupy vo viacerých formátoch: HTML, PDF, ePub</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Typické technológie:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://daringfireball.net/projects/markdown/">Markdown</a> — minimalistický zápis ako v e-mailoch</p>
+</li>
+<li>
+<p><a href="https://docs.asciidoctor.org/asciidoc/latest/syntax-quick-reference/">AsciiDoc</a> — podobný štýl ako Markdown, mnoho pokročilých vlastností, slúži na písanie rozsiahlych dokumentácií</p>
+</li>
+</ul>
+</div>
+<div class="sect2">
+<h3 id="_asciidoc">Asciidoc</h3>
+<div class="paragraph">
+<p>AsciiDoc je formát s textovým zápisom pre rozsiahle formátované dokumenty.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tbody><tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+Pozrite si syntax v <a href="https://docs.asciidoctor.org/asciidoc/latest/syntax-quick-reference/">ťaháku</a> na projektovom webe.
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tbody><tr>
+<td class="icon">
+<div class="title">Tip</div>
+</td>
+<td class="content">
+Doinštalujte si do IntelliJ IDEA plugin pre AsciiDoc. Použite <em>Preferences</em> &gt; <em>Plugins</em> &gt; Asciidoc. Získate podporu pre náhľad v HTML, zvýrazňovanie syntaxe a klávesové skratky.
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Vytvorte si v projekte súbor <code>README.adoc</code></p>
+</li>
+<li>
+<p>Komitnite a pushnite do projektu.</p>
+</li>
+<li>
+<p>Sledujte, ako vám GitLab automaticky vyrenderuje README.adoc do HTML podoby.</p>
+</li>
+</ol>
+</div>
+<div class="admonitionblock note">
+<table>
+<tbody><tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+Neskôr si ukážeme, ako je možné pomocou AsciiDoc vytvárať celý projektový web, a to automaticky po každom pushnutí.
+</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+</div>
+</div>
+
+</main>
+
+    <footer>
+      
+<script>
+(function() {
+  function center_el(tagName) {
+    var tags = document.getElementsByTagName(tagName), i, tag;
+    for (i = 0; i < tags.length; i++) {
+      tag = tags[i];
+      var parent = tag.parentElement;
+      
+      if (parent.childNodes.length === 1) {
+        
+        if (parent.nodeName === 'A') {
+          parent = parent.parentElement;
+          if (parent.childNodes.length != 1) continue;
+        }
+        if (parent.nodeName === 'P') parent.style.textAlign = 'center';
+      }
+    }
+  }
+  var tagNames = ['img', 'embed', 'object'];
+  for (var i = 0; i < tagNames.length; i++) {
+    center_el(tagNames[i]);
+  }
+})();
+</script>
+
+      
+    </footer>
+  </body>
+</html>
+
