@@ -63,23 +63,23 @@
 <p><strong>Gradle</strong> je rokmi overený nástroj na zostavovanie projektov v Java ekosystéme. Samotné príkazy pre zostavenie boli od nepamätí písané v jazyku Gradle. Novým hitom je však Kotlin! Ukážme si, ako môžeme využiť tento jazyk na zostavovanie projektov.</p>
 <h2 id="prvý-gradlovský-skript-v-kotline">Prvý gradlovský skript v Kotline</h2>
 <p>Predpokladajme, že máme k dispozícii posledný Gradle, napríklad 5.5.1. V nejakom adresári si založme kotlinovský <em>build script</em>:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">touch build.gradle.kts
-</code></pre></div><p>Vytvorme prvý <strong>task</strong>, teda príkaz, ktorý sa bude dať pomocou Gradle vykonať. Task je podobný <em>targetu</em> z nástroja <code>make</code>, či <code>ant</code>.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">tasks {
-    register(<span style="background-color:#e0e0ff">&#34;hello&#34;</span>) {
-        doLast {
-            println(<span style="background-color:#e0e0ff">&#34;Hello world&#34;</span>)
-        }
-    }
-}
-</code></pre></div><ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>touch build.gradle.kts
+</span></span></code></pre></div><p>Vytvorme prvý <strong>task</strong>, teda príkaz, ktorý sa bude dať pomocou Gradle vykonať. Task je podobný <em>targetu</em> z nástroja <code>make</code>, či <code>ant</code>.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span>tasks {
+</span></span><span style="display:flex;"><span>    register(<span style="background-color:#e0e0ff">&#34;hello&#34;</span>) {
+</span></span><span style="display:flex;"><span>        doLast {
+</span></span><span style="display:flex;"><span>            println(<span style="background-color:#e0e0ff">&#34;Hello world&#34;</span>)
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><ul>
 <li>Blok <code>tasks</code> obsahuje deklarácie <em>taskov</em>.</li>
 <li>Sekcia <code>register</code> (v skutočnosti volanie metódy <code>register</code>) zaregistruje nový vlastný task, ktorý si nazveme <code>hello</code>.</li>
 <li>Sekcia <code>doLast</code> určuje príkazy, ktoré sa vykonajú, keď sa spustí náš task <code>hello</code>.</li>
 </ul>
 <p>Task môžeme spustiť:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">gradle hello
-</code></pre></div><p>Uvidíme výsledok:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>gradle hello
+</span></span></code></pre></div><p>Uvidíme výsledok:</p>
 <pre tabindex="0"><code>&gt; Task :hello
 Hello world
 
@@ -90,40 +90,40 @@ BUILD SUCCESSFUL in 546ms
 </code></pre><p>Následne uvidíme len samotnú správu.</p>
 <h2 id="elegantný-pomenovaný-task">Elegantný pomenovaný task</h2>
 <p>Task môžeme zaradiť do logickej skupiny (<strong>group</strong>) a môžeme mu priradiť popis (<strong>description</strong>):</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">tasks {
-    register(<span style="background-color:#e0e0ff">&#34;hello&#34;</span>) {
-        group = <span style="background-color:#e0e0ff">&#34;Greetings&#34;</span>
-        description = <span style="background-color:#e0e0ff">&#34;Say hello&#34;</span>
-        doLast {
-            println(<span style="background-color:#e0e0ff">&#34;Hello world&#34;</span>)
-        }
-    }
-}
-</code></pre></div><p>Ak spustíme task, ktorý nám vypíše zoznam dostupných taskov, uvidíme elegantný popis:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">gradle -q tasks
-</code></pre></div><p>Výsledok bude obsahovať (niekde uprostred):</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span>tasks {
+</span></span><span style="display:flex;"><span>    register(<span style="background-color:#e0e0ff">&#34;hello&#34;</span>) {
+</span></span><span style="display:flex;"><span>        group = <span style="background-color:#e0e0ff">&#34;Greetings&#34;</span>
+</span></span><span style="display:flex;"><span>        description = <span style="background-color:#e0e0ff">&#34;Say hello&#34;</span>
+</span></span><span style="display:flex;"><span>        doLast {
+</span></span><span style="display:flex;"><span>            println(<span style="background-color:#e0e0ff">&#34;Hello world&#34;</span>)
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Ak spustíme task, ktorý nám vypíše zoznam dostupných taskov, uvidíme elegantný popis:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>gradle -q tasks
+</span></span></code></pre></div><p>Výsledok bude obsahovať (niekde uprostred):</p>
 <pre tabindex="0"><code>Greetings tasks
 ---------------
 hello - Say hello
 </code></pre><h1 id="tasky-založené-na-existujúcich-taskoch">Tasky založené na existujúcich taskoch</h1>
 <p>Niekedy máme šťastie a vieme využiť tasky, ktoré sú k dispozícii buď automaticky, alebo z niektorých pluginov. Gradle ponúka <a href="https://docs.gradle.org/current/dsl/#N10437">viacero zabudovaných taskov</a>, napr. task <code>Exec</code> na spúšťanie programov.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">tasks {
-    register&lt;Exec&gt;(<span style="background-color:#e0e0ff">&#34;workdir&#34;</span>) {
-        executable = <span style="background-color:#e0e0ff">&#34;pwd&#34;</span>
-    }
-}
-</code></pre></div><p>V tomto prípade sme zaregistrovali task s názvom <code>workdir</code>, ktorý využíva zabudovanú predlohu (<em>task type</em>) s názvom <code>Exec</code>. Vysvetlenie tohto zápisu je zatiaľ zložité, ale povedzme si len, že predloha <em>task type</em> sa udáva do lomených zátvoriek.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span>tasks {
+</span></span><span style="display:flex;"><span>    register&lt;Exec&gt;(<span style="background-color:#e0e0ff">&#34;workdir&#34;</span>) {
+</span></span><span style="display:flex;"><span>        executable = <span style="background-color:#e0e0ff">&#34;pwd&#34;</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>V tomto prípade sme zaregistrovali task s názvom <code>workdir</code>, ktorý využíva zabudovanú predlohu (<em>task type</em>) s názvom <code>Exec</code>. Vysvetlenie tohto zápisu je zatiaľ zložité, ale povedzme si len, že predloha <em>task type</em> sa udáva do lomených zátvoriek.</p>
 <p>V rámci tasku sme nastavili vlastnosť (<em>property</em>) <code>executable</code>, ktorá berie reťazec s názvom systémového programu.</p>
 <h1 id="kotlin-oop-a-gradle">Kotlin, OOP a Gradle</h1>
 <p>Kotlin je objektovo orientovaný jazyk, presne tak ako Java. Môžeme si teda vytvárať vlastné tasky ako objekty (inštancie) danej triedy.</p>
 <p>Deklarujme si task ako triedu<code>HelloTask</code>:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">open</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">HelloTask</span> : DefaultTask() {
-    <span style="color:#555;font-weight:bold">@TaskAction</span>
-    <span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">sayHello</span>() {
-        println(<span style="background-color:#e0e0ff">&#34;Hello world&#34;</span>)
-    }
-}
-</code></pre></div><p>Vidíme viacero vecí:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">open</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">HelloTask</span> : DefaultTask() {
+</span></span><span style="display:flex;"><span>    <span style="color:#555;font-weight:bold">@TaskAction</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">sayHello</span>() {
+</span></span><span style="display:flex;"><span>        println(<span style="background-color:#e0e0ff">&#34;Hello world&#34;</span>)
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Vidíme viacero vecí:</p>
 <ul>
 <li>
 <p>Trieda <code>HelloTask</code> dedí od zabudovanej triedy <code>org.gradle.api.DefaultTask</code>. Keďže náš program je gradleovský <em>build file</em>, balíček <code>org.gradle.api</code> nemusíme písať.</p>
@@ -143,60 +143,60 @@ hello - Say hello
 </ul>
 </li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">tasks {
-    register(<span style="background-color:#e0e0ff">&#34;hello&#34;</span>, HelloTask<span style="color:#333">::</span><span style="color:#289;font-weight:bold">class</span>)
-}
-</code></pre></div><p>Funkciu zaregistrujeme pomocou názvu <code>hello</code> a odkazom na triedu tasku. Konštrukcia <code>::class</code> reprezentuje mechanizmus známy z Javy, kde je uvádzaný cez dvojbodku.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span>tasks {
+</span></span><span style="display:flex;"><span>    register(<span style="background-color:#e0e0ff">&#34;hello&#34;</span>, HelloTask<span style="color:#333">::</span><span style="color:#289;font-weight:bold">class</span>)
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Funkciu zaregistrujeme pomocou názvu <code>hello</code> a odkazom na triedu tasku. Konštrukcia <code>::class</code> reprezentuje mechanizmus známy z Javy, kde je uvádzaný cez dvojbodku.</p>
 <p>Task môžeme spustiť obvyklým spôsobom cez <code>gradle hello</code>!</p>
 <p>## Registrácia ustáleným spôsobom</p>
 <p>Idiomatický spôsob používa kratší zápis, ale jeho vysvetlenie nie je v tejto chvíli jednoduché:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">tasks {
-    register&lt;HelloTask&gt;(<span style="background-color:#e0e0ff">&#34;hello&#34;</span>)
-}
-</code></pre></div><h2 id="vlastnosti--properties-a-inicializačný-blok-pre-konštruktor">Vlastnosti / properties a inicializačný blok pre konštruktor</h2>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span>tasks {
+</span></span><span style="display:flex;"><span>    register&lt;HelloTask&gt;(<span style="background-color:#e0e0ff">&#34;hello&#34;</span>)
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="vlastnosti--properties-a-inicializačný-blok-pre-konštruktor">Vlastnosti / properties a inicializačný blok pre konštruktor</h2>
 <p>Ak chceme nastaviť skupinu (<strong>group</strong>) a popis (<strong>description</strong>) v triede, môžeme využiť nasledovný zápis:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">open</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">HelloTask</span> : DefaultTask() {
-    <span style="color:#289;font-weight:bold">init</span> {
-        group = <span style="background-color:#e0e0ff">&#34;Greetings&#34;</span>
-        description = <span style="background-color:#e0e0ff">&#34;Say hello&#34;</span>
-    }
-
-    <span style="color:#555;font-weight:bold">@TaskAction</span>
-    <span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">sayHello</span>() {
-        println(<span style="background-color:#e0e0ff">&#34;Hello world&#34;</span>)
-    }
-}
-</code></pre></div><p>Sekcia <code>init</code> reprezentuje kód, ktorý sa zavolá v rámci konštruktora triedy.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">open</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">HelloTask</span> : DefaultTask() {
+</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">init</span> {
+</span></span><span style="display:flex;"><span>        group = <span style="background-color:#e0e0ff">&#34;Greetings&#34;</span>
+</span></span><span style="display:flex;"><span>        description = <span style="background-color:#e0e0ff">&#34;Say hello&#34;</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#555;font-weight:bold">@TaskAction</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">sayHello</span>() {
+</span></span><span style="display:flex;"><span>        println(<span style="background-color:#e0e0ff">&#34;Hello world&#34;</span>)
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Sekcia <code>init</code> reprezentuje kód, ktorý sa zavolá v rámci konštruktora triedy.</p>
 <p>Každá trieda v Kotline má totiž <strong>primárny</strong> konštruktor, ktorý je súčasťou hlavičky. V našom prípade ho vidíme v okrúhlych zátvorkách za <code>DefaultTask()</code>. Keďže zátvorky uvádzame za rodičovskou triedou, znamená to, že tento konštruktor sme zdedili.</p>
 <p>Primárny konštruktor nesmie obsahovať kód, ale prípadné príkazy uvádzame do sekcie <code>init</code>.</p>
 <p>V rámci sekcie <code>init</code> využívame dve <em>properties</em> (vlastnosti): pre skupinu a popis. Na rozdiel od Javy, kde sú <em>properties</em> reprezentované gettermi a settermi, je v Kotline prístup riešený bežným priradením do premennej (pre <em>setter</em>), resp. čítaním z premennej (pre <em>getter</em>).</p>
 <p>Obe vlastnosti, <code>group</code> i <code>description</code> sme zdedili od rodiča, a pokojne by sme mohli použiť aj ekvivalentný zápis <code>setGroup(“greetings”)</code>, resp. <code>setDescription(“Say Hello”)</code>.</p>
 <p>Task si môžeme spustiť obvyklým spôsobom:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">gradle -q hello
-</code></pre></div><h1 id="premenné-inferencia-typov-a-kolekcie">Premenné, inferencia typov a kolekcie</h1>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>gradle -q hello
+</span></span></code></pre></div><h1 id="premenné-inferencia-typov-a-kolekcie">Premenné, inferencia typov a kolekcie</h1>
 <p>Kotlin ponúka elegantnú syntax pre kolekcie (zoznamy/polia, mapy/slovníky/asociatívne polia, množiny). Vyrobme si najprv ďalší Gradle task, ktorý vypíše všetky súbory v aktuálnom <em>projektovom</em> adresári:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">open</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">LsTask</span>: DefaultTask() {
-    <span style="color:#555;font-weight:bold">@TaskAction</span>
-    <span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">listFiles</span>() {
-        println(project.projectDir)
-    }
-}
-
-tasks {
-    register&lt;LsTask&gt;(<span style="background-color:#e0e0ff">&#34;ls&#34;</span>)
-}
-</code></pre></div><p>Ak spustíme task <code>gradle ls</code>, uvidíme celú cestu k adresáru, v ktorom sa nachádza <code>build.gradle.kts</code>.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">open</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">LsTask</span>: DefaultTask() {
+</span></span><span style="display:flex;"><span>    <span style="color:#555;font-weight:bold">@TaskAction</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">listFiles</span>() {
+</span></span><span style="display:flex;"><span>        println(project.projectDir)
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>tasks {
+</span></span><span style="display:flex;"><span>    register&lt;LsTask&gt;(<span style="background-color:#e0e0ff">&#34;ls&#34;</span>)
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Ak spustíme task <code>gradle ls</code>, uvidíme celú cestu k adresáru, v ktorom sa nachádza <code>build.gradle.kts</code>.</p>
 <p>Opäť využívame <em>properties</em>, pretože rodičovská trieda <code>DefaultTask</code> má metódu <code>getProject()</code>, ktorá sa v Kotline dá zavolať aj jednoduchšie. Trik sa ešte raz zopakuje, keď trieda <code>Project</code> ponúka metódu <code>getProjectDir()</code>, prístupnú cez <em>property</em> <code>projectDir</code>.</p>
 <h2 id="premenné">Premenné</h2>
 <p>Cestu k projektu si môžeme priradiť do <strong>premennej</strong>:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">val</span> dir = project.projectDir
-println(dir)
-</code></pre></div><p>Konštrukcia <code>val dir</code> reprezentuje deklaráciu <strong>immutable</strong> (nemeniteľnej) premennej.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">val</span> dir = project.projectDir
+</span></span><span style="display:flex;"><span>println(dir)
+</span></span></code></pre></div><p>Konštrukcia <code>val dir</code> reprezentuje deklaráciu <strong>immutable</strong> (nemeniteľnej) premennej.</p>
 <p>Dátový typ nie je nutné uvádzať, pretože Kotlin si ho odvodí sám vďaka mechanizmu <strong>type inference</strong>, teda automatického odvodzovania dátových typov. Keďže <code>projectDir</code>, teda výsledok volania metódy <code>getProjectDir()</code> je typu <code>java.io.File</code>, Kotlin si <em>domyslí</em>, že premenná <code>dir</code> môže byť tiež iba <code>File</code>.</p>
 <p>Kotlin je <em>silne typovaný jazyk</em>, kde každá premenná a každý výraz má konkrétny dátový typ, akurát ho v kóde nemusíme uvádzať, ak to nie je nutné.</p>
 <p>V niektorých prípadoch je samozrejme možné typ uviesť explicitne, napríklad:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">val</span> dir: File = project.projectDir
-</code></pre></div><p>Premenná <code>dir</code> je typu <code>File</code>, a keďže Gradle automaticky importuje balíček <code>java.io</code>, stačí uvádzať skrátený názov.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">val</span> dir: File = project.projectDir
+</span></span></code></pre></div><p>Premenná <code>dir</code> je typu <code>File</code>, a keďže Gradle automaticky importuje balíček <code>java.io</code>, stačí uvádzať skrátený názov.</p>
 <h2 id="polia-a-premenné-s-null-safety-ochrana-proti-výnimkám-nullpointerexception">Polia a premenné s null-safety: ochrana proti výnimkám <code>NullPointerException</code></h2>
 <p>Práca s <code>null</code> môže byť nepríjemná, pretože treba rozlišovať medzi dvoma svetmi: premenná s objektom, na ktorom možno volať metódy a premenná bez objektu, na ktorej metódy nemôžeme volať. Ak sa to popletie, nastávajú výnimky <code>NullPointerException</code>&gt;</p>
 <p>Kotlin sa rozhodol zrušiť <code>null</code>. To je samozrejme skvelé, ale keďže musíme interagovať so štandardnou knižnicou Javy, je treba nájsť kompromis.</p>
@@ -208,17 +208,17 @@ println(dir)
 </ol>
 <p>Polia (<em>arrays</em>) v Kotline — na rozdiel od Javy — sú reprezentované triedou <code>Array</code>. Dátový typ jednotlivých prvkov sa uvádza v lomených zátvorkách, teda pole reťazcov je <code>Array&lt;File&gt;</code> (podobne ako v Jave ide o <strong>generický typ</strong>).</p>
 <p>Pre prípady, keď Kotlin potrebuje vybaviť <em>interoperabilitu</em> s Javou, kde objekt môže byť <code>null</code>, je dátový typ okrášlený otáznikom:  <code>Array&lt;String&gt;?</code> znamená, že máme pole reťazcov, ktoré môže byť <code>null</code>, a treba to vybaviť špeciálnym spôsobom:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">val</span> children: Array&lt;File&gt;? = project.projectDir.listFiles()
-</code></pre></div><p>S použitím typovej inferencie je zápis samozrejme kratši:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">val</span> children = project.projectDir.listFiles()
-</code></pre></div><p>Poďme teraz vypisovať! Prípad, ak je premenná nenullová, vieme vyriešiť <em>if</em>om:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">val</span> children = project.projectDir.listFiles()
-<span style="color:#289;font-weight:bold">if</span> (children <span style="color:#333">!=</span> <span style="color:#289;font-weight:bold">null</span>) {
-    <span style="color:#289;font-weight:bold">for</span> (c <span style="color:#289;font-weight:bold">in</span> children) {
-        println(c)
-    }
-}
-</code></pre></div><p>V kóde vidíme ďalšiu elegantnú vec: <strong>smart cast</strong>, teda chytré pretypovanie. Kotlin <em>vie</em>, že vo vnútri <code>if</code> je premenná nenullová, a preto s ňou môžeme pracovať bezpečným spôsobom bez obáv, že nastane <code>NullPointerException</code>.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">val</span> children: Array&lt;File&gt;? = project.projectDir.listFiles()
+</span></span></code></pre></div><p>S použitím typovej inferencie je zápis samozrejme kratši:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">val</span> children = project.projectDir.listFiles()
+</span></span></code></pre></div><p>Poďme teraz vypisovať! Prípad, ak je premenná nenullová, vieme vyriešiť <em>if</em>om:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">val</span> children = project.projectDir.listFiles()
+</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">if</span> (children <span style="color:#333">!=</span> <span style="color:#289;font-weight:bold">null</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">for</span> (c <span style="color:#289;font-weight:bold">in</span> children) {
+</span></span><span style="display:flex;"><span>        println(c)
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>V kóde vidíme ďalšiu elegantnú vec: <strong>smart cast</strong>, teda chytré pretypovanie. Kotlin <em>vie</em>, že vo vnútri <code>if</code> je premenná nenullová, a preto s ňou môžeme pracovať bezpečným spôsobom bez obáv, že nastane <code>NullPointerException</code>.</p>
 <p>Zároveň vidíme ukážku cyklu <code>for</code>, kde prechádzame prvkami poľa. Dátový typ premennej <code>c</code> nemusíme uvádzať!</p>
 <h2 id="lambda-výrazy">Lambda výrazy</h2>
 <p>Kotlin — podobne ako Java — podporuje lambda výrazy, teda zápisy pre funkcie, s ktorými môžeme zaobchádzať ako s objektami.</p>
@@ -226,38 +226,38 @@ println(dir)
 <pre tabindex="0"><code>val doPrint = { f: File -&gt; println(f) }
 </code></pre><p>S lambdami sa dajú robiť psie kusy. Ak máme funkciu, ktorá ako parameter berie inú funkciu, máme <strong>funkciu vyššieho rádu</strong>. Namiesto teórie si dajme príklad.</p>
 <p>Pole má metódu (teda funkciu) <code>forEach()</code>, ktorá ako parameter berie <em>funkciu</em>, ktorá sa zavolá pre každý prvok. Môžeme teda spraviť toto:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">val</span> children = project.projectDir.listFiles()
-<span style="color:#289;font-weight:bold">val</span> doPrint = { f: File <span style="color:#333">-&gt;</span> println(f) }
-children.forEach(doPrint)
-</code></pre></div><p>Tento zápis je síce správny, ale takmer nikto ho v praxi nepoužije. Kotlin má totiž skvelú syntaktickú vlastnosť (prevzatú z Groovy): funkcia druhého rádu môže vynechať guľaté zátvorky. Kód funkcie v parametri sa dá uviesť medzi zložené zátvorky, čo pripomína klasický <em>blok</em>:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">val</span> children = project.projectDir.listFiles()
-children.forEach { 
-  f: File <span style="color:#333">-&gt;</span> println(f) 
-}
-</code></pre></div><p>Vďaka skracovacej mánii môžeme pokračovať:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">val</span> children = project.projectDir.listFiles()
+</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">val</span> doPrint = { f: File <span style="color:#333">-&gt;</span> println(f) }
+</span></span><span style="display:flex;"><span>children.forEach(doPrint)
+</span></span></code></pre></div><p>Tento zápis je síce správny, ale takmer nikto ho v praxi nepoužije. Kotlin má totiž skvelú syntaktickú vlastnosť (prevzatú z Groovy): funkcia druhého rádu môže vynechať guľaté zátvorky. Kód funkcie v parametri sa dá uviesť medzi zložené zátvorky, čo pripomína klasický <em>blok</em>:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">val</span> children = project.projectDir.listFiles()
+</span></span><span style="display:flex;"><span>children.forEach { 
+</span></span><span style="display:flex;"><span>  f: File <span style="color:#333">-&gt;</span> println(f) 
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Vďaka skracovacej mánii môžeme pokračovať:</p>
 <ul>
 <li>Keďže Kotllin vie, že prechádzame pole súborov <code>File</code>, dátový typ premennej <code>f</code> môžeme vynechať.</li>
 <li>Pre prípady, že lambda má len jeden parameter, nemusíme uvádzať ani ten. V lambde je k dispozícii premenná <code>it</code> („to“).</li>
 </ul>
 <p>Výsledok je:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">children.forEach { println(<span style="color:#289;font-weight:bold">it</span>) }
-</code></pre></div><p>Zápis sa dá zjednodušiť ešte viac, ale to si nechajme na <em>prílepok</em>. Ešte sme stále nevyriešili jedno varovanie kompilátora, ktoré indikuje situáciu, kde <code>children</code> môže byť <code>null</code>.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span>children.forEach { println(<span style="color:#289;font-weight:bold">it</span>) }
+</span></span></code></pre></div><p>Zápis sa dá zjednodušiť ešte viac, ale to si nechajme na <em>prílepok</em>. Ešte sme stále nevyriešili jedno varovanie kompilátora, ktoré indikuje situáciu, kde <code>children</code> môže byť <code>null</code>.</p>
 <p>Namiesto <code>if</code> , kde skontrolujeme nenullovosť, môžeme použiť špeciálny operátor <strong>safe call</strong>, teda bezpečného volania. Namiesto klasického volania metódy cez bodku použijeme <code>?.</code>, ktorá neurobí nič, ak je premenná <code>children</code> náhodou <code>null</code>.</p>
 <p>Funkcia pre výpis súborov tak môže vyzerať nasledovne:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#555;font-weight:bold">@TaskAction</span>
-<span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">listFiles</span>() {
-    project.projectDir.listFiles()<span style="color:#333">?.</span>forEach { 
-        println(<span style="color:#289;font-weight:bold">it</span>)
-    }
-}
-</code></pre></div><h1 id="inštančné-premenné-a-vlastné-konštruktory">Inštančné premenné a vlastné konštruktory</h1>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#555;font-weight:bold">@TaskAction</span>
+</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">listFiles</span>() {
+</span></span><span style="display:flex;"><span>    project.projectDir.listFiles()<span style="color:#333">?.</span>forEach { 
+</span></span><span style="display:flex;"><span>        println(<span style="color:#289;font-weight:bold">it</span>)
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h1 id="inštančné-premenné-a-vlastné-konštruktory">Inštančné premenné a vlastné konštruktory</h1>
 <p>Vylepšime náš <em>task</em> o možnosť prijať adresár z nejakého parametra, či premennej. Na toto môžeme využiť inštančnú premennú!</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">open</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">LsTask</span>: DefaultTask() {
-    <span style="color:#289;font-weight:bold">val</span> directory = File(<span style="background-color:#e0e0ff">&#34;/tmp&#34;</span>)
-
-		<span style="color:#666;font-style:italic">/* ... */</span>
-}
-</code></pre></div><p>Do triedy <code>LsTask</code> sme dodali inštančnú premennú <code>directory</code>. Platia pre ňu viaceré vlastnosti:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">open</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">LsTask</span>: DefaultTask() {
+</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">val</span> directory = File(<span style="background-color:#e0e0ff">&#34;/tmp&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#666;font-style:italic">/* ... */</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Do triedy <code>LsTask</code> sme dodali inštančnú premennú <code>directory</code>. Platia pre ňu viaceré vlastnosti:</p>
 <ul>
 <li>Ide o premennú len na čítanie, teda <em>read-only</em>, teda premennú s getterom, ale bez settera.</li>
 <li>Premenná je rovno inicializovaná a to tým, že sme vytvorili objekt typu <code>File</code>. Na rozdiel od Javy pri vytváraní objektov nepoužívame kľúčové slovo <code>new</code>, jednoducho sa tvárime, že voláme funkciu <code>File()</code>, ktorá vytvorí objekt. Pre jednoduchosť povieme, že chceme vypisovať obsah adresára <code>/tmp</code>.</li>
@@ -265,60 +265,58 @@ children.forEach {
 <li>Používame inferenciu dátového typu, kde Kotlin <em>vie</em>, že premenná <code>directory</code> bude typu <code>File</code>.</li>
 </ul>
 <p>Samozrejme, upravíme aj funkciu pre výpis:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">open</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">LsTask</span>: DefaultTask() {
-    <span style="color:#289;font-weight:bold">val</span> directory = File(<span style="background-color:#e0e0ff">&#34;/tmp&#34;</span>)
-
-    <span style="color:#555;font-weight:bold">@TaskAction</span>
-    <span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">listFiles</span>() {
-        directory.listFiles()<span style="color:#333">?.</span>forEach {
-            println(<span style="color:#289;font-weight:bold">it</span>)
-        }
-    }
-}
-</code></pre></div><p>Často sa používa konvencia, kde inicializácia inštančných premenných zbehne v primárnom konštruktore. Zápis vyzerá nasledovne:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">open</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">LsTask</span>(<span style="color:#289;font-weight:bold">val</span> directory: File = File(<span style="background-color:#e0e0ff">&#34;/tmp&#34;</span>)) : DefaultTask() {
-    <span style="color:#555;font-weight:bold">@TaskAction</span>
-    <span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">listFiles</span>() {
-        directory.listFiles()<span style="color:#333">?.</span>forEach {
-            println(<span style="color:#289;font-weight:bold">it</span>)
-        }
-    }
-}
-
-</code></pre></div><p>Všimnime si, ako sme premennú deklarovali a inicializovali v hlavičke triedy.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">open</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">LsTask</span>: DefaultTask() {
+</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">val</span> directory = File(<span style="background-color:#e0e0ff">&#34;/tmp&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#555;font-weight:bold">@TaskAction</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">listFiles</span>() {
+</span></span><span style="display:flex;"><span>        directory.listFiles()<span style="color:#333">?.</span>forEach {
+</span></span><span style="display:flex;"><span>            println(<span style="color:#289;font-weight:bold">it</span>)
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Často sa používa konvencia, kde inicializácia inštančných premenných zbehne v primárnom konštruktore. Zápis vyzerá nasledovne:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">open</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">LsTask</span>(<span style="color:#289;font-weight:bold">val</span> directory: File = File(<span style="background-color:#e0e0ff">&#34;/tmp&#34;</span>)) : DefaultTask() {
+</span></span><span style="display:flex;"><span>    <span style="color:#555;font-weight:bold">@TaskAction</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">listFiles</span>() {
+</span></span><span style="display:flex;"><span>        directory.listFiles()<span style="color:#333">?.</span>forEach {
+</span></span><span style="display:flex;"><span>            println(<span style="color:#289;font-weight:bold">it</span>)
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Všimnime si, ako sme premennú deklarovali a inicializovali v hlavičke triedy.</p>
 <p>V našom prípade to urobíme ale inak, keďže v Gradle môžeme parametrizovať tasky pomocou tzv. <em>extras</em>.</p>
 <h1 id="parametrizovateľné-tasky">Parametrizovateľné tasky</h1>
 <p>Tasky možno parametrizovať, napríklad chceme volať:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"> gradle ls --directory<span style="color:#333">=</span>/Users
-</code></pre></div><p>V takom prípade stačí dodať nad príslušnú inštančnú premennú anotáciu <code>@Option</code> a uviesť názov parametra a popis.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">open</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">LsTask</span>: DefaultTask() {
-    <span style="color:#555;font-weight:bold">@Option</span>(option = <span style="background-color:#e0e0ff">&#34;directory&#34;</span>, description = <span style="background-color:#e0e0ff">&#34;A directory to list&#34;</span>)
-    <span style="color:#289;font-weight:bold">var</span> directory = project.buildDir.toString()
-
-    <span style="color:#555;font-weight:bold">@TaskAction</span>
-    <span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">listFiles</span>() {
-        File(directory).listFiles()<span style="color:#333">?.</span>forEach {
-            println(<span style="color:#289;font-weight:bold">it</span>)
-        }
-    }
-}
-
-</code></pre></div><p>Premenná <code>directory</code> sa zmení na reťazec <code>String</code>, pretože automatický prevod parametrov z príkazového riadka na inštančnú premennú podporuje len reťazce, booleany, enumy a zoznamy reťazcov. Preto sme primerane upravili aj kód.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span> gradle ls --directory<span style="color:#333">=</span>/Users
+</span></span></code></pre></div><p>V takom prípade stačí dodať nad príslušnú inštančnú premennú anotáciu <code>@Option</code> a uviesť názov parametra a popis.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">open</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">LsTask</span>: DefaultTask() {
+</span></span><span style="display:flex;"><span>    <span style="color:#555;font-weight:bold">@Option</span>(option = <span style="background-color:#e0e0ff">&#34;directory&#34;</span>, description = <span style="background-color:#e0e0ff">&#34;A directory to list&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">var</span> directory = project.buildDir.toString()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#555;font-weight:bold">@TaskAction</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">listFiles</span>() {
+</span></span><span style="display:flex;"><span>        File(directory).listFiles()<span style="color:#333">?.</span>forEach {
+</span></span><span style="display:flex;"><span>            println(<span style="color:#289;font-weight:bold">it</span>)
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Premenná <code>directory</code> sa zmení na reťazec <code>String</code>, pretože automatický prevod parametrov z príkazového riadka na inštančnú premennú podporuje len reťazce, booleany, enumy a zoznamy reťazcov. Preto sme primerane upravili aj kód.</p>
 <p>Úplne zadarmo dostaneme aj pomocníka, ktorý vypíše podporované parametre.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"> gradle <span style="color:#072">help</span> --task ls
-</code></pre></div><h1 id="prílepky">Prílepky</h1>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span> gradle <span style="color:#072">help</span> --task ls
+</span></span></code></pre></div><h1 id="prílepky">Prílepky</h1>
 <h2 id="hardcore-member-references--referencie-na-metódy-a-vlastnosti">Hardcore: Member References — referencie na metódy a vlastnosti</h2>
 <p>Podobne ako v Jave existujú <em>method references</em>, ktoré využívajú fakt, kde každá metóda je vlastne lambda výraz, je v Kotline mechanizmus <em>member reference</em>.</p>
 <p>V príklade považujeme funkciu <code>println()</code> za lambda výraz, ktorý berie jeden objekt a čosi s ním spraví.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">children.forEach(<span style="color:#289;font-weight:bold">this</span><span style="color:#333">::</span>println)
-</code></pre></div><p>Keďže funkcia <code>println()</code> je automaticky k dispozícii, a objekt, na ktorom ju voláme, je <code>this</code>, môžeme i toto zjednodušiť a <code>this</code> vynechať:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">children.forEach(<span style="color:#333">::</span>println)
-</code></pre></div><h2 id="hardcore-syntax-kotlinu-v-script-file">Hardcore: syntax Kotlinu v <em>script file</em></h2>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span>children.forEach(<span style="color:#289;font-weight:bold">this</span><span style="color:#333">::</span>println)
+</span></span></code></pre></div><p>Keďže funkcia <code>println()</code> je automaticky k dispozícii, a objekt, na ktorom ju voláme, je <code>this</code>, môžeme i toto zjednodušiť a <code>this</code> vynechať:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span>children.forEach(<span style="color:#333">::</span>println)
+</span></span></code></pre></div><h2 id="hardcore-syntax-kotlinu-v-script-file">Hardcore: syntax Kotlinu v <em>script file</em></h2>
 <p>Syntax <em>build scriptov</em> využíva naplno vymoženosti Kotlinu. Napríklad nasledovný kód:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">repositories {
-    mavenCentral()
-}
-</code></pre></div><p><em>Build script</em> je v skutočnosti nastavovanie vlastností na objekte typu <code>KotlinBuildScript</code>. Sekcia <code>repositories</code> prakticky volá metódu <code>repositories()</code>, ktorej parametrom je lambda. Keďže guľaté zátvorky okolo volania funkcie s lambdou možno vynechať, zrazu je zápis elegantný!</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span>repositories {
+</span></span><span style="display:flex;"><span>    mavenCentral()
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p><em>Build script</em> je v skutočnosti nastavovanie vlastností na objekte typu <code>KotlinBuildScript</code>. Sekcia <code>repositories</code> prakticky volá metódu <code>repositories()</code>, ktorej parametrom je lambda. Keďže guľaté zátvorky okolo volania funkcie s lambdou možno vynechať, zrazu je zápis elegantný!</p>
 
 </main>
 

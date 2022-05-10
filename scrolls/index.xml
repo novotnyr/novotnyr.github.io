@@ -125,9 +125,9 @@ Nový stroj jede&amp;hellip; Jenom neseje. Nový stroj zdanlivo išiel bez probl
       
       <guid>https://novotnyr.github.io/scrolls/powershell-pokrocile-funkcie/</guid>
       <description>Funkcie v PowerShelli sa dajú zapisovať rozličnými spôsobmi. Ukážme si jednoduchú funkciu, ktorá zráta veľkost súborov v aktuálnom adresári:
-function Get-Size($Unit) { Get-ChildItem -File | Measure-Object -Property Length -Sum | Select-Object -ExpandProperty Sum | ForEach-Object { $_ / (&amp;#34;1&amp;#34; + $Unit)} } Funkcia má jeden netypovaný parameter s názvom $Unit a vieme ju použiť nasledovne:
+function Get-Size($Unit) {  Get-ChildItem -File  | Measure-Object -Property Length -Sum  | Select-Object -ExpandProperty Sum  | ForEach-Object { $_ / (&amp;#34;1&amp;#34; + $Unit)} } Funkcia má jeden netypovaný parameter s názvom $Unit a vieme ju použiť nasledovne:
 Get-Size MB Konvencie však odporúčajú zapisovať parametre v sekcii param:
-function Get-Size { param ( [String] $Unit = &amp;#34;MB&amp;#34; ) Get-ChildItem -File | Measure-Object -Property Length -Sum | Select-Object -ExpandProperty Sum | ForEach-Object { $_ / (&amp;#34;1&amp;#34; + $Unit)} } Parameter $Unit má implicitnú hodnotu MB a je typu String.</description>
+function Get-Size {  param (  [String]  $Unit = &amp;#34;MB&amp;#34;  )   Get-ChildItem -File  | Measure-Object -Property Length -Sum  | Select-Object -ExpandProperty Sum  | ForEach-Object { $_ / (&amp;#34;1&amp;#34; + $Unit)} } Parameter $Unit má implicitnú hodnotu MB a je typu String.</description>
     </item>
     
     <item>
@@ -150,7 +150,7 @@ Budeme pracovať s troma add-onmi (doplnkami).
       <guid>https://novotnyr.github.io/scrolls/zmena-shell-v-makefile/</guid>
       <description>Makefile prevezme použitý shell zo svojej internej premennej SHELL (pozri sekcia 5.3.2 v dokumentácii GNU Make). Štandardná hodnota je /bin/sh.
 Premennú môžeme zmeniť klasickým spôsobom:
-export SHELL = /bin/bash .PHONY: all all: echo ${SHELL} Použitie klauzuly export je nutné, pretože bez neho sa premenná neexportuje do externých skriptov, ani do sub-makeov.
+export SHELL = /bin/bash  .PHONY: all all:  echo ${SHELL} Použitie klauzuly export je nutné, pretože bez neho sa premenná neexportuje do externých skriptov, ani do sub-makeov.
 Načo vlastne predefinovávať? Nápad zmeniť shell je málokedy dobrý. Moderné distribúcie očakávajú, že skripty budú implementované v norme POSIX a nebudú používať žiadne špeciality bashizmy, ani konštrukcie zo zsh či nebodaj fish.</description>
     </item>
     
@@ -423,7 +423,7 @@ Ako z toho preboha vybehnem?</description>
       <guid>https://novotnyr.github.io/scrolls/postavme-kotlinovsky-projekt-v-gradle-cez-kotlin/</guid>
       <description>Budovanie kotlinovských projektov Čo ak chceme vybudovať projekt, ktorého zdrojáky sú v Kotline a gradloidný build script je&amp;hellip; v Kotline? (Vložte yo-dawg-meme.png). Poďme na to!
 V prvom rade potrebujeme deklarovať plugin, ktorý zapne podporu pre zostavovanie zdrojových kódov napísaných v Kotline. Do nového build scriptu uvedieme tri sekcie.
-plugins { kotlin(&amp;#34;jvm&amp;#34;) version &amp;#34;1.3.41&amp;#34; } repositories { mavenCentral() } dependencies { implementation(kotlin(&amp;#34;stdlib&amp;#34;)) }  plugins: sekcia plugins slúži na zavádzanie pluginov. A keďže kotlinovský build script je skvelý, použijeme špecifický zápis pre kotlinovské projekty.</description>
+plugins {  kotlin(&amp;#34;jvm&amp;#34;) version &amp;#34;1.3.41&amp;#34; }  repositories {  mavenCentral() }  dependencies {  implementation(kotlin(&amp;#34;stdlib&amp;#34;)) }  plugins: sekcia plugins slúži na zavádzanie pluginov.</description>
     </item>
     
     <item>
@@ -501,8 +501,8 @@ Let’s use an alternative solution. Apache Qpid is a messaging solution and bro
       
       <guid>https://novotnyr.github.io/scrolls/saving-keystrokes-with-live-templates-in-intellij-idea/</guid>
       <description>Typing Code Over and Over? In one of the projects, we had to create many customized enumerations. Something like this:
-public class Status { ONLINE(&amp;quot;on&amp;quot;), OFFLINE(&amp;quot;off&amp;quot;); } Each of this enum was supposed to have a findByCode method that would resolve “on” to ONLINE and “off” to offline. Something like this:
-public enum Status { ONLINE(&amp;quot;on&amp;quot;), OFFLINE(&amp;quot;off&amp;quot;); private final String code; Status(String code) { this.code = code; } public static Status findByCode(String code) throws IllegalArgumentException { for (Status value : Status.</description>
+public class Status { ONLINE(&amp;#34;on&amp;#34;), OFFLINE(&amp;#34;off&amp;#34;); } Each of this enum was supposed to have a findByCode method that would resolve “on” to ONLINE and “off” to offline. Something like this:
+public enum Status { ONLINE(&amp;#34;on&amp;#34;), OFFLINE(&amp;#34;off&amp;#34;); private final String code; Status(String code) { this.code = code; } public static Status findByCode(String code) throws IllegalArgumentException { for (Status value : Status.</description>
     </item>
     
     <item>
@@ -548,7 +548,7 @@ pre každé slovo R spracuj R  Priamo for cyklus! V shellscriptingu je však for
 mkdir -p /tmp/mongodb/rs-{0,1,2} In shell, run:
 mongod --dbpath /tmp/mongodb/rs-0 --replSet rs --port 27021 --bind_ip localhost --smallfiles --oplogSize 128 mongod --dbpath /tmp/mongodb/rs-1 --replSet rs --port 27022 --bind_ip localhost --smallfiles --oplogSize 128 mongod --dbpath /tmp/mongodb/rs-2 --replSet rs --port 27023 --bind_ip localhost --smallfiles --oplogSize 128 Initiate ReplicaSet Run client to initiate ReplicaSet:
 mongo --port 27021 Create ReplicaSet configuration:
-rs.initiate({ _id : &amp;#39;rs&amp;#39;, members: [ { _id : 0, host : &amp;#34;localhost:27021&amp;#34; }, { _id : 1, host : &amp;#34;localhost:27022&amp;#34; }, { _id : 2, host : &amp;#34;localhost:27023&amp;#34; } ] }) Review with:</description>
+rs.initiate({  _id : &amp;#39;rs&amp;#39;,  members: [  { _id : 0, host : &amp;#34;localhost:27021&amp;#34; },  { _id : 1, host : &amp;#34;localhost:27022&amp;#34; },  { _id : 2, host : &amp;#34;localhost:27023&amp;#34; }  ] }) Review with:</description>
     </item>
     
     <item>
@@ -649,7 +649,7 @@ Upgrade to JDK6 Camel is built upon JDK6.</description>
       <guid>https://novotnyr.github.io/scrolls/maven-jetty-ssl-connector/</guid>
       <description>Problém Cieľ maven jetty:run v Mavene je veľmi užitočný na rýchle nasadenie webovej aplikácie do servletového kontajnera Jetty. V štandardom nastavení počúva Jetty na porte 8080... ale nepodporuje SSL.
 Ako nastaviť pom.xml? Jetty v Mavene používa štandardne klasický konektor určený pre bežné nezabezpečené HTTP a SSL konektor ponecháva vypnutý. Ak chceme používať SSL, musíme v pom.xml explicitne zapnúť SSL konektor.
-&amp;lt;plugin&amp;gt; &amp;lt;groupId&amp;gt;org.mortbay.jetty&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;jetty-maven-plugin&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;7.4.2.v20110526&amp;lt;/version&amp;gt; &amp;lt;configuration&amp;gt; &amp;lt;connectors&amp;gt; &amp;lt;connector implementation=&amp;quot;org.eclipse.jetty.server.ssl.SslSocketConnector&amp;quot;&amp;gt; &amp;lt;port&amp;gt;8443&amp;lt;/port&amp;gt; &amp;lt;maxIdleTime&amp;gt;60000&amp;lt;/maxIdleTime&amp;gt; &amp;lt;keystore&amp;gt;etc/jetty-ssl.</description>
+&amp;lt;plugin&amp;gt; &amp;lt;groupId&amp;gt;org.mortbay.jetty&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;jetty-maven-plugin&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;7.4.2.v20110526&amp;lt;/version&amp;gt; &amp;lt;configuration&amp;gt; &amp;lt;connectors&amp;gt; &amp;lt;connector implementation=&amp;#34;org.eclipse.jetty.server.ssl.SslSocketConnector&amp;#34;&amp;gt; &amp;lt;port&amp;gt;8443&amp;lt;/port&amp;gt; &amp;lt;maxIdleTime&amp;gt;60000&amp;lt;/maxIdleTime&amp;gt; &amp;lt;keystore&amp;gt;etc/jetty-ssl.</description>
     </item>
     
     <item>
@@ -810,8 +810,8 @@ Jednoduchý bar Predstavme si, že na začiatku podnikateľskej kariéry bude ba
       <pubDate>Sun, 26 Jul 2009 00:00:00 +0100</pubDate>
       
       <guid>https://novotnyr.github.io/scrolls/mysqldb-receptar-tipy-triky/</guid>
-      <description>Zmena znakovej sady pre databazu alter database xxxxx character set cp1250 Pripojenie k databaze so specifikovanim znakovej sady pre klienta &amp;quot;c:\Program Files\MySQL\MySQL Server 4.1\bin\mysql&amp;quot; -u oldelfinnphpBB -p --default-character-set=cp1250 Import CSV súboru z Excelu mysqlimport.exe -u root -p --fields-terminated-by=; --fields-optionally-enclosed-by=\&amp;quot; davano post.txt Dátumy by mali byť v tvare akceptovateľnom funkciou DATETIME(), napr. YYYY-MM-DD HH:mm)
-Zistenie znakovej sady tabuľky show table status from hotels like &#39;hotel_reservations&#39; Vypíše info o tabuľke hotel_reservations v databáze hotels.</description>
+      <description>Zmena znakovej sady pre databazu alter database xxxxx character set cp1250 Pripojenie k databaze so specifikovanim znakovej sady pre klienta &amp;#34;c:\Program Files\MySQL\MySQL Server 4.1\bin\mysql&amp;#34; -u oldelfinnphpBB -p --default-character-set=cp1250 Import CSV súboru z Excelu mysqlimport.exe -u root -p --fields-terminated-by=; --fields-optionally-enclosed-by=\&amp;#34; davano post.txt Dátumy by mali byť v tvare akceptovateľnom funkciou DATETIME(), napr. YYYY-MM-DD HH:mm)
+Zistenie znakovej sady tabuľky show table status from hotels like &amp;#39;hotel_reservations&amp;#39; Vypíše info o tabuľke hotel_reservations v databáze hotels.</description>
     </item>
     
     <item>
@@ -820,10 +820,9 @@ Zistenie znakovej sady tabuľky show table status from hotels like &#39;hotel_re
       <pubDate>Tue, 23 Jun 2009 00:00:00 +0100</pubDate>
       
       <guid>https://novotnyr.github.io/scrolls/pouzivame-spring-ws/</guid>
-      <description>package sk.novotnyr.movie; import java.util.Date; public class MovieReservation { protected String title; protected Date date; protected int numberOfTickets; // gettre a settre } Stiahneme Spring-WS. Do classpath:
+      <description>package sk.novotnyr.movie;  import java.util.Date;  public class MovieReservation {   protected String title;  protected Date date;  protected int numberOfTickets;   // gettre a settre } Stiahneme Spring-WS. Do classpath:
  activation.jar commons-logging-1.1.1.jar log4j-1.2.15.jar saaj-api-1.3.jar saaj-impl-1.3.jar spring-web.jar spring-webmvc.jar spring-ws-1.5.2.jar spring.jar stax-api-1.0.1.jar xstream-1.3.jar  Kostra webovej aplikácie: web.xml
-&amp;lt;?xml version=&amp;#34;1.0&amp;#34; encoding=&amp;#34;UTF-8&amp;#34;?&amp;gt; &amp;lt;web-app xmlns=&amp;#34;http://java.sun.com/xml/ns/j2ee&amp;#34; xmlns:xsi=&amp;#34;http://www.w3.org/2001/XMLSchema-instance&amp;#34; xsi:schemaLocation=&amp;#34;http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd&amp;#34; version=&amp;#34;2.4&amp;#34;&amp;gt; &amp;lt;servlet&amp;gt; &amp;lt;servlet-name&amp;gt;spring-ws&amp;lt;/servlet-name&amp;gt; &amp;lt;servlet-class&amp;gt;org.springframework.ws.transport.http.MessageDispatcherServlet&amp;lt;/servlet-class&amp;gt; &amp;lt;/servlet&amp;gt; &amp;lt;servlet-mapping&amp;gt; &amp;lt;servlet-name&amp;gt;spring-ws&amp;lt;/servlet-name&amp;gt; &amp;lt;url-pattern&amp;gt;/*&amp;lt;/url-pattern&amp;gt; &amp;lt;/servlet-mapping&amp;gt; &amp;lt;/web-app&amp;gt; spring-ws-servlet.xml
-&amp;lt;?xml version=&amp;#34;1.0&amp;#34; encoding=&amp;#34;UTF-8&amp;#34;?&amp;gt; &amp;lt;beans xmlns=&amp;#34;http://www.springframework.org/schema/beans&amp;#34; xmlns:xsi=&amp;#34;http://www.w3.org/2001/XMLSchema-instance&amp;#34; xsi:schemaLocation=&amp;#34;http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd&amp;#34;&amp;gt; &amp;lt;bean id=&amp;#34;movieReservationEndpoint&amp;#34; class=&amp;#34;sk.</description>
+&amp;lt;?xml version=&amp;#34;1.0&amp;#34; encoding=&amp;#34;UTF-8&amp;#34;?&amp;gt; &amp;lt;web-app xmlns=&amp;#34;http://java.sun.com/xml/ns/j2ee&amp;#34; xmlns:xsi=&amp;#34;http://www.w3.org/2001/XMLSchema-instance&amp;#34;  xsi:schemaLocation=&amp;#34;http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd&amp;#34;  version=&amp;#34;2.4&amp;#34;&amp;gt;   &amp;lt;servlet&amp;gt;  &amp;lt;servlet-name&amp;gt;spring-ws&amp;lt;/servlet-name&amp;gt;  &amp;lt;servlet-class&amp;gt;org.springframework.ws.transport.http.MessageDispatcherServlet&amp;lt;/servlet-class&amp;gt;  &amp;lt;/servlet&amp;gt;   &amp;lt;servlet-mapping&amp;gt;  &amp;lt;servlet-name&amp;gt;spring-ws&amp;lt;/servlet-name&amp;gt;  &amp;lt;url-pattern&amp;gt;/*&amp;lt;/url-pattern&amp;gt;  &amp;lt;/servlet-mapping&amp;gt;  &amp;lt;/web-app&amp;gt; spring-ws-servlet.</description>
     </item>
     
     <item>
@@ -867,8 +866,8 @@ Logovanie (logging) má svoj pôvod v moreplavbe, presnejšie v spôsobe určova
       <pubDate>Sun, 08 Feb 2009 19:54:37 +0100</pubDate>
       
       <guid>https://novotnyr.github.io/scrolls/xul-receptar-tipov-a-trikov/</guid>
-      <description>Ako pridať riadky do stromu? &amp;lt;tree id=&amp;#34;treeXPaths&amp;#34; flex=&amp;#34;1&amp;#34; rows=&amp;#34;20&amp;#34; hidecolumnpicker=&amp;#34;true&amp;#34;&amp;gt; &amp;lt;treecols&amp;gt; &amp;lt;treecol id=&amp;#34;site&amp;#34; label=&amp;#34;Site&amp;#34; flex=&amp;#34;1&amp;#34;/&amp;gt; &amp;lt;treecol id=&amp;#34;xpath&amp;#34; label=&amp;#34;XPath&amp;#34; flex=&amp;#34;2&amp;#34;/&amp;gt; &amp;lt;/treecols&amp;gt; &amp;lt;treechildren /&amp;gt; &amp;lt;/tree&amp;gt; Kód
-var treeXPaths = document.getElementById(&amp;#34;treeXPaths&amp;#34;); // extract &amp;lt;treechildren&amp;gt; var treechildren = treeXPaths.getElementsByTagName(&amp;#34;treechildren&amp;#34;).item(0); // hierarchy is: treechildren / treeitem / treerow / treecell  var treeitem = document.createElement(&amp;#34;treeitem&amp;#34;); treechildren.appendChild(treeitem); var treerow = document.createElement(&amp;#34;treerow&amp;#34;); treeitem.appendChild(treerow); var treecellUrl = document.createElement(&amp;#34;treecell&amp;#34;); treecellUrl.setAttribute(&amp;#34;label&amp;#34;, url); treerow.appendChild(treecellUrl); var treecellXPath = document.createElement(&amp;#34;treecell&amp;#34;); treecellXPath.setAttribute(&amp;#34;label&amp;#34;, xPath); treerow.appendChild(treecellXPath); </description>
+      <description>Ako pridať riadky do stromu? &amp;lt;tree id=&amp;#34;treeXPaths&amp;#34; flex=&amp;#34;1&amp;#34; rows=&amp;#34;20&amp;#34; hidecolumnpicker=&amp;#34;true&amp;#34;&amp;gt;   &amp;lt;treecols&amp;gt;  &amp;lt;treecol id=&amp;#34;site&amp;#34; label=&amp;#34;Site&amp;#34; flex=&amp;#34;1&amp;#34;/&amp;gt;  &amp;lt;treecol id=&amp;#34;xpath&amp;#34; label=&amp;#34;XPath&amp;#34; flex=&amp;#34;2&amp;#34;/&amp;gt;  &amp;lt;/treecols&amp;gt;   &amp;lt;treechildren /&amp;gt;  &amp;lt;/tree&amp;gt; Kód
+var treeXPaths = document.getElementById(&amp;#34;treeXPaths&amp;#34;); // extract &amp;lt;treechildren&amp;gt; var treechildren = treeXPaths.getElementsByTagName(&amp;#34;treechildren&amp;#34;).item(0); // hierarchy is: treechildren / treeitem / treerow / treecell  var treeitem = document.createElement(&amp;#34;treeitem&amp;#34;); treechildren.appendChild(treeitem);  var treerow = document.createElement(&amp;#34;treerow&amp;#34;); treeitem.appendChild(treerow);  var treecellUrl = document.createElement(&amp;#34;treecell&amp;#34;); treecellUrl.</description>
     </item>
     
     <item>
@@ -899,8 +898,8 @@ Dosiaľ mala komunita k dispozícii všetky aktualizované verzie Springu, ale s
       
       <guid>https://novotnyr.github.io/scrolls/bedaky-nad-jaxb-pluginy/</guid>
       <description>V jednom z projektov používame JAXB, čo je nástroj na mapovanie XML schémy na Java triedy. Jedného pekného rána sme dostali nápad použiť plugin FluentAPI, ktorý vie dodať triedam vygenerovaným zo schémy metódy with.... Potom vieme používať
-USAddress address = new USAddress() .withName(name) .withStreet(street) .withCity(city) .withState(state) .withZip(new BigDecimal(zip)); Stiahli sme teda JAR súbor, a do antovského build.xml dodali:
-&amp;lt;taskdef name=&amp;#34;xjc&amp;#34; classname=&amp;#34;com.sun.tools.xjc.XJCTask&amp;#34;&amp;gt; &amp;lt;classpath&amp;gt; &amp;lt;pathelement path=&amp;#34;C:/java/jaxb/lib/jaxb-xjc.jar&amp;#34; /&amp;gt; &amp;lt;pathelement path=&amp;#34;C:/java/jaxb/lib/jaxb-fluent-api-2.1.3.jar&amp;#34; /&amp;gt; &amp;lt;/classpath&amp;gt; &amp;lt;/taskdef&amp;gt; &amp;lt;target name=&amp;#34;generate-classes&amp;#34;&amp;gt; &amp;lt;xjc extension=&amp;#34;true&amp;#34; destdir=&amp;#34;src&amp;#34;&amp;gt; &amp;lt;schema dir=&amp;#34;src&amp;#34; includes=&amp;#34;*.</description>
+USAddress address = new USAddress() 	.withName(name) 	.withStreet(street) 	.withCity(city) 	.withState(state) 	.withZip(new BigDecimal(zip)); Stiahli sme teda JAR súbor, a do antovského build.xml dodali:
+&amp;lt;taskdef name=&amp;#34;xjc&amp;#34; classname=&amp;#34;com.sun.tools.xjc.XJCTask&amp;#34;&amp;gt;  &amp;lt;classpath&amp;gt;  &amp;lt;pathelement path=&amp;#34;C:/java/jaxb/lib/jaxb-xjc.</description>
     </item>
     
     <item>
@@ -942,7 +941,7 @@ V jednom z projektov sme potrebovali mapovanie na java.</description>
       
       <guid>https://novotnyr.github.io/scrolls/spring-ws-sifrovane-spravy/</guid>
       <description>Keystore Vygenerovanie dvojice privátny kľúč-verejný kľúč pre server keytool -genkey -alias ais-ws-server -keystore ais-ws-server.jks -keyalg RSA Pozn. treba explicitne zvoliť algoritmus RSA, pretože implicitný algoritmus DSA vedie na klientskej strane k chybe:
-Can&#39;t use DSA for encryption Export serverovského certifikátu export verejného kľúča (= serverovského certifikátu), ktorým bude klient šifrovať správy
+Can&amp;#39;t use DSA for encryption Export serverovského certifikátu export verejného kľúča (= serverovského certifikátu), ktorým bude klient šifrovať správy
 keytool -export -alias ais-ws-server -file ais-ws-server-public-key.crt -keystore ais-ws-server.jks Súbor ais-ws-server-public-key.crt obsahuje certifikát servera, ktorý importneme do keystoru u klienta.</description>
     </item>
     
@@ -953,7 +952,7 @@ keytool -export -alias ais-ws-server -file ais-ws-server-public-key.crt -keystor
       
       <guid>https://novotnyr.github.io/scrolls/zabezpecenie-webovych-sluzieb-v-spring-ws-cez-xwss/</guid>
       <description>Server Predpokladajme, že máme hotovú kostru pre serverovskú časť Spring-WS. Majme bežný endpoint, ktorý je klasickým POJOm. Endpoint predstavuje metódu, ktorá nevracia nič a dokument na vstupe pošle na štandardný výstup na serveri.
-Endpoint package ais.ws; import javax.xml.transform.Source; import javax.xml.transform.Transformer; import javax.xml.transform.TransformerFactory; import javax.xml.transform.stream.StreamResult; public class RegistrationEndPoint { public void handleMovieReservationRequest(Source messageSource) { try { Transformer transformer = TransformerFactory.newInstance().newTransformer(); transformer.transform(messageSource, new StreamResult(System.out)); } catch (Exception e) { e.printStackTrace(); } } } Bean zadeklarujeme v aplikačnom kontexte Springu:</description>
+Endpoint package ais.ws;  import javax.xml.transform.Source; import javax.xml.transform.Transformer; import javax.xml.transform.TransformerFactory; import javax.xml.transform.stream.StreamResult;  public class RegistrationEndPoint {  public void handleMovieReservationRequest(Source messageSource) {  try {  Transformer transformer = TransformerFactory.newInstance().newTransformer();  transformer.transform(messageSource, new StreamResult(System.out));  } catch (Exception e) {  e.</description>
     </item>
     
     <item>
@@ -1076,7 +1075,7 @@ koreň A B C 1 2 3 4 5 Ako na to?</description>
       <pubDate>Tue, 22 Apr 2008 00:00:00 +0100</pubDate>
       
       <guid>https://novotnyr.github.io/scrolls/unit-tests-with-spring-and-hibernate/</guid>
-      <description>&amp;lt;?xml version=&amp;#34;1.0&amp;#34; encoding=&amp;#34;UTF-8&amp;#34;?&amp;gt; &amp;lt;beans xmlns=&amp;#34;http://www.springframework.org/schema/beans&amp;#34; xmlns:xsi=&amp;#34;http://www.w3.org/2001/XMLSchema-instance&amp;#34; xmlns:aop=&amp;#34;http://www.springframework.org/schema/aop&amp;#34; xmlns:tx=&amp;#34;http://www.springframework.org/schema/tx&amp;#34; xmlns:context=&amp;#34;http://www.springframework.org/schema/context&amp;#34; xsi:schemaLocation=&amp;#34;http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd&amp;#34;&amp;gt; &amp;lt;bean name=&amp;#34;dataSource&amp;#34; class=&amp;#34;com.mysql.jdbc.jdbc2.optional.MysqlDataSource&amp;#34;&amp;gt; &amp;lt;property name=&amp;#34;user&amp;#34; value=&amp;#34;js&amp;#34; /&amp;gt; &amp;lt;property name=&amp;#34;password&amp;#34; value=&amp;#34;js&amp;#34; /&amp;gt; &amp;lt;property name=&amp;#34;serverName&amp;#34; value=&amp;#34;158.197.31.35&amp;#34; /&amp;gt; &amp;lt;property name=&amp;#34;databaseName&amp;#34; value=&amp;#34;js&amp;#34; /&amp;gt; &amp;lt;property name=&amp;#34;port&amp;#34; value=&amp;#34;80&amp;#34; /&amp;gt; &amp;lt;/bean&amp;gt; &amp;lt;bean id=&amp;#34;transactionManager&amp;#34; class=&amp;#34;org.springframework.jdbc.datasource.DataSourceTransactionManager&amp;#34;&amp;gt; &amp;lt;property name=&amp;#34;dataSource&amp;#34; ref=&amp;#34;dataSource&amp;#34; /&amp;gt; &amp;lt;/bean&amp;gt; &amp;lt;tx:annotation-driven transaction-manager=&amp;#34;transactionManager&amp;#34; /&amp;gt; &amp;lt;context:component-scan base-package=&amp;#34;sk.upjs.js&amp;#34; /&amp;gt; &amp;lt;bean id=&amp;#34;hibernateTemplate&amp;#34; class=&amp;#34;org.springframework.orm.hibernate3.HibernateTemplate&amp;#34;&amp;gt; &amp;lt;property name=&amp;#34;sessionFactory&amp;#34; ref=&amp;#34;sessionFactory&amp;#34; /&amp;gt; &amp;lt;/bean&amp;gt; &amp;lt;bean id=&amp;#34;sessionFactory&amp;#34; class=&amp;#34;org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean&amp;#34;&amp;gt; &amp;lt;property name=&amp;#34;dataSource&amp;#34; ref=&amp;#34;dataSource&amp;#34; /&amp;gt; &amp;lt;property name=&amp;#34;annotatedClasses&amp;#34;&amp;gt; &amp;lt;list&amp;gt; &amp;lt;value&amp;gt;sk.</description>
+      <description>&amp;lt;?xml version=&amp;#34;1.0&amp;#34; encoding=&amp;#34;UTF-8&amp;#34;?&amp;gt;  &amp;lt;beans xmlns=&amp;#34;http://www.springframework.org/schema/beans&amp;#34;  xmlns:xsi=&amp;#34;http://www.w3.org/2001/XMLSchema-instance&amp;#34;  xmlns:aop=&amp;#34;http://www.springframework.org/schema/aop&amp;#34;  xmlns:tx=&amp;#34;http://www.springframework.org/schema/tx&amp;#34;  xmlns:context=&amp;#34;http://www.springframework.org/schema/context&amp;#34;  xsi:schemaLocation=&amp;#34;http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd&amp;#34;&amp;gt;   &amp;lt;bean name=&amp;#34;dataSource&amp;#34;  class=&amp;#34;com.mysql.jdbc.jdbc2.optional.MysqlDataSource&amp;#34;&amp;gt;  &amp;lt;property name=&amp;#34;user&amp;#34; value=&amp;#34;js&amp;#34; /&amp;gt;  &amp;lt;property name=&amp;#34;password&amp;#34; value=&amp;#34;js&amp;#34; /&amp;gt;  &amp;lt;property name=&amp;#34;serverName&amp;#34; value=&amp;#34;158.197.31.35&amp;#34; /&amp;gt;  &amp;lt;property name=&amp;#34;databaseName&amp;#34; value=&amp;#34;js&amp;#34; /&amp;gt;  &amp;lt;property name=&amp;#34;port&amp;#34; value=&amp;#34;80&amp;#34; /&amp;gt;  &amp;lt;/bean&amp;gt;   &amp;lt;bean id=&amp;#34;transactionManager&amp;#34;  class=&amp;#34;org.springframework.jdbc.datasource.DataSourceTransactionManager&amp;#34;&amp;gt;  &amp;lt;property name=&amp;#34;dataSource&amp;#34; ref=&amp;#34;dataSource&amp;#34; /&amp;gt;  &amp;lt;/bean&amp;gt;   &amp;lt;tx:annotation-driven transaction-manager=&amp;#34;transactionManager&amp;#34; /&amp;gt;   &amp;lt;context:component-scan base-package=&amp;#34;sk.</description>
     </item>
     
     <item>
@@ -1088,7 +1087,7 @@ koreň A B C 1 2 3 4 5 Ako na to?</description>
       <description>Zmena implicitnej uvítacej stránky Tomcat 4.1.x Do web.xml stačí vložiť nový kontext
 &amp;lt;Context docBase=&amp;#34;C:\Java\Tomcat\webapps\ROOT&amp;#34; path=&amp;#34;&amp;#34; workDir=&amp;#34;work\Standalone\localhost\_&amp;#34; /&amp;gt; Tomcat 5.5.x Podľa odporúčaní je vhodné popisy kontextov ukladať do adresára %CATALINA_HOME%\conf\Catalina\localhost (a nie upravovať web.xml). Koreňový kontext zmeníme vytvorením súboru %CATALINA_HOME%\conf\Catalina\localhost\ROOT.xml s obsahom
 &amp;lt;Context docBase=&amp;#34;C:/projects/tomcat-root&amp;#34; /&amp;gt; Kompilácia jsvc na 64bitovej Fedore Do configure pre jsvc treba okolo riadku 2630 (tam, kde sa detekuje architektúra) pridať do case vetvenia riadok
-x86_64) CFLAGS=&amp;quot;$CFLAGS -DCPU=\\\&amp;quot;i686\\\&amp;quot;&amp;quot; ;; Potom sa pokračuje v inštalácii normálne (.</description>
+x86_64) CFLAGS=&amp;#34;$CFLAGS -DCPU=\\\&amp;#34;i686\\\&amp;#34;&amp;#34; ;; Potom sa pokračuje v inštalácii normálne (.</description>
     </item>
     
     <item>
@@ -1111,7 +1110,7 @@ V článku si ukážeme príklad jednoduchej aplikácie, ktorú zabezpečíme a 
       <description>Jedným z významných prínosov Spring 2.5 je podpora anotácií, ktoré môžu slúžiť ako alternatíva na deklarovanie vzťahov a závislostí medzi jednotlivými komponentami a riešenie dependency injection. K dispozícii je podpora pre springovskú sadu anotácií i pre štandardizované anotácie zo špecifikácie JSR-250 (Commons Annotations for Java Platform).
 Ukážme si jednoduchý príklad v ktorom sa používajú anotácie.
 Springovské anotácie Majme interfejs na generovanie citátov:
-package sk.novotnyr.quotes; public interface QuoteGenerator { public String getQuote(); } a jeho jednoduchú implementáciu:</description>
+package sk.novotnyr.quotes;  public interface QuoteGenerator {  public String getQuote(); } a jeho jednoduchú implementáciu:</description>
     </item>
     
     <item>
@@ -1120,7 +1119,7 @@ package sk.novotnyr.quotes; public interface QuoteGenerator { public String getQ
       <pubDate>Tue, 19 Feb 2008 09:24:46 +0100</pubDate>
       
       <guid>https://novotnyr.github.io/scrolls/hibernate-receptar-tipy-triky/</guid>
-      <description>Interceptory package sk.annun.davano.dao; import java.util.Collections; import java.util.Iterator; import org.apache.log4j.Logger; import org.hibernate.EmptyInterceptor; import org.springframework.jdbc.core.JdbcTemplate; import sk.annun.davano.Post; public class FulltextSearchUpdateInterceptor extends EmptyInterceptor { public static final Logger logger = Logger.getLogger(FulltextSearchUpdateInterceptor.class); private JdbcTemplate jdbcTemplate; // @Override // public boolean onFlushDirty(Object entity, Serializable id, Object[] currentState, Object[] previousState, String[] propertyNames, Type[] types) { // if(entity instanceof Post) { // Object[] params = {getText((Post) entity), id}; // jdbcTemplate.update(&amp;#34;UPDATE post_fulltext SET text = ? WHERE id = ?</description>
+      <description>Interceptory package sk.annun.davano.dao;  import java.util.Collections; import java.util.Iterator;  import org.apache.log4j.Logger; import org.hibernate.EmptyInterceptor; import org.springframework.jdbc.core.JdbcTemplate;  import sk.annun.davano.Post;  public class FulltextSearchUpdateInterceptor extends EmptyInterceptor {   public static final Logger logger = Logger.getLogger(FulltextSearchUpdateInterceptor.class);   private JdbcTemplate jdbcTemplate;  // @Override // public boolean onFlushDirty(Object entity, Serializable id, Object[] currentState, Object[] previousState, String[] propertyNames, Type[] types) { // if(entity instanceof Post) { // Object[] params = {getText((Post) entity), id}; // jdbcTemplate.</description>
     </item>
     
     <item>
@@ -1138,7 +1137,7 @@ package sk.novotnyr.quotes; public interface QuoteGenerator { public String getQ
       <pubDate>Thu, 31 Jan 2008 00:00:00 +0100</pubDate>
       
       <guid>https://novotnyr.github.io/scrolls/php-sessions-and-security-tips-and-tricks/</guid>
-      <description>And now: 30 seconds o&#39; fun:
+      <description>And now: 30 seconds o&amp;rsquo; fun:
 Misc notes  take MD5 of USER_AGENT into account (and possibly other HTTP headers) &amp;ndash; changing of it between sessions may be possible hijack use cookies as extra security level (put fingerprint into cookie)  Store md5 of sid, ip, login time into cookie and into db table to compare them later   use prevention of logging into existing session &amp;ndash; always generate new session ID after login.</description>
     </item>
     
@@ -1160,7 +1159,7 @@ JAXB umožňuje mapovanie XML dokumentov na Java objekty a to v oboch smeroch. S
       
       <guid>https://novotnyr.github.io/scrolls/spring-ws-od-xsd-k-webovej-sluzbe/</guid>
       <description>Krok 1 - základná webová služba Ukážkový dokument pre požiadavku.
-&amp;lt;?xml version=&amp;#34;1.0&amp;#34; encoding=&amp;#34;UTF-8&amp;#34;?&amp;gt; &amp;lt;movieReservationRequest xmlns=&amp;#34;http://movie.novotnyr.sk/ws/types&amp;#34; &amp;gt; &amp;lt;title&amp;gt;Battlestar Galactica&amp;lt;/title&amp;gt; &amp;lt;date&amp;gt;2008-12-24&amp;lt;/date&amp;gt; &amp;lt;numberOfTickets&amp;gt;4&amp;lt;/numberOfTickets&amp;gt; &amp;lt;/movieReservationRequest&amp;gt; web.xml &amp;lt;?xml version=&amp;#34;1.0&amp;#34; encoding=&amp;#34;UTF-8&amp;#34;?&amp;gt; &amp;lt;web-app xmlns=&amp;#34;http://java.sun.com/xml/ns/j2ee&amp;#34; xmlns:xsi=&amp;#34;http://www.w3.org/2001/XMLSchema-instance&amp;#34; xsi:schemaLocation=&amp;#34;http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd&amp;#34; version=&amp;#34;2.4&amp;#34;&amp;gt; &amp;lt;servlet&amp;gt; &amp;lt;servlet-name&amp;gt;spring-ws&amp;lt;/servlet-name&amp;gt; &amp;lt;servlet-class&amp;gt; org.springframework.ws.transport.http.MessageDispatcherServlet &amp;lt;/servlet-class&amp;gt; &amp;lt;load-on-startup&amp;gt;1&amp;lt;/load-on-startup&amp;gt; &amp;lt;/servlet&amp;gt; &amp;lt;servlet-mapping&amp;gt; &amp;lt;servlet-name&amp;gt;spring-ws&amp;lt;/servlet-name&amp;gt; &amp;lt;url-pattern&amp;gt;/*&amp;lt;/url-pattern&amp;gt; &amp;lt;/servlet-mapping&amp;gt; &amp;lt;/web-app&amp;gt; spring-ws-servlet.xml &amp;lt;?xml version=&amp;#34;1.0&amp;#34; encoding=&amp;#34;UTF-8&amp;#34;?&amp;gt; &amp;lt;beans xmlns=&amp;#34;http://www.springframework.org/schema/beans&amp;#34; xmlns:xsi=&amp;#34;http://www.w3.org/2001/XMLSchema-instance&amp;#34; xmlns:context=&amp;#34;http://www.springframework.org/schema/context&amp;#34; xsi:schemaLocation=&amp;#34;http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd&amp;#34;&amp;gt; &amp;lt;context:component-scan base-package=&amp;#34;sk.novotnyr.movie&amp;#34;/&amp;gt; &amp;lt;bean class=&amp;#34;org.springframework.ws.server.endpoint.mapping .PayloadRootAnnotationMethodEndpointMapping&amp;#34;/&amp;gt; &amp;lt;/beans&amp;gt; Endpoint package sk.novotnyr.movie; import javax.xml.transform.Source; import javax.xml.transform.Transformer; import javax.xml.transform.TransformerFactory; import javax.</description>
+&amp;lt;?xml version=&amp;#34;1.0&amp;#34; encoding=&amp;#34;UTF-8&amp;#34;?&amp;gt;  &amp;lt;movieReservationRequest xmlns=&amp;#34;http://movie.novotnyr.sk/ws/types&amp;#34; &amp;gt;  &amp;lt;title&amp;gt;Battlestar Galactica&amp;lt;/title&amp;gt;  &amp;lt;date&amp;gt;2008-12-24&amp;lt;/date&amp;gt;  &amp;lt;numberOfTickets&amp;gt;4&amp;lt;/numberOfTickets&amp;gt; &amp;lt;/movieReservationRequest&amp;gt; web.xml &amp;lt;?xml version=&amp;#34;1.0&amp;#34; encoding=&amp;#34;UTF-8&amp;#34;?&amp;gt; &amp;lt;web-app xmlns=&amp;#34;http://java.sun.com/xml/ns/j2ee&amp;#34; xmlns:xsi=&amp;#34;http://www.w3.org/2001/XMLSchema-instance&amp;#34;  xsi:schemaLocation=&amp;#34;http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd&amp;#34;  version=&amp;#34;2.4&amp;#34;&amp;gt;   &amp;lt;servlet&amp;gt;  &amp;lt;servlet-name&amp;gt;spring-ws&amp;lt;/servlet-name&amp;gt;  &amp;lt;servlet-class&amp;gt;  org.springframework.ws.transport.http.MessageDispatcherServlet  &amp;lt;/servlet-class&amp;gt;  &amp;lt;load-on-startup&amp;gt;1&amp;lt;/load-on-startup&amp;gt;  &amp;lt;/servlet&amp;gt;   &amp;lt;servlet-mapping&amp;gt;  &amp;lt;servlet-name&amp;gt;spring-ws&amp;lt;/servlet-name&amp;gt;  &amp;lt;url-pattern&amp;gt;/*&amp;lt;/url-pattern&amp;gt;  &amp;lt;/servlet-mapping&amp;gt;  &amp;lt;/web-app&amp;gt; spring-ws-servlet.xml &amp;lt;?xml version=&amp;#34;1.0&amp;#34; encoding=&amp;#34;UTF-8&amp;#34;?&amp;gt; &amp;lt;beans xmlns=&amp;#34;http://www.springframework.org/schema/beans&amp;#34; xmlns:xsi=&amp;#34;http://www.w3.org/2001/XMLSchema-instance&amp;#34;  xmlns:context=&amp;#34;http://www.</description>
     </item>
     
     <item>
@@ -1206,7 +1205,7 @@ Ant zjednodušuje nudné a často opakované procesy prebiehajúce pri zostavova
       <guid>https://novotnyr.github.io/scrolls/automaticke-odhalovanie-implementacii-interfejsu-v-classpath/</guid>
       <description>Zadanie Máte zadanú aplikáciu, ktorá má vykonávať nejakú činnosť nad rôznymi geometrickými útvarmi (pre jednoduchosť: štvorce, kruhy a pod.) Nové geometrické útvary však môžu byť pridávané do aplikácie za behu (napr. dopracujeme meňavku a chceme ju zaviesť do systému).
 Riešenie Predpokladajme, že všetky geometrické útvary implementujú rozhranie Shape, ktoré poskytuje jedinú možnú činnosť - výpočet obsahu.
-package sk.novotnyr.shapes; public interface Shape { public double getArea(); } Príklady ostatných geometrických útvarov môžu byť napr.</description>
+package sk.novotnyr.shapes;  public interface Shape {  public double getArea(); } Príklady ostatných geometrických útvarov môžu byť napr.</description>
     </item>
     
     <item>
@@ -1237,7 +1236,7 @@ Jeho syntax je inšpirovaná syntaxou používanou v súborových systémoch - j
       <guid>https://novotnyr.github.io/scrolls/datove-zdroje-jdbc-v-tomcat-datasource/</guid>
       <description>Predpokladajme, že chceme sprístupniť v Tomcate globálny dátový zdroj JDBC dostupný cez JNDI vyhľadávanie. Globálnosť v tomto prípade znamená, že ho definujeme v Tomcate ako globálny JNDI zdroj.
 Zadefinovanie globálneho JNDI zdroja. V Tomcate 5.5.x zadefinujeme globálny dátový zdroj buď pomocou administrátorského panela, alebo manuálne. V prípade manuálnej konfigurácie vložíme do server.xml do elementu &amp;lt;GlobalNamingResources&amp;gt;
-&amp;lt;Resource auth=&amp;#34;Container&amp;#34; name=&amp;#34;jdbc/MyDataSource&amp;#34; type=&amp;#34;javax.sql.DataSource&amp;#34; url=&amp;#34;jdbc:db2://dbserver:50000/mydb&amp;#34; driverClassName=&amp;#34;com.p6spy.engine.spy.P6SpyDriver&amp;#34; username=&amp;#34;xxx&amp;#34; password=&amp;#34;xxx&amp;#34; maxActive=&amp;#34;20&amp;#34; maxIdle=&amp;#34;10&amp;#34; maxWait=&amp;#34;-1&amp;#34; /&amp;gt; Zadefinovanie odkazu na globálny zdroj v deskriptore kontextu.</description>
+&amp;lt;Resource  auth=&amp;#34;Container&amp;#34;  name=&amp;#34;jdbc/MyDataSource&amp;#34;  type=&amp;#34;javax.sql.DataSource&amp;#34;  url=&amp;#34;jdbc:db2://dbserver:50000/mydb&amp;#34;  driverClassName=&amp;#34;com.p6spy.engine.spy.P6SpyDriver&amp;#34;  username=&amp;#34;xxx&amp;#34;  password=&amp;#34;xxx&amp;#34;  maxActive=&amp;#34;20&amp;#34;  maxIdle=&amp;#34;10&amp;#34;  maxWait=&amp;#34;-1&amp;#34; /&amp;gt; Zadefinovanie odkazu na globálny zdroj v deskriptore kontextu.</description>
     </item>
     
     <item>
@@ -1280,8 +1279,7 @@ Vo vývojovom prostredí Javy sa však nachádza nástroj jar.exe, ktorý uľah�
       <guid>https://novotnyr.github.io/scrolls/ibatis-receptar-tipy-triky/</guid>
       <description>Používanie bodkočiarok Zvážte používanie bodkočiarok v dopytoch - môže to pôsobiť veľa problémov. Napr. ovládač typu NET pre DB2 spokojne skonzumuje dopyt ukončený bodkočiarkou. Žiaľ, JCC verzia ovládača sa zakusne a vyhlási syntaktickú chybu.
 Vzťahy 1:1 s použitím ResultMapy a explicitné vzťahy Majme
-&amp;lt;resultMap class=&amp;#34;libris.Book&amp;#34; id=&amp;#34;bookRM&amp;#34; groupBy=&amp;#34;id&amp;#34; &amp;gt; &amp;lt;result property=&amp;#34;id&amp;#34; column=&amp;#34;id_book&amp;#34;/&amp;gt; &amp;lt;result property=&amp;#34;title&amp;#34; column=&amp;#34;title&amp;#34;/&amp;gt; &amp;lt;result property=&amp;#34;status.requestsCount&amp;#34; column=&amp;#34;request_count&amp;#34;/&amp;gt; &amp;lt;result property=&amp;#34;status.borrowedTo&amp;#34; column=&amp;#34;borrowee&amp;#34;/&amp;gt; &amp;lt;result property=&amp;#34;series&amp;#34; resultMap=&amp;#34;Book.seriesRM&amp;#34;/&amp;gt; &amp;lt;/resultMap&amp;gt; a triedu
-public class Book implements Serializable { protected Integer id; protected String title = new String(); private BookStatus status; private SimpleSeries series = SimpleSeries.</description>
+&amp;lt;resultMap class=&amp;#34;libris.Book&amp;#34; id=&amp;#34;bookRM&amp;#34; groupBy=&amp;#34;id&amp;#34; &amp;gt;  &amp;lt;result property=&amp;#34;id&amp;#34; column=&amp;#34;id_book&amp;#34;/&amp;gt;  &amp;lt;result property=&amp;#34;title&amp;#34; column=&amp;#34;title&amp;#34;/&amp;gt;   &amp;lt;result property=&amp;#34;status.requestsCount&amp;#34; column=&amp;#34;request_count&amp;#34;/&amp;gt;  &amp;lt;result property=&amp;#34;status.borrowedTo&amp;#34; column=&amp;#34;borrowee&amp;#34;/&amp;gt;   &amp;lt;result property=&amp;#34;series&amp;#34; resultMap=&amp;#34;Book.seriesRM&amp;#34;/&amp;gt; &amp;lt;/resultMap&amp;gt; a triedu</description>
     </item>
     
     <item>
@@ -1324,8 +1322,8 @@ Rozbalený ZIP archív (66 MB) však môžeme bez problémov osekať o nepouží
       <guid>https://novotnyr.github.io/scrolls/rmi-a-vzdialene-volanie-metod/</guid>
       <description>Od verzie Java 5 sa vzdialené volanie metód značne zjednodušilo. Uvedieme jednoduchý príklad servera a klienta, ktorý získa aktuálny dátum na serveri.
 Základné interfejsy Predovšetkým budeme potrebovať interfejs, ktorý bude obsahovať vzdialené volateľné metódy.
-package rmi2; import java.rmi.Remote; import java.rmi.RemoteException; import java.util.Date; public interface RemoteDateService extends Remote { public Date getDate() throws RemoteException; } Následne dodáme jeho implementáciu:
-package rmi2; import java.rmi.RemoteException; import java.rmi.server.UnicastRemoteObject; import java.util.Date; public class RemoteDateServiceImpl extends UnicastRemoteObject implements RemoteDateService { public RemoteDateServiceImpl() throws RemoteException { super(); } public Date getDate() throws RemoteException { return new Date(); } } Trieda implementuje UnicastRemoteObject, to znamená, že pri vytvorení jej inštancie sa vykoná jej automatická registrácia v RMI registroch (teda bude automaticky pripravená na zverejnenie).</description>
+package rmi2;  import java.rmi.Remote; import java.rmi.RemoteException; import java.util.Date;  public interface RemoteDateService extends Remote {  public Date getDate() throws RemoteException; } Následne dodáme jeho implementáciu:
+package rmi2;  import java.rmi.RemoteException; import java.rmi.server.UnicastRemoteObject; import java.util.Date;  public class RemoteDateServiceImpl extends UnicastRemoteObject  implements RemoteDateService {  public RemoteDateServiceImpl() throws RemoteException {  super();  } 	 public Date getDate() throws RemoteException {  return new Date();  } } Trieda implementuje UnicastRemoteObject, to znamená, že pri vytvorení jej inštancie sa vykoná jej automatická registrácia v RMI registroch (teda bude automaticky pripravená na zverejnenie).</description>
     </item>
     
     <item>
@@ -1336,8 +1334,8 @@ package rmi2; import java.rmi.RemoteException; import java.rmi.server.UnicastRem
       <guid>https://novotnyr.github.io/scrolls/rmi-remoting-a-spring/</guid>
       <description>Spring podporuje automatické publikovanie zvoleného interfaceu v podobe RMI triedy.
 Majme jednoduchý interface:
-package spring.rmi; import java.util.Date; public interface DateService { public Date getDate(); } a jeho implementáciu, ktorá vracia aktuálny dátum
-package spring.rmi; import java.util.Date; public class DateServiceImpl implements DateService { public Date getDate() { return new Date(); } } (:sourceend:) Všimnime si, že ani interfejs ani jeho implementácia nemajú v sebe nič špeciálne. Sú to klasické triedy, ktoré dokonca nepoužívajú nič z technológie RMI.</description>
+package spring.rmi;  import java.util.Date;  public interface DateService {  public Date getDate(); } a jeho implementáciu, ktorá vracia aktuálny dátum
+package spring.rmi;  import java.util.Date;  public class DateServiceImpl implements DateService {  public Date getDate() {  return new Date();  } } (:sourceend:) Všimnime si, že ani interfejs ani jeho implementácia nemajú v sebe nič špeciálne.</description>
     </item>
     
     <item>
@@ -1406,7 +1404,7 @@ Modifikacia poloziek v ListView Ak sa planuju zmeny poloziek v ListView (pridava
       
       <guid>https://novotnyr.github.io/scrolls/maven-receptar-tipy-triky/</guid>
       <description>Generovanie projektovych stranok pomocou Mavenu 1  Nastavime  maven.docs.outputencoding=utf-8 v project.properties. Inak sa dockame dokumentacie v iso-8859-1, pripadne otaznikov vo vygenerovanych dokumentoch
- Stiahneme plugin sdocbook  maven plugin:download -DgroupId=maven-plugins -DartifactId=maven-sdocbook-plugin -Dversion=1.4.1  Do maven.xml v projektovom adresari pridame / vytvorime  &amp;lt;project xmlns:j=&amp;#34;jelly:core&amp;#34; xmlns:ant=&amp;#34;jelly:ant&amp;#34; xmlns:util=&amp;#34;jelly:util&amp;#34; xmlns:maven=&amp;#34;jelly:maven&amp;#34;&amp;gt; &amp;lt;goal name=&amp;#34;docbook2xdoc&amp;#34;&amp;gt; &amp;lt;maven:get var=&amp;#34;maven.sdocbook.generated.html&amp;#34; plugin=&amp;#34;maven-sdocbook-plugin&amp;#34; property=&amp;#34;maven.sdocbook.generated.html&amp;#34;/&amp;gt; &amp;lt;mkdir dir=&amp;#34;${maven.gen.docs}/docbook2xdoc&amp;#34;/&amp;gt; &amp;lt;j:set var=&amp;#34;maven.html2xdoc.dir.bak&amp;#34; value=&amp;#34;${maven.html2xdoc.dir}&amp;#34;/&amp;gt; &amp;lt;j:set var=&amp;#34;maven.gen.docs.bak&amp;#34; value=&amp;#34;${maven.gen.docs}&amp;#34;/&amp;gt; &amp;lt;j:set var=&amp;#34;maven.html2xdoc.dir&amp;#34; value=&amp;#34;${maven.sdocbook.generated.html}&amp;#34;/&amp;gt; &amp;lt;j:set var=&amp;#34;maven.gen.docs&amp;#34; value=&amp;#34;${maven.gen.docs}&amp;#34;/&amp;gt; &amp;lt;attainGoal name=&amp;#34;html2xdoc:transform&amp;#34;/&amp;gt; &amp;lt;j:set var=&amp;#34;maven.</description>
+ Stiahneme plugin sdocbook  maven plugin:download -DgroupId=maven-plugins -DartifactId=maven-sdocbook-plugin -Dversion=1.4.1  Do maven.xml v projektovom adresari pridame / vytvorime  &amp;lt;project xmlns:j=&amp;#34;jelly:core&amp;#34; xmlns:ant=&amp;#34;jelly:ant&amp;#34; xmlns:util=&amp;#34;jelly:util&amp;#34; xmlns:maven=&amp;#34;jelly:maven&amp;#34;&amp;gt;  &amp;lt;goal name=&amp;#34;docbook2xdoc&amp;#34;&amp;gt;  &amp;lt;maven:get var=&amp;#34;maven.sdocbook.generated.html&amp;#34;  plugin=&amp;#34;maven-sdocbook-plugin&amp;#34;  property=&amp;#34;maven.sdocbook.generated.html&amp;#34;/&amp;gt;  &amp;lt;mkdir dir=&amp;#34;${maven.gen.docs}/docbook2xdoc&amp;#34;/&amp;gt;   &amp;lt;j:set var=&amp;#34;maven.html2xdoc.dir.bak&amp;#34; value=&amp;#34;${maven.html2xdoc.dir}&amp;#34;/&amp;gt;  &amp;lt;j:set var=&amp;#34;maven.gen.docs.bak&amp;#34; value=&amp;#34;${maven.gen.docs}&amp;#34;/&amp;gt;   &amp;lt;j:set var=&amp;#34;maven.</description>
     </item>
     
     <item>
@@ -1426,7 +1424,7 @@ Modifikacia poloziek v ListView Ak sa planuju zmeny poloziek v ListView (pridava
       <guid>https://novotnyr.github.io/scrolls/jednoduchy-priklad-pouzitia-hibernate/</guid>
       <description>Úvod Hibernate (http://www.hibernate.org) je nástroj podporujúci objektovú perzistenciu &amp;ndash; v preklade: umožňuje ukladať objekty do databázy a následne ich z nej vyberať (často sa možno stretnúť so pojmom ORM &amp;ndash; Object Relational Mapping). Výhodou je jeho ľahké používanie, stabilita a rozšírenosť.
 Príklad Uvažujme niekoľko jednoduchých tried, ktoré sa zaoberajú mačkami. Majme koncept mačky: mačka má meno a deti. Teda môžeme ju reprezentovať triedou Cat.
-package catology; import java.util.HashSet; import java.util.Set; public class Cat { private String name; public String getName() { return name; } public void setName(String name) { this.</description>
+package catology;  import java.util.HashSet; import java.</description>
     </item>
     
     <item>
@@ -1485,7 +1483,7 @@ c:\Program Files\Mozilla Firefox\chrome | |-textedit |-content |-skin |-locale A
       
       <guid>https://novotnyr.github.io/scrolls/xerces-primer/</guid>
       <description>DOM v Xercesovi  Na salaši pod Veprom TramtáriaDOM Budú miestne preteky V hode oštiepkom — L&amp;amp;S&amp;amp;F &amp;ndash; Majstrovstvá
- DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance(); factory.setValidating(true); factory.setIgnoringElementContentWhitespace(true); DocumentBuilder builder = factory.newDocumentBuilder(); // Method input for entering String included Document doc = builder.parse(filename); // DOM tree done - getting the root element  Element root = doc.getDocumentElement(); SAX Štartér import org.xml.sax.XMLReader; import org.xml.sax.ContentHandler; import java.io.IOException; import org.xml.sax.SAXException; public class SAXParserDemo { public void performDemo(String uri) { System.</description>
+ DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance(); factory.setValidating(true); factory.setIgnoringElementContentWhitespace(true); DocumentBuilder builder = factory.newDocumentBuilder(); // Method input for entering String included Document doc = builder.parse(filename); // DOM tree done - getting the root element  Element root = doc.getDocumentElement(); SAX Štartér import org.xml.sax.XMLReader; import org.xml.sax.ContentHandler; import java.io.IOException; import org.xml.sax.SAXException;  public class SAXParserDemo {   public void performDemo(String uri) {  System.</description>
     </item>
     
     <item>

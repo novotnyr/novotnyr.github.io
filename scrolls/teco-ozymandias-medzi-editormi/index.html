@@ -93,8 +93,8 @@ make -f makefile.osx
 <h2 id="gui">GUI</h2>
 <p>TECO nemá GUI. (Ale je tu video mód. Pre krehké srdcia. Viď kapitola na konci.)</p>
 <p>Teda, spustenie <code>teco</code> spôsobí nasledovný vrchol GUI:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">*
-</code></pre></div><p>Jedna hviezdička, teda prompt, je celé GUI.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-plain" data-lang="plain"><span style="display:flex;"><span>*
+</span></span></code></pre></div><p>Jedna hviezdička, teda prompt, je celé GUI.</p>
 <p>TECO je totiž znakovo orientovaný editor. Celý textový súbor považuje za obrovský reťazec (znakov), ktoré sú indexované (od nuly). V tomto reťazci máme <strong>kurzor</strong>, ktorý ukazuje na konkrétny znak, a vďaka pestrej palete <strong>príkazov</strong> môžeme po súbore skackať a meniť, pridávať, či mazať jednotlivé znaky.</p>
 <p>Akurát trochu terminológie:</p>
 <ul>
@@ -104,8 +104,8 @@ make -f makefile.osx
 </ul>
 <h2 id="načítanie-a-výpis-súboru-v-bufferi">Načítanie a výpis súboru v bufferi</h2>
 <p>Na hrajkanie si urobme cvičný súbor <code>ozymandias.txt</code>, zo shellu:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#072">printf</span> <span style="background-color:#e0e0ff">&#34;Som Ozymandias, vsetkych kralov kral.\nHlad, mocny, zufaj, vidiac moje dielo\041\n --Percy Bysshe Shelley: Ozymandias (1818)\n&#34;</span> &gt; ozymandias.txt
-</code></pre></div><p>Bežné TECO neberie parametre z príkazového riadka. (Príkazový riadok nebol vynájdený.)</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span><span style="color:#072">printf</span> <span style="background-color:#e0e0ff">&#34;Som Ozymandias, vsetkych kralov kral.\nHlad, mocny, zufaj, vidiac moje dielo\041\n --Percy Bysshe Shelley: Ozymandias (1818)\n&#34;</span> &gt; ozymandias.txt
+</span></span></code></pre></div><p>Bežné TECO neberie parametre z príkazového riadka. (Príkazový riadok nebol vynájdený.)</p>
 <p>Na načítanie súboru použijeme dva <strong>príkazy</strong>:</p>
 <ul>
 <li><code>EB</code> otvorí súbor na čítanie a zápis. (Analógia <code>fopen()</code>)</li>
@@ -119,8 +119,8 @@ make -f makefile.osx
 </code></pre><p>Súbor sa otvoril a načítal! Po otvorení súboru je pointer na začiatku buffera, na indexe 0.</p>
 <h2 id="ht--výpis-obsahu-buffera"><code>HT</code> — výpis obsahu buffera</h2>
 <p>Výpis celého buffera získame príkazom <code>HT</code>:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">HT$$
-</code></pre></div><p>Celý session vyzerá nasledovne:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-plain" data-lang="plain"><span style="display:flex;"><span>HT$$
+</span></span></code></pre></div><p>Celý session vyzerá nasledovne:</p>
 <pre tabindex="0"><code>*HT$$
 Som Ozymandias, vsetkych kralov kral.
 Hlad, mocny, zufaj, vidiac moje dielo!
@@ -132,29 +132,29 @@ Hlad, mocny, zufaj, vidiac moje dielo!
 <p>Z <code>teco</code> sa vylieza dvojitým <code>Ctrl+C</code>. <code>Ctrl+C</code>.</p>
 <h2 id="--zistenie-aktuálnej-polohy"><code>.=</code> – zistenie aktuálnej polohy</h2>
 <p>Ak chceme zistiť, kde máme pointer, použime príkaz <code>.=</code>:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">.=$$
-</code></pre></div><p>Celý session vyzerá:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">*.=$$
-0
-</code></pre></div><p>Tento príkaz vypíše index, na ktorom sa práve nachádza pointer.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-plain" data-lang="plain"><span style="display:flex;"><span>.=$$
+</span></span></code></pre></div><p>Celý session vyzerá:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-plain" data-lang="plain"><span style="display:flex;"><span>*.=$$
+</span></span><span style="display:flex;"><span>0
+</span></span></code></pre></div><p>Tento príkaz vypíše index, na ktorom sa práve nachádza pointer.</p>
 <p>Mnemotechnika kríva ešte viac, ale v tomto prípade ide o použitie príkazu s parametrom. Ale detaily neskôr.</p>
 <h2 id="t--typeout--výpis-riadka"><code>T</code> — typeout – výpis riadka</h2>
 <p>Jednopísmenný príkaz <code>T</code> vypisuje text od pointeru do konca riadku (teda po najbližší <code>CR</code>-<code>LF</code>).</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">T$$
-</code></pre></div><p>Celý session vrátane dekorácie:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">*T$$
-Som Ozymandias, vsetkych kralov kral.
-</code></pre></div><p>Keďže pointer je na začiatku buffera (a na začiatku prvého riadku), samotný <code>T</code> vypíše prvý riadok.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-plain" data-lang="plain"><span style="display:flex;"><span>T$$
+</span></span></code></pre></div><p>Celý session vrátane dekorácie:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-plain" data-lang="plain"><span style="display:flex;"><span>*T$$
+</span></span><span style="display:flex;"><span>Som Ozymandias, vsetkych kralov kral.
+</span></span></code></pre></div><p>Keďže pointer je na začiatku buffera (a na začiatku prvého riadku), samotný <code>T</code> vypíše prvý riadok.</p>
 <p><code>T</code> je štandardný debugovací nástroj. Kto je stratený, nech si <code>T</code>-čkne.</p>
 <p>Hodí sa aj kombo na výpis celého riadka, bez ohľadu na polohu pointra:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">0TT
-</code></pre></div><p>O kombách neskôr, zatiaľ to použime ako zaklínadlo!</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-plain" data-lang="plain"><span style="display:flex;"><span>0TT
+</span></span></code></pre></div><p>O kombách neskôr, zatiaľ to použime ako zaklínadlo!</p>
 <h2 id="c--character-move--pohyb-po-znakoch"><code>C</code> — character move – pohyb po znakoch</h2>
 <p>Príkaz <code>C</code> hýbe pointerom po <del>páske</del> <del>bufferi</del> súbore. Ak chceme pointer posunúť o jeden znak doprava:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">C
-</code></pre></div><p>Zrazu máme kurzor medzi indexami 0 a 1, inak povedané, v ukážke medzi písmenami <code>S</code> a <code>o</code>:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">S|om Ozymandias, vsetkych kralov kral.
-</code></pre></div><p>To si môžeme overiť:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-plain" data-lang="plain"><span style="display:flex;"><span>C
+</span></span></code></pre></div><p>Zrazu máme kurzor medzi indexami 0 a 1, inak povedané, v ukážke medzi písmenami <code>S</code> a <code>o</code>:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-plain" data-lang="plain"><span style="display:flex;"><span>S|om Ozymandias, vsetkych kralov kral.
+</span></span></code></pre></div><p>To si môžeme overiť:</p>
 <ul>
 <li><code>.=</code> vráti <code>1</code></li>
 <li><code>T</code> vráti <code>om Ozymandias, vsetkych kralov kral.</code>, pretože vypisujeme od pointra (index 1) do konca riadka.</li>
@@ -167,30 +167,30 @@ Som Ozymandias, vsetkych kralov kral.
 </ul>
 <h3 id="parametre-c">Parametre <code>C</code></h3>
 <p>Príkaz <code>C</code> berie počet znakov, o ktoré sa máme pohnúť doprava. Napr. <code>1C</code> posunie pointer o jeden znak doprava. Posun a výpis, aha:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">*1C$$
-*T$$
-om Ozymandias, vsetkych kralov kral.
-</code></pre></div><p>Posúvať sa môžeme aj doľava, cez záporné indexy! <code>-1C</code> posunie pointer o mínus jeden znak doprava. Teda o jeden znak doľava.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">*-1C$$
-*T$$
-Som Ozymandias, vsetkych kralov kral.
-</code></pre></div><p>Plus jedna a mínus jedna sú zabudované. <code>C</code> znamená automaticky <code>1C</code> a <code>-C</code> znamená <code>-1C</code>.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-plain" data-lang="plain"><span style="display:flex;"><span>*1C$$
+</span></span><span style="display:flex;"><span>*T$$
+</span></span><span style="display:flex;"><span>om Ozymandias, vsetkych kralov kral.
+</span></span></code></pre></div><p>Posúvať sa môžeme aj doľava, cez záporné indexy! <code>-1C</code> posunie pointer o mínus jeden znak doprava. Teda o jeden znak doľava.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-plain" data-lang="plain"><span style="display:flex;"><span>*-1C$$
+</span></span><span style="display:flex;"><span>*T$$
+</span></span><span style="display:flex;"><span>Som Ozymandias, vsetkych kralov kral.
+</span></span></code></pre></div><p>Plus jedna a mínus jedna sú zabudované. <code>C</code> znamená automaticky <code>1C</code> a <code>-C</code> znamená <code>-1C</code>.</p>
 <h2 id="j--jump--skok-na-index"><code>J</code> — jump – skok na index</h2>
 <p><code>J</code> ako <strong>jump</strong> skočí na konkrétny index.</p>
 <h3 id="skok-na-začiatok">Skok na začiatok</h3>
 <p>Napríklad skok pointrom na začiatok buffera?</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">0J
-</code></pre></div><p>Skok počiatkový je taký bežný, že má skratku:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">J
-</code></pre></div><p>Skok pred tretí znak?</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">3J
-</code></pre></div><h3 id="skok-na-koniec">Skok na koniec</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-plain" data-lang="plain"><span style="display:flex;"><span>0J
+</span></span></code></pre></div><p>Skok počiatkový je taký bežný, že má skratku:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-plain" data-lang="plain"><span style="display:flex;"><span>J
+</span></span></code></pre></div><p>Skok pred tretí znak?</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-plain" data-lang="plain"><span style="display:flex;"><span>3J
+</span></span></code></pre></div><h3 id="skok-na-koniec">Skok na koniec</h3>
 <p>Skok na koniec buffera vyriešime kúzlom:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">ZJ
-</code></pre></div><h4 id="z--index-konca-buffera"><code>Z</code> — index konca buffera</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-plain" data-lang="plain"><span style="display:flex;"><span>ZJ
+</span></span></code></pre></div><h4 id="z--index-konca-buffera"><code>Z</code> — index konca buffera</h4>
 <p>Príkaz <code>Z</code> vracia index konca buffera. A samozrejme, výsledok použime ako parameter pre <em>jump</em>! Normálny zápis v normálnom jazyku by vyzeral:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">jump(endOfBufferIndex())
-</code></pre></div><p>Ale normálne jazyky neboli vynájdené!</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-plain" data-lang="plain"><span style="display:flex;"><span>jump(endOfBufferIndex())
+</span></span></code></pre></div><p>Ale normálne jazyky neboli vynájdené!</p>
 <h3 id="konce-riadkov-sú-dva-riadky">Konce riadkov sú dva riadky!</h3>
 <p>Pozor na to, že konce riadkov sú dva znaky: <code>CR</code> a <code>LF</code>! Index konca bufferu tak môže byť väčšie číslo než je dĺžka súboru v Linuxe!</p>
 <h2 id="funkcie-pre-indexy">Funkcie pre indexy</h2>
@@ -203,15 +203,15 @@ Som Ozymandias, vsetkych kralov kral.
 </ul>
 <h2 id="l--line-move--posun-po-riadkoch"><code>L</code> — line move – posun po riadkoch</h2>
 <p>Posun zo začiatku na ďalší riadok?</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">L
-</code></pre></div><p>Ak sme na začiatku buffera, posunieme sa o riadok ďalej a pointer sa posunie <em>za</em> prvý <code>CR-LF</code>.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-plain" data-lang="plain"><span style="display:flex;"><span>L
+</span></span></code></pre></div><p>Ak sme na začiatku buffera, posunieme sa o riadok ďalej a pointer sa posunie <em>za</em> prvý <code>CR-LF</code>.</p>
 <p>Overme si to výpisom:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">T
-</code></pre></div><p>Uvidíme výpis od aktuálneho pointera do konca riadku, teda <code>Hlad, mocny, zufaj, vidiac moje dielo!</code>.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-plain" data-lang="plain"><span style="display:flex;"><span>T
+</span></span></code></pre></div><p>Uvidíme výpis od aktuálneho pointera do konca riadku, teda <code>Hlad, mocny, zufaj, vidiac moje dielo!</code>.</p>
 <h3 id="posun-o-viacero-riadkov">Posun o viacero riadkov</h3>
 <p>Posúvať sa môžeme dopredu i dozadu. Napríklad posun o dva riadky dopredu:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">2L
-</code></pre></div><h2 id="i--insert--vkladanie-textu"><code>I</code> – insert – vkladanie textu</h2>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-plain" data-lang="plain"><span style="display:flex;"><span>2L
+</span></span></code></pre></div><h2 id="i--insert--vkladanie-textu"><code>I</code> – insert – vkladanie textu</h2>
 <p>Príkaz <code>I</code> (<strong>insert</strong>) vkladá text pod pointer.</p>
 <p>Berie jeden parameter a to <em>text</em>, čo sa má vložiť. Tento parameter však nejde <em>pred</em> príkaz (nie je to poloha), ale <em>za</em> príkaz.</p>
 <p>Ak sa nachádzame na začiatku buffera a chceme vložiť dekoračnú čiaru, použime:</p>
@@ -221,8 +221,8 @@ Som Ozymandias, vsetkych kralov kral.
 <li>a následne ukončíme príkaz cez <code>Esc</code>, <code>Esc</code>,</li>
 </ul>
 <p>Vložíme na začiatok buffera nový riadok:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">I--------------------&lt;enter&gt;$$
-</code></pre></div><p>Súbor si vypíšme klasickým <code>HT</code>.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-plain" data-lang="plain"><span style="display:flex;"><span>I--------------------&lt;enter&gt;$$
+</span></span></code></pre></div><p>Súbor si vypíšme klasickým <code>HT</code>.</p>
 <p>Celý <em>session</em> vyzerá potom nasledovne:</p>
 <pre tabindex="0"><code>*I--------------
 $$
@@ -234,10 +234,10 @@ Hlad, mocny, zufaj, vidiac moje dielo!
  *
 </code></pre><h2 id="k--kill--mazanie-textu"><code>K</code> — kill – mazanie textu</h2>
 <p>Príkaz <code>K</code> (<strong>kill</strong>) maže riadok od pointera po najbližší koniec riadka (vrátane). Ak chceme zmazať prvý riadok:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">J$$
-K$$
-HT
-</code></pre></div><ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-plain" data-lang="plain"><span style="display:flex;"><span>J$$
+</span></span><span style="display:flex;"><span>K$$
+</span></span><span style="display:flex;"><span>HT
+</span></span></code></pre></div><ul>
 <li><code>J</code> presunieme sa na začiatok buffera</li>
 <li><code>K</code> vymaže od začiatku buffera po najbližší <code>CR</code>-<code>LF</code> (vrátane)</li>
 <li>a overíme si výpisom.</li>
@@ -248,32 +248,31 @@ HT
 <h2 id="d--delete--mazanie-znakov"><code>D</code> – delete – mazanie znakov</h2>
 <p>Ak chceme mazať znaky, <code>D</code> maže jeden znak napravo od pointera.</p>
 <p>Prvý znak buffera von!</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">J$$
-D
-</code></pre></div><p><code>D</code> berie parametre, takže <code>3D</code> nie je trojrozmerné TECO, ale mazanie troch znakov napravo od pointera.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-plain" data-lang="plain"><span style="display:flex;"><span>J$$
+</span></span><span style="display:flex;"><span>D
+</span></span></code></pre></div><p><code>D</code> berie parametre, takže <code>3D</code> nie je trojrozmerné TECO, ale mazanie troch znakov napravo od pointera.</p>
 <p>Mínusové argumenty mažú naľavo! <code>-5D</code> zmaže päť znakov naľavo od pointra.</p>
 <h2 id="hardcore-combo-1">Hardcore Combo</h2>
 <p><code>JD</code> nie je <em>Jack Daniels</em>, ale kombo na mazanie prvého znaku buffera.</p>
 <h1 id="intermezzo">Intermezzo</h1>
 <p>V tomto stave je súbor zrejme rozdrbaný tak, že je najlepšie skončiť a začať nanovo.</p>
 <p>Teda</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">Ctrl-C
-Ctrl-C
-teco
-EBozymandias.txt$$
-Y$$
-HT$$
-</code></pre></div><h1 id="druhé-dejstvo--kombá">Druhé dejstvo – kombá</h1>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-plain" data-lang="plain"><span style="display:flex;"><span>Ctrl-C
+</span></span><span style="display:flex;"><span>Ctrl-C
+</span></span><span style="display:flex;"><span>teco
+</span></span><span style="display:flex;"><span>EBozymandias.txt$$
+</span></span><span style="display:flex;"><span>Y$$
+</span></span><span style="display:flex;"><span>HT$$
+</span></span></code></pre></div><h1 id="druhé-dejstvo--kombá">Druhé dejstvo – kombá</h1>
 <p>TECO je v skutočnosti arkádovka: vľavo pisár, vpravo súbor, a kombá nakladajú do súboru, čo sa zmestí.</p>
 <p>Príkazy môžu rovno nasledovať za sebou a ukončia sa <strong>Esc/Esc</strong>.</p>
 <p>Dajme si prípravu, kde sekerou rozporcujeme Shelleyho jambický pentameter na päť riadkov a jeden prázdny na konci:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">Som Ozymandias, 
-vsetkych kralov kral.
-Hlad, mocny, 
-zufaj, 
-vidiac moje dielo!
-
-</code></pre></div><p>Pre Linux/Mac to vyzerá:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-plain" data-lang="plain"><span style="display:flex;"><span>Som Ozymandias, 
+</span></span><span style="display:flex;"><span>vsetkych kralov kral.
+</span></span><span style="display:flex;"><span>Hlad, mocny, 
+</span></span><span style="display:flex;"><span>zufaj, 
+</span></span><span style="display:flex;"><span>vidiac moje dielo!
+</span></span></code></pre></div><p>Pre Linux/Mac to vyzerá:</p>
 <pre tabindex="0"><code>0000000   123 157 155 040 117 172 171 155 141 156 144 151 141 163 054 040
            S   o   m       O   z   y   m   a   n   d   i   a   s   ,
 0000020   012 166 163 145 164 153 171 143 150 040 153 162 141 154 157 166
@@ -293,8 +292,8 @@ zufaj,&lt;CR&gt;&lt;LF&gt;
 vidiac moje dielo!&lt;CR&gt;&lt;LF&gt;
 </code></pre><p>A teraz kombo tajm!</p>
 <h2 id="mazanie-posledného-riadku">Mazanie posledného riadku</h2>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">ZJ-LK$$
-</code></pre></div><ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-plain" data-lang="plain"><span style="display:flex;"><span>ZJ-LK$$
+</span></span></code></pre></div><ul>
 <li><code>ZJ</code> nás hodí na koniec buffera:
 <ul>
 <li><code>J</code> skáče,</li>
@@ -305,8 +304,8 @@ vidiac moje dielo!&lt;CR&gt;&lt;LF&gt;
 <li><code>K</code> maže celý aktuálny riadok.</li>
 </ul>
 <p>Poďme hrať TECO golf! Ušetrime jeden znak:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">ZJ-K$$
-</code></pre></div><ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-plain" data-lang="plain"><span style="display:flex;"><span>ZJ-K$$
+</span></span></code></pre></div><ul>
 <li><code>ZJ</code> nás hodí na koniec buffera: <code>J</code> skáče, <code>Z</code> je parameter skoku zvaný „na koniec buffera“</li>
 <li><code>-K</code> maže celý predošlý riadok. <code>K</code> killuje, mínus hovorí „jeden riadok naľavo“.</li>
 </ul>
@@ -318,38 +317,38 @@ vidiac moje dielo!&lt;CR&gt;&lt;LF&gt;
 <h2 id="prepisovanie-textu">Prepisovanie textu</h2>
 <p>TECO nepodporuje prepisovanie textu. Ale vieme mazať a vkladať!</p>
 <p>Zmeňme <code>Som</code> na začiatku buffera na <code>som</code>.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">JDIs$$
-</code></pre></div><ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-plain" data-lang="plain"><span style="display:flex;"><span>JDIs$$
+</span></span></code></pre></div><ul>
 <li><code>J</code> skáče na začiatok buffera.</li>
 <li><code>D</code> zmaže znak napravo od pointera. Získame <code>om Ozymandias,</code>. Pointer stojí medzi začiatkom buffera a <code>o</code>.</li>
 <li><code>Is</code> vloží znak <code>s</code> (es) napravo od pointera. Získame <code>som ozymandias</code>. Kurzor bude medzi <code>s</code> a <code>o</code>.</li>
 </ul>
 <h2 id="nejednoznačnosti-v-kombách">Nejednoznačnosti v kombách</h2>
 <p>Nejednoznačnosti vieme vyriešiť voľne pohodeným <code>Esc</code>. Napríklad <code>I</code> (Insert) potrebuje oddeliť vkladaný text od nasledujúcich príkazov.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">ID$-C$$
-</code></pre></div><p>Vložíme <code>D</code> a posunieme sa o znak doľava. <strong>Esc</strong> zabráni vloženiu reťazca „dé mínus cé“.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-plain" data-lang="plain"><span style="display:flex;"><span>ID$-C$$
+</span></span></code></pre></div><p>Vložíme <code>D</code> a posunieme sa o znak doľava. <strong>Esc</strong> zabráni vloženiu reťazca „dé mínus cé“.</p>
 <h2 id="výpis-celého-aktuálneho-riadku-t">Výpis celého aktuálneho riadku: <code>T</code></h2>
 <p>Niekedy sa pointer ocitne uprostred riadku. Napríklad po poslednom príklade:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">.=$$
-</code></pre></div><p>Výsledok bude 1.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-plain" data-lang="plain"><span style="display:flex;"><span>.=$$
+</span></span></code></pre></div><p>Výsledok bude 1.</p>
 <p>Ak vypíšeme riadok cez <code>T</code>, získame text od pointera do konca riadka, takže <code>om ozymandias</code>. Kde je <code>S</code>?</p>
 <p>Kombináciou dvoch príkazov vypíšeme celý aktuálny riadok:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">0TT
-</code></pre></div><ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-plain" data-lang="plain"><span style="display:flex;"><span>0TT
+</span></span></code></pre></div><ul>
 <li><code>0T</code> vypíše obsah od začiatku riadku po pointer.</li>
 <li><code>T</code> vypíše od pointra po koniec riadku.</li>
 </ul>
 <h2 id="s--search--vyhľadávanie"><code>S</code> – search – vyhľadávanie</h2>
 <p>TECO vie vyhľadávať! <code>S</code> berie jeden argument s textom, ktorý sa má hľadať:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">Skral$$
-</code></pre></div><p>TECO nájde reťazec a postaví pointer za hľadaný text.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-plain" data-lang="plain"><span style="display:flex;"><span>Skral$$
+</span></span></code></pre></div><p>TECO nájde reťazec a postaví pointer za hľadaný text.</p>
 <p>Ak sa pozrieme navôkol, kurzor bude za prvým výskytom reťazca <code>kral</code>:</p>
 <pre tabindex="0"><code>*T$$
 ov kral.
 </code></pre><h2 id="fs--find--substitute--vyhľadávanie-a-nahrádzanie"><code>FS</code> – find / substitute – vyhľadávanie a nahrádzanie</h2>
 <p><code>FS</code> má dva parametre oddelené <strong>Esc</strong>: <em>čo</em> hľadať a <em>čím</em> nahradiť.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">FSOzymandias$Ozzy$$
-</code></pre></div><p>Po nahradení sa kurzor objaví za nahradeným textom.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-plain" data-lang="plain"><span style="display:flex;"><span>FSOzymandias$Ozzy$$
+</span></span></code></pre></div><p>Po nahradení sa kurzor objaví za nahradeným textom.</p>
 <p>Pozor, hľadá sa od aktuálnej pozície kurzora! Ak sme práve skončili príkaz s vyhľadávaním, radšej skočme na začiatok súboru.</p>
 <h2 id="ex--ukončenie-a-zápis-zmien"><code>EX</code> – ukončenie a zápis zmien</h2>
 <p>Príkaz <code>EX</code> zapíše zmeny a ukončí trápenie.</p>
@@ -357,8 +356,8 @@ ov kral.
 <p>V TECO sa dá programovať! TECO je turingovsky úplný jazyk!</p>
 <h2 id="--vyhodnocovanie-výrazov"><code>=</code> – vyhodnocovanie výrazov</h2>
 <p>Príkaz <code>=</code> v skutočnosti vyhodnocuje výrazy!</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">2+2*4=$$
-</code></pre></div><p>Výsledok je .. 16! TECO sa netrápi s prioritou operátorov (tie neboli vynájdené). Kto chce, uzátvorkuje si!</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-plain" data-lang="plain"><span style="display:flex;"><span>2+2*4=$$
+</span></span></code></pre></div><p>Výsledok je .. 16! TECO sa netrápi s prioritou operátorov (tie neboli vynájdené). Kto chce, uzátvorkuje si!</p>
 <p>A pozor, medzery vo výrazoch sa nesmú používať. (Teda smú, nahrádzajú sa <code>+</code>. Bol to vraj vtedy dobrý nápad.)</p>
 <h2 id="funkcie-pre-polohu">Funkcie pre polohu</h2>
 <p>Doteraz sme videli viacero funkcií, ktoré vracali polohu:</p>
@@ -376,8 +375,8 @@ ov kral.
 </ul>
 <h2 id="opakovania-a-cykly">Opakovania a cykly</h2>
 <p>TECO podporuje opakovania! Chceme vložiť na začiatok buffera dvadsať pomlčiek?</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">J$5&lt;I-$&gt;$$
-</code></pre></div><ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-plain" data-lang="plain"><span style="display:flex;"><span>J$5&lt;I-$&gt;$$
+</span></span></code></pre></div><ul>
 <li><code>J</code> skočí na začiatok buffera</li>
 <li><code>5&lt;I-$&gt;</code>
 <ul>
@@ -393,8 +392,8 @@ ov kral.
 </ul>
 <h2 id="masové-nahrádzanie">Masové nahrádzanie</h2>
 <p>Opakovanie sa dá použiť pri masovom nahrádzaní! Chceme v celom súbore nahradiť <code>m</code> za <code>n</code>?</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">J&lt;FSm$n$;&gt;$$
-</code></pre></div><ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-plain" data-lang="plain"><span style="display:flex;"><span>J&lt;FSm$n$;&gt;$$
+</span></span></code></pre></div><ul>
 <li><code>J</code> skáče na začiatok buffera.</li>
 <li><code>&lt;</code>…<code>&gt;</code> obsahuje cyklus. Keďže nemáme počet opakovaní, máme prakticky <code>while</code>.</li>
 <li><code>FS</code> nahrádza:
@@ -414,17 +413,17 @@ ov kral.
 <h3 id="u--vkladanie-čísla-do-registra"><code>U</code> – vkladanie čísla do registra</h3>
 <p>Príkaz <code>U</code> vloží číslo do registra. Má dva parametre 1) vkladané číslo a 2) meno registra.</p>
 <p>Vložme dvadsať do nultého registra:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">20U0$$
-</code></pre></div><h3 id="q--výber-čísla-z-registra"><code>Q</code> – výber čísla z registra</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-plain" data-lang="plain"><span style="display:flex;"><span>20U0$$
+</span></span></code></pre></div><h3 id="q--výber-čísla-z-registra"><code>Q</code> – výber čísla z registra</h3>
 <p><code>Q</code> je „funkcia“ pre výber čísla z registra. Ak chceme vypísať obsah, dáme kombo s <code>=</code>!</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">Q0=$$
-</code></pre></div><h3 id="--inkrementácia-čísla-v-registri"><code>%</code> – inkrementácia čísla v registri</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-plain" data-lang="plain"><span style="display:flex;"><span>Q0=$$
+</span></span></code></pre></div><h3 id="--inkrementácia-čísla-v-registri"><code>%</code> – inkrementácia čísla v registri</h3>
 <p>Ak chceme zvýšiť číslo v registri o 1:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">%0$$
-</code></pre></div><h2 id="registre-pre-cyklus-for">Registre pre cyklus <code>for</code></h2>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-plain" data-lang="plain"><span style="display:flex;"><span>%0$$
+</span></span></code></pre></div><h2 id="registre-pre-cyklus-for">Registre pre cyklus <code>for</code></h2>
 <p>Teraz si môžeme vypísať čísla od 1 po 5!</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">5&lt;%0$Q0=&gt;$$
-</code></pre></div><ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-plain" data-lang="plain"><span style="display:flex;"><span>5&lt;%0$Q0=&gt;$$
+</span></span></code></pre></div><ul>
 <li><code>5</code> určuje počet opakovaní</li>
 <li><code>&lt;</code>…<code>&gt;</code> je kód cyklu
 <ul>
@@ -438,8 +437,8 @@ ov kral.
 <p>Máme už dosť?</p>
 <h1 id="komentáre-video-mód">Komentáre: Video mód</h1>
 <p>Niektoré moderné beštie TECO majú video mód. Napríklad verzia z GitHubu vie zapnúť režim nasledovne:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain"> ./teco -scroll:5
-</code></pre></div><p>Obrazovka sa rozdelí na dve časti:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-plain" data-lang="plain"><span style="display:flex;"><span> ./teco -scroll:5
+</span></span></code></pre></div><p>Obrazovka sa rozdelí na dve časti:</p>
 <ol>
 <li>spodných 5 riadkov je editor príkazov</li>
 <li>zvyšok hore zobrazuje text. Pointer je zvýraznený, ale pozor, na obrazovke nevieme vykresliť kurzor medzi znakmi, preto je vždy na znaku napravo od skutočného pointera.</li>

@@ -62,16 +62,16 @@
 <h1 id="zmena-znakovej-sady-pre-databazu">Zmena znakovej sady pre databazu</h1>
 <pre tabindex="0"><code>alter database xxxxx character set cp1250
 </code></pre><h1 id="pripojenie-k-databaze-so-specifikovanim-znakovej-sady-pre-klienta">Pripojenie k databaze so specifikovanim znakovej sady pre klienta</h1>
-<pre tabindex="0"><code>&quot;c:\Program Files\MySQL\MySQL Server 4.1\bin\mysql&quot; -u oldelfinnphpBB -p --default-character-set=cp1250
+<pre tabindex="0"><code>&#34;c:\Program Files\MySQL\MySQL Server 4.1\bin\mysql&#34; -u oldelfinnphpBB -p --default-character-set=cp1250
 </code></pre><h1 id="import-csv-súboru-z-excelu">Import CSV súboru z Excelu</h1>
-<pre tabindex="0"><code>mysqlimport.exe -u root -p --fields-terminated-by=; --fields-optionally-enclosed-by=\&quot; davano post.txt
+<pre tabindex="0"><code>mysqlimport.exe -u root -p --fields-terminated-by=; --fields-optionally-enclosed-by=\&#34; davano post.txt
 </code></pre><p>Dátumy by mali byť v tvare akceptovateľnom funkciou <code>DATETIME()</code>, napr. <code>YYYY-MM-DD HH:mm</code>)</p>
 <h1 id="zistenie-znakovej-sady-tabuľky">Zistenie znakovej sady tabuľky</h1>
-<pre tabindex="0"><code>show table status from hotels like 'hotel_reservations'
+<pre tabindex="0"><code>show table status from hotels like &#39;hotel_reservations&#39;
 </code></pre><p>Vypíše info o tabuľke <code>hotel_reservations</code> v databáze <code>hotels</code>.</p>
 <h1 id="ako-zistiť-zoznam-tabuliek-a-počty-ich-riadkov">Ako zistiť zoznam tabuliek a počty ich riadkov</h1>
 <pre tabindex="0"><code>SELECT table_name, table_rows FROM information_schema.TABLES T 
-where table_schema = 'olympus'
+where table_schema = &#39;olympus&#39;
 order by table_name
 </code></pre><h1 id="ako-exportovať-dáta-z-jedinej-tabuľky">Ako exportovať dáta z jedinej tabuľky?</h1>
 <pre tabindex="0"><code>mysqldump -B --tables --skip-extended-insert --order-by-primary -u root -proot phpbb phpbb_posts &gt; olympus-phpbb_posts-simpleinserts.sql

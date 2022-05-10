@@ -80,14 +80,14 @@
 <p>Tým sa veľkosť Jetty zminimalizuje na prijateľných 15 MB.</p>
 <h1 id="konfigurácia-webovej-aplikácie">Konfigurácia webovej aplikácie</h1>
 <p>Konfigurácia prebieha pomocou XML súborov v adresári <code>contexts</code>. Každej nasadenej aplikácii zodpovedá jeden XML súbor. Príkladom minimalistického konfiguračného súboru je:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#579">&lt;?xml version=&#34;1.0&#34;  encoding=&#34;ISO-8859-1&#34;?&gt;</span>
-<span style="color:#579">&lt;!DOCTYPE Configure PUBLIC &#34;-//Mort Bay Consulting//DTD Configure//EN&#34; &#34;http://jetty.mortbay.org/configure.dtd&#34;&gt;</span>
-
-<span style="color:#070">&lt;Configure</span> <span style="color:#007">class=</span><span style="background-color:#e0e0ff">&#34;org.mortbay.jetty.webapp.WebAppContext&#34;</span><span style="color:#070">&gt;</span>
-  <span style="color:#070">&lt;Set</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;contextPath&#34;</span><span style="color:#070">&gt;</span>/libris<span style="color:#070">&lt;/Set&gt;</span>
-  <span style="color:#070">&lt;Set</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;resourceBase&#34;</span><span style="color:#070">&gt;</span>c:/Projects/libris/web<span style="color:#070">&lt;/Set&gt;</span>
-<span style="color:#070">&lt;/Configure&gt;</span> 
-</code></pre></div><ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#579">&lt;?xml version=&#34;1.0&#34;  encoding=&#34;ISO-8859-1&#34;?&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#579">&lt;!DOCTYPE Configure PUBLIC &#34;-//Mort Bay Consulting//DTD Configure//EN&#34; &#34;http://jetty.mortbay.org/configure.dtd&#34;&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#070">&lt;Configure</span> <span style="color:#007">class=</span><span style="background-color:#e0e0ff">&#34;org.mortbay.jetty.webapp.WebAppContext&#34;</span><span style="color:#070">&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#070">&lt;Set</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;contextPath&#34;</span><span style="color:#070">&gt;</span>/libris<span style="color:#070">&lt;/Set&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#070">&lt;Set</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;resourceBase&#34;</span><span style="color:#070">&gt;</span>c:/Projects/libris/web<span style="color:#070">&lt;/Set&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#070">&lt;/Configure&gt;</span> 
+</span></span></code></pre></div><ul>
 <li><code>contextPath</code> špecifikuje koncovku v URL webovej aplikácie. V príklade bude aplikácia typicky nasadená na adresu napr. <code>http://localhost:8080/libris</code></li>
 <li><code>resourceBase</code> odkazuje na adresár webovej aplikácie (ide o adresár obsahujúci <code>WEB-INF</code>)</li>
 </ul>
@@ -106,11 +106,11 @@ WARN:  failed SelectChannelConnector@0.0.0.0:8080
      at sun.nio.ch.ServerSocketAdaptor.bind(Unknown Source)
 </code></pre><p>Riešením je zastaviť aplikáciu, ktorá na danom porte počúva, alebo upraviť port.</p>
 <p>Zmeniť port možno v súbore <code>etc/jetty.xml</code>, kde v</p>
-<pre tabindex="0"><code>&lt;Call name=&quot;addConnector&quot;&gt;
+<pre tabindex="0"><code>&lt;Call name=&#34;addConnector&#34;&gt;
   &lt;Arg&gt;
-    &lt;New class=&quot;org.mortbay.jetty.nio.SelectChannelConnector&quot;&gt;
-      &lt;Set name=&quot;port&quot;&gt;&lt;SystemProperty name=&quot;jetty.port&quot; 
-                       default=&quot;8080&quot;/&gt;
+    &lt;New class=&#34;org.mortbay.jetty.nio.SelectChannelConnector&#34;&gt;
+      &lt;Set name=&#34;port&#34;&gt;&lt;SystemProperty name=&#34;jetty.port&#34; 
+                       default=&#34;8080&#34;/&gt;
       &lt;/Set&gt; 
 </code></pre><p>upravíme atribút <code>default</code>.</p>
 <h1 id="maven-a-jetty">Maven a Jetty</h1>
@@ -118,40 +118,40 @@ WARN:  failed SelectChannelConnector@0.0.0.0:8080
 <p>Bližšie informácie možno nájsť na <a href="http://docs.codehaus.org/display/JETTY/Maven+Jetty+Plugin">stránkach pluginu</a>.</p>
 <h1 id="programové-spustenie-jetty">Programové spustenie Jetty</h1>
 <p>Jetty je možné pohodlne naštartovať aj v rámci webovej aplikácie. Prepokladajme, že máme servlet:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">HelloServlet</span> <span style="color:#289;font-weight:bold">extends</span> HttpServlet <span style="color:#333">{</span>
-
-  <span style="color:#555;font-weight:bold">@Override</span>
-  <span style="color:#289;font-weight:bold">protected</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">doGet</span><span style="color:#333">(</span>HttpServletRequest req<span style="color:#333">,</span>
-                       HttpServletResponse resp<span style="color:#333">)</span>
-      <span style="color:#289;font-weight:bold">throws</span> ServletException<span style="color:#333">,</span> IOException 
-  <span style="color:#333">{</span>
-    System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;Hello world.&#34;</span><span style="color:#333">);</span>     
-  <span style="color:#333">}</span>
-
-<span style="color:#333">}</span>
-</code></pre></div><p>Jetty, v ktorej beží jeden jednoduchý servlet (ktorý nepotrebuje celú webovú aplikáciu, ani konfigurovanie cez <code>web.xml</code>), naštartujeme:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">javax.servlet.ServletException</span><span style="color:#333">;</span>
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">javax.servlet.http.HttpServlet</span><span style="color:#333">;</span>
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">javax.servlet.http.HttpServletRequest</span><span style="color:#333">;</span>
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">javax.servlet.http.HttpServletResponse</span><span style="color:#333">;</span>
-
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">org.mortbay.jetty.Server</span><span style="color:#333">;</span>
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">org.mortbay.jetty.servlet.ServletHandler</span><span style="color:#333">;</span>
-
-<span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">ClassicServer</span> <span style="color:#333">{</span>
-  <span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">static</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">main</span><span style="color:#333">(</span>String<span style="color:#333">[]</span> args<span style="color:#333">)</span> <span style="color:#289;font-weight:bold">throws</span> Exception <span style="color:#333">{</span>
-    Server server <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Server<span style="color:#333">(</span>8080<span style="color:#333">);</span>
-    ServletHandler servletHandler <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> ServletHandler<span style="color:#333">();</span>
-    servletHandler<span style="color:#333">.</span><span style="color:#007">addServletWithMapping</span><span style="color:#333">(</span>HelloServlet<span style="color:#333">.</span><span style="color:#007">class</span><span style="color:#333">,</span>
-                                         <span style="background-color:#e0e0ff">&#34;/hello&#34;</span><span style="color:#333">);</span>
-    
-    server<span style="color:#333">.</span><span style="color:#007">addHandler</span><span style="color:#333">(</span>servletHandler<span style="color:#333">);</span>
-    
-    server<span style="color:#333">.</span><span style="color:#007">start</span><span style="color:#333">();</span>
-    server<span style="color:#333">.</span><span style="color:#007">join</span><span style="color:#333">();</span>  
-  <span style="color:#333">}</span>
-<span style="color:#333">}</span>
-</code></pre></div><p>Po spustení aplikácie a navštívení adresy http://localhost:8080/hello uvidíme výpis:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">HelloServlet</span> <span style="color:#289;font-weight:bold">extends</span> HttpServlet <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#555;font-weight:bold">@Override</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#289;font-weight:bold">protected</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">doGet</span><span style="color:#333">(</span>HttpServletRequest req<span style="color:#333">,</span>
+</span></span><span style="display:flex;"><span>                       HttpServletResponse resp<span style="color:#333">)</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#289;font-weight:bold">throws</span> ServletException<span style="color:#333">,</span> IOException 
+</span></span><span style="display:flex;"><span>  <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>    System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;Hello world.&#34;</span><span style="color:#333">);</span>     
+</span></span><span style="display:flex;"><span>  <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#333">}</span>
+</span></span></code></pre></div><p>Jetty, v ktorej beží jeden jednoduchý servlet (ktorý nepotrebuje celú webovú aplikáciu, ani konfigurovanie cez <code>web.xml</code>), naštartujeme:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">javax.servlet.ServletException</span><span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">javax.servlet.http.HttpServlet</span><span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">javax.servlet.http.HttpServletRequest</span><span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">javax.servlet.http.HttpServletResponse</span><span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">org.mortbay.jetty.Server</span><span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">org.mortbay.jetty.servlet.ServletHandler</span><span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">ClassicServer</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">static</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">main</span><span style="color:#333">(</span>String<span style="color:#333">[]</span> args<span style="color:#333">)</span> <span style="color:#289;font-weight:bold">throws</span> Exception <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>    Server server <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Server<span style="color:#333">(</span>8080<span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>    ServletHandler servletHandler <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> ServletHandler<span style="color:#333">();</span>
+</span></span><span style="display:flex;"><span>    servletHandler<span style="color:#333">.</span><span style="color:#007">addServletWithMapping</span><span style="color:#333">(</span>HelloServlet<span style="color:#333">.</span><span style="color:#007">class</span><span style="color:#333">,</span>
+</span></span><span style="display:flex;"><span>                                         <span style="background-color:#e0e0ff">&#34;/hello&#34;</span><span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    server<span style="color:#333">.</span><span style="color:#007">addHandler</span><span style="color:#333">(</span>servletHandler<span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    server<span style="color:#333">.</span><span style="color:#007">start</span><span style="color:#333">();</span>
+</span></span><span style="display:flex;"><span>    server<span style="color:#333">.</span><span style="color:#007">join</span><span style="color:#333">();</span>  
+</span></span><span style="display:flex;"><span>  <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#333">}</span>
+</span></span></code></pre></div><p>Po spustení aplikácie a navštívení adresy http://localhost:8080/hello uvidíme výpis:</p>
 <pre tabindex="0"><code>2007-11-14 15:14:10.168::INFO:  Logging to STDERR via org.mortbay.log.StdErrLog
 2007-11-14 15:14:10.356::INFO:  jetty-6.1.5
 2007-11-14 15:14:10.575::INFO:  Started SocketConnector@0.0.0.0:8080

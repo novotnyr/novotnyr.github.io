@@ -61,44 +61,44 @@
 <main>
 <p>Funkcie v PowerShelli sa dajú zapisovať rozličnými spôsobmi.
 Ukážme si jednoduchú funkciu, ktorá zráta veľkost súborov v aktuálnom adresári:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-powershell" data-lang="powershell"><span style="color:#289;font-weight:bold">function</span> <span style="color:#072">Get-Size</span>(<span style="color:#036">$Unit</span>) {
-    <span style="color:#072">Get-ChildItem</span> <span style="color:#333">-File</span> 
-    | <span style="color:#072">Measure-Object</span> -Property Length -Sum 
-    | <span style="color:#072">Select-Object</span> -ExpandProperty Sum
-    | <span style="color:#072">ForEach-Object</span> { <span style="color:#036">$_</span> / (<span style="background-color:#e0e0ff">&#34;1&#34;</span> + <span style="color:#036">$Unit</span>)}
-}
-</code></pre></div><p>Funkcia má jeden netypovaný parameter s názvom <code>$Unit</code> a vieme ju použiť nasledovne:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">function</span> <span style="color:#072">Get-Size</span>(<span style="color:#036">$Unit</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#072">Get-ChildItem</span> <span style="color:#333">-File</span> 
+</span></span><span style="display:flex;"><span>    | <span style="color:#072">Measure-Object</span> -Property Length -Sum 
+</span></span><span style="display:flex;"><span>    | <span style="color:#072">Select-Object</span> -ExpandProperty Sum
+</span></span><span style="display:flex;"><span>    | <span style="color:#072">ForEach-Object</span> { <span style="color:#036">$_</span> / (<span style="background-color:#e0e0ff">&#34;1&#34;</span> + <span style="color:#036">$Unit</span>)}
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Funkcia má jeden netypovaný parameter s názvom <code>$Unit</code> a vieme ju použiť nasledovne:</p>
 <pre tabindex="0"><code>Get-Size MB
 </code></pre><p>Konvencie však odporúčajú zapisovať parametre v sekcii <code>param</code>:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-powershell" data-lang="powershell"><span style="color:#289;font-weight:bold">function</span> <span style="color:#072">Get-Size</span> {
-    <span style="color:#289;font-weight:bold">param</span> (
-        <span style="color:#5ed;font-weight:bold">[String]</span>
-        <span style="color:#036">$Unit</span> = <span style="background-color:#e0e0ff">&#34;MB&#34;</span>
-    )
-
-    <span style="color:#072">Get-ChildItem</span> <span style="color:#333">-File</span> 
-    | <span style="color:#072">Measure-Object</span> -Property Length -Sum 
-    | <span style="color:#072">Select-Object</span> -ExpandProperty Sum
-    | <span style="color:#072">ForEach-Object</span> { <span style="color:#036">$_</span> / (<span style="background-color:#e0e0ff">&#34;1&#34;</span> + <span style="color:#036">$Unit</span>)}
-}
-</code></pre></div><p>Parameter <code>$Unit</code> má implicitnú hodnotu <code>MB</code> a je typu <code>String</code>.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">function</span> <span style="color:#072">Get-Size</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">param</span> (
+</span></span><span style="display:flex;"><span>        <span style="color:#5ed;font-weight:bold">[String]</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#036">$Unit</span> = <span style="background-color:#e0e0ff">&#34;MB&#34;</span>
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#072">Get-ChildItem</span> <span style="color:#333">-File</span> 
+</span></span><span style="display:flex;"><span>    | <span style="color:#072">Measure-Object</span> -Property Length -Sum 
+</span></span><span style="display:flex;"><span>    | <span style="color:#072">Select-Object</span> -ExpandProperty Sum
+</span></span><span style="display:flex;"><span>    | <span style="color:#072">ForEach-Object</span> { <span style="color:#036">$_</span> / (<span style="background-color:#e0e0ff">&#34;1&#34;</span> + <span style="color:#036">$Unit</span>)}
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Parameter <code>$Unit</code> má implicitnú hodnotu <code>MB</code> a je typu <code>String</code>.</p>
 <p>Volať ho môžeme nasledovne:</p>
 <pre tabindex="0"><code>Get-Size 20
 </code></pre><h1 id="funkcie-ako-cmdlety-cez-atribút-cmdletbinding">Funkcie ako cmdlety cez atribút <code>CmdletBinding</code></h1>
 <p>Ak chceme, aby sa funkcia tvárila ako cmdlet, dodajme na začiatok atribút <code>CmdletBinding</code>:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-powershell" data-lang="powershell"><span style="color:#289;font-weight:bold">function</span> <span style="color:#072">Get-Size</span> {
-    [<span style="color:#289;font-weight:bold">CmdletBinding</span>(PositionalBinding = <span style="color:#036">$False</span>)]
-    <span style="color:#289;font-weight:bold">param</span> (
-        <span style="color:#5ed;font-weight:bold">[String]</span>
-        <span style="color:#036">$Unit</span> = <span style="background-color:#e0e0ff">&#34;MB&#34;</span>
-    )
-
-    <span style="color:#072">Get-ChildItem</span> <span style="color:#333">-File</span> 
-    | <span style="color:#072">Measure-Object</span> -Property Length -Sum 
-    | <span style="color:#072">Select-Object</span> -ExpandProperty Sum
-    | <span style="color:#072">ForEach-Object</span> { <span style="color:#036">$_</span> / (<span style="background-color:#e0e0ff">&#34;1&#34;</span> + <span style="color:#036">$Unit</span>)}
-}
-</code></pre></div><h2 id="vypnutie-pozičných-argumentov">Vypnutie pozičných argumentov</h2>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">function</span> <span style="color:#072">Get-Size</span> {
+</span></span><span style="display:flex;"><span>    [<span style="color:#289;font-weight:bold">CmdletBinding</span>(PositionalBinding = <span style="color:#036">$False</span>)]
+</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">param</span> (
+</span></span><span style="display:flex;"><span>        <span style="color:#5ed;font-weight:bold">[String]</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#036">$Unit</span> = <span style="background-color:#e0e0ff">&#34;MB&#34;</span>
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#072">Get-ChildItem</span> <span style="color:#333">-File</span> 
+</span></span><span style="display:flex;"><span>    | <span style="color:#072">Measure-Object</span> -Property Length -Sum 
+</span></span><span style="display:flex;"><span>    | <span style="color:#072">Select-Object</span> -ExpandProperty Sum
+</span></span><span style="display:flex;"><span>    | <span style="color:#072">ForEach-Object</span> { <span style="color:#036">$_</span> / (<span style="background-color:#e0e0ff">&#34;1&#34;</span> + <span style="color:#036">$Unit</span>)}
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="vypnutie-pozičných-argumentov">Vypnutie pozičných argumentov</h2>
 <p>Vypli sme pozičné argumenty, teda každý argument musí mať meno.
 Ak spustíme len <code>Get-Size GB</code>, uvidíme chybovú hlášku: <code>A positional parameter cannot be found that accepts argument 'GB'</code>
 Správne použitie je:</p>
@@ -106,8 +106,8 @@ Správne použitie je:</p>
 </code></pre><h2 id="štandardné-prepínače">Štandardné prepínače</h2>
 <p>Dostaneme podporu pre štandardné parametre, ako napríklad <code>$ErrorAction</code> a <code>$ErrorVariable</code>.</p>
 <p>Ak teraz zavoláme funkciu s vymyslenou jednotkou &ldquo;mobobajty&rdquo;, a použijeme ignorovanie chyby, funkcia veselo pobeží ďalej.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-powershell" data-lang="powershell"><span style="color:#072">Get-Size</span> -Unit BB -ErrorAction SilentlyContinue
-</code></pre></div><h2 id="podpora-pre-ladiace-výpisy">Podpora pre ladiace výpisy</h2>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span><span style="color:#072">Get-Size</span> -Unit BB -ErrorAction SilentlyContinue
+</span></span></code></pre></div><h2 id="podpora-pre-ladiace-výpisy">Podpora pre ladiace výpisy</h2>
 <p>Automaticky dostaneme možnosť využívať vypisovacie / logovacie cmdlety:</p>
 <ul>
 <li><code>Write-Verbose</code> pre výpisy, ktoré sa zapnú, ak cmdlet pustíme s parametrom <code>-Verbose</code></li>
@@ -120,37 +120,37 @@ Správne použitie je:</p>
 <h3 id="validácie-pomocou-regexu">Validácie pomocou regexu</h3>
 <p>Napríklad validácia oproti regexu:</p>
 <pre tabindex="0"><code>[Parameter()]
-[ValidatePattern(&quot;[kKmMtTpP][bB]&quot;)]
+[ValidatePattern(&#34;[kKmMtTpP][bB]&#34;)]
 [String]
-$Unit = &quot;MB&quot;
+$Unit = &#34;MB&#34;
 </code></pre><p>V atribúte <code>ValidatePattern</code> môžeme uviesť regulárny výraz.</p>
 <h3 id="validácie-pomocou-skriptu">Validácie pomocou skriptu</h3>
 <p>Validácie môžu využívať skripty - stačí uviesť atribút <code>ValidateScript</code> a vo vnútri uviesť kód, ktorý bud vráti <code>$true</code> alebo vyhodí výnimku`</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-powershell" data-lang="powershell">[<span style="color:#289;font-weight:bold">Parameter</span>(<span style="color:#289;font-weight:bold">ValueFromPipeline</span> = <span style="color:#036">$true</span>)]
-[ValidateScript({
-    <span style="color:#289;font-weight:bold">if</span>(<span style="color:#333">-Not</span> (<span style="color:#036">$_</span> | <span style="color:#072">Test-Path</span>)) {
-        <span style="color:#289;font-weight:bold">throw</span> <span style="background-color:#e0e0ff">&#34;File or folder does not exist&#34;</span> 
-    }
-    <span style="color:#036">$true</span>
-})]
-<span style="color:#5ed;font-weight:bold">[System.IO.FileInfo]</span> <span style="color:#036">$Path</span>
-</code></pre></div><p>Okrem toho vidíme aj ďalšie pokročilé vlastnosti:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span>[<span style="color:#289;font-weight:bold">Parameter</span>(<span style="color:#289;font-weight:bold">ValueFromPipeline</span> = <span style="color:#036">$true</span>)]
+</span></span><span style="display:flex;"><span>[ValidateScript({
+</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">if</span>(<span style="color:#333">-Not</span> (<span style="color:#036">$_</span> | <span style="color:#072">Test-Path</span>)) {
+</span></span><span style="display:flex;"><span>        <span style="color:#289;font-weight:bold">throw</span> <span style="background-color:#e0e0ff">&#34;File or folder does not exist&#34;</span> 
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#036">$true</span>
+</span></span><span style="display:flex;"><span>})]
+</span></span><span style="display:flex;"><span><span style="color:#5ed;font-weight:bold">[System.IO.FileInfo]</span> <span style="color:#036">$Path</span>
+</span></span></code></pre></div><p>Okrem toho vidíme aj ďalšie pokročilé vlastnosti:</p>
 <ul>
 <li>Skript berie hodnotu z rúry (<code>ValueFromPipeline</code></li>
 <li>Dátový typ je <code>FileInfo</code>, čo obmedzí hodnoty len na cesty k adresárom, či súborom</li>
 </ul>
 <p>Skript tak môžeme zavolať:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-powershell" data-lang="powershell"><span style="color:#072">Get-Item</span> /tmp | <span style="color:#072">Get-Size</span> -Unit <span style="background-color:#e0e0ff">&#34;MB&#34;</span>
-</code></pre></div><p>Ak pošleme do rúry reťazec, ten sa automaticky konvertuje na objekt typu <code>FileInfo</code> a validuje.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span><span style="color:#072">Get-Item</span> /tmp | <span style="color:#072">Get-Size</span> -Unit <span style="background-color:#e0e0ff">&#34;MB&#34;</span>
+</span></span></code></pre></div><p>Ak pošleme do rúry reťazec, ten sa automaticky konvertuje na objekt typu <code>FileInfo</code> a validuje.</p>
 <p>Pošlime do rúry neexistujúci priečinok a uvidíme chybu:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-powershell" data-lang="powershell"><span style="background-color:#e0e0ff">&#34;/nonexistent&#34;</span> | <span style="color:#072">Get-Size</span> -Unit <span style="background-color:#e0e0ff">&#34;MB&#34;</span>
-</code></pre></div><p>Uvidíme:</p>
-<pre tabindex="0"><code>Cannot validate argument on parameter 'Path'. File or folder does not exist
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span><span style="background-color:#e0e0ff">&#34;/nonexistent&#34;</span> | <span style="color:#072">Get-Size</span> -Unit <span style="background-color:#e0e0ff">&#34;MB&#34;</span>
+</span></span></code></pre></div><p>Uvidíme:</p>
+<pre tabindex="0"><code>Cannot validate argument on parameter &#39;Path&#39;. File or folder does not exist
 </code></pre><h1 id="ďalšie-užitočné-vlastnosti">Ďalšie užitočné vlastnosti</h1>
 <h2 id="povinné-parametre">Povinné parametre</h2>
 <p>Parameter môžeme označiť ako <code>Mandatory</code>, teda povinný:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-powershell" data-lang="powershell">[<span style="color:#289;font-weight:bold">Parameter</span>(<span style="color:#289;font-weight:bold">Mandatory</span>=<span style="color:#036">$true</span>)]
-</code></pre></div><h2 id="prepínače">Prepínače</h2>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span>[<span style="color:#289;font-weight:bold">Parameter</span>(<span style="color:#289;font-weight:bold">Mandatory</span>=<span style="color:#036">$true</span>)]
+</span></span></code></pre></div><h2 id="prepínače">Prepínače</h2>
 <p>Parameter s atribútom <code>[Switch]</code> je prepínač, teda má hodnotu <code>$True</code> alebo <code>$False</code>.</p>
 
 </main>

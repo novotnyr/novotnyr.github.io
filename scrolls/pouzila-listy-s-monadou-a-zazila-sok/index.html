@@ -89,100 +89,100 @@
 <li>z tohto nového superzoznamu vytiahneme vnútro &ndash; teda prvky a prehodíme ich do celkového výsledného zoznamu prvkov</li>
 <li>na konci obalíme výsledný zoznam prvkov do superzoznamu a vrátime ho ako výsledok!</li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#333">&lt;</span>R<span style="color:#333">&gt;</span> SuperList<span style="color:#333">&lt;</span>R<span style="color:#333">&gt;</span> <span style="color:#5ed;font-weight:bold">bind</span><span style="color:#333">(</span>Function<span style="color:#333">&lt;</span>T<span style="color:#333">,</span> SuperList<span style="color:#333">&lt;</span>R<span style="color:#333">&gt;&gt;</span> handler<span style="color:#333">)</span> <span style="color:#333">{</span>
-    List<span style="color:#333">&lt;</span>R<span style="color:#333">&gt;</span> newItems <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> ArrayList<span style="color:#333">&lt;&gt;();</span> 
-    <span style="color:#289;font-weight:bold">for</span> <span style="color:#333">(</span>T item <span style="color:#333">:</span> items<span style="color:#333">)</span> <span style="color:#333">{</span>
-        SuperList<span style="color:#333">&lt;</span>R<span style="color:#333">&gt;</span> partialSuperList <span style="color:#333">=</span> handler<span style="color:#333">.</span><span style="color:#007">apply</span><span style="color:#333">(</span>item<span style="color:#333">);</span>
-        newItems<span style="color:#333">.</span><span style="color:#007">addAll</span><span style="color:#333">(</span>partialSuperList<span style="color:#333">.</span><span style="color:#007">getItems</span><span style="color:#333">());</span>
-    <span style="color:#333">}</span>
-    <span style="color:#289;font-weight:bold">return</span> <span style="color:#289;font-weight:bold">new</span> SuperList<span style="color:#333">&lt;&gt;(</span>newItems<span style="color:#333">);</span>
-<span style="color:#333">}</span>
-</code></pre></div><h2 id="celý-kód">Celý kód</h2>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">public</span> <span style="color:#333">&lt;</span>R<span style="color:#333">&gt;</span> SuperList<span style="color:#333">&lt;</span>R<span style="color:#333">&gt;</span> <span style="color:#5ed;font-weight:bold">bind</span><span style="color:#333">(</span>Function<span style="color:#333">&lt;</span>T<span style="color:#333">,</span> SuperList<span style="color:#333">&lt;</span>R<span style="color:#333">&gt;&gt;</span> handler<span style="color:#333">)</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>    List<span style="color:#333">&lt;</span>R<span style="color:#333">&gt;</span> newItems <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> ArrayList<span style="color:#333">&lt;&gt;();</span> 
+</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">for</span> <span style="color:#333">(</span>T item <span style="color:#333">:</span> items<span style="color:#333">)</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>        SuperList<span style="color:#333">&lt;</span>R<span style="color:#333">&gt;</span> partialSuperList <span style="color:#333">=</span> handler<span style="color:#333">.</span><span style="color:#007">apply</span><span style="color:#333">(</span>item<span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>        newItems<span style="color:#333">.</span><span style="color:#007">addAll</span><span style="color:#333">(</span>partialSuperList<span style="color:#333">.</span><span style="color:#007">getItems</span><span style="color:#333">());</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">return</span> <span style="color:#289;font-weight:bold">new</span> SuperList<span style="color:#333">&lt;&gt;(</span>newItems<span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#333">}</span>
+</span></span></code></pre></div><h2 id="celý-kód">Celý kód</h2>
 <p>Celý kód obsahuje už len tri veci:</p>
 <ul>
 <li>konštruktor, ktorým vytvoríme superzoznam na základe klasickej kolekcie</li>
 <li>pomocná metóda na vytváranie superzoznamu z prvkov, čo sa hodí v testoch</li>
 <li>a metóda, ktorou získame zo superzoznamu klasický zoznamu</li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">package</span> <span style="color:#0e84b5;font-weight:bold">com.github.novotnyr.monad.list</span><span style="color:#333">;</span>
-
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">java.util.ArrayList</span><span style="color:#333">;</span>
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">java.util.Arrays</span><span style="color:#333">;</span>
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">java.util.Collection</span><span style="color:#333">;</span>
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">java.util.List</span><span style="color:#333">;</span>
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">java.util.function.Function</span><span style="color:#333">;</span>
-
-<span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">SuperList</span><span style="color:#333">&lt;</span>T<span style="color:#333">&gt;</span> <span style="color:#333">{</span>
-    <span style="color:#289;font-weight:bold">private</span> <span style="color:#289;font-weight:bold">final</span> List<span style="color:#333">&lt;</span>T<span style="color:#333">&gt;</span> items <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> ArrayList<span style="color:#333">&lt;&gt;();</span>
-
-    <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">SuperList</span><span style="color:#333">(</span>Collection<span style="color:#333">&lt;</span>T<span style="color:#333">&gt;</span> entries<span style="color:#333">)</span> <span style="color:#333">{</span>
-        <span style="color:#289;font-weight:bold">this</span><span style="color:#333">.</span><span style="color:#007">items</span><span style="color:#333">.</span><span style="color:#007">addAll</span><span style="color:#333">(</span>entries<span style="color:#333">);</span>
-    <span style="color:#333">}</span>
-
-    <span style="color:#289;font-weight:bold">public</span> <span style="color:#333">&lt;</span>R<span style="color:#333">&gt;</span> SuperList<span style="color:#333">&lt;</span>R<span style="color:#333">&gt;</span> <span style="color:#5ed;font-weight:bold">bind</span><span style="color:#333">(</span>Function<span style="color:#333">&lt;</span>T<span style="color:#333">,</span> SuperList<span style="color:#333">&lt;</span>R<span style="color:#333">&gt;&gt;</span> handler<span style="color:#333">)</span> <span style="color:#333">{</span>
-        List<span style="color:#333">&lt;</span>R<span style="color:#333">&gt;</span> newItems <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> ArrayList<span style="color:#333">&lt;&gt;();</span> 
-        <span style="color:#289;font-weight:bold">for</span> <span style="color:#333">(</span>T item <span style="color:#333">:</span> items<span style="color:#333">)</span> <span style="color:#333">{</span>
-            SuperList<span style="color:#333">&lt;</span>R<span style="color:#333">&gt;</span> partialSuperList <span style="color:#333">=</span> handler<span style="color:#333">.</span><span style="color:#007">apply</span><span style="color:#333">(</span>item<span style="color:#333">);</span>
-            newItems<span style="color:#333">.</span><span style="color:#007">addAll</span><span style="color:#333">(</span>partialSuperList<span style="color:#333">.</span><span style="color:#007">getItems</span><span style="color:#333">());</span>
-        <span style="color:#333">}</span>
-        <span style="color:#289;font-weight:bold">return</span> <span style="color:#289;font-weight:bold">new</span> SuperList<span style="color:#333">&lt;&gt;(</span>newItems<span style="color:#333">);</span>
-    <span style="color:#333">}</span>
-
-    <span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">static</span> <span style="color:#333">&lt;</span>T<span style="color:#333">&gt;</span> SuperList<span style="color:#333">&lt;</span>T<span style="color:#333">&gt;</span> <span style="color:#5ed;font-weight:bold">listOf</span><span style="color:#333">(</span>T<span style="color:#333">...</span> items<span style="color:#333">)</span> <span style="color:#333">{</span>
-        <span style="color:#289;font-weight:bold">return</span> <span style="color:#289;font-weight:bold">new</span> SuperList<span style="color:#333">&lt;&gt;(</span>Arrays<span style="color:#333">.</span><span style="color:#007">asList</span><span style="color:#333">(</span>items<span style="color:#333">));</span>
-    <span style="color:#333">}</span>
-
-    <span style="color:#289;font-weight:bold">public</span> List<span style="color:#333">&lt;</span>T<span style="color:#333">&gt;</span> <span style="color:#5ed;font-weight:bold">getItems</span><span style="color:#333">()</span> <span style="color:#333">{</span>
-        <span style="color:#289;font-weight:bold">return</span> <span style="color:#289;font-weight:bold">this</span><span style="color:#333">.</span><span style="color:#007">items</span><span style="color:#333">;</span>
-    <span style="color:#333">}</span>
-<span style="color:#333">}</span>
-</code></pre></div><p>Unit test bude vytvorí zoznam troch čísiel, vynásobí ich dvoma a zistí, či to zbehlo v poriadli:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">package</span> <span style="color:#0e84b5;font-weight:bold">com.github.novotnyr.monad.list</span><span style="color:#333">;</span>
-
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">org.junit.jupiter.api.Assertions</span><span style="color:#333">;</span>
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">org.junit.jupiter.api.Test</span><span style="color:#333">;</span>
-
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">java.util.Arrays</span><span style="color:#333">;</span>
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">java.util.List</span><span style="color:#333">;</span>
-
-<span style="color:#289;font-weight:bold">import static</span> <span style="color:#0e84b5;font-weight:bold">com.github.novotnyr.monad.list.SuperList.listOf</span><span style="color:#333">;</span>
-
-<span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">SuperListTest</span> <span style="color:#333">{</span>
-    <span style="color:#555;font-weight:bold">@Test</span>
-    <span style="color:#289;font-weight:bold">public</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">testMultiplication</span><span style="color:#333">()</span> <span style="color:#333">{</span>
-        List<span style="color:#333">&lt;</span>Integer<span style="color:#333">&gt;</span> doubles <span style="color:#333">=</span> listOf<span style="color:#333">(</span>1<span style="color:#333">,</span> 2<span style="color:#333">,</span> 3<span style="color:#333">)</span>
-                <span style="color:#333">.</span><span style="color:#007">bind</span><span style="color:#333">(</span>n <span style="color:#333">-&gt;</span> listOf<span style="color:#333">(</span>n <span style="color:#333">*</span> 2<span style="color:#333">))</span>
-                <span style="color:#333">.</span><span style="color:#007">getItems</span><span style="color:#333">();</span>
-
-        Assertions<span style="color:#333">.</span><span style="color:#007">assertEquals</span><span style="color:#333">(</span>Arrays<span style="color:#333">.</span><span style="color:#007">asList</span><span style="color:#333">(</span>2<span style="color:#333">,</span> 4<span style="color:#333">,</span> 6<span style="color:#333">),</span> doubles<span style="color:#333">);</span>
-    <span style="color:#333">}</span>
-<span style="color:#333">}</span>
-</code></pre></div><p>Keďže sme si umne pripravili statickú metódu <code>listOf()</code>, s použitím statického importu máme celkom pekný zápis!</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">package</span> <span style="color:#0e84b5;font-weight:bold">com.github.novotnyr.monad.list</span><span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">java.util.ArrayList</span><span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">java.util.Arrays</span><span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">java.util.Collection</span><span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">java.util.List</span><span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">java.util.function.Function</span><span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">SuperList</span><span style="color:#333">&lt;</span>T<span style="color:#333">&gt;</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">private</span> <span style="color:#289;font-weight:bold">final</span> List<span style="color:#333">&lt;</span>T<span style="color:#333">&gt;</span> items <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> ArrayList<span style="color:#333">&lt;&gt;();</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">SuperList</span><span style="color:#333">(</span>Collection<span style="color:#333">&lt;</span>T<span style="color:#333">&gt;</span> entries<span style="color:#333">)</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#289;font-weight:bold">this</span><span style="color:#333">.</span><span style="color:#007">items</span><span style="color:#333">.</span><span style="color:#007">addAll</span><span style="color:#333">(</span>entries<span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">public</span> <span style="color:#333">&lt;</span>R<span style="color:#333">&gt;</span> SuperList<span style="color:#333">&lt;</span>R<span style="color:#333">&gt;</span> <span style="color:#5ed;font-weight:bold">bind</span><span style="color:#333">(</span>Function<span style="color:#333">&lt;</span>T<span style="color:#333">,</span> SuperList<span style="color:#333">&lt;</span>R<span style="color:#333">&gt;&gt;</span> handler<span style="color:#333">)</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>        List<span style="color:#333">&lt;</span>R<span style="color:#333">&gt;</span> newItems <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> ArrayList<span style="color:#333">&lt;&gt;();</span> 
+</span></span><span style="display:flex;"><span>        <span style="color:#289;font-weight:bold">for</span> <span style="color:#333">(</span>T item <span style="color:#333">:</span> items<span style="color:#333">)</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>            SuperList<span style="color:#333">&lt;</span>R<span style="color:#333">&gt;</span> partialSuperList <span style="color:#333">=</span> handler<span style="color:#333">.</span><span style="color:#007">apply</span><span style="color:#333">(</span>item<span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>            newItems<span style="color:#333">.</span><span style="color:#007">addAll</span><span style="color:#333">(</span>partialSuperList<span style="color:#333">.</span><span style="color:#007">getItems</span><span style="color:#333">());</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#289;font-weight:bold">return</span> <span style="color:#289;font-weight:bold">new</span> SuperList<span style="color:#333">&lt;&gt;(</span>newItems<span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">static</span> <span style="color:#333">&lt;</span>T<span style="color:#333">&gt;</span> SuperList<span style="color:#333">&lt;</span>T<span style="color:#333">&gt;</span> <span style="color:#5ed;font-weight:bold">listOf</span><span style="color:#333">(</span>T<span style="color:#333">...</span> items<span style="color:#333">)</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#289;font-weight:bold">return</span> <span style="color:#289;font-weight:bold">new</span> SuperList<span style="color:#333">&lt;&gt;(</span>Arrays<span style="color:#333">.</span><span style="color:#007">asList</span><span style="color:#333">(</span>items<span style="color:#333">));</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">public</span> List<span style="color:#333">&lt;</span>T<span style="color:#333">&gt;</span> <span style="color:#5ed;font-weight:bold">getItems</span><span style="color:#333">()</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#289;font-weight:bold">return</span> <span style="color:#289;font-weight:bold">this</span><span style="color:#333">.</span><span style="color:#007">items</span><span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#333">}</span>
+</span></span></code></pre></div><p>Unit test bude vytvorí zoznam troch čísiel, vynásobí ich dvoma a zistí, či to zbehlo v poriadli:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">package</span> <span style="color:#0e84b5;font-weight:bold">com.github.novotnyr.monad.list</span><span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">org.junit.jupiter.api.Assertions</span><span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">org.junit.jupiter.api.Test</span><span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">java.util.Arrays</span><span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">java.util.List</span><span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">import static</span> <span style="color:#0e84b5;font-weight:bold">com.github.novotnyr.monad.list.SuperList.listOf</span><span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">SuperListTest</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#555;font-weight:bold">@Test</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">public</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">testMultiplication</span><span style="color:#333">()</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>        List<span style="color:#333">&lt;</span>Integer<span style="color:#333">&gt;</span> doubles <span style="color:#333">=</span> listOf<span style="color:#333">(</span>1<span style="color:#333">,</span> 2<span style="color:#333">,</span> 3<span style="color:#333">)</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#333">.</span><span style="color:#007">bind</span><span style="color:#333">(</span>n <span style="color:#333">-&gt;</span> listOf<span style="color:#333">(</span>n <span style="color:#333">*</span> 2<span style="color:#333">))</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#333">.</span><span style="color:#007">getItems</span><span style="color:#333">();</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        Assertions<span style="color:#333">.</span><span style="color:#007">assertEquals</span><span style="color:#333">(</span>Arrays<span style="color:#333">.</span><span style="color:#007">asList</span><span style="color:#333">(</span>2<span style="color:#333">,</span> 4<span style="color:#333">,</span> 6<span style="color:#333">),</span> doubles<span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#333">}</span>
+</span></span></code></pre></div><p>Keďže sme si umne pripravili statickú metódu <code>listOf()</code>, s použitím statického importu máme celkom pekný zápis!</p>
 <h1 id="pravá-zábava-výpočty-nad-funkciami-s-viacerými-výsledkami">Pravá zábava: výpočty nad funkciami s viacerými výsledkami</h1>
 <p>Toto je samozrejme v poriadku, ale pravá zábava nastáva vtedy, ak máme výpočty, ktoré môžu vracať viac hodnôt <strong>naraz</strong>!</p>
 <p>Vymyslime si metódu, ktorá pre číslo <em>n</em> vráti jeho susedov: teda číslo o jedna menšie, samotné číslo a číslo o 1 väčšie.</p>
 <p>Inak povedané, vstupom metódy je číslo a výsledkom je trojica čísiel.
 Keďže máme superzoznam, neváhajme ho použiť!</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">package</span> <span style="color:#0e84b5;font-weight:bold">com.github.novotnyr.monad.list</span><span style="color:#333">;</span>
-
-<span style="color:#289;font-weight:bold">import static</span> <span style="color:#0e84b5;font-weight:bold">com.github.novotnyr.monad.list.SuperList.listOf</span><span style="color:#333">;</span>
-
-<span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">Utils</span> <span style="color:#333">{</span>
-    <span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">static</span> SuperList<span style="color:#333">&lt;</span>Integer<span style="color:#333">&gt;</span> <span style="color:#5ed;font-weight:bold">neighbours</span><span style="color:#333">(</span><span style="color:#66f;font-weight:bold">int</span> number<span style="color:#333">)</span> <span style="color:#333">{</span>
-        <span style="color:#289;font-weight:bold">return</span> listOf<span style="color:#333">(</span>number <span style="color:#333">-</span> 1<span style="color:#333">,</span> number<span style="color:#333">,</span> number <span style="color:#333">+</span> 1<span style="color:#333">);</span>
-    <span style="color:#333">}</span>
-<span style="color:#333">}</span>
-</code></pre></div><p>Test potom vyzerá nasledovne:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#555;font-weight:bold">@Test</span>
-<span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">testNeighbours</span><span style="color:#333">()</span> <span style="color:#333">{</span>
-    List<span style="color:#333">&lt;</span>Integer<span style="color:#333">&gt;</span> neighbours <span style="color:#333">=</span> listOf<span style="color:#333">(</span>1<span style="color:#333">,</span> 2<span style="color:#333">,</span> 3<span style="color:#333">)</span>
-            <span style="color:#333">.</span><span style="color:#007">bind</span><span style="color:#333">(</span>Utils<span style="color:#333">::</span>neighbours<span style="color:#333">)</span>
-            <span style="color:#333">.</span><span style="color:#007">getItems</span><span style="color:#333">();</span>
-
-    List<span style="color:#333">&lt;</span>Integer<span style="color:#333">&gt;</span> expected <span style="color:#333">=</span> Arrays<span style="color:#333">.</span><span style="color:#007">asList</span><span style="color:#333">(</span>0<span style="color:#333">,</span> 1<span style="color:#333">,</span> 2<span style="color:#333">,</span> 1<span style="color:#333">,</span> 2<span style="color:#333">,</span> 3<span style="color:#333">,</span> 2<span style="color:#333">,</span> 3<span style="color:#333">,</span> 4<span style="color:#333">);</span>
-    Assertions<span style="color:#333">.</span><span style="color:#007">assertEquals</span><span style="color:#333">(</span>expected<span style="color:#333">,</span> neighbours<span style="color:#333">);</span>
-<span style="color:#333">}</span>
-</code></pre></div><p>Vytvorili sme superzoznam troch čísiel, aplikovali naň funkciu <code>neighbours</code> a výsledkom je .. spľasnutý zoznam deviatich čísiel!</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">package</span> <span style="color:#0e84b5;font-weight:bold">com.github.novotnyr.monad.list</span><span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">import static</span> <span style="color:#0e84b5;font-weight:bold">com.github.novotnyr.monad.list.SuperList.listOf</span><span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">Utils</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">static</span> SuperList<span style="color:#333">&lt;</span>Integer<span style="color:#333">&gt;</span> <span style="color:#5ed;font-weight:bold">neighbours</span><span style="color:#333">(</span><span style="color:#66f;font-weight:bold">int</span> number<span style="color:#333">)</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#289;font-weight:bold">return</span> listOf<span style="color:#333">(</span>number <span style="color:#333">-</span> 1<span style="color:#333">,</span> number<span style="color:#333">,</span> number <span style="color:#333">+</span> 1<span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#333">}</span>
+</span></span></code></pre></div><p>Test potom vyzerá nasledovne:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#555;font-weight:bold">@Test</span>
+</span></span><span style="display:flex;"><span><span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">testNeighbours</span><span style="color:#333">()</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>    List<span style="color:#333">&lt;</span>Integer<span style="color:#333">&gt;</span> neighbours <span style="color:#333">=</span> listOf<span style="color:#333">(</span>1<span style="color:#333">,</span> 2<span style="color:#333">,</span> 3<span style="color:#333">)</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#333">.</span><span style="color:#007">bind</span><span style="color:#333">(</span>Utils<span style="color:#333">::</span>neighbours<span style="color:#333">)</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#333">.</span><span style="color:#007">getItems</span><span style="color:#333">();</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    List<span style="color:#333">&lt;</span>Integer<span style="color:#333">&gt;</span> expected <span style="color:#333">=</span> Arrays<span style="color:#333">.</span><span style="color:#007">asList</span><span style="color:#333">(</span>0<span style="color:#333">,</span> 1<span style="color:#333">,</span> 2<span style="color:#333">,</span> 1<span style="color:#333">,</span> 2<span style="color:#333">,</span> 3<span style="color:#333">,</span> 2<span style="color:#333">,</span> 3<span style="color:#333">,</span> 4<span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>    Assertions<span style="color:#333">.</span><span style="color:#007">assertEquals</span><span style="color:#333">(</span>expected<span style="color:#333">,</span> neighbours<span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#333">}</span>
+</span></span></code></pre></div><p>Vytvorili sme superzoznam troch čísiel, aplikovali naň funkciu <code>neighbours</code> a výsledkom je .. spľasnutý zoznam deviatich čísiel!</p>
 <p>Presnešie povedané, postupne prechádzame zoznam troch čísiel, na každé z nich použijeme <code>neighbours</code> a výsledné čiastkové superzoznamy zlúčime dohromady do jedného zoznamu.</p>
 <p>Postupne to vyzerá nasledovne</p>
 <pre tabindex="0"><code>1 -&gt; [0, 1, 2]
@@ -193,17 +193,17 @@ Keďže máme superzoznam, neváhajme ho použiť!</p>
 </code></pre><p>Funkcia <code>bind</code> zoberie tri čiastkové superzoznamy a zlepí ich dohromady do jedného veľkého superzoznamu:</p>
 <h1 id="susedia-a-duplikácie">Susedia a duplikácie!</h1>
 <p>Môžeme si urobiť aj iný test, kde zistíme susedov a každého z nich zduplikujeme!</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#555;font-weight:bold">@Test</span>
-<span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">testNeighboursAndDuplicate</span><span style="color:#333">()</span> <span style="color:#333">{</span>
-    List<span style="color:#333">&lt;</span>Integer<span style="color:#333">&gt;</span> neighbours <span style="color:#333">=</span> listOf<span style="color:#333">(</span>7<span style="color:#333">)</span>
-            <span style="color:#333">.</span><span style="color:#007">bind</span><span style="color:#333">(</span>Utils<span style="color:#333">::</span>neighbours<span style="color:#333">)</span>
-            <span style="color:#333">.</span><span style="color:#007">bind</span><span style="color:#333">(</span>n <span style="color:#333">-&gt;</span> listOf<span style="color:#333">(</span>n <span style="color:#333">*</span> 2<span style="color:#333">))</span>
-            <span style="color:#333">.</span><span style="color:#007">getItems</span><span style="color:#333">();</span>
-
-    List<span style="color:#333">&lt;</span>Integer<span style="color:#333">&gt;</span> expected <span style="color:#333">=</span> Arrays<span style="color:#333">.</span><span style="color:#007">asList</span><span style="color:#333">(</span>12<span style="color:#333">,</span> 14<span style="color:#333">,</span> 16<span style="color:#333">);</span>
-    Assertions<span style="color:#333">.</span><span style="color:#007">assertEquals</span><span style="color:#333">(</span>expected<span style="color:#333">,</span> neighbours<span style="color:#333">);</span>
-<span style="color:#333">}</span>
-</code></pre></div><p>Z čísla 7 vzniknú susedia 6, 7 a 8, a keď ich zduplikujeme, očakávame 12, 14 a 16!</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#555;font-weight:bold">@Test</span>
+</span></span><span style="display:flex;"><span><span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">testNeighboursAndDuplicate</span><span style="color:#333">()</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>    List<span style="color:#333">&lt;</span>Integer<span style="color:#333">&gt;</span> neighbours <span style="color:#333">=</span> listOf<span style="color:#333">(</span>7<span style="color:#333">)</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#333">.</span><span style="color:#007">bind</span><span style="color:#333">(</span>Utils<span style="color:#333">::</span>neighbours<span style="color:#333">)</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#333">.</span><span style="color:#007">bind</span><span style="color:#333">(</span>n <span style="color:#333">-&gt;</span> listOf<span style="color:#333">(</span>n <span style="color:#333">*</span> 2<span style="color:#333">))</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#333">.</span><span style="color:#007">getItems</span><span style="color:#333">();</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    List<span style="color:#333">&lt;</span>Integer<span style="color:#333">&gt;</span> expected <span style="color:#333">=</span> Arrays<span style="color:#333">.</span><span style="color:#007">asList</span><span style="color:#333">(</span>12<span style="color:#333">,</span> 14<span style="color:#333">,</span> 16<span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>    Assertions<span style="color:#333">.</span><span style="color:#007">assertEquals</span><span style="color:#333">(</span>expected<span style="color:#333">,</span> neighbours<span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#333">}</span>
+</span></span></code></pre></div><p>Z čísla 7 vzniknú susedia 6, 7 a 8, a keď ich zduplikujeme, očakávame 12, 14 a 16!</p>
 <h1 id="jednoduchší-bind---skratka-pre-prevod-prvku-na-prvok">Jednoduchší bind - skratka pre prevod prvku na prvok</h1>
 <p>Metóda <code>bind</code> očakávala funkciu, ktorá vráti superzoznam, teda monadický zoznam.
 Mnohokrát sme však leniví a vieme, že každý prvok zoznamu budeme premieňať na iný prvok zoznamu.</p>
@@ -216,15 +216,15 @@ Mnohokrát sme však leniví a vieme, že každý prvok zoznamu budeme premieňa
 <p>Našťastie, ak skombinujeme <code>bind</code> a obaľovaciu funkciu <code>listOf</code>, vieme si zjednodušiť život.</p>
 <p>Dôležité je, že funkcia v parametri už nevracia superzoznam <code>SuperList&lt;R&gt;</code>, ale len bežný jednoduchý prvok <code>R</code>.</p>
 <p>Iniciálny kód:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#333">&lt;</span>R<span style="color:#333">&gt;</span> SuperList<span style="color:#333">&lt;</span>R<span style="color:#333">&gt;</span> <span style="color:#5ed;font-weight:bold">map</span><span style="color:#333">(</span>Function<span style="color:#333">&lt;</span>T<span style="color:#333">,</span> R<span style="color:#333">&gt;</span> mapper<span style="color:#333">)</span> <span style="color:#333">{</span>
-    List<span style="color:#333">&lt;</span>R<span style="color:#333">&gt;</span> newItems <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> ArrayList<span style="color:#333">&lt;&gt;();</span>
-    <span style="color:#289;font-weight:bold">for</span> <span style="color:#333">(</span>T item <span style="color:#333">:</span> items<span style="color:#333">)</span> <span style="color:#333">{</span>
-        R partialItem <span style="color:#333">=</span> mapper<span style="color:#333">.</span><span style="color:#007">apply</span><span style="color:#333">(</span>item<span style="color:#333">);</span>
-        newItems<span style="color:#333">.</span><span style="color:#007">add</span><span style="color:#333">(</span>partialItem<span style="color:#333">);</span>
-    <span style="color:#333">}</span>
-    <span style="color:#289;font-weight:bold">return</span> <span style="color:#289;font-weight:bold">new</span> SuperList<span style="color:#333">&lt;&gt;(</span>newItems<span style="color:#333">);</span>
-<span style="color:#333">}</span>
-</code></pre></div><p>Otestujeme to so zjednodušeným zápisom:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">public</span> <span style="color:#333">&lt;</span>R<span style="color:#333">&gt;</span> SuperList<span style="color:#333">&lt;</span>R<span style="color:#333">&gt;</span> <span style="color:#5ed;font-weight:bold">map</span><span style="color:#333">(</span>Function<span style="color:#333">&lt;</span>T<span style="color:#333">,</span> R<span style="color:#333">&gt;</span> mapper<span style="color:#333">)</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>    List<span style="color:#333">&lt;</span>R<span style="color:#333">&gt;</span> newItems <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> ArrayList<span style="color:#333">&lt;&gt;();</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">for</span> <span style="color:#333">(</span>T item <span style="color:#333">:</span> items<span style="color:#333">)</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>        R partialItem <span style="color:#333">=</span> mapper<span style="color:#333">.</span><span style="color:#007">apply</span><span style="color:#333">(</span>item<span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>        newItems<span style="color:#333">.</span><span style="color:#007">add</span><span style="color:#333">(</span>partialItem<span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">return</span> <span style="color:#289;font-weight:bold">new</span> SuperList<span style="color:#333">&lt;&gt;(</span>newItems<span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#333">}</span>
+</span></span></code></pre></div><p>Otestujeme to so zjednodušeným zápisom:</p>
 <pre tabindex="0"><code>@Test
 public void testMultiplicationWithMap() {
     List&lt;Integer&gt; doubles = listOf(1, 2, 3)

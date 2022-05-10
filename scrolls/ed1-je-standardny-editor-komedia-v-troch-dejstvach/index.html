@@ -66,8 +66,8 @@
 <p><img src="doom-difficulty.png" alt=""></p>
 <h1 id="introitus">Introitus</h1>
 <p>Najprv ukážkový fajl:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#072">printf</span> <span style="background-color:#e0e0ff">&#34;%s\n&#34;</span> Lorem ipsum dolor sit amet &gt; lorem.txt
-</code></pre></div><p>Pome na to!</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#072">printf</span> <span style="background-color:#e0e0ff">&#34;%s\n&#34;</span> Lorem ipsum dolor sit amet &gt; lorem.txt
+</span></span></code></pre></div><p>Pome na to!</p>
 <pre tabindex="0"><code>ed lorem.txt
 </code></pre><p>Uvidíme tretie najlepšie UI <em>ever</em>:</p>
 <p><img src="ui.png" alt="Tretie najlepšie UI ever"></p>
@@ -214,7 +214,7 @@ loremipsum.txt
 </code></pre><h1 id="intermezzo">Intermezzo</h1>
 <p>Asi je jasné, že súbor vyzerá rozdrbane. Dajme ho do pôvodného stavu. Quitnime <code>ed</code> (<code>q</code>) a dajme si pragit:</p>
 <pre tabindex="0"><code>rm lorem.txt loremipsum.txt
-printf &quot;%s\n&quot; Lorem ipsum dolor sit amet &gt; lorem.txt
+printf &#34;%s\n&#34; Lorem ipsum dolor sit amet &gt; lorem.txt
 </code></pre><p>Dajme si ešte raz <code>ed lorem.txt</code> a nezabudnime zapnúť <code>prompt</code> !</p>
 <h1 id="druhé-dejstvo-presuny-a-klipbórd">Druhé dejstvo: presuny a klipbórd</h1>
 <p>Vypíšme si, nech vieme, kde sme:</p>
@@ -381,15 +381,15 @@ anet
 <p><strong>Stabilizácia:</strong> <em>Dennis Ritchie</em></p>
 <h1 id="pro-tipy">Pro tipy</h1>
 <p>Prepínač <code>-p</code> nastavuje reťazec pre prompt. Takže:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">/tmp⟩ ed -p<span style="background-color:#e0e0ff">&#34;&gt; &#34;</span> lorem.txt
-<span style="color:#60e;font-weight:bold">27</span>
-&gt; ,p
-Lorem
-ipsum
-dolor
-sit
-amet
-</code></pre></div>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>/tmp⟩ ed -p<span style="background-color:#e0e0ff">&#34;&gt; &#34;</span> lorem.txt
+</span></span><span style="display:flex;"><span><span style="color:#60e;font-weight:bold">27</span>
+</span></span><span style="display:flex;"><span>&gt; ,p
+</span></span><span style="display:flex;"><span>Lorem
+</span></span><span style="display:flex;"><span>ipsum
+</span></span><span style="display:flex;"><span>dolor
+</span></span><span style="display:flex;"><span>sit
+</span></span><span style="display:flex;"><span>amet
+</span></span></code></pre></div>
 </main>
 
     <footer>

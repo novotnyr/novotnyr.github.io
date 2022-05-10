@@ -98,13 +98,13 @@ service svnserve
 <pre tabindex="0"><code>&gt; telnet localhost 3690
 Trying 127.0.0.1...
 Connected to localhost.
-Escape character is '^]'.
+Escape character is &#39;^]&#39;.
 ( success ( 1 2 ( ANONYMOUS ) ( edit-pipeline ) ) )
 </code></pre><h1 id="ďalšie-príkazy">Ďalšie príkazy</h1>
 <h2 id="vytvorenie-repository">Vytvorenie repository</h2>
 <pre tabindex="0"><code>svnadmin create /home/svn/svnroot
 </code></pre><h2 id="import-dát-z-projektu">Import dát z projektu</h2>
-<pre tabindex="0"><code>svn import . file:///home/svn/svnroot -m &quot;Initial import&quot;
+<pre tabindex="0"><code>svn import . file:///home/svn/svnroot -m &#34;Initial import&#34;
 </code></pre><h1 id="spustenie-servera-ako-démona">Spustenie servera ako démona</h1>
 <pre tabindex="0"><code>svnserve -d -r /home/svn/svnroot
 </code></pre><hr>
@@ -140,7 +140,7 @@ admins = jose
 </ol>
 <pre tabindex="0"><code>1.  Check that the author of this commit has the rights to perform
 1.  the commit on the files and directories being modified.
-/home/svn/svnroot/hooks/commit-access-control.pl &quot;$REPOS&quot; &quot;$TXN&quot; /home/svn/svnroot/hooks/commit-access-control.cfg || exit 1
+/home/svn/svnroot/hooks/commit-access-control.pl &#34;$REPOS&#34; &#34;$TXN&#34; /home/svn/svnroot/hooks/commit-access-control.cfg || exit 1
 </code></pre><ol>
 <li>Skopírovať do adresára <code>/hooks</code> súbor <code>commit-access-control.pl</code> a chmodnúť ho na executable.</li>
 <li>Skopírovať do adresára <code>/hooks</code> súbor <code>commit-access-control.cfg</code></li>
@@ -156,7 +156,7 @@ users = john,joe,george
 access = read-write
 </code></pre><h3 id="hlási-to-inifilespm">Hlási to <code>IniFiles.pm</code></h3>
 <p>Ak to hlási nemožnosť nájsť <code>IniFiles.pm</code></p>
-<pre tabindex="0"><code>Can't locate Config/IniFiles.pm in @INC
+<pre tabindex="0"><code>Can&#39;t locate Config/IniFiles.pm in @INC
 </code></pre><ul>
 <li>Exportnite premennú prostredia aby sťahovač Perlu z CPANu podporoval pasívne FTP:</li>
 </ul>
@@ -179,7 +179,7 @@ access = read-write
   SVNPath /svn # cesta vo filesysteme k ulozisku
 
   AuthType Basic
-  AuthName &quot;UINF PF UPJS Subversion repository&quot;
+  AuthName &#34;UINF PF UPJS Subversion repository&#34;
   AuthUserFile /etc/svn/http-passwd
   Require valid-user
 
@@ -205,8 +205,8 @@ LoadModule authn_dbd_module modules/mod_authn_dbd.so
 <li>vytvoriť databázu</li>
 </ul>
 <pre tabindex="0"><code>CREATE DATABASE apacheauth;
-create user 'apache'@'localhost' IDENTIFIED BY 'XXXXXX';
-grant all privileges on apacheauth.* to 'apache'@'localhost';
+create user &#39;apache&#39;@&#39;localhost&#39; IDENTIFIED BY &#39;XXXXXX&#39;;
+grant all privileges on apacheauth.* to &#39;apache&#39;@&#39;localhost&#39;;
 use apacheauth
 create table authn (user varchar(20) not null, password varchar(255) not null);
 </code></pre><ul>
@@ -214,7 +214,7 @@ create table authn (user varchar(20) not null, password varchar(255) not null);
 </ul>
 <pre tabindex="0"><code>1.  mod_dbd configuration
 DBDriver mysql
-DBDParams &quot;host=localhost dbname=apacheauth user=apache pass=XXXXXXX&quot;
+DBDParams &#34;host=localhost dbname=apacheauth user=apache pass=XXXXXXX&#34;
 
 DBDMin  4
 DBDKeep 8
@@ -226,15 +226,15 @@ DBDExptime 300
   SVNPath /var/svn/repositoryroot
 
   AuthType Basic
-  AuthName &quot;UINF PF UPJS Subversion repository&quot;
+  AuthName &#34;UINF PF UPJS Subversion repository&#34;
   Require valid-user
 
   AuthBasicProvider dbd
-  AuthDBDUserPWQuery &quot;SELECT password FROM authn WHERE user = %s&quot;
+  AuthDBDUserPWQuery &#34;SELECT password FROM authn WHERE user = %s&#34;
 &lt;/Location&gt;
 </code></pre><p>Meniť heslá je dobré:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql"><span style="color:#289;font-weight:bold">update</span><span style="color:#bbb"> </span>authn<span style="color:#bbb"> </span><span style="color:#289;font-weight:bold">set</span><span style="color:#bbb"> </span>password<span style="color:#333">=</span>encrypt(<span style="background-color:#e0e0ff">&#39;mocneheslo&#39;</span>,<span style="color:#bbb"> </span><span style="background-color:#e0e0ff">&#39;salt&#39;</span>)<span style="color:#bbb"> </span><span style="color:#289;font-weight:bold">where</span><span style="color:#bbb"> </span><span style="color:#289;font-weight:bold">user</span><span style="color:#333">=</span><span style="background-color:#e0e0ff">&#39;chuck&#39;</span>;<span style="color:#bbb">
-</span></code></pre></div><p>Nezabudnite na to, že salt musí byť rovnaká ako v prípade ručnej kontroly v PHP skripte, ktorý porovnáva zadané a uložené heslo.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">update</span><span style="color:#bbb"> </span>authn<span style="color:#bbb"> </span><span style="color:#289;font-weight:bold">set</span><span style="color:#bbb"> </span>password<span style="color:#333">=</span>encrypt(<span style="background-color:#e0e0ff">&#39;mocneheslo&#39;</span>,<span style="color:#bbb"> </span><span style="background-color:#e0e0ff">&#39;salt&#39;</span>)<span style="color:#bbb"> </span><span style="color:#289;font-weight:bold">where</span><span style="color:#bbb"> </span><span style="color:#289;font-weight:bold">user</span><span style="color:#333">=</span><span style="background-color:#e0e0ff">&#39;chuck&#39;</span>;<span style="color:#bbb">
+</span></span></span></code></pre></div><p>Nezabudnite na to, že salt musí byť rovnaká ako v prípade ručnej kontroly v PHP skripte, ktorý porovnáva zadané a uložené heslo.</p>
 
 </main>
 

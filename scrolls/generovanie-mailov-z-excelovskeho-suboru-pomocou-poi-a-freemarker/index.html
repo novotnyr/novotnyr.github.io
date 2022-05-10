@@ -77,82 +77,82 @@
 </ul>
 <h2 id="načítanie-excelovského-súboru">Načítanie excelovského súboru</h2>
 <p>Načítanie excelovského súboru je elegantné:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">POIFSFileSystem fs <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> POIFSFileSystem<span style="color:#333">(</span>
-  <span style="color:#289;font-weight:bold">new</span> FileInputStream<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;data.xls&#34;</span><span style="color:#333">));</span>
-HSSFWorkbook wb <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> HSSFWorkbook<span style="color:#333">(</span>fs<span style="color:#333">);</span>
-HSSFSheet sheet <span style="color:#333">=</span> wb<span style="color:#333">.</span><span style="color:#007">getSheetAt</span><span style="color:#333">(</span>1<span style="color:#333">);</span>
-</code></pre></div><p>Prvý riadok vytvorí súborový systém podporujúci prácu s OLE2 dokumentami. Druhý riadok otvorí nový <em>workbook</em> (<em>sešit</em>), z ktorého vytiahneme druhý <em>sheet</em> (<em>list</em>)) (z indexu 1).</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>POIFSFileSystem fs <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> POIFSFileSystem<span style="color:#333">(</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#289;font-weight:bold">new</span> FileInputStream<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;data.xls&#34;</span><span style="color:#333">));</span>
+</span></span><span style="display:flex;"><span>HSSFWorkbook wb <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> HSSFWorkbook<span style="color:#333">(</span>fs<span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>HSSFSheet sheet <span style="color:#333">=</span> wb<span style="color:#333">.</span><span style="color:#007">getSheetAt</span><span style="color:#333">(</span>1<span style="color:#333">);</span>
+</span></span></code></pre></div><p>Prvý riadok vytvorí súborový systém podporujúci prácu s OLE2 dokumentami. Druhý riadok otvorí nový <em>workbook</em> (<em>sešit</em>), z ktorého vytiahneme druhý <em>sheet</em> (<em>list</em>)) (z indexu 1).</p>
 <p>Metódy na získavanie obsahu buniek sú prosté. Zo sheetu vytiahneme riadok pomocou <code>getRow()</code>, čím získame objekt riadka. Z riadku zase vieme vytiahnuť objekt bunky cez <code>getCell()</code>, a na nej vieme volať metódy pre získanie hodnoty, formátov a pod.</p>
 <p>Keďže nevieme, koľko riadkov obsahuje daný list, budeme iterovať riadky dovtedy, kým nezískame <code>null</code> hodnotu, čo indikuje to, že ďalší riadok už je prázdny.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">do</span> <span style="color:#333">{</span>
-  HSSFRow row <span style="color:#333">=</span> sheet<span style="color:#333">.</span><span style="color:#007">getRow</span><span style="color:#333">(</span>i<span style="color:#333">);</span>
-  <span style="color:#289;font-weight:bold">if</span><span style="color:#333">(</span>row <span style="color:#333">==</span> <span style="color:#289;font-weight:bold">null</span><span style="color:#333">)</span> <span style="color:#333">{</span>
-    <span style="color:#289;font-weight:bold">break</span><span style="color:#333">;</span>
-  <span style="color:#333">}</span>
-  <span style="color:#666;font-style:italic">//...
-</span><span style="color:#666;font-style:italic"></span>  i<span style="color:#333">++;</span>
-<span style="color:#333">}</span> <span style="color:#289;font-weight:bold">while</span><span style="color:#333">(</span><span style="color:#289;font-weight:bold">true</span><span style="color:#333">);</span>
-</code></pre></div><p>Každý riadok obsahuje teda vo svojich bunkách riadky o autorovi. Vypísať obsah buniek môžeme jednoducho:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">for</span> <span style="color:#333">(</span><span style="color:#66f;font-weight:bold">short</span> j <span style="color:#333">=</span> 1<span style="color:#333">;</span> j <span style="color:#333">&lt;</span> 5<span style="color:#333">;</span> j<span style="color:#333">++)</span> <span style="color:#333">{</span>
-  HSSFCell cell <span style="color:#333">=</span> row<span style="color:#333">.</span><span style="color:#007">getCell</span><span style="color:#333">(</span>j<span style="color:#333">);</span>
-  System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span>cell<span style="color:#333">.</span><span style="color:#007">getNumericCellValue</span><span style="color:#333">());</span>
-<span style="color:#333">}</span>
-</code></pre></div><p>Tento kód vypíše numerické hodnoty buniek z druhého až piateho stĺpca. POI rozlišuje medzi typmi buniek &ndash; nie je možné vypisovať číselné hodnoty z reťazcových buniek a naopak. (Typ bunky je možné zistiť volaním metódy <code>getCellType()</code> na bunke, čo vracia celočíselnú konštantu, možné hodnoty sú v <a href="http://poi.apache.org/apidocs/index.html?org/apache/poi/hssf/usermodel/HSSFCell.html">dokumentácii</a>.) Metóda <code>getNumericCellValue()</code> získa obsah číselnej bunky ako <code>double</code>. Hodnoty z textových buniek môžeme získať zase pomocou <code>getRichStringCellValue().getString()</code>.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">do</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>  HSSFRow row <span style="color:#333">=</span> sheet<span style="color:#333">.</span><span style="color:#007">getRow</span><span style="color:#333">(</span>i<span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#289;font-weight:bold">if</span><span style="color:#333">(</span>row <span style="color:#333">==</span> <span style="color:#289;font-weight:bold">null</span><span style="color:#333">)</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">break</span><span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#666;font-style:italic">//...
+</span></span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic"></span>  i<span style="color:#333">++;</span>
+</span></span><span style="display:flex;"><span><span style="color:#333">}</span> <span style="color:#289;font-weight:bold">while</span><span style="color:#333">(</span><span style="color:#289;font-weight:bold">true</span><span style="color:#333">);</span>
+</span></span></code></pre></div><p>Každý riadok obsahuje teda vo svojich bunkách riadky o autorovi. Vypísať obsah buniek môžeme jednoducho:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">for</span> <span style="color:#333">(</span><span style="color:#66f;font-weight:bold">short</span> j <span style="color:#333">=</span> 1<span style="color:#333">;</span> j <span style="color:#333">&lt;</span> 5<span style="color:#333">;</span> j<span style="color:#333">++)</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>  HSSFCell cell <span style="color:#333">=</span> row<span style="color:#333">.</span><span style="color:#007">getCell</span><span style="color:#333">(</span>j<span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>  System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span>cell<span style="color:#333">.</span><span style="color:#007">getNumericCellValue</span><span style="color:#333">());</span>
+</span></span><span style="display:flex;"><span><span style="color:#333">}</span>
+</span></span></code></pre></div><p>Tento kód vypíše numerické hodnoty buniek z druhého až piateho stĺpca. POI rozlišuje medzi typmi buniek &ndash; nie je možné vypisovať číselné hodnoty z reťazcových buniek a naopak. (Typ bunky je možné zistiť volaním metódy <code>getCellType()</code> na bunke, čo vracia celočíselnú konštantu, možné hodnoty sú v <a href="http://poi.apache.org/apidocs/index.html?org/apache/poi/hssf/usermodel/HSSFCell.html">dokumentácii</a>.) Metóda <code>getNumericCellValue()</code> získa obsah číselnej bunky ako <code>double</code>. Hodnoty z textových buniek môžeme získať zase pomocou <code>getRichStringCellValue().getString()</code>.</p>
 <p>Jednotlivé riadky môžeme pohodlne namapovať na pomocné objekty obsahujúce dáta o používateľoch. S týmito objektami sa potom bude pohodlne pracovať v šablóne.</p>
 <p>Vytvoríme si teda pomocnú triedu <code>Item</code>:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">Item</span> <span style="color:#333">{</span>
-  String name<span style="color:#333">;</span>
-
-  <span style="color:#66f;font-weight:bold">boolean</span> hasFirst<span style="color:#333">;</span>
-
-  <span style="color:#66f;font-weight:bold">boolean</span> hasSecond<span style="color:#333">;</span>
-
-  <span style="color:#66f;font-weight:bold">boolean</span> hasThird<span style="color:#333">;</span>
-
-  <span style="color:#66f;font-weight:bold">boolean</span> hasFourth<span style="color:#333">;</span>
-
-  <span style="color:#666;font-style:italic">//gettre a settre
-</span><span style="color:#666;font-style:italic"></span>  <span style="color:#333">...</span>
-  <span style="color:#666;font-style:italic">//
-</span><span style="color:#666;font-style:italic"></span>
-  <span style="color:#289;font-weight:bold">public</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">setFirst</span><span style="color:#333">(</span><span style="color:#66f;font-weight:bold">double</span> first<span style="color:#333">)</span> <span style="color:#333">{</span>
-    <span style="color:#289;font-weight:bold">this</span><span style="color:#333">.</span><span style="color:#007">hasFirst</span> <span style="color:#333">=</span> <span style="color:#333">(</span>first <span style="color:#333">!=</span> 0<span style="color:#333">.</span><span style="color:#007">0</span><span style="color:#333">);</span>
-  <span style="color:#333">}</span>
-
-  <span style="color:#289;font-weight:bold">public</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">setSecond</span><span style="color:#333">(</span><span style="color:#66f;font-weight:bold">double</span> second<span style="color:#333">)</span> <span style="color:#333">{</span>
-    <span style="color:#289;font-weight:bold">this</span><span style="color:#333">.</span><span style="color:#007">hasSecond</span> <span style="color:#333">=</span> <span style="color:#333">(</span>second <span style="color:#333">!=</span> 0<span style="color:#333">.</span><span style="color:#007">0</span><span style="color:#333">);</span>
-  <span style="color:#333">}</span>
-
-  <span style="color:#289;font-weight:bold">public</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">setThird</span><span style="color:#333">(</span><span style="color:#66f;font-weight:bold">double</span> third<span style="color:#333">)</span> <span style="color:#333">{</span>
-    <span style="color:#289;font-weight:bold">this</span><span style="color:#333">.</span><span style="color:#007">hasThird</span> <span style="color:#333">=</span> <span style="color:#333">(</span>third <span style="color:#333">!=</span> 0<span style="color:#333">.</span><span style="color:#007">0</span><span style="color:#333">);</span>
-  <span style="color:#333">}</span>
-
-  <span style="color:#289;font-weight:bold">public</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">setFourth</span><span style="color:#333">(</span><span style="color:#66f;font-weight:bold">double</span> fourth<span style="color:#333">)</span> <span style="color:#333">{</span>
-    <span style="color:#289;font-weight:bold">this</span><span style="color:#333">.</span><span style="color:#007">hasFourth</span> <span style="color:#333">=</span> <span style="color:#333">(</span>fourth <span style="color:#333">!=</span> 0<span style="color:#333">.</span><span style="color:#007">0</span><span style="color:#333">);</span>
-  <span style="color:#333">}</span>
-<span style="color:#333">}</span>
-</code></pre></div><p>Keďže číselné hodnoty v bunkách sú poskytované v podobe <code>double</code> hodnôt a pre šablónu je lepšie mať hodnoty typu <code>boolean</code>, vyrobíme si pomocné settre.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">Item</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>  String name<span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66f;font-weight:bold">boolean</span> hasFirst<span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66f;font-weight:bold">boolean</span> hasSecond<span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66f;font-weight:bold">boolean</span> hasThird<span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66f;font-weight:bold">boolean</span> hasFourth<span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#666;font-style:italic">//gettre a settre
+</span></span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic"></span>  <span style="color:#333">...</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#666;font-style:italic">//
+</span></span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic"></span>
+</span></span><span style="display:flex;"><span>  <span style="color:#289;font-weight:bold">public</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">setFirst</span><span style="color:#333">(</span><span style="color:#66f;font-weight:bold">double</span> first<span style="color:#333">)</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">this</span><span style="color:#333">.</span><span style="color:#007">hasFirst</span> <span style="color:#333">=</span> <span style="color:#333">(</span>first <span style="color:#333">!=</span> 0<span style="color:#333">.</span><span style="color:#007">0</span><span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#289;font-weight:bold">public</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">setSecond</span><span style="color:#333">(</span><span style="color:#66f;font-weight:bold">double</span> second<span style="color:#333">)</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">this</span><span style="color:#333">.</span><span style="color:#007">hasSecond</span> <span style="color:#333">=</span> <span style="color:#333">(</span>second <span style="color:#333">!=</span> 0<span style="color:#333">.</span><span style="color:#007">0</span><span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#289;font-weight:bold">public</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">setThird</span><span style="color:#333">(</span><span style="color:#66f;font-weight:bold">double</span> third<span style="color:#333">)</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">this</span><span style="color:#333">.</span><span style="color:#007">hasThird</span> <span style="color:#333">=</span> <span style="color:#333">(</span>third <span style="color:#333">!=</span> 0<span style="color:#333">.</span><span style="color:#007">0</span><span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#289;font-weight:bold">public</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">setFourth</span><span style="color:#333">(</span><span style="color:#66f;font-weight:bold">double</span> fourth<span style="color:#333">)</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">this</span><span style="color:#333">.</span><span style="color:#007">hasFourth</span> <span style="color:#333">=</span> <span style="color:#333">(</span>fourth <span style="color:#333">!=</span> 0<span style="color:#333">.</span><span style="color:#007">0</span><span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#333">}</span>
+</span></span></code></pre></div><p>Keďže číselné hodnoty v bunkách sú poskytované v podobe <code>double</code> hodnôt a pre šablónu je lepšie mať hodnoty typu <code>boolean</code>, vyrobíme si pomocné settre.</p>
 <p>Pre každý riadok z listu teda vytvoríme novú položku typu <code>Item</code> a pre jej zapamätanie ju môžeme hodiť do pomocného zoznamu.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">List<span style="color:#333">&lt;</span>Item<span style="color:#333">&gt;</span> items <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> ArrayList<span style="color:#333">&lt;</span>Item<span style="color:#333">&gt;();</span>
-<span style="color:#666;font-style:italic">//...otvaranie suborov...
-</span><span style="color:#666;font-style:italic"></span><span style="color:#66f;font-weight:bold">int</span> i <span style="color:#333">=</span> 1<span style="color:#333">;</span> <span style="color:#666;font-style:italic">//skip the first row
-</span><span style="color:#666;font-style:italic"></span><span style="color:#289;font-weight:bold">do</span> <span style="color:#333">{</span>
-  HSSFRow row <span style="color:#333">=</span> sheet<span style="color:#333">.</span><span style="color:#007">getRow</span><span style="color:#333">(</span>i<span style="color:#333">);</span>
-  <span style="color:#289;font-weight:bold">if</span><span style="color:#333">(</span>row <span style="color:#333">==</span> <span style="color:#289;font-weight:bold">null</span><span style="color:#333">)</span> <span style="color:#333">{</span>
-    <span style="color:#289;font-weight:bold">break</span><span style="color:#333">;</span>
-  <span style="color:#333">}</span>
-  Item item <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Item<span style="color:#333">();</span>
-  item<span style="color:#333">.</span><span style="color:#007">setName</span><span style="color:#333">(</span>row<span style="color:#333">.</span><span style="color:#007">getCell</span><span style="color:#333">((</span><span style="color:#66f;font-weight:bold">short</span><span style="color:#333">)</span>0<span style="color:#333">).</span><span style="color:#007">getRichStringCellValue</span><span style="color:#333">()</span>
-               <span style="color:#333">.</span><span style="color:#007">getString</span><span style="color:#333">());</span>
-  item<span style="color:#333">.</span><span style="color:#007">setFirst</span><span style="color:#333">(</span>row<span style="color:#333">.</span><span style="color:#007">getCell</span><span style="color:#333">((</span><span style="color:#66f;font-weight:bold">short</span><span style="color:#333">)</span>1<span style="color:#333">).</span><span style="color:#007">getNumericCellValue</span><span style="color:#333">());</span>
-  item<span style="color:#333">.</span><span style="color:#007">setSecond</span><span style="color:#333">(</span>row<span style="color:#333">.</span><span style="color:#007">getCell</span><span style="color:#333">((</span><span style="color:#66f;font-weight:bold">short</span><span style="color:#333">)</span>2<span style="color:#333">).</span><span style="color:#007">getNumericCellValue</span><span style="color:#333">());</span>
-  item<span style="color:#333">.</span><span style="color:#007">setThird</span><span style="color:#333">(</span>row<span style="color:#333">.</span><span style="color:#007">getCell</span><span style="color:#333">((</span><span style="color:#66f;font-weight:bold">short</span><span style="color:#333">)</span>3<span style="color:#333">).</span><span style="color:#007">getNumericCellValue</span><span style="color:#333">());</span>
-  item<span style="color:#333">.</span><span style="color:#007">setFourth</span><span style="color:#333">(</span>row<span style="color:#333">.</span><span style="color:#007">getCell</span><span style="color:#333">((</span><span style="color:#66f;font-weight:bold">short</span><span style="color:#333">)</span>4<span style="color:#333">).</span><span style="color:#007">getNumericCellValue</span><span style="color:#333">());</span>
-
-  items<span style="color:#333">.</span><span style="color:#007">add</span><span style="color:#333">(</span>item<span style="color:#333">);</span>
-  i<span style="color:#333">++;</span>
-<span style="color:#333">}</span> <span style="color:#289;font-weight:bold">while</span><span style="color:#333">(</span><span style="color:#289;font-weight:bold">true</span><span style="color:#333">);</span>
-</code></pre></div><h2 id="generovanie-mailov-zo-šablóny">Generovanie mailov zo šablóny</h2>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>List<span style="color:#333">&lt;</span>Item<span style="color:#333">&gt;</span> items <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> ArrayList<span style="color:#333">&lt;</span>Item<span style="color:#333">&gt;();</span>
+</span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic">//...otvaranie suborov...
+</span></span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic"></span><span style="color:#66f;font-weight:bold">int</span> i <span style="color:#333">=</span> 1<span style="color:#333">;</span> <span style="color:#666;font-style:italic">//skip the first row
+</span></span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic"></span><span style="color:#289;font-weight:bold">do</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>  HSSFRow row <span style="color:#333">=</span> sheet<span style="color:#333">.</span><span style="color:#007">getRow</span><span style="color:#333">(</span>i<span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#289;font-weight:bold">if</span><span style="color:#333">(</span>row <span style="color:#333">==</span> <span style="color:#289;font-weight:bold">null</span><span style="color:#333">)</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">break</span><span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span>  Item item <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Item<span style="color:#333">();</span>
+</span></span><span style="display:flex;"><span>  item<span style="color:#333">.</span><span style="color:#007">setName</span><span style="color:#333">(</span>row<span style="color:#333">.</span><span style="color:#007">getCell</span><span style="color:#333">((</span><span style="color:#66f;font-weight:bold">short</span><span style="color:#333">)</span>0<span style="color:#333">).</span><span style="color:#007">getRichStringCellValue</span><span style="color:#333">()</span>
+</span></span><span style="display:flex;"><span>               <span style="color:#333">.</span><span style="color:#007">getString</span><span style="color:#333">());</span>
+</span></span><span style="display:flex;"><span>  item<span style="color:#333">.</span><span style="color:#007">setFirst</span><span style="color:#333">(</span>row<span style="color:#333">.</span><span style="color:#007">getCell</span><span style="color:#333">((</span><span style="color:#66f;font-weight:bold">short</span><span style="color:#333">)</span>1<span style="color:#333">).</span><span style="color:#007">getNumericCellValue</span><span style="color:#333">());</span>
+</span></span><span style="display:flex;"><span>  item<span style="color:#333">.</span><span style="color:#007">setSecond</span><span style="color:#333">(</span>row<span style="color:#333">.</span><span style="color:#007">getCell</span><span style="color:#333">((</span><span style="color:#66f;font-weight:bold">short</span><span style="color:#333">)</span>2<span style="color:#333">).</span><span style="color:#007">getNumericCellValue</span><span style="color:#333">());</span>
+</span></span><span style="display:flex;"><span>  item<span style="color:#333">.</span><span style="color:#007">setThird</span><span style="color:#333">(</span>row<span style="color:#333">.</span><span style="color:#007">getCell</span><span style="color:#333">((</span><span style="color:#66f;font-weight:bold">short</span><span style="color:#333">)</span>3<span style="color:#333">).</span><span style="color:#007">getNumericCellValue</span><span style="color:#333">());</span>
+</span></span><span style="display:flex;"><span>  item<span style="color:#333">.</span><span style="color:#007">setFourth</span><span style="color:#333">(</span>row<span style="color:#333">.</span><span style="color:#007">getCell</span><span style="color:#333">((</span><span style="color:#66f;font-weight:bold">short</span><span style="color:#333">)</span>4<span style="color:#333">).</span><span style="color:#007">getNumericCellValue</span><span style="color:#333">());</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  items<span style="color:#333">.</span><span style="color:#007">add</span><span style="color:#333">(</span>item<span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>  i<span style="color:#333">++;</span>
+</span></span><span style="display:flex;"><span><span style="color:#333">}</span> <span style="color:#289;font-weight:bold">while</span><span style="color:#333">(</span><span style="color:#289;font-weight:bold">true</span><span style="color:#333">);</span>
+</span></span></code></pre></div><h2 id="generovanie-mailov-zo-šablóny">Generovanie mailov zo šablóny</h2>
 <p>Na generovanie mailov zo šablóny potrebujeme dve náležitosti:</p>
 <ul>
 <li>samotnú šablónu mailu</li>
@@ -183,32 +183,32 @@ náležitosti:
 &lt;/#if&gt;
 </code></pre><p>špecifikuje, že text sa má zobraziť len vtedy, ak premenná <code>item.fourth</code> má hodnotu <code>false</code>.</p>
 <h3 id="konfigurácia-freemarkera">Konfigurácia Freemarkera</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Configuration cfg <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Configuration<span style="color:#333">();</span>
-cfg<span style="color:#333">.</span><span style="color:#007">setDirectoryForTemplateLoading</span><span style="color:#333">(</span><span style="color:#289;font-weight:bold">new</span> File<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;.&#34;</span><span style="color:#333">));</span>
-
-Template template <span style="color:#333">=</span> cfg<span style="color:#333">.</span><span style="color:#007">getTemplate</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;template.ftl&#34;</span><span style="color:#333">);</span>
-</code></pre></div><p>Pred použitím Freemarkera ho potrebujeme nakonfigurovať, teda vytvoriť objekt <code>Configuration</code>. Na ňom nastavíme adresár, v ktorom sa budú nachádzať šablóny.
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Configuration cfg <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Configuration<span style="color:#333">();</span>
+</span></span><span style="display:flex;"><span>cfg<span style="color:#333">.</span><span style="color:#007">setDirectoryForTemplateLoading</span><span style="color:#333">(</span><span style="color:#289;font-weight:bold">new</span> File<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;.&#34;</span><span style="color:#333">));</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Template template <span style="color:#333">=</span> cfg<span style="color:#333">.</span><span style="color:#007">getTemplate</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;template.ftl&#34;</span><span style="color:#333">);</span>
+</span></span></code></pre></div><p>Pred použitím Freemarkera ho potrebujeme nakonfigurovať, teda vytvoriť objekt <code>Configuration</code>. Na ňom nastavíme adresár, v ktorom sa budú nachádzať šablóny.
 Objekt šablóny získame na treťom riadku &ndash; šablóna sa načíta z daného súboru.</p>
 <p>Následne potrebujeme nastaviť obsahy pre premenné definované v šablóne (ide o premenné <code>item.name</code>, <code>item.first</code>, &hellip; <code>item.fourth</code>. Názvy a ich hodnoty sú reprezentované v mape, ktorú vytvoríme</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Map model <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> HashMap<span style="color:#333">();</span>
-model<span style="color:#333">.</span><span style="color:#007">put</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;item&#34;</span><span style="color:#333">,</span> item<span style="color:#333">)</span>
-</code></pre></div><p>Táto mapa priradí premennej <code>item</code> objekt <code>item</code> typu <code>Item</code>. Premenné definované v šablóne potom môžu používať bodkovú notáciu pri práci s objektom <code>item</code> a pristupovať tak k jeho gettrom.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Map model <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> HashMap<span style="color:#333">();</span>
+</span></span><span style="display:flex;"><span>model<span style="color:#333">.</span><span style="color:#007">put</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;item&#34;</span><span style="color:#333">,</span> item<span style="color:#333">)</span>
+</span></span></code></pre></div><p>Táto mapa priradí premennej <code>item</code> objekt <code>item</code> typu <code>Item</code>. Premenné definované v šablóne potom môžu používať bodkovú notáciu pri práci s objektom <code>item</code> a pristupovať tak k jeho gettrom.</p>
 <p>Napr. premenná <code>${item.name}</code> vezme obsah premennej <code>item</code> (čo je objekt typu <code>Item</code>) a na ňom zavolá metódu <code>getName()</code>. Na výstupe sa teda objaví meno používateľa.</p>
 <p>Analogicky podmienka <code>!item.fourth</code> zavolá metódu <code>getFourth()</code> na obsahu premennej <code>item</code> a zneguje ju.</p>
 <p>Výsledný kód na vygenerovanie textu mailov a jeho zobrazenie na štandardný výstup je potom:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Configuration cfg <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Configuration<span style="color:#333">();</span>
-cfg<span style="color:#333">.</span><span style="color:#007">setDirectoryForTemplateLoading</span><span style="color:#333">(</span><span style="color:#289;font-weight:bold">new</span> File<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;.&#34;</span><span style="color:#333">));</span>
-
-Template template <span style="color:#333">=</span> cfg<span style="color:#333">.</span><span style="color:#007">getTemplate</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;template.ftl&#34;</span><span style="color:#333">);</span>
-	
-Writer out <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> OutputStreamWriter<span style="color:#333">(</span>System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">);</span>
-Map rootModel <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> HashMap<span style="color:#333">();</span>
-<span style="color:#289;font-weight:bold">for</span> <span style="color:#333">(</span>Item item <span style="color:#333">:</span> items<span style="color:#333">)</span> <span style="color:#333">{</span>
-  rootModel<span style="color:#333">.</span><span style="color:#007">put</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;item&#34;</span><span style="color:#333">,</span> item<span style="color:#333">);</span>
-  template<span style="color:#333">.</span><span style="color:#007">process</span><span style="color:#333">(</span>rootModel<span style="color:#333">,</span> out<span style="color:#333">);</span>
-  out<span style="color:#333">.</span><span style="color:#007">flush</span><span style="color:#333">();</span> 			
-<span style="color:#333">}</span>
-</code></pre></div><p>Vytvoríme objekt šablóny, vytvoríme objekt <code>out</code>, do ktorého sa bude zapisovať výsledok (teda na konzolu). Prejdeme zoznamom položiek, pomocou metódy <code>process()</code> asociujeme dáta z položky so šablónou a vypľujeme ju na výstup.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Configuration cfg <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Configuration<span style="color:#333">();</span>
+</span></span><span style="display:flex;"><span>cfg<span style="color:#333">.</span><span style="color:#007">setDirectoryForTemplateLoading</span><span style="color:#333">(</span><span style="color:#289;font-weight:bold">new</span> File<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;.&#34;</span><span style="color:#333">));</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Template template <span style="color:#333">=</span> cfg<span style="color:#333">.</span><span style="color:#007">getTemplate</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;template.ftl&#34;</span><span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>	
+</span></span><span style="display:flex;"><span>Writer out <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> OutputStreamWriter<span style="color:#333">(</span>System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>Map rootModel <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> HashMap<span style="color:#333">();</span>
+</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">for</span> <span style="color:#333">(</span>Item item <span style="color:#333">:</span> items<span style="color:#333">)</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>  rootModel<span style="color:#333">.</span><span style="color:#007">put</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;item&#34;</span><span style="color:#333">,</span> item<span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>  template<span style="color:#333">.</span><span style="color:#007">process</span><span style="color:#333">(</span>rootModel<span style="color:#333">,</span> out<span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>  out<span style="color:#333">.</span><span style="color:#007">flush</span><span style="color:#333">();</span> 			
+</span></span><span style="display:flex;"><span><span style="color:#333">}</span>
+</span></span></code></pre></div><p>Vytvoríme objekt šablóny, vytvoríme objekt <code>out</code>, do ktorého sa bude zapisovať výsledok (teda na konzolu). Prejdeme zoznamom položiek, pomocou metódy <code>process()</code> asociujeme dáta z položky so šablónou a vypľujeme ju na výstup.</p>
 <p>Samotný objekt šablóny môžeme medzi zmenami dát recyklovať, keďže je bezstavový (nemusíme teda pre každú položku načítavať šablónu nanovo). Rovnako je užitočné <code>flush()</code>núť výstup, aby sa nestalo, že dáta ostanú v medzipamäti.</p>
 <h1 id="punchline">Punchline</h1>
 <p>Na tento účel sa dá využiť aj <em>Hromadná korešpondencia z Wordu</em>, ktorá dokáže pomerne pekne zabezpečiť získavanie dát pre maily z excelovského súboru.</p>

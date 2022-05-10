@@ -64,44 +64,44 @@
 <p>V EcmaScripte neexistuje koncept triedy.</p>
 <h2 id="tvorba-novych-instancii">Tvorba novych instancii</h2>
 <h3 id="explicitne-vytvaranie-objektov">Explicitne vytvaranie objektov</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#289;font-weight:bold">var</span> person <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> <span style="color:#072">Object</span>;
-person.firstName <span style="color:#333">=</span> <span style="background-color:#e0e0ff">&#34;John&#34;</span>;
-person.secondName <span style="color:#333">=</span> <span style="background-color:#e0e0ff">&#34;Doe&#34;</span>;
-</code></pre></div><h3 id="inline-ci-pristup-cez-literal">„Inline&quot; ci pristup cez literal</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#289;font-weight:bold">var</span> obj <span style="color:#333">=</span> { foreground<span style="color:#333">:</span><span style="background-color:#e0e0ff">&#34;red&#34;</span>, background<span style="color:#333">:</span><span style="background-color:#e0e0ff">&#34;blue&#34;</span> }
-</code></pre></div><p>Vsimnime si syntax:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">var</span> person <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> <span style="color:#072">Object</span>;
+</span></span><span style="display:flex;"><span>person.firstName <span style="color:#333">=</span> <span style="background-color:#e0e0ff">&#34;John&#34;</span>;
+</span></span><span style="display:flex;"><span>person.secondName <span style="color:#333">=</span> <span style="background-color:#e0e0ff">&#34;Doe&#34;</span>;
+</span></span></code></pre></div><h3 id="inline-ci-pristup-cez-literal">„Inline&quot; ci pristup cez literal</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">var</span> obj <span style="color:#333">=</span> { foreground<span style="color:#333">:</span><span style="background-color:#e0e0ff">&#34;red&#34;</span>, background<span style="color:#333">:</span><span style="background-color:#e0e0ff">&#34;blue&#34;</span> }
+</span></span></code></pre></div><p>Vsimnime si syntax:</p>
 <ul>
 <li>datove cleny su uvedene bez <code>var</code></li>
 <li>hodnota sa im priraduje cez dvojbodku (nie cez „rovna sa&quot;)</li>
 </ul>
 <h2 id="prototypy-v-ulohe-tried">Prototypy v ulohe tried</h2>
 <p>Na vytvaranie kvazi-tried sa pouzivaju „prototypy&quot;. Protyp specifikuje implicitne hodnoty pre metody a datove cleny novych instancii.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#666;font-style:italic">// tato funkcia je vlastne konstruktorom triedy Person
-</span><span style="color:#666;font-style:italic"></span><span style="color:#289;font-weight:bold">function</span> Person() {
-  print(<span style="background-color:#e0e0ff">&#39;Constructing new person...&#39;</span>);
-}
-
-<span style="color:#666;font-style:italic">// Objekt.prototyp je vlastne kvazi-trieda
-</span><span style="color:#666;font-style:italic"></span>Person.prototype <span style="color:#333">=</span> {
-  firstName<span style="color:#333">:</span> <span style="background-color:#e0e0ff">&#34;John&#34;</span>,
-  secondName<span style="color:#333">:</span> <span style="background-color:#e0e0ff">&#34;Doe&#34;</span>
-}
-
-<span style="color:#666;font-style:italic">// vytvorenie novej instancie
-</span><span style="color:#666;font-style:italic"></span><span style="color:#289;font-weight:bold">var</span> p <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Person();
-<span style="color:#666;font-style:italic">// print the default data field values
-</span><span style="color:#666;font-style:italic"></span>print(p.firstName);
-print(p.secondName);
-
-<span style="color:#666;font-style:italic">// set a value for data field
-</span><span style="color:#666;font-style:italic"></span>p.firstName <span style="color:#333">=</span> <span style="background-color:#e0e0ff">&#34;Michael&#34;</span>;
-print(p.firstName);
-
-<span style="color:#666;font-style:italic">// make a new instance, its data fields have default values specified in prototype
-</span><span style="color:#666;font-style:italic"></span><span style="color:#289;font-weight:bold">var</span> q <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Person();
-print(q.firstName);
-print(q.secondName);
-</code></pre></div>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#666;font-style:italic">// tato funkcia je vlastne konstruktorom triedy Person
+</span></span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic"></span><span style="color:#289;font-weight:bold">function</span> Person() {
+</span></span><span style="display:flex;"><span>  print(<span style="background-color:#e0e0ff">&#39;Constructing new person...&#39;</span>);
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic">// Objekt.prototyp je vlastne kvazi-trieda
+</span></span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic"></span>Person.prototype <span style="color:#333">=</span> {
+</span></span><span style="display:flex;"><span>  firstName<span style="color:#333">:</span> <span style="background-color:#e0e0ff">&#34;John&#34;</span>,
+</span></span><span style="display:flex;"><span>  secondName<span style="color:#333">:</span> <span style="background-color:#e0e0ff">&#34;Doe&#34;</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic">// vytvorenie novej instancie
+</span></span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic"></span><span style="color:#289;font-weight:bold">var</span> p <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Person();
+</span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic">// print the default data field values
+</span></span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic"></span>print(p.firstName);
+</span></span><span style="display:flex;"><span>print(p.secondName);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic">// set a value for data field
+</span></span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic"></span>p.firstName <span style="color:#333">=</span> <span style="background-color:#e0e0ff">&#34;Michael&#34;</span>;
+</span></span><span style="display:flex;"><span>print(p.firstName);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic">// make a new instance, its data fields have default values specified in prototype
+</span></span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic"></span><span style="color:#289;font-weight:bold">var</span> q <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Person();
+</span></span><span style="display:flex;"><span>print(q.firstName);
+</span></span><span style="display:flex;"><span>print(q.secondName);
+</span></span></code></pre></div>
 </main>
 
     <footer>

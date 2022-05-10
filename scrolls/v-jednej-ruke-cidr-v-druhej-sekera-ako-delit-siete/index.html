@@ -88,14 +88,14 @@
 <p>Bežná metafora sú ulice a popisné čísla. Ulica je „sieťová časť“, popisné číslo identifikuje konkrétny „dom“.</p>
 <p>Vďaka <strong>maske</strong> vieme oddeliť sieťovú časť od stanicovej. Maska je 32bitový štrúdlik jednotkových bajtov nasledovaný štrúdlikom nulových bajtov.</p>
 <p>Každá stanica v CIDR notifikácii uvedie svoju IP adresu a dĺžku masky. Napríklad:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">192.168.1.16/24
-</code></pre></div><p>Táto adresa hovorí, že maska má 24 jednotkových bitov. Binárny prepis:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">  192      168      1         16
-11000000 10101000 00000001 00010000 adresa
-11111111 11111111 11111111 00000000 maska 
-</code></pre></div><p>Maska sa dá prepísať ekvivalentne do štvorblokového formátu:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">255.255.255.0
-</code></pre></div><p>Oba zápisy: cez IP adresu a dĺžku i cez IP adresu a masku sú ekvivalentné.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-plain" data-lang="plain"><span style="display:flex;"><span>192.168.1.16/24
+</span></span></code></pre></div><p>Táto adresa hovorí, že maska má 24 jednotkových bitov. Binárny prepis:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-plain" data-lang="plain"><span style="display:flex;"><span>  192      168      1         16
+</span></span><span style="display:flex;"><span>11000000 10101000 00000001 00010000 adresa
+</span></span><span style="display:flex;"><span>11111111 11111111 11111111 00000000 maska 
+</span></span></code></pre></div><p>Maska sa dá prepísať ekvivalentne do štvorblokového formátu:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-plain" data-lang="plain"><span style="display:flex;"><span>255.255.255.0
+</span></span></code></pre></div><p>Oba zápisy: cez IP adresu a dĺžku i cez IP adresu a masku sú ekvivalentné.</p>
 <p>Napríklad vo Windowse možno napiecť IP adresu sieťovej karty pomocou masky:</p>
 <p><img src="windows-10-internet-issue.png" alt="Image result for windows mask"></p>
 <h2 id="sú-stanice-v-rovnakej-sieti-adresa-siete">Sú stanice v rovnakej sieti? Adresa siete</h2>
@@ -106,16 +106,16 @@
 <li><code>158.197.31.155/27</code></li>
 </ul>
 <p>Pre každú stanicu zistíme <strong>adresu siete</strong>, a ak sa zhodujú, sú v rovnakej sieti. Tú zistíme logickým <em>AND</em>-om bitov IP adresy a masky siete.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">158.197. 31.170 | 10011110 11000101 00011111 10101010
-255.255.255.224 | 11111111 11111111 11111111 11100000
------------------------------------------------------
-AND             | 10011110 11000101 00011111 10100000
-</code></pre></div><p>a</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">158.197. 31.155 | 10011110 11000101 00011111 10011011
-255.255.255.224 | 11111111 11111111 11111111 11100000
------------------------------------------------------
-AND             | 10011110 11000101 00011111 10000000
-</code></pre></div><p>Získame dve <strong>adresy siete</strong>, ktoré sú odlišné:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-plain" data-lang="plain"><span style="display:flex;"><span>158.197. 31.170 | 10011110 11000101 00011111 10101010
+</span></span><span style="display:flex;"><span>255.255.255.224 | 11111111 11111111 11111111 11100000
+</span></span><span style="display:flex;"><span>-----------------------------------------------------
+</span></span><span style="display:flex;"><span>AND             | 10011110 11000101 00011111 10100000
+</span></span></code></pre></div><p>a</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-plain" data-lang="plain"><span style="display:flex;"><span>158.197. 31.155 | 10011110 11000101 00011111 10011011
+</span></span><span style="display:flex;"><span>255.255.255.224 | 11111111 11111111 11111111 11100000
+</span></span><span style="display:flex;"><span>-----------------------------------------------------
+</span></span><span style="display:flex;"><span>AND             | 10011110 11000101 00011111 10000000
+</span></span></code></pre></div><p>Získame dve <strong>adresy siete</strong>, ktoré sú odlišné:</p>
 <ul>
 <li>158.197.31.160</li>
 <li>158.197.31.128</li>
@@ -125,11 +125,11 @@ AND             | 10011110 11000101 00011111 10000000
 <p>V každej sieti existuje <strong>broadcastová adresa</strong> určená pre datagramy, ktoré majú byť prijaté všetkými sieťovými rozhraniami. Ak chceme trúbiť info každému, datagramy posielame na broadcastovú adresu.</p>
 <p>Získame ju logickým <em>OR</em> medzi IP adresou a invertovanou maskou siete.</p>
 <p>Zoberme si <code>158.197.31.170/27</code></p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">158.197. 31.170             | 10011110 11000101 00011111 10101010
-invertovaná 255.255.255.224 | 00000000 00000000 00000000 00011111 
------------------------------------------------------------------
-OR                          | 10011110 11000101 00011111 10111111 | 158.197.31.191
-</code></pre></div><p>Broadcastová adresa tejto siete je <code>158.197.31.191</code>.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-plain" data-lang="plain"><span style="display:flex;"><span>158.197. 31.170             | 10011110 11000101 00011111 10101010
+</span></span><span style="display:flex;"><span>invertovaná 255.255.255.224 | 00000000 00000000 00000000 00011111 
+</span></span><span style="display:flex;"><span>-----------------------------------------------------------------
+</span></span><span style="display:flex;"><span>OR                          | 10011110 11000101 00011111 10111111 | 158.197.31.191
+</span></span></code></pre></div><p>Broadcastová adresa tejto siete je <code>158.197.31.191</code>.</p>
 <h2 id="rozsahy-a-kapacity-siete">Rozsahy a kapacity siete</h2>
 <p>Sieťová adresa a broadcastová adresa tvoria dolné a horné ohraničenia pre rozsahy IP adries staníc v sieti.</p>
 <p>Pre <code>158.197.31.170/27</code> máme:</p>
@@ -143,12 +143,12 @@ OR                          | 10011110 11000101 00011111 10111111 | 158.197.31.1
 <h1 id="príklad--cvičenie-na-rozsahy-siete">Príklad / cvičenie na rozsahy siete</h1>
 <p>Majme sieť <code>101.101.101.64/26</code>. Aký je rozsah IP adries?</p>
 <h2 id="riešenie">Riešenie</h2>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">IP     101.101.101. 64 | 01100101 01100101 01100101 01000000
-Maska:                 | 11111111 11111111 11111111 11000000 | 255.255.255.192
-Adresa siete (AND)     | 01100101 01100101 01100101 01000000 | 101.101.101.64
-Invertovaná maska      | 00000000 00000000 00000000 00111111
-Broadcast (OR s inv.)  | 01100101 01100101 01100101 01111111 | 101.101.101.127
-</code></pre></div><p>Rozsah IP adries je <code>101.101.101.65</code> — <code>101.101.101.126.</code></p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-plain" data-lang="plain"><span style="display:flex;"><span>IP     101.101.101. 64 | 01100101 01100101 01100101 01000000
+</span></span><span style="display:flex;"><span>Maska:                 | 11111111 11111111 11111111 11000000 | 255.255.255.192
+</span></span><span style="display:flex;"><span>Adresa siete (AND)     | 01100101 01100101 01100101 01000000 | 101.101.101.64
+</span></span><span style="display:flex;"><span>Invertovaná maska      | 00000000 00000000 00000000 00111111
+</span></span><span style="display:flex;"><span>Broadcast (OR s inv.)  | 01100101 01100101 01100101 01111111 | 101.101.101.127
+</span></span></code></pre></div><p>Rozsah IP adries je <code>101.101.101.65</code> — <code>101.101.101.126.</code></p>
 <h2 id="riešenie-2">Riešenie 2</h2>
 <p>Maska s 26 bitmi ponecháva 32 - 26 = 6 bitov pre stanicové IP adresy. Dva na šiestu, t. j. 2^6 = 64, čo znamená, že v sieti môže byť maximálne 64 mínus <em>adresa siete</em> mínus <em>broadcast</em> = 62 staníc.</p>
 <ul>
@@ -165,8 +165,8 @@ Broadcast (OR s inv.)  | 01100101 01100101 01100101 01111111 | 101.101.101.127
 <li>10 bitov je stanicová časť = 2^10 = 1024 staníc mínus <em>sieť</em> mínus <em>broadcast</em> = 1022 staníc.</li>
 </ul>
 <p>Maska vyzerá nasledovne:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">255.255.252.  0 | 11111111 11111111 11111100 00000000
-</code></pre></div><p>Ak chceme pridať <strong>dve</strong> podsiete, potrebujeme predĺžiť masku. Ak ju natiahneme o 1 bit, vieme odlíšiť dve podsiete (0 a 1).</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-plain" data-lang="plain"><span style="display:flex;"><span>255.255.252.  0 | 11111111 11111111 11111100 00000000
+</span></span></code></pre></div><p>Ak chceme pridať <strong>dve</strong> podsiete, potrebujeme predĺžiť masku. Ak ju natiahneme o 1 bit, vieme odlíšiť dve podsiete (0 a 1).</p>
 <p>Inými slovami: dva na koľkú dá <strong>dve</strong> podsiete? Dva na prvú.</p>
 <ul>
 <li>Teda masku natiahneme o 1 bit na 23 bitov.</li>
@@ -190,28 +190,28 @@ Broadcast (OR s inv.)  | 01100101 01100101 01100101 01111111 | 101.101.101.127
 <p>Keďže sme masku rozšírili o 1 bit, budeme vyrábať všetky kombinácie núl a jednotiek v rozšírenej sekcii masky.</p>
 <h4 id="prvá-podsieť">Prvá podsieť</h4>
 <p>Začneme s nulou na 23. pozícii a zistíme adresu siete.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">158.197. 28.  0 | 10011110 11000101 000111|0|0 00000000
-255.255.254.  0 | 11111111 11111111 111111|1|0 00000000
--------------------------------------------------------
-AND             | 10011110 11000101 000111|0|0 00000000 | 158.197.28.0
-</code></pre></div><p>Zároveň zistíme broadcastovú adresu, čo bude horný rozsah pre prvú podsieť. Určíme to OR-ovaním s invertovanou maskou.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">  158.197. 28.  0 | 10011110 11000101 000111|0|0 00000000
-! 255.255.254.  0 | 00000000 00000000 000000|0|1 11111111
----------------------------------------------------------
-   OR             | 10011110 11000101 000111|0|1 11111111 | 158.197.29.255
-</code></pre></div><p>Pre prvú podsieť teda máme rozsah <code>158.197.28.1</code>—<code>158.197.29.254</code>.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-plain" data-lang="plain"><span style="display:flex;"><span>158.197. 28.  0 | 10011110 11000101 000111|0|0 00000000
+</span></span><span style="display:flex;"><span>255.255.254.  0 | 11111111 11111111 111111|1|0 00000000
+</span></span><span style="display:flex;"><span>-------------------------------------------------------
+</span></span><span style="display:flex;"><span>AND             | 10011110 11000101 000111|0|0 00000000 | 158.197.28.0
+</span></span></code></pre></div><p>Zároveň zistíme broadcastovú adresu, čo bude horný rozsah pre prvú podsieť. Určíme to OR-ovaním s invertovanou maskou.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-plain" data-lang="plain"><span style="display:flex;"><span>  158.197. 28.  0 | 10011110 11000101 000111|0|0 00000000
+</span></span><span style="display:flex;"><span>! 255.255.254.  0 | 00000000 00000000 000000|0|1 11111111
+</span></span><span style="display:flex;"><span>---------------------------------------------------------
+</span></span><span style="display:flex;"><span>   OR             | 10011110 11000101 000111|0|1 11111111 | 158.197.29.255
+</span></span></code></pre></div><p>Pre prvú podsieť teda máme rozsah <code>158.197.28.1</code>—<code>158.197.29.254</code>.</p>
 <h4 id="druhá-podsieť">Druhá podsieť</h4>
 <p>Začneme s jednotkou na 23. pozícii a zistíme adresu siete a broadcast.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">158.197. 30.  0 | 10011110 11000101 000111|1|0 00000000
-255.255.254.  0 | 11111111 11111111 111111|1|0 00000000
--------------------------------------------------------
-AND             | 10011110 11000101 000111|1|0 00000000 | 158.197.30.0
-</code></pre></div><p>Broadcast:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">  158.197. 28.  0 | 10011110 11000101 000111|1|0 00000000
-! 255.255.254.  0 | 00000000 00000000 000000|0|1 11111111
--------------------------------------------------------
-  OR             | 10011110 11000101 000111|1|1 11111111 | 158.197.31.255
-</code></pre></div><p>Pre druhú podsieť teda máme rozsah <code>158.197.30.1</code>—<code>158.197.31.254</code>.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-plain" data-lang="plain"><span style="display:flex;"><span>158.197. 30.  0 | 10011110 11000101 000111|1|0 00000000
+</span></span><span style="display:flex;"><span>255.255.254.  0 | 11111111 11111111 111111|1|0 00000000
+</span></span><span style="display:flex;"><span>-------------------------------------------------------
+</span></span><span style="display:flex;"><span>AND             | 10011110 11000101 000111|1|0 00000000 | 158.197.30.0
+</span></span></code></pre></div><p>Broadcast:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-plain" data-lang="plain"><span style="display:flex;"><span>  158.197. 28.  0 | 10011110 11000101 000111|1|0 00000000
+</span></span><span style="display:flex;"><span>! 255.255.254.  0 | 00000000 00000000 000000|0|1 11111111
+</span></span><span style="display:flex;"><span>-------------------------------------------------------
+</span></span><span style="display:flex;"><span>  OR             | 10011110 11000101 000111|1|1 11111111 | 158.197.31.255
+</span></span></code></pre></div><p>Pre druhú podsieť teda máme rozsah <code>158.197.30.1</code>—<code>158.197.31.254</code>.</p>
 <h2 id="rozbíjanie-siete-na-4-podsiete">Rozbíjanie siete na 4 podsiete</h2>
 <p>Majme opäť sieť  <code>158.197.28.0/22</code>, ktorú chceme rozbiť na 4 podsiete.</p>
 <p>Dva na koľkú dá <strong>štyri</strong> podsiete? Dva na <strong>druhú</strong>.</p>
@@ -229,9 +229,9 @@ AND             | 10011110 11000101 000111|1|0 00000000 | 158.197.30.0
 </ul>
 <h3 id="riešenie-poctivé-počty">Riešenie: poctivé počty</h3>
 <p>Rozšírme masku na 24 bitov:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">158.197. 28.  0 | 10011110 11000101 000111|00| 00000000
-                  11111111 11111111 111111|11| 00000000 | 255.255.255.0
-</code></pre></div><p>Sieťové adresy budú získavané všetkými kombináciami 7. a 8. bitu v treťom oktete, pretože o ten sme natiahli masku:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-plain" data-lang="plain"><span style="display:flex;"><span>158.197. 28.  0 | 10011110 11000101 000111|00| 00000000
+</span></span><span style="display:flex;"><span>                  11111111 11111111 111111|11| 00000000 | 255.255.255.0
+</span></span></code></pre></div><p>Sieťové adresy budú získavané všetkými kombináciami 7. a 8. bitu v treťom oktete, pretože o ten sme natiahli masku:</p>
 <ol>
 <li>prvá podsieť: 000111<strong>00</strong> = <code>___.___.28.000</code></li>
 <li>druhá podsieť: 000111<strong>01</strong> = <code>___.___.29.000</code></li>
@@ -255,30 +255,30 @@ AND             | 10011110 11000101 000111|1|0 00000000 | 158.197.30.0
 </ul>
 <h3 id="riešenie-presné-počty">Riešenie: presné počty</h3>
 <p>Natiahnime masku z 26 bitov na 28 bitov (dva dodatočné bity obsiahnu 2^2 = 4 podsiete).</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">                       |                              |!!|     
-Maska:                 | 11111111 11111111 11111111 11|11|0000 | 255.255.255.240
-</code></pre></div><p>Teraz vyrábajme všetky kombinácie núl a jednotiek na pozíciách v adrese siete, o ktoré sme natiahli masku.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-plain" data-lang="plain"><span style="display:flex;"><span>                       |                              |!!|     
+</span></span><span style="display:flex;"><span>Maska:                 | 11111111 11111111 11111111 11|11|0000 | 255.255.255.240
+</span></span></code></pre></div><p>Teraz vyrábajme všetky kombinácie núl a jednotiek na pozíciách v adrese siete, o ktoré sme natiahli masku.</p>
 <h4 id="prvá-podsieť-bity-00">Prvá podsieť (bity <code>00</code>)</h4>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">                                                       ..
-101.101.101.64         | 01100101 01100101 01100101 01|00|0000
-Maska:                 | 11111111 11111111 11111111 11|11|0000 | 255.255.255.192
-Adresa siete:          | 01100101 01100101 01100101 01|00|0000 | 101.101.101. 64
-</code></pre></div><h4 id="druhá-podsieť-bity-01">Druhá podsieť (bity <code>01</code>)</h4>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">                                                       ..
-101.101.101.64         | 01100101 01100101 01100101 01|01|0000
-Maska:                 | 11111111 11111111 11111111 11|11|0000 | 255.255.255.192
-Adresa siete:          | 01100101 01100101 01100101 01|01|0000 | 101.101.101. 80
-</code></pre></div><h4 id="tretia-podsieť-bity-10">Tretia podsieť (bity <code>10</code>)</h4>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">                                                       ..
-101.101.101.64         | 01100101 01100101 01100101 01|10|0000
-Maska:                 | 11111111 11111111 11111111 11|11|0000 | 255.255.255.192
-Adresa siete:          | 01100101 01100101 01100101 01|10|0000 | 101.101.101. 96
-</code></pre></div><h4 id="štvrtá-podsieť-bity-11">Štvrtá podsieť (bity <code>11</code>)</h4>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">                                                       ..
-101.101.101.64         | 01100101 01100101 01100101 01|11|0000
-Maska:                 | 11111111 11111111 11111111 11|11|0000 | 255.255.255.192
-Adresa siete:          | 01100101 01100101 01100101 01|11|0000 | 101.101.101.112
-</code></pre></div><h4 id="sumárne">Sumárne</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-plain" data-lang="plain"><span style="display:flex;"><span>                                                       ..
+</span></span><span style="display:flex;"><span>101.101.101.64         | 01100101 01100101 01100101 01|00|0000
+</span></span><span style="display:flex;"><span>Maska:                 | 11111111 11111111 11111111 11|11|0000 | 255.255.255.192
+</span></span><span style="display:flex;"><span>Adresa siete:          | 01100101 01100101 01100101 01|00|0000 | 101.101.101. 64
+</span></span></code></pre></div><h4 id="druhá-podsieť-bity-01">Druhá podsieť (bity <code>01</code>)</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-plain" data-lang="plain"><span style="display:flex;"><span>                                                       ..
+</span></span><span style="display:flex;"><span>101.101.101.64         | 01100101 01100101 01100101 01|01|0000
+</span></span><span style="display:flex;"><span>Maska:                 | 11111111 11111111 11111111 11|11|0000 | 255.255.255.192
+</span></span><span style="display:flex;"><span>Adresa siete:          | 01100101 01100101 01100101 01|01|0000 | 101.101.101. 80
+</span></span></code></pre></div><h4 id="tretia-podsieť-bity-10">Tretia podsieť (bity <code>10</code>)</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-plain" data-lang="plain"><span style="display:flex;"><span>                                                       ..
+</span></span><span style="display:flex;"><span>101.101.101.64         | 01100101 01100101 01100101 01|10|0000
+</span></span><span style="display:flex;"><span>Maska:                 | 11111111 11111111 11111111 11|11|0000 | 255.255.255.192
+</span></span><span style="display:flex;"><span>Adresa siete:          | 01100101 01100101 01100101 01|10|0000 | 101.101.101. 96
+</span></span></code></pre></div><h4 id="štvrtá-podsieť-bity-11">Štvrtá podsieť (bity <code>11</code>)</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-plain" data-lang="plain"><span style="display:flex;"><span>                                                       ..
+</span></span><span style="display:flex;"><span>101.101.101.64         | 01100101 01100101 01100101 01|11|0000
+</span></span><span style="display:flex;"><span>Maska:                 | 11111111 11111111 11111111 11|11|0000 | 255.255.255.192
+</span></span><span style="display:flex;"><span>Adresa siete:          | 01100101 01100101 01100101 01|11|0000 | 101.101.101.112
+</span></span></code></pre></div><h4 id="sumárne">Sumárne</h4>
 <ul>
 <li>maska podsietí bude <code>255.255.255.240</code></li>
 <li>rozsahy adries (s vynechaním IP adries siete a broadcastových adries)
@@ -314,30 +314,30 @@ Adresa siete:          | 01100101 01100101 01100101 01|11|0000 | 101.101.101.112
 </ul>
 <h3 id="riešenie-1">Riešenie</h3>
 <p>Rozšírime masku o 2 bity (aby sme pojali 4 podsiete) na <code>158.197.28.0/24</code>:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">-------------------------------------------!!-------------------------
-158.197. 28.  0 | 10011110 11000101 000111|00| 00000000
-                  11111111 11111111 111111|11| 00000000 | 255.255.255.0
------------------------------------------------------------------------
-                  10011110 11000101 000111|00| 00000000 | 158.197.28.0
-</code></pre></div><p>A 2. podsieť:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">-------------------------------------------!!-------------------------
-158.197. 28.  0 | 10011110 11000101 000111|01| 00000000
-                  11111111 11111111 111111|11| 00000000 | 255.255.255.0
------------------------------------------------------------------------
-                  10011110 11000101 000111|01| 00000000 | 158.197.29.0
-</code></pre></div><p>A tretia podsieť:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">-------------------------------------------!!-------------------------
-158.197. 28.  0 | 10011110 11000101 000111|10| 00000000
-                  11111111 11111111 111111|11| 00000000 | 255.255.255.0
------------------------------------------------------------------------
-                  10011110 11000101 000111|10| 00000000 | 158.197.30.0
-</code></pre></div><p>A štvrtá podsieť:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">-------------------------------------------!!-------------------------
-158.197. 28.  0 | 10011110 11000101 000111|11| 00000000
-                  11111111 11111111 111111|11| 00000000 | 255.255.255.0
------------------------------------------------------------------------
-                  10011110 11000101 000111|11| 00000000 | 158.197.31.0
-</code></pre></div><p>Získame tak 4 podsiete:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-plain" data-lang="plain"><span style="display:flex;"><span>-------------------------------------------!!-------------------------
+</span></span><span style="display:flex;"><span>158.197. 28.  0 | 10011110 11000101 000111|00| 00000000
+</span></span><span style="display:flex;"><span>                  11111111 11111111 111111|11| 00000000 | 255.255.255.0
+</span></span><span style="display:flex;"><span>-----------------------------------------------------------------------
+</span></span><span style="display:flex;"><span>                  10011110 11000101 000111|00| 00000000 | 158.197.28.0
+</span></span></code></pre></div><p>A 2. podsieť:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-plain" data-lang="plain"><span style="display:flex;"><span>-------------------------------------------!!-------------------------
+</span></span><span style="display:flex;"><span>158.197. 28.  0 | 10011110 11000101 000111|01| 00000000
+</span></span><span style="display:flex;"><span>                  11111111 11111111 111111|11| 00000000 | 255.255.255.0
+</span></span><span style="display:flex;"><span>-----------------------------------------------------------------------
+</span></span><span style="display:flex;"><span>                  10011110 11000101 000111|01| 00000000 | 158.197.29.0
+</span></span></code></pre></div><p>A tretia podsieť:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-plain" data-lang="plain"><span style="display:flex;"><span>-------------------------------------------!!-------------------------
+</span></span><span style="display:flex;"><span>158.197. 28.  0 | 10011110 11000101 000111|10| 00000000
+</span></span><span style="display:flex;"><span>                  11111111 11111111 111111|11| 00000000 | 255.255.255.0
+</span></span><span style="display:flex;"><span>-----------------------------------------------------------------------
+</span></span><span style="display:flex;"><span>                  10011110 11000101 000111|10| 00000000 | 158.197.30.0
+</span></span></code></pre></div><p>A štvrtá podsieť:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-plain" data-lang="plain"><span style="display:flex;"><span>-------------------------------------------!!-------------------------
+</span></span><span style="display:flex;"><span>158.197. 28.  0 | 10011110 11000101 000111|11| 00000000
+</span></span><span style="display:flex;"><span>                  11111111 11111111 111111|11| 00000000 | 255.255.255.0
+</span></span><span style="display:flex;"><span>-----------------------------------------------------------------------
+</span></span><span style="display:flex;"><span>                  10011110 11000101 000111|11| 00000000 | 158.197.31.0
+</span></span></code></pre></div><p>Získame tak 4 podsiete:</p>
 <ul>
 <li>158.197.28.0/24 pre <em>finančákov</em></li>
 <li>158.197.29.0/24 pre <em>verejné siete</em></li>
@@ -345,18 +345,18 @@ Adresa siete:          | 01100101 01100101 01100101 01|11|0000 | 101.101.101.112
 <li>158.197.31.0/24</li>
 </ul>
 <p>Posledné dve však vieme zlúčiť do podsiete pre <em>zvyšok firmy</em> a dať im masku o jedna menšiu:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">-------------------------------------------!--------------------------
-158.197. 28.  0 | 10011110 11000101 000111|1|0 00000000
-                  11111111 11111111 111111|1|0 00000000 | 255.255.254.0
------------------------------------------------------------------------
-                  10011110 11000101 000111|1|0 00000000 | 158.197.30.0
-</code></pre></div><p>Horná hranica pre zlúčenú sieť:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">-------------------------------------------!--------------------------
-158.197. 28.  0 | 10011110 11000101 000111|1|0 00000000
-                  00000000 00000000 000000|0|1 11111111 | !255.255.254.0
-------------------------------------------------------------------------
-                  10011110 11000101 000111|1|1 11111111 | 158.197.31. 255
-</code></pre></div><h1 id="špeciálne-ip-adresy">Špeciálne IP adresy</h1>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-plain" data-lang="plain"><span style="display:flex;"><span>-------------------------------------------!--------------------------
+</span></span><span style="display:flex;"><span>158.197. 28.  0 | 10011110 11000101 000111|1|0 00000000
+</span></span><span style="display:flex;"><span>                  11111111 11111111 111111|1|0 00000000 | 255.255.254.0
+</span></span><span style="display:flex;"><span>-----------------------------------------------------------------------
+</span></span><span style="display:flex;"><span>                  10011110 11000101 000111|1|0 00000000 | 158.197.30.0
+</span></span></code></pre></div><p>Horná hranica pre zlúčenú sieť:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-plain" data-lang="plain"><span style="display:flex;"><span>-------------------------------------------!--------------------------
+</span></span><span style="display:flex;"><span>158.197. 28.  0 | 10011110 11000101 000111|1|0 00000000
+</span></span><span style="display:flex;"><span>                  00000000 00000000 000000|0|1 11111111 | !255.255.254.0
+</span></span><span style="display:flex;"><span>------------------------------------------------------------------------
+</span></span><span style="display:flex;"><span>                  10011110 11000101 000111|1|1 11111111 | 158.197.31. 255
+</span></span></code></pre></div><h1 id="špeciálne-ip-adresy">Špeciálne IP adresy</h1>
 <p>V IPv4 rozoznávame aj špeciálne typy adries.</p>
 <ul>
 <li><code>0.0.0.0/32</code> zdrojová adresa stanice v lokálnej sieti pri žiadosti DHCP o pridelenie IP.</li>

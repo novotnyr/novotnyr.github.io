@@ -90,58 +90,58 @@
 <li>dohľadanie piatej položky &ndash; ale inej! &ndash; v položke GECOS. Ak sa e-mailová adresa nenachádza, výsledok je <code>null</code>.</li>
 </ul>
 <p>Vytvorme si cvičnú triedu:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">EtcPasswd</span> <span style="color:#333">{</span>
-    <span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">static</span> <span style="color:#289;font-weight:bold">final</span> String FIELD_SEPARATOR <span style="color:#333">=</span> <span style="background-color:#e0e0ff">&#34;:&#34;</span><span style="color:#333">;</span>
-
-    <span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">static</span> <span style="color:#289;font-weight:bold">final</span> String GECOS_SEPARATOR <span style="color:#333">=</span> <span style="background-color:#e0e0ff">&#34;,&#34;</span><span style="color:#333">;</span>
-
-    <span style="color:#289;font-weight:bold">public</span> String <span style="color:#5ed;font-weight:bold">findEntry</span><span style="color:#333">(</span>String username<span style="color:#333">)</span> <span style="color:#333">{</span>
-        <span style="color:#289;font-weight:bold">return</span> <span style="background-color:#e0e0ff">&#34;root:*:0:0:System Administrator,42A,555-798-4765,555-291-3511,root@example.com:/var/root:/bin/sh&#34;</span><span style="color:#333">;</span>
-    <span style="color:#333">}</span>
-
-    <span style="color:#289;font-weight:bold">public</span> String <span style="color:#5ed;font-weight:bold">getGecos</span><span style="color:#333">(</span>String line<span style="color:#333">)</span> <span style="color:#333">{</span>
-        String<span style="color:#333">[]</span> components <span style="color:#333">=</span> line<span style="color:#333">.</span><span style="color:#007">split</span><span style="color:#333">(</span>FIELD_SEPARATOR<span style="color:#333">);</span>
-        <span style="color:#289;font-weight:bold">if</span> <span style="color:#333">(</span>components<span style="color:#333">.</span><span style="color:#007">length</span> <span style="color:#333">&lt;</span> 7<span style="color:#333">)</span> <span style="color:#333">{</span>
-            <span style="color:#289;font-weight:bold">return</span> <span style="color:#289;font-weight:bold">null</span><span style="color:#333">;</span>
-        <span style="color:#333">}</span>
-        <span style="color:#289;font-weight:bold">return</span> components<span style="color:#333">[</span>4<span style="color:#333">];</span>
-    <span style="color:#333">}</span>
-
-    <span style="color:#289;font-weight:bold">public</span> String <span style="color:#5ed;font-weight:bold">getEmail</span><span style="color:#333">(</span>String gecosField<span style="color:#333">)</span> <span style="color:#333">{</span>
-        String<span style="color:#333">[]</span> components <span style="color:#333">=</span> gecosField<span style="color:#333">.</span><span style="color:#007">split</span><span style="color:#333">(</span>GECOS_SEPARATOR<span style="color:#333">);</span>
-        <span style="color:#289;font-weight:bold">if</span> <span style="color:#333">(</span>components<span style="color:#333">.</span><span style="color:#007">length</span> <span style="color:#333">&lt;</span> 7<span style="color:#333">)</span> <span style="color:#333">{</span>
-            <span style="color:#289;font-weight:bold">return</span> <span style="color:#289;font-weight:bold">null</span><span style="color:#333">;</span>
-        <span style="color:#333">}</span>
-        <span style="color:#289;font-weight:bold">return</span> components<span style="color:#333">[</span>5<span style="color:#333">];</span>
-    <span style="color:#333">}</span>
-<span style="color:#333">}</span>
-</code></pre></div><p>Metóda <code>findEntry()</code> bude zatiaľ napečená natvrdo: vráti konštantný <code>String</code>. Všetky ostatné metódy zoberú <code>String</code> a vrátia buď <code>String</code> alebo <code>null</code>, ak sa príslušný údaj (položka, záznam, podpoložka) nenájdu.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">EtcPasswd</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">static</span> <span style="color:#289;font-weight:bold">final</span> String FIELD_SEPARATOR <span style="color:#333">=</span> <span style="background-color:#e0e0ff">&#34;:&#34;</span><span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">static</span> <span style="color:#289;font-weight:bold">final</span> String GECOS_SEPARATOR <span style="color:#333">=</span> <span style="background-color:#e0e0ff">&#34;,&#34;</span><span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">public</span> String <span style="color:#5ed;font-weight:bold">findEntry</span><span style="color:#333">(</span>String username<span style="color:#333">)</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#289;font-weight:bold">return</span> <span style="background-color:#e0e0ff">&#34;root:*:0:0:System Administrator,42A,555-798-4765,555-291-3511,root@example.com:/var/root:/bin/sh&#34;</span><span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">public</span> String <span style="color:#5ed;font-weight:bold">getGecos</span><span style="color:#333">(</span>String line<span style="color:#333">)</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>        String<span style="color:#333">[]</span> components <span style="color:#333">=</span> line<span style="color:#333">.</span><span style="color:#007">split</span><span style="color:#333">(</span>FIELD_SEPARATOR<span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#289;font-weight:bold">if</span> <span style="color:#333">(</span>components<span style="color:#333">.</span><span style="color:#007">length</span> <span style="color:#333">&lt;</span> 7<span style="color:#333">)</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#289;font-weight:bold">return</span> <span style="color:#289;font-weight:bold">null</span><span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#289;font-weight:bold">return</span> components<span style="color:#333">[</span>4<span style="color:#333">];</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">public</span> String <span style="color:#5ed;font-weight:bold">getEmail</span><span style="color:#333">(</span>String gecosField<span style="color:#333">)</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>        String<span style="color:#333">[]</span> components <span style="color:#333">=</span> gecosField<span style="color:#333">.</span><span style="color:#007">split</span><span style="color:#333">(</span>GECOS_SEPARATOR<span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#289;font-weight:bold">if</span> <span style="color:#333">(</span>components<span style="color:#333">.</span><span style="color:#007">length</span> <span style="color:#333">&lt;</span> 7<span style="color:#333">)</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#289;font-weight:bold">return</span> <span style="color:#289;font-weight:bold">null</span><span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#289;font-weight:bold">return</span> components<span style="color:#333">[</span>5<span style="color:#333">];</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#333">}</span>
+</span></span></code></pre></div><p>Metóda <code>findEntry()</code> bude zatiaľ napečená natvrdo: vráti konštantný <code>String</code>. Všetky ostatné metódy zoberú <code>String</code> a vrátia buď <code>String</code> alebo <code>null</code>, ak sa príslušný údaj (položka, záznam, podpoložka) nenájdu.</p>
 <p>Samozrejme, kód musíme otestovať!</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">package</span> <span style="color:#0e84b5;font-weight:bold">com.github.novotnyr.monad</span><span style="color:#333">;</span>
-
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">org.junit.jupiter.api.Test</span><span style="color:#333">;</span>
-
-<span style="color:#289;font-weight:bold">import static</span> <span style="color:#0e84b5;font-weight:bold">org.junit.jupiter.api.Assertions.*</span><span style="color:#333">;</span>
-
-<span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">EtcPasswdTest</span> <span style="color:#333">{</span>
-    <span style="color:#555;font-weight:bold">@Test</span>
-    <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">testParseRootEmail</span><span style="color:#333">()</span> <span style="color:#333">{</span>
-        EtcPasswd etcPasswd <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> EtcPasswd<span style="color:#333">();</span>
-        String entry <span style="color:#333">=</span> etcPasswd<span style="color:#333">.</span><span style="color:#007">findEntry</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;root&#34;</span><span style="color:#333">);</span>
-        <span style="color:#289;font-weight:bold">if</span> <span style="color:#333">(</span>entry <span style="color:#333">!=</span> <span style="color:#289;font-weight:bold">null</span><span style="color:#333">)</span> <span style="color:#333">{</span>
-            String gecos <span style="color:#333">=</span> etcPasswd<span style="color:#333">.</span><span style="color:#007">getGecos</span><span style="color:#333">(</span>entry<span style="color:#333">);</span>
-            <span style="color:#289;font-weight:bold">if</span> <span style="color:#333">(</span>gecos <span style="color:#333">!=</span> <span style="color:#289;font-weight:bold">null</span><span style="color:#333">)</span> <span style="color:#333">{</span>
-                String email <span style="color:#333">=</span> etcPasswd<span style="color:#333">.</span><span style="color:#007">getEmail</span><span style="color:#333">(</span>gecos<span style="color:#333">);</span>
-                <span style="color:#289;font-weight:bold">if</span> <span style="color:#333">(</span>email <span style="color:#333">!=</span> <span style="color:#289;font-weight:bold">null</span><span style="color:#333">)</span> <span style="color:#333">{</span>
-                    assertEquals<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;root@example.com&#34;</span><span style="color:#333">,</span> email<span style="color:#333">);</span>
-                <span style="color:#333">}</span>
-                <span style="color:#289;font-weight:bold">return</span><span style="color:#333">;</span>
-            <span style="color:#333">}</span>
-        <span style="color:#333">}</span>
-        fail<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;Failed to parse entry&#34;</span><span style="color:#333">);</span>
-    <span style="color:#333">}</span>
-<span style="color:#333">}</span>
-</code></pre></div><p>Ak chceme byť hyperbezpeční, musíme každú metódu ošetriť pre prípady, že vracajú <code>null</code>. Čo sa však stalo?</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">package</span> <span style="color:#0e84b5;font-weight:bold">com.github.novotnyr.monad</span><span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">org.junit.jupiter.api.Test</span><span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">import static</span> <span style="color:#0e84b5;font-weight:bold">org.junit.jupiter.api.Assertions.*</span><span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">EtcPasswdTest</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#555;font-weight:bold">@Test</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">testParseRootEmail</span><span style="color:#333">()</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>        EtcPasswd etcPasswd <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> EtcPasswd<span style="color:#333">();</span>
+</span></span><span style="display:flex;"><span>        String entry <span style="color:#333">=</span> etcPasswd<span style="color:#333">.</span><span style="color:#007">findEntry</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;root&#34;</span><span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#289;font-weight:bold">if</span> <span style="color:#333">(</span>entry <span style="color:#333">!=</span> <span style="color:#289;font-weight:bold">null</span><span style="color:#333">)</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>            String gecos <span style="color:#333">=</span> etcPasswd<span style="color:#333">.</span><span style="color:#007">getGecos</span><span style="color:#333">(</span>entry<span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#289;font-weight:bold">if</span> <span style="color:#333">(</span>gecos <span style="color:#333">!=</span> <span style="color:#289;font-weight:bold">null</span><span style="color:#333">)</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>                String email <span style="color:#333">=</span> etcPasswd<span style="color:#333">.</span><span style="color:#007">getEmail</span><span style="color:#333">(</span>gecos<span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#289;font-weight:bold">if</span> <span style="color:#333">(</span>email <span style="color:#333">!=</span> <span style="color:#289;font-weight:bold">null</span><span style="color:#333">)</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>                    assertEquals<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;root@example.com&#34;</span><span style="color:#333">,</span> email<span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#289;font-weight:bold">return</span><span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span>        fail<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;Failed to parse entry&#34;</span><span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#333">}</span>
+</span></span></code></pre></div><p>Ak chceme byť hyperbezpeční, musíme každú metódu ošetriť pre prípady, že vracajú <code>null</code>. Čo sa však stalo?</p>
 <pre><code>INDIANA
    JONES
       A
@@ -177,29 +177,29 @@ if(con != null)
 <li>obaliť akýkoľvek reťazec</li>
 <li>zavolať na ňom akúkoľvek funkciu &ndash; výpočtový krok, úkon, získanie riadku, získanie GECOS položky &ndash; ktorá zoberie reťazec, vykoná nad ním, čo treba a výsledok vráti v novej škatuli.</li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">package</span> <span style="color:#0e84b5;font-weight:bold">com.github.novotnyr.monad</span><span style="color:#333">;</span>
-
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">java.util.function.Function</span><span style="color:#333">;</span>
-
-<span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">Box</span> <span style="color:#333">{</span>
-    <span style="color:#289;font-weight:bold">private</span> String value<span style="color:#333">;</span>
-
-    <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">Box</span><span style="color:#333">()</span> <span style="color:#333">{</span>
-        <span style="color:#666;font-style:italic">// vytvorí prázdnu škatuľu
-</span><span style="color:#666;font-style:italic"></span>    <span style="color:#333">}</span>
-
-    <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">Box</span><span style="color:#333">(</span>String value<span style="color:#333">)</span> <span style="color:#333">{</span>
-        <span style="color:#289;font-weight:bold">this</span><span style="color:#333">.</span><span style="color:#007">value</span> <span style="color:#333">=</span> value<span style="color:#333">;</span>
-    <span style="color:#333">}</span>
-
-    <span style="color:#289;font-weight:bold">public</span> Box <span style="color:#5ed;font-weight:bold">then</span><span style="color:#333">(</span>Function<span style="color:#333">&lt;</span>String<span style="color:#333">,</span> Box<span style="color:#333">&gt;</span> handler<span style="color:#333">)</span> <span style="color:#333">{</span>
-        <span style="color:#289;font-weight:bold">if</span> <span style="color:#333">(</span><span style="color:#289;font-weight:bold">this</span><span style="color:#333">.</span><span style="color:#007">value</span> <span style="color:#333">==</span> <span style="color:#289;font-weight:bold">null</span><span style="color:#333">)</span> <span style="color:#333">{</span>
-            <span style="color:#289;font-weight:bold">return</span> <span style="color:#289;font-weight:bold">new</span> Box<span style="color:#333">();</span>
-        <span style="color:#333">}</span>
-        <span style="color:#289;font-weight:bold">return</span> handler<span style="color:#333">.</span><span style="color:#007">apply</span><span style="color:#333">(</span><span style="color:#289;font-weight:bold">this</span><span style="color:#333">.</span><span style="color:#007">value</span><span style="color:#333">);</span>
-    <span style="color:#333">}</span>
-<span style="color:#333">}</span>
-</code></pre></div><p>Škatuľa:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">package</span> <span style="color:#0e84b5;font-weight:bold">com.github.novotnyr.monad</span><span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">java.util.function.Function</span><span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">Box</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">private</span> String value<span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">Box</span><span style="color:#333">()</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#666;font-style:italic">// vytvorí prázdnu škatuľu
+</span></span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic"></span>    <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">Box</span><span style="color:#333">(</span>String value<span style="color:#333">)</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#289;font-weight:bold">this</span><span style="color:#333">.</span><span style="color:#007">value</span> <span style="color:#333">=</span> value<span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">public</span> Box <span style="color:#5ed;font-weight:bold">then</span><span style="color:#333">(</span>Function<span style="color:#333">&lt;</span>String<span style="color:#333">,</span> Box<span style="color:#333">&gt;</span> handler<span style="color:#333">)</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#289;font-weight:bold">if</span> <span style="color:#333">(</span><span style="color:#289;font-weight:bold">this</span><span style="color:#333">.</span><span style="color:#007">value</span> <span style="color:#333">==</span> <span style="color:#289;font-weight:bold">null</span><span style="color:#333">)</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#289;font-weight:bold">return</span> <span style="color:#289;font-weight:bold">new</span> Box<span style="color:#333">();</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#289;font-weight:bold">return</span> handler<span style="color:#333">.</span><span style="color:#007">apply</span><span style="color:#333">(</span><span style="color:#289;font-weight:bold">this</span><span style="color:#333">.</span><span style="color:#007">value</span><span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#333">}</span>
+</span></span></code></pre></div><p>Škatuľa:</p>
 <ul>
 <li>obaľuje reťazcovú hodnotu,</li>
 <li>má konštruktor pre prázdnu škatuľu</li>
@@ -207,19 +207,19 @@ if(con != null)
 <li>vie na svoj obsah aplikovať Java funkciu a vrátiť novú škatuľu, ale len vtedy, ak nie je prázdna. Ak je škatuľa prázdna, vráti prázdnu škatuľu.</li>
 </ul>
 <p>Vyrobme si test!</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#555;font-weight:bold">@Test</span>
-<span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">testWithBox</span><span style="color:#333">()</span> <span style="color:#333">{</span>
-    EtcPasswd etcPasswd <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> EtcPasswd<span style="color:#333">();</span>
-    <span style="color:#289;font-weight:bold">new</span> Box<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;root&#34;</span><span style="color:#333">)</span>
-            <span style="color:#333">.</span><span style="color:#007">then</span><span style="color:#333">(</span>login <span style="color:#333">-&gt;</span> <span style="color:#289;font-weight:bold">new</span> Box<span style="color:#333">(</span>etcPasswd<span style="color:#333">.</span><span style="color:#007">findEntry</span><span style="color:#333">(</span>login<span style="color:#333">)))</span>
-            <span style="color:#333">.</span><span style="color:#007">then</span><span style="color:#333">(</span>line <span style="color:#333">-&gt;</span> <span style="color:#289;font-weight:bold">new</span> Box<span style="color:#333">(</span>etcPasswd<span style="color:#333">.</span><span style="color:#007">getGecos</span><span style="color:#333">(</span>line<span style="color:#333">)))</span>
-            <span style="color:#333">.</span><span style="color:#007">then</span><span style="color:#333">(</span>gecos <span style="color:#333">-&gt;</span> <span style="color:#289;font-weight:bold">new</span> Box<span style="color:#333">(</span>etcPasswd<span style="color:#333">.</span><span style="color:#007">getEmail</span><span style="color:#333">(</span>gecos<span style="color:#333">)))</span>
-            <span style="color:#333">.</span><span style="color:#007">then</span><span style="color:#333">(</span>email <span style="color:#333">-&gt;</span> <span style="color:#333">{</span>
-                assertEquals<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;root@example.com&#34;</span><span style="color:#333">,</span> email<span style="color:#333">);</span>
-                <span style="color:#289;font-weight:bold">return</span> <span style="color:#289;font-weight:bold">new</span> Box<span style="color:#333">(</span>email<span style="color:#333">);</span>
-            <span style="color:#333">});</span>
-<span style="color:#333">}</span>
-</code></pre></div><p>Vyrobii sme si krabicu s iniciálnym obsahom a postupne sme aplikovali funkcie:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#555;font-weight:bold">@Test</span>
+</span></span><span style="display:flex;"><span><span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">testWithBox</span><span style="color:#333">()</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>    EtcPasswd etcPasswd <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> EtcPasswd<span style="color:#333">();</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">new</span> Box<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;root&#34;</span><span style="color:#333">)</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#333">.</span><span style="color:#007">then</span><span style="color:#333">(</span>login <span style="color:#333">-&gt;</span> <span style="color:#289;font-weight:bold">new</span> Box<span style="color:#333">(</span>etcPasswd<span style="color:#333">.</span><span style="color:#007">findEntry</span><span style="color:#333">(</span>login<span style="color:#333">)))</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#333">.</span><span style="color:#007">then</span><span style="color:#333">(</span>line <span style="color:#333">-&gt;</span> <span style="color:#289;font-weight:bold">new</span> Box<span style="color:#333">(</span>etcPasswd<span style="color:#333">.</span><span style="color:#007">getGecos</span><span style="color:#333">(</span>line<span style="color:#333">)))</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#333">.</span><span style="color:#007">then</span><span style="color:#333">(</span>gecos <span style="color:#333">-&gt;</span> <span style="color:#289;font-weight:bold">new</span> Box<span style="color:#333">(</span>etcPasswd<span style="color:#333">.</span><span style="color:#007">getEmail</span><span style="color:#333">(</span>gecos<span style="color:#333">)))</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#333">.</span><span style="color:#007">then</span><span style="color:#333">(</span>email <span style="color:#333">-&gt;</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>                assertEquals<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;root@example.com&#34;</span><span style="color:#333">,</span> email<span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#289;font-weight:bold">return</span> <span style="color:#289;font-weight:bold">new</span> Box<span style="color:#333">(</span>email<span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#333">});</span>
+</span></span><span style="display:flex;"><span><span style="color:#333">}</span>
+</span></span></code></pre></div><p>Vyrobii sme si krabicu s iniciálnym obsahom a postupne sme aplikovali funkcie:</p>
 <ul>
 <li>na nájdenie riadku so záznamom</li>
 <li>na získanie GECOS</li>
@@ -234,51 +234,51 @@ if(con != null)
 </ul>
 <p>Táto metóda je teda <strong>programovateľná bodkočiarka!</strong> medzi dvoma riadkami algoritmu!</p>
 <p>Čo však v prípade podivných vstupov? Napíšme si test:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">    <span style="color:#555;font-weight:bold">@Test</span>
-    <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">testWithUnparsableLine</span><span style="color:#333">()</span> <span style="color:#333">{</span>
-        AtomicBoolean testPassed <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> AtomicBoolean<span style="color:#333">(</span><span style="color:#289;font-weight:bold">false</span><span style="color:#333">);</span>
-        EtcPasswd etcPasswd <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> EtcPasswd<span style="color:#333">();</span>
-        <span style="color:#289;font-weight:bold">new</span> Box<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;root:*:0:0::/var/root:/bin/sh&#34;</span><span style="color:#333">)</span>
-                <span style="color:#333">.</span><span style="color:#007">then</span><span style="color:#333">(</span>line <span style="color:#333">-&gt;</span> <span style="color:#289;font-weight:bold">new</span> Box<span style="color:#333">(</span>etcPasswd<span style="color:#333">.</span><span style="color:#007">getGecos</span><span style="color:#333">(</span>line<span style="color:#333">)))</span>
-                <span style="color:#333">.</span><span style="color:#007">then</span><span style="color:#333">(</span>gecos <span style="color:#333">-&gt;</span> <span style="color:#289;font-weight:bold">new</span> Box<span style="color:#333">(</span>etcPasswd<span style="color:#333">.</span><span style="color:#007">getEmail</span><span style="color:#333">(</span>gecos<span style="color:#333">)))</span>
-                <span style="color:#333">.</span><span style="color:#007">then</span><span style="color:#333">(</span>email <span style="color:#333">-&gt;</span> <span style="color:#333">{</span>
-                    testPassed<span style="color:#333">.</span><span style="color:#007">set</span><span style="color:#333">(</span><span style="color:#289;font-weight:bold">true</span><span style="color:#333">);</span>
-                    <span style="color:#289;font-weight:bold">return</span> <span style="color:#289;font-weight:bold">new</span> Box<span style="color:#333">(</span>email<span style="color:#333">);</span>
-                <span style="color:#333">});</span>
-        assertFalse<span style="color:#333">(</span>testPassed<span style="color:#333">.</span><span style="color:#007">get</span><span style="color:#333">());</span>
-    <span style="color:#333">}</span>
-</code></pre></div><p>Okrem <code>AtomicBoolean</code>, ktorý slúži na prepravu údajov z vnútra funkcie v <code>then</code> do overenia úspechu testu, uvidíme hneď, že test úspešne zlyhá, ak sa parsovanie nepodarí.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>    <span style="color:#555;font-weight:bold">@Test</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">testWithUnparsableLine</span><span style="color:#333">()</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>        AtomicBoolean testPassed <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> AtomicBoolean<span style="color:#333">(</span><span style="color:#289;font-weight:bold">false</span><span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>        EtcPasswd etcPasswd <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> EtcPasswd<span style="color:#333">();</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#289;font-weight:bold">new</span> Box<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;root:*:0:0::/var/root:/bin/sh&#34;</span><span style="color:#333">)</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#333">.</span><span style="color:#007">then</span><span style="color:#333">(</span>line <span style="color:#333">-&gt;</span> <span style="color:#289;font-weight:bold">new</span> Box<span style="color:#333">(</span>etcPasswd<span style="color:#333">.</span><span style="color:#007">getGecos</span><span style="color:#333">(</span>line<span style="color:#333">)))</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#333">.</span><span style="color:#007">then</span><span style="color:#333">(</span>gecos <span style="color:#333">-&gt;</span> <span style="color:#289;font-weight:bold">new</span> Box<span style="color:#333">(</span>etcPasswd<span style="color:#333">.</span><span style="color:#007">getEmail</span><span style="color:#333">(</span>gecos<span style="color:#333">)))</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#333">.</span><span style="color:#007">then</span><span style="color:#333">(</span>email <span style="color:#333">-&gt;</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>                    testPassed<span style="color:#333">.</span><span style="color:#007">set</span><span style="color:#333">(</span><span style="color:#289;font-weight:bold">true</span><span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#289;font-weight:bold">return</span> <span style="color:#289;font-weight:bold">new</span> Box<span style="color:#333">(</span>email<span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#333">});</span>
+</span></span><span style="display:flex;"><span>        assertFalse<span style="color:#333">(</span>testPassed<span style="color:#333">.</span><span style="color:#007">get</span><span style="color:#333">());</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#333">}</span>
+</span></span></code></pre></div><p>Okrem <code>AtomicBoolean</code>, ktorý slúži na prepravu údajov z vnútra funkcie v <code>then</code> do overenia úspechu testu, uvidíme hneď, že test úspešne zlyhá, ak sa parsovanie nepodarí.</p>
 <p>Ku škatuli sa oplatí jedno vylepšenie: získanie hodnoty z vnútra, a to priamo. Keďže však nechceme, aby škatuľa vracala <code>null</code>, ošetríme to výnimkou.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> String <span style="color:#5ed;font-weight:bold">getOrElse</span><span style="color:#333">()</span> <span style="color:#289;font-weight:bold">throws</span> NoSuchElementException <span style="color:#333">{</span>
-    <span style="color:#289;font-weight:bold">if</span> <span style="color:#333">(</span><span style="color:#289;font-weight:bold">this</span><span style="color:#333">.</span><span style="color:#007">value</span> <span style="color:#333">==</span> <span style="color:#289;font-weight:bold">null</span><span style="color:#333">)</span> <span style="color:#333">{</span>
-        <span style="color:#289;font-weight:bold">throw</span> <span style="color:#289;font-weight:bold">new</span> NoSuchElementException<span style="color:#333">();</span>
-    <span style="color:#333">}</span>
-    <span style="color:#289;font-weight:bold">return</span> <span style="color:#289;font-weight:bold">this</span><span style="color:#333">.</span><span style="color:#007">value</span><span style="color:#333">;</span>
-<span style="color:#333">}</span>
-</code></pre></div><p>V teste potom:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#555;font-weight:bold">@Test</span>
-<span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">testGetOrElse</span><span style="color:#333">()</span> <span style="color:#333">{</span>
-    EtcPasswd etcPasswd <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> EtcPasswd<span style="color:#333">();</span>
-    String email <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Box<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;root&#34;</span><span style="color:#333">)</span>
-            <span style="color:#333">.</span><span style="color:#007">then</span><span style="color:#333">(</span>login <span style="color:#333">-&gt;</span> <span style="color:#289;font-weight:bold">new</span> Box<span style="color:#333">(</span>etcPasswd<span style="color:#333">.</span><span style="color:#007">findEntry</span><span style="color:#333">(</span>login<span style="color:#333">)))</span>
-            <span style="color:#333">.</span><span style="color:#007">then</span><span style="color:#333">(</span>line <span style="color:#333">-&gt;</span> <span style="color:#289;font-weight:bold">new</span> Box<span style="color:#333">(</span>etcPasswd<span style="color:#333">.</span><span style="color:#007">getGecos</span><span style="color:#333">(</span>line<span style="color:#333">)))</span>
-            <span style="color:#333">.</span><span style="color:#007">then</span><span style="color:#333">(</span>gecos <span style="color:#333">-&gt;</span> <span style="color:#289;font-weight:bold">new</span> Box<span style="color:#333">(</span>etcPasswd<span style="color:#333">.</span><span style="color:#007">getEmail</span><span style="color:#333">(</span>gecos<span style="color:#333">)))</span>
-            <span style="color:#333">.</span><span style="color:#007">getOrElse</span><span style="color:#333">();</span>
-    assertEquals<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;root@example.com&#34;</span><span style="color:#333">,</span> email<span style="color:#333">);</span>
-<span style="color:#333">}</span>    
-</code></pre></div><p>Rovnako môžeme otestovať aj prípad, keď parsovanie zlyhá:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#555;font-weight:bold">@Test</span>
-<span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">testFailWithUnparsableLine</span><span style="color:#333">()</span> <span style="color:#333">{</span>
-    EtcPasswd etcPasswd <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> EtcPasswd<span style="color:#333">();</span>
-
-    assertThrows<span style="color:#333">(</span>NoSuchElementException<span style="color:#333">.</span><span style="color:#007">class</span><span style="color:#333">,</span> <span style="color:#333">()</span> <span style="color:#333">-&gt;</span> <span style="color:#333">{</span>
-        <span style="color:#289;font-weight:bold">new</span> Box<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;root:*:0:0::/var/root:/bin/sh&#34;</span><span style="color:#333">)</span>
-                <span style="color:#333">.</span><span style="color:#007">then</span><span style="color:#333">(</span>line <span style="color:#333">-&gt;</span> <span style="color:#289;font-weight:bold">new</span> Box<span style="color:#333">(</span>etcPasswd<span style="color:#333">.</span><span style="color:#007">getGecos</span><span style="color:#333">(</span>line<span style="color:#333">)))</span>
-                <span style="color:#333">.</span><span style="color:#007">then</span><span style="color:#333">(</span>gecos <span style="color:#333">-&gt;</span> <span style="color:#289;font-weight:bold">new</span> Box<span style="color:#333">(</span>etcPasswd<span style="color:#333">.</span><span style="color:#007">getEmail</span><span style="color:#333">(</span>gecos<span style="color:#333">)))</span>
-                <span style="color:#333">.</span><span style="color:#007">getOrElse</span><span style="color:#333">();</span>
-    <span style="color:#333">});</span>
-<span style="color:#333">}</span>
-</code></pre></div><p>Škatuľa <code>Box</code> je v skutočnosti obal, ktorý bezpečne pracuje s <code>null</code> hodnotami!</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">public</span> String <span style="color:#5ed;font-weight:bold">getOrElse</span><span style="color:#333">()</span> <span style="color:#289;font-weight:bold">throws</span> NoSuchElementException <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">if</span> <span style="color:#333">(</span><span style="color:#289;font-weight:bold">this</span><span style="color:#333">.</span><span style="color:#007">value</span> <span style="color:#333">==</span> <span style="color:#289;font-weight:bold">null</span><span style="color:#333">)</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#289;font-weight:bold">throw</span> <span style="color:#289;font-weight:bold">new</span> NoSuchElementException<span style="color:#333">();</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">return</span> <span style="color:#289;font-weight:bold">this</span><span style="color:#333">.</span><span style="color:#007">value</span><span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#333">}</span>
+</span></span></code></pre></div><p>V teste potom:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#555;font-weight:bold">@Test</span>
+</span></span><span style="display:flex;"><span><span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">testGetOrElse</span><span style="color:#333">()</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>    EtcPasswd etcPasswd <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> EtcPasswd<span style="color:#333">();</span>
+</span></span><span style="display:flex;"><span>    String email <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Box<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;root&#34;</span><span style="color:#333">)</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#333">.</span><span style="color:#007">then</span><span style="color:#333">(</span>login <span style="color:#333">-&gt;</span> <span style="color:#289;font-weight:bold">new</span> Box<span style="color:#333">(</span>etcPasswd<span style="color:#333">.</span><span style="color:#007">findEntry</span><span style="color:#333">(</span>login<span style="color:#333">)))</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#333">.</span><span style="color:#007">then</span><span style="color:#333">(</span>line <span style="color:#333">-&gt;</span> <span style="color:#289;font-weight:bold">new</span> Box<span style="color:#333">(</span>etcPasswd<span style="color:#333">.</span><span style="color:#007">getGecos</span><span style="color:#333">(</span>line<span style="color:#333">)))</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#333">.</span><span style="color:#007">then</span><span style="color:#333">(</span>gecos <span style="color:#333">-&gt;</span> <span style="color:#289;font-weight:bold">new</span> Box<span style="color:#333">(</span>etcPasswd<span style="color:#333">.</span><span style="color:#007">getEmail</span><span style="color:#333">(</span>gecos<span style="color:#333">)))</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#333">.</span><span style="color:#007">getOrElse</span><span style="color:#333">();</span>
+</span></span><span style="display:flex;"><span>    assertEquals<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;root@example.com&#34;</span><span style="color:#333">,</span> email<span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#333">}</span>    
+</span></span></code></pre></div><p>Rovnako môžeme otestovať aj prípad, keď parsovanie zlyhá:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#555;font-weight:bold">@Test</span>
+</span></span><span style="display:flex;"><span><span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">testFailWithUnparsableLine</span><span style="color:#333">()</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>    EtcPasswd etcPasswd <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> EtcPasswd<span style="color:#333">();</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    assertThrows<span style="color:#333">(</span>NoSuchElementException<span style="color:#333">.</span><span style="color:#007">class</span><span style="color:#333">,</span> <span style="color:#333">()</span> <span style="color:#333">-&gt;</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#289;font-weight:bold">new</span> Box<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;root:*:0:0::/var/root:/bin/sh&#34;</span><span style="color:#333">)</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#333">.</span><span style="color:#007">then</span><span style="color:#333">(</span>line <span style="color:#333">-&gt;</span> <span style="color:#289;font-weight:bold">new</span> Box<span style="color:#333">(</span>etcPasswd<span style="color:#333">.</span><span style="color:#007">getGecos</span><span style="color:#333">(</span>line<span style="color:#333">)))</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#333">.</span><span style="color:#007">then</span><span style="color:#333">(</span>gecos <span style="color:#333">-&gt;</span> <span style="color:#289;font-weight:bold">new</span> Box<span style="color:#333">(</span>etcPasswd<span style="color:#333">.</span><span style="color:#007">getEmail</span><span style="color:#333">(</span>gecos<span style="color:#333">)))</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#333">.</span><span style="color:#007">getOrElse</span><span style="color:#333">();</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#333">});</span>
+</span></span><span style="display:flex;"><span><span style="color:#333">}</span>
+</span></span></code></pre></div><p>Škatuľa <code>Box</code> je v skutočnosti obal, ktorý bezpečne pracuje s <code>null</code> hodnotami!</p>
 <p>A teraz prekvapenie: premenujme triedu <code>Box</code> na jej známy ekvivalent, pretože <code>Box</code> je to takmer isté, čo <code>java.util.Optional</code> alebo konštrukcia <code>Maybe</code> z iných jazykov.</p>
 <p>Prečo <code>Maybe</code>? Pretože škatuľa „možno obsahuje hodnotu“.</p>
 <p>A prečo <code>Optional</code>? Stačí</p>

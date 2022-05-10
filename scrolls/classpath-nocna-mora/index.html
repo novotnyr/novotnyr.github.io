@@ -66,12 +66,12 @@
 <p>Vo všetkých príkladoch budeme predpokladať, že máme pevný adresár pre „projekt&quot;, povedzme <code>C:\Projects\javacp</code>, v ktorom budeme uchovávať zdrojové kódy.</p>
 <h2 id="jednoduchá-trieda-žiadne-balíčky">Jednoduchá trieda, žiadne balíčky</h2>
 <p>Predpokladajme, že máme jednoduchú triedu <code>HelloWorld</code>, ktorá sa nenachádza v žiadnom balíčku.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">HelloWorld</span> <span style="color:#333">{</span>
-  <span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">static</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">main</span><span style="color:#333">(</span>String<span style="color:#333">[]</span> args<span style="color:#333">)</span> <span style="color:#333">{</span>
-    System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;Hello World!&#34;</span><span style="color:#333">);</span>
-  <span style="color:#333">}</span>
-<span style="color:#333">}</span>
-</code></pre></div><p>Trieda <code>HelloWorld</code> sa podľa konvencií musí nachádzať v súbore <code>HelloWorld.java</code> a keďže neprislúcha žiadnemu balíčku, bude uložený priamo v projektovom adresári – teda v <code>C:\Projects\javacp\HelloWorld.java</code>.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">HelloWorld</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">static</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">main</span><span style="color:#333">(</span>String<span style="color:#333">[]</span> args<span style="color:#333">)</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>    System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;Hello World!&#34;</span><span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#333">}</span>
+</span></span></code></pre></div><p>Trieda <code>HelloWorld</code> sa podľa konvencií musí nachádzať v súbore <code>HelloWorld.java</code> a keďže neprislúcha žiadnemu balíčku, bude uložený priamo v projektovom adresári – teda v <code>C:\Projects\javacp\HelloWorld.java</code>.</p>
 <p>Súbor môžeme jednoducho skompilovať</p>
 <pre tabindex="0"><code>javac HelloWorld.java
 </code></pre><p>čím vznikne <code>C:\Projects\javacp\HelloWorld.class</code>. Tento súbor spustíme zavolaním <code>java.exe</code>, teda</p>
@@ -79,7 +79,7 @@
 </code></pre><p>Program by mal podľa očakávaní vypísať</p>
 <pre tabindex="0"><code>Hello World!
 </code></pre><p>Z nejakého dôvodu sa však môže stať, že zažijeme typickú výnimku:</p>
-<pre tabindex="0"><code>Exception in thread &quot;main&quot; java.lang.NoClassDefFoundError: HelloWorld
+<pre tabindex="0"><code>Exception in thread &#34;main&#34; java.lang.NoClassDefFoundError: HelloWorld
 </code></pre><p>Zákernosťou môže byť to, že na našom počítači program môže ísť, ale v analogickom adresári na počítači suseda získame výnimku. Základným riešením ťažkého kalibru pre tento príklad je použitie „tajného parametra&quot;</p>
 <pre tabindex="0"><code>java -cp . HelloWorld
 </code></pre><p>Ten prikáže virtuálnemu stroju, aby triedy pre program vyhľadával len a výhradne v aktuálnom adresári (teda v <code>C:\Projects\javacp</code>.)</p>
@@ -88,18 +88,18 @@
 <ul>
 <li>dodanie riadku <code>package sk.java</code> do úvodu zdrojovej triedy</li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">package</span> <span style="color:#0e84b5;font-weight:bold">sk.java</span><span style="color:#333">;</span>
-
-<span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">HelloWorld</span> <span style="color:#333">{</span>
-  <span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">static</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">main</span><span style="color:#333">(</span>String<span style="color:#333">[]</span> args<span style="color:#333">)</span> <span style="color:#333">{</span>
-    System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;Hello World!&#34;</span><span style="color:#333">);</span>
-  <span style="color:#333">}</span>
-<span style="color:#333">}</span>
-</code></pre></div><ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">package</span> <span style="color:#0e84b5;font-weight:bold">sk.java</span><span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">HelloWorld</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">static</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">main</span><span style="color:#333">(</span>String<span style="color:#333">[]</span> args<span style="color:#333">)</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>    System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;Hello World!&#34;</span><span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#333">}</span>
+</span></span></code></pre></div><ul>
 <li>založenie dodatočných adresárov zodpovedajúcich hierarchii balíčkov. Každému balíčku musí prislúchať jeden adresár v súborovom systéme. Vytvorme teda adresárovú štruktúru <code>C:\Projects\javacp\sk\java</code>.</li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">c:<span style="color:#666;background-color:#e0e0ff;font-weight:bold">\p</span>rojects<span style="color:#666;background-color:#e0e0ff;font-weight:bold">\j</span>avacp&gt;md sk<span style="color:#666;background-color:#e0e0ff;font-weight:bold">\j</span>ava
-</code></pre></div><p>Pre istotu vymažme starý skompilovaný súbor (aby sme predišli zmäteniu):</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>c:<span style="color:#666;background-color:#e0e0ff;font-weight:bold">\p</span>rojects<span style="color:#666;background-color:#e0e0ff;font-weight:bold">\j</span>avacp&gt;md sk<span style="color:#666;background-color:#e0e0ff;font-weight:bold">\j</span>ava
+</span></span></code></pre></div><p>Pre istotu vymažme starý skompilovaný súbor (aby sme predišli zmäteniu):</p>
 <pre tabindex="0"><code>rm HelloWorld.class
 </code></pre><p>a presuňme do balíčka zdrojový súbor:</p>
 <pre tabindex="0"><code>C:\projects\javacp&gt;move HelloWorld.java C:\projects\javacp\sk\java\HelloWorld.java
@@ -111,7 +111,7 @@
 <pre tabindex="0"><code>java -cp . HelloWorld
 </code></pre><p>Žiaľ, teraz sa skoro určite dožijeme výnimky:</p>
 <pre tabindex="0"><code>C:\projects\javacp\sk\java&gt;java -cp . HelloWorld
-Exception in thread &quot;main&quot; java.lang.NoClassDefFoundError: HelloWorld (wrong name: sk/java/HelloWorld)
+Exception in thread &#34;main&#34; java.lang.NoClassDefFoundError: HelloWorld (wrong name: sk/java/HelloWorld)
   at java.lang.ClassLoader.defineClass1(Native Method)
 </code></pre><p>V tomto prípade <code>java</code> oznamuje, že sa snažíme spustiť <code>HelloWorld</code> s nesprávnou špecifikáciou balíčka. Triedy, ktoré sa nachádzajú v balíčku sa musia volať úplným menom a navyše zo správneho adresára.</p>
 <p><code>HelloWorld</code> teda spustíme z adresára <code>C:\Projects\javacp</code> príkazom</p>
@@ -172,7 +172,7 @@ Exception in thread &quot;main&quot; java.lang.NoClassDefFoundError: HelloWorld 
 <pre tabindex="0"><code>java -jar javacp.jar
 </code></pre><p>Ale ako bolo povedané vyššie, <code>-jar</code> parameter ignoruje všetky predošlé body vyhľadávania a teda aj <code>commons-math-1.1.jar</code>. Nepomôže ani explicitné určenie:</p>
 <pre tabindex="0"><code>c:\Projects\javacp&gt;java -cp commons-math-1.1.jar -jar javacp.jar
-Exception in thread &quot;main&quot; java.lang.NoClassDefFoundError: org/apache/commons/math/linear/RealMatrix
+Exception in thread &#34;main&#34; java.lang.NoClassDefFoundError: org/apache/commons/math/linear/RealMatrix
 </code></pre><p>V tomto prípade je možné vyriešiť problém pridaním oboch JARov do <code>CLASSPATH</code> a spustením hlavnej triedy:</p>
 <pre tabindex="0"><code>c:\Projects\javacp&gt;java -cp commons-math-1.1.jar;javacp.jar sk.java.MatrixSolver
 </code></pre><h1 id="sumár-a-morálne-ponaučenie">Sumár a morálne ponaučenie</h1>

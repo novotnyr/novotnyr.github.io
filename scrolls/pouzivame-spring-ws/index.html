@@ -59,19 +59,19 @@
 
 
 <main>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">package</span> <span style="color:#0e84b5;font-weight:bold">sk.novotnyr.movie</span><span style="color:#333">;</span>
-
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">java.util.Date</span><span style="color:#333">;</span>
-
-<span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">MovieReservation</span> <span style="color:#333">{</span>
-
-  <span style="color:#289;font-weight:bold">protected</span> String title<span style="color:#333">;</span>
-  <span style="color:#289;font-weight:bold">protected</span> Date date<span style="color:#333">;</span>
-  <span style="color:#289;font-weight:bold">protected</span> <span style="color:#66f;font-weight:bold">int</span> numberOfTickets<span style="color:#333">;</span>
-
-  <span style="color:#666;font-style:italic">// gettre a settre
-</span><span style="color:#666;font-style:italic"></span><span style="color:#333">}</span>
-</code></pre></div><p>Stiahneme Spring-WS. Do classpath:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">package</span> <span style="color:#0e84b5;font-weight:bold">sk.novotnyr.movie</span><span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">java.util.Date</span><span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">MovieReservation</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#289;font-weight:bold">protected</span> String title<span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#289;font-weight:bold">protected</span> Date date<span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#289;font-weight:bold">protected</span> <span style="color:#66f;font-weight:bold">int</span> numberOfTickets<span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#666;font-style:italic">// gettre a settre
+</span></span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic"></span><span style="color:#333">}</span>
+</span></span></code></pre></div><p>Stiahneme Spring-WS. Do classpath:</p>
 <ul>
 <li>activation.jar</li>
 <li>commons-logging-1.1.1.jar</li>
@@ -87,46 +87,46 @@
 </ul>
 <p>Kostra webovej aplikácie:
 <code>web.xml</code></p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#579">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
-<span style="color:#070">&lt;web-app</span> <span style="color:#007">xmlns=</span><span style="background-color:#e0e0ff">&#34;http://java.sun.com/xml/ns/j2ee&#34;</span> <span style="color:#007">xmlns:xsi=</span><span style="background-color:#e0e0ff">&#34;http://www.w3.org/2001/XMLSchema-instance&#34;</span>
-         <span style="color:#007">xsi:schemaLocation=</span><span style="background-color:#e0e0ff">&#34;http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd&#34;</span>
-         <span style="color:#007">version=</span><span style="background-color:#e0e0ff">&#34;2.4&#34;</span><span style="color:#070">&gt;</span>
-
-    <span style="color:#070">&lt;servlet&gt;</span>
-        <span style="color:#070">&lt;servlet-name&gt;</span>spring-ws<span style="color:#070">&lt;/servlet-name&gt;</span>
-        <span style="color:#070">&lt;servlet-class&gt;</span>org.springframework.ws.transport.http.MessageDispatcherServlet<span style="color:#070">&lt;/servlet-class&gt;</span>
-    <span style="color:#070">&lt;/servlet&gt;</span>
-
-    <span style="color:#070">&lt;servlet-mapping&gt;</span>
-        <span style="color:#070">&lt;servlet-name&gt;</span>spring-ws<span style="color:#070">&lt;/servlet-name&gt;</span>
-        <span style="color:#070">&lt;url-pattern&gt;</span>/*<span style="color:#070">&lt;/url-pattern&gt;</span>
-    <span style="color:#070">&lt;/servlet-mapping&gt;</span>
-
-<span style="color:#070">&lt;/web-app&gt;</span>
-</code></pre></div><p><code>spring-ws-servlet.xml</code></p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#579">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
-<span style="color:#070">&lt;beans</span> <span style="color:#007">xmlns=</span><span style="background-color:#e0e0ff">&#34;http://www.springframework.org/schema/beans&#34;</span> <span style="color:#007">xmlns:xsi=</span><span style="background-color:#e0e0ff">&#34;http://www.w3.org/2001/XMLSchema-instance&#34;</span>
-       <span style="color:#007">xsi:schemaLocation=</span><span style="background-color:#e0e0ff">&#34;http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd&#34;</span><span style="color:#070">&gt;</span>
- 	<span style="color:#070">&lt;bean</span> <span style="color:#007">id=</span><span style="background-color:#e0e0ff">&#34;movieReservationEndpoint&#34;</span> <span style="color:#007">class=</span><span style="background-color:#e0e0ff">&#34;sk.novotnyr.movie.ws.XStreamMovieReservationEndpoint&#34;</span> <span style="color:#070">/&gt;</span>
- 	
-	<span style="color:#070">&lt;bean</span> <span style="color:#007">id=</span><span style="background-color:#e0e0ff">&#34;endpointMapping&#34;</span> <span style="color:#007">class=</span><span style="background-color:#e0e0ff">&#34;org.springframework.ws.server.endpoint.mapping.UriEndpointMapping&#34;</span><span style="color:#070">&gt;</span>
-		<span style="color:#070">&lt;property</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;mappings&#34;</span><span style="color:#070">&gt;</span>
-			<span style="color:#070">&lt;props&gt;</span>
-				<span style="color:#070">&lt;prop</span> <span style="color:#007">key=</span><span style="background-color:#e0e0ff">&#34;http://localhost:8080/movie/ws/reservation&#34;</span><span style="color:#070">&gt;</span>movieReservationEndpoint<span style="color:#070">&lt;/prop&gt;</span>
-			<span style="color:#070">&lt;/props&gt;</span>
-		<span style="color:#070">&lt;/property&gt;</span>
-	<span style="color:#070">&lt;/bean&gt;</span>
-    
-<span style="color:#070">&lt;/beans&gt;</span>
-</code></pre></div><h1 id="dokument-pre-požiadavku">Dokument pre požiadavku</h1>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#579">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
-
-<span style="color:#070">&lt;movieReservationRequest&gt;</span>
-  <span style="color:#070">&lt;title&gt;</span>Battlestar Galactica<span style="color:#070">&lt;/title&gt;</span>
-  <span style="color:#070">&lt;date&gt;</span>2008-12-24<span style="color:#070">&lt;/date&gt;</span>
-  <span style="color:#070">&lt;numberOfTickets&gt;</span>4<span style="color:#070">&lt;/numberOfTickets&gt;</span>  
-<span style="color:#070">&lt;/movieReservationRequest&gt;</span>
-</code></pre></div><h1 id="log4jproperties"><code>log4j.properties</code></h1>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#579">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#070">&lt;web-app</span> <span style="color:#007">xmlns=</span><span style="background-color:#e0e0ff">&#34;http://java.sun.com/xml/ns/j2ee&#34;</span> <span style="color:#007">xmlns:xsi=</span><span style="background-color:#e0e0ff">&#34;http://www.w3.org/2001/XMLSchema-instance&#34;</span>
+</span></span><span style="display:flex;"><span>         <span style="color:#007">xsi:schemaLocation=</span><span style="background-color:#e0e0ff">&#34;http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd&#34;</span>
+</span></span><span style="display:flex;"><span>         <span style="color:#007">version=</span><span style="background-color:#e0e0ff">&#34;2.4&#34;</span><span style="color:#070">&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#070">&lt;servlet&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#070">&lt;servlet-name&gt;</span>spring-ws<span style="color:#070">&lt;/servlet-name&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#070">&lt;servlet-class&gt;</span>org.springframework.ws.transport.http.MessageDispatcherServlet<span style="color:#070">&lt;/servlet-class&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#070">&lt;/servlet&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#070">&lt;servlet-mapping&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#070">&lt;servlet-name&gt;</span>spring-ws<span style="color:#070">&lt;/servlet-name&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#070">&lt;url-pattern&gt;</span>/*<span style="color:#070">&lt;/url-pattern&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#070">&lt;/servlet-mapping&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#070">&lt;/web-app&gt;</span>
+</span></span></code></pre></div><p><code>spring-ws-servlet.xml</code></p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#579">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#070">&lt;beans</span> <span style="color:#007">xmlns=</span><span style="background-color:#e0e0ff">&#34;http://www.springframework.org/schema/beans&#34;</span> <span style="color:#007">xmlns:xsi=</span><span style="background-color:#e0e0ff">&#34;http://www.w3.org/2001/XMLSchema-instance&#34;</span>
+</span></span><span style="display:flex;"><span>       <span style="color:#007">xsi:schemaLocation=</span><span style="background-color:#e0e0ff">&#34;http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd&#34;</span><span style="color:#070">&gt;</span>
+</span></span><span style="display:flex;"><span> 	<span style="color:#070">&lt;bean</span> <span style="color:#007">id=</span><span style="background-color:#e0e0ff">&#34;movieReservationEndpoint&#34;</span> <span style="color:#007">class=</span><span style="background-color:#e0e0ff">&#34;sk.novotnyr.movie.ws.XStreamMovieReservationEndpoint&#34;</span> <span style="color:#070">/&gt;</span>
+</span></span><span style="display:flex;"><span> 	
+</span></span><span style="display:flex;"><span>	<span style="color:#070">&lt;bean</span> <span style="color:#007">id=</span><span style="background-color:#e0e0ff">&#34;endpointMapping&#34;</span> <span style="color:#007">class=</span><span style="background-color:#e0e0ff">&#34;org.springframework.ws.server.endpoint.mapping.UriEndpointMapping&#34;</span><span style="color:#070">&gt;</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#070">&lt;property</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;mappings&#34;</span><span style="color:#070">&gt;</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#070">&lt;props&gt;</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#070">&lt;prop</span> <span style="color:#007">key=</span><span style="background-color:#e0e0ff">&#34;http://localhost:8080/movie/ws/reservation&#34;</span><span style="color:#070">&gt;</span>movieReservationEndpoint<span style="color:#070">&lt;/prop&gt;</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#070">&lt;/props&gt;</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#070">&lt;/property&gt;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#070">&lt;/bean&gt;</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span><span style="color:#070">&lt;/beans&gt;</span>
+</span></span></code></pre></div><h1 id="dokument-pre-požiadavku">Dokument pre požiadavku</h1>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#579">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#070">&lt;movieReservationRequest&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#070">&lt;title&gt;</span>Battlestar Galactica<span style="color:#070">&lt;/title&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#070">&lt;date&gt;</span>2008-12-24<span style="color:#070">&lt;/date&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#070">&lt;numberOfTickets&gt;</span>4<span style="color:#070">&lt;/numberOfTickets&gt;</span>  
+</span></span><span style="display:flex;"><span><span style="color:#070">&lt;/movieReservationRequest&gt;</span>
+</span></span></code></pre></div><h1 id="log4jproperties"><code>log4j.properties</code></h1>
 <pre tabindex="0"><code>log4j.rootCategory=INFO, stdout
 log4j.logger.org.springframework.ws=DEBUG
 log4j.logger.org.springframework.ws.client.MessageTracing.sent=TRACE
@@ -138,67 +138,67 @@ log4j.appender.stdout=org.apache.log4j.ConsoleAppender
 log4j.appender.stdout.layout=org.apache.log4j.PatternLayout
 log4j.appender.stdout.layout.ConversionPattern=%p [%c{3}] %m%n
 </code></pre><h1 id="endpoint">Endpoint</h1>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">package</span> <span style="color:#0e84b5;font-weight:bold">sk.novotnyr.movie.ws</span><span style="color:#333">;</span>
-
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">org.springframework.oxm.xstream.XStreamMarshaller</span><span style="color:#333">;</span>
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">org.springframework.ws.server.endpoint.AbstractMarshallingPayloadEndpoint</span><span style="color:#333">;</span>
-
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">sk.novotnyr.movie.MovieReservation</span><span style="color:#333">;</span>
-
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">com.thoughtworks.xstream.converters.basic.DateConverter</span><span style="color:#333">;</span>
-
-<span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">XStreamMovieReservationEndpoint</span> <span style="color:#289;font-weight:bold">extends</span> AbstractMarshallingPayloadEndpoint <span style="color:#333">{</span>
-  
-  <span style="color:#555;font-weight:bold">@Override</span>
-  <span style="color:#289;font-weight:bold">protected</span> Object <span style="color:#5ed;font-weight:bold">invokeInternal</span><span style="color:#333">(</span>Object object<span style="color:#333">)</span> <span style="color:#289;font-weight:bold">throws</span> Exception <span style="color:#333">{</span>
-
-    MovieReservation movieReservationRequest <span style="color:#333">=</span> <span style="color:#333">(</span>MovieReservation<span style="color:#333">)</span> object<span style="color:#333">;</span>
-    System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span>movieReservationRequest<span style="color:#333">.</span><span style="color:#007">getTitle</span><span style="color:#333">());</span>
-    System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span>movieReservationRequest<span style="color:#333">.</span><span style="color:#007">getDate</span><span style="color:#333">());</span>
-    System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span>movieReservationRequest<span style="color:#333">.</span><span style="color:#007">getNumberOfTickets</span><span style="color:#333">());</span>
-
-    <span style="color:#666;font-style:italic">// one-way messages return null
-</span><span style="color:#666;font-style:italic"></span>    <span style="color:#289;font-weight:bold">return</span> <span style="color:#289;font-weight:bold">null</span><span style="color:#333">;</span>
-  <span style="color:#333">}</span>
-
-  <span style="color:#555;font-weight:bold">@Override</span>
-  <span style="color:#289;font-weight:bold">public</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">afterPropertiesSet</span><span style="color:#333">()</span> <span style="color:#289;font-weight:bold">throws</span> Exception <span style="color:#333">{</span>
-    <span style="color:#289;font-weight:bold">super</span><span style="color:#333">.</span><span style="color:#007">afterPropertiesSet</span><span style="color:#333">();</span>
-
-    XStreamMarshaller marshaller <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> XStreamMarshaller<span style="color:#333">();</span>
-    marshaller<span style="color:#333">.</span><span style="color:#007">addAlias</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;movieReservationRequest&#34;</span><span style="color:#333">,</span> MovieReservation<span style="color:#333">.</span><span style="color:#007">class</span><span style="color:#333">);</span>
-    marshaller<span style="color:#333">.</span><span style="color:#007">getXStream</span><span style="color:#333">().</span><span style="color:#007">registerConverter</span><span style="color:#333">(</span><span style="color:#289;font-weight:bold">new</span> DateConverter<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;yyyy-DD-mm&#34;</span><span style="color:#333">,</span> <span style="color:#289;font-weight:bold">new</span> String<span style="color:#333">[]{}));</span>
-    
-    setMarshaller<span style="color:#333">(</span>marshaller<span style="color:#333">);</span>
-    setUnmarshaller<span style="color:#333">(</span>marshaller<span style="color:#333">);</span>
-
-  <span style="color:#333">}</span>
-  
-<span style="color:#333">}</span>
-</code></pre></div><h1 id="klient">Klient</h1>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">package</span> <span style="color:#0e84b5;font-weight:bold">sk.novotnyr.movie.ws</span><span style="color:#333">;</span>
-
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">java.io.FileReader</span><span style="color:#333">;</span>
-
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">javax.xml.transform.stream.StreamResult</span><span style="color:#333">;</span>
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">javax.xml.transform.stream.StreamSource</span><span style="color:#333">;</span>
-
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">org.springframework.ws.client.core.WebServiceTemplate</span><span style="color:#333">;</span>
-
-<span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">Client</span> <span style="color:#333">{</span>
-  
-  <span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">static</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">main</span><span style="color:#333">(</span>String<span style="color:#333">[]</span> args<span style="color:#333">)</span> <span style="color:#289;font-weight:bold">throws</span> Exception <span style="color:#333">{</span>
-    WebServiceTemplate webServiceTemplate <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> WebServiceTemplate<span style="color:#333">();</span>
-    webServiceTemplate<span style="color:#333">.</span><span style="color:#007">setDefaultUri</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;http://localhost:8080/movie/ws/reservation&#34;</span><span style="color:#333">);</span>
-    
-   
-    StreamSource source <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> StreamSource<span style="color:#333">(</span><span style="color:#289;font-weight:bold">new</span> FileReader<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;D:\\Projects\\movie-ws\\web\\WEB-INF\\xml\\movieReservationRequest.xml&#34;</span><span style="color:#333">));</span>
-    StreamResult result <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> StreamResult<span style="color:#333">(</span>System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">);</span>
-    webServiceTemplate<span style="color:#333">.</span><span style="color:#007">sendSourceAndReceiveToResult</span><span style="color:#333">(</span>source<span style="color:#333">,</span> result<span style="color:#333">);</span>        
-
-  <span style="color:#333">}</span>
-<span style="color:#333">}</span>
-</code></pre></div>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">package</span> <span style="color:#0e84b5;font-weight:bold">sk.novotnyr.movie.ws</span><span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">org.springframework.oxm.xstream.XStreamMarshaller</span><span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">org.springframework.ws.server.endpoint.AbstractMarshallingPayloadEndpoint</span><span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">sk.novotnyr.movie.MovieReservation</span><span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">com.thoughtworks.xstream.converters.basic.DateConverter</span><span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">XStreamMovieReservationEndpoint</span> <span style="color:#289;font-weight:bold">extends</span> AbstractMarshallingPayloadEndpoint <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>  <span style="color:#555;font-weight:bold">@Override</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#289;font-weight:bold">protected</span> Object <span style="color:#5ed;font-weight:bold">invokeInternal</span><span style="color:#333">(</span>Object object<span style="color:#333">)</span> <span style="color:#289;font-weight:bold">throws</span> Exception <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    MovieReservation movieReservationRequest <span style="color:#333">=</span> <span style="color:#333">(</span>MovieReservation<span style="color:#333">)</span> object<span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span>    System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span>movieReservationRequest<span style="color:#333">.</span><span style="color:#007">getTitle</span><span style="color:#333">());</span>
+</span></span><span style="display:flex;"><span>    System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span>movieReservationRequest<span style="color:#333">.</span><span style="color:#007">getDate</span><span style="color:#333">());</span>
+</span></span><span style="display:flex;"><span>    System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span>movieReservationRequest<span style="color:#333">.</span><span style="color:#007">getNumberOfTickets</span><span style="color:#333">());</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#666;font-style:italic">// one-way messages return null
+</span></span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic"></span>    <span style="color:#289;font-weight:bold">return</span> <span style="color:#289;font-weight:bold">null</span><span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#555;font-weight:bold">@Override</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#289;font-weight:bold">public</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">afterPropertiesSet</span><span style="color:#333">()</span> <span style="color:#289;font-weight:bold">throws</span> Exception <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">super</span><span style="color:#333">.</span><span style="color:#007">afterPropertiesSet</span><span style="color:#333">();</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    XStreamMarshaller marshaller <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> XStreamMarshaller<span style="color:#333">();</span>
+</span></span><span style="display:flex;"><span>    marshaller<span style="color:#333">.</span><span style="color:#007">addAlias</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;movieReservationRequest&#34;</span><span style="color:#333">,</span> MovieReservation<span style="color:#333">.</span><span style="color:#007">class</span><span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>    marshaller<span style="color:#333">.</span><span style="color:#007">getXStream</span><span style="color:#333">().</span><span style="color:#007">registerConverter</span><span style="color:#333">(</span><span style="color:#289;font-weight:bold">new</span> DateConverter<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;yyyy-DD-mm&#34;</span><span style="color:#333">,</span> <span style="color:#289;font-weight:bold">new</span> String<span style="color:#333">[]{}));</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    setMarshaller<span style="color:#333">(</span>marshaller<span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>    setUnmarshaller<span style="color:#333">(</span>marshaller<span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span><span style="color:#333">}</span>
+</span></span></code></pre></div><h1 id="klient">Klient</h1>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">package</span> <span style="color:#0e84b5;font-weight:bold">sk.novotnyr.movie.ws</span><span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">java.io.FileReader</span><span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">javax.xml.transform.stream.StreamResult</span><span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">javax.xml.transform.stream.StreamSource</span><span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">org.springframework.ws.client.core.WebServiceTemplate</span><span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">Client</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>  <span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">static</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">main</span><span style="color:#333">(</span>String<span style="color:#333">[]</span> args<span style="color:#333">)</span> <span style="color:#289;font-weight:bold">throws</span> Exception <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>    WebServiceTemplate webServiceTemplate <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> WebServiceTemplate<span style="color:#333">();</span>
+</span></span><span style="display:flex;"><span>    webServiceTemplate<span style="color:#333">.</span><span style="color:#007">setDefaultUri</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;http://localhost:8080/movie/ws/reservation&#34;</span><span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>   
+</span></span><span style="display:flex;"><span>    StreamSource source <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> StreamSource<span style="color:#333">(</span><span style="color:#289;font-weight:bold">new</span> FileReader<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;D:\\Projects\\movie-ws\\web\\WEB-INF\\xml\\movieReservationRequest.xml&#34;</span><span style="color:#333">));</span>
+</span></span><span style="display:flex;"><span>    StreamResult result <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> StreamResult<span style="color:#333">(</span>System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>    webServiceTemplate<span style="color:#333">.</span><span style="color:#007">sendSourceAndReceiveToResult</span><span style="color:#333">(</span>source<span style="color:#333">,</span> result<span style="color:#333">);</span>        
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#333">}</span>
+</span></span></code></pre></div>
 </main>
 
     <footer>

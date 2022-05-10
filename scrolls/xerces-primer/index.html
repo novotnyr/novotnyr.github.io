@@ -67,212 +67,212 @@ Budú miestne preteky
 V hode oštiepkom
 — L&amp;S&amp;F &ndash; Majstrovstvá</p>
 </blockquote>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">DocumentBuilderFactory factory <span style="color:#333">=</span> DocumentBuilderFactory<span style="color:#333">.</span><span style="color:#007">newInstance</span><span style="color:#333">();</span>
-factory<span style="color:#333">.</span><span style="color:#007">setValidating</span><span style="color:#333">(</span><span style="color:#289;font-weight:bold">true</span><span style="color:#333">);</span>
-factory<span style="color:#333">.</span><span style="color:#007">setIgnoringElementContentWhitespace</span><span style="color:#333">(</span><span style="color:#289;font-weight:bold">true</span><span style="color:#333">);</span>
-DocumentBuilder builder <span style="color:#333">=</span> factory<span style="color:#333">.</span><span style="color:#007">newDocumentBuilder</span><span style="color:#333">();</span>
-<span style="color:#666;font-style:italic">// Method input for entering String included
-</span><span style="color:#666;font-style:italic"></span>Document doc <span style="color:#333">=</span> builder<span style="color:#333">.</span><span style="color:#007">parse</span><span style="color:#333">(</span>filename<span style="color:#333">);</span>
-<span style="color:#666;font-style:italic">// DOM tree done - getting the root element
-</span><span style="color:#666;font-style:italic"></span> Element root <span style="color:#333">=</span> doc<span style="color:#333">.</span><span style="color:#007">getDocumentElement</span><span style="color:#333">();</span>
-</code></pre></div><h1 id="sax">SAX</h1>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>DocumentBuilderFactory factory <span style="color:#333">=</span> DocumentBuilderFactory<span style="color:#333">.</span><span style="color:#007">newInstance</span><span style="color:#333">();</span>
+</span></span><span style="display:flex;"><span>factory<span style="color:#333">.</span><span style="color:#007">setValidating</span><span style="color:#333">(</span><span style="color:#289;font-weight:bold">true</span><span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>factory<span style="color:#333">.</span><span style="color:#007">setIgnoringElementContentWhitespace</span><span style="color:#333">(</span><span style="color:#289;font-weight:bold">true</span><span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>DocumentBuilder builder <span style="color:#333">=</span> factory<span style="color:#333">.</span><span style="color:#007">newDocumentBuilder</span><span style="color:#333">();</span>
+</span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic">// Method input for entering String included
+</span></span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic"></span>Document doc <span style="color:#333">=</span> builder<span style="color:#333">.</span><span style="color:#007">parse</span><span style="color:#333">(</span>filename<span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic">// DOM tree done - getting the root element
+</span></span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic"></span> Element root <span style="color:#333">=</span> doc<span style="color:#333">.</span><span style="color:#007">getDocumentElement</span><span style="color:#333">();</span>
+</span></span></code></pre></div><h1 id="sax">SAX</h1>
 <h2 id="štartér">Štartér</h2>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">org.xml.sax.XMLReader</span><span style="color:#333">;</span>
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">org.xml.sax.ContentHandler</span><span style="color:#333">;</span>
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">java.io.IOException</span><span style="color:#333">;</span>
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">org.xml.sax.SAXException</span><span style="color:#333">;</span>
-
-<span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">SAXParserDemo</span> <span style="color:#333">{</span>
-
-  <span style="color:#289;font-weight:bold">public</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">performDemo</span><span style="color:#333">(</span>String uri<span style="color:#333">)</span> <span style="color:#333">{</span>
-    System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;Parsing XML File: &#34;</span> <span style="color:#333">+</span> uri <span style="color:#333">+</span> <span style="background-color:#e0e0ff">&#34;\n\n&#34;</span><span style="color:#333">);</span>
-
-    <span style="color:#666;font-style:italic">//Create ContentHandler to handle SAX events
-</span><span style="color:#666;font-style:italic"></span>    ContentHandler contentHandler <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> MyContentHandler<span style="color:#333">();</span>
-    System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;+OK: Handler assigned&#34;</span><span style="color:#333">);</span>
-    <span style="color:#289;font-weight:bold">try</span> <span style="color:#333">{</span>
-      <span style="color:#666;font-style:italic">// Instantiate a parser
-</span><span style="color:#666;font-style:italic"></span>      XMLReader parser <span style="color:#333">=</span> XMLReaderFactory<span style="color:#333">.</span><span style="color:#007">createXMLReader</span><span style="color:#333">();</span>
-      <span style="color:#666;font-style:italic">// Alternatively, you can instantiate vendor&#39;s implementation directly.
-</span><span style="color:#666;font-style:italic"></span>      <span style="color:#666;font-style:italic">// Driver can be specified via system property: java -Dorg.xml.sax.driver=gnu.xml.aelfred2.XmlReader
-</span><span style="color:#666;font-style:italic"></span>      <span style="color:#666;font-style:italic">//XMLReader parser = new org.apache.xerces.parsers.SAXParser();
-</span><span style="color:#666;font-style:italic"></span>
-      <span style="color:#666;font-style:italic">// Register the content handler
-</span><span style="color:#666;font-style:italic"></span>      parser<span style="color:#333">.</span><span style="color:#007">setContentHandler</span><span style="color:#333">(</span>contentHandler<span style="color:#333">);</span>
-      <span style="color:#666;font-style:italic">// Parse the document
-</span><span style="color:#666;font-style:italic"></span>      parser<span style="color:#333">.</span><span style="color:#007">parse</span><span style="color:#333">(</span>uri<span style="color:#333">);</span>
-      <span style="color:#666;font-style:italic">// Serialize result
-</span><span style="color:#666;font-style:italic"></span>    <span style="color:#333">}</span> <span style="color:#289;font-weight:bold">catch</span> <span style="color:#333">(</span>IOException e<span style="color:#333">)</span> <span style="color:#333">{</span>
-      System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;Error reading URI: &#34;</span> <span style="color:#333">+</span> e<span style="color:#333">.</span><span style="color:#007">getMessage</span><span style="color:#333">());</span>
-    <span style="color:#333">}</span> <span style="color:#289;font-weight:bold">catch</span> <span style="color:#333">(</span>SAXException e<span style="color:#333">)</span> <span style="color:#333">{</span>
-      System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;Error in parsing: &#34;</span> <span style="color:#333">+</span> e<span style="color:#333">.</span><span style="color:#007">getMessage</span><span style="color:#333">());</span>
-      e<span style="color:#333">.</span><span style="color:#007">printStackTrace</span><span style="color:#333">(</span>System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">);</span>
-    <span style="color:#333">}</span>
-  <span style="color:#333">}</span>
-
-  <span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">static</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">main</span><span style="color:#333">(</span>String<span style="color:#333">[]</span> args<span style="color:#333">)</span> <span style="color:#333">{</span>
-    <span style="color:#289;font-weight:bold">if</span> <span style="color:#333">(</span>args<span style="color:#333">.</span><span style="color:#007">length</span> <span style="color:#333">!=</span> 1<span style="color:#333">)</span> <span style="color:#333">{</span>
-      System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;Usage: java SAXParserDemo [XML URI]&#34;</span><span style="color:#333">);</span>
-      System<span style="color:#333">.</span><span style="color:#007">exit</span><span style="color:#333">(</span>0<span style="color:#333">);</span>
-    <span style="color:#333">}</span>
-    String uri <span style="color:#333">=</span> args<span style="color:#333">[</span>0<span style="color:#333">];</span>
-    SAXParserDemo parserDemo <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> SAXParserDemo<span style="color:#333">();</span>
-    parserDemo<span style="color:#333">.</span><span style="color:#007">performDemo</span><span style="color:#333">(</span>uri<span style="color:#333">);</span>
-  <span style="color:#333">}</span>
-<span style="color:#333">}</span>
-</code></pre></div><h2 id="contenthandler"><code>ContentHandler</code></h2>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">MyContentHandler</span> <span style="color:#289;font-weight:bold">implements</span> ContentHandler <span style="color:#333">{</span>
-    <span style="color:#289;font-weight:bold">private</span> Locator locator<span style="color:#333">;</span>
-
-    <span style="color:#289;font-weight:bold">public</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">setDocumentLocator</span><span style="color:#333">(</span>Locator locator<span style="color:#333">)</span> <span style="color:#333">{</span>
-      System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34; * setDocumentLocator( ) called&#34;</span><span style="color:#333">);</span>
-      <span style="color:#289;font-weight:bold">this</span><span style="color:#333">.</span><span style="color:#007">locator</span> <span style="color:#333">=</span> locator<span style="color:#333">;</span>
-    <span style="color:#333">}</span>
-
-    <span style="color:#289;font-weight:bold">public</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">startDocument</span><span style="color:#333">()</span> <span style="color:#289;font-weight:bold">throws</span> SAXException <span style="color:#333">{</span>
-      System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;Parsing begins...&#34;</span><span style="color:#333">);</span>
-    <span style="color:#333">}</span>
-
-    <span style="color:#289;font-weight:bold">public</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">endDocument</span><span style="color:#333">()</span> <span style="color:#289;font-weight:bold">throws</span> SAXException <span style="color:#333">{</span>
-      System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;Parsing ends...&#34;</span><span style="color:#333">);</span>
-      System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;------------------&#34;</span><span style="color:#333">);</span>
-      System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;Serializing result&#34;</span><span style="color:#333">);</span>
-      serializeNode<span style="color:#333">(</span>resultDocument<span style="color:#333">);</span>
-    <span style="color:#333">}</span>
-
-    <span style="color:#289;font-weight:bold">public</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">processingInstruction</span><span style="color:#333">(</span>String target<span style="color:#333">,</span> String data<span style="color:#333">)</span>
-    <span style="color:#289;font-weight:bold">throws</span> SAXException <span style="color:#333">{</span>
-    <span style="color:#333">}</span>
-
-    <span style="color:#289;font-weight:bold">public</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">startPrefixMapping</span><span style="color:#333">(</span>String prefix<span style="color:#333">,</span> String uri<span style="color:#333">)</span> <span style="color:#333">{</span>
-    <span style="color:#333">}</span>
-
-    <span style="color:#289;font-weight:bold">public</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">endPrefixMapping</span><span style="color:#333">(</span>String prefix<span style="color:#333">)</span> <span style="color:#333">{</span>
-    <span style="color:#333">}</span>
-
-    <span style="color:#289;font-weight:bold">public</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">startElement</span><span style="color:#333">(</span>String namespaceURI<span style="color:#333">,</span> String localName<span style="color:#333">,</span>
-    String rawName<span style="color:#333">,</span> Attributes atts<span style="color:#333">)</span> <span style="color:#289;font-weight:bold">throws</span> SAXException <span style="color:#333">{</span>
-      System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;startElement: &#34;</span> <span style="color:#333">+</span> localName <span style="color:#333">+</span> <span style="background-color:#e0e0ff">&#34;\n&#34;</span><span style="color:#333">);</span>
-    <span style="color:#333">}</span>
-
-    <span style="color:#289;font-weight:bold">public</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">endElement</span><span style="color:#333">(</span>String namespaceURI<span style="color:#333">,</span> String localName<span style="color:#333">,</span>
-    String rawName<span style="color:#333">)</span> <span style="color:#289;font-weight:bold">throws</span> SAXException <span style="color:#333">{</span>
-      System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;endElement: &#34;</span> <span style="color:#333">+</span> localName <span style="color:#333">+</span> <span style="background-color:#e0e0ff">&#34;\n&#34;</span><span style="color:#333">);</span>
-    <span style="color:#333">}</span>
-
-    <span style="color:#289;font-weight:bold">public</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">characters</span><span style="color:#333">(</span><span style="color:#66f;font-weight:bold">char</span><span style="color:#333">[]</span> ch<span style="color:#333">,</span> <span style="color:#66f;font-weight:bold">int</span> start<span style="color:#333">,</span> <span style="color:#66f;font-weight:bold">int</span> end<span style="color:#333">)</span>
-    <span style="color:#289;font-weight:bold">throws</span> SAXException <span style="color:#333">{</span>
-      String s <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> String<span style="color:#333">(</span>ch<span style="color:#333">,</span> start<span style="color:#333">,</span> end<span style="color:#333">);</span>
-      System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;characters: &#34;</span> <span style="color:#333">+</span> s<span style="color:#333">);</span>
-    <span style="color:#333">}</span>
-
-    <span style="color:#289;font-weight:bold">public</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">ignorableWhitespace</span><span style="color:#333">(</span><span style="color:#66f;font-weight:bold">char</span><span style="color:#333">[]</span> ch<span style="color:#333">,</span> <span style="color:#66f;font-weight:bold">int</span> start<span style="color:#333">,</span> <span style="color:#66f;font-weight:bold">int</span> end<span style="color:#333">)</span>
-    <span style="color:#289;font-weight:bold">throws</span> SAXException <span style="color:#333">{</span>
-    <span style="color:#333">}</span>
-
-    <span style="color:#289;font-weight:bold">public</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">skippedEntity</span><span style="color:#333">(</span>String name<span style="color:#333">)</span> <span style="color:#289;font-weight:bold">throws</span> SAXException <span style="color:#333">{</span>
-    <span style="color:#333">}</span>
-<span style="color:#333">}</span>
-</code></pre></div><p>Alternatívne je možné triedu <code> MyContentHandler</code>  oddediť od štandardnej implementácie <code> DefaultHandler</code> , ktorej metódy implementujú rozhranie <code> ContentHandler</code>  tak, že nerobia nič.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">MyContentHandler</span> <span style="color:#289;font-weight:bold">extends</span> DefaultHandler <span style="color:#333">{</span>
-
-  <span style="color:#289;font-weight:bold">public</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">startDocument</span><span style="color:#333">()</span> <span style="color:#289;font-weight:bold">throws</span> SAXException <span style="color:#333">{</span>
-    System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;Parsing begins...&#34;</span><span style="color:#333">);</span>
-  <span style="color:#333">}</span>
-
-  <span style="color:#289;font-weight:bold">public</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">endDocument</span><span style="color:#333">()</span> <span style="color:#289;font-weight:bold">throws</span> SAXException <span style="color:#333">{</span>
-    System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;Parsing ends...&#34;</span><span style="color:#333">);</span>
-    System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;------------------&#34;</span><span style="color:#333">);</span>
-    System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;Serializing result&#34;</span><span style="color:#333">);</span>
-  <span style="color:#333">}</span>
-
-  <span style="color:#289;font-weight:bold">public</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">startElement</span><span style="color:#333">(</span>String namespaceURI<span style="color:#333">,</span> String localName<span style="color:#333">,</span>
-      String rawName<span style="color:#333">,</span> Attributes atts<span style="color:#333">)</span> <span style="color:#289;font-weight:bold">throws</span> SAXException <span style="color:#333">{</span>
-    System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;startElement: &#34;</span> <span style="color:#333">+</span> localName<span style="color:#333">);</span>
-  <span style="color:#333">}</span>
-
-  <span style="color:#289;font-weight:bold">public</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">endElement</span><span style="color:#333">(</span>String namespaceURI<span style="color:#333">,</span> String localName<span style="color:#333">,</span> String rawName<span style="color:#333">)</span>
-      <span style="color:#289;font-weight:bold">throws</span> SAXException <span style="color:#333">{</span>
-    System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;endElement: &#34;</span> <span style="color:#333">+</span> localName<span style="color:#333">);</span>
-  <span style="color:#333">}</span>
-
-  <span style="color:#289;font-weight:bold">public</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">characters</span><span style="color:#333">(</span><span style="color:#66f;font-weight:bold">char</span><span style="color:#333">[]</span> ch<span style="color:#333">,</span> <span style="color:#66f;font-weight:bold">int</span> start<span style="color:#333">,</span> <span style="color:#66f;font-weight:bold">int</span> end<span style="color:#333">)</span> <span style="color:#289;font-weight:bold">throws</span> SAXException <span style="color:#333">{</span>
-    String s <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> String<span style="color:#333">(</span>ch<span style="color:#333">,</span> start<span style="color:#333">,</span> end<span style="color:#333">);</span>
-    System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;characters: &#34;</span> <span style="color:#333">+</span> s<span style="color:#333">);</span>
-  <span style="color:#333">}</span>
-<span style="color:#333">}</span>
-</code></pre></div><h2 id="metóda-characters-">Metóda <code>characters()</code> .</h2>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">org.xml.sax.XMLReader</span><span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">org.xml.sax.ContentHandler</span><span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">java.io.IOException</span><span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">org.xml.sax.SAXException</span><span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">SAXParserDemo</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#289;font-weight:bold">public</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">performDemo</span><span style="color:#333">(</span>String uri<span style="color:#333">)</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>    System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;Parsing XML File: &#34;</span> <span style="color:#333">+</span> uri <span style="color:#333">+</span> <span style="background-color:#e0e0ff">&#34;\n\n&#34;</span><span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#666;font-style:italic">//Create ContentHandler to handle SAX events
+</span></span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic"></span>    ContentHandler contentHandler <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> MyContentHandler<span style="color:#333">();</span>
+</span></span><span style="display:flex;"><span>    System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;+OK: Handler assigned&#34;</span><span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">try</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#666;font-style:italic">// Instantiate a parser
+</span></span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic"></span>      XMLReader parser <span style="color:#333">=</span> XMLReaderFactory<span style="color:#333">.</span><span style="color:#007">createXMLReader</span><span style="color:#333">();</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#666;font-style:italic">// Alternatively, you can instantiate vendor&#39;s implementation directly.
+</span></span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic"></span>      <span style="color:#666;font-style:italic">// Driver can be specified via system property: java -Dorg.xml.sax.driver=gnu.xml.aelfred2.XmlReader
+</span></span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic"></span>      <span style="color:#666;font-style:italic">//XMLReader parser = new org.apache.xerces.parsers.SAXParser();
+</span></span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic"></span>
+</span></span><span style="display:flex;"><span>      <span style="color:#666;font-style:italic">// Register the content handler
+</span></span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic"></span>      parser<span style="color:#333">.</span><span style="color:#007">setContentHandler</span><span style="color:#333">(</span>contentHandler<span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#666;font-style:italic">// Parse the document
+</span></span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic"></span>      parser<span style="color:#333">.</span><span style="color:#007">parse</span><span style="color:#333">(</span>uri<span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#666;font-style:italic">// Serialize result
+</span></span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic"></span>    <span style="color:#333">}</span> <span style="color:#289;font-weight:bold">catch</span> <span style="color:#333">(</span>IOException e<span style="color:#333">)</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>      System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;Error reading URI: &#34;</span> <span style="color:#333">+</span> e<span style="color:#333">.</span><span style="color:#007">getMessage</span><span style="color:#333">());</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#333">}</span> <span style="color:#289;font-weight:bold">catch</span> <span style="color:#333">(</span>SAXException e<span style="color:#333">)</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>      System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;Error in parsing: &#34;</span> <span style="color:#333">+</span> e<span style="color:#333">.</span><span style="color:#007">getMessage</span><span style="color:#333">());</span>
+</span></span><span style="display:flex;"><span>      e<span style="color:#333">.</span><span style="color:#007">printStackTrace</span><span style="color:#333">(</span>System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">static</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">main</span><span style="color:#333">(</span>String<span style="color:#333">[]</span> args<span style="color:#333">)</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">if</span> <span style="color:#333">(</span>args<span style="color:#333">.</span><span style="color:#007">length</span> <span style="color:#333">!=</span> 1<span style="color:#333">)</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>      System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;Usage: java SAXParserDemo [XML URI]&#34;</span><span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>      System<span style="color:#333">.</span><span style="color:#007">exit</span><span style="color:#333">(</span>0<span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span>    String uri <span style="color:#333">=</span> args<span style="color:#333">[</span>0<span style="color:#333">];</span>
+</span></span><span style="display:flex;"><span>    SAXParserDemo parserDemo <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> SAXParserDemo<span style="color:#333">();</span>
+</span></span><span style="display:flex;"><span>    parserDemo<span style="color:#333">.</span><span style="color:#007">performDemo</span><span style="color:#333">(</span>uri<span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#333">}</span>
+</span></span></code></pre></div><h2 id="contenthandler"><code>ContentHandler</code></h2>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">MyContentHandler</span> <span style="color:#289;font-weight:bold">implements</span> ContentHandler <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">private</span> Locator locator<span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">public</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">setDocumentLocator</span><span style="color:#333">(</span>Locator locator<span style="color:#333">)</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>      System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34; * setDocumentLocator( ) called&#34;</span><span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#289;font-weight:bold">this</span><span style="color:#333">.</span><span style="color:#007">locator</span> <span style="color:#333">=</span> locator<span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">public</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">startDocument</span><span style="color:#333">()</span> <span style="color:#289;font-weight:bold">throws</span> SAXException <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>      System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;Parsing begins...&#34;</span><span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">public</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">endDocument</span><span style="color:#333">()</span> <span style="color:#289;font-weight:bold">throws</span> SAXException <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>      System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;Parsing ends...&#34;</span><span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>      System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;------------------&#34;</span><span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>      System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;Serializing result&#34;</span><span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>      serializeNode<span style="color:#333">(</span>resultDocument<span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">public</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">processingInstruction</span><span style="color:#333">(</span>String target<span style="color:#333">,</span> String data<span style="color:#333">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">throws</span> SAXException <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">public</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">startPrefixMapping</span><span style="color:#333">(</span>String prefix<span style="color:#333">,</span> String uri<span style="color:#333">)</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">public</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">endPrefixMapping</span><span style="color:#333">(</span>String prefix<span style="color:#333">)</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">public</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">startElement</span><span style="color:#333">(</span>String namespaceURI<span style="color:#333">,</span> String localName<span style="color:#333">,</span>
+</span></span><span style="display:flex;"><span>    String rawName<span style="color:#333">,</span> Attributes atts<span style="color:#333">)</span> <span style="color:#289;font-weight:bold">throws</span> SAXException <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>      System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;startElement: &#34;</span> <span style="color:#333">+</span> localName <span style="color:#333">+</span> <span style="background-color:#e0e0ff">&#34;\n&#34;</span><span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">public</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">endElement</span><span style="color:#333">(</span>String namespaceURI<span style="color:#333">,</span> String localName<span style="color:#333">,</span>
+</span></span><span style="display:flex;"><span>    String rawName<span style="color:#333">)</span> <span style="color:#289;font-weight:bold">throws</span> SAXException <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>      System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;endElement: &#34;</span> <span style="color:#333">+</span> localName <span style="color:#333">+</span> <span style="background-color:#e0e0ff">&#34;\n&#34;</span><span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">public</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">characters</span><span style="color:#333">(</span><span style="color:#66f;font-weight:bold">char</span><span style="color:#333">[]</span> ch<span style="color:#333">,</span> <span style="color:#66f;font-weight:bold">int</span> start<span style="color:#333">,</span> <span style="color:#66f;font-weight:bold">int</span> end<span style="color:#333">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">throws</span> SAXException <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>      String s <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> String<span style="color:#333">(</span>ch<span style="color:#333">,</span> start<span style="color:#333">,</span> end<span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>      System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;characters: &#34;</span> <span style="color:#333">+</span> s<span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">public</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">ignorableWhitespace</span><span style="color:#333">(</span><span style="color:#66f;font-weight:bold">char</span><span style="color:#333">[]</span> ch<span style="color:#333">,</span> <span style="color:#66f;font-weight:bold">int</span> start<span style="color:#333">,</span> <span style="color:#66f;font-weight:bold">int</span> end<span style="color:#333">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">throws</span> SAXException <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">public</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">skippedEntity</span><span style="color:#333">(</span>String name<span style="color:#333">)</span> <span style="color:#289;font-weight:bold">throws</span> SAXException <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#333">}</span>
+</span></span></code></pre></div><p>Alternatívne je možné triedu <code> MyContentHandler</code>  oddediť od štandardnej implementácie <code> DefaultHandler</code> , ktorej metódy implementujú rozhranie <code> ContentHandler</code>  tak, že nerobia nič.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">MyContentHandler</span> <span style="color:#289;font-weight:bold">extends</span> DefaultHandler <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#289;font-weight:bold">public</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">startDocument</span><span style="color:#333">()</span> <span style="color:#289;font-weight:bold">throws</span> SAXException <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>    System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;Parsing begins...&#34;</span><span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#289;font-weight:bold">public</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">endDocument</span><span style="color:#333">()</span> <span style="color:#289;font-weight:bold">throws</span> SAXException <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>    System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;Parsing ends...&#34;</span><span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>    System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;------------------&#34;</span><span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>    System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;Serializing result&#34;</span><span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#289;font-weight:bold">public</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">startElement</span><span style="color:#333">(</span>String namespaceURI<span style="color:#333">,</span> String localName<span style="color:#333">,</span>
+</span></span><span style="display:flex;"><span>      String rawName<span style="color:#333">,</span> Attributes atts<span style="color:#333">)</span> <span style="color:#289;font-weight:bold">throws</span> SAXException <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>    System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;startElement: &#34;</span> <span style="color:#333">+</span> localName<span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#289;font-weight:bold">public</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">endElement</span><span style="color:#333">(</span>String namespaceURI<span style="color:#333">,</span> String localName<span style="color:#333">,</span> String rawName<span style="color:#333">)</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#289;font-weight:bold">throws</span> SAXException <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>    System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;endElement: &#34;</span> <span style="color:#333">+</span> localName<span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#289;font-weight:bold">public</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">characters</span><span style="color:#333">(</span><span style="color:#66f;font-weight:bold">char</span><span style="color:#333">[]</span> ch<span style="color:#333">,</span> <span style="color:#66f;font-weight:bold">int</span> start<span style="color:#333">,</span> <span style="color:#66f;font-weight:bold">int</span> end<span style="color:#333">)</span> <span style="color:#289;font-weight:bold">throws</span> SAXException <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>    String s <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> String<span style="color:#333">(</span>ch<span style="color:#333">,</span> start<span style="color:#333">,</span> end<span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>    System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;characters: &#34;</span> <span style="color:#333">+</span> s<span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#333">}</span>
+</span></span></code></pre></div><h2 id="metóda-characters-">Metóda <code>characters()</code> .</h2>
 <p>Typický začiatočnícky používateľ si nevšimne nenápadné upozornenie v dokumentácii metódy <code>characters()</code> , ktoré hovorí, že reťazce v XML elemente sa nemusia spracovať v jedinom volaní tejo metódy. Inak povedané, napr. v prípade elementu</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#070">&lt;nazov&gt;</span>Everything is proceeding as I have foreseen.<span style="color:#070">&lt;/nazov&gt;</span>
-</code></pre></div><p>sa text <code>Everything is proceeding as I have foreseen.</code>	 pri spracovávaní môže rozdeliť do dvoch volaní metódy <code> characters()</code> . V prvom volaní môže prísť napr. text &lsquo;&lsquo;Everything is proceeding&rsquo;&rsquo; a zvyšok textu dostanete k dispozícii až v ďalšom volaní. Preto je priam nutné zhromažďovať jednotlivé kusy textu v <code> StringBuffer</code> i a následne na vhodnom mieste si z neho skompletizovaný obsah elementu vytiahnuť.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#070">&lt;nazov&gt;</span>Everything is proceeding as I have foreseen.<span style="color:#070">&lt;/nazov&gt;</span>
+</span></span></code></pre></div><p>sa text <code>Everything is proceeding as I have foreseen.</code>	 pri spracovávaní môže rozdeliť do dvoch volaní metódy <code> characters()</code> . V prvom volaní môže prísť napr. text &lsquo;&lsquo;Everything is proceeding&rsquo;&rsquo; a zvyšok textu dostanete k dispozícii až v ďalšom volaní. Preto je priam nutné zhromažďovať jednotlivé kusy textu v <code> StringBuffer</code> i a následne na vhodnom mieste si z neho skompletizovaný obsah elementu vytiahnuť.</p>
 <p><code> ContentHandler</code>  môže vyzerať napr. takto:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">MyContentHandler</span> <span style="color:#289;font-weight:bold">extends</span> DefaultHandler <span style="color:#333">{</span>
-  <span style="color:#289;font-weight:bold">private</span> StringBuffer charBuffer <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> StringBuffer<span style="color:#333">();</span>
-
-  <span style="color:#289;font-weight:bold">public</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">startDocument</span><span style="color:#333">()</span> <span style="color:#289;font-weight:bold">throws</span> SAXException <span style="color:#333">{</span>
-    System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;Parsing begins...&#34;</span><span style="color:#333">);</span>
-  <span style="color:#333">}</span>
-
-  <span style="color:#289;font-weight:bold">public</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">endDocument</span><span style="color:#333">()</span> <span style="color:#289;font-weight:bold">throws</span> SAXException <span style="color:#333">{</span>
-    System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;Parsing ends...&#34;</span><span style="color:#333">);</span>
-    System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;------------------&#34;</span><span style="color:#333">);</span>
-    System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;Serializing result&#34;</span><span style="color:#333">);</span>
-  <span style="color:#333">}</span>
-
-  <span style="color:#289;font-weight:bold">public</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">startElement</span><span style="color:#333">(</span>String namespaceURI<span style="color:#333">,</span> String localName<span style="color:#333">,</span>
-      String rawName<span style="color:#333">,</span> Attributes atts<span style="color:#333">)</span> <span style="color:#289;font-weight:bold">throws</span> SAXException <span style="color:#333">{</span>
-    System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;startElement: &#34;</span> <span style="color:#333">+</span> localName<span style="color:#333">);</span>
-  <span style="color:#333">}</span>
-
-  <span style="color:#289;font-weight:bold">public</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">endElement</span><span style="color:#333">(</span>String namespaceURI<span style="color:#333">,</span> String localName<span style="color:#333">,</span> String rawName<span style="color:#333">)</span>
-      <span style="color:#289;font-weight:bold">throws</span> SAXException <span style="color:#333">{</span>
-    System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;endElement: &#34;</span> <span style="color:#333">+</span> localName<span style="color:#333">);</span>
-    
-    <span style="color:#666;font-style:italic">//element skončil, vypíšeme nazhromaždený text...
-</span><span style="color:#666;font-style:italic"></span>    System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span>charBuffer<span style="color:#333">);</span>
-    <span style="color:#666;font-style:italic">//..a keďže text už nepotrebujeme, vymažeme StringBuffer
-</span><span style="color:#666;font-style:italic"></span>    charBuffer<span style="color:#333">.</span><span style="color:#007">setLength</span><span style="color:#333">(</span>0<span style="color:#333">);</span>
-  <span style="color:#333">}</span>
-
-  <span style="color:#289;font-weight:bold">public</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">characters</span><span style="color:#333">(</span><span style="color:#66f;font-weight:bold">char</span><span style="color:#333">[]</span> ch<span style="color:#333">,</span> <span style="color:#66f;font-weight:bold">int</span> start<span style="color:#333">,</span> <span style="color:#66f;font-weight:bold">int</span> end<span style="color:#333">)</span> <span style="color:#289;font-weight:bold">throws</span> SAXException <span style="color:#333">{</span>
-    String s <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> String<span style="color:#333">(</span>ch<span style="color:#333">,</span> start<span style="color:#333">,</span> end<span style="color:#333">);</span>
-    System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;characters: &#34;</span> <span style="color:#333">+</span> s<span style="color:#333">);</span>
-    
-    charBuffer<span style="color:#333">.</span><span style="color:#007">append</span><span style="color:#333">(</span>s<span style="color:#333">);</span>
-  <span style="color:#333">}</span>
-<span style="color:#333">}</span>
-</code></pre></div><h1 id="transformácie-xsl">Transformácie XSL</h1>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">MyContentHandler</span> <span style="color:#289;font-weight:bold">extends</span> DefaultHandler <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#289;font-weight:bold">private</span> StringBuffer charBuffer <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> StringBuffer<span style="color:#333">();</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#289;font-weight:bold">public</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">startDocument</span><span style="color:#333">()</span> <span style="color:#289;font-weight:bold">throws</span> SAXException <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>    System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;Parsing begins...&#34;</span><span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#289;font-weight:bold">public</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">endDocument</span><span style="color:#333">()</span> <span style="color:#289;font-weight:bold">throws</span> SAXException <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>    System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;Parsing ends...&#34;</span><span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>    System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;------------------&#34;</span><span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>    System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;Serializing result&#34;</span><span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#289;font-weight:bold">public</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">startElement</span><span style="color:#333">(</span>String namespaceURI<span style="color:#333">,</span> String localName<span style="color:#333">,</span>
+</span></span><span style="display:flex;"><span>      String rawName<span style="color:#333">,</span> Attributes atts<span style="color:#333">)</span> <span style="color:#289;font-weight:bold">throws</span> SAXException <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>    System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;startElement: &#34;</span> <span style="color:#333">+</span> localName<span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#289;font-weight:bold">public</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">endElement</span><span style="color:#333">(</span>String namespaceURI<span style="color:#333">,</span> String localName<span style="color:#333">,</span> String rawName<span style="color:#333">)</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#289;font-weight:bold">throws</span> SAXException <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>    System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;endElement: &#34;</span> <span style="color:#333">+</span> localName<span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#666;font-style:italic">//element skončil, vypíšeme nazhromaždený text...
+</span></span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic"></span>    System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span>charBuffer<span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#666;font-style:italic">//..a keďže text už nepotrebujeme, vymažeme StringBuffer
+</span></span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic"></span>    charBuffer<span style="color:#333">.</span><span style="color:#007">setLength</span><span style="color:#333">(</span>0<span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#289;font-weight:bold">public</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">characters</span><span style="color:#333">(</span><span style="color:#66f;font-weight:bold">char</span><span style="color:#333">[]</span> ch<span style="color:#333">,</span> <span style="color:#66f;font-weight:bold">int</span> start<span style="color:#333">,</span> <span style="color:#66f;font-weight:bold">int</span> end<span style="color:#333">)</span> <span style="color:#289;font-weight:bold">throws</span> SAXException <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>    String s <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> String<span style="color:#333">(</span>ch<span style="color:#333">,</span> start<span style="color:#333">,</span> end<span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>    System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;characters: &#34;</span> <span style="color:#333">+</span> s<span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    charBuffer<span style="color:#333">.</span><span style="color:#007">append</span><span style="color:#333">(</span>s<span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#333">}</span>
+</span></span></code></pre></div><h1 id="transformácie-xsl">Transformácie XSL</h1>
 <p>Pozri tiež <a href="https://novotnyr.github.io/scrolls/transformacie-xml-suborov-v-jave-pomocou-trax/">článok o Transformáciách pomocou TraX</a>.</p>
 <p><a href="http://www-106.ibm.com/developerworks/edu/x-dw-xusax-i.html">http://www-106.ibm.com/developerworks/edu/x-dw-xusax-i.html</a></p>
 <h1 id="serializácia-xml">Serializácia XML</h1>
 <h2 id="serializacia-xml-pomocou-pomocnych-tried-xalanu">Serializacia XML pomocou pomocnych tried Xalanu</h2>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">OutputFormat format <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> OutputFormat<span style="color:#333">(</span>document<span style="color:#333">);</span>
-format<span style="color:#333">.</span><span style="color:#007">setLineSeparator</span><span style="color:#333">(</span>LineSeparator<span style="color:#333">.</span><span style="color:#007">Windows</span><span style="color:#333">);</span>
-format<span style="color:#333">.</span><span style="color:#007">setIndenting</span><span style="color:#333">(</span><span style="color:#289;font-weight:bold">true</span><span style="color:#333">);</span>
-format<span style="color:#333">.</span><span style="color:#007">setLineWidth</span><span style="color:#333">(</span>0<span style="color:#333">);</span>
-format<span style="color:#333">.</span><span style="color:#007">setPreserveSpace</span><span style="color:#333">(</span><span style="color:#289;font-weight:bold">true</span><span style="color:#333">);</span>
-
-StringWriter out <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> StringWriter<span style="color:#333">();</span>
-XMLSerializer serializer <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> XMLSerializer<span style="color:#333">(</span>out<span style="color:#333">,</span> format<span style="color:#333">);</span>
-serializer<span style="color:#333">.</span><span style="color:#007">asDOMSerializer</span><span style="color:#333">();</span>
-serializer<span style="color:#333">.</span><span style="color:#007">serialize</span><span style="color:#333">(</span>document<span style="color:#333">);</span>
-
-<span style="color:#289;font-weight:bold">return</span> out<span style="color:#333">.</span><span style="color:#007">toString</span><span style="color:#333">();</span>
-</code></pre></div><h1 id="preliezanie-stromu--nodeiterator-">Preliezanie stromu (<code> NodeIterator</code> )</h1>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Document doc <span style="color:#333">=</span> <span style="color:#666;font-style:italic">//...
-</span><span style="color:#666;font-style:italic"></span>NodeIterator ni <span style="color:#333">=</span> <span style="color:#333">((</span>DocumentTraversal<span style="color:#333">)</span> doc<span style="color:#333">).</span><span style="color:#007">createNodeIterator</span><span style="color:#333">(</span>doc<span style="color:#333">.</span><span style="color:#007">getDocumentElement</span><span style="color:#333">(),</span> NodeFilter<span style="color:#333">.</span><span style="color:#007">SHOW_ALL</span><span style="color:#333">,</span> <span style="color:#289;font-weight:bold">null</span><span style="color:#333">,</span> <span style="color:#289;font-weight:bold">false</span><span style="color:#333">);</span>
-
-Node node<span style="color:#333">;</span>
-<span style="color:#289;font-weight:bold">while</span><span style="color:#333">((</span>node <span style="color:#333">=</span> ni<span style="color:#333">.</span><span style="color:#007">nextNode</span><span style="color:#333">())</span> <span style="color:#333">!=</span> <span style="color:#289;font-weight:bold">null</span><span style="color:#333">)</span> <span style="color:#333">{</span>
-  System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span>node<span style="color:#333">.</span><span style="color:#007">getNodeName</span><span style="color:#333">());</span>
-
-  <span style="color:#289;font-weight:bold">if</span><span style="color:#333">(</span>node<span style="color:#333">.</span><span style="color:#007">getAttributes</span><span style="color:#333">()</span> <span style="color:#333">!=</span> <span style="color:#289;font-weight:bold">null</span><span style="color:#333">)</span> <span style="color:#333">{</span>
-    <span style="color:#289;font-weight:bold">for</span><span style="color:#333">(</span><span style="color:#66f;font-weight:bold">int</span> i <span style="color:#333">=</span> 0<span style="color:#333">;</span> i <span style="color:#333">&lt;</span> node<span style="color:#333">.</span><span style="color:#007">getAttributes</span><span style="color:#333">().</span><span style="color:#007">getLength</span><span style="color:#333">();</span> i<span style="color:#333">++)</span> <span style="color:#333">{</span>
-      System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;  &#34;</span> <span style="color:#333">+</span> node<span style="color:#333">.</span><span style="color:#007">getAttributes</span><span style="color:#333">().</span><span style="color:#007">item</span><span style="color:#333">(</span>i<span style="color:#333">));</span>
-    <span style="color:#333">}</span>
-  <span style="color:#333">}</span>
-<span style="color:#333">}</span>
-</code></pre></div>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>OutputFormat format <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> OutputFormat<span style="color:#333">(</span>document<span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>format<span style="color:#333">.</span><span style="color:#007">setLineSeparator</span><span style="color:#333">(</span>LineSeparator<span style="color:#333">.</span><span style="color:#007">Windows</span><span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>format<span style="color:#333">.</span><span style="color:#007">setIndenting</span><span style="color:#333">(</span><span style="color:#289;font-weight:bold">true</span><span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>format<span style="color:#333">.</span><span style="color:#007">setLineWidth</span><span style="color:#333">(</span>0<span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>format<span style="color:#333">.</span><span style="color:#007">setPreserveSpace</span><span style="color:#333">(</span><span style="color:#289;font-weight:bold">true</span><span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>StringWriter out <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> StringWriter<span style="color:#333">();</span>
+</span></span><span style="display:flex;"><span>XMLSerializer serializer <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> XMLSerializer<span style="color:#333">(</span>out<span style="color:#333">,</span> format<span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>serializer<span style="color:#333">.</span><span style="color:#007">asDOMSerializer</span><span style="color:#333">();</span>
+</span></span><span style="display:flex;"><span>serializer<span style="color:#333">.</span><span style="color:#007">serialize</span><span style="color:#333">(</span>document<span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">return</span> out<span style="color:#333">.</span><span style="color:#007">toString</span><span style="color:#333">();</span>
+</span></span></code></pre></div><h1 id="preliezanie-stromu--nodeiterator-">Preliezanie stromu (<code> NodeIterator</code> )</h1>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Document doc <span style="color:#333">=</span> <span style="color:#666;font-style:italic">//...
+</span></span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic"></span>NodeIterator ni <span style="color:#333">=</span> <span style="color:#333">((</span>DocumentTraversal<span style="color:#333">)</span> doc<span style="color:#333">).</span><span style="color:#007">createNodeIterator</span><span style="color:#333">(</span>doc<span style="color:#333">.</span><span style="color:#007">getDocumentElement</span><span style="color:#333">(),</span> NodeFilter<span style="color:#333">.</span><span style="color:#007">SHOW_ALL</span><span style="color:#333">,</span> <span style="color:#289;font-weight:bold">null</span><span style="color:#333">,</span> <span style="color:#289;font-weight:bold">false</span><span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Node node<span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">while</span><span style="color:#333">((</span>node <span style="color:#333">=</span> ni<span style="color:#333">.</span><span style="color:#007">nextNode</span><span style="color:#333">())</span> <span style="color:#333">!=</span> <span style="color:#289;font-weight:bold">null</span><span style="color:#333">)</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>  System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span>node<span style="color:#333">.</span><span style="color:#007">getNodeName</span><span style="color:#333">());</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#289;font-weight:bold">if</span><span style="color:#333">(</span>node<span style="color:#333">.</span><span style="color:#007">getAttributes</span><span style="color:#333">()</span> <span style="color:#333">!=</span> <span style="color:#289;font-weight:bold">null</span><span style="color:#333">)</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">for</span><span style="color:#333">(</span><span style="color:#66f;font-weight:bold">int</span> i <span style="color:#333">=</span> 0<span style="color:#333">;</span> i <span style="color:#333">&lt;</span> node<span style="color:#333">.</span><span style="color:#007">getAttributes</span><span style="color:#333">().</span><span style="color:#007">getLength</span><span style="color:#333">();</span> i<span style="color:#333">++)</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>      System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;  &#34;</span> <span style="color:#333">+</span> node<span style="color:#333">.</span><span style="color:#007">getAttributes</span><span style="color:#333">().</span><span style="color:#007">item</span><span style="color:#333">(</span>i<span style="color:#333">));</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#333">}</span>
+</span></span></code></pre></div>
 </main>
 
     <footer>

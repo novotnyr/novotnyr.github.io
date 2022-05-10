@@ -63,160 +63,160 @@
 <p>Ukážme si jednoduchý príklad v ktorom sa používajú anotácie.</p>
 <h1 id="springovské-anotácie">Springovské anotácie</h1>
 <p>Majme interfejs na generovanie citátov:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">package</span> <span style="color:#0e84b5;font-weight:bold">sk.novotnyr.quotes</span><span style="color:#333">;</span>
-
-<span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">interface</span> <span style="color:#e9e;font-weight:bold">QuoteGenerator</span> <span style="color:#333">{</span>
-  <span style="color:#289;font-weight:bold">public</span> String <span style="color:#5ed;font-weight:bold">getQuote</span><span style="color:#333">();</span>
-<span style="color:#333">}</span>
-</code></pre></div><p>a jeho jednoduchú implementáciu:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">package</span> <span style="color:#0e84b5;font-weight:bold">sk.novotnyr.quotes</span><span style="color:#333">;</span>
-
-<span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">HardwiredQuoteGenerator</span> <span style="color:#289;font-weight:bold">implements</span> QuoteGenerator <span style="color:#333">{</span>
-
-  <span style="color:#289;font-weight:bold">public</span> String <span style="color:#5ed;font-weight:bold">getQuote</span><span style="color:#333">()</span> <span style="color:#333">{</span>
-    <span style="color:#289;font-weight:bold">return</span> <span style="background-color:#e0e0ff">&#34;Spring is gr8&#34;</span><span style="color:#333">;</span>
-  <span style="color:#333">}</span>
-
-<span style="color:#333">}</span>
-</code></pre></div><p>A okrem toho majme triedu, ktorá bude vypisovať citáty na štandardný výstup:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">QuotePrinter</span> <span style="color:#333">{</span>
-  <span style="color:#289;font-weight:bold">private</span> QuoteGenerator quoteGenerator<span style="color:#333">;</span>
-  
-  <span style="color:#289;font-weight:bold">public</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">print</span><span style="color:#333">()</span> <span style="color:#333">{</span>
-    String quote <span style="color:#333">=</span> quoteGenerator<span style="color:#333">.</span><span style="color:#007">getQuote</span><span style="color:#333">();</span>
-    System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span>quote<span style="color:#333">);</span>
-  <span style="color:#333">}</span>
-
-  <span style="color:#666;font-style:italic">// gettre a settre
-</span><span style="color:#666;font-style:italic"></span><span style="color:#333">}</span>
-</code></pre></div><p>V klasickom Springu by sme mohli nadeklarovať v aplikačnom kontexte nasledovné beany:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#070">&lt;bean</span> <span style="color:#007">id=</span><span style="background-color:#e0e0ff">&#34;hardwiredQuoteGenerator&#34;</span>  
-      <span style="color:#007">class=</span><span style="background-color:#e0e0ff">&#34;sk.novotnyr.quotes.HardwiredQuoteGenerator&#34;</span> <span style="color:#070">/&gt;</span>
-    
-<span style="color:#070">&lt;bean</span> <span style="color:#007">id=</span><span style="background-color:#e0e0ff">&#34;quotePrinter&#34;</span> 
-      <span style="color:#007">class=</span><span style="background-color:#e0e0ff">&#34;sk.novotnyr.quotes.QuotePrinter&#34;</span> <span style="color:#070">/&gt;</span>
-</code></pre></div><p>a použiť vypisovač citátov nasledovne:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">ClassPathXmlApplicationContext ctx 
-  <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> ClassPathXmlApplicationContext<span style="color:#333">(</span>
-      <span style="background-color:#e0e0ff">&#34;applicationContext.xml&#34;</span><span style="color:#333">);</span> 
-QuotePrinter printer <span style="color:#333">=</span> <span style="color:#333">(</span>QuotePrinter<span style="color:#333">)</span> ctx<span style="color:#333">.</span><span style="color:#007">getBean</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;quotePrinter&#34;</span><span style="color:#333">);</span>
-printer<span style="color:#333">.</span><span style="color:#007">print</span><span style="color:#333">();</span>
-</code></pre></div><p>V novom Springu 2.5 sú k dispozícii anotácie <code>@Autowired</code> a <code>@Component</code>, ktoré reprezentujú alternatívny spôsob deklarácie a wiringu beanov. Triedy anotované ako komponenty nie je potrebné deklarovať v popisovači aplikačného kontextu. Odhalia sa automaticky v <code>CLASSPATH</code>e (viď nižšie). Poznamenajme, že k anotácii <code>@Component</code> jestvujú jej špecializácie <code>@Service</code>, <code>@Repository</code> a <code>@Controller</code>, ktoré je možné používať pre anotáciu služieb, úložísk (t. j. DAO objektov) a kontrolérov (v MVC vrstve).</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#555;font-weight:bold">@Component</span>
-<span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">HardwiredQuoteGenerator</span> <span style="color:#289;font-weight:bold">implements</span> QuoteGenerator <span style="color:#333">{</span>
-  <span style="color:#289;font-weight:bold">public</span> String <span style="color:#5ed;font-weight:bold">getQuote</span><span style="color:#333">()</span> <span style="color:#333">{</span>
-    <span style="color:#289;font-weight:bold">return</span> <span style="background-color:#e0e0ff">&#34;Spring is gr8&#34;</span><span style="color:#333">;</span>
-  <span style="color:#333">}</span>
-<span style="color:#333">}</span>
-</code></pre></div><p>A asociáciu s vypisovačom vykonáme pomocou autowiringu:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#555;font-weight:bold">@Component</span>
-<span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">QuotePrinter</span> <span style="color:#333">{</span>
-  <span style="color:#555;font-weight:bold">@Autowired</span>
-  <span style="color:#289;font-weight:bold">private</span> QuoteGenerator quoteGenerator<span style="color:#333">;</span>
-  
-  <span style="color:#289;font-weight:bold">public</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">print</span><span style="color:#333">()</span> <span style="color:#333">{</span>
-    String quote <span style="color:#333">=</span> quoteGenerator<span style="color:#333">.</span><span style="color:#007">getQuote</span><span style="color:#333">();</span>
-    System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span>quote<span style="color:#333">);</span>
-  <span style="color:#333">}</span>
-<span style="color:#333">}</span>
-</code></pre></div><p>Do <code>quoteGeneratora</code> sa automaticky nawireuje implementácia príslušného rozhrania (prebieha detekcia podľa typu, v kontexte sa musí nájsť práve jedna implementácia, inak nastane výnimka). Ak použijeme <code>@Autowired</code> na inštančnej premennej, nemusíme dokonca poskytnúť gettre a settre.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">package</span> <span style="color:#0e84b5;font-weight:bold">sk.novotnyr.quotes</span><span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">interface</span> <span style="color:#e9e;font-weight:bold">QuoteGenerator</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#289;font-weight:bold">public</span> String <span style="color:#5ed;font-weight:bold">getQuote</span><span style="color:#333">();</span>
+</span></span><span style="display:flex;"><span><span style="color:#333">}</span>
+</span></span></code></pre></div><p>a jeho jednoduchú implementáciu:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">package</span> <span style="color:#0e84b5;font-weight:bold">sk.novotnyr.quotes</span><span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">HardwiredQuoteGenerator</span> <span style="color:#289;font-weight:bold">implements</span> QuoteGenerator <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#289;font-weight:bold">public</span> String <span style="color:#5ed;font-weight:bold">getQuote</span><span style="color:#333">()</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">return</span> <span style="background-color:#e0e0ff">&#34;Spring is gr8&#34;</span><span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#333">}</span>
+</span></span></code></pre></div><p>A okrem toho majme triedu, ktorá bude vypisovať citáty na štandardný výstup:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">QuotePrinter</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#289;font-weight:bold">private</span> QuoteGenerator quoteGenerator<span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>  <span style="color:#289;font-weight:bold">public</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">print</span><span style="color:#333">()</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>    String quote <span style="color:#333">=</span> quoteGenerator<span style="color:#333">.</span><span style="color:#007">getQuote</span><span style="color:#333">();</span>
+</span></span><span style="display:flex;"><span>    System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span>quote<span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#666;font-style:italic">// gettre a settre
+</span></span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic"></span><span style="color:#333">}</span>
+</span></span></code></pre></div><p>V klasickom Springu by sme mohli nadeklarovať v aplikačnom kontexte nasledovné beany:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#070">&lt;bean</span> <span style="color:#007">id=</span><span style="background-color:#e0e0ff">&#34;hardwiredQuoteGenerator&#34;</span>  
+</span></span><span style="display:flex;"><span>      <span style="color:#007">class=</span><span style="background-color:#e0e0ff">&#34;sk.novotnyr.quotes.HardwiredQuoteGenerator&#34;</span> <span style="color:#070">/&gt;</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span><span style="color:#070">&lt;bean</span> <span style="color:#007">id=</span><span style="background-color:#e0e0ff">&#34;quotePrinter&#34;</span> 
+</span></span><span style="display:flex;"><span>      <span style="color:#007">class=</span><span style="background-color:#e0e0ff">&#34;sk.novotnyr.quotes.QuotePrinter&#34;</span> <span style="color:#070">/&gt;</span>
+</span></span></code></pre></div><p>a použiť vypisovač citátov nasledovne:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>ClassPathXmlApplicationContext ctx 
+</span></span><span style="display:flex;"><span>  <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> ClassPathXmlApplicationContext<span style="color:#333">(</span>
+</span></span><span style="display:flex;"><span>      <span style="background-color:#e0e0ff">&#34;applicationContext.xml&#34;</span><span style="color:#333">);</span> 
+</span></span><span style="display:flex;"><span>QuotePrinter printer <span style="color:#333">=</span> <span style="color:#333">(</span>QuotePrinter<span style="color:#333">)</span> ctx<span style="color:#333">.</span><span style="color:#007">getBean</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;quotePrinter&#34;</span><span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>printer<span style="color:#333">.</span><span style="color:#007">print</span><span style="color:#333">();</span>
+</span></span></code></pre></div><p>V novom Springu 2.5 sú k dispozícii anotácie <code>@Autowired</code> a <code>@Component</code>, ktoré reprezentujú alternatívny spôsob deklarácie a wiringu beanov. Triedy anotované ako komponenty nie je potrebné deklarovať v popisovači aplikačného kontextu. Odhalia sa automaticky v <code>CLASSPATH</code>e (viď nižšie). Poznamenajme, že k anotácii <code>@Component</code> jestvujú jej špecializácie <code>@Service</code>, <code>@Repository</code> a <code>@Controller</code>, ktoré je možné používať pre anotáciu služieb, úložísk (t. j. DAO objektov) a kontrolérov (v MVC vrstve).</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#555;font-weight:bold">@Component</span>
+</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">HardwiredQuoteGenerator</span> <span style="color:#289;font-weight:bold">implements</span> QuoteGenerator <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#289;font-weight:bold">public</span> String <span style="color:#5ed;font-weight:bold">getQuote</span><span style="color:#333">()</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">return</span> <span style="background-color:#e0e0ff">&#34;Spring is gr8&#34;</span><span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#333">}</span>
+</span></span></code></pre></div><p>A asociáciu s vypisovačom vykonáme pomocou autowiringu:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#555;font-weight:bold">@Component</span>
+</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">QuotePrinter</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#555;font-weight:bold">@Autowired</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#289;font-weight:bold">private</span> QuoteGenerator quoteGenerator<span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>  <span style="color:#289;font-weight:bold">public</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">print</span><span style="color:#333">()</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>    String quote <span style="color:#333">=</span> quoteGenerator<span style="color:#333">.</span><span style="color:#007">getQuote</span><span style="color:#333">();</span>
+</span></span><span style="display:flex;"><span>    System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span>quote<span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#333">}</span>
+</span></span></code></pre></div><p>Do <code>quoteGeneratora</code> sa automaticky nawireuje implementácia príslušného rozhrania (prebieha detekcia podľa typu, v kontexte sa musí nájsť práve jedna implementácia, inak nastane výnimka). Ak použijeme <code>@Autowired</code> na inštančnej premennej, nemusíme dokonca poskytnúť gettre a settre.</p>
 <p>Ak chceme presnejšie vyšpecifikovať použitý bean (napr. v prípade, že sa v aplikačnom kontexte nachádza viacero implementácií daného interfejsu), môžeme použiť anotáciu <code>@Qualifier</code>.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#555;font-weight:bold">@Autowired</span>
-<span style="color:#555;font-weight:bold">@Qualifier</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;hardwiredQuoteGenerator&#34;</span><span style="color:#333">)</span>
-<span style="color:#289;font-weight:bold">private</span> QuoteGenerator quoteGenerator<span style="color:#333">;</span>
-</code></pre></div><p>Tento príklad skúsi nawireovať triedu <code>HardwiredQuoteGenerator</code> implementujúcu interfejs <code>QuoteGenerator</code> (názov beanu v <code>@Qualifier</code> sa odvodí z názvu triedy).</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#555;font-weight:bold">@Autowired</span>
+</span></span><span style="display:flex;"><span><span style="color:#555;font-weight:bold">@Qualifier</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;hardwiredQuoteGenerator&#34;</span><span style="color:#333">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">private</span> QuoteGenerator quoteGenerator<span style="color:#333">;</span>
+</span></span></code></pre></div><p>Tento príklad skúsi nawireovať triedu <code>HardwiredQuoteGenerator</code> implementujúcu interfejs <code>QuoteGenerator</code> (názov beanu v <code>@Qualifier</code> sa odvodí z názvu triedy).</p>
 <p>Samotný <code>QuotePrinter</code> má byť takisto beanom v aplikačnom kontexte, preto ho analogicky označíme ako <code>@Component</code>.</p>
 <p>Z popisovača aplikačného kontextu teda môžeme vynechať beany, ktoré zodpovedajú anotovaným triedam. Musíme však zapnúť podporu pre načítavanie anotovaných tried.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#579">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
-<span style="color:#070">&lt;beans</span> <span style="color:#007">xmlns=</span><span style="background-color:#e0e0ff">&#34;http://www.springframework.org/schema/beans&#34;</span>
-       <span style="color:#007">xmlns:xsi=</span><span style="background-color:#e0e0ff">&#34;http://www.w3.org/2001/XMLSchema-instance&#34;</span>
-       <span style="color:#007">xmlns:context=</span><span style="background-color:#e0e0ff">&#34;http://www.springframework.org/schema/context&#34;</span>
-       <span style="color:#007">xsi:schemaLocation=</span><span style="background-color:#e0e0ff">&#34;http://www.springframework.org/schema/beans 
-</span><span style="background-color:#e0e0ff">           http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
-</span><span style="background-color:#e0e0ff">           http://www.springframework.org/schema/context
-</span><span style="background-color:#e0e0ff">           http://www.springframework.org/schema/context/spring-context-2.5.xsd&#34;</span><span style="color:#070">&gt;</span>
-               
-     <span style="color:#070">&lt;context:component-scan</span> <span style="color:#007">base-package=</span><span style="background-color:#e0e0ff">&#34;sk.novotnyr.quotes&#34;</span> <span style="color:#070">/&gt;</span>
-<span style="color:#070">&lt;/beans&gt;</span>
-</code></pre></div><p>Element <code>component-scan</code> zapne podporu pre anotácie <code>@Component</code>, <code>@Autowired</code>, <code>@Qualifier</code> a pod. a zaregistruje komponentové beany (nachádzajúce sa v príslušnom balíčku) ako beany.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#579">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#070">&lt;beans</span> <span style="color:#007">xmlns=</span><span style="background-color:#e0e0ff">&#34;http://www.springframework.org/schema/beans&#34;</span>
+</span></span><span style="display:flex;"><span>       <span style="color:#007">xmlns:xsi=</span><span style="background-color:#e0e0ff">&#34;http://www.w3.org/2001/XMLSchema-instance&#34;</span>
+</span></span><span style="display:flex;"><span>       <span style="color:#007">xmlns:context=</span><span style="background-color:#e0e0ff">&#34;http://www.springframework.org/schema/context&#34;</span>
+</span></span><span style="display:flex;"><span>       <span style="color:#007">xsi:schemaLocation=</span><span style="background-color:#e0e0ff">&#34;http://www.springframework.org/schema/beans 
+</span></span></span><span style="display:flex;"><span><span style="background-color:#e0e0ff">           http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+</span></span></span><span style="display:flex;"><span><span style="background-color:#e0e0ff">           http://www.springframework.org/schema/context
+</span></span></span><span style="display:flex;"><span><span style="background-color:#e0e0ff">           http://www.springframework.org/schema/context/spring-context-2.5.xsd&#34;</span><span style="color:#070">&gt;</span>
+</span></span><span style="display:flex;"><span>               
+</span></span><span style="display:flex;"><span>     <span style="color:#070">&lt;context:component-scan</span> <span style="color:#007">base-package=</span><span style="background-color:#e0e0ff">&#34;sk.novotnyr.quotes&#34;</span> <span style="color:#070">/&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#070">&lt;/beans&gt;</span>
+</span></span></code></pre></div><p>Element <code>component-scan</code> zapne podporu pre anotácie <code>@Component</code>, <code>@Autowired</code>, <code>@Qualifier</code> a pod. a zaregistruje komponentové beany (nachádzajúce sa v príslušnom balíčku) ako beany.</p>
 <p>Vypisovač citátov naštartujeme a spustíme zvyčajným spôsobom:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">ClassPathXmlApplicationContext ctx <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span>   
-  ClassPathXmlApplicationContext<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;applicationContext.xml&#34;</span><span style="color:#333">);</span> 
-QuotePrinter printer <span style="color:#333">=</span> <span style="color:#333">(</span>QuotePrinter<span style="color:#333">)</span> ctx<span style="color:#333">.</span><span style="color:#007">getBean</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;quotePrinter&#34;</span><span style="color:#333">);</span>
-printer<span style="color:#333">.</span><span style="color:#007">print</span><span style="color:#333">();</span>
-</code></pre></div><h1 id="používanie-anotácií-z-jsr-250">Používanie anotácií z JSR-250</h1>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>ClassPathXmlApplicationContext ctx <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span>   
+</span></span><span style="display:flex;"><span>  ClassPathXmlApplicationContext<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;applicationContext.xml&#34;</span><span style="color:#333">);</span> 
+</span></span><span style="display:flex;"><span>QuotePrinter printer <span style="color:#333">=</span> <span style="color:#333">(</span>QuotePrinter<span style="color:#333">)</span> ctx<span style="color:#333">.</span><span style="color:#007">getBean</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;quotePrinter&#34;</span><span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>printer<span style="color:#333">.</span><span style="color:#007">print</span><span style="color:#333">();</span>
+</span></span></code></pre></div><h1 id="používanie-anotácií-z-jsr-250">Používanie anotácií z JSR-250</h1>
 <p>Spring podporuje aj používanie anotácií z JSR-250 (<code>@Resource</code>, <code>@PostDestroy</code>, <code>@PreDestroy</code> atď) na reprezentovanie beanov a ich wiringu. Tieto anotácie sú k dispozícii v Java SE 6 a Java 5 EE automaticky. Ak používame staršiu verziu Javy, JAR súbor s triedami si môžeme stiahnuť <a href="http://javashoplm.sun.com/ECom/docs/Welcome.jsp?StoreId=22&amp;PartDetailId=caj-1.0-fr-eval-oth-JSpec&amp;SiteId=JCP&amp;TransactionId=noreg">zo stránok JSR-250</a>. Náš generátor citátov môžeme upraviť, namiesto springovskej anotácie <code>@Component</code> použijeme <code>@Resource</code>:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">javax.annotation.Resource</span><span style="color:#333">;</span>
-
-<span style="color:#555;font-weight:bold">@Resource</span>
-<span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">HardwiredQuoteGenerator</span> <span style="color:#289;font-weight:bold">implements</span> QuoteGenerator <span style="color:#333">{</span>
-  <span style="color:#289;font-weight:bold">public</span> String <span style="color:#5ed;font-weight:bold">getQuote</span><span style="color:#333">()</span> <span style="color:#333">{</span>
-    <span style="color:#289;font-weight:bold">return</span> <span style="background-color:#e0e0ff">&#34;Spring is gr8&#34;</span><span style="color:#333">;</span>
-  <span style="color:#333">}</span>
-<span style="color:#333">}</span>
-</code></pre></div><p>Analogicky upravíme aj <code>QuotePrinter</code>. Anotácia <code>@Resource</code> má dvojakú sémantiku: v prípade, že anotuje triedu, indikuje tým komponent, ktorý má byť vyhľadaný počas behu. Ak anotuje inštančnú premennú, reprezentuje tým cieľ pre <em>dependency injection</em>.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#555;font-weight:bold">@Resource</span>
-<span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">QuotePrinter</span> <span style="color:#333">{</span>
-  <span style="color:#555;font-weight:bold">@Resource</span><span style="color:#333">(</span>name<span style="color:#333">=</span><span style="background-color:#e0e0ff">&#34;randomQuoteGenerator&#34;</span><span style="color:#333">)</span>
-  <span style="color:#289;font-weight:bold">private</span> QuoteGenerator quoteGenerator<span style="color:#333">;</span>
-  
-  <span style="color:#289;font-weight:bold">public</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">print</span><span style="color:#333">()</span> <span style="color:#333">{</span>
-    String quote <span style="color:#333">=</span> quoteGenerator<span style="color:#333">.</span><span style="color:#007">getQuote</span><span style="color:#333">();</span>
-    System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span>quote<span style="color:#333">);</span>
-  <span style="color:#333">}</span>
-<span style="color:#333">}</span>
-</code></pre></div><p>V prípade, že potrebujeme vyriešiť nejednoznačnosť beanov, môžeme použiť atribút <code>name</code>, v ktorom uvedieme identifikátor beanu, ktorý sa má nawireovať (podobne ako v prípade springovských anotácií sa identifikátor odvodí od názvu triedy).</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">javax.annotation.Resource</span><span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#555;font-weight:bold">@Resource</span>
+</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">HardwiredQuoteGenerator</span> <span style="color:#289;font-weight:bold">implements</span> QuoteGenerator <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#289;font-weight:bold">public</span> String <span style="color:#5ed;font-weight:bold">getQuote</span><span style="color:#333">()</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">return</span> <span style="background-color:#e0e0ff">&#34;Spring is gr8&#34;</span><span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#333">}</span>
+</span></span></code></pre></div><p>Analogicky upravíme aj <code>QuotePrinter</code>. Anotácia <code>@Resource</code> má dvojakú sémantiku: v prípade, že anotuje triedu, indikuje tým komponent, ktorý má byť vyhľadaný počas behu. Ak anotuje inštančnú premennú, reprezentuje tým cieľ pre <em>dependency injection</em>.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#555;font-weight:bold">@Resource</span>
+</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">QuotePrinter</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#555;font-weight:bold">@Resource</span><span style="color:#333">(</span>name<span style="color:#333">=</span><span style="background-color:#e0e0ff">&#34;randomQuoteGenerator&#34;</span><span style="color:#333">)</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#289;font-weight:bold">private</span> QuoteGenerator quoteGenerator<span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>  <span style="color:#289;font-weight:bold">public</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">print</span><span style="color:#333">()</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>    String quote <span style="color:#333">=</span> quoteGenerator<span style="color:#333">.</span><span style="color:#007">getQuote</span><span style="color:#333">();</span>
+</span></span><span style="display:flex;"><span>    System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span>quote<span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#333">}</span>
+</span></span></code></pre></div><p>V prípade, že potrebujeme vyriešiť nejednoznačnosť beanov, môžeme použiť atribút <code>name</code>, v ktorom uvedieme identifikátor beanu, ktorý sa má nawireovať (podobne ako v prípade springovských anotácií sa identifikátor odvodí od názvu triedy).</p>
 <p>Budeme musieť ešte upraviť popisovač aplikačného kontextu. Element <code>component-scan</code> totiž v <code>CLASSPATH</code> vyhľadáva len triedy anotované ako <code>@Component</code>,  <code>@Repository</code>, <code>@Service</code> a <code>@Component</code>. Ak chceme detekovať aj <code>@Resource</code>, musíme to uviesť konfigurácii tohto elementu.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#070">&lt;context:component-scan</span> <span style="color:#007">base-package=</span><span style="background-color:#e0e0ff">&#34;sk.novotnyr.quotes.jsr250&#34;</span><span style="color:#070">&gt;</span>
-  <span style="color:#070">&lt;context:include-filter</span> <span style="color:#007">type=</span><span style="background-color:#e0e0ff">&#34;annotation&#34;</span> 
-                          <span style="color:#007">expression=</span><span style="background-color:#e0e0ff">&#34;javax.annotation.Resource&#34;</span><span style="color:#070">/&gt;</span>
-<span style="color:#070">&lt;/context:component-scan&gt;</span>
-</code></pre></div><h1 id="vytvorenie-vlastnej-anotácie">Vytvorenie vlastnej anotácie</h1>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#070">&lt;context:component-scan</span> <span style="color:#007">base-package=</span><span style="background-color:#e0e0ff">&#34;sk.novotnyr.quotes.jsr250&#34;</span><span style="color:#070">&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#070">&lt;context:include-filter</span> <span style="color:#007">type=</span><span style="background-color:#e0e0ff">&#34;annotation&#34;</span> 
+</span></span><span style="display:flex;"><span>                          <span style="color:#007">expression=</span><span style="background-color:#e0e0ff">&#34;javax.annotation.Resource&#34;</span><span style="color:#070">/&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#070">&lt;/context:component-scan&gt;</span>
+</span></span></code></pre></div><h1 id="vytvorenie-vlastnej-anotácie">Vytvorenie vlastnej anotácie</h1>
 <p>Spring umožňuje používať pre automatickú registráciu beanov v kontexte akúkoľvek anotáciu (nielen <code>@Component</code>, <code>@Resource</code> atď.) Principiálne jestvujú dva spôsoby:</p>
 <ul>
 <li>vytvorenie vlastnej anotácie a jej zavedenie cez <code>&lt;context:include-filter&gt;</code>. To sme demonštrovali na predošlom príklade anotácie <code>javax.annotation.Resource</code>.</li>
 <li>vytvorenie vlastnej anotácie, ktorá je špecializáciou springovskej anotácie <code>@Component</code>. V tejto časti rozoberieme práve tento spôsob.</li>
 </ul>
 <p>Java anotácie nepodporujú dedičnosť (anotácia nemôže dediť prvky a metódy od inej anotácie). V prípade springovskej špecializácie je možné tento nedostatok obísť - stačí, keď oanotujeme vlastnú anotáciou pomocou <code>@Component</code>:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">java.lang.annotation.Documented</span><span style="color:#333">;</span>
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">java.lang.annotation.ElementType</span><span style="color:#333">;</span>
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">java.lang.annotation.Retention</span><span style="color:#333">;</span>
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">java.lang.annotation.RetentionPolicy</span><span style="color:#333">;</span>
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">java.lang.annotation.Target</span><span style="color:#333">;</span>
-
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">org.springframework.stereotype.Component</span><span style="color:#333">;</span>
-
-<span style="color:#555;font-weight:bold">@Target</span><span style="color:#333">({</span>ElementType<span style="color:#333">.</span><span style="color:#007">TYPE</span><span style="color:#333">})</span>
-<span style="color:#555;font-weight:bold">@Retention</span><span style="color:#333">(</span>RetentionPolicy<span style="color:#333">.</span><span style="color:#007">RUNTIME</span><span style="color:#333">)</span>
-<span style="color:#555;font-weight:bold">@Documented</span>
-<span style="color:#555;font-weight:bold">@Component</span>
-<span style="color:#289;font-weight:bold">public</span> <span style="color:#555;font-weight:bold">@interface</span> Bean <span style="color:#333">{</span>
-   String <span style="color:#5ed;font-weight:bold">value</span><span style="color:#333">()</span> <span style="color:#289;font-weight:bold">default</span> <span style="background-color:#e0e0ff">&#34;&#34;</span><span style="color:#333">;</span>
-<span style="color:#333">}</span> 
-</code></pre></div><p>Inštančná premenná <code>value</code> nie je povinná, ale pomocou nej môžeme dodávať alternatívny názov pre anotovaný bean.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">java.lang.annotation.Documented</span><span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">java.lang.annotation.ElementType</span><span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">java.lang.annotation.Retention</span><span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">java.lang.annotation.RetentionPolicy</span><span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">java.lang.annotation.Target</span><span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">org.springframework.stereotype.Component</span><span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#555;font-weight:bold">@Target</span><span style="color:#333">({</span>ElementType<span style="color:#333">.</span><span style="color:#007">TYPE</span><span style="color:#333">})</span>
+</span></span><span style="display:flex;"><span><span style="color:#555;font-weight:bold">@Retention</span><span style="color:#333">(</span>RetentionPolicy<span style="color:#333">.</span><span style="color:#007">RUNTIME</span><span style="color:#333">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#555;font-weight:bold">@Documented</span>
+</span></span><span style="display:flex;"><span><span style="color:#555;font-weight:bold">@Component</span>
+</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">public</span> <span style="color:#555;font-weight:bold">@interface</span> Bean <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>   String <span style="color:#5ed;font-weight:bold">value</span><span style="color:#333">()</span> <span style="color:#289;font-weight:bold">default</span> <span style="background-color:#e0e0ff">&#34;&#34;</span><span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#333">}</span> 
+</span></span></code></pre></div><p>Inštančná premenná <code>value</code> nie je povinná, ale pomocou nej môžeme dodávať alternatívny názov pre anotovaný bean.</p>
 <p>Všetky bean anotované pomocou <code>@Bean</code> zaregistrujú automaticky - jediná vec, ktorú treba špecifikovať, je zapnutie automatickej detekcie v konfiguračnom súbore:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#070">&lt;context:component-scan</span> <span style="color:#007">base-package=</span><span style="background-color:#e0e0ff">&#34;sk.novotnyr.spring.tools&#34;</span> <span style="color:#070">/&gt;</span>
-</code></pre></div><p>Príklad použitia je potom nasledovný:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#555;font-weight:bold">@Bean</span>
-<span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">HardwiredQuoteGenerator</span> <span style="color:#289;font-weight:bold">implements</span> QuoteGenerator <span style="color:#333">{</span>
-  <span style="color:#289;font-weight:bold">public</span> String <span style="color:#5ed;font-weight:bold">getQuote</span><span style="color:#333">()</span> <span style="color:#333">{</span>
-    <span style="color:#289;font-weight:bold">return</span> <span style="background-color:#e0e0ff">&#34;Spring is gr8&#34;</span><span style="color:#333">;</span>
-  <span style="color:#333">}</span>
-<span style="color:#333">}</span>
-</code></pre></div><p>Bean získame z kontextu nasledovným spôsobom:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">ClassPathXmlApplicationContext ctx 
-  <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> ClassPathXmlApplicationContext<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;ctx.xml&#34;</span><span style="color:#333">);</span>
-QuoteGenerator tool
-  <span style="color:#333">=</span> <span style="color:#333">(</span>QuoteGenerator<span style="color:#333">)</span> ctx<span style="color:#333">.</span><span style="color:#007">getBean</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;hardWiredQuoteGenerator&#34;</span><span style="color:#333">);</span>
-</code></pre></div><p>Samozrejme, bean môžeme aj aliasovať</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#555;font-weight:bold">@Bean</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;quoteGenerator&#34;</span><span style="color:#333">)</span>
-<span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">HardwiredQuoteGenerator</span> <span style="color:#289;font-weight:bold">implements</span> QuoteGenerator <span style="color:#333">{</span>
-<span style="color:#333">...</span>
-<span style="color:#333">}</span>
-</code></pre></div><p>a v tom prípade bude jeho získanie z kontextu prebiehať nasledovne:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">QuoteGenerator tool
-  <span style="color:#333">=</span> <span style="color:#333">(</span>QuoteGenerator<span style="color:#333">)</span> ctx<span style="color:#333">.</span><span style="color:#007">getBean</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;quoteGenerator&#34;</span><span style="color:#333">);</span>
-</code></pre></div><h1 id="referencie">Referencie</h1>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#070">&lt;context:component-scan</span> <span style="color:#007">base-package=</span><span style="background-color:#e0e0ff">&#34;sk.novotnyr.spring.tools&#34;</span> <span style="color:#070">/&gt;</span>
+</span></span></code></pre></div><p>Príklad použitia je potom nasledovný:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#555;font-weight:bold">@Bean</span>
+</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">HardwiredQuoteGenerator</span> <span style="color:#289;font-weight:bold">implements</span> QuoteGenerator <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#289;font-weight:bold">public</span> String <span style="color:#5ed;font-weight:bold">getQuote</span><span style="color:#333">()</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">return</span> <span style="background-color:#e0e0ff">&#34;Spring is gr8&#34;</span><span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#333">}</span>
+</span></span></code></pre></div><p>Bean získame z kontextu nasledovným spôsobom:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>ClassPathXmlApplicationContext ctx 
+</span></span><span style="display:flex;"><span>  <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> ClassPathXmlApplicationContext<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;ctx.xml&#34;</span><span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>QuoteGenerator tool
+</span></span><span style="display:flex;"><span>  <span style="color:#333">=</span> <span style="color:#333">(</span>QuoteGenerator<span style="color:#333">)</span> ctx<span style="color:#333">.</span><span style="color:#007">getBean</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;hardWiredQuoteGenerator&#34;</span><span style="color:#333">);</span>
+</span></span></code></pre></div><p>Samozrejme, bean môžeme aj aliasovať</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#555;font-weight:bold">@Bean</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;quoteGenerator&#34;</span><span style="color:#333">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">HardwiredQuoteGenerator</span> <span style="color:#289;font-weight:bold">implements</span> QuoteGenerator <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span><span style="color:#333">...</span>
+</span></span><span style="display:flex;"><span><span style="color:#333">}</span>
+</span></span></code></pre></div><p>a v tom prípade bude jeho získanie z kontextu prebiehať nasledovne:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>QuoteGenerator tool
+</span></span><span style="display:flex;"><span>  <span style="color:#333">=</span> <span style="color:#333">(</span>QuoteGenerator<span style="color:#333">)</span> ctx<span style="color:#333">.</span><span style="color:#007">getBean</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;quoteGenerator&#34;</span><span style="color:#333">);</span>
+</span></span></code></pre></div><h1 id="referencie">Referencie</h1>
 <ul>
 <li><a href="http://www.infoq.com/articles/spring-2.5-part-1">Článok na InfoQ</a></li>
 <li><a href="http://static.springframework.org/spring/docs/2.5.x/reference/beans.html#beans-annotation-config">Oficiálna dokumentácia</a></li>

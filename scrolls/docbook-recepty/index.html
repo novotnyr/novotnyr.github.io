@@ -99,31 +99,31 @@
 </code></pre><h2 id="použitie-z-java-projektu">Použitie z Java projektu</h2>
 <p>Vytvorte nový Java projekt a do §§build path§§ pridajte <code>xalan.jar</code> a <code>serializer.jar</code>.</p>
 <p>Kód pre transformáciu vyzerá nasledovne:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">java.io.File</span><span style="color:#333">;</span>
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">java.io.FileReader</span><span style="color:#333">;</span>
-
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">javax.xml.transform.Transformer</span><span style="color:#333">;</span>
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">javax.xml.transform.TransformerFactory</span><span style="color:#333">;</span>
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">javax.xml.transform.stream.StreamResult</span><span style="color:#333">;</span>
-<span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">javax.xml.transform.stream.StreamSource</span><span style="color:#333">;</span>
-
-
-<span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">Transformator</span> <span style="color:#333">{</span>
-  <span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">static</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">main</span><span style="color:#333">(</span>String<span style="color:#333">[]</span> args<span style="color:#333">)</span> <span style="color:#289;font-weight:bold">throws</span> Exception <span style="color:#333">{</span>
-    StreamSource sablona <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> StreamSource<span style="color:#333">(</span><span style="color:#289;font-weight:bold">new</span> File<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;c:/Programs/docbook/html/docbook.xsl&#34;</span><span style="color:#333">));</span>
-				
-    StreamSource vstup <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> StreamSource<span style="color:#333">(</span><span style="color:#289;font-weight:bold">new</span> File<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;c:/Users/rn/Documents/refprirucka.xml&#34;</span><span style="color:#333">));</span>
-    StreamResult vystup <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> StreamResult<span style="color:#333">(</span><span style="color:#289;font-weight:bold">new</span> File<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;C:/Users/rn/Documents/refprirucka.html&#34;</span><span style="color:#333">));</span>
-
-    Transformer transformer <span style="color:#333">=</span> TransformerFactory<span style="color:#333">.</span><span style="color:#007">newInstance</span><span style="color:#333">().</span><span style="color:#007">newTransformer</span><span style="color:#333">(</span>sablona<span style="color:#333">);</span>
-
-    transformer<span style="color:#333">.</span><span style="color:#007">transform</span><span style="color:#333">(</span>vstup<span style="color:#333">,</span> vystup<span style="color:#333">);</span>
-  <span style="color:#333">}</span>
-<span style="color:#333">}</span>
-</code></pre></div><h1 id="foreignphrase-je-obalený-medzerami"><code>&lt;foreignphrase&gt;</code> je obalený medzerami!</h1>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">java.io.File</span><span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">java.io.FileReader</span><span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">javax.xml.transform.Transformer</span><span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">javax.xml.transform.TransformerFactory</span><span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">javax.xml.transform.stream.StreamResult</span><span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">javax.xml.transform.stream.StreamSource</span><span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">Transformator</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">static</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">main</span><span style="color:#333">(</span>String<span style="color:#333">[]</span> args<span style="color:#333">)</span> <span style="color:#289;font-weight:bold">throws</span> Exception <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>    StreamSource sablona <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> StreamSource<span style="color:#333">(</span><span style="color:#289;font-weight:bold">new</span> File<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;c:/Programs/docbook/html/docbook.xsl&#34;</span><span style="color:#333">));</span>
+</span></span><span style="display:flex;"><span>				
+</span></span><span style="display:flex;"><span>    StreamSource vstup <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> StreamSource<span style="color:#333">(</span><span style="color:#289;font-weight:bold">new</span> File<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;c:/Users/rn/Documents/refprirucka.xml&#34;</span><span style="color:#333">));</span>
+</span></span><span style="display:flex;"><span>    StreamResult vystup <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> StreamResult<span style="color:#333">(</span><span style="color:#289;font-weight:bold">new</span> File<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;C:/Users/rn/Documents/refprirucka.html&#34;</span><span style="color:#333">));</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    Transformer transformer <span style="color:#333">=</span> TransformerFactory<span style="color:#333">.</span><span style="color:#007">newInstance</span><span style="color:#333">().</span><span style="color:#007">newTransformer</span><span style="color:#333">(</span>sablona<span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    transformer<span style="color:#333">.</span><span style="color:#007">transform</span><span style="color:#333">(</span>vstup<span style="color:#333">,</span> vystup<span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#333">}</span>
+</span></span></code></pre></div><h1 id="foreignphrase-je-obalený-medzerami"><code>&lt;foreignphrase&gt;</code> je obalený medzerami!</h1>
 <p>Vypnite <code>INDENT</code> v XSLT transformátore. Ak máte</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">transformer<span style="color:#333">.</span><span style="color:#007">setOutputProperty</span><span style="color:#333">(</span>OutputKeys<span style="color:#333">.</span><span style="color:#007">INDENT</span><span style="color:#333">,</span> <span style="background-color:#e0e0ff">&#34;yes&#34;</span><span style="color:#333">);</span>
-</code></pre></div><p>rozbije vám to výstup.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>transformer<span style="color:#333">.</span><span style="color:#007">setOutputProperty</span><span style="color:#333">(</span>OutputKeys<span style="color:#333">.</span><span style="color:#007">INDENT</span><span style="color:#333">,</span> <span style="background-color:#e0e0ff">&#34;yes&#34;</span><span style="color:#333">);</span>
+</span></span></code></pre></div><p>rozbije vám to výstup.</p>
 
 </main>
 

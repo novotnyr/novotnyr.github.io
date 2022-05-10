@@ -736,24 +736,24 @@ stĺpci.</p>
 je založená na dvoch triedach: uzle a grafe.</p>
 <p>Uzol <code>Uzol</code> je jednoduchá trieda - uzol je charakterizovaný
 svojim popiskom.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">
-<span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">Uzol</span> <span style="color:#333">{</span>
-  <span style="color:#289;font-weight:bold">private</span> String label<span style="color:#333">;</span>
-
-  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">Uzol</span><span style="color:#333">(</span>String label<span style="color:#333">)</span> <span style="color:#333">{</span>
-    <span style="color:#289;font-weight:bold">super</span><span style="color:#333">();</span>
-    <span style="color:#289;font-weight:bold">this</span><span style="color:#333">.</span><span style="color:#007">label</span> <span style="color:#333">=</span> label<span style="color:#333">;</span>
-  <span style="color:#333">}</span>
-
-  <span style="color:#289;font-weight:bold">public</span> String <span style="color:#5ed;font-weight:bold">getLabel</span><span style="color:#333">()</span> <span style="color:#333">{</span>
-    <span style="color:#289;font-weight:bold">return</span> label<span style="color:#333">;</span>
-  <span style="color:#333">}</span>
-
-  <span style="color:#289;font-weight:bold">public</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">setLabel</span><span style="color:#333">(</span>String label<span style="color:#333">)</span> <span style="color:#333">{</span>
-    <span style="color:#289;font-weight:bold">this</span><span style="color:#333">.</span><span style="color:#007">label</span> <span style="color:#333">=</span> label<span style="color:#333">;</span>
-  <span style="color:#333">}</span>
-<span style="color:#333">}</span>
-</code></pre></div><p>Samotný graf, v tomto prípade s názvom <code>IncidenceMatrix</code>,
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">Uzol</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#289;font-weight:bold">private</span> String label<span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">Uzol</span><span style="color:#333">(</span>String label<span style="color:#333">)</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">super</span><span style="color:#333">();</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">this</span><span style="color:#333">.</span><span style="color:#007">label</span> <span style="color:#333">=</span> label<span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#289;font-weight:bold">public</span> String <span style="color:#5ed;font-weight:bold">getLabel</span><span style="color:#333">()</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">return</span> label<span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#289;font-weight:bold">public</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">setLabel</span><span style="color:#333">(</span>String label<span style="color:#333">)</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">this</span><span style="color:#333">.</span><span style="color:#007">label</span> <span style="color:#333">=</span> label<span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#333">}</span>
+</span></span></code></pre></div><p>Samotný graf, v tomto prípade s názvom <code>IncidenceMatrix</code>,
 triedou obaľujúcou maticu incidencií a poskytujúcou metódy na prácu s ňou.</p>
 <p>Maticu môžeme reprezentovať ako zoznamom zoznamov, inak povedané
 ako objektom typu <code>List&lt;List&lt;Boolean&gt;</code>. Tento zoznam si možno
@@ -763,11 +763,11 @@ samostatný zoznam booleovských položiek.</p>
 Objekt typu <code>Uzol</code> v tomto zozname sa nachádza na nejakom indexe.
 Napr. desiaty uzol má index 9 a v matici incidencií mu zodpovedá
 zoznam s indexom 9, resp. prvky v zoznamoch s indexom 9.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">IncidenceMatrix</span> <span style="color:#333">{</span>
-  <span style="color:#289;font-weight:bold">private</span> List<span style="color:#333">&lt;</span>List<span style="color:#333">&lt;</span>Boolean<span style="color:#333">&gt;&gt;</span> matica <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> ArrayList<span style="color:#333">&lt;</span>List<span style="color:#333">&lt;</span>Integer<span style="color:#333">&gt;&gt;();</span>
-
-  <span style="color:#289;font-weight:bold">private</span> List<span style="color:#333">&lt;</span>Uzol<span style="color:#333">&gt;</span> uzly <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> ArrayList<span style="color:#333">&lt;</span>Uzol<span style="color:#333">&gt;();</span>
-</code></pre></div><h2 id="pridanie-uzla-do-grafu-1">Pridanie uzla do grafu</h2>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">IncidenceMatrix</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#289;font-weight:bold">private</span> List<span style="color:#333">&lt;</span>List<span style="color:#333">&lt;</span>Boolean<span style="color:#333">&gt;&gt;</span> matica <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> ArrayList<span style="color:#333">&lt;</span>List<span style="color:#333">&lt;</span>Integer<span style="color:#333">&gt;&gt;();</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#289;font-weight:bold">private</span> List<span style="color:#333">&lt;</span>Uzol<span style="color:#333">&gt;</span> uzly <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> ArrayList<span style="color:#333">&lt;</span>Uzol<span style="color:#333">&gt;();</span>
+</span></span></code></pre></div><h2 id="pridanie-uzla-do-grafu-1">Pridanie uzla do grafu</h2>
 <p>Ako sme spomínali vyššie, pridanie uzla do grafu zodpovedá pridaniu
 nového riadka a nového stĺpca. Ako sa to prejaví v prípade zoznamu zoznamov?
 Rozdeľme si túto operáciu na dva (plus jeden) kroky:</p>
@@ -783,44 +783,44 @@ Rozdeľme si túto operáciu na dva (plus jeden) kroky:</p>
 <li>do zoznamu uzlov pridajme nový prvok zodpovedajúci aktuálne pridávanému uzlu.</li>
 </ol>
 <p>Tomu zodpovedá metóda <code>pridajUzol()</code>, ktorou pridáme uzol do grafu.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">pridajUzol</span><span style="color:#333">(</span>Uzol uzol<span style="color:#333">)</span> <span style="color:#333">{</span>
-  <span style="color:#666;font-style:italic">// na koniec kazdeho zoznamu prida *false*
-</span><span style="color:#666;font-style:italic"></span>  <span style="color:#289;font-weight:bold">for</span><span style="color:#333">(</span>List<span style="color:#333">&lt;</span>Boolean<span style="color:#333">&gt;</span> matica <span style="color:#333">:</span> matica<span style="color:#333">)</span> <span style="color:#333">{</span>
-    matica<span style="color:#333">.</span><span style="color:#007">add</span><span style="color:#333">(</span><span style="color:#289;font-weight:bold">false</span><span style="color:#333">);</span>
-  <span style="color:#333">}</span>
-
-  <span style="color:#666;font-style:italic">// prida novy zoznam dlzky pocetUzlov + 1 naplneny *false*
-</span><span style="color:#666;font-style:italic"></span>  List<span style="color:#333">&lt;</span>Boolean<span style="color:#333">&gt;</span> riadok <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> ArrayList<span style="color:#333">&lt;</span>Boolean<span style="color:#333">&gt;();</span>
-  <span style="color:#289;font-weight:bold">for</span><span style="color:#333">(</span><span style="color:#66f;font-weight:bold">int</span> i <span style="color:#333">=</span> 0<span style="color:#333">;</span> i <span style="color:#333">&lt;</span> uzly<span style="color:#333">.</span><span style="color:#007">size</span><span style="color:#333">()</span> <span style="color:#333">+</span> 1<span style="color:#333">;</span> i<span style="color:#333">++)</span> <span style="color:#333">{</span>
-    riadok<span style="color:#333">.</span><span style="color:#007">add</span><span style="color:#333">(</span><span style="color:#289;font-weight:bold">false</span><span style="color:#333">);</span>
-  <span style="color:#333">}</span>   
-  matica<span style="color:#333">.</span><span style="color:#007">add</span><span style="color:#333">(</span>riadok<span style="color:#333">);</span>
-  <span style="color:#666;font-style:italic">// prida uzol do zoznamu uzlov
-</span><span style="color:#666;font-style:italic"></span>  uzly<span style="color:#333">.</span><span style="color:#007">add</span><span style="color:#333">(</span>uzol<span style="color:#333">);</span>
-<span style="color:#333">}</span>
-</code></pre></div><h2 id="odstránenie-uzla-z-grafu">Odstránenie uzla z grafu</h2>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">public</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">pridajUzol</span><span style="color:#333">(</span>Uzol uzol<span style="color:#333">)</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#666;font-style:italic">// na koniec kazdeho zoznamu prida *false*
+</span></span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic"></span>  <span style="color:#289;font-weight:bold">for</span><span style="color:#333">(</span>List<span style="color:#333">&lt;</span>Boolean<span style="color:#333">&gt;</span> matica <span style="color:#333">:</span> matica<span style="color:#333">)</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>    matica<span style="color:#333">.</span><span style="color:#007">add</span><span style="color:#333">(</span><span style="color:#289;font-weight:bold">false</span><span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#666;font-style:italic">// prida novy zoznam dlzky pocetUzlov + 1 naplneny *false*
+</span></span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic"></span>  List<span style="color:#333">&lt;</span>Boolean<span style="color:#333">&gt;</span> riadok <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> ArrayList<span style="color:#333">&lt;</span>Boolean<span style="color:#333">&gt;();</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#289;font-weight:bold">for</span><span style="color:#333">(</span><span style="color:#66f;font-weight:bold">int</span> i <span style="color:#333">=</span> 0<span style="color:#333">;</span> i <span style="color:#333">&lt;</span> uzly<span style="color:#333">.</span><span style="color:#007">size</span><span style="color:#333">()</span> <span style="color:#333">+</span> 1<span style="color:#333">;</span> i<span style="color:#333">++)</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>    riadok<span style="color:#333">.</span><span style="color:#007">add</span><span style="color:#333">(</span><span style="color:#289;font-weight:bold">false</span><span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#333">}</span>   
+</span></span><span style="display:flex;"><span>  matica<span style="color:#333">.</span><span style="color:#007">add</span><span style="color:#333">(</span>riadok<span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#666;font-style:italic">// prida uzol do zoznamu uzlov
+</span></span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic"></span>  uzly<span style="color:#333">.</span><span style="color:#007">add</span><span style="color:#333">(</span>uzol<span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#333">}</span>
+</span></span></code></pre></div><h2 id="odstránenie-uzla-z-grafu">Odstránenie uzla z grafu</h2>
 <p>Odstránenie uzla je opačnou operáciou aj v zmysle vykonaných činností.
 Pre daný uzol si zistíme jeho index (na to použijeme metódu <code>indexOf()</code>
 na zozname <code>java.util.List</code>, ktorá vráti index prvého výskytu daného
 objektu v ňom) <em>k</em>. Z matice potom odstránime <em>k</em>-ty zoznam
 a z každého zoznamu odstránime <em>k</em>-ty prvok.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">protected</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">odstráňUzol</span><span style="color:#333">(</span>Uzol node<span style="color:#333">)</span> <span style="color:#333">{</span>
-  <span style="color:#666;font-style:italic">// zisti index daného uzla
-</span><span style="color:#666;font-style:italic"></span>  <span style="color:#66f;font-weight:bold">int</span> index <span style="color:#333">=</span> uzly<span style="color:#333">.</span><span style="color:#007">indexOf</span><span style="color:#333">(</span>node<span style="color:#333">);</span>
-  <span style="color:#289;font-weight:bold">if</span><span style="color:#333">(</span>index <span style="color:#333">==</span> <span style="color:#333">-</span>1<span style="color:#333">)</span> <span style="color:#333">{</span>
-    <span style="color:#666;font-style:italic">// taký uzol nejestvuje, nerobíme nič
-</span><span style="color:#666;font-style:italic"></span>    <span style="color:#289;font-weight:bold">return</span><span style="color:#333">;</span>
-  <span style="color:#333">}</span>
-  <span style="color:#666;font-style:italic">// z matice odstránime príslušný zoznam  
-</span><span style="color:#666;font-style:italic"></span>  matica<span style="color:#333">.</span><span style="color:#007">remove</span><span style="color:#333">(</span>index<span style="color:#333">);</span>
-  <span style="color:#666;font-style:italic">// z každého riadka v matici odstránime príslušnú bunku
-</span><span style="color:#666;font-style:italic"></span>  <span style="color:#289;font-weight:bold">for</span> <span style="color:#333">(</span>List<span style="color:#333">&lt;</span>Integer<span style="color:#333">&gt;</span> matica <span style="color:#333">:</span> matica<span style="color:#333">)</span> <span style="color:#333">{</span>
-    matica<span style="color:#333">.</span><span style="color:#007">remove</span><span style="color:#333">(</span>index<span style="color:#333">);</span>
-  <span style="color:#333">}</span>
-  <span style="color:#666;font-style:italic">// zo zoznamu uzlov vyhodíme daný uzol
-</span><span style="color:#666;font-style:italic"></span>  uzly<span style="color:#333">.</span><span style="color:#007">remove</span><span style="color:#333">(</span>node<span style="color:#333">);</span>
-<span style="color:#333">}</span>
-</code></pre></div><h2 id="pridanie-hrany-do-grafu-1">Pridanie hrany do grafu</h2>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">protected</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">odstráňUzol</span><span style="color:#333">(</span>Uzol node<span style="color:#333">)</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#666;font-style:italic">// zisti index daného uzla
+</span></span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic"></span>  <span style="color:#66f;font-weight:bold">int</span> index <span style="color:#333">=</span> uzly<span style="color:#333">.</span><span style="color:#007">indexOf</span><span style="color:#333">(</span>node<span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#289;font-weight:bold">if</span><span style="color:#333">(</span>index <span style="color:#333">==</span> <span style="color:#333">-</span>1<span style="color:#333">)</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#666;font-style:italic">// taký uzol nejestvuje, nerobíme nič
+</span></span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic"></span>    <span style="color:#289;font-weight:bold">return</span><span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#666;font-style:italic">// z matice odstránime príslušný zoznam  
+</span></span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic"></span>  matica<span style="color:#333">.</span><span style="color:#007">remove</span><span style="color:#333">(</span>index<span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#666;font-style:italic">// z každého riadka v matici odstránime príslušnú bunku
+</span></span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic"></span>  <span style="color:#289;font-weight:bold">for</span> <span style="color:#333">(</span>List<span style="color:#333">&lt;</span>Integer<span style="color:#333">&gt;</span> matica <span style="color:#333">:</span> matica<span style="color:#333">)</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>    matica<span style="color:#333">.</span><span style="color:#007">remove</span><span style="color:#333">(</span>index<span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#666;font-style:italic">// zo zoznamu uzlov vyhodíme daný uzol
+</span></span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic"></span>  uzly<span style="color:#333">.</span><span style="color:#007">remove</span><span style="color:#333">(</span>node<span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#333">}</span>
+</span></span></code></pre></div><h2 id="pridanie-hrany-do-grafu-1">Pridanie hrany do grafu</h2>
 <p>Ďalšou užitočnou operáciou je pridanie hrany medzi dvoma uzlami. V grafickom
 znázornení to zodpovedá natiahnutiu čiary medzi dvoma „guličkami&quot;. Ak
 máme v grafe dva existujúce uzly <em>C</em> a <em>F</em>, stačí nájsť
@@ -981,24 +981,24 @@ osem na prvku s pozíciou 5.</p>
 </tbody>
 </table>
 <p>Metóda vyzerá nasledovne:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">pridajHranu</span><span style="color:#333">(</span>Uzol node1<span style="color:#333">,</span> Uzol node2<span style="color:#333">)</span> <span style="color:#333">{</span>
-  <span style="color:#666;font-style:italic">// zistíme index prvého uzla
-</span><span style="color:#666;font-style:italic"></span>  <span style="color:#66f;font-weight:bold">int</span> index1 <span style="color:#333">=</span> uzly<span style="color:#333">.</span><span style="color:#007">indexOf</span><span style="color:#333">(</span>node1<span style="color:#333">);</span>
-  <span style="color:#289;font-weight:bold">if</span><span style="color:#333">(</span>index1 <span style="color:#333">==</span> <span style="color:#333">-</span>1<span style="color:#333">)</span> <span style="color:#333">{</span>
-    <span style="color:#666;font-style:italic">// taký uzol neexistuje!
-</span><span style="color:#666;font-style:italic"></span>    <span style="color:#289;font-weight:bold">throw</span> <span style="color:#289;font-weight:bold">new</span> IllegalArgumentException<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;Uzol v grafe neexistuje! &#34;</span> <span style="color:#333">+</span> node1<span style="color:#333">);</span>
-  <span style="color:#333">}</span>
-  <span style="color:#666;font-style:italic">// zistíme index druhého uzla
-</span><span style="color:#666;font-style:italic"></span>  <span style="color:#66f;font-weight:bold">int</span> index2 <span style="color:#333">=</span> uzly<span style="color:#333">.</span><span style="color:#007">indexOf</span><span style="color:#333">(</span>node2<span style="color:#333">);</span>
-  <span style="color:#289;font-weight:bold">if</span><span style="color:#333">(</span>index2 <span style="color:#333">==</span> <span style="color:#333">-</span>1<span style="color:#333">)</span> <span style="color:#333">{</span>
-    <span style="color:#666;font-style:italic">// taký uzol neexistuje!
-</span><span style="color:#666;font-style:italic"></span>    <span style="color:#289;font-weight:bold">throw</span> <span style="color:#289;font-weight:bold">new</span> IllegalArgumentException<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;Uzol v grafe neexistuje! &#34;</span> <span style="color:#333">+</span> node2<span style="color:#333">);</span>
-  <span style="color:#333">}</span>   
-  <span style="color:#666;font-style:italic">// na index1-tom zozname nastavíme hodnotu na pozícii index2 na true
-</span><span style="color:#666;font-style:italic"></span>  matica<span style="color:#333">.</span><span style="color:#007">get</span><span style="color:#333">(</span>index1<span style="color:#333">).</span><span style="color:#007">set</span><span style="color:#333">(</span>index2<span style="color:#333">,</span> <span style="color:#289;font-weight:bold">true</span><span style="color:#333">);</span>
-  <span style="color:#666;font-style:italic">// pre neorientovane hrany tiez matica.get(index2).set(index1, true);
-</span><span style="color:#666;font-style:italic"></span><span style="color:#333">}</span>
-</code></pre></div><h1 id="algoritmus-topologického-triedenia-na-matici-incidencií">Algoritmus topologického triedenia na matici incidencií</h1>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">public</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">pridajHranu</span><span style="color:#333">(</span>Uzol node1<span style="color:#333">,</span> Uzol node2<span style="color:#333">)</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#666;font-style:italic">// zistíme index prvého uzla
+</span></span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic"></span>  <span style="color:#66f;font-weight:bold">int</span> index1 <span style="color:#333">=</span> uzly<span style="color:#333">.</span><span style="color:#007">indexOf</span><span style="color:#333">(</span>node1<span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#289;font-weight:bold">if</span><span style="color:#333">(</span>index1 <span style="color:#333">==</span> <span style="color:#333">-</span>1<span style="color:#333">)</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#666;font-style:italic">// taký uzol neexistuje!
+</span></span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic"></span>    <span style="color:#289;font-weight:bold">throw</span> <span style="color:#289;font-weight:bold">new</span> IllegalArgumentException<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;Uzol v grafe neexistuje! &#34;</span> <span style="color:#333">+</span> node1<span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#666;font-style:italic">// zistíme index druhého uzla
+</span></span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic"></span>  <span style="color:#66f;font-weight:bold">int</span> index2 <span style="color:#333">=</span> uzly<span style="color:#333">.</span><span style="color:#007">indexOf</span><span style="color:#333">(</span>node2<span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#289;font-weight:bold">if</span><span style="color:#333">(</span>index2 <span style="color:#333">==</span> <span style="color:#333">-</span>1<span style="color:#333">)</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#666;font-style:italic">// taký uzol neexistuje!
+</span></span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic"></span>    <span style="color:#289;font-weight:bold">throw</span> <span style="color:#289;font-weight:bold">new</span> IllegalArgumentException<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;Uzol v grafe neexistuje! &#34;</span> <span style="color:#333">+</span> node2<span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#333">}</span>   
+</span></span><span style="display:flex;"><span>  <span style="color:#666;font-style:italic">// na index1-tom zozname nastavíme hodnotu na pozícii index2 na true
+</span></span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic"></span>  matica<span style="color:#333">.</span><span style="color:#007">get</span><span style="color:#333">(</span>index1<span style="color:#333">).</span><span style="color:#007">set</span><span style="color:#333">(</span>index2<span style="color:#333">,</span> <span style="color:#289;font-weight:bold">true</span><span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#666;font-style:italic">// pre neorientovane hrany tiez matica.get(index2).set(index1, true);
+</span></span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic"></span><span style="color:#333">}</span>
+</span></span></code></pre></div><h1 id="algoritmus-topologického-triedenia-na-matici-incidencií">Algoritmus topologického triedenia na matici incidencií</h1>
 <h2 id="topologické-triedenie">Topologické triedenie</h2>
 <p>V predošlom článku sme spomínali pekný algoritmus riešiaci problém
 správneho poradia pri zápise predmetov v študijnom programe
@@ -1011,80 +1011,80 @@ nazývaný <em>topologické triedenie</em>.</p>
 <li>prejdime na krok 1.</li>
 </ol>
 <p>Samotná implementácia v Jave zodpovedá priamo algoritmu:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">topologickeTriedenie</span><span style="color:#333">()</span> <span style="color:#333">{</span>
-  Uzol uzolBezPredchodcov <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">null</span><span style="color:#333">;</span>
-  <span style="color:#289;font-weight:bold">while</span><span style="color:#333">((</span>uzolBezPredchodcov <span style="color:#333">=</span> hľadajUzolBezPredchodcov<span style="color:#333">())</span> <span style="color:#333">!=</span> <span style="color:#289;font-weight:bold">null</span><span style="color:#333">)</span> <span style="color:#333">{</span>
-    System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span>uzolBezPredchodcov<span style="color:#333">);</span>
-    odstráňUzol<span style="color:#333">(</span>uzolBezPredchodcov<span style="color:#333">);</span>     
-  <span style="color:#333">}</span>
-  <span style="color:#289;font-weight:bold">if</span><span style="color:#333">(!</span>uzly<span style="color:#333">.</span><span style="color:#007">isEmpty</span><span style="color:#333">())</span> <span style="color:#333">{</span>
-    <span style="color:#289;font-weight:bold">throw</span> <span style="color:#289;font-weight:bold">new</span> IllegalStateException<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;V grafe sú cykly.&#34;</span><span style="color:#333">);</span>
-  <span style="color:#333">}</span>
-<span style="color:#333">}</span>
-</code></pre></div><p>Metóda <code>hľadajUzolBezPredchodcov()</code> nájde v grafe uzol, ktorý nemá predchodcov,
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">public</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">topologickeTriedenie</span><span style="color:#333">()</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>  Uzol uzolBezPredchodcov <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">null</span><span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#289;font-weight:bold">while</span><span style="color:#333">((</span>uzolBezPredchodcov <span style="color:#333">=</span> hľadajUzolBezPredchodcov<span style="color:#333">())</span> <span style="color:#333">!=</span> <span style="color:#289;font-weight:bold">null</span><span style="color:#333">)</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>    System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span>uzolBezPredchodcov<span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>    odstráňUzol<span style="color:#333">(</span>uzolBezPredchodcov<span style="color:#333">);</span>     
+</span></span><span style="display:flex;"><span>  <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#289;font-weight:bold">if</span><span style="color:#333">(!</span>uzly<span style="color:#333">.</span><span style="color:#007">isEmpty</span><span style="color:#333">())</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">throw</span> <span style="color:#289;font-weight:bold">new</span> IllegalStateException<span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;V grafe sú cykly.&#34;</span><span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#333">}</span>
+</span></span></code></pre></div><p>Metóda <code>hľadajUzolBezPredchodcov()</code> nájde v grafe uzol, ktorý nemá predchodcov,
 teda v matici incidencie má príslušný stĺpec bez značiek (teda sú v ňom samé
 hodnoty <code>false</code>). V predošlej ukážkovej tabuľke máme dva uzly bez predchodcov: ich indexy
 sú 0 a 7.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#666;font-style:italic">// ideme &#34;po stlpcoch&#34; v matici. Pre kazdy stlpec pozrieme,
-</span><span style="color:#666;font-style:italic">// ci v nom je *true* prvok. Ak ano, znamena
-</span><span style="color:#666;font-style:italic">// vchadzajucu hranu a teda predka. Ak nie,
-</span><span style="color:#666;font-style:italic">// mame uzol bez predchodcov, ktory vratime.
-</span><span style="color:#666;font-style:italic"></span><span style="color:#289;font-weight:bold">for</span> <span style="color:#333">(</span><span style="color:#66f;font-weight:bold">int</span> i <span style="color:#333">=</span> 0<span style="color:#333">;</span> i <span style="color:#333">&lt;</span> uzly<span style="color:#333">.</span><span style="color:#007">size</span><span style="color:#333">();</span> i<span style="color:#333">++)</span> <span style="color:#333">{</span>
-  <span style="color:#66f;font-weight:bold">boolean</span> máPredchodcov <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">false</span><span style="color:#333">;</span>
-  <span style="color:#289;font-weight:bold">for</span> <span style="color:#333">(</span>List<span style="color:#333">&lt;</span>Boolean<span style="color:#333">&gt;</span> riadok <span style="color:#333">:</span> matica<span style="color:#333">)</span> <span style="color:#333">{</span>
-    <span style="color:#289;font-weight:bold">if</span><span style="color:#333">(</span>riadok<span style="color:#333">.</span><span style="color:#007">get</span><span style="color:#333">(</span>i<span style="color:#333">)</span> <span style="color:#333">==</span> <span style="color:#289;font-weight:bold">true</span><span style="color:#333">)</span> <span style="color:#333">{</span>
-      <span style="color:#666;font-style:italic">// staci napisat if(riadok.get(i)) {
-</span><span style="color:#666;font-style:italic"></span>      máPredchodcov <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">true</span><span style="color:#333">;</span>
-      <span style="color:#289;font-weight:bold">break</span><span style="color:#333">;</span>
-    <span style="color:#333">}</span>
-  <span style="color:#333">}</span>
-  <span style="color:#289;font-weight:bold">if</span><span style="color:#333">(!</span>máPredchodcov<span style="color:#333">)</span> <span style="color:#333">{</span>
-    <span style="color:#666;font-style:italic">// v i-tom stlpci je uzol bez predka, 
-</span><span style="color:#666;font-style:italic"></span>    <span style="color:#666;font-style:italic">// dohladame v zozname uzlov prislusny objekt 
-</span><span style="color:#666;font-style:italic"></span>    <span style="color:#666;font-style:italic">// Uzol a vratime ho
-</span><span style="color:#666;font-style:italic"></span>    <span style="color:#289;font-weight:bold">return</span> uzly<span style="color:#333">.</span><span style="color:#007">get</span><span style="color:#333">(</span>i<span style="color:#333">);</span>
-  <span style="color:#333">}</span>
-<span style="color:#333">}</span>
-<span style="color:#289;font-weight:bold">return</span> <span style="color:#289;font-weight:bold">null</span><span style="color:#333">;</span>
-</code></pre></div><p>Metóda <code>odstráňUzol()</code>, ktorá odstraňuje uzol z grafu, už bola popísaná
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#666;font-style:italic">// ideme &#34;po stlpcoch&#34; v matici. Pre kazdy stlpec pozrieme,
+</span></span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic">// ci v nom je *true* prvok. Ak ano, znamena
+</span></span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic">// vchadzajucu hranu a teda predka. Ak nie,
+</span></span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic">// mame uzol bez predchodcov, ktory vratime.
+</span></span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic"></span><span style="color:#289;font-weight:bold">for</span> <span style="color:#333">(</span><span style="color:#66f;font-weight:bold">int</span> i <span style="color:#333">=</span> 0<span style="color:#333">;</span> i <span style="color:#333">&lt;</span> uzly<span style="color:#333">.</span><span style="color:#007">size</span><span style="color:#333">();</span> i<span style="color:#333">++)</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66f;font-weight:bold">boolean</span> máPredchodcov <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">false</span><span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#289;font-weight:bold">for</span> <span style="color:#333">(</span>List<span style="color:#333">&lt;</span>Boolean<span style="color:#333">&gt;</span> riadok <span style="color:#333">:</span> matica<span style="color:#333">)</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">if</span><span style="color:#333">(</span>riadok<span style="color:#333">.</span><span style="color:#007">get</span><span style="color:#333">(</span>i<span style="color:#333">)</span> <span style="color:#333">==</span> <span style="color:#289;font-weight:bold">true</span><span style="color:#333">)</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#666;font-style:italic">// staci napisat if(riadok.get(i)) {
+</span></span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic"></span>      máPredchodcov <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">true</span><span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#289;font-weight:bold">break</span><span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#289;font-weight:bold">if</span><span style="color:#333">(!</span>máPredchodcov<span style="color:#333">)</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#666;font-style:italic">// v i-tom stlpci je uzol bez predka, 
+</span></span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic"></span>    <span style="color:#666;font-style:italic">// dohladame v zozname uzlov prislusny objekt 
+</span></span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic"></span>    <span style="color:#666;font-style:italic">// Uzol a vratime ho
+</span></span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic"></span>    <span style="color:#289;font-weight:bold">return</span> uzly<span style="color:#333">.</span><span style="color:#007">get</span><span style="color:#333">(</span>i<span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">return</span> <span style="color:#289;font-weight:bold">null</span><span style="color:#333">;</span>
+</span></span></code></pre></div><p>Metóda <code>odstráňUzol()</code>, ktorá odstraňuje uzol z grafu, už bola popísaná
 vyššie.</p>
 <h2 id="budovanie-štruktúry">Budovanie štruktúry</h2>
 <p>Vybudovanie grafu pre topologické triedenie je tiež veľmi podobné klasickému
 prístupu popísanému minule. Ak načítavame dvojice <em>prerekvizita</em> -<em>predmet</em>
 zo súboru, metóda <code>pridajDvojicu()</code> vyzerá nasledovne:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">pridajDvojicu</span><span style="color:#333">(</span>String prerekvizita<span style="color:#333">,</span> String predmet<span style="color:#333">)</span> <span style="color:#333">{</span>
-  <span style="color:#666;font-style:italic">// nájdi v grafe prvý uzol
-</span><span style="color:#666;font-style:italic"></span>  Uzol uzolPrerekvizity <span style="color:#333">=</span> hľadajPodľaNázvu<span style="color:#333">(</span>prerekvizita<span style="color:#333">);</span>
-  <span style="color:#666;font-style:italic">// ak prvý uzol nejestvuje, vytvor ho a pridaj do grafu
-</span><span style="color:#666;font-style:italic"></span>  <span style="color:#289;font-weight:bold">if</span><span style="color:#333">(</span>uzolPrerekvizity <span style="color:#333">==</span> <span style="color:#289;font-weight:bold">null</span><span style="color:#333">)</span> <span style="color:#333">{</span>
-    uzolPrerekvizity <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Uzol<span style="color:#333">(</span>prerekvizita<span style="color:#333">);</span>
-    pridajUzol<span style="color:#333">(</span>uzolPrerekvizity<span style="color:#333">);</span>
-  <span style="color:#333">}</span>
-  <span style="color:#666;font-style:italic">// nájdi v grafe druhý uzol
-</span><span style="color:#666;font-style:italic"></span>  Uzol uzolPredmetu <span style="color:#333">=</span> hľadajPodľaNázvu<span style="color:#333">(</span>predmet<span style="color:#333">);</span>
-  <span style="color:#666;font-style:italic">// ak druhý uzol nejestvuje, vytvor a pridaj ho do grafu
-</span><span style="color:#666;font-style:italic"></span>  <span style="color:#289;font-weight:bold">if</span><span style="color:#333">(</span>uzolPredmetu <span style="color:#333">==</span> <span style="color:#289;font-weight:bold">null</span><span style="color:#333">)</span> <span style="color:#333">{</span>
-    uzolPredmetu <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Uzol<span style="color:#333">(</span>predmet<span style="color:#333">);</span>
-    pridajUzol<span style="color:#333">(</span>uzolPredmetu<span style="color:#333">);</span>
-  <span style="color:#333">}</span>
-
-  pridajHranu<span style="color:#333">(</span>uzolPrerekvizity<span style="color:#333">,</span> uzolPredmetu<span style="color:#333">);</span>
-<span style="color:#333">}</span>
-</code></pre></div><p>Metóda na hľadanie uzla podľa názvu je úplne rovnaká
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">public</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">pridajDvojicu</span><span style="color:#333">(</span>String prerekvizita<span style="color:#333">,</span> String predmet<span style="color:#333">)</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#666;font-style:italic">// nájdi v grafe prvý uzol
+</span></span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic"></span>  Uzol uzolPrerekvizity <span style="color:#333">=</span> hľadajPodľaNázvu<span style="color:#333">(</span>prerekvizita<span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#666;font-style:italic">// ak prvý uzol nejestvuje, vytvor ho a pridaj do grafu
+</span></span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic"></span>  <span style="color:#289;font-weight:bold">if</span><span style="color:#333">(</span>uzolPrerekvizity <span style="color:#333">==</span> <span style="color:#289;font-weight:bold">null</span><span style="color:#333">)</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>    uzolPrerekvizity <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Uzol<span style="color:#333">(</span>prerekvizita<span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>    pridajUzol<span style="color:#333">(</span>uzolPrerekvizity<span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#666;font-style:italic">// nájdi v grafe druhý uzol
+</span></span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic"></span>  Uzol uzolPredmetu <span style="color:#333">=</span> hľadajPodľaNázvu<span style="color:#333">(</span>predmet<span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#666;font-style:italic">// ak druhý uzol nejestvuje, vytvor a pridaj ho do grafu
+</span></span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic"></span>  <span style="color:#289;font-weight:bold">if</span><span style="color:#333">(</span>uzolPredmetu <span style="color:#333">==</span> <span style="color:#289;font-weight:bold">null</span><span style="color:#333">)</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>    uzolPredmetu <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Uzol<span style="color:#333">(</span>predmet<span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>    pridajUzol<span style="color:#333">(</span>uzolPredmetu<span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  pridajHranu<span style="color:#333">(</span>uzolPrerekvizity<span style="color:#333">,</span> uzolPredmetu<span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#333">}</span>
+</span></span></code></pre></div><p>Metóda na hľadanie uzla podľa názvu je úplne rovnaká
 ako v prípade vlastnej štruktúry - stačí prejsť zoznam
 uzlov a nájsť ten požadovaný.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">protected</span> Uzol <span style="color:#5ed;font-weight:bold">hľadajPodľaNázvu</span><span style="color:#333">(</span>String nazov<span style="color:#333">)</span> <span style="color:#333">{</span>
-  <span style="color:#666;font-style:italic">// prechádzame zoznam uzlov
-</span><span style="color:#666;font-style:italic"></span>  <span style="color:#289;font-weight:bold">for</span> <span style="color:#333">(</span>Uzol uzol <span style="color:#333">:</span> uzly<span style="color:#333">)</span> <span style="color:#333">{</span>
-    <span style="color:#666;font-style:italic">// ak sme našli uzol, končíme
-</span><span style="color:#666;font-style:italic"></span>    <span style="color:#289;font-weight:bold">if</span><span style="color:#333">(</span>uzol<span style="color:#333">.</span><span style="color:#007">getNazov</span><span style="color:#333">().</span><span style="color:#007">equals</span><span style="color:#333">(</span>nazov<span style="color:#333">))</span> <span style="color:#333">{</span>
-      <span style="color:#289;font-weight:bold">return</span> uzol<span style="color:#333">;</span>
-    <span style="color:#333">}</span>
-  <span style="color:#333">}</span>
-  <span style="color:#666;font-style:italic">// uzol sme nenašli, vraciame null
-</span><span style="color:#666;font-style:italic"></span>  <span style="color:#289;font-weight:bold">return</span> <span style="color:#289;font-weight:bold">null</span><span style="color:#333">;</span>
-<span style="color:#333">}</span>
-</code></pre></div>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">protected</span> Uzol <span style="color:#5ed;font-weight:bold">hľadajPodľaNázvu</span><span style="color:#333">(</span>String nazov<span style="color:#333">)</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#666;font-style:italic">// prechádzame zoznam uzlov
+</span></span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic"></span>  <span style="color:#289;font-weight:bold">for</span> <span style="color:#333">(</span>Uzol uzol <span style="color:#333">:</span> uzly<span style="color:#333">)</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#666;font-style:italic">// ak sme našli uzol, končíme
+</span></span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic"></span>    <span style="color:#289;font-weight:bold">if</span><span style="color:#333">(</span>uzol<span style="color:#333">.</span><span style="color:#007">getNazov</span><span style="color:#333">().</span><span style="color:#007">equals</span><span style="color:#333">(</span>nazov<span style="color:#333">))</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#289;font-weight:bold">return</span> uzol<span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#666;font-style:italic">// uzol sme nenašli, vraciame null
+</span></span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic"></span>  <span style="color:#289;font-weight:bold">return</span> <span style="color:#289;font-weight:bold">null</span><span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#333">}</span>
+</span></span></code></pre></div>
 </main>
 
     <footer>

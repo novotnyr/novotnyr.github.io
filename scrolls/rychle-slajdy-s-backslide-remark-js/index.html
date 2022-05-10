@@ -69,29 +69,29 @@
 </ul>
 <h1 id="zdrojový-kód">Zdrojový kód</h1>
 <p>Ukážkové slajdy v Markdowne vyzerá napríklad nasledovne:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-markdown" data-lang="markdown">title: httpd a Tomcat – loadbalancing a ladenie výkonu
-class: animation-fade
-layout: true
----
-<span style="color:#000080;font-weight:bold"># Forward Proxy
-</span><span style="color:#000080;font-weight:bold"></span>
-<span style="color:#289;font-weight:bold">-</span> browser si nastaví proxy v prehliadači.
-<span style="color:#289;font-weight:bold">-</span> vysvetlí, že aký server chce navštíviť
-<span style="color:#289;font-weight:bold">-</span> proxy načíta obsah a prepošle ju klientovi
-<span style="color:#289;font-weight:bold">-</span> v Apachovi cez moduly:
-	<span style="color:#289;font-weight:bold">-</span> proxy
-	<span style="color:#289;font-weight:bold">-</span> proxy_http
-	<span style="color:#289;font-weight:bold">-</span> proxy_connect
----
-<span style="color:#000080;font-weight:bold"># reverse proxy (gateway)
-</span><span style="color:#000080;font-weight:bold"></span>
-<span style="color:#289;font-weight:bold">-</span> klient nakontaktuje server
-<span style="color:#289;font-weight:bold">-</span> ten je v skutočnosti reverse proxy
-<span style="color:#289;font-weight:bold">-</span> server/reverse-proxy nakontaktuje aplikačné servery
-	<span style="color:#289;font-weight:bold">-</span> získa obsah
-	<span style="color:#289;font-weight:bold">-</span> schrústa
-	<span style="color:#289;font-weight:bold">-</span> pošle klientovi
-</code></pre></div><ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-markdown" data-lang="markdown"><span style="display:flex;"><span>title: httpd a Tomcat – loadbalancing a ladenie výkonu
+</span></span><span style="display:flex;"><span>class: animation-fade
+</span></span><span style="display:flex;"><span>layout: true
+</span></span><span style="display:flex;"><span>---
+</span></span><span style="display:flex;"><span><span style="color:#000080;font-weight:bold"># Forward Proxy
+</span></span></span><span style="display:flex;"><span><span style="color:#000080;font-weight:bold"></span>
+</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">-</span> browser si nastaví proxy v prehliadači.
+</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">-</span> vysvetlí, že aký server chce navštíviť
+</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">-</span> proxy načíta obsah a prepošle ju klientovi
+</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">-</span> v Apachovi cez moduly:
+</span></span><span style="display:flex;"><span>	<span style="color:#289;font-weight:bold">-</span> proxy
+</span></span><span style="display:flex;"><span>	<span style="color:#289;font-weight:bold">-</span> proxy_http
+</span></span><span style="display:flex;"><span>	<span style="color:#289;font-weight:bold">-</span> proxy_connect
+</span></span><span style="display:flex;"><span>---
+</span></span><span style="display:flex;"><span><span style="color:#000080;font-weight:bold"># reverse proxy (gateway)
+</span></span></span><span style="display:flex;"><span><span style="color:#000080;font-weight:bold"></span>
+</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">-</span> klient nakontaktuje server
+</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">-</span> ten je v skutočnosti reverse proxy
+</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">-</span> server/reverse-proxy nakontaktuje aplikačné servery
+</span></span><span style="display:flex;"><span>	<span style="color:#289;font-weight:bold">-</span> získa obsah
+</span></span><span style="display:flex;"><span>	<span style="color:#289;font-weight:bold">-</span> schrústa
+</span></span><span style="display:flex;"><span>	<span style="color:#289;font-weight:bold">-</span> pošle klientovi
+</span></span></code></pre></div><ul>
 <li><strong>YAML Front Matter</strong>: súbor je uvedený YAML preambulou s <em>metadátami</em>, napr. názvom prezentácie (<em>title</em>) a štýlom (<em>class</em>).</li>
 <li><strong>Slajdy</strong> sú oddelené vodorovnou čiarou.</li>
 <li><strong>Nadpisy</strong> slajdov zodpovedajú nadpisom prvej úrovne (<code>#</code>)</li>

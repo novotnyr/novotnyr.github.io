@@ -268,19 +268,19 @@ indikuje spustenie inštalátora pri nasadzovaní snap-inu do prostredia.</p>
     {
         public override string Name {
             get {
-                return &quot;HelloWorldSnapIns&quot;;
+                return &#34;HelloWorldSnapIns&#34;;
             }
         }
         
         public override string Description {
             get {
-                return &quot;A sample snap-in with Hello World message.&quot;;
+                return &#34;A sample snap-in with Hello World message.&#34;;
             }
         }
         
         public override string Vendor {
             get {
-                return &quot;UINF PF UPJS&quot;;
+                return &#34;UINF PF UPJS&#34;;
             }
         }
     }
@@ -295,10 +295,10 @@ vidíme v príklade <em>properties</em> Name, Description a Vendor.</p>
 </blockquote>
 <p>V tejto chvílu už môžeme projekt zostaviť: <em>Build | Build Solution</em>. Pri
 prvom pokuse získame chybu:</p>
-<pre tabindex="0"><code>The type 'System.Configuration.Install.Installer' is
+<pre tabindex="0"><code>The type &#39;System.Configuration.Install.Installer&#39; is
 defined in an assembly that is not referenced. You must add a reference
-to assembly 'System.Configuration.Install, Version=2.0.0.0, Culture=neutral,
-PublicKeyToken=b03f5f7f11d50a3a'. (CS0012) -
+to assembly &#39;System.Configuration.Install, Version=2.0.0.0, Culture=neutral,
+PublicKeyToken=b03f5f7f11d50a3a&#39;. (CS0012) -
 C:\Users\rn\Documents\SharpDevelop Projects\HelloWorldCmdlets\HelloWorldCmdlets\HelloWorldCmdlet.cs:18,15
 </code></pre><p>Do projektu musíme pridať <em>assembly</em>
 <code>System.Configuration.Install.Installer</code> podobne, ako sme to robili v
@@ -354,22 +354,22 @@ using System.Management.Automation;
 
 namespace HelloCmdlets
 {
-	[Cmdlet(&quot;Say&quot;, &quot;Hello&quot;)]
+	[Cmdlet(&#34;Say&#34;, &#34;Hello&#34;)]
 	public class HelloWorldCmdlet : PSCmdlet
 	{
 		[Parameter]
-		[ValidateSet(&quot;Steve Jobs&quot;, &quot;Bill Gates&quot;)]
+		[ValidateSet(&#34;Steve Jobs&#34;, &#34;Bill Gates&#34;)]
 		public string UserName {
 			get; set;
 		}
 		
 		protected override void ProcessRecord()
 		{
-			WriteObject(UserName + &quot;, Hello World!&quot;);
+			WriteObject(UserName + &#34;, Hello World!&#34;);
 		}
 	}
 	
-	[Cmdlet(&quot;Get&quot;, &quot;Translation&quot;)]	
+	[Cmdlet(&#34;Get&#34;, &#34;Translation&#34;)]	
 	public class TranslationCmdlet : PSCmdlet {
 		
 		[Parameter(Position=0, ValueFromPipeline=true)]
@@ -381,10 +381,10 @@ namespace HelloCmdlets
 		private Dictionary&lt;string, string&gt; dictionary = new Dictionary&lt;string, string&gt;();
 		
 		public TranslationCmdlet() {
-			dictionary[&quot;slovo&quot;] = &quot;word&quot;;
-			dictionary[&quot;pes&quot;] = &quot;dog&quot;;
-			dictionary[&quot;dom&quot;] = &quot;house&quot;;
-			dictionary[&quot;zabijac&quot;] = &quot;slayer&quot;;
+			dictionary[&#34;slovo&#34;] = &#34;word&#34;;
+			dictionary[&#34;pes&#34;] = &#34;dog&#34;;
+			dictionary[&#34;dom&#34;] = &#34;house&#34;;
+			dictionary[&#34;zabijac&#34;] = &#34;slayer&#34;;
 		}
 		
 		protected override void ProcessRecord()
@@ -394,7 +394,7 @@ namespace HelloCmdlets
 			} else {
 				WriteError(new ErrorRecord(
 					new KeyNotFoundException(), 
-					&quot;Slovo sa nenaslo&quot;, 
+					&#34;Slovo sa nenaslo&#34;, 
 					ErrorCategory.InvalidData, 
 					Word));
 			}
@@ -402,11 +402,11 @@ namespace HelloCmdlets
 		
 		protected override void BeginProcessing()
 		{
-			WriteObject(&quot;-----------------------------------------&quot;);
+			WriteObject(&#34;-----------------------------------------&#34;);
 		}
 	}
 	
-	[Cmdlet(&quot;Add&quot;, &quot;Extension&quot;)]
+	[Cmdlet(&#34;Add&#34;, &#34;Extension&#34;)]
 	public class AddExtensionCmdlet : PSCmdlet {
 		[Parameter(ValueFromPipeline=true, Position=0)]
 		public FileInfo File;
@@ -427,19 +427,19 @@ namespace HelloCmdlets
 	{
 		public override string Vendor {
 			get {
-				return &quot;UPJS&quot;;
+				return &#34;UPJS&#34;;
 			}
 		}
 		
 		public override string Name {
 			get {
-				return &quot;HelloWorldSnapIn&quot;;
+				return &#34;HelloWorldSnapIn&#34;;
 			}
 		}
 		
 		public override string Description {
 			get {
-				return &quot;Hello World cmdlets.&quot;;
+				return &#34;Hello World cmdlets.&#34;;
 			}
 		}
 	}

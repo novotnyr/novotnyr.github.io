@@ -75,8 +75,8 @@
 <p><code>gnuplot</code> používa vo Windowse pomerne neštandardné písmo. Zmeniť ho môžeme pravým kliknutím do okna, zvolením <code>Choose Font</code> a vybratím obľúbeného písma (napr. <code>Fixedsys</code> alebo <code>Courier New</code>). Nastavenie uložíme opäť pravým kliknutím a vybratím <code>Update setting...</code></p>
 <h2 id="macos">MacOS</h2>
 <p>Najľahší spôsob je inštalácia cez <em>Homebrew</em>. MacOS fungujú najlepšie s terminálom <code>qt</code>:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">brew install gnuplot --with-qt
-</code></pre></div><h1 id="práca-s-gnuplotom">Práca s <code>gnuplot</code>om</h1>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>brew install gnuplot --with-qt
+</span></span></code></pre></div><h1 id="práca-s-gnuplotom">Práca s <code>gnuplot</code>om</h1>
 <p>Vykresľovanie a výpočty sú riadené príkazmi, ktoré zvyknú mať parametre. Príkaz zadáme a potvrdíme Enterom.</p>
 <h2 id="vykreslenie-grafu-funkcie-jednej-premennej">Vykreslenie grafu funkcie jednej premennej</h2>
 <p>Jednoduché vykreslenie grafu funkcie <em>sin(x)</em>:</p>
@@ -117,7 +117,7 @@ cos(2*x)
 </code></pre><h2 id="užívateľské-premenné-a-funkcie">Užívateľské premenné a funkcie</h2>
 <p><code>gnuplot</code> umožňuje definíciu užívateľských funkcií a premenných:</p>
 <pre tabindex="0"><code>f(x) = sin(x)
-</code></pre><p>definuje užívateľskú funkciu &lsquo;&lsquo;f(x)'&rsquo;. Potom môžeme používať túto funkciu nasledovne:</p>
+</code></pre><p>definuje užívateľskú funkciu &lsquo;&lsquo;f(x)&rsquo;&rsquo;. Potom môžeme používať túto funkciu nasledovne:</p>
 <pre tabindex="0"><code>plot f(x)
 </code></pre><p>čím sa vykreslí sínus.</p>
 <p>Podobne možno definovať aj vlastné premenné:</p>
@@ -180,13 +180,13 @@ print 5.0 / lambda
 <h3 id="výstup-do-formátu-pre-latex">Výstup do formátu pre LaTeX</h3>
 <p>Ak chceme vytvoriť obrázok vo formáte prostredia picture pre LaTeX, musíme po zmene terminálu nastaviť aj výstupný súbor, inak sa údaje zobrazia na štandardnom výstupe.</p>
 <pre tabindex="0"><code>set term latex
-set output 'D:\obrazok.tex'
+set output &#39;D:\obrazok.tex&#39;
 replot
 </code></pre><p>Po vykonaní týchto príkazov môžeme vykonať zase <code>set term windows</code>.</p>
 <h3 id="výstup-do-formátu-jpg">Výstup do formátu JPG</h3>
 <p>JPG obrázok môžeme vytvoriť jednoducho. Stačí nastaviť správny terminál a vykresliť graf.</p>
 <pre tabindex="0"><code>set term jpeg
-set output 'D:\obrazok.jpg'
+set output &#39;D:\obrazok.jpg&#39;
 plot sin(x)
 # alebo replot, ak chceme obrázok len vykresliť znovu
 set term windows
@@ -203,7 +203,7 @@ pia 0
 so 5
 ne 1
 </code></pre><p>Príkaz <code>plot</code> dokáže kresliť dáta zo súboru:</p>
-<pre tabindex="0"><code>plot &quot;D:\teploty.txt&quot; using 2:xticlabels(1) with lines notitle
+<pre tabindex="0"><code>plot &#34;D:\teploty.txt&#34; using 2:xticlabels(1) with lines notitle
 </code></pre><p>Takto sa vykreslia jednotlivé teploty, pričom</p>
 <ul>
 <li><code>2</code> indikuje druhý stĺpec nesúci teploty</li>
@@ -213,13 +213,13 @@ ne 1
 </ul>
 <h3 id="plný-príklad-s-popiskami">Plný príklad s popiskami</h3>
 <p>V úplnom príklade môžeme ešte nastaviť titulok grafu (<code>title</code>), prispôsobiť <em>x</em>-ovú a <em>y</em>-ovú popisku osi:</p>
-<pre tabindex="0"><code>set title &quot;Teploty&quot;
-set xlabel &quot;Den&quot;
-set ylabel &quot;Teplota&quot;
-plot &quot;D:\teploty.txt&quot; using 2:xticlabels(1) with lines notitle
+<pre tabindex="0"><code>set title &#34;Teploty&#34;
+set xlabel &#34;Den&#34;
+set ylabel &#34;Teplota&#34;
+plot &#34;D:\teploty.txt&#34; using 2:xticlabels(1) with lines notitle
 </code></pre><p><img src="teploty.svg" alt=""></p>
 <h1 id="zložitejší-príklad">Zložitejší príklad</h1>
-<pre tabindex="0"><code>cd 'D:\test\prasta2'
+<pre tabindex="0"><code>cd &#39;D:\test\prasta2&#39;
 # vypise aktualnu cestu
 pwd
 # vymaze terminal
@@ -229,24 +229,24 @@ set term latex
 
 e = exp(1)
 #-----------------------------------------------------------------
-set output 'pic_rozdelenie_ex.tex'
-set title ''
+set output &#39;pic_rozdelenie_ex.tex&#39;
+set title &#39;&#39;
 exdelta(x) = (1/delta)*(e**(-x/delta))
 plot [x=1:150] [0:0.15] \ 
-delta = 5., exdelta(x) title '$\delta = 5$', \
-delta = 10., exdelta(x) title '$\delta = 10$', \ 
-delta = 25., exdelta(x) title '$\delta = 25$'
+delta = 5., exdelta(x) title &#39;$\delta = 5$&#39;, \
+delta = 10., exdelta(x) title &#39;$\delta = 10$&#39;, \ 
+delta = 25., exdelta(x) title &#39;$\delta = 25$&#39;
 
-set output 'pic_df_ex.tex'
+set output &#39;pic_df_ex.tex&#39;
 exdeltadf(x) = (1-e**(-x/delta))
 plot [x=0:50] [0:1] \ 
-delta = 5., exdeltadf(x) title '$\delta = 5$',\ 
-delta = 10., exdeltadf(x) title '$\delta = 10$', \
-delta = 25., exdeltadf(x) title '$\delta = 25$'
+delta = 5., exdeltadf(x) title &#39;$\delta = 5$&#39;,\ 
+delta = 10., exdeltadf(x) title &#39;$\delta = 10$&#39;, \
+delta = 25., exdeltadf(x) title &#39;$\delta = 25$&#39;
 #----------------------------------------------
 
 set term win
-print 'Jobs done'
+print &#39;Jobs done&#39;
 </code></pre>
 </main>
 

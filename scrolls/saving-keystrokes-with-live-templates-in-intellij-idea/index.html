@@ -62,11 +62,11 @@
 <h1 id="typing-code-over-and-over">Typing Code Over and Over?</h1>
 <p>In one of the projects, we had to create many customized enumerations. Something like this:</p>
 <pre tabindex="0"><code>public class Status {
-    ONLINE(&quot;on&quot;), OFFLINE(&quot;off&quot;);
+    ONLINE(&#34;on&#34;), OFFLINE(&#34;off&#34;);
 }
 </code></pre><p>Each of this <code>enum</code> was supposed to have a <code>findByCode</code> method that would resolve <code>“on”</code> to <code>ONLINE</code> and <code>“off”</code> to offline. Something like this:</p>
 <pre tabindex="0"><code>public enum Status {
-    ONLINE(&quot;on&quot;), OFFLINE(&quot;off&quot;);
+    ONLINE(&#34;on&#34;), OFFLINE(&#34;off&#34;);
 
     private final String code;
 
@@ -80,7 +80,7 @@
                 return value;
             }
         }
-        throw new IllegalArgumentException(&quot;No Status: '&quot; + code + &quot;'&quot;);
+        throw new IllegalArgumentException(&#34;No Status: &#39;&#34; + code + &#34;&#39;&#34;);
     }
 }
 </code></pre><p>Instead of superboring typing it over and over, let’s create a <strong>Live Template</strong> in the IntelliJ IDEA!</p>
@@ -101,7 +101,7 @@
 			return $ENUM_ELEMENT$;
 		}
 	}
-	throw new IllegalArgumentException(&quot;No $ENUM$: '&quot; + $CODE$ + &quot;'&quot;);
+	throw new IllegalArgumentException(&#34;No $ENUM$: &#39;&#34; + $CODE$ + &#34;&#39;&#34;);
 }
 </code></pre><h2 id="variables">Variables</h2>
 <p>The template code uses multiple variables. We can customize the suggestions or the actual values for these variables via <strong>Edit variables button</strong>. In the dialog, we can assign the following semantics:</p>
@@ -119,7 +119,7 @@
 <h1 id="using-the-live-template">Using the Live Template</h1>
 <p>Now, let’s use the freshly created Live Template. We can place a cursor on a reasonable place in the <code>Status</code> source, type <code>enumfind</code> and expand with <strong>TAB</strong>!</p>
 <pre tabindex="0"><code>public class Status {
-    ONLINE(&quot;on&quot;), OFFLINE(&quot;off&quot;);
+    ONLINE(&#34;on&#34;), OFFLINE(&#34;off&#34;);
 
     enumfind&lt;TAB&gt;
 }

@@ -62,75 +62,75 @@
 <h1 id="budovanie-kotlinovských-projektov">Budovanie kotlinovských projektov</h1>
 <p>Čo ak chceme vybudovať projekt, ktorého zdrojáky sú v Kotline a gradloidný <em>build script</em> je&hellip; v Kotline? (Vložte <em>yo-dawg-meme.png</em>). Poďme na to!</p>
 <p>V prvom rade potrebujeme deklarovať <em>plugin</em>, ktorý zapne podporu pre zostavovanie zdrojových kódov napísaných v Kotline. Do nového <em>build scriptu</em> uvedieme tri sekcie.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">plugins {
-    kotlin(<span style="background-color:#e0e0ff">&#34;jvm&#34;</span>) version <span style="background-color:#e0e0ff">&#34;1.3.41&#34;</span>
-}
-
-repositories {
-    mavenCentral()
-}
-
-dependencies {
-    implementation(kotlin(<span style="background-color:#e0e0ff">&#34;stdlib&#34;</span>))
-}
-</code></pre></div><ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span>plugins {
+</span></span><span style="display:flex;"><span>    kotlin(<span style="background-color:#e0e0ff">&#34;jvm&#34;</span>) version <span style="background-color:#e0e0ff">&#34;1.3.41&#34;</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>repositories {
+</span></span><span style="display:flex;"><span>    mavenCentral()
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>dependencies {
+</span></span><span style="display:flex;"><span>    implementation(kotlin(<span style="background-color:#e0e0ff">&#34;stdlib&#34;</span>))
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><ul>
 <li><strong>plugins</strong>: sekcia <code>plugins</code> slúži na zavádzanie pluginov. A keďže kotlinovský <em>build script</em> je skvelý, použijeme špecifický zápis pre kotlinovské projekty.</li>
 <li><strong>repositories</strong>: uvedie repozitáre pre artefakty (závislosti a pluginy), ktoré sa majú stiahnuť do projektu. Uviedli sme povestný centrálny repozitár Mavenu.</li>
 <li><strong>dependencies</strong>: uvedie závislosti, teda knižnice, ktoré sú nutné na beh projektu. Kotlinovský projekt závisí na štandardnej knižnici Kotlinu, ktorú musíme zaviesť do projektu.</li>
 </ul>
 <p>Teraz sa môžeme pokúsiť zbuildovať projekt:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">gradle assemble
-</code></pre></div><p>Samozrejme, nestane sa nič užitočné, lebo nemáme žiadne zdrojáky!</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>gradle assemble
+</span></span></code></pre></div><p>Samozrejme, nestane sa nič užitočné, lebo nemáme žiadne zdrojáky!</p>
 <h2 id="zdrojáky-v-kotline">Zdrojáky v Kotline</h2>
 <p>Kotlin očakáva zdrojáky v adresári <code>src/main/kotlin</code>, vytvorme ho teda.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"> mkdir -p src/main/kotlin
-</code></pre></div><p>V tomto adresári si môžeme veselo programovať. Môžeme vytvoriť <code>Hello.kt</code> s hlúpym obsahom:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">main</span>() {
-    println(<span style="background-color:#e0e0ff">&#34;Hello!&#34;</span>)
-}
-</code></pre></div><p>A veselo buildujme:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">gradle assemble
-</code></pre></div><p>V adresári <code>build/libs</code> sa objaví súbor JAR s výsledkom!</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span> mkdir -p src/main/kotlin
+</span></span></code></pre></div><p>V tomto adresári si môžeme veselo programovať. Môžeme vytvoriť <code>Hello.kt</code> s hlúpym obsahom:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">main</span>() {
+</span></span><span style="display:flex;"><span>    println(<span style="background-color:#e0e0ff">&#34;Hello!&#34;</span>)
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>A veselo buildujme:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>gradle assemble
+</span></span></code></pre></div><p>V adresári <code>build/libs</code> sa objaví súbor JAR s výsledkom!</p>
 <h2 id="zdrojáky-pre-moderné-javy">Zdrojáky pre moderné Javy</h2>
 <p>Vybuildované <code>.class</code> súbory pobežia aj na prastarej Java 6. To je síce super, ale mohli by sme sa posunúť.</p>
 <p>Stačí parametrizovať kompilačný <em>task</em>:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">tasks {
-    withType&lt;KotlinCompile&gt; {
-        kotlinOptions.jvmTarget = <span style="background-color:#e0e0ff">&#34;1.8&#34;</span>
-    }
-}
-</code></pre></div><h3 id="štandardná-knižnica-pre-moderné-javy">Štandardná knižnica pre moderné Javy</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span>tasks {
+</span></span><span style="display:flex;"><span>    withType&lt;KotlinCompile&gt; {
+</span></span><span style="display:flex;"><span>        kotlinOptions.jvmTarget = <span style="background-color:#e0e0ff">&#34;1.8&#34;</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="štandardná-knižnica-pre-moderné-javy">Štandardná knižnica pre moderné Javy</h3>
 <p>Druhou vecou je štandardná knižnica Kotlinu, ktorá je stavaná na kompatibilitu a API pre šestkovú verziu Javy. To vyriešime inou závislosťou: namiesto všeobecnej <code>stdlib</code> použijeme <code>stlib-jdk8</code>.</p>
 <p>Celý <em>build script</em> vyzerá nasledovne:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">org.jetbrains.kotlin.gradle.tasks.KotlinCompile</span>
-
-plugins {
-    kotlin(<span style="background-color:#e0e0ff">&#34;jvm&#34;</span>) version <span style="background-color:#e0e0ff">&#34;1.3.41&#34;</span>
-}
-
-repositories {
-    mavenCentral()
-}
-
-dependencies {
-    implementation(kotlin(<span style="background-color:#e0e0ff">&#34;stdlib-jdk8&#34;</span>))
-}
-
-tasks {
-    withType&lt;KotlinCompile&gt; {
-        kotlinOptions.jvmTarget = <span style="background-color:#e0e0ff">&#34;1.8&#34;</span>
-    }
-}
-</code></pre></div><h2 id="mavenovské-nastavenia">Mavenovské nastavenia</h2>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">org.jetbrains.kotlin.gradle.tasks.KotlinCompile</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>plugins {
+</span></span><span style="display:flex;"><span>    kotlin(<span style="background-color:#e0e0ff">&#34;jvm&#34;</span>) version <span style="background-color:#e0e0ff">&#34;1.3.41&#34;</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>repositories {
+</span></span><span style="display:flex;"><span>    mavenCentral()
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>dependencies {
+</span></span><span style="display:flex;"><span>    implementation(kotlin(<span style="background-color:#e0e0ff">&#34;stdlib-jdk8&#34;</span>))
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>tasks {
+</span></span><span style="display:flex;"><span>    withType&lt;KotlinCompile&gt; {
+</span></span><span style="display:flex;"><span>        kotlinOptions.jvmTarget = <span style="background-color:#e0e0ff">&#34;1.8&#34;</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="mavenovské-nastavenia">Mavenovské nastavenia</h2>
 <p>Aby náš projekt bol naozaj kultúrny, nastavíme mu koordináty: teda mavenovskú skupinu a verziu:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">group = <span style="background-color:#e0e0ff">&#34;com.github.novotnyr&#34;</span>
-version = <span style="background-color:#e0e0ff">&#34;0.0.1-SNAPSHOT&#34;</span>
-</code></pre></div><h3 id="nastavenia-projektu-settingsgradlekts">Nastavenia projektu <code>settings.gradle.kts</code>.</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span>group = <span style="background-color:#e0e0ff">&#34;com.github.novotnyr&#34;</span>
+</span></span><span style="display:flex;"><span>version = <span style="background-color:#e0e0ff">&#34;0.0.1-SNAPSHOT&#34;</span>
+</span></span></code></pre></div><h3 id="nastavenia-projektu-settingsgradlekts">Nastavenia projektu <code>settings.gradle.kts</code>.</h3>
 <p>Názov projektu sa nastavuje na inom mieste, v samostatnom súbore <code>settings.gradle.kts</code>, ktorý sa tiež riadi kotlinovskou syntaxou.</p>
 <p>Založme si ho s nasledovným obsahom:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#666;font-style:italic">// súbor settings.gradle.kts
-</span><span style="color:#666;font-style:italic"></span>rootProject.name = <span style="background-color:#e0e0ff">&#34;gradle-boot-kotlin&#34;</span>
-</code></pre></div><p>Teraz sa zostaví korektný súbor s názvom, ktorý spĺňa mavenovské konvencie, teda <code>gradle-boot-kotlin-0.0.1-SNAPSHOT.jar</code></p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#666;font-style:italic">// súbor settings.gradle.kts
+</span></span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic"></span>rootProject.name = <span style="background-color:#e0e0ff">&#34;gradle-boot-kotlin&#34;</span>
+</span></span></code></pre></div><p>Teraz sa zostaví korektný súbor s názvom, ktorý spĺňa mavenovské konvencie, teda <code>gradle-boot-kotlin-0.0.1-SNAPSHOT.jar</code></p>
 
 </main>
 

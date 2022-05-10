@@ -271,27 +271,27 @@ Použite <code>java.uil.Scanner</code> a metódu <code>String#split()</code>.</l
 <ul>
 <li><code>int indexOf(String s)</code>: vráti index prvého výskytu podreťazca <code>s</code> v danom reťazci. Ak sa daný podreťazec v reťazci nevyskytuje, vráti <code>-1</code>.</li>
 </ul>
-<pre tabindex="0"><code>	&quot;janko komár&quot;.indexOf(&quot;ko&quot;)
+<pre tabindex="0"><code>	&#34;janko komár&#34;.indexOf(&#34;ko&#34;)
 </code></pre><p>Výsledkom je 3 (prvýkrát sa <code>ko</code> vyskytuje od štvrtého znaku, teda od tretieho indexu)</p>
 <ul>
 <li><code>String substring(int počIndex, int koncIndex)</code>: vráti podreťazec medzi počiatočným indexom a koncovým indexom.</li>
 </ul>
-<pre tabindex="0"><code>&quot;hamburger&quot;.substring(4, 8)
+<pre tabindex="0"><code>&#34;hamburger&#34;.substring(4, 8)
 </code></pre><p>vráti <code>urge</code>.</p>
 <ul>
 <li><code>char charAt(int index)</code>: vráti znak na danej pozícii.</li>
 </ul>
-<pre tabindex="0"><code>char znak = &quot;hamburger&quot;.charAt(3);
+<pre tabindex="0"><code>char znak = &#34;hamburger&#34;.charAt(3);
 </code></pre><p>vráti znak <code>b</code>.</p>
 <ul>
 <li><code>int length()</code>: vráti dĺžku reťazca</li>
 </ul>
-<pre tabindex="0"><code>int dlzka = &quot;hamburger&quot;.length()
+<pre tabindex="0"><code>int dlzka = &#34;hamburger&#34;.length()
 </code></pre><p>Výsledkom je 9.</p>
 <ul>
 <li><code>boolean startsWith(String prefix)</code>: zistí, či sa reťazec začína daným podreťazcom.</li>
 </ul>
-<pre tabindex="0"><code>boolean b = &quot;myšlienka&quot;.startsWith(&quot;myš&quot;);
+<pre tabindex="0"><code>boolean b = &#34;myšlienka&#34;.startsWith(&#34;myš&#34;);
 </code></pre><p>vráti <code>true</code>.</p>
 <h2 id="cvičenie-10-17-12-2007">Cvičenie 10 (17. 12. 2007)</h2>
 <p>V rovine sa nachádzajú geometrické útvary – štvorce, obdĺžniky a kružnice.</p>
@@ -317,52 +317,52 @@ Použite <code>java.uil.Scanner</code> a metódu <code>String#split()</code>.</l
 <h2 id="jednoduchý-program-ahoj-svet">Jednoduchý program <em>Ahoj svet</em></h2>
 <pre tabindex="0"><code>program AhojSvet;
 begin
-  writeln('Ahoj svet');
+  writeln(&#39;Ahoj svet&#39;);
 end.
-</code></pre><div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">AhojSvet</span>
-  <span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">static</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">main</span><span style="color:#333">(</span>String<span style="color:#333">[]</span> args<span style="color:#333">)</span> <span style="color:#333">{</span>
-    System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;Ahoj svet&#34;</span><span style="color:#333">);</span>
-  <span style="color:#333">}</span>
-<span style="color:#333">}</span>
-</code></pre></div><h2 id="for-cyklus"><code>for</code> cyklus</h2>
+</code></pre><div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">AhojSvet</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">static</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">main</span><span style="color:#333">(</span>String<span style="color:#333">[]</span> args<span style="color:#333">)</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>    System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;Ahoj svet&#34;</span><span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#333">}</span>
+</span></span></code></pre></div><h2 id="for-cyklus"><code>for</code> cyklus</h2>
 <pre tabindex="0"><code>program DU;
   var i:integer;
 begin
   for i:=1 to 20 do begin
-    writeln('Budem si pisat domace ulohy');
+    writeln(&#39;Budem si pisat domace ulohy&#39;);
   end;
 end.
-</code></pre><div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">AhojSvet</span>
-  <span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">static</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">main</span><span style="color:#333">(</span>String<span style="color:#333">[]</span> args<span style="color:#333">)</span> <span style="color:#333">{</span>
-    <span style="color:#289;font-weight:bold">for</span><span style="color:#333">(</span><span style="color:#66f;font-weight:bold">int</span> i <span style="color:#333">=</span> 0<span style="color:#333">;</span> i <span style="color:#333">&lt;</span> 20<span style="color:#333">;</span> i<span style="color:#333">++)</span> <span style="color:#333">{</span>
-      System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;Budem si pisat domace ulohy&#34;</span><span style="color:#333">);</span>
-    <span style="color:#333">}</span>
-  <span style="color:#333">}</span>
-<span style="color:#333">}</span>
-</code></pre></div><h2 id="podmienky">Podmienky</h2>
+</code></pre><div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">AhojSvet</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">static</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">main</span><span style="color:#333">(</span>String<span style="color:#333">[]</span> args<span style="color:#333">)</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">for</span><span style="color:#333">(</span><span style="color:#66f;font-weight:bold">int</span> i <span style="color:#333">=</span> 0<span style="color:#333">;</span> i <span style="color:#333">&lt;</span> 20<span style="color:#333">;</span> i<span style="color:#333">++)</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>      System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;Budem si pisat domace ulohy&#34;</span><span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#333">}</span>
+</span></span></code></pre></div><h2 id="podmienky">Podmienky</h2>
 <pre tabindex="0"><code>if (a = 25 or b &lt; 25) and (a &gt; b) then begin
-  writeln('Podmienka splnena');
+  writeln(&#39;Podmienka splnena&#39;);
 end 
 else begin
-  writeln('Podmienka nesplnena');
+  writeln(&#39;Podmienka nesplnena&#39;);
 end;
-</code></pre><div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">if</span><span style="color:#333">(</span> <span style="color:#333">(</span>a <span style="color:#333">==</span> 25 <span style="color:#333">||</span> b <span style="color:#333">&lt;</span> 25<span style="color:#333">)</span> <span style="color:#333">&amp;&amp;</span> <span style="color:#333">(</span>a <span style="color:#333">&gt;</span> b<span style="color:#333">))</span> <span style="color:#333">{</span>
-  System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;Podmienka splnena&#34;</span><span style="color:#333">);</span>
-<span style="color:#333">}</span> <span style="color:#289;font-weight:bold">else</span> <span style="color:#333">{</span>
-  System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;Podmienka nesplnena&#34;</span><span style="color:#333">);</span>
-<span style="color:#333">}</span>
-</code></pre></div><h2 id="cyklus-while">Cyklus <code>while</code></h2>
+</code></pre><div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">if</span><span style="color:#333">(</span> <span style="color:#333">(</span>a <span style="color:#333">==</span> 25 <span style="color:#333">||</span> b <span style="color:#333">&lt;</span> 25<span style="color:#333">)</span> <span style="color:#333">&amp;&amp;</span> <span style="color:#333">(</span>a <span style="color:#333">&gt;</span> b<span style="color:#333">))</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>  System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;Podmienka splnena&#34;</span><span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#333">}</span> <span style="color:#289;font-weight:bold">else</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>  System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;Podmienka nesplnena&#34;</span><span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#333">}</span>
+</span></span></code></pre></div><h2 id="cyklus-while">Cyklus <code>while</code></h2>
 <pre tabindex="0"><code>a := 25;
 while a &gt;= 0 do begin
   writeln(a);
   a := a - 1;
 end;
-</code></pre><div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66f;font-weight:bold">int</span> a <span style="color:#333">=</span> 25<span style="color:#333">;</span>
-<span style="color:#289;font-weight:bold">while</span><span style="color:#333">(</span>a <span style="color:#333">&gt;</span> 0<span style="color:#333">)</span> <span style="color:#333">{</span>
-  System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span>a<span style="color:#333">);</span>
-  a<span style="color:#333">--;</span>
-<span style="color:#333">}</span>
-</code></pre></div><h2 id="procedurálne-programovanie">Procedurálne programovanie</h2>
+</code></pre><div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66f;font-weight:bold">int</span> a <span style="color:#333">=</span> 25<span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">while</span><span style="color:#333">(</span>a <span style="color:#333">&gt;</span> 0<span style="color:#333">)</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>  System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span>a<span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>  a<span style="color:#333">--;</span>
+</span></span><span style="display:flex;"><span><span style="color:#333">}</span>
+</span></span></code></pre></div><h2 id="procedurálne-programovanie">Procedurálne programovanie</h2>
 <pre tabindex="0"><code>program rovnica;
 
 function diskriminant(a,b,c:integer):integer;
@@ -381,22 +381,22 @@ end;
 begin
   korene(2, 15, 5);
 end.
-</code></pre><div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">Rovnica</span> <span style="color:#333">{</span>
-  <span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">static</span> <span style="color:#66f;font-weight:bold">int</span> <span style="color:#5ed;font-weight:bold">diskriminant</span><span style="color:#333">(</span><span style="color:#66f;font-weight:bold">int</span> a<span style="color:#333">,</span> <span style="color:#66f;font-weight:bold">int</span> b<span style="color:#333">,</span> <span style="color:#66f;font-weight:bold">int</span> c<span style="color:#333">)</span> <span style="color:#333">{</span>
-    <span style="color:#289;font-weight:bold">return</span> <span style="color:#333">(</span>b <span style="color:#333">*</span> b<span style="color:#333">)</span> <span style="color:#333">-</span> <span style="color:#333">(</span>4 <span style="color:#333">*</span> a <span style="color:#333">*</span> c<span style="color:#333">);</span>
-  <span style="color:#333">}</span>
-
-  <span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">static</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">korene</span><span style="color:#333">(</span><span style="color:#66f;font-weight:bold">int</span> a<span style="color:#333">,</span> <span style="color:#66f;font-weight:bold">int</span> b<span style="color:#333">,</span> <span style="color:#66f;font-weight:bold">int</span> c<span style="color:#333">)</span> <span style="color:#333">{</span>
-    <span style="color:#66f;font-weight:bold">int</span> d <span style="color:#333">=</span> diskriminant<span style="color:#333">(</span>a<span style="color:#333">,</span> b<span style="color:#333">,</span> c<span style="color:#333">);</span>
-    System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span> <span style="color:#333">(-</span>b <span style="color:#333">+</span> Math<span style="color:#333">.</span><span style="color:#007">sqrt</span><span style="color:#333">(</span>d<span style="color:#333">))</span> <span style="color:#333">/</span> <span style="color:#333">(</span>2 <span style="color:#333">*</span> a<span style="color:#333">)</span> <span style="color:#333">);</span>
-    System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span> <span style="color:#333">(-</span>b <span style="color:#333">-</span> Math<span style="color:#333">.</span><span style="color:#007">sqrt</span><span style="color:#333">(</span>d<span style="color:#333">))</span> <span style="color:#333">/</span> <span style="color:#333">(</span>2 <span style="color:#333">*</span> a<span style="color:#333">)</span> <span style="color:#333">);</span>
-  <span style="color:#333">}</span>
-
-  <span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">static</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">main</span><span style="color:#333">(</span>String<span style="color:#333">[]</span> args<span style="color:#333">)</span> <span style="color:#333">{</span>
-    korene<span style="color:#333">(</span>2<span style="color:#333">,</span> 15<span style="color:#333">,</span> 5<span style="color:#333">);</span>
-  <span style="color:#333">}</span>
-<span style="color:#333">}</span>
-</code></pre></div><h1 id="písomka">Písomka</h1>
+</code></pre><div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">Rovnica</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">static</span> <span style="color:#66f;font-weight:bold">int</span> <span style="color:#5ed;font-weight:bold">diskriminant</span><span style="color:#333">(</span><span style="color:#66f;font-weight:bold">int</span> a<span style="color:#333">,</span> <span style="color:#66f;font-weight:bold">int</span> b<span style="color:#333">,</span> <span style="color:#66f;font-weight:bold">int</span> c<span style="color:#333">)</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">return</span> <span style="color:#333">(</span>b <span style="color:#333">*</span> b<span style="color:#333">)</span> <span style="color:#333">-</span> <span style="color:#333">(</span>4 <span style="color:#333">*</span> a <span style="color:#333">*</span> c<span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">static</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">korene</span><span style="color:#333">(</span><span style="color:#66f;font-weight:bold">int</span> a<span style="color:#333">,</span> <span style="color:#66f;font-weight:bold">int</span> b<span style="color:#333">,</span> <span style="color:#66f;font-weight:bold">int</span> c<span style="color:#333">)</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66f;font-weight:bold">int</span> d <span style="color:#333">=</span> diskriminant<span style="color:#333">(</span>a<span style="color:#333">,</span> b<span style="color:#333">,</span> c<span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>    System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span> <span style="color:#333">(-</span>b <span style="color:#333">+</span> Math<span style="color:#333">.</span><span style="color:#007">sqrt</span><span style="color:#333">(</span>d<span style="color:#333">))</span> <span style="color:#333">/</span> <span style="color:#333">(</span>2 <span style="color:#333">*</span> a<span style="color:#333">)</span> <span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>    System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span> <span style="color:#333">(-</span>b <span style="color:#333">-</span> Math<span style="color:#333">.</span><span style="color:#007">sqrt</span><span style="color:#333">(</span>d<span style="color:#333">))</span> <span style="color:#333">/</span> <span style="color:#333">(</span>2 <span style="color:#333">*</span> a<span style="color:#333">)</span> <span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">static</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">main</span><span style="color:#333">(</span>String<span style="color:#333">[]</span> args<span style="color:#333">)</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>    korene<span style="color:#333">(</span>2<span style="color:#333">,</span> 15<span style="color:#333">,</span> 5<span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#333">}</span>
+</span></span></code></pre></div><h1 id="písomka">Písomka</h1>
 <h2 id="vágny-príklad">Vágny príklad</h2>
 <p>Firma Vox Populi si chce nechať vytvoriť informačný systém pre prieskum verejnej mienky založený na hlasovaní. Každý prieskum verejnej mienky obsahuje otázku a množinu odpovedí; účastník hlasovania potom následne odpovedá na otázku zvolením jednej z možných odpovedí.</p>
 <p>Príkladom prieskumu verejnej mienky môže byť otázka: Myslíte si, že SuperStar je zmanipulovaná? s možnými odpoveďami:</p>
@@ -418,8 +418,8 @@ Navrhnite pre tento informačný systém triedy, uveďte a slovne popíšte ich 
 <ol>
 <li>Majme riadok</li>
 </ol>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66f;font-weight:bold">int</span><span style="color:#333">[]</span> x <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> <span style="color:#66f;font-weight:bold">int</span><span style="color:#333">[</span>25<span style="color:#333">];</span>
-</code></pre></div><p>Ktoré z tvrdení budú platiť po vykonaní tohto riadku?</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66f;font-weight:bold">int</span><span style="color:#333">[]</span> x <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> <span style="color:#66f;font-weight:bold">int</span><span style="color:#333">[</span>25<span style="color:#333">];</span>
+</span></span></code></pre></div><p>Ktoré z tvrdení budú platiť po vykonaní tohto riadku?</p>
 <p>A. <code>x[24]</code> je 0</p>
 <p>B. <code>x[24]</code> je nedefinovaná</p>
 <p>C. <code>x[25]</code> je 0</p>
@@ -428,11 +428,11 @@ Navrhnite pre tento informačný systém triedy, uveďte a slovne popíšte ich 
 <ol start="2">
 <li>Majme triedu</li>
 </ol>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">Trieda</span> <span style="color:#333">{</span>
-  <span style="color:#66f;font-weight:bold">float</span> <span style="color:#5ed;font-weight:bold">rátaj</span><span style="color:#333">(</span><span style="color:#66f;font-weight:bold">float</span> a<span style="color:#333">,</span> <span style="color:#66f;font-weight:bold">float</span> b<span style="color:#333">)</span> <span style="color:#333">{</span> <span style="color:#333">}</span>
-  <span style="color:#666;font-style:italic">// sem príde metóda
-</span><span style="color:#666;font-style:italic"></span><span style="color:#333">}</span>
-</code></pre></div><p>Ktorá z nasledovných metód by môže byť uvedená v triede namiesto komentára a prečo?
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">Trieda</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66f;font-weight:bold">float</span> <span style="color:#5ed;font-weight:bold">rátaj</span><span style="color:#333">(</span><span style="color:#66f;font-weight:bold">float</span> a<span style="color:#333">,</span> <span style="color:#66f;font-weight:bold">float</span> b<span style="color:#333">)</span> <span style="color:#333">{</span> <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#666;font-style:italic">// sem príde metóda
+</span></span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic"></span><span style="color:#333">}</span>
+</span></span></code></pre></div><p>Ktorá z nasledovných metód by môže byť uvedená v triede namiesto komentára a prečo?
 A. <code>int rátaj(int a, int b)</code></p>
 <p>B. <code>float rátaj(float a, float b)</code></p>
 <p>C. <code>float rátaj(float c, float d)</code></p>
@@ -440,28 +440,28 @@ A. <code>int rátaj(int a, int b)</code></p>
 <ol start="3">
 <li>Majme nasledovné triedy (každá v samostatnom súbore):</li>
 </ol>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">Rodič</span> <span style="color:#333">{</span>
-  <span style="color:#289;font-weight:bold">public</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">metóda</span><span style="color:#333">(</span><span style="color:#66f;font-weight:bold">int</span> i<span style="color:#333">)</span> <span style="color:#333">{</span>
-    System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">print</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;Rodič &#34;</span>
-      <span style="color:#333">+</span> i<span style="color:#333">);</span>
-  <span style="color:#333">}</span>
-<span style="color:#333">}</span>
-<span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">Dedič</span> <span style="color:#289;font-weight:bold">extends</span> Rodič <span style="color:#333">{</span>
-  <span style="color:#289;font-weight:bold">public</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">metóda</span><span style="color:#333">(</span><span style="color:#66f;font-weight:bold">int</span> j<span style="color:#333">)</span> <span style="color:#333">{</span>
-    System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">print</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;Dedič &#34;</span> <span style="color:#333">+</span> j<span style="color:#333">);</span>
-  <span style="color:#333">}</span>
-  <span style="color:#289;font-weight:bold">public</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">metóda</span><span style="color:#333">(</span>String s<span style="color:#333">)</span> <span style="color:#333">{</span>
-    System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">print</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;Mám &#34;</span> <span style="color:#333">+</span> s<span style="color:#333">);</span>
-  <span style="color:#333">}</span>
-  <span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">static</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">main</span><span style="color:#333">(</span>
-    String args<span style="color:#333">[])</span> <span style="color:#333">{</span>
-    Rodič b1 <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Rodič<span style="color:#333">()</span>
-    Rodič b2 <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Dedič<span style="color:#333">();</span>
-    b1<span style="color:#333">.</span><span style="color:#007">metóda</span><span style="color:#333">(</span>5<span style="color:#333">);</span>
-    b2<span style="color:#333">.</span><span style="color:#007">metóda</span><span style="color:#333">(</span>6<span style="color:#333">);</span>
-  <span style="color:#333">}</span>
-<span style="color:#333">}</span>
-</code></pre></div><p>Aký výsledok sa vypíše po spustení metódy <code>main()</code> v triede <code>Dedič</code>?</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">Rodič</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#289;font-weight:bold">public</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">metóda</span><span style="color:#333">(</span><span style="color:#66f;font-weight:bold">int</span> i<span style="color:#333">)</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>    System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">print</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;Rodič &#34;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#333">+</span> i<span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">Dedič</span> <span style="color:#289;font-weight:bold">extends</span> Rodič <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#289;font-weight:bold">public</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">metóda</span><span style="color:#333">(</span><span style="color:#66f;font-weight:bold">int</span> j<span style="color:#333">)</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>    System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">print</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;Dedič &#34;</span> <span style="color:#333">+</span> j<span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#289;font-weight:bold">public</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">metóda</span><span style="color:#333">(</span>String s<span style="color:#333">)</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>    System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">print</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;Mám &#34;</span> <span style="color:#333">+</span> s<span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">static</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">main</span><span style="color:#333">(</span>
+</span></span><span style="display:flex;"><span>    String args<span style="color:#333">[])</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>    Rodič b1 <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Rodič<span style="color:#333">()</span>
+</span></span><span style="display:flex;"><span>    Rodič b2 <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Dedič<span style="color:#333">();</span>
+</span></span><span style="display:flex;"><span>    b1<span style="color:#333">.</span><span style="color:#007">metóda</span><span style="color:#333">(</span>5<span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>    b2<span style="color:#333">.</span><span style="color:#007">metóda</span><span style="color:#333">(</span>6<span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#333">}</span>
+</span></span></code></pre></div><p>Aký výsledok sa vypíše po spustení metódy <code>main()</code> v triede <code>Dedič</code>?</p>
 <p>A. <code>Rodič 5Rodič 6</code></p>
 <p>B. <code>Dedič 5Dedič 6</code></p>
 <p>C. <code>Dedič 5Rodič 6</code></p>
@@ -470,13 +470,13 @@ A. <code>int rátaj(int a, int b)</code></p>
 <ol start="4">
 <li>Majme nasledovnú triedu</li>
 </ol>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">Test</span> <span style="color:#289;font-weight:bold">extends</span> Rodič <span style="color:#333">{</span>
-  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">Test</span><span style="color:#333">(</span><span style="color:#66f;font-weight:bold">int</span> j<span style="color:#333">)</span> <span style="color:#333">{</span>   <span style="color:#333">}</span>
-  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">Test</span><span style="color:#333">(</span><span style="color:#66f;font-weight:bold">int</span> j<span style="color:#333">,</span> <span style="color:#66f;font-weight:bold">int</span> k<span style="color:#333">)</span> <span style="color:#333">{</span> 
-    <span style="color:#289;font-weight:bold">super</span><span style="color:#333">(</span>j<span style="color:#333">,</span> k<span style="color:#333">);</span>
-  <span style="color:#333">}</span>
-<span style="color:#333">}</span>
-</code></pre></div><p>pričom <code>Rodič</code> je trieda z predošlého príkladu. Ktoré z uvedených konštrukcií je možné použiť na vytvorenie inštancie triedy <code>Test</code>?</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">Test</span> <span style="color:#289;font-weight:bold">extends</span> Rodič <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">Test</span><span style="color:#333">(</span><span style="color:#66f;font-weight:bold">int</span> j<span style="color:#333">)</span> <span style="color:#333">{</span>   <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#289;font-weight:bold">public</span> <span style="color:#5ed;font-weight:bold">Test</span><span style="color:#333">(</span><span style="color:#66f;font-weight:bold">int</span> j<span style="color:#333">,</span> <span style="color:#66f;font-weight:bold">int</span> k<span style="color:#333">)</span> <span style="color:#333">{</span> 
+</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">super</span><span style="color:#333">(</span>j<span style="color:#333">,</span> k<span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#333">}</span>
+</span></span></code></pre></div><p>pričom <code>Rodič</code> je trieda z predošlého príkladu. Ktoré z uvedených konštrukcií je možné použiť na vytvorenie inštancie triedy <code>Test</code>?</p>
 <p>A. <code>Test t = new Test();</code></p>
 <p>B. <code>Test t = new Test(1);</code></p>
 <p>C. <code>Test t = new Test(1, 2);</code></p>
@@ -489,20 +489,20 @@ A. <code>int rátaj(int a, int b)</code></p>
 <p>C. Všetko sa skompiluje správne. Po zavolaní konštruktora triedy <code>Zviera</code> sa vypíše chybové hlásenie.</p>
 <p>D. Všetko sa skompiluje správne. Po zavolaní konštruktora triedy <code>Zebra</code> sa vypíše chybové hlásenie.</p>
 <p>E. Všetko sa skompiluje správne a spustí sa správne.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">Zviera</span> <span style="color:#333">{</span>
-  <span style="color:#66f;font-weight:bold">float</span> váha<span style="color:#333">;</span>
-  Zviera<span style="color:#333">(</span><span style="color:#66f;font-weight:bold">float</span> váha<span style="color:#333">)</span> <span style="color:#333">{</span>
-    <span style="color:#289;font-weight:bold">this</span><span style="color:#333">.</span><span style="color:#007">váha</span> <span style="color:#333">=</span> váha<span style="color:#333">;</span>
-  <span style="color:#333">}</span>
-<span style="color:#333">}</span>
-<span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">Zebra</span> <span style="color:#289;font-weight:bold">extends</span> Zviera <span style="color:#333">{</span>
-  <span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">static</span>
-  <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">main</span><span style="color:#333">(</span>String<span style="color:#333">[]</span> args<span style="color:#333">)</span> <span style="color:#333">{</span>
-    Zviera a <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Zviera<span style="color:#333">(</span>222<span style="color:#333">.</span><span style="color:#007">2f</span><span style="color:#333">);</span>
-    Zebra z <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Zebra<span style="color:#333">();</span>
-  <span style="color:#333">}</span>
-<span style="color:#333">}</span>
-</code></pre></div>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">Zviera</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66f;font-weight:bold">float</span> váha<span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span>  Zviera<span style="color:#333">(</span><span style="color:#66f;font-weight:bold">float</span> váha<span style="color:#333">)</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">this</span><span style="color:#333">.</span><span style="color:#007">váha</span> <span style="color:#333">=</span> váha<span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">Zebra</span> <span style="color:#289;font-weight:bold">extends</span> Zviera <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">static</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">main</span><span style="color:#333">(</span>String<span style="color:#333">[]</span> args<span style="color:#333">)</span> <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span>    Zviera a <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Zviera<span style="color:#333">(</span>222<span style="color:#333">.</span><span style="color:#007">2f</span><span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>    Zebra z <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> Zebra<span style="color:#333">();</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#333">}</span>
+</span></span></code></pre></div>
 </main>
 
     <footer>

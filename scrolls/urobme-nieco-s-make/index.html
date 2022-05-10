@@ -65,51 +65,51 @@
 <h1 id="jednoduché-recepty-najmä-pre-céčkarov">Jednoduché recepty, najmä pre céčkarov</h1>
 <h2 id="recept-overenie-že-make-funguje">Recept: overenie, že <code>make</code> funguje</h2>
 <p><code>make</code>  je naozaj všade! Z terminálu, resp. konzoly spustime:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">whitehall:tmp$ make
-make: *** No targets specified and no makefile found.  Stop.
-</code></pre></div><p>Program nemá žiadne špeciálne inštrukcie, preto skončí s chybovou hláškou.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>whitehall:tmp$ make
+</span></span><span style="display:flex;"><span>make: *** No targets specified and no makefile found.  Stop.
+</span></span></code></pre></div><p>Program nemá žiadne špeciálne inštrukcie, preto skončí s chybovou hláškou.</p>
 <p>Overme si verziu <code>make</code> v operačnom systéme:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">whitehall:tmp$ make -v
-GNU Make 3.81
-Copyright <span style="color:#333">(</span>C<span style="color:#333">)</span> <span style="color:#60e;font-weight:bold">2006</span>  Free Software Foundation, Inc.
-This is free software; see the <span style="color:#072">source</span> <span style="color:#289;font-weight:bold">for</span> copying conditions.
-There is NO warranty; not even <span style="color:#289;font-weight:bold">for</span> MERCHANTABILITY or FITNESS FOR A
-PARTICULAR PURPOSE.
-
-This program built <span style="color:#289;font-weight:bold">for</span> i386-apple-darwin11.3.0
-</code></pre></div><p>V ukážke vidíme <strong>GNU Make</strong> spustený na <em>MacOS Mojave</em>. Ide o najrozšírenejší variant, i keď to nie je najnovšia verzia. V každom prípade, je to rozumný štandard!</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>whitehall:tmp$ make -v
+</span></span><span style="display:flex;"><span>GNU Make 3.81
+</span></span><span style="display:flex;"><span>Copyright <span style="color:#333">(</span>C<span style="color:#333">)</span> <span style="color:#60e;font-weight:bold">2006</span>  Free Software Foundation, Inc.
+</span></span><span style="display:flex;"><span>This is free software; see the <span style="color:#072">source</span> <span style="color:#289;font-weight:bold">for</span> copying conditions.
+</span></span><span style="display:flex;"><span>There is NO warranty; not even <span style="color:#289;font-weight:bold">for</span> MERCHANTABILITY or FITNESS FOR A
+</span></span><span style="display:flex;"><span>PARTICULAR PURPOSE.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>This program built <span style="color:#289;font-weight:bold">for</span> i386-apple-darwin11.3.0
+</span></span></code></pre></div><p>V ukážke vidíme <strong>GNU Make</strong> spustený na <em>MacOS Mojave</em>. Ide o najrozšírenejší variant, i keď to nie je najnovšia verzia. V každom prípade, je to rozumný štandard!</p>
 <h2 id="recept-zostavenie-jedného-c-súboru">Recept: zostavenie jedného <code>c</code> súboru</h2>
 <p>Vytvorme si primitívny program v jazyku C, <code>hello.c</code>:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#579">#include</span><span style="color:#579">&lt;stdio.h&gt;</span><span style="color:#579">
-</span><span style="color:#579"></span>
-<span style="color:#66f;font-weight:bold">int</span> <span style="color:#5ed;font-weight:bold">main</span>(<span style="color:#66f;font-weight:bold">void</span>) {
-  printf(<span style="background-color:#e0e0ff">&#34;Hello World!&#34;</span>);
-  <span style="color:#289;font-weight:bold">return</span> <span style="color:#66f;font-weight:bold">0</span>;
-}
-</code></pre></div><p>Build (zostavenie) spustíme nasledovne:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">make hello
-</code></pre></div><p>Na výstupe uvidíme priebeh zostavenia:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-makefile" data-lang="makefile"><span style="color:#f00;background-color:#faa">cc</span>     <span style="color:#f00;background-color:#faa">hello.c</span>   <span style="color:#f00;background-color:#faa">-o</span> <span style="color:#f00;background-color:#faa">hello</span>
-</code></pre></div><p>V aktuálnom adresári vznikne binárka <code>hello</code>, ktorú môžeme rovno spustiť.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">./hello
-</code></pre></div><p><code>make</code> má totiž zabudovanú podporu pre jazyk C. Po spustení <code>make hello</code> sa vyhľadá v aktuálnom adresári súbor <code>hello.c</code>, a skompiluje sa presne tak, ako keby sme vykonali <code>cc hello.c -o hello</code>. Príkaz <code>cc</code> je na tradičnom linuxovom systéme stotožnený s niektorý, kompilátorom jazyka C, napr. s <code>gcc</code>.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#579">#include</span><span style="color:#579">&lt;stdio.h&gt;</span><span style="color:#579">
+</span></span></span><span style="display:flex;"><span><span style="color:#579"></span>
+</span></span><span style="display:flex;"><span><span style="color:#66f;font-weight:bold">int</span> <span style="color:#5ed;font-weight:bold">main</span>(<span style="color:#66f;font-weight:bold">void</span>) {
+</span></span><span style="display:flex;"><span>  printf(<span style="background-color:#e0e0ff">&#34;Hello World!&#34;</span>);
+</span></span><span style="display:flex;"><span>  <span style="color:#289;font-weight:bold">return</span> <span style="color:#66f;font-weight:bold">0</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Build (zostavenie) spustíme nasledovne:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>make hello
+</span></span></code></pre></div><p>Na výstupe uvidíme priebeh zostavenia:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-makefile" data-lang="makefile"><span style="display:flex;"><span><span style="color:#f00;background-color:#faa">cc</span>     <span style="color:#f00;background-color:#faa">hello.c</span>   <span style="color:#f00;background-color:#faa">-o</span> <span style="color:#f00;background-color:#faa">hello</span>
+</span></span></code></pre></div><p>V aktuálnom adresári vznikne binárka <code>hello</code>, ktorú môžeme rovno spustiť.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>./hello
+</span></span></code></pre></div><p><code>make</code> má totiž zabudovanú podporu pre jazyk C. Po spustení <code>make hello</code> sa vyhľadá v aktuálnom adresári súbor <code>hello.c</code>, a skompiluje sa presne tak, ako keby sme vykonali <code>cc hello.c -o hello</code>. Príkaz <code>cc</code> je na tradičnom linuxovom systéme stotožnený s niektorý, kompilátorom jazyka C, napr. s <code>gcc</code>.</p>
 <h3 id="pozorovanie-ak-sa-zdrojáky-nezmenili-build-sa-nevykoná">Pozorovanie: ak sa zdrojáky nezmenili, build sa nevykoná</h3>
 <p>Opakované spustenie <code>make</code> šetrí čas. Ak <code>make</code> zistí, že zdrojový súbor nebol zmenený, kompiláciu nebude zbytočne opakovať a vypíše len:</p>
 <pre tabindex="0"><code>`hello` is up to date
 </code></pre><h2 id="recept-prispôsobenie-parametrov-buildu-pre-jazyk-c">Recept: prispôsobenie parametrov buildu pre jazyk C</h2>
 <p>Ak chceme použiť vlastné nastavenia pre build, založme si konfiguračný súbor <code>makefile</code>. Uveďme doňho nastavenia pre kompilátor C:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-makefile" data-lang="makefile"><span style="color:#036">CFLAGS</span> <span style="color:#333">=</span> -Wall -Wextra -ansi -pedantic -Werror
-</code></pre></div><p>V súbore <code>makefile</code> môžeme deklarovať vlastné premenné. V tomto prípade nastavíme zabudovanú premennú <code>CFLAGS</code>, ktorou sa riadia parametre kompilátora jazyka C.
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-makefile" data-lang="makefile"><span style="display:flex;"><span><span style="color:#036">CFLAGS</span> <span style="color:#333">=</span> -Wall -Wextra -ansi -pedantic -Werror
+</span></span></code></pre></div><p>V súbore <code>makefile</code> môžeme deklarovať vlastné premenné. V tomto prípade nastavíme zabudovanú premennú <code>CFLAGS</code>, ktorou sa riadia parametre kompilátora jazyka C.
 Ak spustíme <code>make hello</code> znovu, uvidíme jej použitie:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">whitehall$ make hello
-cc -Wall -Wextra -ansi -pedantic -Werror    hello.c   -o hello
-</code></pre></div><h2 id="recept-vlastný-kompilátor-pre-c">Recept: vlastný kompilátor pre C</h2>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>whitehall$ make hello
+</span></span><span style="display:flex;"><span>cc -Wall -Wextra -ansi -pedantic -Werror    hello.c   -o hello
+</span></span></code></pre></div><h2 id="recept-vlastný-kompilátor-pre-c">Recept: vlastný kompilátor pre C</h2>
 <p>Ak chceme použiť konkrétny kompilátor jazyka C pre build, nastavme premennú <code>CC</code>:</p>
 <pre tabindex="0"><code>CC = gcc
 </code></pre><p>Spustíme ho:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">whitehall$ make hello
-gcc -Wall -Wextra -ansi -pedantic -Werror    hello.c   -o hello
-</code></pre></div><h2 id="recept-vlastný-cieľ-pre-mazanie">Recept: vlastný cieľ pre mazanie</h2>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>whitehall$ make hello
+</span></span><span style="display:flex;"><span>gcc -Wall -Wextra -ansi -pedantic -Werror    hello.c   -o hello
+</span></span></code></pre></div><h2 id="recept-vlastný-cieľ-pre-mazanie">Recept: vlastný cieľ pre mazanie</h2>
 <p><code>make</code> podporuje aj vlastné ciele (<strong>targets</strong>), teda vlastné postupnosti príkazov, ktoré sa majú vykonať. Folklórom je vymazanie binárok, teda príkaz v duchu:</p>
 <pre tabindex="0"><code>rm ./hello
 </code></pre><p>V <code>makefile</code> si môžeme zaviesť vlastný cieľ <code>clean</code> a následne ho zavolať:</p>
@@ -120,34 +120,34 @@ Ak chceme vymazať binárku, stačí zavolať:</p>
 <pre tabindex="0"><code>make clean
 </code></pre><h2 id="recept-prerekvizity">Recept: prerekvizity</h2>
 <p>Prerekvizitou je súbor, ktorý musí existovať &ndash; teda je požiadavkou &ndash; na úspešné vykonanie cieľa. Prerekvizity uvádzame za dvojbodku:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-makefile" data-lang="makefile"><span style="color:#036">CFLAGS</span> <span style="color:#333">=</span> -Wall -Wextra -ansi -pedantic -Werror
-<span style="color:#036">CC</span> <span style="color:#333">=</span> gcc
-
-<span style="color:#5ed;font-weight:bold">all</span><span style="color:#333">:</span> hello
-
-<span style="color:#5ed;font-weight:bold">clean</span><span style="color:#333">:</span>
-	rm ./hello
-</code></pre></div><p>V tomto prípade sme si vymysleli cieľ <code>all</code>, ktorý vyžaduje na svoje úspešné vykonanie existenciu súboru <code>hello</code>.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-makefile" data-lang="makefile"><span style="display:flex;"><span><span style="color:#036">CFLAGS</span> <span style="color:#333">=</span> -Wall -Wextra -ansi -pedantic -Werror
+</span></span><span style="display:flex;"><span><span style="color:#036">CC</span> <span style="color:#333">=</span> gcc
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#5ed;font-weight:bold">all</span><span style="color:#333">:</span> hello
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#5ed;font-weight:bold">clean</span><span style="color:#333">:</span>
+</span></span><span style="display:flex;"><span>	rm ./hello
+</span></span></code></pre></div><p>V tomto prípade sme si vymysleli cieľ <code>all</code>, ktorý vyžaduje na svoje úspešné vykonanie existenciu súboru <code>hello</code>.</p>
 <p>Ak spustíme <code>make all</code>, a súbor s binárkou <code>hello</code> , ktorá je prerekvizitou tohto cieľa, neexistuje, spustí sa vykonávanie zabudovaného cieľa <code>hello</code> ,
 teda spustenie kompilátora <code>gcc</code>.</p>
 <p>Aký je rozdiel medzi <code>make hello</code> a <code>make</code>? V tomto prípade zdanlivo žiadny, ale o sekundu zistíme, že prináša jednu pohodlnú vec.</p>
 <h2 id="recept-implicitné-ciele">Recept: implicitné ciele</h2>
 <p>Cieľ, ktorý je v <code>makefile</code> uvedený ako prvý, je <strong>implicitný</strong> (<em>default target</em>). Vykoná sa v prípade, keď zavoláme <code>make</code> len tak, bez ničoho:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">make
-</code></pre></div><h1 id="recepty-pre-iné-technológie">Recepty pre iné technológie</h1>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>make
+</span></span></code></pre></div><h1 id="recepty-pre-iné-technológie">Recepty pre iné technológie</h1>
 <p>Ukážme si zostavenie, kompiláciu, či konverziu pre iné technológie, presnejšie pre prevod zdrojových súborov z formátu <a href="https://daringfireball.net/projects/markdown/">Markdown</a> pomocou nástroja <a href="https://pandoc.org/">Pandoc</a>.
 Založme si cvičný súbor <code>hello.markdown</code> s nasledovným jednoduchým obsahom:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-markdown" data-lang="markdown">Hello World
-===========
-Toto je ukážkový súbor!
-</code></pre></div><h2 id="recept-ručný-prevod-z-markdown-do-html">Recept: ručný prevod z Markdown do HTML</h2>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-markdown" data-lang="markdown"><span style="display:flex;"><span>Hello World
+</span></span><span style="display:flex;"><span>===========
+</span></span><span style="display:flex;"><span>Toto je ukážkový súbor!
+</span></span></code></pre></div><h2 id="recept-ručný-prevod-z-markdown-do-html">Recept: ručný prevod z Markdown do HTML</h2>
 <p>Ak by sme nepotrebovali <code>make</code>, súbor prevedieme na HTML jednoducho:</p>
 <pre tabindex="0"><code>pandoc hello.markdown --output hello.html
 </code></pre><h2 id="recept-vlastný-prevod-jedného-súboru">Recept: vlastný prevod jedného súboru</h2>
 <p>Ak využijeme <code>make</code>, zavedieme pravidlo:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-makefile" data-lang="makefile"><span style="color:#5ed;font-weight:bold">hello.html</span><span style="color:#333">:</span> hello.markdown
-	pandoc hello.markdown --output hello.html
-</code></pre></div><p>Cieľ <code>hello.html</code> zodpovedá súboru, ktorý sa má vyprodukovať v prípade, že</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-makefile" data-lang="makefile"><span style="display:flex;"><span><span style="color:#5ed;font-weight:bold">hello.html</span><span style="color:#333">:</span> hello.markdown
+</span></span><span style="display:flex;"><span>	pandoc hello.markdown --output hello.html
+</span></span></code></pre></div><p>Cieľ <code>hello.html</code> zodpovedá súboru, ktorý sa má vyprodukovať v prípade, že</p>
 <ol>
 <li>existuje <strong>prerekvizita</strong> zodpovedajúca súboru <code>hello.markdown</code> ,</li>
 <li>súbor prerekvizity <code>hello.markdown</code> sa zmenil.
@@ -159,7 +159,7 @@ Vyskúšajme zostaviť cieľ:</li>
 <p><code>make</code> sleduje zmeny na prerekvizitách. Ak sa prerekvizita nezmenila, pravidlo sa nevykoná, čím sa šetrí čas! Vyskúšajme jeden cieľ spustiť viackrát:</p>
 <pre tabindex="0"><code>make hello.html
 </code></pre><p>Po druhom spustení uvidíme oznam, že cieľ nie je potrebné vykonať, lebo jeho prerekvizita sa nezmenila.</p>
-<pre tabindex="0"><code>make: `hello.html' is up to date.
+<pre tabindex="0"><code>make: `hello.html&#39; is up to date.
 </code></pre><h2 id="recept-všeobecné-pravidlá-pre-prevody-súborov-pattern-rules">Recept: všeobecné pravidlá pre prevody súborov (<em>pattern rules</em>)</h2>
 <p>Ak by sme mali v adresári viacero zdrojových súborov vo formáte Markdown určených na prevod do HTML, každý jeden súbor by musel mať samostatné pravidlo. To by nebola ktovieaká zábava. Našťastie, <code>make</code> podporuje <em>vzorové pravidlá</em> (<strong>pattern rules</strong>) pre súbory, ktorých názvy zodpovedajú príslušnému vzoru:</p>
 <pre tabindex="0"><code>%.html: %.markdown
@@ -189,16 +189,16 @@ Falošný cieľ označíme nasledovne:</p>
 <li>vyhlásiť <code>clean</code> za falošný cieľ,</li>
 <li>použiť <code>all</code> ako falošný cieľ, ktorý síce neurobí nič, ale vykoná sa v prípade, ak neuvedieme žiaden cieľ`.</li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-makefile" data-lang="makefile"><span style="color:#5ed;font-weight:bold">%.html</span><span style="color:#333">:</span> %.markdown
-	pandoc $&lt; --output <span style="color:#036">$@</span>
-
-<span style="color:#5ed;font-weight:bold">all</span><span style="color:#333">:</span>
-<span style="color:#5ed;font-weight:bold">.PHONY</span><span style="color:#333">:</span> all
-
-<span style="color:#5ed;font-weight:bold">clean</span><span style="color:#333">:</span>
-	rm *.html
-<span style="color:#5ed;font-weight:bold">.PHONY</span><span style="color:#333">:</span> clean
-</code></pre></div><h1 id="recepty-pre-hromadné-spracovanie-súborov">Recepty pre hromadné spracovanie súborov</h1>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-makefile" data-lang="makefile"><span style="display:flex;"><span><span style="color:#5ed;font-weight:bold">%.html</span><span style="color:#333">:</span> %.markdown
+</span></span><span style="display:flex;"><span>	pandoc $&lt; --output <span style="color:#036">$@</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#5ed;font-weight:bold">all</span><span style="color:#333">:</span>
+</span></span><span style="display:flex;"><span><span style="color:#5ed;font-weight:bold">.PHONY</span><span style="color:#333">:</span> all
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#5ed;font-weight:bold">clean</span><span style="color:#333">:</span>
+</span></span><span style="display:flex;"><span>	rm *.html
+</span></span><span style="display:flex;"><span><span style="color:#5ed;font-weight:bold">.PHONY</span><span style="color:#333">:</span> clean
+</span></span></code></pre></div><h1 id="recepty-pre-hromadné-spracovanie-súborov">Recepty pre hromadné spracovanie súborov</h1>
 <p>Vytvorme si ešte jeden súbor vo formáte Markdown, <code>intro.markdown</code>:</p>
 <pre tabindex="0"><code>Úvod
 =============
@@ -212,14 +212,14 @@ Toto je úvod!
 <li>v príkazoch samotného receptu.
 V ukážke vidíme priradenie i čítanie z premennej pomocou <code>$(MARKDOWN)</code>, čo je zápis podobný shellu.</li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-makefile" data-lang="makefile"><span style="color:#036">MARKDOWN</span> <span style="color:#333">=</span> intro.markdown hello.markdown
-<span style="color:#5ed;font-weight:bold">all.markdown</span><span style="color:#333">:</span> <span style="color:#289;font-weight:bold">$(</span><span style="color:#036">MARKDOWN</span><span style="color:#289;font-weight:bold">)</span>
-	cat <span style="color:#289;font-weight:bold">$(</span>MARKDOWN<span style="color:#289;font-weight:bold">)</span> &gt; all.markdown
-</code></pre></div><p>Zároveň vidíme, že definujeme cieľ <code>all.markdown</code>, ktorý má prerekvizitu získanú z premennej.
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-makefile" data-lang="makefile"><span style="display:flex;"><span><span style="color:#036">MARKDOWN</span> <span style="color:#333">=</span> intro.markdown hello.markdown
+</span></span><span style="display:flex;"><span><span style="color:#5ed;font-weight:bold">all.markdown</span><span style="color:#333">:</span> <span style="color:#289;font-weight:bold">$(</span><span style="color:#036">MARKDOWN</span><span style="color:#289;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span>	cat <span style="color:#289;font-weight:bold">$(</span>MARKDOWN<span style="color:#289;font-weight:bold">)</span> &gt; all.markdown
+</span></span></code></pre></div><p>Zároveň vidíme, že definujeme cieľ <code>all.markdown</code>, ktorý má prerekvizitu získanú z premennej.
 Vo vykonaní cieľa pomocou <code>cat</code> zoberieme obsahy oboch súborov z premennej a zapíšeme ich do súboru.
 Môžeme tak vykonať príkaz, ktorým sa obsahy oboch súborov konkatenujú do jedného veľkého súboru.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">make all.markdown
-</code></pre></div><h2 id="recept-dynamické-zoznamy-súborov-pomocou-funkcie-wildcard">Recept: dynamické zoznamy súborov pomocou funkcie <code>wildcard</code></h2>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>make all.markdown
+</span></span></code></pre></div><h2 id="recept-dynamické-zoznamy-súborov-pomocou-funkcie-wildcard">Recept: dynamické zoznamy súborov pomocou funkcie <code>wildcard</code></h2>
 <p>Ak by sme mali príliš veľa zdrojových súborov, môžeme využiť zabudovanú funkciu <code>wildcard</code>:</p>
 <pre tabindex="0"><code>MARKDOWN = $(wildcard *.markdown)
 </code></pre><p>Do premennej <code>MARKDOWN</code> vložíme výsledok volania funkcie <code>wildcard</code>, ktorá vyhľadá všetky súbory s príponou <code>.markdown</code> a zostaví z nich zoznam.
@@ -240,10 +240,10 @@ Mohli by sme si urobiť cieľ  <code>html</code></p>
 html: intro.html hello.html
 </code></pre><p>Ak zavoláme <code>make html</code> , <code>make</code> zistí, že sú potrebné dve prerekvizity v podobe dvoch HTML súborov. Ak tieto súbory nejestvujú alebo nie sú aktuálne, pokúsi sa ich zostaviť.
 Na vytvorenie HTML súboru máme vzorové pravidlo (<em>pattern rule</em>) , ktoré zavolá nástroj <code>pandoc</code>. Toto pravidlo sa zavolá pre každý markdownový súbor zvlášť.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">whitehall$ make html
-pandoc intro.markdown --output intro.html
-pandoc hello.markdown --output hello.html
-</code></pre></div><p>Vidíme, že vieme zavolať cieľ, ktorým naraz vybudujeme všetky HTML súbory!</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>whitehall$ make html
+</span></span><span style="display:flex;"><span>pandoc intro.markdown --output intro.html
+</span></span><span style="display:flex;"><span>pandoc hello.markdown --output hello.html
+</span></span></code></pre></div><p>Vidíme, že vieme zavolať cieľ, ktorým naraz vybudujeme všetky HTML súbory!</p>
 <h2 id="recept-hromadné-zostavenie-dynamických-súborov">Recept: hromadné zostavenie dynamických súborov</h2>
 <p>Ak chceme naraz zostaviť všetky HTML súbory, máme na to cieľ <code>html</code> s pevným zoznamom prerekvizít:</p>
 <pre tabindex="0"><code>html: intro.html hello.html

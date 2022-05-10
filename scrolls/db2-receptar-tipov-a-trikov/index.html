@@ -75,29 +75,29 @@ NO CYCLE
 NO CACHE 
 ORDER;
 </code></pre><p>Sekvencia mozu byt pouzita ako generator primarnych klucov.</p>
-<pre tabindex="0"><code>INSERT INTO VYZNAM VALUES (next value for vyznam_seq, 'Hura');
+<pre tabindex="0"><code>INSERT INTO VYZNAM VALUES (next value for vyznam_seq, &#39;Hura&#39;);
 </code></pre><p>Zo sekvencie mozeme vySELECTovat pomocou</p>
 <pre tabindex="0"><code>SELECT NEXT VALUE FOR vyznam_seq FROM sysibm.sysdummy1
 </code></pre><h1 id="zistenie-edície-db2">Zistenie edície DB2</h1>
 <p>Pouzite <code>db2licm -l</code>. Typicky vystup je</p>
-<pre tabindex="0"><code>Product Name                            = &quot;DB2 Universal Database Express Edition&quot;
-Product Identifier                      = &quot;DB2EXP&quot;
-Version Information                     = &quot;8.2&quot;
-Expiry Date                             = &quot;Permanent&quot;
-Registered User Policy                  = &quot;Disabled&quot;
-Enforcement Policy                      = &quot;Soft Stop&quot;
-Number of processors                    = &quot;2&quot;
-Number of licensed processors           = &quot;2&quot;
-Annotation                              = &quot;&quot;
-Other information                       = &quot;&quot;
+<pre tabindex="0"><code>Product Name                            = &#34;DB2 Universal Database Express Edition&#34;
+Product Identifier                      = &#34;DB2EXP&#34;
+Version Information                     = &#34;8.2&#34;
+Expiry Date                             = &#34;Permanent&#34;
+Registered User Policy                  = &#34;Disabled&#34;
+Enforcement Policy                      = &#34;Soft Stop&#34;
+Number of processors                    = &#34;2&#34;
+Number of licensed processors           = &#34;2&#34;
+Annotation                              = &#34;&#34;
+Other information                       = &#34;&#34;
 </code></pre><h2 id="zistenie-verzie-db2">Zistenie verzie DB2</h2>
 <p>Použite <code>db2level</code>. Typický výstup je</p>
 <pre tabindex="0"><code>C:\IBM\SQLLIB\BIN&gt;db2level
-DB21085I  Instance &quot;DB2&quot; uses &quot;32&quot; bits and DB2 code release &quot;SQL08023&quot; with
-level identifier &quot;03040106&quot;.
-Informational tokens are &quot;DB2 v8.1.10.1155&quot;, &quot;special_15462&quot;, &quot;WR21362_15462&quot;,
-and FixPak &quot;10&quot;.
-Product is installed at &quot;C:\IBM\SQLLIB&quot;.
+DB21085I  Instance &#34;DB2&#34; uses &#34;32&#34; bits and DB2 code release &#34;SQL08023&#34; with
+level identifier &#34;03040106&#34;.
+Informational tokens are &#34;DB2 v8.1.10.1155&#34;, &#34;special_15462&#34;, &#34;WR21362_15462&#34;,
+and FixPak &#34;10&#34;.
+Product is installed at &#34;C:\IBM\SQLLIB&#34;.
 </code></pre><h2 id="očíslovanie-riadkov-v-selecte">Očíslovanie riadkov v SELECTe</h2>
 <pre tabindex="0"><code>SELECT id_zakl_tvar, id_autor, text, ROWNUMBER() OVER (ORDER BY id_zakl_tvar)
 FROM citat
