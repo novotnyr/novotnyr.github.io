@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Od WSDL k webovej službe — generovanie servera a klienta pomocou Metro na Java 17 | robonovotny</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    <link rel="stylesheet" href="https://novotnyr.github.io/asciidoctor.css">
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.css" integrity="sha384-D+9gmBxUQogRLqvARvNLmA9hS2x//eK1FhVb9PiU86gmcrBrJAQT8okdJ4LMp2uv" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.js" integrity="sha384-483A6DwYfKeDa0Q52fJmxFXkcPCFfnXMoXblOkJ4JcA8zATN6Tm78UNL72AKk+0O" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/contrib/auto-render.min.js" integrity="sha384-yACMu8JWxKzSp/C1YV86pzGiQ/l1YUfE8oPuahJQxzehAjEt2GiQuy/BIvl9KyeF" crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body);
+        });
+    </script>
+
+<header>
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <nav>
+    <ul>
+      
+      
+      <li class="pull-left ">
+        <a href="https://novotnyr.github.io/">/home/robonovotny</a>
+      </li>
+      
+
+      
+
+    </ul>
+  </nav>
+</header>
+
+  </head>
+
+  <body>
+    <br/>
+
+<div class="article-meta">
+<h1><span class="title">Od WSDL k webovej službe — generovanie servera a klienta pomocou Metro na Java 17</span></h1>
+
+<h2 class="date">2022/10/30</h2>
+<p class="terms">
+  
+  
+  
+  
+  
+</p>
+</div>
+
+
+
+<main>
+<div class="sect1">
+<h2 id="_úvod">Úvod</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Navrhli sme webovú službu pre SOAP pomocou <strong>contract-first</strong>?
+Máme teda kontrakt reprezentovaný súborom WSDL?</p>
+</div>
+<div class="paragraph">
+<p>Poďme vygenerovať kód pre server SOAP na kombinácii:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Java 17</p>
+</li>
+<li>
+<p>špecifikáciu <a href="https://eclipse-ee4j.github.io/metro-jax-ws/">Jakarta XML Web Services 4.0</a> (nástupca JAX-WS)</p>
+</li>
+<li>
+<p>referenčnú implementáciu <em>Eclipse Metro</em>.</p>
+</li>
+<li>
+<p>plugin pre Maven z knižnice Eclipse Metro.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_príklad_a_štruktúra_dát">Príklad a štruktúra dát</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Vybudujme si službu pre objednanie parkovania.
+V požiadavke pošleme EČV vozidla a parkovaciu zónu a v odpovedi získame identifikátor parkovacieho lístka a dátum platnosti.</p>
+</div>
+<div class="paragraph">
+<p>Pripravíme si:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>schému pre správy v tvare XSD (<em>XML Schema</em>)</p>
+</li>
+<li>
+<p>popisný súbor WSDL</p>
+</li>
+<li>
+<p>mavenovský projekt s <code>pom.xml</code> pre serverovskú časť.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_xml_schéma">XML schéma</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Vezmeme schému pre správy pomocou <strong>XML Schemy</strong>.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Kompletný súbor schémy <code>parking.xsd</code> nájdeme na konci článku, resp. <a href="https://github.com/novotnyr/jaxws-wsdl-server-2022/blob/main/src/main/resources/parking.xsd">v repozitári na GitHube</a>.
+</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_wsdl_súbor">WSDL súbor</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Vezmeme si hotový súbor pre WSDL.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Kompletný súbor schémy <code>parking.wsdl</code> nájdeme na konci článku, resp. <a href="https://github.com/novotnyr/jaxws-wsdl-server-2022/blob/main/src/main/resources/parking.wsdl">v repozitári na GitHube</a>.
+</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_projekt_pre_serverovskú_časť">Projekt pre serverovskú časť</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Založme si nový projekt založený na buildovacom nástroji Maven.</p>
+</div>
+<div class="paragraph">
+<p>V <code>pom.xml</code> definujeme:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>verziu kódu pre kompilátor: použijeme Javu 17</p>
+</li>
+<li>
+<p>závislosť na knižnici Eclipse Metro</p>
+</li>
+<li>
+<p>Maven plugin pre generovanie kódu servera</p>
+</li>
+</ul>
+</div>
+<div class="sect2">
+<h3 id="_verzia_kompilátora">Verzia kompilátora</h3>
+<div class="paragraph">
+<p>Dodajme nasledovné projektové vlastnosti:</p>
+</div>
+<div class="listingblock">
+<div class="title">pom.xml</div>
+<div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;properties&gt;
+    &lt;maven.compiler.source&gt;17&lt;/maven.compiler.source&gt;
+    &lt;maven.compiler.target&gt;17&lt;/maven.compiler.target&gt;
+&lt;/properties&gt;</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_závislosť_na_knižnici_metro">Závislosť na knižnici Metro</h3>
+<div class="paragraph">
+<p>Pridajme si závislosť na knižnici Metro:</p>
+</div>
+<div class="listingblock">
+<div class="title">pom.xml</div>
+<div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;dependency&gt;
+    &lt;groupId&gt;org.glassfish.metro&lt;/groupId&gt;
+    &lt;artifactId&gt;webservices-rt&lt;/artifactId&gt;
+    &lt;version&gt;4.0.1&lt;/version&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_maven_plugin">Maven Plugin</h3>
+<div class="paragraph">
+<p>Generovanie kostry serverovskej časti projektu, teda generovanie zdrojových kódov podľa dodaného WSDL súboru uskutočníme cez mavenovský plugin.</p>
+</div>
+<div class="listingblock">
+<div class="title">pom.xml</div>
+<div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;plugin&gt;
+    &lt;groupId&gt;com.sun.xml.ws&lt;/groupId&gt;
+    &lt;artifactId&gt;jaxws-maven-plugin&lt;/artifactId&gt;
+    &lt;version&gt;4.0.0&lt;/version&gt;
+    &lt;configuration&gt;
+        &lt;wsdlDirectory&gt;src/main/resources&lt;/wsdlDirectory&gt;<i class="conum" data-value="2"></i><b>(2)</b>
+       &lt;wsdlFiles&gt;
+           &lt;wsdlFile&gt;parking.wsdl&lt;/wsdlFile&gt;<i class="conum" data-value="1"></i><b>(1)</b>
+       &lt;/wsdlFiles&gt;
+        &lt;wsdlLocation&gt;/parking.wsdl&lt;/wsdlLocation&gt;<i class="conum" data-value="3"></i><b>(3)</b>
+    &lt;/configuration&gt;
+&lt;/plugin&gt;</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tbody><tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Definujme odkaz na názov WSDL, z ktorého vygenerujeme kód.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Uvedieme cestu k adresáru v projekte, z ktorého vytiahneme WSDL súbor.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Aby sa v generovanom kóde zbytočne neobjavovali celé cesty k lokálnemu súborovému systému používateľa, uveďme explicitnú adresu ku kódu.</td>
+</tr>
+</tbody></table>
+</div>
+<div class="admonitionblock note">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Ak umiestnime WSDL súbor medzi prostriedky (<em>resources</em>), objaví sa vo výslednom JAR archíve a teda v ceste <code>CLASSPATH</code> (v koreni).
+Takto sa na tento súbor odkážeme z bežiaceho servera a vieme ho poskytnúť klientovi.</p>
+</div>
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="admonitionblock note">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Lokácia <code>wsdlLocation</code> s lomkou na začiatku znamená, že WSDL súbor pri budovaní klientskeho kódu sa vytiahne z cesty <code>CLASSPATH</code>.
+</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_celý_pom_xml">Celý pom.xml</h3>
+<div class="admonitionblock tip">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+Celý súbor <code>pom.xml</code> nájdeme na <a href="https://github.com/novotnyr/kopr-wsdl-server-2021/blob/main/pom.xml">na GitHube</a>.
+</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_rozmiestnenie_súborov">Rozmiestnenie súborov</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Oba súbory — <code>parking.wsdl</code> aj <code>parking.xsd</code> umiestnime do <code>src/main/resources</code>, pretože tak sme to nastavili v <code>pom.xml</code> v adresári <code>wsdlDirectory</code>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_zostavenie_projektu">Zostavenie projektu</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Zdrojáky pre server nagenerujeme nasledovne:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">mvn jaxws:wsimport package</code></pre>
+</div>
+</div>
+<div class="admonitionblock caution">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-caution" title="Caution"></i>
+</td>
+<td class="content">
+Ak spúšťame Maven zo shellu, dajme si pozor, aby Java, v ktorej sa spúšťal Maven, bola vo verzii 17.
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="paragraph">
+<p>Zdrojáky sa nagenerujú do priečinka:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>target/generated-sources/wsimport/</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Pre naše WSDL sa vygeneruje nasledovná štruktúra:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code> org
+└── example
+   └── parking
+      ├── ObjectFactory.java
+      ├── package-info.java
+      ├── ParkingService.java
+      ├── ParkingRequest.java
+      ├── ParkingServices.java
+      └── ParkingTicket.java</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Názvy priečinkov / balíčkov sa odvodia z <code>targetNamespace</code> vo WSDL či schéme.
+</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_konfigurácia_projektu">Konfigurácia projektu</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Adresár <code>target/generated-sources/wsimport/</code> je užitočné potrebné pridať do projektu ako miesto so zdrojovými kódmi.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Eclipse</dt>
+<dd>
+<p>Pravý klik na adresár v strome <strong>Package List</strong>, a z kontextového menu <strong>Build Path | Use as Source Folder</strong>.</p>
+</dd>
+<dt class="hdlist1">IntelliJ</dt>
+<dd>
+<p>Pravý klik na adresár <code>target/generated-sources-wsimport</code> v projektovom strome, a z kontextového menu <strong>Mark Directory As | Generated Sources Root</strong>.</p>
+</dd>
+</dl>
+</div>
+</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_implementácia_servera">Implementácia servera</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Implementácia servera znamená vytvorenie triedy, ktorá bude implementovať triedu <code>org.example.ParkingService</code>.</p>
+</div>
+<div class="listingblock">
+<div class="title">DefaultParkingService.java</div>
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">package com.github.novotnyr.soap;
+
+import jakarta.jws.WebService;
+import org.example.parking.ParkingRequest;
+import org.example.parking.ParkingService;
+import org.example.parking.ParkingTicket;
+
+@WebService(endpointInterface = &#34;org.example.parking.ParkingService&#34;) <i class="conum" data-value="2"></i><b>(2)</b>
+public class DefaultParkingService implements ParkingService { <i class="conum" data-value="1"></i><b>(1)</b>
+    @Override
+    public ParkingTicket getTicket(ParkingRequest part) {
+        return new ParkingTicket(); <i class="conum" data-value="3"></i><b>(3)</b>
+    }
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tbody><tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Implementujeme interfejs, ktorý vznikol generovaním kódu.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>V atribúte <code>endpointInterface</code> uvedieme interfejs s kontraktom webovej služby pre JAX-WS.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Pripravíme implementáciu metódy — v tomto prípade veľmi jednoduchú.</td>
+</tr>
+</tbody></table>
+</div>
+<div class="admonitionblock important">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Interfejs <code>ParkingService</code> sa uvádza na dvoch miestach:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>V <code>implements</code>, kde určuje metódy, ktoré v Jave naprogramujeme.</p>
+</li>
+<li>
+<p>V <code>endpointInterface</code>, kde spárujeme implementáciu s nagenerovaným kontraktom webovej služby.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Ak vynecháme atribút <code>endpointInterface</code>, môže sa stať, že server nageneruje kontrakt a WSDL na základe implementácie — teda „v protismere“ od kódu k WSDL, čo rozhodne nechceme!</p>
+</div>
+</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_spustenie_servera">Spustenie servera</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Server môžeme spustiť jednoducho:</p>
+</div>
+<div class="listingblock">
+<div class="title">ParkingSoapServer.java</div>
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">package com.github.novotnyr.soap;
+
+import jakarta.xml.ws.Endpoint;
+
+public class ParkingSoapServer {
+    public static void main(String[] args) {
+        Endpoint.publish(&#34;http://localhost:8888/parking&#34;, new DefaultParkingService());
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Server beží na porte 8888 a spĺňa špecifikáciu WSDL.</p>
+</div>
+<div class="admonitionblock caution">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-caution" title="Caution"></i>
+</td>
+<td class="content">
+Táto služba zverejňuje WSDL na adrese <code><a href="http://localhost:8888/parking?wsdl" class="bare">http://localhost:8888/parking?wsdl</a></code>.
+Toto WSDL je však autogenerované, čo popiera zmysel ručnej tvorby.
+</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_spustenie_servera_s_naším_wsdl">Spustenie servera s naším WSDL</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Ak chceme použiť existujúce WSDL a to zverejniť klientovi, musíme prispôsobiť nasadenie služby.</p>
+</div>
+<div class="paragraph">
+<p>Budeme predpokladať, že v CLASSPATH máme aj WSDL (<code>parking.wsdl</code>) aj XSD (<code>parking.xsd</code>).</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">public static void main(String[] args) {
+    List&lt;Source&gt; metadata = new ArrayList&lt;Source&gt;(); <i class="conum" data-value="1"></i><b>(1)</b>
+
+    var wsdlSource = new StreamSource(DefaultParkingService.class.getResourceAsStream(&#34;/parking.wsdl&#34;)); <i class="conum" data-value="2"></i><b>(2)</b>
+    wsdlSource.setSystemId(&#34;http://www.example.org/parking/parking.wsdl&#34;); <i class="conum" data-value="3"></i><b>(3)</b>
+    metadata.add(wsdlSource); <i class="conum" data-value="4"></i><b>(4)</b>
+
+    var xsdSource = new StreamSource(DefaultParkingService.class.getResourceAsStream(&#34;/parking.xsd&#34;));<i class="conum" data-value="2"></i><b>(2)</b>
+    xsdSource.setSystemId(&#34;http://www.example.org/parking/parking.xsd&#34;);<i class="conum" data-value="3"></i><b>(3)</b>
+    metadata.add(xsdSource);<i class="conum" data-value="4"></i><b>(4)</b>
+
+    var filter = new HashMap&lt;String, Object&gt;();
+    filter.put(Endpoint.WSDL_SERVICE, new QName(&#34;http://www.example.org/parking&#34;, &#34;ParkingServices&#34;)); <i class="conum" data-value="5"></i><b>(5)</b>
+    filter.put(Endpoint.WSDL_PORT, new QName(&#34;http://www.example.org/parking&#34;, &#34;ParkingService&#34;)); <i class="conum" data-value="6"></i><b>(6)</b>
+
+    var endpoint = Endpoint.create(new DefaultParkingService()); <i class="conum" data-value="7"></i><b>(7)</b>
+    endpoint.setProperties(filter); <i class="conum" data-value="8"></i><b>(8)</b>
+    endpoint.setMetadata(metadata); <i class="conum" data-value="9"></i><b>(9)</b>
+    endpoint.publish(&#34;http://localhost:8888/parking&#34;); <i class="conum" data-value="10"></i><b>(10)</b>
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tbody><tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Musíme si pripraviť zoznam pre metadáta: teda WSDL a XSD.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Vytvoríme objekt <code>Source</code> reprezentujúci XML súbor pre WSDL či schému.
+Tento objekt načítame z <code>CLASSPATH</code>: to je reprezentované lomkou v argumente <code>getResourceAsStream</code>.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Každý takýto objekt <code>Source</code> potrebuje jednoznačný identifikátor v tvare URL s použitím protokolu <code>HTTP</code> alebo <code>file</code>.
+Keďže na konkrétnej hodnote nezáleží, vytvoríme si vymyslený ukážkový identifikátor.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>Súbor dodáme do metadát.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="5"></i><b>5</b></td>
+<td>Pomocou <code>properties</code> definujeme filter na službu <em>service</em> a <em>port</em> z WSDL, na ktorý použijeme naše metadáta, teda na ktorom zmeníme WSDL a XML schému XSD.
+Pomocou <code>WSDL_SERVICE</code> určíme kvalifikované meno (menný priestor a názov elementu) pre element <code>wsdl:service</code> z WSDL.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="6"></i><b>6</b></td>
+<td>Pomocou <code>WSDL_PORT</code> určíme kvalifikované meno (menný priestor a názov elementu) pre element <code>wsdl:port</code> z WSDL.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="7"></i><b>7</b></td>
+<td>Vytvoríme nový endpoint nad našou triedou s implementáciou servera.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="8"></i><b>8</b></td>
+<td>Nastavíme filter cez <em>properties</em>.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="9"></i><b>9</b></td>
+<td>Nastavíme nové metadáta služby.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="10"></i><b>10</b></td>
+<td>Endpoint vypublikujeme na danej adrese.</td>
+</tr>
+</tbody></table>
+</div>
+<div class="paragraph">
+<p>Backend teraz môžeme spustiť ako Java aplikáciu!</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+Na adrese <code><a href="http://localhost:8888/parking?wsdl" class="bare">http://localhost:8888/parking?wsdl</a></code> uvidíme našej ručne písané WSDL!
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Pri deklarovaní filtra (<em>properties</em>) sa musia kvalifikované názvy presne zhodovať s názvami vo WSDL.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Menný priestor v kvalifikovanom mene <code>QName</code> sa preberá z atribútu <code>targetNamespace</code> vo WSDL.</p>
+</li>
+<li>
+<p>Lokálne meno z atribútu <code>name</code> v elemente <code>wsdl:service</code>, resp. <code>wsdl:port</code>.</p>
+</li>
+</ul>
+</div>
+</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_výsledný_repozitár">Výsledný repozitár</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Výsledný repozitár je na GitHube, v repozitári <a href="https://github.com/novotnyr/jaxws-wsdl-server-2022">novotnyr/jaxws-wsdl-server-2022</a>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_zdrojáky">Zdrojáky</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_xml_schéma_2">XML Schéma</h3>
+<div class="listingblock">
+<div class="title">parking.xsd</div>
+<div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;
+&lt;schema xmlns=&#34;http://www.w3.org/2001/XMLSchema&#34;
+        targetNamespace=&#34;http://www.example.org/parking&#34;
+        elementFormDefault=&#34;qualified&#34;&gt;
+
+    &lt;element name=&#34;parkingRequest&#34;&gt;
+        &lt;complexType&gt;
+            &lt;sequence&gt;
+                &lt;element name=&#34;carId&#34; type=&#34;string&#34; /&gt;
+                &lt;element name=&#34;zone&#34; type=&#34;int&#34; /&gt;
+            &lt;/sequence&gt;
+        &lt;/complexType&gt;
+    &lt;/element&gt;
+
+    &lt;element name=&#34;parkingTicket&#34;&gt;
+        &lt;complexType&gt;
+            &lt;sequence&gt;
+                &lt;element name=&#34;id&#34; type=&#34;string&#34; /&gt;
+                &lt;element name=&#34;validUntil&#34; type=&#34;dateTime&#34; /&gt;
+            &lt;/sequence&gt;
+        &lt;/complexType&gt;
+    &lt;/element&gt;
+&lt;/schema&gt;</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_wsdl">WSDL</h3>
+<div class="listingblock">
+<div class="title">parking.wsdl</div>
+<div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34; standalone=&#34;no&#34;?&gt;
+&lt;definitions
+        name=&#34;parking&#34;
+
+        xmlns=&#34;http://schemas.xmlsoap.org/wsdl/&#34;
+        xmlns:xsd=&#34;http://www.w3.org/2001/XMLSchema&#34;
+        xmlns:soap=&#34;http://schemas.xmlsoap.org/wsdl/soap/&#34;
+
+        targetNamespace=&#34;http://www.example.org/parking&#34;
+        xmlns:p=&#34;http://www.example.org/parking&#34;
+&gt;
+
+    &lt;types&gt;
+        &lt;xsd:schema targetNamespace=&#34;http://www.example.org/parking&#34;&gt;
+            &lt;xsd:include schemaLocation=&#34;parking.xsd&#34; /&gt;
+        &lt;/xsd:schema&gt;
+    &lt;/types&gt;
+
+    &lt;message name=&#34;parkingRequest&#34;&gt;
+        &lt;part name=&#34;part&#34; element=&#34;p:parkingRequest&#34; /&gt;
+    &lt;/message&gt;
+
+    &lt;message name=&#34;parkingResponse&#34;&gt;
+        &lt;part name=&#34;part&#34; element=&#34;p:parkingTicket&#34; /&gt;
+    &lt;/message&gt;
+
+    &lt;portType name=&#34;ParkingPortType&#34;&gt;
+        &lt;operation name=&#34;getTicket&#34;&gt;
+            &lt;input message=&#34;p:parkingRequest&#34; /&gt;
+            &lt;output message=&#34;p:parkingResponse&#34; /&gt;
+        &lt;/operation&gt;
+    &lt;/portType&gt;
+
+    &lt;binding name=&#34;ParkingBinding&#34; type=&#34;p:ParkingPortType&#34;&gt;
+        &lt;soap:binding transport=&#34;http://schemas.xmlsoap.org/soap/http&#34; style=&#34;document&#34;/&gt;
+
+        &lt;operation name=&#34;getTicket&#34;&gt;
+            &lt;input&gt;
+                &lt;soap:body use=&#34;literal&#34;/&gt;
+            &lt;/input&gt;
+            &lt;output&gt;
+                &lt;soap:body use=&#34;literal&#34;/&gt;
+            &lt;/output&gt;
+        &lt;/operation&gt;
+    &lt;/binding&gt;
+
+    &lt;service name=&#34;ParkingServices&#34;&gt;
+        &lt;port name=&#34;ParkingService&#34; binding=&#34;p:ParkingBinding&#34;&gt;
+            &lt;soap:address location=&#34;http://localhost:8888/parking&#34;/&gt;
+        &lt;/port&gt;
+    &lt;/service&gt;
+&lt;/definitions&gt;</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_deskriptor_pre_maven">Deskriptor pre Maven</h3>
+<div class="listingblock">
+<div class="title">pom.xml</div>
+<div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;
+&lt;project xmlns=&#34;http://maven.apache.org/POM/4.0.0&#34;
+         xmlns:xsi=&#34;http://www.w3.org/2001/XMLSchema-instance&#34;
+         xsi:schemaLocation=&#34;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&#34;&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+
+    &lt;groupId&gt;com.github.novotnyr&lt;/groupId&gt;
+    &lt;artifactId&gt;jaxws-wsdl-server&lt;/artifactId&gt;
+    &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+
+    &lt;properties&gt;
+        &lt;maven.compiler.source&gt;17&lt;/maven.compiler.source&gt;
+        &lt;maven.compiler.target&gt;17&lt;/maven.compiler.target&gt;
+        &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+    &lt;/properties&gt;
+
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.glassfish.metro&lt;/groupId&gt;
+            &lt;artifactId&gt;webservices-rt&lt;/artifactId&gt;
+            &lt;version&gt;4.0.1&lt;/version&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+
+    &lt;build&gt;
+        &lt;plugins&gt;
+            &lt;plugin&gt;
+                &lt;groupId&gt;com.sun.xml.ws&lt;/groupId&gt;
+                &lt;artifactId&gt;jaxws-maven-plugin&lt;/artifactId&gt;
+                &lt;version&gt;4.0.0&lt;/version&gt;
+                &lt;configuration&gt;
+                    &lt;wsdlDirectory&gt;src/main/resources&lt;/wsdlDirectory&gt;
+                    &lt;wsdlFiles&gt;
+                        &lt;wsdlFile&gt;parking.wsdl&lt;/wsdlFile&gt;
+                    &lt;/wsdlFiles&gt;
+                    &lt;wsdlLocation&gt;/parking.wsdl&lt;/wsdlLocation&gt;
+                &lt;/configuration&gt;
+            &lt;/plugin&gt;
+        &lt;/plugins&gt;
+    &lt;/build&gt;
+&lt;/project&gt;</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</main>
+
+    <footer>
+      
+<script>
+(function() {
+  function center_el(tagName) {
+    var tags = document.getElementsByTagName(tagName), i, tag;
+    for (i = 0; i < tags.length; i++) {
+      tag = tags[i];
+      var parent = tag.parentElement;
+      
+      if (parent.childNodes.length === 1) {
+        
+        if (parent.nodeName === 'A') {
+          parent = parent.parentElement;
+          if (parent.childNodes.length != 1) continue;
+        }
+        if (parent.nodeName === 'P') parent.style.textAlign = 'center';
+      }
+    }
+  }
+  var tagNames = ['img', 'embed', 'object'];
+  for (var i = 0; i < tagNames.length; i++) {
+    center_el(tagNames[i]);
+  }
+})();
+</script>
+
+      
+    </footer>
+  </body>
+</html>
+
