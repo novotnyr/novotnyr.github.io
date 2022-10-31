@@ -207,7 +207,7 @@ public class DefaultTermService {
     private List&lt;Term&gt; terms = new ArrayList&lt;Term&gt;();
 
     public DefaultTermService() {
-        terms.add(new Term(LocalDate.of(2022, 12, 12), &#34;UINF/PAZ1c&#34;, 100));
+        terms.add(new Term(LocalDate.of(2022, 12, 12), &#34;UINF/PAZ1c&#34;, 100)); <i class="conum" data-value="4"></i><b>(4)</b>
         terms.add(new Term(LocalDate.of(2022, 12, 15), &#34;UINF/PAZ1c&#34;, 75));
         terms.add(new Term(LocalDate.of(2023, 1, 5), &#34;UINF/TVY1a&#34;, 50));
     }
@@ -233,6 +233,11 @@ public class DefaultTermService {
 <tr>
 <td><i class="conum" data-value="3"></i><b>3</b></td>
 <td>Pridáme verejnú metódu, ktorá sa bude mapovať na <em>operáciu</em> webovej služby-</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>Triedy <code>Term</code> je naša vlastná — obsahuje dátum skúšky, kód predmetu a voľnú kapacitu.
+Celý zdrojový kód triedy nájdeme <a href="https://github.com/novotnyr/jaxws-soap-demo-2022/blob/235a2e1d7550a9c6fba213cc1becc3201c1ec801/jaxws-server/src/main/java/com/github/novotnyr/soap/server/Term.java">repozitári na GitHube</a>.</td>
 </tr>
 </tbody></table>
 </div>
@@ -535,8 +540,7 @@ Na opravu je nutné zmeniť triedu na strane servera, pregenerovať WSDL a klien
 <h2 id="_záver">Záver</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Takúto podporu webových služieb môžeme považovať za vhodnú pre mnoho
-jednoduchých prípadov (jednoduchá trieda, málo metód, HTTP binding, vyhovujúci HTTP server, žiadne závislosti).</p>
+<p>Takúto podporu webových služieb môžeme považovať za vhodnú pre mnoho jednoduchých prípadov (jednoduchá trieda, málo metód, HTTP binding, vyhovujúci HTTP server, žiadne závislosti).</p>
 </div>
 <div class="paragraph">
 <p>Samozrejme, v komplexnejších prípadoch si asi s touto verziou nevystačíme a budeme potrebovať použiť niektorú z ťažkotonážnejších implementácií, alebo jej zahrnutie do

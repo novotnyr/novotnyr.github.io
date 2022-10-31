@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SOAP, JAX-WS, Metro a časy v `java.time` | robonovotny</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    <link rel="stylesheet" href="https://novotnyr.github.io/asciidoctor.css">
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.css" integrity="sha384-D+9gmBxUQogRLqvARvNLmA9hS2x//eK1FhVb9PiU86gmcrBrJAQT8okdJ4LMp2uv" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.js" integrity="sha384-483A6DwYfKeDa0Q52fJmxFXkcPCFfnXMoXblOkJ4JcA8zATN6Tm78UNL72AKk+0O" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/contrib/auto-render.min.js" integrity="sha384-yACMu8JWxKzSp/C1YV86pzGiQ/l1YUfE8oPuahJQxzehAjEt2GiQuy/BIvl9KyeF" crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body);
+        });
+    </script>
+
+<header>
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <nav>
+    <ul>
+      
+      
+      <li class="pull-left ">
+        <a href="https://novotnyr.github.io/">/home/robonovotny</a>
+      </li>
+      
+
+      
+
+    </ul>
+  </nav>
+</header>
+
+  </head>
+
+  <body>
+    <br/>
+
+<div class="article-meta">
+<h1><span class="title">SOAP, JAX-WS, Metro a časy v <code>java.time</code></span></h1>
+
+<h2 class="date">2022/10/31</h2>
+<p class="terms">
+  
+  
+  
+  
+  
+</p>
+</div>
+
+
+
+<main>
+<div class="paragraph">
+<p>Eclipse Metro nevie pracovať s balíčkom <code>java.time</code>.</p>
+</div>
+<div class="paragraph">
+<p>To je zvláštne, lebo Java 8 je tu od roku 2014, ale vieme to napraviť!</p>
+</div>
+<div class="paragraph">
+<p>V skutočnosti, s <code>java.time</code> nevie pracovať knižnica JAXB (<em>Jakarta XML Data Binding</em>), ale tá je súčasťou Metra.</p>
+</div>
+<div class="paragraph">
+<p>Budeme potrebovať:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Javu aspoň 11, ale podpora beží veselo na Jave 17 — poslednom LTS v čase písania článku</p>
+</li>
+<li>
+<p>Eclipse Metro pre Jakarta EE 10 (JAX-WS 4.0)</p>
+</li>
+<li>
+<p><em>Binding customizations</em> Prispôsobenia prevodu XML na objekty a späť, zvané tiež <em>marshalling</em>, či <em>serializácia</em>.</p>
+</li>
+<li>
+<p>knižnicu ThreeTen, ktorá zavedie podporu pre triedy z <code>java.time</code> do JAXB.</p>
+</li>
+<li>
+<p>Maven</p>
+</li>
+<li>
+<p>plugin <code>jaxws-maven-plugin</code> z Metra</p>
+</li>
+</ul>
+</div>
+<div class="sect1">
+<h2 id="_súbor_pre_maven">Súbor pre Maven</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Do <code>pom.xml</code> pridajme závislosti na Metre a ThreeTen:</p>
+</div>
+<div class="listingblock">
+<div class="title">pom.xml</div>
+<div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;dependencies&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;com.sun.xml.ws&lt;/groupId&gt;
+        &lt;artifactId&gt;jaxws-rt&lt;/artifactId&gt;
+        &lt;version&gt;4.0.0&lt;/version&gt;<i class="conum" data-value="1"></i><b>(1)</b>
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;io.github.threeten-jaxb&lt;/groupId&gt;
+        &lt;artifactId&gt;threeten-jaxb-core&lt;/artifactId&gt;
+        &lt;version&gt;2.1.0&lt;/version&gt;<i class="conum" data-value="2"></i><b>(2)</b>
+    &lt;/dependency&gt;
+&lt;/dependencies&gt;</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tbody><tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Eclipse Metro pre JAX-WS 4.0 v špecifikácii Jakarta EE 10.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Knižnica ThreeTen pre podporu „zabudnutých“ tried v JAXB.</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_webservis_s_dátumami_a_časmi">Webservis s dátumami a časmi</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Predstavme si webservis, ktorý pracuje s dátumami.</p>
+</div>
+<div class="paragraph">
+<p>Najprv požiadavka:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;timeRequest xmlns=&#34;urn:example:now&#34;&gt;anyType&lt;/timeRequest&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Odpoveď bude obsahovať aktuálny čas:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;currentLocalDateTime xmlns=&#34;urn:example:now&#34;&gt;2008-09-29T03:49:45&lt;/currentLocalDateTime&gt;</code></pre>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_schéma_pre_správy">Schéma pre správy</h3>
+<div class="paragraph">
+<p>Schéma pokryje požiadavku aj odpoveď:</p>
+</div>
+<div class="listingblock">
+<div class="title">now.xsd</div>
+<div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;schema xmlns=&#34;http://www.w3.org/2001/XMLSchema&#34;
+        version=&#34;1.0&#34;
+        targetNamespace=&#34;urn:example:now&#34;&gt;
+
+    &lt;element name=&#34;timeRequest&#34; type=&#34;anyType&#34; /&gt;
+    &lt;element name=&#34;currentLocalDateTime&#34; type=&#34;dateTime&#34; /&gt;
+&lt;/schema&gt;</code></pre>
+</div>
+</div>
+<div class="admonitionblock important">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+Schému dáme v projekte do adresára <code>src/wsdl</code>.
+Odtiaľ si ju vytiahne mavenovský plugin a tam ju nájde WSDL.
+</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_wsdl_metadáta">WSDL metadáta</h3>
+<div class="paragraph">
+<p>WSDL metadáta budú pracovať s uvedenými správami v jedinej operácii: <code>getNow</code>:</p>
+</div>
+<div class="listingblock">
+<div class="title">now.wsdl</div>
+<div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;definitions
+        xmlns=&#34;http://schemas.xmlsoap.org/wsdl/&#34;
+        xmlns:soap=&#34;http://schemas.xmlsoap.org/wsdl/soap/&#34;
+        xmlns:tns=&#34;urn:example:now&#34;
+        targetNamespace=&#34;urn:example:now&#34;&gt;
+    &lt;types&gt;
+        &lt;schema xmlns=&#34;http://www.w3.org/2001/XMLSchema&#34; version=&#34;1.0&#34; targetNamespace=&#34;urn:example:now&#34;&gt; <i class="conum" data-value="1"></i><b>(1)</b>
+            &lt;include schemaLocation=&#34;now.xsd&#34; /&gt; <i class="conum" data-value="2"></i><b>(2)</b>
+        &lt;/schema&gt;
+    &lt;/types&gt;
+    &lt;message name=&#34;getNow&#34;&gt;
+        &lt;part name=&#34;parameters&#34; element=&#34;tns:timeRequest&#34;/&gt;
+    &lt;/message&gt;
+    &lt;message name=&#34;getNowResponse&#34;&gt;
+        &lt;part name=&#34;parameters&#34; element=&#34;tns:currentLocalDateTime&#34;/&gt;
+    &lt;/message&gt;
+    &lt;portType name=&#34;TimeService&#34;&gt;
+        &lt;operation name=&#34;getNow&#34;&gt; <i class="conum" data-value="3"></i><b>(3)</b>
+            &lt;input message=&#34;tns:getNow&#34;/&gt;
+            &lt;output message=&#34;tns:getNowResponse&#34;/&gt;
+        &lt;/operation&gt;
+    &lt;/portType&gt;
+    &lt;binding name=&#34;binding&#34; type=&#34;tns:TimeService&#34;&gt;
+        &lt;soap:binding transport=&#34;http://schemas.xmlsoap.org/soap/http&#34; style=&#34;document&#34;/&gt;
+        &lt;operation name=&#34;getNow&#34;&gt;
+            &lt;input&gt;
+                &lt;soap:body use=&#34;literal&#34;/&gt;
+            &lt;/input&gt;
+            &lt;output&gt;
+                &lt;soap:body use=&#34;literal&#34;/&gt;
+            &lt;/output&gt;
+        &lt;/operation&gt;
+    &lt;/binding&gt;
+    &lt;service name=&#34;TimeServices&#34;&gt;
+        &lt;port name=&#34;port&#34; binding=&#34;tns:binding&#34;&gt;
+            &lt;soap:address location=&#34;http://localhost:18888/ws/now&#34;/&gt;
+        &lt;/port&gt;
+    &lt;/service&gt;
+&lt;/definitions&gt;</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tbody><tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Schéma pre správy vo formáte XSD.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Schému zahrnieme pomocou <em>include</em>, keďže menný priestor WSDL (<code>urn:example:now</code>) a menný priestor schémy sa zhodujú.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Máme jedinú operáciu <code>getNow</code>.</td>
+</tr>
+</tbody></table>
+</div>
+<div class="admonitionblock important">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+Schému dáme v projekte do adresára <code>src/wsdl</code>.
+Odtiaľ si ju vytiahne mavenovský plugin.
+</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_maven_plugin">Maven Plugin</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Pridajme mavenový plugin, ktorý vygeneruje zdrojáky klienta:</p>
+</div>
+<div class="listingblock">
+<div class="title">pom.xml</div>
+<div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;plugin&gt;
+    &lt;groupId&gt;com.sun.xml.ws&lt;/groupId&gt;
+    &lt;artifactId&gt;jaxws-maven-plugin&lt;/artifactId&gt;
+    &lt;version&gt;4.0.0&lt;/version&gt;
+&lt;/plugin&gt;</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_generovanie_zdrojákov">Generovanie zdrojákov</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Vygenerujme zdrojáky klienta:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>mvn clean jaxws:wsimport compile</code></pre>
+</div>
+</div>
+<div class="admonitionblock important">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+Cieľ <code>wsimport</code> hľadá WSDL v adresári <code>src/wsdl</code>.
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="paragraph">
+<p>Uvidíme generované súbory:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>target
+├── generated-sources
+│  └── wsimport
+│     └── example
+│        └── now
+│           ├── ObjectFactory.java
+│           ├── TimeService.java
+│           └── TimeServices.java</pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_čo_s_dátumami">Čo s dátumami?</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Trieda <code>TimeService</code> bude pracovať s dátumami typu <code>XMLGregorianCalendar</code>:</p>
+</div>
+<div class="listingblock">
+<div class="title">TimeService.java</div>
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">public XMLGregorianCalendar getNow( <i class="conum" data-value="1"></i><b>(1)</b>
+    @WebParam(name = &#34;timeRequest&#34;, targetNamespace = &#34;urn:example:now&#34;, partName = &#34;parameters&#34;)
+    Object parameters);</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tbody><tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Metóda vracia <code>XMLGregorianCalendar</code>.
+To nám nevyhovuje.</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_xml_bindingy">XML Bindingy</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Dodajme do projektu prispôsobenia mapovania XML na objekty a späť.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+Dodáme <em>XML Binding Customization</em>.
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="paragraph">
+<p>Do adresára <code>src/main/jaxws</code> dodáme <code>jaxb-bindings.xml</code>.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+V tomto adresári ho odhalí Maven plugin.
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="listingblock">
+<div class="title">src/main/jaxws/jaxb-bindings.xml</div>
+<div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;
+&lt;bindings version=&#34;3.0&#34;
+          xmlns=&#34;https://jakarta.ee/xml/ns/jaxb&#34;
+          xmlns:xjc=&#34;http://java.sun.com/xml/ns/jaxb/xjc&#34;
+          xmlns:xsd=&#34;http://www.w3.org/2001/XMLSchema&#34;&gt; <i class="conum" data-value="1"></i><b>(1)</b>
+    &lt;globalBindings&gt; <i class="conum" data-value="2"></i><b>(2)</b>
+        &lt;xjc:javaType
+                xmlType=&#34;xsd:dateTime&#34;
+                name=&#34;java.time.LocalDateTime&#34;
+                adapter=&#34;io.github.threetenjaxb.core.LocalDateTimeXmlAdapter&#34;
+        /&gt; <i class="conum" data-value="3"></i><b>(3)</b>
+    &lt;/globalBindings&gt;
+&lt;/bindings&gt;</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tbody><tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Dôležité sú:
+<div class="dlist">
+<dl>
+<dt class="hdlist1">verzia</dt>
+<dd>
+<p>3.0, i keď používame JAB modernej verzie.
+Táto verzia platí i pre JAXB 4.0 (v JAX-WS 4.0).</p>
+</dd>
+<dt class="hdlist1">implicitný menný priestor</dt>
+<dd>
+<p><code><a href="https://jakarta.ee/xml/ns/jaxb" class="bare">https://jakarta.ee/xml/ns/jaxb</a></code>.
+Pozor, používame menný priestor z projektu Jakarta!</p>
+</dd>
+<dt class="hdlist1">menný priestor pre <code>xjc</code></dt>
+<dd>
+<p>tento menný priestor je pre XJC — XML Java Compiler — prekladač XML na anotované Java triedy.</p>
+<div class="paragraph">
+<p>Špeciálne ho použijeme na prispôsobenie prekladu dátumov a časov.</p>
+</div>
+</dd>
+<dt class="hdlist1">menný priestor pre XML schému</dt>
+<dd>
+<p>deklarujeme menný priestor pre XML Schema (XSD), z neho vytiahneme dátový typ pre dátumy a časy</p>
+</dd>
+</dl>
+</div></td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Deklarujeme pravidlá, ktoré platia globálne, pre všetky triedy.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Deklarujeme pravidlo, ktoré:
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>xmlType</code></dt>
+<dd>
+<p>vezme dátový typ z XML — tuto dátum a čas <code>dateTime</code> z <em>XML Schema</em></p>
+</dd>
+<dt class="hdlist1"><code>name</code></dt>
+<dd>
+<p>namapuje ho na dátový typ z Javy</p>
+</dd>
+<dt class="hdlist1"><code>adapter</code></dt>
+<dd>
+<p>použije na to adaptér, teda Java kód.
+Ten použijeme z knižnice ThreeTen-JAXB.</p>
+</dd>
+</dl>
+</div></td>
+</tr>
+</tbody></table>
+</div>
+<div class="admonitionblock caution">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-caution" title="Caution"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Element <code>javaType</code> je z menného priestoru <code><a href="http://java.sun.com/xml/ns/jaxb/xjc" class="bare">http://java.sun.com/xml/ns/jaxb/xjc</a></code> (prefix <code>xjc</code>).</p>
+</div>
+<div class="paragraph">
+<p>Pozor, existuje totiž aj rovnomenný element z <code><a href="https://jakarta.ee/xml/ns/jaxb" class="bare">https://jakarta.ee/xml/ns/jaxb</a></code> (v súbore bez prípony), ten však nepodporuje adaptéry!</p>
+</div>
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="paragraph">
+<p>Vygenerujme znovu zdrojáky klienta:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>mvn clean jaxws:wsimport compile</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Uvidíme, že už sa používa <code>java.time.LocalDateTime</code>.</p>
+</div>
+<div class="listingblock">
+<div class="title">TimeService.java</div>
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@XmlJavaTypeAdapter(LocalDateTimeXmlAdapter.class) <i class="conum" data-value="2"></i><b>(2)</b>
+@WebMethod
+@WebResult(name = &#34;currentLocalDateTime&#34;, targetNamespace = &#34;urn:example:now&#34;, partName = &#34;parameters&#34;)
+public LocalDateTime getNow( <i class="conum" data-value="1"></i><b>(1)</b>
+    @WebParam(name = &#34;timeRequest&#34;, targetNamespace = &#34;urn:example:now&#34;, partName = &#34;parameters&#34;)
+    Object parameters);</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tbody><tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Používa sa <code>LocalDateTime</code>.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Generátor zdrojákov správne použije adaptér, ktorý sme uviedli v XML súbore.</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_kód_pre_klienta">Kód pre klienta</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Kód pre klienta následne len využije generované zdrojáky:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">public class Client {
+    public static void main(String[] args) {
+        var serviceLocator = new TimeServices();
+        TimeService timeService = serviceLocator.getPort();
+        LocalDateTime now = timeService.getNow(new Object());
+        System.out.println(now);
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_zdrojové_kódy">Zdrojové kódy</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Zdrojové kódy sú k dispozícii na <a href="https://github.com/novotnyr/jaxws-java-util-time-threeten-client">GitHube, v repozitári <code>novotnyr/jaxws-java-util-time-threeten-client</code></a>.</p>
+</div>
+</div>
+</div>
+
+</main>
+
+    <footer>
+      
+<script>
+(function() {
+  function center_el(tagName) {
+    var tags = document.getElementsByTagName(tagName), i, tag;
+    for (i = 0; i < tags.length; i++) {
+      tag = tags[i];
+      var parent = tag.parentElement;
+      
+      if (parent.childNodes.length === 1) {
+        
+        if (parent.nodeName === 'A') {
+          parent = parent.parentElement;
+          if (parent.childNodes.length != 1) continue;
+        }
+        if (parent.nodeName === 'P') parent.style.textAlign = 'center';
+      }
+    }
+  }
+  var tagNames = ['img', 'embed', 'object'];
+  for (var i = 0; i < tagNames.length; i++) {
+    center_el(tagNames[i]);
+  }
+})();
+</script>
+
+      
+    </footer>
+  </body>
+</html>
+

@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SOAP, JAX-WS, Metro a serializácia dátumov a časov | robonovotny</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    <link rel="stylesheet" href="https://novotnyr.github.io/asciidoctor.css">
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.css" integrity="sha384-D+9gmBxUQogRLqvARvNLmA9hS2x//eK1FhVb9PiU86gmcrBrJAQT8okdJ4LMp2uv" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.js" integrity="sha384-483A6DwYfKeDa0Q52fJmxFXkcPCFfnXMoXblOkJ4JcA8zATN6Tm78UNL72AKk+0O" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/contrib/auto-render.min.js" integrity="sha384-yACMu8JWxKzSp/C1YV86pzGiQ/l1YUfE8oPuahJQxzehAjEt2GiQuy/BIvl9KyeF" crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body);
+        });
+    </script>
+
+<header>
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <nav>
+    <ul>
+      
+      
+      <li class="pull-left ">
+        <a href="https://novotnyr.github.io/">/home/robonovotny</a>
+      </li>
+      
+
+      
+
+    </ul>
+  </nav>
+</header>
+
+  </head>
+
+  <body>
+    <br/>
+
+<div class="article-meta">
+<h1><span class="title">SOAP, JAX-WS, Metro a serializácia dátumov a časov</span></h1>
+
+<h2 class="date">2022/10/31</h2>
+<p class="terms">
+  
+  
+  
+  
+  
+</p>
+</div>
+
+
+
+<main>
+<div class="paragraph">
+<p>Vytvorme SOAP web service pomocou JAX-WS 4.0 (Jakarta XML Web Services) a Eclipse Metro.</p>
+</div>
+<div class="paragraph">
+<p>Ak používame základné dátové typy, všetko je v poriadku.
+Vo chvíli, keď začneme používať dátumy a časy z knižnice <code>java.time</code>, nastanú problémy.</p>
+</div>
+<div class="sect1">
+<h2 id="_príprava_pom_xml">Príprava <code>pom.xml</code></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Pripravme si mavenovský projekt, kde dodajme závislosti na Metre a podporu pre Javu 17.</p>
+</div>
+<div class="listingblock">
+<div class="title">pom.xml</div>
+<div class="content">
+<pre class="highlight"><code>&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;
+&lt;project xmlns=&#34;http://maven.apache.org/POM/4.0.0&#34;
+         xmlns:xsi=&#34;http://www.w3.org/2001/XMLSchema-instance&#34;
+         xsi:schemaLocation=&#34;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&#34;&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+
+    &lt;groupId&gt;com.github.novotnyr&lt;/groupId&gt;
+    &lt;artifactId&gt;jaxws-java-util-time-server&lt;/artifactId&gt;
+    &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+
+    &lt;properties&gt;
+        &lt;maven.compiler.source&gt;17&lt;/maven.compiler.source&gt;<i class="conum" data-value="3"></i><b>(3)</b>
+        &lt;maven.compiler.target&gt;17&lt;/maven.compiler.target&gt;
+        &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+    &lt;/properties&gt;
+
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;com.sun.xml.ws&lt;/groupId&gt;<i class="conum" data-value="1"></i><b>(1)</b>
+            &lt;artifactId&gt;jaxws-rt&lt;/artifactId&gt;
+            &lt;version&gt;4.0.0&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;com.fasterxml.woodstox&lt;/groupId&gt;<i class="conum" data-value="2"></i><b>(2)</b>
+            &lt;artifactId&gt;woodstox-core&lt;/artifactId&gt;
+            &lt;version&gt;6.4.0&lt;/version&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+&lt;/project&gt;</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tbody><tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Dodajme závislosť na Eclipse Metro.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Explicitný <code>woodstox-core</code> uvádzame kvôli bezpečnostnej chybe v Eclipse Metro 4.0, kde použijeme novšiu verziu tejto knižnice s opravenou chybou.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Použijeme Javu 17.</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_webservis_v_soap">Webservis v SOAP</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Pridajme si ukážkový SOAPový webservis, vrátane metódy <code>main()</code>:</p>
+</div>
+<div class="listingblock">
+<div class="title">TimeService.java</div>
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">package com.github.novotnyr.soap;
+
+import jakarta.jws.WebService;
+import jakarta.xml.ws.Endpoint;
+
+import java.time.LocalDateTime;
+
+@WebService
+public class TimeService {
+    public LocalDateTime getNow() { <i class="conum" data-value="1"></i><b>(1)</b>
+        return LocalDateTime.now();
+    }
+
+    public static void main(String[] args) {
+        Endpoint.publish(&#34;http://localhost:18888/ws/now&#34;, new TimeService()); <i class="conum" data-value="2"></i><b>(2)</b>
+    }
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tbody><tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Metóda vracia objekt s dátumom a časom <code>java.time.LocalDateTime</code>.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Pripravíme si endpoint a publikujeme ho.</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_ako_vyzerá_wsdl">Ako vyzerá WSDL?</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>WSDL a jeho stav? Jedným slovom: nie veľmi dobre.</p>
+</div>
+<div class="paragraph">
+<p>Pozrime sa na adresu <a href="http://localhost:18888/ws/now?xsd=1" class="bare">http://localhost:18888/ws/now?xsd=1</a> a uvidíme zvláštnu schému:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;xs:complexType name=&#34;getNowResponse&#34;&gt;
+    &lt;xs:sequence&gt;
+        &lt;xs:element name=&#34;return&#34; type=&#34;tns:localDateTime&#34; minOccurs=&#34;0&#34;/&gt;
+    &lt;/xs:sequence&gt;
+&lt;/xs:complexType&gt;
+&lt;xs:complexType name=&#34;localDateTime&#34; final=&#34;extension restriction&#34;&gt;
+    &lt;xs:sequence/&gt;
+&lt;/xs:complexType&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Operácia <code>getNowResponse</code> vracia akýsi XML dátový typ <code>localDateTime</code>, ktorá je definovaný ako prázdna sekvencia.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+JAX-WS síce vygenerovalo WSDL, ale nikto ho nevie normálne spracovať.
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="paragraph">
+<p>Ak by sme skúsili požiadavku v SoapUI, dostaneme odpoveď:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;S:Envelope xmlns:S=&#34;http://schemas.xmlsoap.org/soap/envelope/&#34;&gt;
+   &lt;S:Body&gt;
+      &lt;ns2:getNowResponse xmlns:ns2=&#34;http://soap.novotnyr.github.com/&#34;&gt;
+         &lt;return/&gt; <i class="conum" data-value="1"></i><b>(1)</b>
+      &lt;/ns2:getNowResponse&gt;
+   &lt;/S:Body&gt;
+&lt;/S:Envelope&gt;</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tbody><tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Element <code>return</code> rozhodne neobsahuje nič užitočné, hoci by sme čakali aktuálny dátum.</td>
+</tr>
+</tbody></table>
+</div>
+<div class="admonitionblock important">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+JAX-WS nevie normálne pracovať s objektami z balíčka <code>java.time</code>.
+</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_knižnica_threeten_jaxb_dostavte_sa_do_projektu">Knižnica <code>threeten-jaxb</code>, dostavte sa do projektu!</h2>
+<div class="sectionbody">
+<div class="admonitionblock important">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Prevod medzi objektami a XML v <em>Jakarta XML Web Services</em> zabezpečuje samostatná špecifikácia <em>JAXB</em> (<em>Jakarta XML Binding</em>).</p>
+</div>
+<div class="paragraph">
+<p>Súčasťou Metra je aj jej referenčná implementácia.</p>
+</div>
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="paragraph">
+<p>Knižnica <code>threeten-jaxb</code> predstavuje <em>XML adaptéry</em> pre konverziu tried, ktoré sa nedostali do jadra referenčnej implementácie JAXB`.
+Špeciálne je tam podpora pre dátumy a časy.</p>
+</div>
+<div class="paragraph">
+<p>Dodajme do <code>pom.xml</code> závislosť:</p>
+</div>
+<div class="listingblock">
+<div class="title">pom.xml</div>
+<div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;dependency&gt;
+    &lt;groupId&gt;io.github.threeten-jaxb&lt;/groupId&gt;
+    &lt;artifactId&gt;threeten-jaxb-core&lt;/artifactId&gt;
+    &lt;version&gt;2.1.0&lt;/version&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_plán_rekonštrukcie">Plán rekonštrukcie</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Na to, aby sme to rozbehali korektne, potrebujeme 4 kroky:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>pridať závislosť na Three Ten: to sme spravili</p>
+</li>
+<li>
+<p>vytvoriť vlastnú doménovú triedu, v ktorej vrátime aktuálny čas</p>
+</li>
+<li>
+<p>vracať z SOAP operácie doménovú triedu</p>
+</li>
+<li>
+<p>pripraviť anotáciu, ktorá prevedie všetky <code>LocalDateTime</code> na normálnu konštrukciu v XML</p>
+</li>
+</ol>
+</div>
+<div class="sect2">
+<h3 id="_vlastná_doménová_trieda">Vlastná doménová trieda</h3>
+<div class="paragraph">
+<p>Vytvorme vlastnú doménovú triedu.</p>
+</div>
+<div class="listingblock">
+<div class="title">CurrentLocalDateTime.java</div>
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">package com.github.novotnyr.soap;
+
+import java.time.LocalDateTime;
+
+public class CurrentLocalDateTime {
+    private LocalDateTime dateTime;
+
+    public CurrentLocalDateTime() {
+        this.dateTime = LocalDateTime.now();
+    }
+
+    public LocalDateTime getDateTime() {
+        return dateTime;
+    }
+
+    public void setDateTime(LocalDateTime dateTime) {
+        this.dateTime = dateTime;
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Trieda je úplne bežná, neobsahuje nič špeciálne.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_úprava_operácie_v_soap_webservise">Úprava operácie v SOAP webservise</h3>
+<div class="paragraph">
+<p>Operácia v SOAPovej webservice nech vracia našu doménovú triedu:</p>
+</div>
+<div class="listingblock">
+<div class="title">TimeService.java</div>
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@WebService
+public class TimeService {
+    public CurrentLocalDateTime getNow() { <i class="conum" data-value="1"></i><b>(1)</b>
+        return new CurrentLocalDateTime();
+    }
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tbody><tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Zrazu vraciame doménový objekt.</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_zapojenie_xml_adaptéra_na_prevod">Zapojenie XML adaptéra na prevod</h3>
+<div class="paragraph">
+<p>V balíčku <code>com.github.novotnyr.soap</code> vytvorme súbor <code>package-info.java</code>, kde zavedieme pravidlo pre prevody medzi <code>LocalDateTime</code> cez adaptér <code>LocalDateTimeXmlAdapter</code> z knižnice ThreeTen na reťazce.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@XmlJavaTypeAdapters({
+        @XmlJavaTypeAdapter(value = LocalDateTimeXmlAdapter.class, <i class="conum" data-value="1"></i><b>(1)</b>
+                            type = LocalDateTime.class) <i class="conum" data-value="2"></i><b>(2)</b>
+})
+package com.github.novotnyr.soap;
+
+import io.github.threetenjaxb.core.LocalDateTimeXmlAdapter;
+import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapters;
+
+import java.time.LocalDateTime;</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tbody><tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Zavedieme adaptér <code>LocalDateTimeXmlAdapter.class</code>, ktorý sa použije na serializáciu a deserializáciu.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Budeme pracovať s objektami typu <code>LocalDateTime</code>.</td>
+</tr>
+</tbody></table>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+Anotácia je nad celým balíčkom s našim serverom.
+</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_reštart_webservisy">Reštart webservisy</h3>
+<div class="paragraph">
+<p>Reštartnime webservisu a pozrime sa, ako vyzerá XML schéma.</p>
+</div>
+<div class="paragraph">
+<p>Navštívme opäť <a href="http://localhost:18888/ws/now?xsd=1" class="bare">http://localhost:18888/ws/now?xsd=1</a> a uvidíme:</p>
+</div>
+<div class="listingblock">
+<div class="title">filename.xml</div>
+<div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;xs:complexType name=&#34;getNowResponse&#34;&gt;
+    &lt;xs:sequence&gt;
+        &lt;xs:element name=&#34;return&#34; type=&#34;tns:currentLocalDateTime&#34; minOccurs=&#34;0&#34;/&gt; <i class="conum" data-value="1"></i><b>(1)</b>
+    &lt;/xs:sequence&gt;
+&lt;/xs:complexType&gt;
+&lt;xs:complexType name=&#34;currentLocalDateTime&#34;&gt;
+    &lt;xs:sequence&gt;
+        &lt;xs:element name=&#34;dateTime&#34; type=&#34;xs:string&#34; minOccurs=&#34;0&#34;/&gt; <i class="conum" data-value="2"></i><b>(2)</b>
+    &lt;/xs:sequence&gt;
+&lt;/xs:complexType&gt;</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tbody><tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Výstupný element je teraz typu <code>currentLocalDateTime</code>, ktorý sa rozoberie v ďalšom kroku.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Tento dátový typ v XML schéme obsahuje jediný atribút: <code>dateTime</code> typu <code>String</code>, ktorý môže byť vynechaný (<code>minOccurs=0</code>).</td>
+</tr>
+</tbody></table>
+</div>
+<div class="admonitionblock important">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+Vďaka adaptéru sa budú dátumy a časy typu <code>LocalDateTime</code> prevádzať na reťazce v XML.
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="paragraph">
+<p>Ak aktualizujeme definíciu SOAPovej služby v SoapUI, uvidíme inú odpoveď:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;S:Envelope xmlns:S=&#34;http://schemas.xmlsoap.org/soap/envelope/&#34;&gt;
+   &lt;S:Body&gt;
+      &lt;ns2:getNowResponse xmlns:ns2=&#34;http://soap.novotnyr.github.com/&#34;&gt;
+         &lt;return&gt;
+            &lt;dateTime&gt;2022-10-30T22:26:07.848894&lt;/dateTime&gt; <i class="conum" data-value="1"></i><b>(1)</b>
+         &lt;/return&gt;
+      &lt;/ns2:getNowResponse&gt;
+   &lt;/S:Body&gt;
+&lt;/S:Envelope&gt;</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tbody><tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Dátumy a čas už chodia ako reťazce vo formáte ISO-8601.</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_ako_by_vyzeral_klient">Ako by vyzeral klient?</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Ak by sme si vygenerovali SOAP klienta v Jave na základe WSDL, uvideli by sme triedu, kde je dátum a čas reprezentovaný ako reťazec:</p>
+</div>
+<div class="listingblock">
+<div class="title">CurrentLocalDateTime.java</div>
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">package com.github.novotnyr.soap;
+
+public class CurrentLocalDateTime {
+
+    protected String dateTime; <i class="conum" data-value="1"></i><b>(1)</b>
+
+    public String getDateTime() {
+        return dateTime;
+    }
+
+    public void setDateTime(String value) {
+        this.dateTime = value;
+    }
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tbody><tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Dátum a čas je reprezentovaný ako reťazec.
+Je to presne preto, že v XML schéme máme uvedený dátový typ <code>xsd:string</code>.</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_ako_upraviť_xml_schému">Ako upraviť XML schému?</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Vieme upraviť serverovský kód tak, aby v schéme XML vo WSDL vracal dátum a čas?
+Veď existuje primitívny dátový typ <a href="https://www.w3.org/TR/xmlschema-2/#dateTime">dateTime</a>!</p>
+</div>
+<div class="paragraph">
+<p>Na toto musíme dodať ďalšiu anotáciu do serverovskej doménovej triedy.</p>
+</div>
+<div class="listingblock">
+<div class="title">CurrentLocalDateTime.java</div>
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">import jakarta.xml.bind.annotation.XmlSchemaType;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
+public class CurrentLocalDateTime {
+    //...
+    @XmlSchemaType(name = &#34;dateTime&#34;, type = LocalDate.class) <i class="conum" data-value="1"></i><b>(1)</b>
+    public LocalDateTime getDateTime() {
+        //...
+    }
+    //...</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tbody><tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Do <em>gettera</em> doménového objektu dodáme anotáciu <code>@XmlSchemaType</code>.
+Uvedieme dve vlastnosti:
+<div class="ulist">
+<ul>
+<li>
+<p><code>name</code>: názov dátového typu zo XML schémy.
+Uvádzame ho ako reťazec.</p>
+</li>
+<li>
+<p><code>type</code>: dátový typ z Javy, na ktorý sa namapuje typ z XML schémy.</p>
+</li>
+</ul>
+</div></td>
+</tr>
+</tbody></table>
+</div>
+<div class="admonitionblock caution">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-caution" title="Caution"></i>
+</td>
+<td class="content">
+Anotáciu dávame nad <em>getter</em>, nie nad inštančnú premennú, pretože inak uvidíme chybu s duplicitnou deklaráciou atribútu <code>dateTime</code>.
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="paragraph">
+<p>Reštartnime SOAP server a pozrime si schému pre XSD na <a href="http://localhost:18888/ws/now?xsd=1" class="bare">http://localhost:18888/ws/now?xsd=1</a>.</p>
+</div>
+<div class="paragraph">
+<p>Uvidíme pozitívne zmeny:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;xs:complexType name=&#34;currentLocalDateTime&#34;&gt;
+    &lt;xs:sequence&gt;
+        &lt;xs:element name=&#34;dateTime&#34; type=&#34;xs:dateTime&#34; minOccurs=&#34;0&#34;/&gt; <i class="conum" data-value="1"></i><b>(1)</b>
+    &lt;/xs:sequence&gt;
+&lt;/xs:complexType&gt;</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tbody><tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Element <code>dateTime</code> je už zo štandadného primitívneho typu zo XML schémy <code>xs:dateTime</code> a nie reťazec!</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_pregenerovanie_xml_klienta">Pregenerovanie XML klienta</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Ak pregenerujeme klienta cez JAX-WS 4.0, uvidíme zmeny:</p>
+</div>
+<div class="listingblock">
+<div class="title">CurrentLocalDateTime.java</div>
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">package com.github.novotnyr.soap;
+
+import javax.xml.datatype.XMLGregorianCalendar;
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlSchemaType;
+import jakarta.xml.bind.annotation.XmlType;
+
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = &#34;currentLocalDateTime&#34;, propOrder = {
+    &#34;dateTime&#34;
+})
+public class CurrentLocalDateTime {
+
+    @XmlSchemaType(name = &#34;dateTime&#34;) <i class="conum" data-value="2"></i><b>(2)</b>
+    protected XMLGregorianCalendar dateTime; <i class="conum" data-value="1"></i><b>(1)</b>
+
+    public XMLGregorianCalendar getDateTime() {
+        return dateTime;
+    }
+
+    public void setDateTime(XMLGregorianCalendar value) {
+        this.dateTime = value;
+    }
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tbody><tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Generátor klienta vytvoril premennú typu <a href="https://docs.oracle.com/javase/7/docs/api/javax/xml/datatype/XMLGregorianCalendar.html">XMLGregorianCalendar</a></td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Premennú namapoval na dátový typ <code>dateTime</code> zo XML schémy.</td>
+</tr>
+</tbody></table>
+</div>
+<div class="paragraph">
+<p>V kóde potom vieme previesť <code>XMLGregorianCalendar</code> na <code>LocalDateTime</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">//...zavoláme webservis
+CurrentLocalDateTime currentLocalDateTime = timeService.getNow();
+XMLGregorianCalendar dateTime = currentLocalDateTime.getDateTime(); <i class="conum" data-value="1"></i><b>(1)</b>
+LocalDateTime localDateTime = dateTime
+                                .toGregorianCalendar()
+                                .toZonedDateTime()
+                                .toLocalDateTime(); <i class="conum" data-value="2"></i><b>(2)</b>
+System.out.println(localDateTime);</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tbody><tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Získame surový XML objekt s dátumom a časom.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Prevedieme ho na <code>LocalDateTime</code>.</td>
+</tr>
+</tbody></table>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+Ak by sme sa chceli zbaviť komplikovaného ručného prevodu, museli by sme použiť mechanizmus <em>JAXB Bindings</em>, resp. <em>XJC Bindings</em>, ktorý je ale už mimo záber tohto článku.
+</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+</div>
+
+</main>
+
+    <footer>
+      
+<script>
+(function() {
+  function center_el(tagName) {
+    var tags = document.getElementsByTagName(tagName), i, tag;
+    for (i = 0; i < tags.length; i++) {
+      tag = tags[i];
+      var parent = tag.parentElement;
+      
+      if (parent.childNodes.length === 1) {
+        
+        if (parent.nodeName === 'A') {
+          parent = parent.parentElement;
+          if (parent.childNodes.length != 1) continue;
+        }
+        if (parent.nodeName === 'P') parent.style.textAlign = 'center';
+      }
+    }
+  }
+  var tagNames = ['img', 'embed', 'object'];
+  for (var i = 0; i < tagNames.length; i++) {
+    center_el(tagNames[i]);
+  }
+})();
+</script>
+
+      
+    </footer>
+  </body>
+</html>
+
