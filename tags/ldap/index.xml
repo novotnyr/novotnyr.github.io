@@ -15,10 +15,10 @@
       <guid>https://novotnyr.github.io/scrolls/connect-to-ldap-server-from-windows-client-via-ssl/</guid>
       <description>Connecting to LDAP server with SSL via client side may be difficult due to Windows peculiarities. How to ldapmodify the data?
 Retrieve server certificate Locate the server certificate on the server in:
-secure/certs/server.pem  Extract the parts between and including
------BEGIN CERTIFICATE----- ... -----END CERTIFICATE-----  Store the certificate to the client machine to the c:/etc/ldap/server.pem.
+secure/certs/server.pem Extract the parts between and including
+-----BEGIN CERTIFICATE----- ... -----END CERTIFICATE----- Store the certificate to the client machine to the c:/etc/ldap/server.pem.
 Prepare client certificate Create c:/etc/ldap/ldap.conf with the following contents:
-TLS_CACERT c:/etc/ldap/server.pem  Set the location of client configuration file</description>
+TLS_CACERT c:/etc/ldap/server.pem Set the location of client configuration file</description>
     </item>
     
   </channel>

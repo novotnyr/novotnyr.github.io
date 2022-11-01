@@ -333,8 +333,8 @@ public class ListenerTest {
 &lt;/plugin&gt;
 </code></pre><h3 id="configuring-stubrunner">Configuring StubRunner</h3>
 <p>Additionally, we need to configure the <em>StubRunner</em>. Specifically, we need to enable AMQP-based StubRunner for integration tests. Let’s create <code>src/test/resources/application.properties</code> with the following content:</p>
-<pre tabindex="0"><code class="language-properties" data-lang="properties">stubrunner.amqp.enabled=true
-</code></pre><h2 id="configuring-base-test-class">Configuring Base Test Class</h2>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-properties" data-lang="properties"><span style="display:flex;"><span><span style="color:#007">stubrunner.amqp.enabled</span><span style="color:#333">=</span><span style="background-color:#e0e0ff">true</span>
+</span></span></code></pre></div><h2 id="configuring-base-test-class">Configuring Base Test Class</h2>
 <p>We will now declare the base class <code>TestBase</code> that we specified in the <code>pom.xml</code>. This is an <em>abstract</em> class which covers:</p>
 <ul>
 <li>an annotation <code>@AutoConfigureMessageVerifier</code> denoting a base class for integration tests</li>
