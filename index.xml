@@ -6,7 +6,38 @@
     <description>Recent content on robonovotny</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 31 Oct 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://novotnyr.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 18 Dec 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://novotnyr.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Go a zádrhele pri objektoch</title>
+      <link>https://novotnyr.github.io/scrolls/go-a-objekty/</link>
+      <pubDate>Sun, 18 Dec 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://novotnyr.github.io/scrolls/go-a-objekty/</guid>
+      <description>Go, štruktúry a správanie Objekty sú hlavne o správaní.
+A to bez ohľadu na jazyk, v ktorom ich používame, čiže aj v jazyku Go.
+Geometrické útvary Zoberme si také geometrické útvary, ktorým chceme rátať plochu.
+type Shaper interface { Area() float64 } Vyrobíme teda interfejs, ktorý reprezentuje kontrakt pre akýkoľvek objekt, ktorý dokáže vyrátať svoju plochu.
+Najprv štvorce Prvým takýmto útvarom bude útvar — štvorec. Na výpočet plochy potrebujeme jediný stav: veľkosť jeho strany side.</description>
+    </item>
+    
+    <item>
+      <title>Git a podpisovanie komitov cez GPG</title>
+      <link>https://novotnyr.github.io/scrolls/git-gpg-podpisovanie-commit/</link>
+      <pubDate>Wed, 09 Nov 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://novotnyr.github.io/scrolls/git-gpg-podpisovanie-commit/</guid>
+      <description>Nainštalujme gpg:
+brew install gpg Nagenerujeme pár kľúčov:
+gpg --full-generate-key Vznikne adresár v domovskom priečinku ~/.gnupg. Pozrime jeho výpis.
+ls ~/.gnupg Vypíšme kľúče:
+gpg --list-secret-keys --keyid-format=long Uvidíme:
+/Users/novotnyr/.gnupg/pubring.kbx ---------------------------------- sec ed25519/5FAE3B1F51B63E0C 2022-11-08 [SC] 15E5B5BA00311CEF2DD287D55FAE3B1F51B63E0C uid [ultimate] Robert Novotny &amp;lt;redacted@gmail.com&amp;gt; ssb cv25519/3631AF913E983143 2022-11-08 [E] Identifikátor je 5FAE3B1F51B63E0C.
+Exportnime do súboru
+gpg --armor --export 5FAE3B1F51B63E0C Export pridáme do UI GItHubu: GitHub Settings &amp;gt; Keys
+Overme, že podpisovanie funguje v základe:
+echo &amp;#34;test&amp;#34; | gpg --clearsign gpg si poprosí heslo k privátnemu kľúču cez dialóg v termináli a následne vypíše napr.</description>
+    </item>
+    
     <item>
       <title>SOAP, JAX-WS, Metro a časy v `java.time`</title>
       <link>https://novotnyr.github.io/scrolls/jax-ws-serializacia-java-time/</link>

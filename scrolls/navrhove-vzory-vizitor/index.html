@@ -135,7 +135,7 @@
 </span></span></code></pre></div><h3 id="prechádzky-mapou">Prechádzky mapou</h3>
 <p>Podobný trik funguje aj pre mapy:</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">val</span> members = mapOf(<span style="background-color:#e0e0ff">&#34;John&#34;</span> to <span style="color:#60e;font-weight:bold">1940</span>, <span style="background-color:#e0e0ff">&#34;Paul&#34;</span> to <span style="color:#60e;font-weight:bold">1942</span>, <span style="background-color:#e0e0ff">&#34;George&#34;</span> to <span style="color:#60e;font-weight:bold">1943</span>, <span style="background-color:#e0e0ff">&#34;Ringo&#34;</span> to <span style="color:#60e;font-weight:bold">1940</span>)
-</span></span><span style="display:flex;"><span>members.forEach { (name, year) <span style="color:#333">-&gt;</span> println(LocalDate.now().year - year) }
+</span></span><span style="display:flex;"><span>members.forEach { (name, year) <span style="color:#333">-&gt;</span> println(<span style="color:#e9e;font-weight:bold">LocalDate</span>.now().year - year) }
 </span></span></code></pre></div><p>V tomto prípade je <em>visitor</em> reprezentovaný funkciou (lambda výrazom) s dvoma parametrami: menom (<code>name</code>) a rokom narodenia <code>year</code>, ktorá vypíše vek.</p>
 <h3 id="prechádzky-grafom">Prechádzky grafom</h3>
 <p>Ak chceme napríklad prechádzať graf do šírky, vieme visitora definovať ako jednoduchú funkciu z uzlov do <em>ničoho</em> (teda <code>Unit</code>).</p>

@@ -171,8 +171,8 @@ Vytvoríme triedu s príslušnými metódami a anotujeme tu tak, aby ukazovala n
 </span></span><span style="display:flex;"><span>  <span style="color:#333">{</span>
 </span></span><span style="display:flex;"><span>    MovieReservationResponse confirmation 
 </span></span><span style="display:flex;"><span>      <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> MovieReservationResponse<span style="color:#333">();</span>
-</span></span><span style="display:flex;"><span>    confirmation<span style="color:#333">.</span><span style="color:#007">setId</span><span style="color:#333">(</span>23456674<span style="color:#333">);</span>
-</span></span><span style="display:flex;"><span>    confirmation<span style="color:#333">.</span><span style="color:#007">getReservedSeats</span><span style="color:#333">().</span><span style="color:#007">addAll</span><span style="color:#333">(</span>Arrays<span style="color:#333">.</span><span style="color:#007">asList</span><span style="color:#333">(</span>2<span style="color:#333">,</span> 3<span style="color:#333">,</span> 2<span style="color:#333">));</span>
+</span></span><span style="display:flex;"><span>    confirmation<span style="color:#333">.</span><span style="color:#007">setId</span><span style="color:#333">(</span><span style="color:#66f;font-weight:bold">23456674</span><span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>    confirmation<span style="color:#333">.</span><span style="color:#007">getReservedSeats</span><span style="color:#333">().</span><span style="color:#007">addAll</span><span style="color:#333">(</span>Arrays<span style="color:#333">.</span><span style="color:#007">asList</span><span style="color:#333">(</span><span style="color:#66f;font-weight:bold">2</span><span style="color:#333">,</span> <span style="color:#66f;font-weight:bold">3</span><span style="color:#333">,</span> <span style="color:#66f;font-weight:bold">2</span><span style="color:#333">));</span>
 </span></span><span style="display:flex;"><span>    
 </span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">return</span> confirmation<span style="color:#333">;</span>
 </span></span><span style="display:flex;"><span>  <span style="color:#333">}</span>
@@ -313,13 +313,13 @@ V tomto prípade budeme doťahovať WSDL súbor z <code>CLASSPATH</code>.</li>
 </span></span><span style="display:flex;"><span>    
 </span></span><span style="display:flex;"><span>    MovieReservationRequest request <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> MovieReservationRequest<span style="color:#333">();</span>
 </span></span><span style="display:flex;"><span>    request<span style="color:#333">.</span><span style="color:#007">setTitle</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;Godzilla&#34;</span><span style="color:#333">);</span>
-</span></span><span style="display:flex;"><span>    request<span style="color:#333">.</span><span style="color:#007">setNumberOfTickets</span><span style="color:#333">(</span>2<span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>    request<span style="color:#333">.</span><span style="color:#007">setNumberOfTickets</span><span style="color:#333">(</span><span style="color:#66f;font-weight:bold">2</span><span style="color:#333">);</span>
 </span></span><span style="display:flex;"><span>    
 </span></span><span style="display:flex;"><span>    XMLGregorianCalendar date 
 </span></span><span style="display:flex;"><span>      <span style="color:#333">=</span> DatatypeFactory
 </span></span><span style="display:flex;"><span>        <span style="color:#333">.</span><span style="color:#007">newInstance</span><span style="color:#333">()</span>
 </span></span><span style="display:flex;"><span>        <span style="color:#333">.</span><span style="color:#007">newXMLGregorianCalendarDate</span><span style="color:#333">(</span>
-</span></span><span style="display:flex;"><span>            2008<span style="color:#333">,</span> 12<span style="color:#333">,</span> 12<span style="color:#333">,</span> 
+</span></span><span style="display:flex;"><span>            <span style="color:#66f;font-weight:bold">2008</span><span style="color:#333">,</span> <span style="color:#66f;font-weight:bold">12</span><span style="color:#333">,</span> <span style="color:#66f;font-weight:bold">12</span><span style="color:#333">,</span> 
 </span></span><span style="display:flex;"><span>            DatatypeConstants<span style="color:#333">.</span><span style="color:#007">FIELD_UNDEFINED</span><span style="color:#333">);</span>
 </span></span><span style="display:flex;"><span>    request<span style="color:#333">.</span><span style="color:#007">setDate</span><span style="color:#333">(</span>date<span style="color:#333">);</span>
 </span></span><span style="display:flex;"><span>    

@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Go a zádrhele pri objektoch | robonovotny</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    <link rel="stylesheet" href="https://novotnyr.github.io/asciidoctor.css">
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.css" integrity="sha384-D+9gmBxUQogRLqvARvNLmA9hS2x//eK1FhVb9PiU86gmcrBrJAQT8okdJ4LMp2uv" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.js" integrity="sha384-483A6DwYfKeDa0Q52fJmxFXkcPCFfnXMoXblOkJ4JcA8zATN6Tm78UNL72AKk+0O" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/contrib/auto-render.min.js" integrity="sha384-yACMu8JWxKzSp/C1YV86pzGiQ/l1YUfE8oPuahJQxzehAjEt2GiQuy/BIvl9KyeF" crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body);
+        });
+    </script>
+
+<header>
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <nav>
+    <ul>
+      
+      
+      <li class="pull-left ">
+        <a href="https://novotnyr.github.io/">/home/robonovotny</a>
+      </li>
+      
+
+      
+
+    </ul>
+  </nav>
+</header>
+
+  </head>
+
+  <body>
+    <br/>
+
+<div class="article-meta">
+<h1><span class="title">Go a zádrhele pri objektoch</span></h1>
+
+<h2 class="date">2022/12/18</h2>
+<p class="terms">
+  
+  
+  
+  
+  
+</p>
+</div>
+
+
+
+<main>
+<div class="sect1">
+<h2 id="_go_štruktúry_a_správanie">Go, štruktúry a správanie</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Objekty sú hlavne o správaní.</p>
+</div>
+<div class="paragraph">
+<p>A to bez ohľadu na jazyk, v ktorom ich používame, čiže aj v jazyku Go.</p>
+</div>
+<div class="sect2">
+<h3 id="_geometrické_útvary">Geometrické útvary</h3>
+<div class="paragraph">
+<p>Zoberme si také geometrické útvary, ktorým chceme rátať plochu.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-go" data-lang="go">type Shaper interface {
+	Area() float64
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Vyrobíme teda interfejs, ktorý reprezentuje kontrakt pre akýkoľvek objekt, ktorý dokáže vyrátať svoju plochu.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_najprv_štvorce">Najprv štvorce</h3>
+<div class="paragraph">
+<p>Prvým takýmto útvarom bude útvar — <strong>štvorec</strong>.
+Na výpočet plochy potrebujeme jediný <em>stav</em>: veľkosť jeho strany <code>side</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-go" data-lang="go">type Square struct {
+	side float64
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Ak má štvorec implementovať interfejs <code>Shaper</code>, stačí mu dodať príslušnú metódu:</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tbody><tr>
+<td class="icon">
+<div class="title">Tip</div>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>V Go neexistuje kľúčové slovo <code>implements</code> či dvojbodka z iných jazykov.
+Ak má štruktúra všetky metódy daného interfejsu, implementuje ho automaticky.</p>
+</div>
+<div class="paragraph">
+<p>Toto je niekde nazývané „duck typing“ — ak to kváka ako kačka, a chodí ako kačka, tak je to kačka.</p>
+</div>
+<div class="paragraph">
+<p>U nás: ak to vie zrátať plochu, tak je to interfejs <code>Shaper</code>.</p>
+</div>
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-go" data-lang="go">func (s Square) Area() float64 {
+	return s.side * s.side
+}</code></pre>
+</div>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tbody><tr>
+<td class="icon">
+<div class="title">Tip</div>
+</td>
+<td class="content">
+Budeme používať metódy na prijímači, ktorý je hodnotou (<em>receiver</em> je typu <em>value</em>) a nie smerníkom (<em>pointer</em>).
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="paragraph">
+<p>Testovať vieme jednoducho:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-go" data-lang="go">blueSquare := Square{side: 2}
+println(blueSquare.Area())</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Urobme funkciu, ktorá vypíše plochu útvaru na konzolu:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-go" data-lang="go">func printArea(s Shaper) {
+	fmt.Printf(&#34;%.2f\n&#34;, s.Area())
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Testujme:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-go" data-lang="go">func main() {
+	blueSquare := Square{side: 2}
+	printArea(blueSquare)
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Uvidíme:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>4.0</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Funkcia zobrala skutočný objekt typu <code>Square</code>, ktorý vyhovuje interfejsu <code>Shaper</code>.</p>
+</div>
+<div class="paragraph">
+<p>Slovom, štvorec kváka ako interfejs <code>Shaper</code> (má všetky — jednu — jeho metódu) a teda sa dá použiť na každom mieste, ktoré pracuje s interfejsom <code>Shaper</code>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_kruhy">Kruhy</h3>
+<div class="paragraph">
+<p>Zaveďme kruhy:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-go" data-lang="go">type Circle struct {
+	diameter float64
+}
+
+func (c Circle) Area() float64 {
+	return math.Pi * math.Pow(c.diameter, 2)
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Kruh spĺňa interfejs <code>Shaper</code> a preto ho môžeme ho poslať do funkcie <code>printArea</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-go" data-lang="go">redCircle := Circle{diameter: 3}
+printArea(redCircle)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Uvidíme:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>28.27</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Urobme si rez útvarov a iterujme:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-go" data-lang="go">shapes := []Shaper{blueSquare, redSquare, redCircle}
+for _, shape := range shapes {
+    printArea(shape)
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Premenná <code>shapes</code> je typu <code>[]Shaper</code> a obsahuje tri položky — dve sú typu <code>Square</code> a jednu typu <code>Circle</code>.</p>
+</div>
+<div class="paragraph">
+<p>Vďaka interfejsom máme podtypy a polymorfizmus: premenná <code>shape</code> v cykle sa správa raz tak, raz onak.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_pomenované_útvary">Pomenované útvary</h3>
+<div class="paragraph">
+<p>Zaveďme pomenované útvary.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-go" data-lang="go">type NamedShape struct {
+	name string
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Vyhlásme štvorec za pomenovaný útvar:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-go" data-lang="go">type Square struct {
+	side float64
+	NamedShape
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Toto síce vyzerá ako dedičnosť, ale Go ju nemá.
+V skutočnosti je to <strong>embedding</strong> („zapustenie“) či <strong>kompozícia</strong>, ktorá dedičnosť simuluje.</p>
+</div>
+<div class="paragraph">
+<p>Zmeňme tvorbu štvorcov:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-go" data-lang="go">blueSquare := Square{2, NamedShape{&#34;Blue&#34;}}
+redSquare := Square{1000, NamedShape{&#34;Red&#34;}}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Vytvorme rez pomenovaných štvorcov:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-go" data-lang="go">squares := []Square{blueSquare, redSquare}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Vytlačme ich mená:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-go" data-lang="go">for _, square := range squares {
+    fmt.Printf(&#34;Name: %s\n&#34;, square.name)
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Premenná <code>square</code> je typu <code>Square</code>, ale „zdedila“ premennú <code>name</code> od „rodičovského“ typu <code>NamedShape</code>.
+Úvodzovky sú namieste, lebo v skutočnosti štruktúra <code>Square</code> je zložená z typu <code>NamedShape</code> a pristupuje k jeho stavu rovnako ako keby ho mala sama.</p>
+</div>
+<div class="sect3">
+<h4 id="_polymorfizmus">Polymorfizmus</h4>
+<div class="paragraph">
+<p>Ukážme si polymorfizmus — zaveďme funkciu pre výpis mena pomenovaného útvaru.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-go" data-lang="go">func printName(s NamedShape) {
+	fmt.Printf(&#34;Name: %s\n&#34;, s.name)
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Skúsme teraz vypisovať mená:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-go" data-lang="go">squares := []Square{blueSquare, redSquare}
+for _, square := range squares {
+    printName(square)
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Uvidíme chybu!</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>Cannot use &#39;square&#39; (type Square) as the type NamedShape</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Takýto typ polymorfizmu v Go nefunguje.
+Hoci štruktúra <code>Square</code> „dedí“ od štruktúry <code>NamedShape</code> — presnejšie „je s ňou zložená“, nevieme ju použiť v metóde, ktorá berie parameter <code>NamedSquare</code>.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tbody><tr>
+<td class="icon">
+<div class="title">Tip</div>
+</td>
+<td class="content">
+Takýto <em>subtyping</em> funguje len pri interfejsoch, nie pri kompozícii!
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="paragraph">
+<p>Vytvorme si teraz rez pomenovaných útvarov:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-go" data-lang="go">squares := []NamedShape{blueSquare, redSquare}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Tiež uvidíme kýbel chýb:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>Cannot use &#39;blueSquare&#39; (type Square) as the type NamedShape
+Cannot use &#39;redSquare&#39; (type Square) as the type NamedShape</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Obísť to môžeme interfejsom:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-go" data-lang="go">type Namer interface {
+	Name() string
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Pridajme pomenovanému útvaru metódu na získanie mena:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-go" data-lang="go">func (n NamedShape) Name() string {
+	return n.name
+}</code></pre>
+</div>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tbody><tr>
+<td class="icon">
+<div class="title">Tip</div>
+</td>
+<td class="content">
+Štruktúra <code>NamedShape</code> bude implementovať interfejs <code>Namer</code>.
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="paragraph">
+<p>Upravme funkciu tak, že jej zmeníme typ z konkrétnej štruktúry na interfejs.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-go" data-lang="go">func printName(n Namer) {
+	fmt.Printf(&#34;Name: %s\n&#34;, n.Name())
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Toto sme v skutočnosti vylepšili na viacerých úrovniach.
+Funkcia na tlačenie mena nepotrebuje pomenovaný útvar, ale akúkoľvek všeobecnú vec, ktorá má meno — a toto meno je získateľné cez metódu <code>Name()</code>.</p>
+</div>
+<div class="paragraph">
+<p>Ak by sme si vymysleli pomenované zvieratá, vedeli by sme ich vypisovať tiež!</p>
+</div>
+<div class="paragraph">
+<p>Vytvorme teraz rez pomenovaných vecí typu <code>[]Namer</code> a vypíšme ho:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-go" data-lang="go">squares := []Namer{blueSquare, redSquare}
+for _, square := range squares {
+    printName(square)
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Toto funguje korektne, lebo využívame podtypy cez interfejsy.</p>
+</div>
+<div class="paragraph">
+<p>Štvorec <code>Square</code> „dedí“ od <code>NamedShape</code> a keďže <code>NamedShape</code> implementuje <code>Namer</code> s metódou <code>Name</code>, i na štvorci môžeme volať metódu <code>Name()</code>.</p>
+</div>
+<div class="paragraph">
+<p>Jej implementácia je „zdedená“ od <code>NamedShape</code>, teda vypisuje názov štvorca.</p>
+</div>
+<div class="paragraph">
+<p>Upravme teraz výpis mena na štruktúre <code>Square</code>.</p>
+</div>
+<div class="paragraph">
+<p>Dodajme štvorcu metódu:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-go" data-lang="go">func (s Square) Name() string {
+	return &#34;Square &#34; + s.name
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Týmto sme prekryli (<em>override</em>) metódu <code>Name()</code> rodičovského <code>NamedShape</code> a poskytli vlastnú implementáciu.</p>
+</div>
+<div class="paragraph">
+<p>Ak spustíme výpis nanovo, uvidíme:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>Name: Square Blue
+Name: Square Red</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_pomenované_kruhy">Pomenované kruhy</h3>
+<div class="paragraph">
+<p>Použime aj pomenované kruhy:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-go" data-lang="go">type Circle struct {
+	diameter float64
+	NamedShape
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Implementujme prekrytú metódu <code>Name</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-go" data-lang="go">func (c Circle) Name() string {
+	return &#34;Circle &#34; + c.name
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Urobme si rez pomenovaných útvarov:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-go" data-lang="go">namedShapes := []Namer{blueSquare, redSquare, redCircle}
+for _, shape := range namedShapes {
+    printName(shape)
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Uvidíme výpis:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>Name: Square Blue
+Name: Square Red
+Name: Circle</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Kruh nemá meno, pretože …​ sme mu pri konštrukcii nepriradili meno.</p>
+</div>
+<div class="paragraph">
+<p>Môžeme tiež vyrobiť interfejs pre pomenované veci s plochou:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-go" data-lang="go">type NamedShaper interface {
+	Namer
+	Shaper
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Potom vieme urobiť rez pomenovaných útvarov!</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-go" data-lang="go">namedShapes := []NamedShaper{blueSquare, redSquare, redCircle}
+for _, shape := range namedShapes {
+    printName(shape)
+    printArea(shape)
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</main>
+
+    <footer>
+      
+<script>
+(function() {
+  function center_el(tagName) {
+    var tags = document.getElementsByTagName(tagName), i, tag;
+    for (i = 0; i < tags.length; i++) {
+      tag = tags[i];
+      var parent = tag.parentElement;
+      
+      if (parent.childNodes.length === 1) {
+        
+        if (parent.nodeName === 'A') {
+          parent = parent.parentElement;
+          if (parent.childNodes.length != 1) continue;
+        }
+        if (parent.nodeName === 'P') parent.style.textAlign = 'center';
+      }
+    }
+  }
+  var tagNames = ['img', 'embed', 'object'];
+  for (var i = 0; i < tagNames.length; i++) {
+    center_el(tagNames[i]);
+  }
+})();
+</script>
+
+      
+    </footer>
+  </body>
+</html>
+

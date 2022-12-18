@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Git a podpisovanie komitov cez GPG | robonovotny</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    <link rel="stylesheet" href="https://novotnyr.github.io/asciidoctor.css">
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.css" integrity="sha384-D+9gmBxUQogRLqvARvNLmA9hS2x//eK1FhVb9PiU86gmcrBrJAQT8okdJ4LMp2uv" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.js" integrity="sha384-483A6DwYfKeDa0Q52fJmxFXkcPCFfnXMoXblOkJ4JcA8zATN6Tm78UNL72AKk+0O" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/contrib/auto-render.min.js" integrity="sha384-yACMu8JWxKzSp/C1YV86pzGiQ/l1YUfE8oPuahJQxzehAjEt2GiQuy/BIvl9KyeF" crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body);
+        });
+    </script>
+
+<header>
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <nav>
+    <ul>
+      
+      
+      <li class="pull-left ">
+        <a href="https://novotnyr.github.io/">/home/robonovotny</a>
+      </li>
+      
+
+      
+
+    </ul>
+  </nav>
+</header>
+
+  </head>
+
+  <body>
+    <br/>
+
+<div class="article-meta">
+<h1><span class="title">Git a podpisovanie komitov cez GPG</span></h1>
+
+<h2 class="date">2022/11/09</h2>
+<p class="terms">
+  
+  
+  
+  
+  
+</p>
+</div>
+
+
+
+<main>
+<div class="paragraph">
+<p>Nainštalujme <code>gpg</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">brew install gpg</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Nagenerujeme pár kľúčov:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">gpg --full-generate-key</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Vznikne adresár v domovskom priečinku <code>~/.gnupg</code>.
+Pozrime jeho výpis.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>ls ~/.gnupg</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Vypíšme kľúče:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">gpg --list-secret-keys --keyid-format=long</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Uvidíme:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>/Users/novotnyr/.gnupg/pubring.kbx
+----------------------------------
+sec   ed25519/5FAE3B1F51B63E0C 2022-11-08 [SC]
+      15E5B5BA00311CEF2DD287D55FAE3B1F51B63E0C
+uid                 [ultimate] Robert Novotny &lt;redacted@gmail.com&gt;
+ssb   cv25519/3631AF913E983143 2022-11-08 [E]</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Identifikátor je <strong>5FAE3B1F51B63E0C</strong>.</p>
+</div>
+<div class="paragraph">
+<p>Exportnime do súboru</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>gpg --armor --export 5FAE3B1F51B63E0C</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Export pridáme do UI GItHubu: <a href="https://github.com/settings/keys">GitHub Settings &gt; Keys</a></p>
+</div>
+<div class="paragraph">
+<p>Overme, že podpisovanie funguje v základe:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>echo &#34;test&#34; | gpg --clearsign</pre>
+</div>
+</div>
+<div class="paragraph">
+<p><code>gpg</code> si poprosí heslo k privátnemu kľúču cez dialóg v termináli a následne vypíše napr.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA512
+
+test
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQQV5bW6ADEc7y3Sh9VfrjsfUbY+DAUCY2wpmgAKCRBfrjsfUbY+
+DLPXAPwN14IsjXqdvYbLVkTE50iwFNtRa5dLiVSHBW0jEftHQAD/W32zK7mORXjw
+G9XM7aQmy1aw03bQ0gF58ZsGoorE3wg=
+=ysBj
+-----END PGP SIGNATURE------</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Možno uvidíme chybu s <code>ioctl</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>gpg: signing failed: Inappropriate ioctl for device
+gpg: [stdin]: clear-sign failed: Inappropriate ioctl for device</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Tá istá chyba nastáva, ak spustíme <code>git</code> s podpisovaní:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>error: gpg failed to sign the data
+fatal: failed to write commit object</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Exportnime terminál pre <code>gpg</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>export GPG_TTY=$(tty)</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Zopakujme test.
+Ak uspeje, komitnime:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>git commit -S -m &#34;Initial import&#34;</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Prepínač <code>-S</code> zapne podpisovanie komitov.</p>
+</div>
+<div class="paragraph">
+<p>Pushnime komity:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>git push</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Uvidím verifikovaný komit:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="github-signed-commit.png" alt="Podpísaný komit v GitHube"/>
+</div>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tbody><tr>
+<td class="icon">
+<div class="title">Tip</div>
+</td>
+<td class="content">
+Exportovanie <code>GPG_TTY</code> dodajme do profilu v shelli, napr. do <code>.zshrc</code>.
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="sect1">
+<h2 id="_bonusové_príkazy">Bonusové príkazy</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_reštart_agenta">Reštart agenta</h3>
+<div class="paragraph">
+<p>Reštart agenta, aby si pýtal heslo:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>gpgconf --kill gpg-agent</pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_pinentry_pre_mac">Pinentry pre Mac</h3>
+<div class="paragraph">
+<p>Príkaz <code>pinentry</code> si dokáže pýtať heslo v grafickom okne.</p>
+</div>
+<div class="paragraph">
+<p>Pre MacOS:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>brew install pinentry-mac</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Konfigurácia:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>echo &#39;use-agent&#39; &gt; ~/.gnupg/gpg.conf
+echo &#34;pinentry-program $(brew --prefix)/bin/pinentry-mac&#34; &gt;&gt; ~/.gnupg/gpg-agent.conf</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Pre istotu reštartnime:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>gpgconf --kill gpg-agent</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Následne opakujme šifrovanie.
+Namiesto textového políčka uvidíme:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="macos-private-key.png" alt="macos private key"/>
+</div>
+</div>
+<div class="paragraph">
+<p>V Keychaine uvidíme záznamy po vyhľadaní <code>GnuPG</code>:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="keychain-gnupg.png" alt="GnuPG v MacOS keychain"/>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_pinentry_pre_odtlačok_prsta">Pinentry pre odtlačok prsta</h3>
+<div class="paragraph">
+<p>Doinštalujme:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>brew tap jorgelbg/tap
+brew install pinentry-touchid</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Zariaďme sa podľa inštrukcií <code>homebrew</code>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Založenie symlinku:</p>
+<div class="literalblock">
+<div class="content">
+<pre>/usr/local/opt/pinentry-touchid/bin/pinentry-touchid -fix</pre>
+</div>
+</div>
+</li>
+<li>
+<p>Úprava ~/.gnupg/gpg-agent.conf:</p>
+<div class="literalblock">
+<div class="content">
+<pre>pinentry-program /usr/local/opt/pinentry-touchid/bin/pinentry-touchid</pre>
+</div>
+</div>
+</li>
+<li>
+<p>Reload agenta</p>
+<div class="literalblock">
+<div class="content">
+<pre>gpg-connect-agent reloadagent /bye</pre>
+</div>
+</div>
+</li>
+<li>
+<p>Zákaz „Save in Keychain“</p>
+<div class="literalblock">
+<div class="content">
+<pre>defaults write org.gpgtools.common DisableKeychain -bool yes</pre>
+</div>
+</div>
+</li>
+<li>
+<p>Skusmo podpíšme.
+Ak sa systém spýta na povolenie ku keychainu, tak „Always Allow“.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="touchid.png" alt="Touch ID"/>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_ďalšie_zdroje">Ďalšie zdroje</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://gist.github.com/paolocarrasco/18ca8fe6e63490ae1be23e84a7039374">github.com/paolocarrasco Gist</a></p>
+</li>
+<li>
+<p><a href="https://docs.github.com/en/authentication/managing-commit-signature-verification">GitHub: Managing commit signature verification</a></p>
+</li>
+<li>
+<p><a href="https://docs.gitlab.com/ee/user/project/repository/gpg_signed_commits/">GitLab: GPG-signed commits</a></p>
+</li>
+<li>
+<p><a href="https://github.com/jorgelbg/pinentry-touchid"><code>jorgelbg/pinentry-touchid</code></a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+
+</main>
+
+    <footer>
+      
+<script>
+(function() {
+  function center_el(tagName) {
+    var tags = document.getElementsByTagName(tagName), i, tag;
+    for (i = 0; i < tags.length; i++) {
+      tag = tags[i];
+      var parent = tag.parentElement;
+      
+      if (parent.childNodes.length === 1) {
+        
+        if (parent.nodeName === 'A') {
+          parent = parent.parentElement;
+          if (parent.childNodes.length != 1) continue;
+        }
+        if (parent.nodeName === 'P') parent.style.textAlign = 'center';
+      }
+    }
+  }
+  var tagNames = ['img', 'embed', 'object'];
+  for (var i = 0; i < tagNames.length; i++) {
+    center_el(tagNames[i]);
+  }
+})();
+</script>
+
+      
+    </footer>
+  </body>
+</html>
+

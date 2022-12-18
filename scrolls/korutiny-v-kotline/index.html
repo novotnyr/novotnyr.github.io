@@ -91,7 +91,7 @@
 </span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">main</span>() {
 </span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">val</span> url = <span style="background-color:#e0e0ff">&#34;http://deelay.me/2000/https://www.sav.sk/rss/&#34;</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    GlobalScope.launch { 
+</span></span><span style="display:flex;"><span>    <span style="color:#e9e;font-weight:bold">GlobalScope</span>.launch { 
 </span></span><span style="display:flex;"><span>        <span style="color:#289;font-weight:bold">val</span> rss = URL(url).readText()
 </span></span><span style="display:flex;"><span>        println(rss)
 </span></span><span style="display:flex;"><span>    }
@@ -148,13 +148,13 @@
 </span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">java.net.URL</span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">main</span>() = runBlocking&lt;Unit&gt; { <span style="color:#666;font-style:italic">/* Sémantická chyba! */</span>
-</span></span><span style="display:flex;"><span>    launch(Dispatchers.IO) {
+</span></span><span style="display:flex;"><span>    launch(<span style="color:#e9e;font-weight:bold">Dispatchers</span>.IO) {
 </span></span><span style="display:flex;"><span>        <span style="color:#289;font-weight:bold">val</span> url = <span style="background-color:#e0e0ff">&#34;http://deelay.me/2000/http://ics.upjs.sk/~novotnyr/home/db.txt&#34;</span>
 </span></span><span style="display:flex;"><span>        <span style="color:#289;font-weight:bold">val</span> content = URL(url).readText()
 </span></span><span style="display:flex;"><span>        println(<span style="background-color:#e0e0ff">&#34;</span><span style="background-color:#eee">${content.length}</span><span style="background-color:#e0e0ff"> bytes&#34;</span>)
 </span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    launch(Dispatchers.IO) {
+</span></span><span style="display:flex;"><span>    launch(<span style="color:#e9e;font-weight:bold">Dispatchers</span>.IO) {
 </span></span><span style="display:flex;"><span>        <span style="color:#289;font-weight:bold">val</span> url = <span style="background-color:#e0e0ff">&#34;http://deelay.me/2000/http://www.gnu.org/home.en.html&#34;</span>
 </span></span><span style="display:flex;"><span>        <span style="color:#289;font-weight:bold">val</span> content = URL(url).readText()
 </span></span><span style="display:flex;"><span>        println(<span style="background-color:#e0e0ff">&#34;</span><span style="background-color:#eee">${content.length}</span><span style="background-color:#e0e0ff"> bytes&#34;</span>)
@@ -181,13 +181,13 @@
 </span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">main</span>() {
 </span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">val</span> time = measureTimeMillis {
 </span></span><span style="display:flex;"><span>        runBlocking&lt;Unit&gt; {
-</span></span><span style="display:flex;"><span>            launch(Dispatchers.IO) {
+</span></span><span style="display:flex;"><span>            launch(<span style="color:#e9e;font-weight:bold">Dispatchers</span>.IO) {
 </span></span><span style="display:flex;"><span>                <span style="color:#289;font-weight:bold">val</span> url = <span style="background-color:#e0e0ff">&#34;http://deelay.me/2000/http://ics.upjs.sk/~novotnyr/home/db.txt&#34;</span>
 </span></span><span style="display:flex;"><span>                <span style="color:#289;font-weight:bold">val</span> content = URL(url).readText()
 </span></span><span style="display:flex;"><span>                println(<span style="background-color:#e0e0ff">&#34;</span><span style="background-color:#eee">${content.length}</span><span style="background-color:#e0e0ff"> bytes&#34;</span>)
 </span></span><span style="display:flex;"><span>            }
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>            launch(Dispatchers.IO) {
+</span></span><span style="display:flex;"><span>            launch(<span style="color:#e9e;font-weight:bold">Dispatchers</span>.IO) {
 </span></span><span style="display:flex;"><span>                <span style="color:#289;font-weight:bold">val</span> url = <span style="background-color:#e0e0ff">&#34;http://deelay.me/2000/http://www.gnu.org/home.en.html&#34;</span>
 </span></span><span style="display:flex;"><span>                <span style="color:#289;font-weight:bold">val</span> content = URL(url).readText()
 </span></span><span style="display:flex;"><span>                println(<span style="background-color:#e0e0ff">&#34;</span><span style="background-color:#eee">${content.length}</span><span style="background-color:#e0e0ff"> bytes&#34;</span>)
@@ -223,11 +223,11 @@
 </span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">main</span>() {
 </span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">val</span> time = measureTimeMillis {
 </span></span><span style="display:flex;"><span>        runBlocking&lt;Unit&gt; {
-</span></span><span style="display:flex;"><span>            launch(Dispatchers.IO) {
+</span></span><span style="display:flex;"><span>            launch(<span style="color:#e9e;font-weight:bold">Dispatchers</span>.IO) {
 </span></span><span style="display:flex;"><span>                download(<span style="background-color:#e0e0ff">&#34;http://deelay.me/5000/http://ics.upjs.sk/~novotnyr/home/db.txt&#34;</span>)
 </span></span><span style="display:flex;"><span>            }
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>            launch(Dispatchers.IO) {
+</span></span><span style="display:flex;"><span>            launch(<span style="color:#e9e;font-weight:bold">Dispatchers</span>.IO) {
 </span></span><span style="display:flex;"><span>                download(<span style="background-color:#e0e0ff">&#34;http://deelay.me/5000/http://www.gnu.org/home.en.html&#34;</span>)
 </span></span><span style="display:flex;"><span>            }
 </span></span><span style="display:flex;"><span>        }
@@ -251,7 +251,7 @@
 <p>Funkciu môžeme spustiť v explicitnom dispatcheri pomocou bloku <code>withContext</code>.</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">download</span>(url: String) {
 </span></span><span style="display:flex;"><span>    <span style="color:#666;font-style:italic">/* Syntaktická chyba */</span>
-</span></span><span style="display:flex;"><span>    withContext(Dispatchers.IO) {
+</span></span><span style="display:flex;"><span>    withContext(<span style="color:#e9e;font-weight:bold">Dispatchers</span>.IO) {
 </span></span><span style="display:flex;"><span>        <span style="color:#289;font-weight:bold">val</span> content = URL(url).readText()
 </span></span><span style="display:flex;"><span>        println(<span style="background-color:#e0e0ff">&#34;</span><span style="background-color:#eee">${content.length}</span><span style="background-color:#e0e0ff"> bytes&#34;</span>)
 </span></span><span style="display:flex;"><span>    }
@@ -263,7 +263,7 @@
 <p>Táto chyba upozorňuje na dôležitú vlastnosť: <strong>existujúce suspending funkcie môžeme volať len zo suspending funkcie!</strong></p>
 <h2 id="deklarácie-suspending-funkcií">Deklarácie suspending funkcií</h2>
 <p>Upravme deklaráciu podľa chybovej hlášky a zároveň upracme v kóde podľa kotlinovských konvencií.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">suspend</span> <span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">download</span>(url: String) = withContext(Dispatchers.IO) {
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">suspend</span> <span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">download</span>(url: String) = withContext(<span style="color:#e9e;font-weight:bold">Dispatchers</span>.IO) {
 </span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">val</span> content = URL(url).readText()
 </span></span><span style="display:flex;"><span>    println(<span style="background-color:#e0e0ff">&#34;</span><span style="background-color:#eee">${content.length}</span><span style="background-color:#e0e0ff"> bytes&#34;</span>)
 </span></span><span style="display:flex;"><span>}
@@ -291,7 +291,7 @@
 </span></span><span style="display:flex;"><span>    println(<span style="background-color:#e0e0ff">&#34;</span><span style="background-color:#eee">$time</span><span style="background-color:#e0e0ff"> ms&#34;</span>)
 </span></span><span style="display:flex;"><span>}
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">suspend</span> <span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">download</span>(url: String) = withContext(Dispatchers.IO) {
+</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">suspend</span> <span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">download</span>(url: String) = withContext(<span style="color:#e9e;font-weight:bold">Dispatchers</span>.IO) {
 </span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">val</span> content = URL(url).readText()
 </span></span><span style="display:flex;"><span>    println(<span style="background-color:#e0e0ff">&#34;</span><span style="background-color:#eee">${content.length}</span><span style="background-color:#e0e0ff"> bytes&#34;</span>)
 </span></span><span style="display:flex;"><span>}
@@ -299,7 +299,7 @@
 <h1 id="korutiny-s-návratovou-hodnotou-async">Korutiny s návratovou hodnotou: <code>async</code></h1>
 <p>Naše korutiny získavajú reťazec, ktorý vypisujú na konzolu. Čo ak by sme tento reťazec chceli ďalej spracovávať? Napríklad získať celkovú dĺžku v znakoch? (Áno, je to nezmyselné, ale jednoduché!)</p>
 <p>Najprv upravme funkciu <code>download</code>:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">suspend</span> <span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">download</span>(url: String): String = withContext(Dispatchers.IO) {
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">suspend</span> <span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">download</span>(url: String): String = withContext(<span style="color:#e9e;font-weight:bold">Dispatchers</span>.IO) {
 </span></span><span style="display:flex;"><span>    URL(url).readText()
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>Na rozdiel od <code>launch</code>, ktorý len odpálime bez toho, aby sme očakávali výsledok, v tomto prípade chceme raz získať návratovú hodnotu.</p>
@@ -329,7 +329,7 @@
 </span></span><span style="display:flex;"><span>    println(<span style="background-color:#e0e0ff">&#34;</span><span style="background-color:#eee">$time</span><span style="background-color:#e0e0ff"> ms&#34;</span>)
 </span></span><span style="display:flex;"><span>}
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">suspend</span> <span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">download</span>(url: String): String = withContext(Dispatchers.IO) {
+</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">suspend</span> <span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">download</span>(url: String): String = withContext(<span style="color:#e9e;font-weight:bold">Dispatchers</span>.IO) {
 </span></span><span style="display:flex;"><span>    URL(url).readText()
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>Všimnime si, že postupne získame:</p>
@@ -370,7 +370,7 @@
 </span></span><span style="display:flex;"><span>    println(<span style="background-color:#e0e0ff">&#34;</span><span style="background-color:#eee">$time</span><span style="background-color:#e0e0ff"> ms&#34;</span>)
 </span></span><span style="display:flex;"><span>}
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">suspend</span> <span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">download</span>(url: String): String = withContext(Dispatchers.IO) {
+</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">suspend</span> <span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">download</span>(url: String): String = withContext(<span style="color:#e9e;font-weight:bold">Dispatchers</span>.IO) {
 </span></span><span style="display:flex;"><span>    URL(url).readText()
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><ol>
@@ -467,7 +467,7 @@
 </ul>
 <p>V príklade sme sa vôbec obsluhe výnimiek nevenovali a preto vidíme správanie <strong>globálnej obsluhy výnimiek</strong> (<strong>global exception handler</strong>), ktorý ich jednoducho vyklopí na chybový výstup <code>System.err</code>.</p>
 <p>Ak chceme definovať superglobálnu obsluhu, prebijeme nastavenie obsluhy neošetrených výnimiek vo vláknach. Do metódy <code>main()</code> uvedieme:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span>Thread.setDefaultUncaughtExceptionHandler {
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#e9e;font-weight:bold">Thread</span>.setDefaultUncaughtExceptionHandler {
 </span></span><span style="display:flex;"><span>		_, e <span style="color:#333">-&gt;</span> println(<span style="background-color:#e0e0ff">&#34;Unhandled exception: </span><span style="background-color:#eee">$e</span><span style="background-color:#e0e0ff">&#34;</span>)
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><h2 id="ošetrenie-výnimky-na-príslušnom-mieste">Ošetrenie výnimky na príslušnom mieste</h2>
@@ -540,9 +540,9 @@
 <p>Diskutéri v issue <a href="https://github.com/Kotlin/kotlinx.coroutines/issues/763">763</a> tvrdia, že <code>async</code> by sa mal radšej volať <strong>decompose</strong> alebo <strong>fork</strong>, čím by sa vyjasnilo použitie.</p>
 <h4 id="sekcia-async-hneď-nasledovaná-awaitom-je-zbytočná">Sekcia <code>async</code> hneď nasledovaná <code>await()</code>om je zbytočná</h4>
 <p>Niekedy sa stane, že uvidíme sekciu <code>async</code>, ktorá je hneď nasledovaná <code>await()</code>-om.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span> <span style="color:#289;font-weight:bold">val</span> content = async(Dispatchers.IO) { <span style="color:#666;font-style:italic">/* kód */</span> }.await()
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span> <span style="color:#289;font-weight:bold">val</span> content = async(<span style="color:#e9e;font-weight:bold">Dispatchers</span>.IO) { <span style="color:#666;font-style:italic">/* kód */</span> }.await()
 </span></span></code></pre></div><p>Toto nie je paralelizovateľná dekompozícia! (Teda je, ale dekomponujeme problém na jeden podproblém.) Namiesto toho stačí prepnúť kontext!</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">val</span> content = withContext(Dispatchers.IO) { <span style="color:#666;font-style:italic">/* kód */</span> }
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">val</span> content = withContext(<span style="color:#e9e;font-weight:bold">Dispatchers</span>.IO) { <span style="color:#666;font-style:italic">/* kód */</span> }
 </span></span></code></pre></div><h3 id="supervisorscope-pre-jednosmerné-rušenie-od-rodiča-k-deťom"><code>supervisorScope</code> pre jednosmerné rušenie od rodiča k deťom</h3>
 <p>V sekcii <code>coroutineScope</code> nastáva rušenie / <em>cancellation</em> v oboch smeroch: od zlyhaných detí k rodičom a následne od rodiča k ostatným bežiacim deťom. Alternatívou je <code>supervisorScope</code>, ktorý deti zruší len vtedy, ak zlyhá sám. Deti sa o svoje rušenie, či obsluhu výnimiek musia postarať samé.</p>
 <blockquote>
@@ -593,9 +593,9 @@
 </span></span><span style="display:flex;"><span>}
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">main</span>() {
-</span></span><span style="display:flex;"><span>    SwingUtilities.invokeLater {
+</span></span><span style="display:flex;"><span>    <span style="color:#e9e;font-weight:bold">SwingUtilities</span>.invokeLater {
 </span></span><span style="display:flex;"><span>        PrimeCalculatorForm().apply {
-</span></span><span style="display:flex;"><span>            defaultCloseOperation = JFrame.EXIT_ON_CLOSE
+</span></span><span style="display:flex;"><span>            defaultCloseOperation = <span style="color:#e9e;font-weight:bold">JFrame</span>.EXIT_ON_CLOSE
 </span></span><span style="display:flex;"><span>            setLocationRelativeTo(<span style="color:#289;font-weight:bold">null</span>)
 </span></span><span style="display:flex;"><span>            pack()
 </span></span><span style="display:flex;"><span>            isVisible = <span style="color:#289;font-weight:bold">true</span>
@@ -607,8 +607,8 @@
 <p>Keďže táto operácia musí bežať v samostatnom vlákne, alebo v korutine na pozadí, je to kandidát na použitie scope buildera typu <code>launch</code>.</p>
 <p>Ak by sme urobili nasledovný kód, nefungovalo by to a skončilo by to na syntaktickej chybe.</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">private</span> <span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">onStartButtonClick</span>(e: ActionEvent) {
-</span></span><span style="display:flex;"><span>    launch(Dispatchers.Default) {
-</span></span><span style="display:flex;"><span>        println(BigInteger.probablePrime(<span style="color:#60e;font-weight:bold">4069</span>, Random()))
+</span></span><span style="display:flex;"><span>    launch(<span style="color:#e9e;font-weight:bold">Dispatchers</span>.Default) {
+</span></span><span style="display:flex;"><span>        println(<span style="color:#e9e;font-weight:bold">BigInteger</span>.probablePrime(<span style="color:#60e;font-weight:bold">4069</span>, Random()))
 </span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>V extrémnom prípade sa môže stať, že IntelliJ IDEA importne funkciu, ktorá rozhodne nie je správna:</p>
@@ -640,17 +640,17 @@
 <h2 id="použitie-korutiny-v-metóde">Použitie korutiny v metóde</h2>
 <p>Scope builder <code>launch</code> už teraz zafunguje správne, pretože jeho scope bude prebratý z hlavného okna.</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">private</span> <span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">onStartButtonClick</span>(e: ActionEvent) {
-</span></span><span style="display:flex;"><span>		launch(Dispatchers.Default) {
-</span></span><span style="display:flex;"><span>				println(BigInteger.probablePrime(<span style="color:#60e;font-weight:bold">4069</span>, Random()))
+</span></span><span style="display:flex;"><span>		launch(<span style="color:#e9e;font-weight:bold">Dispatchers</span>.Default) {
+</span></span><span style="display:flex;"><span>				println(<span style="color:#e9e;font-weight:bold">BigInteger</span>.probablePrime(<span style="color:#60e;font-weight:bold">4069</span>, Random()))
 </span></span><span style="display:flex;"><span>		}
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>Ak si spustíme aplikáciu, môžeme si klikať na tlačidlo <strong>Start</strong> a po dlhej chvíľke uvidíme v konzole výsledky pre prvočísla. Všimnime si, že hlavné vlákno nie je blokované a úlohy bežia na pozadí, pretože inak by sme ani nedokázali kliknúť na tlačidlo a aplikácia by vyzerala zatuhnuto.</p>
 <h2 id="prepínanie-vlákien">Prepínanie vlákien</h2>
 <p>Ak chceme aktualizovať komponent hlavného okna, presnejšie nastaviť mu korektný titulok po získané prvočísla, použijeme prepnutie kontextu cez <code>withContext</code>:</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">private</span> <span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">onStartButtonClick</span>(e: ActionEvent) {
-</span></span><span style="display:flex;"><span>    launch(Dispatchers.Default) {
-</span></span><span style="display:flex;"><span>        <span style="color:#289;font-weight:bold">val</span> prime = BigInteger.probablePrime(<span style="color:#60e;font-weight:bold">3000</span>, Random())
-</span></span><span style="display:flex;"><span>        withContext(Dispatchers.Main) {
+</span></span><span style="display:flex;"><span>    launch(<span style="color:#e9e;font-weight:bold">Dispatchers</span>.Default) {
+</span></span><span style="display:flex;"><span>        <span style="color:#289;font-weight:bold">val</span> prime = <span style="color:#e9e;font-weight:bold">BigInteger</span>.probablePrime(<span style="color:#60e;font-weight:bold">3000</span>, Random())
+</span></span><span style="display:flex;"><span>        withContext(<span style="color:#e9e;font-weight:bold">Dispatchers</span>.Main) {
 </span></span><span style="display:flex;"><span>            title = prime.toString()
 </span></span><span style="display:flex;"><span>            println(prime)
 </span></span><span style="display:flex;"><span>        }
@@ -708,9 +708,9 @@
 <p>Dajme si do triedy pekný príklad: tlačidlo <strong>Start</strong> vytvorí job a poznačí ho do inštančnej premennej a tlačidlo <strong>Stop</strong> tento job zruší.</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">private</span> <span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">onStartButtonClick</span>(e: ActionEvent) {
 </span></span><span style="display:flex;"><span>    startButton.isEnabled = <span style="color:#289;font-weight:bold">false</span>
-</span></span><span style="display:flex;"><span>    job = launch(Dispatchers.Default) {
-</span></span><span style="display:flex;"><span>        <span style="color:#289;font-weight:bold">val</span> prime = BigInteger.probablePrime(<span style="color:#60e;font-weight:bold">4096</span>, Random())
-</span></span><span style="display:flex;"><span>        withContext(Dispatchers.Main) {
+</span></span><span style="display:flex;"><span>    job = launch(<span style="color:#e9e;font-weight:bold">Dispatchers</span>.Default) {
+</span></span><span style="display:flex;"><span>        <span style="color:#289;font-weight:bold">val</span> prime = <span style="color:#e9e;font-weight:bold">BigInteger</span>.probablePrime(<span style="color:#60e;font-weight:bold">4096</span>, Random())
+</span></span><span style="display:flex;"><span>        withContext(<span style="color:#e9e;font-weight:bold">Dispatchers</span>.Main) {
 </span></span><span style="display:flex;"><span>            title = prime.toString()
 </span></span><span style="display:flex;"><span>            startButton.isEnabled = <span style="color:#289;font-weight:bold">true</span>
 </span></span><span style="display:flex;"><span>        }
@@ -738,9 +738,9 @@
 </span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>}
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">private</span> <span style="color:#289;font-weight:bold">suspend</span> <span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">calculatePrime</span>() = withContext(Dispatchers.Default) {
-</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">val</span> prime = BigInteger.probablePrime(<span style="color:#60e;font-weight:bold">4096</span>, Random())
-</span></span><span style="display:flex;"><span>    withContext(Dispatchers.Main) {
+</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">private</span> <span style="color:#289;font-weight:bold">suspend</span> <span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">calculatePrime</span>() = withContext(<span style="color:#e9e;font-weight:bold">Dispatchers</span>.Default) {
+</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">val</span> prime = <span style="color:#e9e;font-weight:bold">BigInteger</span>.probablePrime(<span style="color:#60e;font-weight:bold">4096</span>, Random())
+</span></span><span style="display:flex;"><span>    withContext(<span style="color:#e9e;font-weight:bold">Dispatchers</span>.Main) {
 </span></span><span style="display:flex;"><span>        title = prime.toString()
 </span></span><span style="display:flex;"><span>        startButton.isEnabled = <span style="color:#289;font-weight:bold">true</span>
 </span></span><span style="display:flex;"><span>    }
@@ -777,7 +777,7 @@
 </span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">main</span>() = runBlocking {
 </span></span><span style="display:flex;"><span>    repeat(<span style="color:#60e;font-weight:bold">10</span>_000) {
 </span></span><span style="display:flex;"><span>        launch {
-</span></span><span style="display:flex;"><span>            println(Thread.currentThread().name + <span style="background-color:#e0e0ff">&#34; &#34;</span> + <span style="color:#289;font-weight:bold">it</span>)
+</span></span><span style="display:flex;"><span>            println(<span style="color:#e9e;font-weight:bold">Thread</span>.currentThread().name + <span style="background-color:#e0e0ff">&#34; &#34;</span> + <span style="color:#289;font-weight:bold">it</span>)
 </span></span><span style="display:flex;"><span>        }
 </span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>}
@@ -798,12 +798,12 @@
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>Skúsme si zotriediť zoznam:</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">main</span>(): Unit = runBlocking {
-</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">val</span> job = launch(Dispatchers.Default) {
+</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">val</span> job = launch(<span style="color:#e9e;font-weight:bold">Dispatchers</span>.Default) {
 </span></span><span style="display:flex;"><span>        <span style="color:#289;font-weight:bold">val</span> shuffled = (<span style="color:#60e;font-weight:bold">1.</span>.<span style="color:#60e;font-weight:bold">30</span>_000).shuffled().toMutableList()
 </span></span><span style="display:flex;"><span>        <span style="color:#289;font-weight:bold">val</span> bubbleSort = shuffled.bubbleSort()
-</span></span><span style="display:flex;"><span>        println(Thread.currentThread().name + <span style="background-color:#e0e0ff">&#34;: &#34;</span> + bubbleSort)
+</span></span><span style="display:flex;"><span>        println(<span style="color:#e9e;font-weight:bold">Thread</span>.currentThread().name + <span style="background-color:#e0e0ff">&#34;: &#34;</span> + bubbleSort)
 </span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>    Thread.sleep(<span style="color:#60e;font-weight:bold">1000</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#e9e;font-weight:bold">Thread</span>.sleep(<span style="color:#60e;font-weight:bold">1000</span>)
 </span></span><span style="display:flex;"><span>    println(<span style="background-color:#e0e0ff">&#34;Cancelling...&#34;</span>)
 </span></span><span style="display:flex;"><span>    job.cancel()
 </span></span><span style="display:flex;"><span>    println(<span style="background-color:#e0e0ff">&#34;Cancelled&#34;</span>)
@@ -836,10 +836,10 @@ DefaultDispatcher-worker-1: [1, ... ]
 <h2 id="čakanie-bez-blokovania-delay">Čakanie bez blokovania: <code>delay()</code></h2>
 <p>Doteraz sme na čakanie používali <code>Thread.sleep()</code>, ktorý blokuje vlákno, kým neuplynie lehota. V korutinách však existuje neblokujúca verzia, teda suspending funkcia <code>delay()</code>:</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">main</span>(): Unit = runBlocking {
-</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">val</span> launch = launch(Dispatchers.Default) {
+</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">val</span> launch = launch(<span style="color:#e9e;font-weight:bold">Dispatchers</span>.Default) {
 </span></span><span style="display:flex;"><span>        <span style="color:#289;font-weight:bold">val</span> shuffled = (<span style="color:#60e;font-weight:bold">1.</span>.<span style="color:#60e;font-weight:bold">30</span>_000).shuffled().toMutableList()
 </span></span><span style="display:flex;"><span>        <span style="color:#289;font-weight:bold">val</span> bubbleSort = shuffled.bubbleSort()
-</span></span><span style="display:flex;"><span>        println(Thread.currentThread().name + <span style="background-color:#e0e0ff">&#34;: &#34;</span> + bubbleSort)
+</span></span><span style="display:flex;"><span>        println(<span style="color:#e9e;font-weight:bold">Thread</span>.currentThread().name + <span style="background-color:#e0e0ff">&#34;: &#34;</span> + bubbleSort)
 </span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>    delay(<span style="color:#60e;font-weight:bold">2000</span>)
 </span></span><span style="display:flex;"><span>    println(<span style="background-color:#e0e0ff">&#34;Cancelling...&#34;</span>)
@@ -968,13 +968,13 @@ DefaultDispatcher-worker-1: [1, ... ]
 </span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">kotlinx.coroutines.launch</span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">main</span>() {
-</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">val</span> job = GlobalScope.launch {
+</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">val</span> job = <span style="color:#e9e;font-weight:bold">GlobalScope</span>.launch {
 </span></span><span style="display:flex;"><span>        <span style="color:#289;font-weight:bold">while</span> (isActive) {
 </span></span><span style="display:flex;"><span>            delay(<span style="color:#60e;font-weight:bold">1000</span>)
 </span></span><span style="display:flex;"><span>            println(<span style="background-color:#e0e0ff">&#34;Reticulating splines...&#34;</span>)
 </span></span><span style="display:flex;"><span>        }
 </span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>    Thread.sleep(<span style="color:#60e;font-weight:bold">3000</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#e9e;font-weight:bold">Thread</span>.sleep(<span style="color:#60e;font-weight:bold">3000</span>)
 </span></span><span style="display:flex;"><span>    job.cancel()
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>V príklade sme si spustili korutinu v globálnom scope, ktorá čo sekundu vypíše hlášku. V metóde <code>main()</code> máme klasický blokujúci kód, ktorý počká tri sekundy a potom <code>job</code> odstrelí.</p>
@@ -997,7 +997,7 @@ DefaultDispatcher-worker-1: [1, ... ]
 <li><em>názov korutiny</em>: korutina môže dostať prehľadné meno, čo je užitočné pri ladení.</li>
 </ul>
 <p>Každý kontext definuje operátor <code>plus</code>, ktorým možno vytvárať immutable kópiu kontextu s novými zmenenými vlastnosťami. Hlúpy príklad vytvorí prázdny kontext s dispatcherom typu IO a vhodným názvom pre korutiny:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">val</span> context = EmptyCoroutineContext + Dispatchers.IO + CoroutineName (<span style="background-color:#e0e0ff">&#34;test&#34;</span>)
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">val</span> context = EmptyCoroutineContext + <span style="color:#e9e;font-weight:bold">Dispatchers</span>.IO + CoroutineName (<span style="background-color:#e0e0ff">&#34;test&#34;</span>)
 </span></span><span style="display:flex;"><span>println(context)
 </span></span></code></pre></div><p>Výsledkom bude:</p>
 <pre tabindex="0"><code>[CoroutineName(test), LimitingDispatcher@27bc2616[dispatcher = DefaultDispatcher]]
@@ -1014,7 +1014,7 @@ DefaultDispatcher-worker-1: [1, ... ]
 <p>Výsledný kontext sa stane <strong>rodičovským kontextom</strong> pre novú korutinu. Samotná potomkovská korutina si vytvorí vlastný <em>job</em> a zlúči ho s rodičovským kontextom, čím získa vlastný kontext. Okrem toho sa job z rodičovskej korutiny stane rodičom jobu potomka, čím sa bude dať dosiahnuť štruktúrovaná konkurentnosť.</p>
 <p>Scope z parametra síce vyzerá ako zbytočná duplicita, ale v skutočnosti slúži ako prostriedok na customizáciu scopu pre potomkov. Môžeme totiž spraviť nasledovné:</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">main</span>() = runBlocking&lt;Unit&gt; {
-</span></span><span style="display:flex;"><span>    launch(Dispatchers.IO + CoroutineName(<span style="background-color:#e0e0ff">&#34;splines&#34;</span>)) {
+</span></span><span style="display:flex;"><span>    launch(<span style="color:#e9e;font-weight:bold">Dispatchers</span>.IO + CoroutineName(<span style="background-color:#e0e0ff">&#34;splines&#34;</span>)) {
 </span></span><span style="display:flex;"><span>        delay(<span style="color:#60e;font-weight:bold">1000</span>)
 </span></span><span style="display:flex;"><span>        println(<span style="background-color:#e0e0ff">&#34;</span><span style="background-color:#eee">${coroutineContext[CoroutineName]}</span><span style="background-color:#e0e0ff">: Reticulating splines...&#34;</span>)
 </span></span><span style="display:flex;"><span>    }
@@ -1062,7 +1062,7 @@ DefaultDispatcher-worker-1: [1, ... ]
 </span></span><span style="display:flex;"><span>    repeat(<span style="color:#60e;font-weight:bold">100</span>_000) { 
 </span></span><span style="display:flex;"><span>        launch {
 </span></span><span style="display:flex;"><span>            println(<span style="background-color:#e0e0ff">&#34;.&#34;</span>)
-</span></span><span style="display:flex;"><span>            <span style="color:#289;font-weight:bold">if</span> (Math.random() &lt; <span style="color:#60e;font-weight:bold">0.4</span>) {
+</span></span><span style="display:flex;"><span>            <span style="color:#289;font-weight:bold">if</span> (<span style="color:#e9e;font-weight:bold">Math</span>.random() &lt; <span style="color:#60e;font-weight:bold">0.4</span>) {
 </span></span><span style="display:flex;"><span>                <span style="color:#289;font-weight:bold">throw</span> IllegalStateException()
 </span></span><span style="display:flex;"><span>            }
 </span></span><span style="display:flex;"><span>        }
@@ -1120,7 +1120,7 @@ DefaultDispatcher-worker-1: [1, ... ]
 </span></span><span style="display:flex;"><span>    		<span style="color:#666;font-style:italic">// nefunguje!
 </span></span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic"></span>        launch(exceptionHandler) {
 </span></span><span style="display:flex;"><span>            println(<span style="background-color:#e0e0ff">&#34;.&#34;</span>)
-</span></span><span style="display:flex;"><span>            <span style="color:#289;font-weight:bold">if</span> (Math.random() &lt; <span style="color:#60e;font-weight:bold">0.4</span>) {
+</span></span><span style="display:flex;"><span>            <span style="color:#289;font-weight:bold">if</span> (<span style="color:#e9e;font-weight:bold">Math</span>.random() &lt; <span style="color:#60e;font-weight:bold">0.4</span>) {
 </span></span><span style="display:flex;"><span>                <span style="color:#289;font-weight:bold">throw</span> IllegalStateException()
 </span></span><span style="display:flex;"><span>            }
 </span></span><span style="display:flex;"><span>        }
@@ -1154,9 +1154,9 @@ DefaultDispatcher-worker-1: [1, ... ]
 </span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">kotlin.coroutines.resume</span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">object</span> <span style="color:#e9e;font-weight:bold">Http</span> {
-</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">suspend</span> <span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">run</span>(url: String): String = withContext(Dispatchers.IO) {
+</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">suspend</span> <span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">run</span>(url: String): String = withContext(<span style="color:#e9e;font-weight:bold">Dispatchers</span>.IO) {
 </span></span><span style="display:flex;"><span>        suspendCancellableCoroutine&lt;String&gt; { continuation <span style="color:#333">-&gt;</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#289;font-weight:bold">val</span> request = Request.Builder()
+</span></span><span style="display:flex;"><span>            <span style="color:#289;font-weight:bold">val</span> request = <span style="color:#e9e;font-weight:bold">Request</span>.Builder()
 </span></span><span style="display:flex;"><span>                .url(url)
 </span></span><span style="display:flex;"><span>                .<span style="color:#289;font-weight:bold">get</span>()
 </span></span><span style="display:flex;"><span>                .build()
@@ -1176,13 +1176,13 @@ DefaultDispatcher-worker-1: [1, ... ]
 </span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">private</span> <span style="color:#289;font-weight:bold">val</span> client: OkHttpClient
-</span></span><span style="display:flex;"><span>        <span style="color:#289;font-weight:bold">get</span>() = OkHttpClient.Builder()
+</span></span><span style="display:flex;"><span>        <span style="color:#289;font-weight:bold">get</span>() = <span style="color:#e9e;font-weight:bold">OkHttpClient</span>.Builder()
 </span></span><span style="display:flex;"><span>            .followRedirects(<span style="color:#289;font-weight:bold">false</span>)
 </span></span><span style="display:flex;"><span>            .build()
 </span></span><span style="display:flex;"><span>}
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">main</span>() = runBlocking {
-</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">val</span> xml = Http.run(<span style="background-color:#e0e0ff">&#34;https://dennikn.sk/minuta/feed/?cat=2386&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">val</span> xml = <span style="color:#e9e;font-weight:bold">Http</span>.run(<span style="background-color:#e0e0ff">&#34;https://dennikn.sk/minuta/feed/?cat=2386&#34;</span>)
 </span></span><span style="display:flex;"><span>    println(xml)
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><h2 id="supervízia-korutin-supervisorscope">Supervízia korutin: <code>supervisorScope</code></h2>
@@ -1196,7 +1196,7 @@ DefaultDispatcher-worker-1: [1, ... ]
 </span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">fun</span> <span style="color:#5ed;font-weight:bold">main</span>() = runBlocking {
 </span></span><span style="display:flex;"><span>    repeat(<span style="color:#60e;font-weight:bold">10</span>) {
 </span></span><span style="display:flex;"><span>        launch {
-</span></span><span style="display:flex;"><span>            println(Thread.currentThread().name + <span style="background-color:#e0e0ff">&#34; &#34;</span> + <span style="color:#289;font-weight:bold">it</span>)
+</span></span><span style="display:flex;"><span>            println(<span style="color:#e9e;font-weight:bold">Thread</span>.currentThread().name + <span style="background-color:#e0e0ff">&#34; &#34;</span> + <span style="color:#289;font-weight:bold">it</span>)
 </span></span><span style="display:flex;"><span>            <span style="color:#289;font-weight:bold">if</span> (<span style="color:#289;font-weight:bold">it</span> % <span style="color:#60e;font-weight:bold">2</span> <span style="color:#333">==</span> <span style="color:#60e;font-weight:bold">0</span>) {
 </span></span><span style="display:flex;"><span>                <span style="color:#289;font-weight:bold">throw</span> IllegalStateException(<span style="background-color:#e0e0ff">&#34;Random failure&#34;</span>)
 </span></span><span style="display:flex;"><span>            }
@@ -1208,7 +1208,7 @@ DefaultDispatcher-worker-1: [1, ... ]
 </span></span><span style="display:flex;"><span>    supervisorScope {
 </span></span><span style="display:flex;"><span>        repeat(<span style="color:#60e;font-weight:bold">10</span>) {
 </span></span><span style="display:flex;"><span>            launch {
-</span></span><span style="display:flex;"><span>                println(Thread.currentThread().name + <span style="background-color:#e0e0ff">&#34; &#34;</span> + <span style="color:#289;font-weight:bold">it</span>)
+</span></span><span style="display:flex;"><span>                println(<span style="color:#e9e;font-weight:bold">Thread</span>.currentThread().name + <span style="background-color:#e0e0ff">&#34; &#34;</span> + <span style="color:#289;font-weight:bold">it</span>)
 </span></span><span style="display:flex;"><span>                <span style="color:#289;font-weight:bold">if</span> (<span style="color:#289;font-weight:bold">it</span> % <span style="color:#60e;font-weight:bold">2</span> <span style="color:#333">==</span> <span style="color:#60e;font-weight:bold">0</span>) {
 </span></span><span style="display:flex;"><span>                    <span style="color:#289;font-weight:bold">throw</span> IllegalStateException(<span style="background-color:#e0e0ff">&#34;Random failure&#34;</span>)
 </span></span><span style="display:flex;"><span>                }
@@ -1239,7 +1239,7 @@ DefaultDispatcher-worker-1: [1, ... ]
 </span></span><span style="display:flex;"><span>        supervisorScope {
 </span></span><span style="display:flex;"><span>            repeat(<span style="color:#60e;font-weight:bold">10</span>) {
 </span></span><span style="display:flex;"><span>                launch {
-</span></span><span style="display:flex;"><span>                    println(Thread.currentThread().name + <span style="background-color:#e0e0ff">&#34; &#34;</span> + <span style="color:#289;font-weight:bold">it</span>)
+</span></span><span style="display:flex;"><span>                    println(<span style="color:#e9e;font-weight:bold">Thread</span>.currentThread().name + <span style="background-color:#e0e0ff">&#34; &#34;</span> + <span style="color:#289;font-weight:bold">it</span>)
 </span></span><span style="display:flex;"><span>                    <span style="color:#289;font-weight:bold">if</span> (<span style="color:#289;font-weight:bold">it</span> % <span style="color:#60e;font-weight:bold">2</span> <span style="color:#333">==</span> <span style="color:#60e;font-weight:bold">0</span>) {
 </span></span><span style="display:flex;"><span>                        <span style="color:#289;font-weight:bold">throw</span> IllegalStateException(<span style="background-color:#e0e0ff">&#34;Random failure&#34;</span>)
 </span></span><span style="display:flex;"><span>                    }
@@ -1260,7 +1260,7 @@ DefaultDispatcher-worker-1: [1, ... ]
 </span></span><span style="display:flex;"><span>    supervisorScope {
 </span></span><span style="display:flex;"><span>        repeat(<span style="color:#60e;font-weight:bold">10</span>) {
 </span></span><span style="display:flex;"><span>            launch(errorHandler) {
-</span></span><span style="display:flex;"><span>                println(Thread.currentThread().name + <span style="background-color:#e0e0ff">&#34; &#34;</span> + <span style="color:#289;font-weight:bold">it</span>)
+</span></span><span style="display:flex;"><span>                println(<span style="color:#e9e;font-weight:bold">Thread</span>.currentThread().name + <span style="background-color:#e0e0ff">&#34; &#34;</span> + <span style="color:#289;font-weight:bold">it</span>)
 </span></span><span style="display:flex;"><span>                <span style="color:#289;font-weight:bold">if</span> (<span style="color:#289;font-weight:bold">it</span> % <span style="color:#60e;font-weight:bold">2</span> <span style="color:#333">==</span> <span style="color:#60e;font-weight:bold">0</span>) {
 </span></span><span style="display:flex;"><span>                    <span style="color:#289;font-weight:bold">throw</span> IllegalStateException(<span style="background-color:#e0e0ff">&#34;Random failure&#34;</span>)
 </span></span><span style="display:flex;"><span>                }
@@ -1282,8 +1282,8 @@ DefaultDispatcher-worker-1: [1, ... ]
 </span></span><span style="display:flex;"><span>    supervisorScope {
 </span></span><span style="display:flex;"><span>        <span style="color:#289;font-weight:bold">val</span> deferreds = ArrayList&lt;Deferred&lt;Unit&gt;&gt;()
 </span></span><span style="display:flex;"><span>        repeat(<span style="color:#60e;font-weight:bold">10</span>) {
-</span></span><span style="display:flex;"><span>            <span style="color:#289;font-weight:bold">val</span> deferred = async(Dispatchers.Default) {
-</span></span><span style="display:flex;"><span>                println(Thread.currentThread().name + <span style="background-color:#e0e0ff">&#34; &#34;</span> + <span style="color:#289;font-weight:bold">it</span>)
+</span></span><span style="display:flex;"><span>            <span style="color:#289;font-weight:bold">val</span> deferred = async(<span style="color:#e9e;font-weight:bold">Dispatchers</span>.Default) {
+</span></span><span style="display:flex;"><span>                println(<span style="color:#e9e;font-weight:bold">Thread</span>.currentThread().name + <span style="background-color:#e0e0ff">&#34; &#34;</span> + <span style="color:#289;font-weight:bold">it</span>)
 </span></span><span style="display:flex;"><span>                <span style="color:#289;font-weight:bold">if</span> (<span style="color:#289;font-weight:bold">it</span> % <span style="color:#60e;font-weight:bold">2</span> <span style="color:#333">==</span> <span style="color:#60e;font-weight:bold">0</span>) {
 </span></span><span style="display:flex;"><span>                    <span style="color:#289;font-weight:bold">throw</span> IllegalStateException(<span style="background-color:#e0e0ff">&#34;Random failure at </span><span style="background-color:#eee">$it</span><span style="background-color:#e0e0ff">&#34;</span>)
 </span></span><span style="display:flex;"><span>                }
@@ -1327,8 +1327,8 @@ Exception in thread &#34;main&#34; java.lang.IllegalStateException: Random failu
 </span></span><span style="display:flex;"><span>    supervisorScope {
 </span></span><span style="display:flex;"><span>        <span style="color:#289;font-weight:bold">try</span> {
 </span></span><span style="display:flex;"><span>            (<span style="color:#60e;font-weight:bold">1.</span>.<span style="color:#60e;font-weight:bold">10</span>).map {
-</span></span><span style="display:flex;"><span>                async(Dispatchers.Default) {
-</span></span><span style="display:flex;"><span>                    println(Thread.currentThread().name + <span style="background-color:#e0e0ff">&#34; &#34;</span> + <span style="color:#289;font-weight:bold">it</span>)
+</span></span><span style="display:flex;"><span>                async(<span style="color:#e9e;font-weight:bold">Dispatchers</span>.Default) {
+</span></span><span style="display:flex;"><span>                    println(<span style="color:#e9e;font-weight:bold">Thread</span>.currentThread().name + <span style="background-color:#e0e0ff">&#34; &#34;</span> + <span style="color:#289;font-weight:bold">it</span>)
 </span></span><span style="display:flex;"><span>                    <span style="color:#289;font-weight:bold">if</span> (<span style="color:#289;font-weight:bold">it</span> % <span style="color:#60e;font-weight:bold">2</span> <span style="color:#333">==</span> <span style="color:#60e;font-weight:bold">0</span>) {
 </span></span><span style="display:flex;"><span>                        <span style="color:#289;font-weight:bold">throw</span> IllegalStateException(<span style="background-color:#e0e0ff">&#34;Random failure at </span><span style="background-color:#eee">$it</span><span style="background-color:#e0e0ff">&#34;</span>)
 </span></span><span style="display:flex;"><span>                    }
