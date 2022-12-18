@@ -1,34 +1,33 @@
 <!DOCTYPE html>
 <html lang="en-us">
   <head>
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+    <link rel="manifest" href="/images/site.webmanifest">
+
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
     <title>Nahrádzanie premenných v stringu v Springu | robonovotny</title>
+
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/go.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
     <link rel="stylesheet" href="/css/style.css" />
     <link rel="stylesheet" href="/css/fonts.css" />
     <link rel="stylesheet" href="https://novotnyr.github.io/asciidoctor.css">
-    
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.css" integrity="sha384-D+9gmBxUQogRLqvARvNLmA9hS2x//eK1FhVb9PiU86gmcrBrJAQT8okdJ4LMp2uv" crossorigin="anonymous">
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.js" integrity="sha384-483A6DwYfKeDa0Q52fJmxFXkcPCFfnXMoXblOkJ4JcA8zATN6Tm78UNL72AKk+0O" crossorigin="anonymous"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/contrib/auto-render.min.js" integrity="sha384-yACMu8JWxKzSp/C1YV86pzGiQ/l1YUfE8oPuahJQxzehAjEt2GiQuy/BIvl9KyeF" crossorigin="anonymous"></script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            renderMathInElement(document.body);
-        });
-    </script>
+    <header>
 
-<header>
-
-  
-  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
-  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
-  <script>hljs.initHighlightingOnLoad();</script>
   <nav>
     <ul>
       
       
       <li class="pull-left ">
-        <a href="https://novotnyr.github.io/">/home/robonovotny</a>
+        <a href="https://novotnyr.github.io/">~/robonovotny</a>
       </li>
       
 
@@ -57,9 +56,9 @@
 </div>
 
 
-
-<main>
-<p>Spring má geniálne vymyslený systém <em>properties</em>, kde možno ukladať rozličné konfiguračné nastavenia v <em>prostredí</em> (<code>Environment</code>) a robiť s tým kdejaké finty. Čo keď však potrebujeme úplne hlúpu vec: nahradiť premenné v reťazci konkrétnymi namapovanými hodnotami?</p>
+<div class="content-wrapper">
+  <main>
+    <p>Spring má geniálne vymyslený systém <em>properties</em>, kde možno ukladať rozličné konfiguračné nastavenia v <em>prostredí</em> (<code>Environment</code>) a robiť s tým kdejaké finty. Čo keď však potrebujeme úplne hlúpu vec: nahradiť premenné v reťazci konkrétnymi namapovanými hodnotami?</p>
 <p>Zoberme si reťazec:</p>
 <pre tabindex="0"><code>http://${hostname}/${path}
 </code></pre><p>Zoberme si dve premenné — <strong>host</strong> s hodnotou <code>localhost</code> a <strong>path</strong> s hodnotou <code>qofola</code>.</p>
@@ -98,8 +97,9 @@
 </ul>
 <p><em>Helper</em> automaticky podporuje rekurzívne kľúče aj hodnoty. Ak akýkoľvek kľúč či hodnota obsahuje vnorené kľúče, tie sa budú “rozbaľovať”, kým sa celý reťazec nepodarí úspešne ponahrádzať hodnotami.</p>
 
-</main>
-
+    <a href="/"> >> Home</a>
+  </main>
+</div>
     <footer>
       
 <script>

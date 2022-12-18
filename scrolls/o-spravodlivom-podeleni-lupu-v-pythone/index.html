@@ -1,34 +1,33 @@
 <!DOCTYPE html>
 <html lang="en-us">
   <head>
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+    <link rel="manifest" href="/images/site.webmanifest">
+
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
     <title>O spravodlivom podelení lupu v Pythone | robonovotny</title>
+
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/go.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
     <link rel="stylesheet" href="/css/style.css" />
     <link rel="stylesheet" href="/css/fonts.css" />
     <link rel="stylesheet" href="https://novotnyr.github.io/asciidoctor.css">
-    
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.css" integrity="sha384-D+9gmBxUQogRLqvARvNLmA9hS2x//eK1FhVb9PiU86gmcrBrJAQT8okdJ4LMp2uv" crossorigin="anonymous">
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.js" integrity="sha384-483A6DwYfKeDa0Q52fJmxFXkcPCFfnXMoXblOkJ4JcA8zATN6Tm78UNL72AKk+0O" crossorigin="anonymous"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/contrib/auto-render.min.js" integrity="sha384-yACMu8JWxKzSp/C1YV86pzGiQ/l1YUfE8oPuahJQxzehAjEt2GiQuy/BIvl9KyeF" crossorigin="anonymous"></script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            renderMathInElement(document.body);
-        });
-    </script>
+    <header>
 
-<header>
-
-  
-  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
-  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
-  <script>hljs.initHighlightingOnLoad();</script>
   <nav>
     <ul>
       
       
       <li class="pull-left ">
-        <a href="https://novotnyr.github.io/">/home/robonovotny</a>
+        <a href="https://novotnyr.github.io/">~/robonovotny</a>
       </li>
       
 
@@ -57,9 +56,9 @@
 </div>
 
 
-
-<main>
-<p>Dvom lupičom sa podarilo uchmatnúť si <em>n</em> zlatých tehličiek. Tehličky majú rôzne váhy. Váha každej tehličky je kladné nenulové reálne číslo (napr. v kilogramoch). Po akcii majú v pláne spravodlivo sa rozdeliť a potom sa čo najskôr rozísť. Polícia je im však v pätách a tak nemajú
+<div class="content-wrapper">
+  <main>
+    <p>Dvom lupičom sa podarilo uchmatnúť si <em>n</em> zlatých tehličiek. Tehličky majú rôzne váhy. Váha každej tehličky je kladné nenulové reálne číslo (napr. v kilogramoch). Po akcii majú v pláne spravodlivo sa rozdeliť a potom sa čo najskôr rozísť. Polícia je im však v pätách a tak nemajú
 čas krájať tehličky, aby sa podelili presne na polovicu (hmotnosť je priamo úmerná cene). Nájdite čo najspravodlivejšie rozdelenie lupu (s minimálnym rozdielom váh).</p>
 <h1 id="nápady-na-riešenie">Nápady na riešenie</h1>
 <p>Brutálne riešenie sa dá určiť generovaním všetkých možností. Keďže máme len 2 zbojníkov, môžeme vygenerovať všetky možné prerozdelenia tehličiek medzi nich a nájsť to s najmenším rozdielom váh.</p>
@@ -187,8 +186,9 @@ print &#34;Prvy dostane &#34;, gz1
 print &#34;Druhy dostane &#34;, gz2
 print &#34;Rozdiel &#34;, najmensiRozdiel
 </code></pre>
-</main>
-
+    <a href="/"> >> Home</a>
+  </main>
+</div>
     <footer>
       
 <script>

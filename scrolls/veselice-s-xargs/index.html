@@ -1,34 +1,33 @@
 <!DOCTYPE html>
 <html lang="en-us">
   <head>
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+    <link rel="manifest" href="/images/site.webmanifest">
+
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
     <title>Veselice s `xargs` | robonovotny</title>
+
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/go.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
     <link rel="stylesheet" href="/css/style.css" />
     <link rel="stylesheet" href="/css/fonts.css" />
     <link rel="stylesheet" href="https://novotnyr.github.io/asciidoctor.css">
-    
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.css" integrity="sha384-D+9gmBxUQogRLqvARvNLmA9hS2x//eK1FhVb9PiU86gmcrBrJAQT8okdJ4LMp2uv" crossorigin="anonymous">
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.js" integrity="sha384-483A6DwYfKeDa0Q52fJmxFXkcPCFfnXMoXblOkJ4JcA8zATN6Tm78UNL72AKk+0O" crossorigin="anonymous"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/contrib/auto-render.min.js" integrity="sha384-yACMu8JWxKzSp/C1YV86pzGiQ/l1YUfE8oPuahJQxzehAjEt2GiQuy/BIvl9KyeF" crossorigin="anonymous"></script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            renderMathInElement(document.body);
-        });
-    </script>
+    <header>
 
-<header>
-
-  
-  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
-  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
-  <script>hljs.initHighlightingOnLoad();</script>
   <nav>
     <ul>
       
       
       <li class="pull-left ">
-        <a href="https://novotnyr.github.io/">/home/robonovotny</a>
+        <a href="https://novotnyr.github.io/">~/robonovotny</a>
       </li>
       
 
@@ -57,9 +56,9 @@
 </div>
 
 
-
-<main>
-<p>Každý druhý článok o <code>xargs</code> sa začína v duchu <em>„&hellip; jedným z najpodceňovanejších príkazov Unixu je&hellip;”</em>. Tento nebude iný.</p>
+<div class="content-wrapper">
+  <main>
+    <p>Každý druhý článok o <code>xargs</code> sa začína v duchu <em>„&hellip; jedným z najpodceňovanejších príkazov Unixu je&hellip;”</em>. Tento nebude iný.</p>
 <p>Mnohokrát sa stáva, že výstupom programu je niekoľko slov oddelených bielym miestom (napr. slová na samostatných riadkoch), ktoré chceme postupne jeden za druhým spracovávať a posielať ako parameter do iného programu. Niečo v duchu:</p>
 <pre><code>pre každé slovo R
 	spracuj R
@@ -175,8 +174,9 @@ willgates
 </code></pre><p>Príkaz <code>yes</code> generuje <code>y</code> donekonečna, ale nám stačí odseknúť <code>head</code>om prvých 9 hodnôt (3 x 3), ktoré pošleme posekať do <code>xargs</code> a na záver nahradíme znaky <code>y</code> jednotkami. (Samozrejme, predpokladá to existenciu príkazu <code>yes</code>, ktorý nie je posixový.)</p>
 <h3 id="heading"></h3>
 
-</main>
-
+    <a href="/"> >> Home</a>
+  </main>
+</div>
     <footer>
       
 <script>

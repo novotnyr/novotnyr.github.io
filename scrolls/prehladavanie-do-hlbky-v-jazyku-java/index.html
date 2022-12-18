@@ -1,34 +1,33 @@
 <!DOCTYPE html>
 <html lang="en-us">
   <head>
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+    <link rel="manifest" href="/images/site.webmanifest">
+
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Prehľadávanie stromu do hĺbky je ďalší klasický algoritmus, ktorý sa nám v praxi môže hodiť. Ukážeme si ho na príklade traverzovania súborového systému, kde chceme na každom súbore či adresári vykonať nejakú operáciu.">
     <title>Prehľadávanie do hĺbky v jazyku Java | robonovotny</title>
+
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/go.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
     <link rel="stylesheet" href="/css/style.css" />
     <link rel="stylesheet" href="/css/fonts.css" />
     <link rel="stylesheet" href="https://novotnyr.github.io/asciidoctor.css">
-    
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.css" integrity="sha384-D+9gmBxUQogRLqvARvNLmA9hS2x//eK1FhVb9PiU86gmcrBrJAQT8okdJ4LMp2uv" crossorigin="anonymous">
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.js" integrity="sha384-483A6DwYfKeDa0Q52fJmxFXkcPCFfnXMoXblOkJ4JcA8zATN6Tm78UNL72AKk+0O" crossorigin="anonymous"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/contrib/auto-render.min.js" integrity="sha384-yACMu8JWxKzSp/C1YV86pzGiQ/l1YUfE8oPuahJQxzehAjEt2GiQuy/BIvl9KyeF" crossorigin="anonymous"></script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            renderMathInElement(document.body);
-        });
-    </script>
+    <header>
 
-<header>
-
-  
-  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
-  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
-  <script>hljs.initHighlightingOnLoad();</script>
   <nav>
     <ul>
       
       
       <li class="pull-left ">
-        <a href="https://novotnyr.github.io/">/home/robonovotny</a>
+        <a href="https://novotnyr.github.io/">~/robonovotny</a>
       </li>
       
 
@@ -57,9 +56,9 @@
 </div>
 
 
-
-<main>
-<h1 id="úvod">Úvod</h1>
+<div class="content-wrapper">
+  <main>
+    <h1 id="úvod">Úvod</h1>
 <p>V predošlom článku sme spomínali algoritmus prehľadávania do šírky, ktorý prechádzal strom ,,po vrstvách&quot;. Okrem neho jestvuje ešte analogický algoritmus prehľadávania do hĺbky. Jeho základnou ideou je preskúmavanie ciest vedúcich k čo najhlbšiemu potomkovi daného uzla.</p>
 <p>Pekným príkladom prehľadávania do hĺbky je traverzovanie súborového systému. Ak chceme prejsť všetky súbory v danom adresári a jeho podadresároch (a v podadresároch jeho podadresárov), takéto prehľadávanie sa nám veľmi hodí.</p>
 <p>Zjednodušený súborový systém môže vyzerať nasledovne:</p>
@@ -206,8 +205,9 @@ File[] children = fileC.listFiles();
 </span></span><span style="display:flex;"><span>  	System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span>treeNode<span style="color:#333">.</span><span style="color:#007">getUserObject</span><span style="color:#333">());</span>
 </span></span><span style="display:flex;"><span><span style="color:#333">}</span>
 </span></span></code></pre></div>
-</main>
-
+    <a href="/"> >> Home</a>
+  </main>
+</div>
     <footer>
       
 <script>

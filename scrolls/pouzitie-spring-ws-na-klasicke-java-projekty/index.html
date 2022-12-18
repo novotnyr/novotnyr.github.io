@@ -1,34 +1,33 @@
 <!DOCTYPE html>
 <html lang="en-us">
   <head>
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+    <link rel="manifest" href="/images/site.webmanifest">
+
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Spring-WS je aplikačný rámec pre vývoj webových služieb, ktorý otvorene propaguje filozofiu &#34;od WSDL k triedam&#34;. Napriek tomu je natoľko flexibilný, že v jednoduchých prípadoch možno rýchlo vyvinúť webovú službu, ktorá vznikla opačným spôsobom. Ukážeme si jednoduchý príklad vybudovania služby, v ktorom sa objekty zasielané v SOAP správach serializujú na XML pomocou knižnice XStream.">
     <title>Použitie Spring-WS na klasické Java objekty | robonovotny</title>
+
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/go.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
     <link rel="stylesheet" href="/css/style.css" />
     <link rel="stylesheet" href="/css/fonts.css" />
     <link rel="stylesheet" href="https://novotnyr.github.io/asciidoctor.css">
-    
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.css" integrity="sha384-D+9gmBxUQogRLqvARvNLmA9hS2x//eK1FhVb9PiU86gmcrBrJAQT8okdJ4LMp2uv" crossorigin="anonymous">
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.js" integrity="sha384-483A6DwYfKeDa0Q52fJmxFXkcPCFfnXMoXblOkJ4JcA8zATN6Tm78UNL72AKk+0O" crossorigin="anonymous"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/contrib/auto-render.min.js" integrity="sha384-yACMu8JWxKzSp/C1YV86pzGiQ/l1YUfE8oPuahJQxzehAjEt2GiQuy/BIvl9KyeF" crossorigin="anonymous"></script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            renderMathInElement(document.body);
-        });
-    </script>
+    <header>
 
-<header>
-
-  
-  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
-  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
-  <script>hljs.initHighlightingOnLoad();</script>
   <nav>
     <ul>
       
       
       <li class="pull-left ">
-        <a href="https://novotnyr.github.io/">/home/robonovotny</a>
+        <a href="https://novotnyr.github.io/">~/robonovotny</a>
       </li>
       
 
@@ -57,9 +56,9 @@
 </div>
 
 
-
-<main>
-<h1 id="úvod">Úvod</h1>
+<div class="content-wrapper">
+  <main>
+    <h1 id="úvod">Úvod</h1>
 <p>[dokumentácii](<a href="http://static.springframework.org/spring-ws/site/">http://static.springframework.org/spring-ws/site/</a> | <em>Spring Web Services</em>]] (Spring-WS) je knižnica pre podporu budovania webových služieb v Jave. Spadá teda do rodiny, v ktorej sú knižnice / aplikačné rámce ako [[http://ws.apache.org/axis2/ | Apache Axis2]], [[http://cxf.apache.org/ | Apache CXF]] alebo [[https://metro.dev.java.net/ | Glassfish Metro]]. Na rozdiel od jej bratrancov je základnou filozofiou „contract-first&quot;. Pri budovaní webových služieb sa teda očakáva vybudovanie XML schémy, popisovača WSDL a tried, ktoré vychádzajú práve z týchto jazykovo a platformovo nezávislých súčastí. Iné knižnice poskytujú aj opačný prístup, teda vybudovanie webovej služby na základe Java implementácie, Spring-WS však tento spôsob zámerne neposkytuje. (Argumentáciu možno nájsť v [[http://static.springframework.org/spring-ws/site/reference/html/why-contract-first.html )). Rovnako je tento aplikačný rámec držaný „pri zemi&quot;. Množstvo vecí, ktoré iné knižnice riešia automagicky, sa tuto riešia manuálne - čo však v mnohých prípadoch umožňuje mať veci pod kontrolou.</p>
 <p>Ukážme si však spôsob, ktorým je možné vybudovať jednoduchú webovú službu práve „ignorovaným&quot; opačným spôsobom. Obetujeme popri tom množstvo z platformových vymožeností webových služieb, ale dosiahneme popri tom fungujúci prototyp.</p>
 <h1 id="triedy-a-serializácia-do-xml-pomocou-xstream">Triedy a serializácia do XML pomocou XStream</h1>
@@ -308,8 +307,9 @@ log4j.appender.stdout.layout.ConversionPattern=%p [%c{3}] %m%n
 <h1 id="kdepak-je-mé-wsdl-kdepak-je-má-schéma">Kdepak je mé WSDL? Kdepak je má schéma?</h1>
 <p>Ako vravieval klasický tvorca v dielni Rudolfa II.: WSDL&hellip; není. Tento spôsob je skutočne veľmi jednoduchý a minimalistický. Napr. Axis2 podporuje možnosť nasadiť jednoduchú Java triedu a získať z nej všetko: webovú službu, automaticky generované WSDL spolu so XML schémou a všetko ostatné. Spring-WS vám WSDL nevie vygenerovať, pretože nemá k dispozícii XML schému vstupných a výstupných dát (a to hlavne preto, že štruktúra XML generovaná XStreamom môže byť principiálne ľubovoľná). To je, ako sme spomínali vyššie, v súlade s filozofiou „contract-first&quot;.</p>
 
-</main>
-
+    <a href="/"> >> Home</a>
+  </main>
+</div>
     <footer>
       
 <script>
