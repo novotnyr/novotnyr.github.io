@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+    <link rel="manifest" href="/images/site.webmanifest">
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <title>Go a simulácia abstraktných metód | robonovotny</title>
+
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/go.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    <link rel="stylesheet" href="https://novotnyr.github.io/asciidoctor.css">
+    <header>
+
+  <nav>
+    <ul>
+      
+      
+      <li class="pull-left ">
+        <a href="https://novotnyr.github.io/">~/robonovotny</a>
+      </li>
+      
+
+      
+
+    </ul>
+  </nav>
+</header>
+
+  </head>
+
+  <body>
+    <br/>
+
+<div class="article-meta">
+<h1><span class="title">Go a simulácia abstraktných metód</span></h1>
+
+<h2 class="date">2022/12/19</h2>
+<p class="terms">
+  
+  
+  
+  
+  
+</p>
+</div>
+
+
+<div class="content-wrapper">
+  <main>
+    <div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>V Go neexistujú abstraktné metódy.
+To často spôsobuje prekvapivé správanie.</p>
+</div>
+<div class="paragraph">
+<p>Vytvorme si útvar s menom:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-go" data-lang="go">type Shape struct {
+	name string
+}
+
+func (s *Shape) Name() string {
+	return s.name
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Použime ho:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-go" data-lang="go">func main() {
+	s := Shape{&#34;some square&#34;}
+	fmt.Println(s.Name())
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Vyrobme na pomenovanom útvare metódu, ktorá popíše jeho vlastnosti ako reťazec, pričom detaily o útvare zabezpečí príslušný útvar, ktorý embedduje <code>Shape</code> — kruh uvedie polomer, štvorec uvedie dĺžku strany a pod.</p>
+</div>
+<div class="paragraph">
+<p>Dodajme:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-go" data-lang="go">func (s *Shape) Describe() string {
+	desc := s.DoDescribe()
+	if desc != &#34;&#34; {
+		desc = &#34; &#34; + desc
+	}
+	return &#34;&lt;&#34; + s.Name() + desc + &#34;&gt;&#34;
+}
+
+func (s *Shape) DoDescribe() string {
+	return &#34;&#34;
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Následne skúsme:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-go" data-lang="go">func main() {
+	s := Shape{&#34;some square&#34;}
+	fmt.Println(s.Describe())
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Uvidíme výpis v lomených zátvorkách:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-go" data-lang="go">&lt;some square&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Metóda <code>DoDescribe</code> je „abstraktná“ a jej kód majú dodať potomkovské štruktúry.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_štvorec_a_jeho_popis">Štvorec a jeho popis</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Dodajme štvorec a jeho popis.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-go" data-lang="go">type Square struct {
+	side float64
+	Shape
+}
+
+func (s *Square) DoDescribe() string {
+	return fmt.Sprintf(&#34;Square %s, side %.2f&#34;, s.Name(), s.side)
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Štvorec embedduje („dedí“) od útvaru <code>Shape</code> a pokúša sa prekryť „abstraktnú“ metódu <code>DoDescribe</code>, žiaľ, neúspešne.</p>
+</div>
+<div class="paragraph">
+<p>Použime:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-go" data-lang="go">redSquare := Square{
+    2,
+    Shape{&#34;Red&#34;},
+}
+fmt.Println(redSquare.Describe())</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Čo uvidíme? Očakávame, že uvidíme podrobnosti o štvorci, ale namiesto toho vidíme výsledok rodičovskej metódy:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>&lt;Red&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Samotný štvorec <code>Square</code> nemá metódu <code>Describe</code>, takže sa zavolá rodičovská metóda z <code>Shape</code>.</p>
+</div>
+<div class="paragraph">
+<p>V bežných objektovo orientovaných jazykov by metóda <code>Describe</code> zavolala metódu <code>DoDescribe</code> na skutočnom type premennej — teda na <code>Square</code>.</p>
+</div>
+<div class="paragraph">
+<p>Toto však v Go nefunguje.</p>
+</div>
+<div class="paragraph">
+<p>V skutočnosti sa volá metóda <code>DoDescribe</code> na tom type, ktorý naozaj obsahuje metódu <code>Describe</code>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_trik_pre_abstraktné_metódy">Trik pre abstraktné metódy</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Obídeme to elegantným trikom z <a href="https://hackthology.com/object-oriented-inheritance-in-go.html">z blogu Hackthology</a>.</p>
+</div>
+<div class="sect2">
+<h3 id="_konštruktory">Konštruktory</h3>
+<div class="paragraph">
+<p>Najprv si však pripravme funkciu, čo sa bude tváriť ako konštruktor:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-go" data-lang="go">func NewSquare(side float64, name string) *Square {
+	s := new(Square)
+	s.side = 0
+	s.Shape = Shape{name}
+
+	return s
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Následne ju použijeme:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-go" data-lang="go">redSquare := NewSquare(2, &#34;Red&#34;)
+fmt.Println(redSquare.Describe())</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Situácia sa nezlepšila, ale otvorili sme si priestor na ďalšie zmeny.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_funkcia_pre_abstraktné_volanie">Funkcia pre abstraktné volanie</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Dodajme do útvaru stav reprezentujúci funkciu pre jeho popis.</p>
+</div>
+<div class="paragraph">
+<p>Funkcie sú v Go rovnoprávne dátové typy, s ktorými možno veselo narábať ako s premennými!</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-go" data-lang="go">type Shape struct {
+	name string
+	describer func() string
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Následne upravme konštruktor pre štvorec:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-go" data-lang="go">func NewSquare(side float64, name string) *Square {
+	s := new(Square)
+	s.side = side //<b class="conum">(1)</b>
+	s.name = name //<b class="conum">(2)</b>
+	s.describer = s.DoDescribe //<b class="conum">(3)</b>
+
+	return s
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<ol>
+<li>
+<p>Štvorcu priradíme dĺžku strany.</p>
+</li>
+<li>
+<p>Zároveň štvorec pomenujeme, pričom využijeme premennú <code>name</code> „zdedenú“ z útvaru <code>Shape</code>.</p>
+</li>
+<li>
+<p>Funkcii, ktorá dokáže vrátiť popis, priradíme metódu (!) <code>DoDescribe</code> zo štvorca.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Štvorec <code>Square</code>, ktorý má metódu <code>DoDescribe</code> ju môže použiť ako funkciu.
+Keďže <code>DoDescribe</code> neberie žiaden parameter a vracia reťazec, je možné ju považovať za príslušnú funkciu s 0 parametrami a s návratovou hodnotou <code>string</code> a teda ju priradiť do premennej v útvare <code>Shape</code>.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tbody><tr>
+<td class="icon">
+<div class="title">Tip</div>
+</td>
+<td class="content">
+Táto vlastnosť sa nazýva <a href="https://go.dev/ref/spec#Method_values">Method Value</a>.
+Metódu štruktúry dokážeme považovať na samostatne stojacu funkciu.
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="paragraph">
+<p>Aby to naozaj fungovalo, musíme ešte upraviť metódu <code>Describe</code> na útvare <code>Shape</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-go" data-lang="go">func (s *Shape) Describe() string {
+	desc := s.describer() //<b class="conum">(1)</b>
+	if desc != &#34;&#34; {
+		desc = &#34; &#34; + desc
+	}
+	return &#34;&lt;&#34; + s.Name() + desc + &#34;&gt;&#34;
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<ol>
+<li>
+<p>Dôležité informácie o útvare z konkrétnej implementácie už nezískame priamo — volaním metódy <code>DoDescribe</code>, ale „dokola“ — z funkcie v premennej <code>describer</code>.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Ak zavoláme príslušný kód, uvidíme správny výsledok.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>&lt;Red Square Red, side 2.00&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Ak chceme naozaj vybudiť dojem, že metóda <code>DoDescribe</code> na útvare <code>Shape</code> je „abstraktná”, dodáme ju.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-go" data-lang="go">func (s *Shape) Describe() string {
+	desc := s.DoDescribe() //<b class="conum">(1)</b>
+	if desc != &#34;&#34; {
+		desc = &#34; &#34; + desc
+	}
+	return &#34;&lt;&#34; + s.Name() + desc + &#34;&gt;&#34;
+}
+
+func (s *Shape) DoDescribe() string {
+	return s.describer() //<b class="conum">(2)</b>
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<ol>
+<li>
+<p>Voláme „abstraktnú“ metódu <code>DoDescribe</code>, ktorá na útvare <code>Shape</code> len deleguje vykonávanie do medzifunkcie v premennej <code>describer</code>.</p>
+</li>
+<li>
+<p>Metóda <code>DoDescribe()</code> rieši zavolanie medzifunkcie.</p>
+</li>
+</ol>
+</div>
+<div class="admonitionblock note">
+<table>
+<tbody><tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+Metóda <code>DoDescribe</code> je na konkrétnom útvare — napr. štvorci — prekrytá korektne.
+Medzifunkcia je inicializovaná v konštruktore štvorca — teda v metóde <code>NewSquare</code>, kde sa do nej priradí metóda <code>DoDescribe</code> štvorca <code>Square</code>.
+</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_kruhy">Kruhy</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Kruhy už urobíme v podobnom duchu.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-go" data-lang="go">// Circle
+type Circle struct {
+	diameter float64
+	Shape
+}
+
+func NewCircle(diameter float64, name string) *Circle {
+	c := &amp;Circle{diameter, Shape{name: name}} //<b class="conum">(1)</b>
+	c.describer = c.DoDescribe //<b class="conum">(2)</b>
+	return c
+}
+
+func (c *Circle) DoDescribe() string { //<b class="conum">(3)</b>
+	return fmt.Sprintf(&#34;Circle with diameter %.2f&#34;, c.diameter)
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<ol>
+<li>
+<p>Inicializáciu urobíme na jeden riadok.</p>
+</li>
+<li>
+<p>Chýbajúcu medzifunkciu dodáme samostatne.
+Nezabudnime, že <code>describer</code> je „zdedený“ z útvaru <code>Shape</code> a preto ho môžeme zavolať.</p>
+</li>
+<li>
+<p>Pridáme vlastný popis kruhu.</p>
+</li>
+</ol>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tbody><tr>
+<td class="icon">
+<div class="title">Warning</div>
+</td>
+<td class="content">
+Metóda <code>DoDescribe</code> musí byť volaná na prijímači typu smerník — teda <em>method receiver</em> musí byť pointrový <code>*Circle</code>!
+Inak tento trik nebude fungovať.
+</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_abstraktný_útvar">Abstraktný útvar</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Pozor na to, že útvar <code>Shape</code> nie je určený na vytváranie premenných napriamo.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-go" data-lang="go">blob := Shape{name: &#34;blob&#34;}
+fmt.Println(blob.Describe())</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Výsledok bude „segmentaiton fault“:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>panic: runtime error: invalid memory address or nil pointer dereference
+[signal SIGSEGV: segmentation violation code=0x1 addr=0x0 pc=0x108e9bd]
+
+goroutine 1 [running]:
+main.(*Shape).DoDescribe(...)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Je to preto, že funkcia v premennej <code>describer</code> nie je inicializovaná.
+Útvar <code>Shape</code> nebol korektne inicializovaný a preto pokus o volanie nedefinovanej medzifunkcie (<code>nil</code>) zlyhá.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_zdroje">Zdroje</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://hackthology.com/object-oriented-inheritance-in-go.html" class="bare">https://hackthology.com/object-oriented-inheritance-in-go.html</a></p>
+</li>
+<li>
+<p><a href="https://www.toptal.com/go/golang-oop-tutorial" class="bare">https://www.toptal.com/go/golang-oop-tutorial</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+
+    <a href="/"> >> Home</a>
+  </main>
+</div>
+    <footer>
+      
+<script>
+(function() {
+  function center_el(tagName) {
+    var tags = document.getElementsByTagName(tagName), i, tag;
+    for (i = 0; i < tags.length; i++) {
+      tag = tags[i];
+      var parent = tag.parentElement;
+      
+      if (parent.childNodes.length === 1) {
+        
+        if (parent.nodeName === 'A') {
+          parent = parent.parentElement;
+          if (parent.childNodes.length != 1) continue;
+        }
+        if (parent.nodeName === 'P') parent.style.textAlign = 'center';
+      }
+    }
+  }
+  var tagNames = ['img', 'embed', 'object'];
+  for (var i = 0; i < tagNames.length; i++) {
+    center_el(tagNames[i]);
+  }
+})();
+</script>
+
+      
+    </footer>
+  </body>
+</html>
+

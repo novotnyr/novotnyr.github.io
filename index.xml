@@ -6,7 +6,19 @@
     <description>Recent content on robonovotny</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 18 Dec 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://novotnyr.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 19 Dec 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://novotnyr.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Go a simulácia abstraktných metód</title>
+      <link>https://novotnyr.github.io/scrolls/go-oop-abstraktne-metody/</link>
+      <pubDate>Mon, 19 Dec 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://novotnyr.github.io/scrolls/go-oop-abstraktne-metody/</guid>
+      <description>V Go neexistujú abstraktné metódy. To často spôsobuje prekvapivé správanie.
+Vytvorme si útvar s menom:
+type Shape struct { name string } func (s *Shape) Name() string { return s.name } Použime ho:
+func main() { s := Shape{&amp;#34;some square&amp;#34;} fmt.Println(s.Name()) } Vyrobme na pomenovanom útvare metódu, ktorá popíše jeho vlastnosti ako reťazec, pričom detaily o útvare zabezpečí príslušný útvar, ktorý embedduje Shape — kruh uvedie polomer, štvorec uvedie dĺžku strany a pod.</description>
+    </item>
+    
     <item>
       <title>Go a zádrhele pri objektoch</title>
       <link>https://novotnyr.github.io/scrolls/go-a-objekty/</link>
