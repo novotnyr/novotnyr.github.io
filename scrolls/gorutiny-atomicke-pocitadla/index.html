@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+    <link rel="manifest" href="/images/site.webmanifest">
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <title>Gorutiny a atomické počítadlé | robonovotny</title>
+
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/go.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    <link rel="stylesheet" href="https://novotnyr.github.io/asciidoctor.css">
+    <header>
+
+  <nav>
+    <ul>
+      
+      
+      <li class="pull-left ">
+        <a href="https://novotnyr.github.io/">~/robonovotny</a>
+      </li>
+      
+
+      
+
+    </ul>
+  </nav>
+</header>
+
+  </head>
+
+  <body>
+    <br/>
+
+<div class="article-meta">
+<h1><span class="title">Gorutiny a atomické počítadlé</span></h1>
+
+<h2 class="date">2023/01/06</h2>
+<p class="terms">
+  
+  
+  
+  
+  
+</p>
+</div>
+
+
+<div class="content-wrapper">
+  <main>
+    <div class="paragraph">
+<p>Počítajme slová vo vetách s gorutinami!</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-go" data-lang="go">package main
+
+import (
+	&#34;log&#34;
+	&#34;strings&#34;
+)
+
+var input = `A ty mor ho! — hoj mor ho! detvo môjho rodu,
+kto kradmou rukou siahne na tvoju slobodu;
+a čo i tam dušu dáš v tom boji divokom:
+Mor ty len, a voľ nebyť, ako byť otrokom.`
+
+func main() {
+	lines := strings.Split(input, &#34;\n&#34;)
+	for _, line := range lines {
+		go countWords(line)
+	}
+}
+
+func countWords(line string) {
+	words := strings.Count(line, &#34; &#34;) + 1
+	log.Printf(&#34;%d %s&#34;, words, line)
+	return words
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Chalupkov fragment najprv rozbijeme na riadky.
+Každý z nich pošleme do <strong>gorutiny</strong>, ktorá začne paralelne rátať počet slov a výsledok vypíše do logu.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+Gorutina sa spúšťa pomocou slova <code>go</code> a volania funkcie, ktorú chceme spustiť paralelne.
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="admonitionblock important">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+Funkcia bežiaca ako gorutina nemôže vracať výsledok.
+Museli by sme naňho čakať, čím by sme popreli zmysel paralelne bežiacej funkcie, na ktorej výsledok sa nečaká.
+To je dôvod, prečo <code>countWords</code> nevracia nič.
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="paragraph">
+<p>Paralelne sa teda spustia štyri gorutiny — pre štyri riadky.</p>
+</div>
+<div class="sect1">
+<h2 id="_atomické_počítadlá">Atomické počítadlá</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Keďže každá gorutina „vracia“ len celé číslo, a úlohou je spočítať čísla, stačí nám jedno <strong>atomické počítadlo</strong>.</p>
+</div>
+<div class="paragraph">
+<p>Ide o počítadlo, ktoré vieme nastavovať atomicky, teda bezpečne uskutočniť nasledovné operácie:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Zistiť stav počítadla.</p>
+</li>
+<li>
+<p>Navýšiť o príslušnú hodnotu</p>
+</li>
+<li>
+<p>Zapísať novú hodnotu.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Toto počítadlo bude zdieľané z viacerých gorutín, a hoci „zdieľané“ je v konkurentnom svete nebezpečné slovo, vďaka atomicite sa všetko vyrieši automaticky.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_prvý_nástrel_s_čakaním">Prvý nástrel s čakaním</h2>
+<div class="sectionbody">
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-go" data-lang="go">import (
+	&#34;fmt&#34;
+	&#34;strings&#34;
+	&#34;sync/atomic&#34;
+	&#34;time&#34;
+)
+
+func main() {
+	wordCount := new(int32) <i class="conum" data-value="1"></i><b>(1)</b>
+	lines := strings.Split(input, &#34;\n&#34;)
+	for _, line := range lines {
+		go func() { <i class="conum" data-value="2"></i><b>(2)</b>
+			words := int32(countWords(line)) <i class="conum" data-value="3"></i><b>(3)</b>
+			atomic.AddInt32(wordCount, words) <i class="conum" data-value="4"></i><b>(4)</b>
+		}()
+	}
+	// TODO dočasné riešenie!
+	time.Sleep(4 * time.Second) <i class="conum" data-value="5"></i><b>(5)</b>
+	fmt.Printf(&#34;%d&#34;, *wordCount) <i class="conum" data-value="6"></i><b>(6)</b>
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tbody><tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Vytvoríme premennú pre počítadlo.
+Keďže budeme potrebovať premennú typu <code>int32</code>, rovno alokujeme pamäť a získame ju ako pointer.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Spustíme anonymnú funkciu ako korutinu.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Spočítame počet slov ako <code>int</code> a prevedieme ho na <code>int32</code>.
+Tieto dva typy sú prakticky synonymá, ale prevod musíme uviesť explicitne.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>Pomocou funkcie <code>AddInt32</code> vieme atomicky navýšiť počítadlo reprezentované pointerom na číslo typu <code>int32</code>.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="5"></i><b>5</b></td>
+<td>Na začiatku urobíme zverstvo — počkáme si štyri sekundy na výsledok.
+Toto budeme musieť ihneď opraviť!</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="6"></i><b>6</b></td>
+<td>Výsledok vypíšeme.</td>
+</tr>
+</tbody></table>
+</div>
+<div class="paragraph">
+<p>Po spustení programu ubehnú 4 sekundy, za ktoré — dúfame — dobehnú všetky korutiny — a počítadlo ukáže:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>36</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>No moment, nie je tam náhodou 37 slov?</p>
+</div>
+<div class="paragraph">
+<p>Je.</p>
+</div>
+<div class="paragraph">
+<p>Problém je na riadku:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>words := int32(countWords(line))</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Ak by sme si spustili <code>go vet</code>, ktorý skontroluje podozrivé konštrukcie cez</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>go vet &lt;program.go&gt;</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>uvideli by sme</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>loop variable line captured by func literal</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Prostredie GoLand ukáže podobné varovanie:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>Loop variables captured by &#39;func&#39; literals in &#39;go&#39; statements might have unexpected values</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Keďže anonymná funkcia v korutine pristupuje k premennej <code>lines</code> zvonku.
+Takéto správanie je nepredvídateľné a rieši sa trikom.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-go" data-lang="go">for _, line := range lines {
+    line := line <i class="conum" data-value="1"></i><b>(1)</b>
+    go func() {
+        words := int32(countWords(line))  <i class="conum" data-value="3"></i><b>(3)</b>
+        atomic.AddInt32(wordCount, words) <i class="conum" data-value="4"></i><b>(4)</b>
+    }()
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tbody><tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>V cykle urobíme lokálnu premennú s názvom, ktorý prebije premennú cyklu.
+Túto „novú“ premennú už vieme spracovať korektne.</td>
+</tr>
+</tbody></table>
+</div>
+<div class="admonitionblock note">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Dôvodom je fakt, že celý cyklus obvykle zbehne rýchlejšie než dobehnú korutiny a to, že premenné v iteráciách sú na tej istej adrese v pamäti a len sa v každej iterácii mení ich obsah.
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="paragraph">
+<p>Teraz už uvidíme korektný výsledok: 37.</p>
+</div>
+<div class="paragraph">
+<p>Stále však čakáme!</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_čakanie_cez_waitgroup">Čakanie cez <code>WaitGroup</code></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><strong>WaitGroup</strong> sa dá použiť na vyčkávanie dobehnutia gorutín.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+V Jave je ekvivalentom <code>CountdownLatch</code>.
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="paragraph">
+<p><em>WaitGroup</em> je tiež akési počítadlo s nasledovnými schopnosťami:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>Add</code>: zvýši interné počítadlo.
+Používané pri spustení novej gorutiny.</p>
+</li>
+<li>
+<p><code>Done</code>: gorutina po dobehnutí zníži počítadlo</p>
+</li>
+<li>
+<p><code>Wait</code>: v hlavnej gorutine čakáme, kým sa počítadlo nezníži na nulu.</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock important">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+Ak odovzdávame premennú typu <code>WaitGroup</code> do funkcie, vždy musíme použiť pointer.
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-go" data-lang="go">func main() {
+	wg := new(sync.WaitGroup) <i class="conum" data-value="1"></i><b>(1)</b>
+	wordCount := new(int32)
+	lines := strings.Split(input, &#34;\n&#34;)
+	for _, line := range lines {
+		line := line
+		wg.Add(1) <i class="conum" data-value="2"></i><b>(2)</b>
+		go func() {
+			words := int32(countWords(line))
+			atomic.AddInt32(wordCount, words)
+			wg.Done() <i class="conum" data-value="3"></i><b>(3)</b>
+		}()
+	}
+	wg.Wait() <i class="conum" data-value="4"></i><b>(4)</b>
+	fmt.Printf(&#34;%d&#34;, *wordCount)
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tbody><tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Vyrobíme pointer na <em>WaitGroup</em>.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Po spustení gorutiny zvýšime počítadlo.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Ak gorutina dobehne, znížime počítadlo.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>Čakáme na dobehnutie, inak povedané, funkcia <code>main</code> pozastavená dovtedy, kým neodbehnú korutiny.</td>
+</tr>
+</tbody></table>
+</div>
+<div class="paragraph">
+<p>Ak teraz spustíme program, všetko bude korektné a bez čakania!</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+Program zráta 53 megabajtový korpus za 67 milisekúnd, pričom na rovnakom stroji je <code>wc -w</code> vykonaný za 182 milisekúnd
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="admonitionblock note">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Všimnime si, že je možné pustiť obrovské množstvo gorutín — keďže ich réžia je maličká, nie je to problém.
+</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_ako_ďalej">Ako ďalej?</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Náš program funguje, ale porušuje filozofiu konkurentnosti v Go:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+Nekomunikujte cez zdieľanú pamäť - radšej zdieľajte pamäť komunikáciou.
+</blockquote>
+</div>
+<div class="paragraph">
+<p>V zložitejších prípadoch, kde si nevymieňame len čísla, je lepšie použiť kanály (<em>channels</em>).</p>
+</div>
+</div>
+</div>
+
+    <a href="/"> >> Home</a>
+  </main>
+</div>
+    <footer>
+      
+<script>
+(function() {
+  function center_el(tagName) {
+    var tags = document.getElementsByTagName(tagName), i, tag;
+    for (i = 0; i < tags.length; i++) {
+      tag = tags[i];
+      var parent = tag.parentElement;
+      
+      if (parent.childNodes.length === 1) {
+        
+        if (parent.nodeName === 'A') {
+          parent = parent.parentElement;
+          if (parent.childNodes.length != 1) continue;
+        }
+        if (parent.nodeName === 'P') parent.style.textAlign = 'center';
+      }
+    }
+  }
+  var tagNames = ['img', 'embed', 'object'];
+  for (var i = 0; i < tagNames.length; i++) {
+    center_el(tagNames[i]);
+  }
+})();
+</script>
+
+      
+    </footer>
+  </body>
+</html>
+

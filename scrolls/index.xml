@@ -6,7 +6,17 @@
     <description>Recent content in Scrolls on robonovotny</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 19 Dec 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://novotnyr.github.io/scrolls/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 06 Jan 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://novotnyr.github.io/scrolls/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Gorutiny a atomické počítadlé</title>
+      <link>https://novotnyr.github.io/scrolls/gorutiny-atomicke-pocitadla/</link>
+      <pubDate>Fri, 06 Jan 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://novotnyr.github.io/scrolls/gorutiny-atomicke-pocitadla/</guid>
+      <description>Počítajme slová vo vetách s gorutinami!
+package main import ( &amp;#34;log&amp;#34; &amp;#34;strings&amp;#34; ) var input = `A ty mor ho! — hoj mor ho! detvo môjho rodu, kto kradmou rukou siahne na tvoju slobodu; a čo i tam dušu dáš v tom boji divokom: Mor ty len, a voľ nebyť, ako byť otrokom.` func main() { lines := strings.Split(input, &amp;#34;\n&amp;#34;) for _, line := range lines { go countWords(line) } } func countWords(line string) { words := strings.</description>
+    </item>
+    
     <item>
       <title>Go a simulácia abstraktných metód</title>
       <link>https://novotnyr.github.io/scrolls/go-oop-abstraktne-metody/</link>
