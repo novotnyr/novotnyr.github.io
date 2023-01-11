@@ -686,6 +686,124 @@ V každej iterácii akoby sme vykonali <code>fac := ←result</code>, čo opakuj
 </div>
 </div>
 <div class="sect1">
+<h2 id="_rýchly_producent_pomalý_konzument">Rýchly producent, pomalý konzument</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Doteraz sme mali pomalého producenta a rýchleho konzumenta na nebufferovanom kanáli?</p>
+</div>
+<div class="paragraph">
+<p>Čo ak to bude naopak?</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-go" data-lang="go">func factorial(n int, result chan&lt;- int) {
+	fac := 1
+	for i := 1; i &lt;= n; i++ {
+		fac = fac * i
+		log.Printf(&#34;Producing %d! = %d&#34;, i, fac)
+		result &lt;- fac <i class="conum" data-value="1"></i><b>(1)</b>
+	}
+	close(result)
+}
+
+func main() {
+	log.SetFlags(log.LstdFlags | log.Lmicroseconds)
+
+	n := 5
+	result := make(chan int)
+	go factorial(n, result)
+	for fac := range result {
+		time.Sleep(1 * time.Second) <i class="conum" data-value="2"></i><b>(2)</b>
+		log.Printf(&#34;Consuming result %d&#34;, fac)
+	}
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tbody><tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Producent chrlí medzivýsledky tak rýchlo, ako to ide.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Konzument je pomalý, trvá mu sekundu zožuť výsledok.</td>
+</tr>
+</tbody></table>
+</div>
+<div class="paragraph">
+<p>Ako bude vyzerať beh?</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>2023/01/11 12:01:16.530831 Producing 1! = 1
+2023/01/11 12:01:16.530956 Producing 2! = 2
+2023/01/11 12:01:17.532070 Consumed result 1
+2023/01/11 12:01:17.532102 Producing 3! = 6
+2023/01/11 12:01:18.534279 Consumed result 2
+2023/01/11 12:01:18.534329 Producing 4! = 24
+2023/01/11 12:01:19.534741 Consumed result 6
+2023/01/11 12:01:19.535096 Producing 5! = 120
+2023/01/11 12:01:20.536281 Consumed result 24
+2023/01/11 12:01:21.538732 Consumed result 120</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Riadky sú nateraz poprehadzované, ale to má dôvod.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Producent vyprodukuje výsledok <code>1</code> a čaká na konzumenta.</p>
+</li>
+<li>
+<p>Prakticky okamžite sa spustí čítanie kanála cez operátor <code>range</code>, ale spracovanie načítaného prvku okamžite zaspí na sekundu. Tak či onak, prvok opustil kanál a producent môže produkovať ďalej výsledok pre <code>2!</code>.</p>
+</li>
+<li>
+<p>Ihneď na to sa vyprodukuje výsledok pre faktoriál 2 a čaká sa konzumenta v druhej iterácii.</p>
+</li>
+<li>
+<p>Konzument však paralelne sekundu spí a keď sa zobudí, skonzumuje výsledok <code>1</code>.</p>
+</li>
+<li>
+<p>To odblokuje producenta, ktorý môže vyrátať <code>3!</code> a zapísať do do kanála.</p>
+</li>
+<li>
+<p>Paralelne ubehne sekunda, keď konzument žul výsledok pre <code>2! = 1</code>.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_rýchly_producent_a_rýchly_konzument">Rýchly producent a rýchly konzument</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Čo ak je producent aj konzument taký rýchly, ako to ide?</p>
+</div>
+<div class="paragraph">
+<p>Odstráňme všetky spánky cez <code>sleep</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>2023/01/11 12:11:26.616269 Producing 1! = 1
+2023/01/11 12:11:26.616370 Producing 2! = 2
+2023/01/11 12:11:26.616372 Consumed result 1
+2023/01/11 12:11:26.616373 Consumed result 2
+2023/01/11 12:11:26.616374 Producing 3! = 6
+2023/01/11 12:11:26.616375 Producing 4! = 24
+2023/01/11 12:11:26.616376 Consumed result 6
+2023/01/11 12:11:26.616377 Consumed result 24
+2023/01/11 12:11:26.616378 Producing 5! = 120
+2023/01/11 12:11:26.616382 Consumed result 120</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Filozofia je úplne rovnaká, producent paralelne produkuje hodnoty ale vždy čaká na konzumenta a naopak.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
 <h2 id="_sumár">Sumár</h2>
 <div class="sectionbody">
 <div class="paragraph">
