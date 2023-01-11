@@ -10,7 +10,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
-    <title>Recepty starých materí pre gorutiny | robonovotny</title>
+    <title>Recepty pre gorutiny a kanály | robonovotny</title>
 
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
@@ -43,7 +43,7 @@
     <br/>
 
 <div class="article-meta">
-<h1><span class="title">Recepty starých materí pre gorutiny</span></h1>
+<h1><span class="title">Recepty pre gorutiny a kanály</span></h1>
 
 <h2 class="date">2023/01/07</h2>
 <p class="terms">
@@ -64,8 +64,13 @@
 <div class="paragraph">
 <p>Gorutina je ľahučké vlákenko na vykonávanie paralelných úloh v Go.</p>
 </div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_paralelné_gorutiny">Paralelné gorutiny</h2>
+<div class="sectionbody">
 <div class="paragraph">
-<p>Spustime desaťtisíc gorutín, ktoré si sekundu pospia a potom vypíšu bodku.</p>
+<p>Vypisujme paralelne čísla od 1 po 10.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -77,28 +82,319 @@ import (
 )
 
 func main() {
-	for i := 0; i &lt; 10000; i++ {
-		go func() {
-			time.Sleep(1 * time.Second)
-			log.Printf(&#34;.\n&#34;)
-		}()
+	go print(&#34;goroutine&#34;) <i class="conum" data-value="1"></i><b>(1)</b>
+	print(&#34;main&#34;) <i class="conum" data-value="2"></i><b>(2)</b>
+}
+
+func print(c string) {
+	for i := 0; i &lt; 10; i++ {
+		log.Printf(&#34;%10s %d\n&#34;, c, i)
+		time.Sleep(1 * time.Second) <i class="conum" data-value="3"></i><b>(3)</b>
 	}
 }</code></pre>
 </div>
+</div>
+<div class="colist arabic">
+<table>
+<tbody><tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Spustíme funkciu ako gorutinu paralelne s behom funkcie <code>main</code>.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Funkcia <code>main</code> beží v hlavnej gorutine.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>V každom kole výpisu zaspíme na sekundu.</td>
+</tr>
+</tbody></table>
+</div>
+<div class="paragraph">
+<p>Výsledkom bude paralelný výpis čísiel, napríklad takýto:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>2023/01/08 11:30:39       main 0
+2023/01/08 11:30:39  goroutine 0
+2023/01/08 11:30:40       main 1
+2023/01/08 11:30:40  goroutine 1
+2023/01/08 11:30:41  goroutine 2
+2023/01/08 11:30:41       main 2
+2023/01/08 11:30:42       main 3
+2023/01/08 11:30:42  goroutine 3
+2023/01/08 11:30:43  goroutine 4
+2023/01/08 11:30:43       main 4</pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Výpisy idú bok po boku.</p>
+</li>
+<li>
+<p>Niekedy je poradie vymenené, pretože závisí od poradia vykonávania, ktoré je prakticky nepredvídateľné.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nečakáme">Nečakáme!</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Skúsme spustiť len samotnú gorutinu.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-go" data-lang="go">package main
+
+import (
+	&#34;log&#34;
+	&#34;time&#34;
+)
+
+func print(c string) {
+	for i := 0; i &lt; 10; i++ {
+		log.Printf(&#34;%10s %d\n&#34;, c, i)
+		time.Sleep(1 * time.Second)
+	}
+}
+
+func main() {
+	go print(&#34;goroutine&#34;) <i class="conum" data-value="1"></i><b>(1)</b>
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tbody><tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Hlavná gorutina len spustí funkciu <code>print</code> ako gorutinu.</td>
+</tr>
+</tbody></table>
 </div>
 <div class="paragraph">
 <p>Ak to však spustíme, neuvidíme nič.</p>
 </div>
 <div class="paragraph">
-<p>Nie je to preto, že spúšťame desaťtisíc paralelných úloh, ale preto, že <strong>hlavná gorutina</strong> vo funkcii <code>main()</code> je pomerne rýchla a nebude čakať na ich dobehnutie.</p>
+<p>Hlavná gorutina vo funkcii <code>main()</code> je veľmi rýchla a nebude čakať na dobehnutie gorutiny s funkciou <code>print</code>.</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_čakanie_cez_waitgroup">Čakanie cez <code>WaitGroup</code></h2>
+<h2 id="_čakanie_pri_kanáli">Čakanie pri kanáli</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p><strong>WaitGroup</strong> sa dá použiť na vyčkávanie dobehnutia gorutín.</p>
+<p>Ak chceme počkať na dokončenie jednej gorutiny, použime kanál.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Kanál (<em>channel</em>) je rúra, ktorou tečú typované dáta.</p>
+</div>
+<div class="paragraph">
+<p>Do jedného konca lejeme dáta — zapisujeme — z druhého konca sa dáta lejú von — čítame ich.</p>
+</div>
+<div class="paragraph">
+<p>Kanály umožňujú bezpečnú komunikáciu medzi gorutinami bez nutnosti riešiť konkurentné problémy s prístupom k spoločným dátam.</p>
+</div>
+<div class="paragraph">
+<p>Ten, kto zapisuje do kanála, sa často nazýva <em>producent</em>, a ten, kto číta, je <em>konzument</em>.
+Do jedného kanála môže zapisovať viacero producentov a čítať môže rovnako viacero konzumentov.</p>
+</div>
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="paragraph">
+<p>Kanál vytvárame zabudovanou funkciou <code>make</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-go" data-lang="go">done := make(chan bool) <i class="conum" data-value="1"></i><b>(1)</b></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tbody><tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Vytvoríme kanál, ktorým tečú <em>booleany</em>.
+Tento kanál je <strong>nebufferovaný</strong>.</td>
+</tr>
+</tbody></table>
+</div>
+<div class="admonitionblock important">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Nebufferovaný kanál (<em>unbuffered channel</em>) slúži na synchrónnu komunikáciu medzi producentom a konzumentom.</p>
+</div>
+<div class="paragraph">
+<p>Producent <em>čaká</em> (<em>blokuje</em>) pri zápise hodnoty dovtedy, kým si ju konzument neprečíta.</p>
+</div>
+<div class="paragraph">
+<p>To platí aj naopak — konzument čaká s čítaním dovtedy, kým producent nezapíše hodnotu.</p>
+</div>
+<div class="paragraph">
+<p>Ako hovorí dokumentácia: „komunikácia uspeje len vtedy, ak odosielateľ a prijímateľ sú pripravení“.</p>
+</div>
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="paragraph">
+<p>Ukážme si použitie kanála s čakaním na výsledok.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-go" data-lang="go">import (
+	&#34;log&#34;
+	&#34;time&#34;
+)
+
+func main() {
+	done := make(chan bool) <i class="conum" data-value="1"></i><b>(1)</b>
+	go print(&#34;goroutine&#34;, done) <i class="conum" data-value="2"></i><b>(2)</b>
+	isDone := &lt;-done <i class="conum" data-value="5"></i><b>(5)</b>
+	log.Printf(&#34;main completed: %v&#34;, isDone) <i class="conum" data-value="6"></i><b>(6)</b>
+}
+
+func print(c string, done chan bool) { <i class="conum" data-value="3"></i><b>(3)</b>
+	for i := 0; i &lt; 10; i++ {
+		log.Printf(&#34;%10s %d\n&#34;, c, i)
+		time.Sleep(1 * time.Second)
+	}
+	done &lt;- true <i class="conum" data-value="4"></i><b>(4)</b>
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tbody><tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Vytvoríme nebufferovaný kanál pre booleovské hodnoty.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Kanál pošleme ako argument do funkcie <code>print</code>.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Funkcia má samostatný parameter typu <code>chan bool</code>.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>Po skončení výpisu indikujeme koniec vykonávania funkcie zápisom do kanála.
+Čítame „do kanála <code>done</code> zapíšeme hodnotu <code>true</code>“.
+Šípka ukazuje tok údajov!</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="5"></i><b>5</b></td>
+<td>V hlavnej gorutine čítame z kanála.
+Čítame „do premennej <code>isDone</code> načítame hodnotu z kanála <code>done</code>“.
+Šípka opäť ukazuje tok údajov!
+<div class="paragraph">
+<p>Na tomto mieste zároveň blokujeme — čakáme, kým do kanála niekto nezapíše hodnotu a to sa stane až na konci funkcie <code>print</code>.</p>
+</div></td>
+</tr>
+</tbody></table>
+</div>
+<div class="admonitionblock important">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Dôležité veci pri kanáloch:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>make</code> vytvára kanál</p>
+</li>
+<li>
+<p>kanál má typ <code>chan &lt;dátovýTyp&gt;</code></p>
+</li>
+<li>
+<p><code>← done</code> číta z kanála jednu hodnotu</p>
+</li>
+<li>
+<p><code>done ← true</code> zapisuje do kanála jednu hodnotu</p>
+</li>
+<li>
+<p>kanály posielame do funkcie priamo — nepoužívame pointre!</p>
+</li>
+</ul>
+</div>
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="sect2">
+<h3 id="_upratovanie">Upratovanie</h3>
+<div class="paragraph">
+<p>Preleštime si ešte kód:</p>
+</div>
+<div class="paragraph">
+<p>V tomto prípade len čakáme na dobehnutie korutiny a skutočná hodnota v kanáli nás nezaujíma.</p>
+</div>
+<div class="paragraph">
+<p>Čítanie tak môžeme zjednodušiť:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-go" data-lang="go">func main() {
+	done := make(chan bool)
+	go print(&#34;goroutine&#34;, done)
+	&lt;-done <i class="conum" data-value="1"></i><b>(1)</b>
+	log.Printf(&#34;main completed&#34;)
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tbody><tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Čítame nejakú hodnotu, ktorej výsledok nás nezaujíma.
+Dôležité je, že blokujeme hlavnú gorutinu — čakáme na producenta.</td>
+</tr>
+</tbody></table>
+</div>
+<div class="paragraph">
+<p>Ak používame kanál v parametri funkcie, oplatí sa určiť, či z kanála čítame alebo zapisujeme.</p>
+</div>
+<div class="paragraph">
+<p>Nasledovný parameter hovorí, že funkcia do kanála len zapisuje:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>done chan&lt;- bool</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Šípka opäť ukazuje smer toku údajov!</p>
+</div>
+<div class="paragraph">
+<p>V kóde:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-go" data-lang="go">func print(c string, done chan&lt;- bool) {
+    //... zvyšok
+}</code></pre>
+</div>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -107,49 +403,55 @@ func main() {
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-V Jave je ekvivalentom <code>CountdownLatch</code>.
-</td>
-</tr>
-</tbody></table>
-</div>
 <div class="paragraph">
-<p><em>WaitGroup</em> má nasledovné schopnosti:</p>
+<p>Šípky sú hlavne dokumentačné, aby používateľ funkcie vedel, ako sa s kanálom pracuje.</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p><code>Add</code>: zvýši interné počítadlo.
-Používané pri spustení novej gorutiny.</p>
+<p><code>done chan← bool</code>: funkcia len zapisuje do kanála booleovské hodnoty.</p>
 </li>
 <li>
-<p><code>Done</code>: gorutina po dobehnutí zníži počítadlo</p>
+<p><code>jobs ←chan string</code>: funkcia len číta z kanála reťazce</p>
 </li>
 <li>
-<p><code>Wait</code>: v hlavnej gorutine čakáme, kým sa počítadlo nezníži na nulu.</p>
+<p><code>signals chan int</code>: funkcia mieni čítať aj zapisovať čísla.</p>
 </li>
 </ul>
 </div>
+<div class="paragraph">
+<p>Dobré vývojové prostredie vie upozorniť na prípad, keď parameter a jeho tok údajov nezodpovedá realite v kóde.</p>
+</div>
+</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_čakanie_na_výsledok">Čakanie na výsledok</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Funkcia spúšťané v gorutine nemôže vracať výsledok cez <code>return</code>.
+To by popieralo jej zmysel, pretože volanie funkcie s návratovou hodnotou v bežnom kóde doslova čaká na výsledok, a pri gorutinách je dôležité paralelný beh bez čakania.</p>
+</div>
+<div class="paragraph">
+<p>Výsledky gorutín patria do výstupného kanála!</p>
+</div>
+<div class="paragraph">
+<p>Ukážme si slimačí výpočet faktoriálu:</p>
+</div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-go" data-lang="go">package main
-
-import (
-	&#34;log&#34;
-	&#34;sync&#34;
-	&#34;time&#34;
-)
-
-func main() {
-	var wg sync.WaitGroup <i class="conum" data-value="1"></i><b>(1)</b>
-	for i := 0; i &lt; 10000; i++ {
-		wg.Add(1) <i class="conum" data-value="2"></i><b>(2)</b>
-		go func() {
-			time.Sleep(1 * time.Second)
-			log.Printf(&#34;.\n&#34;)
-			wg.Done() <i class="conum" data-value="3"></i><b>(3)</b>
-		}()
+<pre class="highlight"><code class="language-go" data-lang="go">func factorial(n int, result chan&lt;- int) { <i class="conum" data-value="1"></i><b>(1)</b>
+	fac := 1
+	for i := 1; i &lt;= n; i++ {
+		fac = fac * i
+		time.Sleep(1 * time.Second)
+		log.Printf(&#34;%d! = %d&#34;, i, fac)
 	}
-	wg.Wait() <i class="conum" data-value="4"></i><b>(4)</b>
+	result &lt;- fac <i class="conum" data-value="2"></i><b>(2)</b>
 }</code></pre>
 </div>
 </div>
@@ -157,601 +459,58 @@ func main() {
 <table>
 <tbody><tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Pripravíme si premennú typu <code>WaitGroup</code>.</td>
+<td>Výsledok je číslo, patrí do kanála čísiel, ktorý príde ako argument.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>Pred každým spustením gorutiny navýšime počítadlo.</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>V rámci gorutiny indikujeme, že gorutina dobehla, čím znížime počítadlo.</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="4"></i><b>4</b></td>
-<td>Čakáme — blokujeme hlavnú gorutinu — kým všetkých desaťtisíc gorutín nedobehne.</td>
+<td>Hotový výsledok zapíšeme do kanála.</td>
 </tr>
 </tbody></table>
 </div>
 <div class="paragraph">
-<p>Ak to spustíme, uvidíme desaťtisíc logovacích záznamov s bodkami.</p>
-</div>
-<div class="paragraph">
-<p>Ak chceme vidieť podrobnosti, upravme logovacie záznamy.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-go" data-lang="go">package main
-
-import (
-	&#34;log&#34;
-	&#34;sync&#34;
-	&#34;time&#34;
-)
-
-func main() {
-	log.SetFlags(log.Ltime | log.Lmicroseconds) <i class="conum" data-value="1"></i><b>(1)</b>
-	var wg sync.WaitGroup
-	for i := 0; i &lt; 10000; i++ {
-		wg.Add(1)
-		go func() {
-			time.Sleep(1 * time.Second)
-			log.Printf(&#34;%d\n&#34;, i) <i class="conum" data-value="2"></i><b>(2)</b>
-			wg.Done()
-		}()
-	}
-	wg.Wait()
-}</code></pre>
-</div>
-</div>
-<div class="colist arabic">
-<table>
-<tbody><tr>
-<td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Vypisujme mikrosekundy pri logovacích záznamoch.</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>Vypíšme identifikátor gorutiny pomocou indexu, ktorý spôsobil jej spustenie.</td>
-</tr>
-</tbody></table>
-</div>
-<div class="admonitionblock important">
-<table>
-<tbody><tr>
-<td class="icon">
-<i class="fa icon-important" title="Important"></i>
-</td>
-<td class="content">
-<div class="paragraph">
-<p>Prostredie nás upozorní, že použitie premennej <code>i</code>, ktorá sa iteruje v cykle, nie je korektné.</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>Loop variables captured by &#39;func&#39; literals in &#39;go&#39; statements might have unexpected values</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Opravme to!</p>
-</div>
-</td>
-</tr>
-</tbody></table>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-go" data-lang="go">log.SetFlags(log.Ltime | log.Lmicroseconds)
-var wg sync.WaitGroup
-for i := 0; i &lt; 10000; i++ {
-    wg.Add(1)
-    i := i <i class="conum" data-value="1"></i><b>(1)</b>
-    go func() {
-        time.Sleep(1 * time.Second)
-        log.Printf(&#34;%d\n&#34;, i) <i class="conum" data-value="2"></i><b>(2)</b>
-        wg.Done()
-    }()
-}
-wg.Wait()</code></pre>
-</div>
-</div>
-<div class="colist arabic">
-<table>
-<tbody><tr>
-<td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Vytvorme lokálnu premennú, ktorý vyrieši problém s použitím iteračnej premennej vo vnútri gorutiny.</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>Použijeme lokálnu premennú namiesto iteračnej z cyklu <code>for</code>.</td>
-</tr>
-</tbody></table>
-</div>
-<div class="paragraph">
-<p>Teraz uvidíme štrúdlik výpisov:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>00:11:36.038469 9988
-00:11:36.038472 9990
-00:11:36.038474 9994
-00:11:36.038483 9998
-00:11:36.038482 9996</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Vidíme, že poradie výpisu sa nemusí dodržať — hodnoty sa vypisujú paralelne!</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_spracujme_riadky_reťazca">Spracujme riadky reťazca</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Skúsme spracovať riadky reťazca skenerom, kde každý z nich pošleme do vlastnej korutiny.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-go" data-lang="go">package main
-
-import (
-	&#34;bufio&#34;
-	&#34;log&#34;
-	&#34;strings&#34;
-	&#34;sync&#34;
-	&#34;time&#34;
-)
-
-func main() {
-	log.SetFlags(log.Ltime | log.Lmicroseconds)
-
-	var wg sync.WaitGroup
-	scanner := bufio.NewScanner(strings.NewReader(input)) <i class="conum" data-value="1"></i><b>(1)</b>
-	for scanner.Scan() {
-		wg.Add(1)
-		line := scanner.Text() <i class="conum" data-value="2"></i><b>(2)</b>
-		go func() {
-			time.Sleep(1 * time.Second)
-			log.Printf(&#34;%s\n&#34;, line) <i class="conum" data-value="3"></i><b>(3)</b>
-			wg.Done()
-		}()
-	}
-	wg.Wait()
-}
-
-var input = `A ty mor ho! — hoj mor ho! detvo môjho rodu,
-kto kradmou rukou siahne na tvoju slobodu;
-a čo i tam dušu dáš v tom boji divokom:
-Mor ty len, a voľ nebyť, ako byť otrokom.`</code></pre>
-</div>
-</div>
-<div class="colist arabic">
-<table>
-<tbody><tr>
-<td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Skenujme riadky z pevného reťazca.</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>Získajme jeden riadok zo vstupu v každej iterácii.</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>V gorutine vypíšeme riadok.</td>
-</tr>
-</tbody></table>
-</div>
-<div class="paragraph">
-<p>Uvidíme riadky vypísané zrejme na preskáčku:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>00:27:44.307242 kto kradmou rukou siahne na tvoju slobodu;
-00:27:44.307245 Mor ty len, a voľ nebyť, ako byť otrokom.
-00:27:44.307244 A ty mor ho! — hoj mor ho! detvo môjho rodu,
-00:27:44.307247 a čo i tam dušu dáš v tom boji divokom:</pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_počítajme_dĺžky_riadkov">Počítajme dĺžky riadkov</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Poďme počítať dĺžky riadkov a agregovať to do celkovej dĺžky vstupu.
-Slovom, simulujme <code>wc -c</code> z linuxového shellu.</p>
-</div>
-<div class="paragraph">
-<p>Na celkovú dĺžku by sme mohli použiť atomické počítadlo, ale radšej si ukážme kanály.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_komunikácia_cez_kanály">Komunikácia cez kanály</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Kanál (<em>channel</em>) je rúra, ktorou tečú typované dáta.</p>
-</div>
-<div class="paragraph">
-<p>Do jedného konca lejeme dáta — zapisujeme — z druhého konca dáta vytekajú — čítame ich.</p>
-</div>
-<div class="paragraph">
-<p>Kanály umožňujú bezpečnú komunikáciu medzi gorutinami bez nutnosti riešiť konkurentné problémy s prístupom k spoločným dátam.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-go" data-lang="go">results := make(chan int) <i class="conum" data-value="1"></i><b>(1)</b>
-
-var wg sync.WaitGroup
-scanner := bufio.NewScanner(strings.NewReader(input))
-for scanner.Scan() {
-    wg.Add(1)
-    line := scanner.Text()
-    go func() {
-        time.Sleep(1 * time.Second)
-        log.Printf(&#34;%s\n&#34;, line)
-        results &lt;- len(line) <i class="conum" data-value="2"></i><b>(2)</b>
-        wg.Done()
-    }()
-}
-wg.Wait()</code></pre>
-</div>
-</div>
-<div class="colist arabic">
-<table>
-<tbody><tr>
-<td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Vytvorme komunikačný <em>kanál</em>, ktorým budú tiecť celé čísla <code>int</code>.</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>Pre každý riadok zistime jeho dĺžku a zapíšme do kanála.</td>
-</tr>
-</tbody></table>
-</div>
-<div class="paragraph">
-<p>Ak spustíme kód, uvidíme 4 riadky a nakoniec pád:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code>fatal error: all goroutines are asleep - deadlock!
-
-goroutine 6 [chan send]:
-main.main.func1()</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>V programe sa deje viacero vecí.</p>
-</div>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>Gorutiny zapisujú do spoločného kanála paralelne — predstavujú producentov.</p>
-</li>
-<li>
-<p>Kanál, ktorý používame, je nebufferovaný (<em>unbuffered</em>) a teda každý <em>producent</em> čaká (<em>blokuje</em>) na zápis dovtedy, kým sa z kanála nečíta.</p>
-</li>
-</ol>
-</div>
-<div class="paragraph">
-<p>Z kanála <code>results</code> však nikto nečíta — keďže sme nič také nenaprogramovali — a teda nastáva <em>deadlock</em>, pretože <em>producenti</em> (<em>gorutiny</em>) čakajú so zápisom na <strong>Go</strong>-dotov, ktorí nikdy neprídu.</p>
-</div>
-<div class="paragraph">
-<p>Tento fenomén Go dokázal identifikovať počas behu, a teda ukončil program s fatálnou chybou.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_konzument_výsledkov">Konzument výsledkov</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Pripravme si funkciu, ktorá bude konzumovať výsledky:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-go" data-lang="go">func aggregateResults(results &lt;-chan int) { <i class="conum" data-value="1"></i><b>(1)</b>
-	for result := range results { <i class="conum" data-value="2"></i><b>(2)</b>
-		log.Printf(&#34;%d\tPartial\n&#34;, result)
-	}
-}</code></pre>
-</div>
-</div>
-<div class="colist arabic">
-<table>
-<tbody><tr>
-<td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Funkcia berie parameter typu <code>chan int</code>.
-Ak použijeme šípku pred <code>chan</code>, znamená to, že z kanála <strong>čítame</strong>.
-<div class="paragraph">
-<p>V skratke, premenná <code>results</code> „číta (<code>←</code>) z kanála celých čísiel <code>(chan int</code>)“.</p>
-</div></td>
-</tr>
-<tr>
-<td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>Pomocou cyklu vieme postupne čítať hodnoty z kanála.</td>
-</tr>
-</tbody></table>
-</div>
-<div class="paragraph">
-<p>Použime funkciu <code>aggregateResults</code> v kóde.</p>
-</div>
-<div class="admonitionblock important">
-<table>
-<tbody><tr>
-<td class="icon">
-<i class="fa icon-important" title="Important"></i>
-</td>
-<td class="content">
-Je veľmi dôležité, kde ju použijeme a ako ju použijeme.
-Veľmi ľahko si vieme vyrobiť deadlock!
-</td>
-</tr>
-</tbody></table>
-</div>
-<div class="paragraph">
-<p>Tento kód niekedy fungovať bude, niekedy nie.</p>
+<p>Číslo prečítame z kanála podobne ako pri bežnom čakaní.</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-go" data-lang="go">func main() {
-	log.SetFlags(log.Ltime | log.Lmicroseconds)
-
-	results := make(chan int)
-
-	var wg sync.WaitGroup
-	scanner := bufio.NewScanner(strings.NewReader(input))
-	for scanner.Scan() {
-		wg.Add(1)
-		line := scanner.Text()
-		go func() {
-			time.Sleep(1 * time.Second)
-			log.Printf(&#34;%s\n&#34;, line)
-			results &lt;- len(line)
-			wg.Done()
-		}()
-	}
-	aggregateResults(results) <i class="conum" data-value="1"></i><b>(1)</b>
-	wg.Wait()
-}</code></pre>
+	result := make(chan int) <i class="conum" data-value="1"></i><b>(1)</b>
+	go factorial(5, result)
+	log.Printf(&#34;Result: %d&#34;, &lt;-result) <i class="conum" data-value="2"></i><b>(2)</b></code></pre>
 </div>
 </div>
 <div class="colist arabic">
 <table>
 <tbody><tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Funkciu spustíme klasicky po spracovaní výsledkov.</td>
-</tr>
-</tbody></table>
-</div>
-<div class="paragraph">
-<p>Uvedený kód sa správa nepredvídateľne, napríklad pri niektorom behu, ale aspoň beží.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>00:55:46.352436 Mor ty len, a voľ nebyť, ako byť otrokom.
-00:55:46.352772 44      Partial
-00:55:46.352468 a čo i tam dušu dáš v tom boji divokom:
-00:55:46.352471 kto kradmou rukou siahne na tvoju slobodu;
-00:55:46.352486 A ty mor ho! — hoj mor ho! detvo môjho rodu,
-00:55:46.352802 43      Partial
-00:55:46.352890 42      Partial
-00:55:46.352895 47      Partial
-fatal error: all goroutines are asleep - deadlock!</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Vidíme štyri podvýsledky a potom deadlock.</p>
-</div>
-<div class="admonitionblock important">
-<table>
-<tbody><tr>
-<td class="icon">
-<i class="fa icon-important" title="Important"></i>
-</td>
-<td class="content">
-Funkcia <code>aggregateResult</code> číta 4 čiastočné výsledky z kanála a potom deadlockne — začne čakať na piaty výsledok, ktorý nikdy nepríde, pretože program sa ukončí.
-</td>
-</tr>
-</tbody></table>
-</div>
-<div class="admonitionblock important">
-<table>
-<tbody><tr>
-<td class="icon">
-<i class="fa icon-important" title="Important"></i>
-</td>
-<td class="content">
-<div class="paragraph">
-<p>Je dôležité najprv agregovať výsledky a potom čakať na dobehnutie korutín.</p>
-</div>
-<div class="paragraph">
-<p>Ak by sme najprv čakali na korutiny a potom agregovali výsledky, máme <em>deadlock</em> — waitgroup by čakala na dobehnutie korutín, ktoré by čakali na konzumovanie kanála z <code>aggregateResult</code> — ale toto čítanie by sa uskutočnilo až po zavolaní <code>Wait()</code>.</p>
-</div>
-</td>
-</tr>
-</tbody></table>
-</div>
-<div class="paragraph">
-<p>Bez ohľadu na to, čí máme najprv <code>aggregateResult</code> a potom <code>Wait()</code>, alebo naopak, vytvoríme nejaký druh deadlocku.</p>
-</div>
-<div class="paragraph">
-<p>Ak to má fungovať korektne, potrebujeme:</p>
-</div>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>Pustiť <code>aggregateResult</code> asynchrónne v gorutine, aby uvoľnil vzájomné čakanie v podobe deadlocku.</p>
-</li>
-<li>
-<p>Počkať s hlavnou gorutinou na spracovanie výsledku.</p>
-</li>
-<li>
-<p>Korektne ukončiť <code>aggregateResult</code>.</p>
-</li>
-</ol>
-</div>
-<div class="sect2">
-<h3 id="_pustime_agregáciu_výsledkov_asynchrónne">Pustime agregáciu výsledkov asynchrónne</h3>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-go" data-lang="go">results := make(chan int)
-
-var wg sync.WaitGroup
-scanner := bufio.NewScanner(strings.NewReader(input))
-for scanner.Scan() {
-    wg.Add(1)
-    line := scanner.Text()
-    go func() {
-        log.Printf(&#34;%s\n&#34;, line)
-        results &lt;- len(line)
-        wg.Done()
-    }()
-}
-go aggregateResults(results) <i class="conum" data-value="1"></i><b>(1)</b>
-wg.Wait()</code></pre>
-</div>
-</div>
-<div class="colist arabic">
-<table>
-<tbody><tr>
-<td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Agregácia výsledkov pobeží asynchrónne.</td>
-</tr>
-</tbody></table>
-</div>
-<div class="paragraph">
-<p>Zbavili sme sa síce deadlocku, ale stále máme <em>race condition</em>, teda stav, kde beh programu závisí od náhodných okolností.</p>
-</div>
-<div class="admonitionblock tip">
-<table>
-<tbody><tr>
-<td class="icon">
-<i class="fa icon-tip" title="Tip"></i>
-</td>
-<td class="content">
-„Race condition“ niekedy ukáže tri výstupy <code>Partial</code>, inokedy menej, ohehdy viac.
-</td>
-</tr>
-</tbody></table>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>01:32:10.503698 A ty mor ho! — hoj mor ho! detvo môjho rodu,
-01:32:10.503860 47      Partial
-01:32:10.503699 kto kradmou rukou siahne na tvoju slobodu;
-01:32:10.503866 42      Partial
-01:32:10.503734 a čo i tam dušu dáš v tom boji divokom:
-01:32:10.503869 43      Partial
-01:32:10.503758 Mor ty len, a voľ nebyť, ako byť otrokom.</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Skrátka, v niektorých prípadoch sa program skončí skôr ako sa spracujú všetky výsledky.</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_čakanie_na_spracovanie_výsledku_a_ukončenie_spracovania">Čakanie na spracovanie výsledku a ukončenie spracovania</h3>
-<div class="paragraph">
-<p>Čakanie sme tu už raz mali — v podobe <em>WaitGroup</em>, ktorá vyčkávala na dobehnutie viacerých korutín.</p>
-</div>
-<div class="paragraph">
-<p>Ak chceme vyčkávať na jedinú korutinu, nemusíme spúšťať ďalšiu <em>waitgroup</em>-u; stačí použiť nebufferovaný kanál so synchrónnym zápisom a čítaním.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-go" data-lang="go">func aggregateResults(results &lt;-chan int, done chan &lt;- int) { <i class="conum" data-value="1"></i><b>(1)</b>
-	for result := range results {
-		log.Printf(&#34;%d\tPartial\n&#34;, result)
-	}
-	done &lt;- 0 <i class="conum" data-value="2"></i><b>(2)</b>
-}</code></pre>
-</div>
-</div>
-<div class="colist arabic">
-<table>
-<tbody><tr>
-<td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Pridáme parameter pre výstupný kanál.
-Čítame „<code>done</code> je typu kanál (<code>chan</code>), do ktorého zapíšeme (<code>←</code>) celé čísla (<code>int</code>)“.</td>
+<td>Vytvoríme kanál čísiel <code>int</code> pre výsledky.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>Po dobehnutí cyklu zapíšeme do výstupného kanála <code>0</code> ako znamenie úspechu.</td>
+<td>Čakáme — blokujeme hlavnú gorutinu — kým nepríde výsledok.</td>
 </tr>
 </tbody></table>
-</div>
-<div class="paragraph">
-<p>Upravme potom hlavnú funkciu:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code>func main() {
-	log.SetFlags(log.Ltime | log.Lmicroseconds)
-
-	results := make(chan int)
-
-	var wg sync.WaitGroup
-	scanner := bufio.NewScanner(strings.NewReader(input))
-	for scanner.Scan() {
-		wg.Add(1)
-		line := scanner.Text()
-		go func() {
-			log.Printf(&#34;%s\n&#34;, line)
-			results &lt;- len(line)
-			wg.Done()
-		}()
-	}
-	done := make(chan int) <i class="conum" data-value="1"></i><b>(1)</b>
-	go aggregateResults(results, done) <i class="conum" data-value="2"></i><b>(2)</b>
-	wg.Wait()
-	close(results) <i class="conum" data-value="3"></i><b>(3)</b>
-	&lt;-done <i class="conum" data-value="4"></i><b>(4)</b>
-}</code></pre>
-</div>
-</div>
-<div class="colist arabic">
-<table>
-<tbody><tr>
-<td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Vytvorme kanál pre indikáciu spracovania výsledkov.</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>Použime kanál argument pre agregáciu výsledkov.</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>Potom, čo všetky gorutiny dobehnú, uzavrieme kanál s výsledkami.
-<div class="paragraph">
-<p>Dobehnutá gorutina určite zapísala výsledok do <code>results</code> a vďaka synchronicite tohto kanála tento výsledok musel niekto prečítať — bola ním funkcia  <code>aggregateResult</code>.</p>
-</div>
-<div class="paragraph">
-<p>Po úspešnom <code>Wait()</code> sa teda nielen zapísali všetky výsledky, ale určite sa aj spracovali a kanál <code>result</code> je možné uzavrieť.</p>
-</div>
-<div class="paragraph">
-<p>Uzavretím kanála zároveň ukončíme cyklus <code>for</code> vo funkcii <code>aggregateResult</code>, pretože <code>range</code> nad kanálom vždy skončí uzavretím kanála.</p>
-</div></td>
-</tr>
-<tr>
-<td><i class="conum" data-value="4"></i><b>4</b></td>
-<td>Čakáme (blokujeme), kým <code>aggregateResult</code> neskončí tým, že do kanála zapíše nulu.</td>
-</tr>
-</tbody></table>
-</div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_upratovanie">Upratovanie</h2>
+<h2 id="_priebežné_výsledky">Priebežné výsledky</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Upracme ešte v kóde. Predovšetkým, kód v korutine odsuňme do samostatnej funkcie.</p>
+<p>Do kanála môžeme zapisovať viacero hodnôt.</p>
+</div>
+<div class="paragraph">
+<p>Ak máme nebufferovaný kanál, zápis každej hodnoty vždy čaká na čítanie od konzumenta.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-go" data-lang="go">func spawnWorker(line string, results chan&lt;- int, wg *sync.WaitGroup) {<i class="conum" data-value="1"></i><b>(1)</b>
-	log.Printf(&#34;%s\n&#34;, line)
-	results &lt;- len(line)
-	wg.Done()
+<pre class="highlight"><code class="language-go" data-lang="go">func factorial(n int, result chan&lt;- int) {
+	fac := 1
+	for i := 1; i &lt;= n; i++ {
+		fac = fac * i
+		time.Sleep(1 * time.Second)
+		log.Printf(&#34;Producing %d! = %d&#34;, i, fac)
+		result &lt;- fac <i class="conum" data-value="1"></i><b>(1)</b>
+	}
 }</code></pre>
 </div>
 </div>
@@ -759,57 +518,19 @@ wg.Wait()</code></pre>
 <table>
 <tbody><tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Funkcia berie:
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>Reťazec s riadkom.</p>
-</li>
-<li>
-<p>Kanál pre výsledky, do ktorého sa bude zapisovať. Čítame „<code>results</code> je typu kanál (<code>chan</code>), do ktorého zapíšeme (<code>←</code>) celé čísla (<code>int</code>)“.</p>
-</li>
-<li>
-<p><em>WaitGroup</em>, ktorú <strong>musíme</strong> odovzdať pomocou pointera, pretože to vyžaduje dokumentácia.</p>
-</li>
-</ol>
-</div></td>
+<td>Priebežne zapisujeme výsledky do kanála.</td>
 </tr>
 </tbody></table>
-</div>
-<div class="admonitionblock important">
-<table>
-<tbody><tr>
-<td class="icon">
-<i class="fa icon-important" title="Important"></i>
-</td>
-<td class="content">
-<code>WaitGroup</code> odovzdávaná ako parameter musí ísť vždy ako <em>pointer</em>.
-</td>
-</tr>
-</tbody></table>
-</div>
-<div class="paragraph">
-<p>Upravme zvyšok kódu:</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-go" data-lang="go">func main() {
-	log.SetFlags(log.Ltime | log.Lmicroseconds)
-
-	results := make(chan int)
-
-	var wg sync.WaitGroup
-	scanner := bufio.NewScanner(strings.NewReader(input))
-	for scanner.Scan() {
-		wg.Add(1)
-		line := scanner.Text()
-		go spawnWorker(line, results, &amp;wg) <i class="conum" data-value="1"></i><b>(1)</b>
+	result := make(chan int)
+	n := 5
+	go factorial(n, result)
+	for i := 1; i &lt;= n; i++ { <i class="conum" data-value="1"></i><b>(1)</b>
+		log.Printf(&#34;Consuming %d! = %d&#34;, i, &lt;-result) <i class="conum" data-value="2"></i><b>(2)</b>
 	}
-	done := make(chan int)
-	go aggregateResults(results, done)
-	wg.Wait()
-	close(results)
-	&lt;-done
 }</code></pre>
 </div>
 </div>
@@ -817,24 +538,183 @@ wg.Wait()</code></pre>
 <table>
 <tbody><tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Zavoláme našu funkciu.
-Nezabudnime odovzdať <em>workgroup</em> ako pointer, teda pomocou ampersandu <em>referencovať</em> (zistiť adresu) štruktúry <code>wg</code>.</td>
+<td>Budeme čítať toľko hodnôt, koľko medzivýsledkov očakávame.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Vždy načítame čiastočný výsledok.
+Posledný výsledok je finálny.</td>
 </tr>
 </tbody></table>
+</div>
+<div class="paragraph">
+<p>Keďže máme nebufferovaný kanál, každý zápis čaká na čítanie, čiže každé produkovanie čaká na konzum — a teda vidíme na striedačku zápis-čítanie, zápis-čítanie, zápis-čítanie.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-go" data-lang="go">2023/01/11 10:15:21 Producing 1! = 1
+2023/01/11 10:15:21 Consuming 1! = 1
+2023/01/11 10:15:22 Producing 2! = 2
+2023/01/11 10:15:22 Consuming 2! = 2
+2023/01/11 10:15:23 Producing 3! = 6
+2023/01/11 10:15:23 Consuming 3! = 6
+2023/01/11 10:15:24 Producing 4! = 24
+2023/01/11 10:15:24 Consuming 4! = 24
+2023/01/11 10:15:25 Producing 5! = 120
+2023/01/11 10:15:25 Consuming 5! = 120</code></pre>
+</div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_hotovo">Hotovo</h2>
+<h2 id="_priebežné_výsledky_s_uzavretím_kanála">Priebežné výsledky s uzavretím kanála</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Náš program je hotový — komunikuje obojsmerne s gorutinou, korektne rieši čakanie a ďalšie konkurentné problémy.</p>
+<p>Ak čítame z nebufferovaného kanála, kde sa objavuje viacero hodnôt, musíme vedieť, kedy skončiť. V opačnom prípade sa zahrávame s deadlockom.</p>
 </div>
 <div class="paragraph">
-<p>Nezabudnime, že v programe sa spustí toľko gorutín, koľko je riadkov v súbore.</p>
+<p>Ak by sme z kanála omylom načítali postupne viac hodnôt než zapísal konzument (napríklad 6 výsledkov pre faktoriál 5), uvidíme <strong>deadlock</strong> — vzájomné vyblokovanie producenta a konzumenta.
+V tomto prípade by konzument márne čakal na producenta, ktorý už nikdy nič nezapíše.</p>
 </div>
 <div class="paragraph">
-<p>To je možné optimalizovať pomocou <em>worker pool</em> — teda fixným počtom gorutín, ktoré postupne spracovávajú úlohy.</p>
+<p>Koniec čítania vieme realizovať:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>buď počítadlom výsledkov</p>
+</li>
+<li>
+<p>alebo explicitným uzavretím kanála.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Počítanie výsledkov sme videli v kanáli. Ak gorutina vyráta faktoriál 3, očakávame tri výsledky a tri iterácie pri čítaní.</p>
+</div>
+<div class="paragraph">
+<p>Druhá možnosť je explicitné uzavretie kanála.
+Na to slúži zabudovaná funkcia <code>close</code>.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+Kanál má uzatvárať producent, nikdy nie konzument! Filozoficky to zodpovedá „koncu súboru“ (<em>end-of-file</em>).
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-go" data-lang="go">func factorial(n int, result chan&lt;- int) {
+	fac := 1
+	for i := 1; i &lt;= n; i++ {
+		fac = fac * i
+		time.Sleep(1 * time.Second)
+		log.Printf(&#34;Producing %d! = %d&#34;, i, fac)
+		result &lt;- fac
+	}
+	close(result) <i class="conum" data-value="1"></i><b>(1)</b>
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tbody><tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Po vyprodukovaní všetkých výsledkov producent uzavrie kanál.</td>
+</tr>
+</tbody></table>
+</div>
+<div class="paragraph">
+<p>Ak vieme, že kanál bude uzatvorený, môžeme položky z kanála konzumovať kombináciou cyklu <code>for</code> a operátora <code>range</code>.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<code>range</code> postupne číta prvky z kanála dovtedy, kým sa kanál neuzavrie.
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-go" data-lang="go">func main() {
+	result := make(chan int)
+	n := 5
+	go factorial(n, result)
+	for fac := range result { <i class="conum" data-value="1"></i><b>(1)</b>
+		log.Printf(&#34;Consuming result %d&#34;, fac) <i class="conum" data-value="2"></i><b>(2)</b>
+	}
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tbody><tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Čítame z kanála a každý prvok priradíme do premennej <code>fac</code>.
+V každej iterácii akoby sme vykonali <code>fac := ←result</code>, čo opakujeme dovtedy, kým sa kanál nezavrie.</td>
+</tr>
+</tbody></table>
+</div>
+<div class="paragraph">
+<p>Keďže máme nebufferovaný kanál, čítanie vždy čaká na zápis.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>2023/01/11 10:29:41 Producing 1! = 1
+2023/01/11 10:29:41 Consuming result 1
+2023/01/11 10:29:42 Producing 2! = 2
+2023/01/11 10:29:42 Consuming result 2
+2023/01/11 10:29:43 Producing 3! = 6
+2023/01/11 10:29:43 Consuming result 6
+2023/01/11 10:29:44 Producing 4! = 24
+2023/01/11 10:29:44 Consuming result 24
+2023/01/11 10:29:45 Producing 5! = 120
+2023/01/11 10:29:45 Consuming result 120</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_sumár">Sumár</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Zhrňme si veci:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>nebufferovaný kanál vytvárame cez <code>make</code></p>
+</li>
+<li>
+<p>zapisujeme šípkou <code>←</code> za kanálom</p>
+</li>
+<li>
+<p>čítame šípkou pred kanálom</p>
+</li>
+<li>
+<p>pri nebufferovanom kanáli zápis čaká na čítanie a čítanie čaká na zápis hodnoty</p>
+</li>
+<li>
+<p>kanál odovzdávame do funkcií priamo — nie cez pointer</p>
+</li>
+<li>
+<p>kanál uzatvára producent cez <code>close</code></p>
+</li>
+<li>
+<p><code>range</code> a <code>for</code> číta z kanála</p>
+</li>
+</ul>
 </div>
 </div>
 </div>
