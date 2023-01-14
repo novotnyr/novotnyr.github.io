@@ -1,0 +1,1066 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+    <link rel="manifest" href="/images/site.webmanifest">
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <title>Recepty pre gorutiny a kanály -- viacero korutín si delí prácu | robonovotny</title>
+
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.3/styles/dracula.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.3/highlight.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.3/languages/go.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    <link rel="stylesheet" href="https://novotnyr.github.io/asciidoctor.css">
+    <header>
+
+  <nav>
+    <ul>
+      
+      
+      <li class="pull-left ">
+        <a href="https://novotnyr.github.io/">~/robonovotny</a>
+      </li>
+      
+
+      
+
+    </ul>
+  </nav>
+</header>
+
+  </head>
+
+  <body>
+    <br/>
+
+<div class="article-meta">
+<h1><span class="title">Recepty pre gorutiny a kanály &ndash; viacero korutín si delí prácu</span></h1>
+
+<h2 class="date">2023/01/12</h2>
+<p class="terms">
+  
+  
+  
+  
+  
+</p>
+</div>
+
+
+<div class="content-wrapper">
+  <main>
+    <div class="sect1">
+<h2 id="_tisíc_zlatých_tisíc_zlatých_gorutín">Tisíc zlatých, tisíc zlatých gorutín</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>V minulom dieli sme spúšťali jedinú gorutinu, ale je čas pridať plyn.</p>
+</div>
+<div class="paragraph">
+<p>Spustime tisíc gorutín, ktoré si sekundu pospia a potom vypíšu bodku.</p>
+</div>
+<div class="paragraph">
+<p>Ukážme si zároveň, ako je možné spustiť anonymnú funkciu ako gorutinu.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-go" data-lang="go">package main
+
+import (
+	&#34;log&#34;
+	&#34;time&#34;
+)
+
+func main() {
+	for i := 0; i &lt; 1000; i++ {
+		go func() { <i class="conum" data-value="1"></i><b>(1)</b>
+			time.Sleep(1 * time.Second)
+			log.Printf(&#34;.\n&#34;)
+		}()
+	}
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tbody><tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Spúšťame anonymnú funkciu ako gorutinu.</td>
+</tr>
+</tbody></table>
+</div>
+<div class="paragraph">
+<p>Ak to však spustíme, neuvidíme nič.</p>
+</div>
+<div class="paragraph">
+<p>Dôvodom je opäť príliš rýchla gorutina <code>main</code>, ktorá vypáli salvu, ale skončí skôr než korutiny, ktoré potrebujú zhruba sekundu.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_čakanie_cez_waitgroup">Čakanie cez <code>WaitGroup</code></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Na jednu gorutinu sme čakali pomocou nebufferovaného kanála.</p>
+</div>
+<div class="paragraph">
+<p>Na vyčkávanie dobehnutia viacerých gorutín sa používa <strong>WaitGroup</strong>.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+V Jave je ekvivalentom <code>CountdownLatch</code>.
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="paragraph">
+<p><em>WaitGroup</em> je závora s počítadlom.</p>
+</div>
+<div class="paragraph">
+<p>Na začiatku nastavíme počítadlo na počet gorutín, ktoré očakávame.
+Spustíme jednotlivé gorutiny a čakáme pri závore obdivujúc počítadlo.
+Každá dobehnutá gorutina ho zníži o jedna a kk je počítadlo na nule, závora sa dvihne a pokračujeme v behu programu.</p>
+</div>
+<div class="paragraph">
+<p><em>WaitGroup</em> má nasledovné schopnosti:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>Add</code>: zvýši interné počítadlo.
+Používané pri spustení novej gorutiny.</p>
+</li>
+<li>
+<p><code>Done</code>: gorutina po dobehnutí zníži počítadlo.</p>
+</li>
+<li>
+<p><code>Wait</code>: v hlavnej gorutine čakáme, kým sa počítadlo nezníži na nulu.</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-go" data-lang="go">package main
+
+import (
+	&#34;log&#34;
+	&#34;sync&#34;
+	&#34;time&#34;
+)
+
+func main() {
+	var wg sync.WaitGroup <i class="conum" data-value="1"></i><b>(1)</b>
+	for i := 0; i &lt; 10000; i++ {
+		wg.Add(1) <i class="conum" data-value="2"></i><b>(2)</b>
+		go func() {
+			time.Sleep(1 * time.Second)
+			log.Printf(&#34;.\n&#34;)
+			wg.Done() <i class="conum" data-value="3"></i><b>(3)</b>
+		}()
+	}
+	wg.Wait() <i class="conum" data-value="4"></i><b>(4)</b>
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tbody><tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Pripravíme si premennú typu <code>WaitGroup</code>.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Pred každým spustením gorutiny navýšime počítadlo.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>V rámci gorutiny indikujeme, že gorutina dobehla, čím znížime počítadlo.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>Čakáme — blokujeme hlavnú gorutinu — kým všetkých desaťtisíc gorutín nedobehne.</td>
+</tr>
+</tbody></table>
+</div>
+<div class="paragraph">
+<p>Ak to spustíme, uvidíme desaťtisíc logovacích záznamov s bodkami.</p>
+</div>
+<div class="paragraph">
+<p>Ak chceme vidieť podrobnosti, upravme logovacie záznamy.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-go" data-lang="go">package main
+
+import (
+	&#34;log&#34;
+	&#34;sync&#34;
+	&#34;time&#34;
+)
+
+func main() {
+	log.SetFlags(log.Ltime | log.Lmicroseconds) <i class="conum" data-value="1"></i><b>(1)</b>
+	var wg sync.WaitGroup
+	for i := 0; i &lt; 10000; i++ {
+		wg.Add(1)
+		go func() {
+			time.Sleep(1 * time.Second)
+			log.Printf(&#34;%d\n&#34;, i) <i class="conum" data-value="2"></i><b>(2)</b>
+			wg.Done()
+		}()
+	}
+	wg.Wait()
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tbody><tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Vypisujme mikrosekundy pri logovacích záznamoch.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Vypíšme identifikátor gorutiny pomocou indexu, ktorý spôsobil jej spustenie.</td>
+</tr>
+</tbody></table>
+</div>
+<div class="admonitionblock important">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="title">Premenné v iterácii a premenné v gorutinách</div>
+<div class="paragraph">
+<p>Prostredie nás upozorní, že použitie premennej <code>i</code>, ktorá sa iteruje v cykle, nie je korektné.</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>Loop variables captured by &#39;func&#39; literals in &#39;go&#39; statements might have unexpected values</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Opravme to!</p>
+</div>
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-go" data-lang="go">log.SetFlags(log.Ltime | log.Lmicroseconds)
+var wg sync.WaitGroup
+for i := 0; i &lt; 10000; i++ {
+    wg.Add(1)
+    i := i <i class="conum" data-value="1"></i><b>(1)</b>
+    go func() {
+        time.Sleep(1 * time.Second)
+        log.Printf(&#34;%d\n&#34;, i) <i class="conum" data-value="2"></i><b>(2)</b>
+        wg.Done()
+    }()
+}
+wg.Wait()</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tbody><tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Vytvorme lokálnu premennú, ktorý vyrieši problém s použitím iteračnej premennej vo vnútri gorutiny.
+<div class="paragraph">
+<p>Toto síce vyzerá zvláštne, ale je to <a href="https://go.dev/doc/faq#closures_and_goroutines">obvyklý trik</a> spomínaný v oficiálnom FAQ.</p>
+</div></td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Použijeme lokálnu premennú namiesto iteračnej z cyklu <code>for</code>.</td>
+</tr>
+</tbody></table>
+</div>
+<div class="paragraph">
+<p>Teraz uvidíme štrúdlik výpisov:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>00:11:36.038469 9988
+00:11:36.038472 9990
+00:11:36.038474 9994
+00:11:36.038483 9998
+00:11:36.038482 9996</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Vidíme, že poradie výpisu sa nemusí dodržať — hodnoty sa vypisujú paralelne!</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_gorutiny_s_výsledkom">Gorutiny s výsledkom</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Poďme vážiť zvieratá paralelne.</p>
+</div>
+<div class="paragraph">
+<p>Najprv si pripravme dáta:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-go" data-lang="go">type Animal struct {
+	species string
+	weight  int
+}
+
+var animals = []Animal{
+	Animal{&#34;slon&#34;, 12},
+	Animal{&#34;hroch&#34;, 4},
+	Animal{&#34;nosorožec&#34;, 4},
+	Animal{&#34;žirafa&#34;, 2},
+	Animal{&#34;bizón&#34;, 2},
+	Animal{&#34;veľryba&#34;, 190},
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Pre každé zviera pustíme gorutinu a výsledok — hmotnosť každého zvieraťa — pošleme do spoločného kanála.</p>
+</div>
+<div class="paragraph">
+<p>Ak vieme ich presný počet, situáciu to zjednodušuje, pretože sa vieme zbaviť čakania medzi producentami a konzumentom.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Bufferovaný kanál (<em>buffered channel</em>) je kanál s konkrétnou kapacitou.</p>
+</div>
+<div class="paragraph">
+<p>Zápis do kanála blokuje len vtedy, ak je kanál plný — teda kapacita by sa prekročila.</p>
+</div>
+<div class="paragraph">
+<p>Čítanie blokuje len vtedy, ak je kanál prázdny.</p>
+</div>
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="paragraph">
+<p>Ak vytvoríme kanál s takou kapacitou, koľko máme zvierat — napríklad 6 — šesť gorutín dokáže zapísať 6 výsledkov bez čakania na konzumenta.</p>
+</div>
+<div class="paragraph">
+<p>Plán je teda nasledovný:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Vytvoríme bufferovaný kanál s kapacitou.</p>
+</li>
+<li>
+<p>Spustíme gorutiny — pre každé zviera jednu.
+Každý gorutina zapíše výsledok do bufferovaného kanála.</p>
+</li>
+<li>
+<p>Počkáme na dobehnutie všetkých gorutín cez <em>WaitGroup</em>.</p>
+</li>
+<li>
+<p>Uzavrieme kanál s výsledkami.</p>
+</li>
+<li>
+<p>Načítame jednotlivé hmotnosti zvierat a získame celkový súčet.</p>
+</li>
+</ol>
+</div>
+<div class="sect2">
+<h3 id="_vytváranie_bufferovaného_kanála">Vytváranie bufferovaného kanála</h3>
+<div class="paragraph">
+<p>Bufferovaný kanál má kapacitu uvedenú v druhom argumente:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-go" data-lang="go">results := make(chan int, len(animals)) <i class="conum" data-value="1"></i><b>(1)</b></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tbody><tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Pre 6 zvierat máme kapacitu kanála nastavenú na 6 prvkov.</td>
+</tr>
+</tbody></table>
+</div>
+<div class="paragraph">
+<p>Potom jadro:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-go" data-lang="go">func main() {
+	results := make(chan int, len(animals))
+
+	var wg sync.WaitGroup
+	for _, a := range animals {
+		wg.Add(1)
+
+		a := a <i class="conum" data-value="3"></i><b>(3)</b>
+		go func() { <i class="conum" data-value="1"></i><b>(1)</b>
+			time.Sleep(1 * time.Second)
+			log.Printf(&#34;%s\n&#34;, a.species)
+			results &lt;- a.weight <i class="conum" data-value="2"></i><b>(2)</b>
+			wg.Done()
+		}()
+	}
+	wg.Wait() <i class="conum" data-value="4"></i><b>(4)</b>
+	close(results) <i class="conum" data-value="5"></i><b>(5)</b>
+	aggregateResults(results) <i class="conum" data-value="6"></i><b>(6)</b>
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tbody><tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Spustíme gorutinu pre každé zviera.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Do spoločného kanála zapíšeme výsledok.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Nezabudneme použiť trik s premennou cyklu používanej v gorutine.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>Čakáme na gorutiny cez <em>waitgroup</em>.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="5"></i><b>5</b></td>
+<td>Uzatvoríme kanál s výsledkami.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="6"></i><b>6</b></td>
+<td>Začneme čítať výsledky v samostatnej funkcii.</td>
+</tr>
+</tbody></table>
+</div>
+<div class="paragraph">
+<p>Agregácia výsledkov znamená čítanie z kanála.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-go" data-lang="go">func aggregateResults(results &lt;-chan int) {
+	total := 0
+	for result := range results {
+		log.Printf(&#34;%d\tPartial\n&#34;, result)
+		total = total + result
+	}
+	log.Printf(&#34;Total: %d\n&#34;, total)
+}</code></pre>
+</div>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+Nezabudnime zistiť, či čítame znižovaním počítadla s výsledkami alebo explicitným uzavretím kanála.
+V príklade zatvárame kanál explicitne a používame kombináciu <code>range</code> a <code>for</code>.
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="admonitionblock important">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Kanál slúži ako zdieľaný <em>slice</em> (pole) pre spoločné výsledky.
+Na rozdiel od bežného poľa či <em>slice</em> je zápis do tejto štruktúry bezpečný a nenastávajú konkurentné problémy.</p>
+</div>
+<div class="paragraph">
+<p>Na rozdiel od iných jazykov nemusíme používať mutexy či iné zámky.</p>
+</div>
+</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_gorutiny_s_neznámym_počtom_vstupov">Gorutiny s neznámym počtom vstupov</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Čo keď nepoznáme počet riadkov? Bufferovaný kanál nepomôže, keďže nevieme nastaviť jeho kapacitu.</p>
+</div>
+<div class="paragraph">
+<p>Dajme si prvý nefunkčný nástrel.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-go" data-lang="go">func main() {
+	results := make(chan int) <i class="conum" data-value="1"></i><b>(1)</b>
+	var wg sync.WaitGroup
+	for _, animal := range animals {
+		wg.Add(1)
+		a := animal <i class="conum" data-value="3"></i><b>(3)</b>
+		go func() {
+			time.Sleep(1 * time.Second)
+			log.Printf(&#34;%s\n&#34;, a)
+			results &lt;- a.weight <i class="conum" data-value="2"></i><b>(2)</b>
+            wg.Done()
+		}()
+	}
+	wg.Wait()
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tbody><tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Vytvorme komunikačný <em>kanál</em>, ktorým budú tiecť celé čísla <code>int</code>.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Pre každé zviera zistíme jeho hmotnosť a zapíšeme do kanála.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Nezabudnime na trik s premennou iterácie, ktorá sa používa v gorutine.</td>
+</tr>
+</tbody></table>
+</div>
+<div class="paragraph">
+<p>Ak spustíme kód, uvidíme 6 riadkov a nakoniec pád:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>fatal error: all goroutines are asleep - deadlock!
+
+goroutine 6 [chan send]:
+main.main.func1()</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>V programe sa deje viacero vecí.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Gorutiny zapisujú do spoločného kanála paralelne — predstavujú producentov.</p>
+</li>
+<li>
+<p>Kanál, ktorý používame, je nebufferovaný (<em>unbuffered</em>) a teda každý <em>producent</em> čaká (<em>blokuje</em>) na zápis dovtedy, kým sa z kanála nečíta.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Z kanála <code>results</code> však nikto nečíta — keďže sme nič také nenaprogramovali — a teda nastáva <em>deadlock</em>, pretože <em>producenti</em> (<em>gorutiny</em>) čakajú so zápisom na <strong>Go</strong>-dotov, ktorí nikdy neprídu.</p>
+</div>
+<div class="paragraph">
+<p>Tento fenomén Go dokázal identifikovať počas behu, a teda ukončil program s fatálnou chybou.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_konzument_výsledkov">Konzument výsledkov</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Pripravme si funkciu, ktorá bude konzumovať výsledky čítaním z kanála.</p>
+</div>
+<div class="paragraph">
+<p>Čítanie však musíme vedieť ukončiť a to:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>buď počítaním výsledkov,</p>
+</li>
+<li>
+<p>alebo uzatvorením kanála.</p>
+</li>
+</ol>
+</div>
+<div class="sect2">
+<h3 id="_počítanie_výsledkov">Počítanie výsledkov</h3>
+<div class="paragraph">
+<p>Začnime počítaním výsledkov.
+Ak vieme koľko riadkov pošleme do gorutiny, vieme tiež, koľko výsledkov očakávame.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-go" data-lang="go">func aggregateResults(results &lt;-chan int, expectedResults int) { <i class="conum" data-value="1"></i><b>(1)</b>
+	for i := expectedResults; i &gt; 0; i-- { <i class="conum" data-value="2"></i><b>(2)</b>
+		log.Printf(&#34;%d\tPartial\n&#34;, &lt;-results) <i class="conum" data-value="3"></i><b>(3)</b>
+	}
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tbody><tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Berieme kanál, z ktorého čítame a počet výsledkov, ktoré prídu.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Načítame toľko výsledkov, koľko treba.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Čítame z kanála (s blokovaním) a vypisujeme.</td>
+</tr>
+</tbody></table>
+</div>
+<div class="paragraph">
+<p>Hlavná funkcia potom navyšuje počítadlo úloh a po spustení gorutín zavolá agregáciu:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-go" data-lang="go">func main() {
+	results := make(chan int)
+	animalCount := 0 <i class="conum" data-value="1"></i><b>(1)</b>
+	var wg sync.WaitGroup
+	for _, animal := range animals {
+		wg.Add(1)
+		a := animal
+		animalCount++ <i class="conum" data-value="2"></i><b>(2)</b>
+		go func() {
+			time.Sleep(1 * time.Second)
+			log.Printf(&#34;%s\n&#34;, a)
+			results &lt;- a.weight
+            wg.Done()
+		}()
+	}
+	aggregateResults(results, animalCount) <i class="conum" data-value="3"></i><b>(3)</b>
+	wg.Wait()
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tbody><tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Inicializujeme počítadlo riadkov.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>S každým načítaným riadkom zvýšime počítadlo.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Agregujeme výsledky.</td>
+</tr>
+</tbody></table>
+</div>
+<div class="admonitionblock important">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Agregáciu výsledkov musíme urobiť <strong>pred</strong> čakaním na gorutiny.</p>
+</div>
+<div class="paragraph">
+<p>Ak by sme najprv čakali a potom agregovali, mali by sme <em>deadlock</em>:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Hlavná gorutina (<code>main</code>) by čakala na dobehnutie gorutín s úlohami a až potom začala čítať z kanála výsledkov.</p>
+</li>
+<li>
+<p>Gorutiny s úlohami by počas behu čakali so zápisom do kanála výsledov na čítanie z hlavnej gorutiny.</p>
+</li>
+</ol>
+</div>
+</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_konzument_výsledkov_s_uzatváraním_kanála">Konzument výsledkov s uzatváraním kanála</h3>
+<div class="paragraph">
+<p>Ukážme si variant, ktorý využíva uzatváranie kanála.</p>
+</div>
+<div class="paragraph">
+<p>Pripravme si funkciu, ktorá bude konzumovať výsledky:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-go" data-lang="go">func aggregateResults(results &lt;-chan int) {
+	for result := range results { <i class="conum" data-value="1"></i><b>(1)</b>
+		log.Printf(&#34;%d\tPartial\n&#34;, result)
+	}
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tbody><tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Pomocou cyklu vieme postupne čítať hodnoty z kanála.</td>
+</tr>
+</tbody></table>
+</div>
+<div class="admonitionblock important">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+Je veľmi dôležité, kde ju použijeme a ako ju použijeme.
+Veľmi ľahko si vieme vyrobiť deadlock!
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="paragraph">
+<p>Tento kód niekedy fungovať bude, niekedy nie.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-go" data-lang="go">func main() {
+	results := make(chan int)
+	var wg sync.WaitGroup
+	for _, animal := range animals {
+		wg.Add(1)
+		a := animal
+		go func() {
+			time.Sleep(1 * time.Second)
+			log.Printf(&#34;%s\n&#34;, a)
+			results &lt;- a.weight
+			wg.Done()
+		}()
+	}
+	aggregateResults(results) <i class="conum" data-value="1"></i><b>(1)</b>
+	wg.Wait()
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tbody><tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Funkciu spustíme klasicky po spracovaní výsledkov.</td>
+</tr>
+</tbody></table>
+</div>
+<div class="paragraph">
+<p>Uvedený kód sa správa nepredvídateľne, napríklad:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>09:28:52.615693 slon: 12 tony
+09:28:52.615791 12      Partial
+09:28:52.615723 nosorožec: 4 tony
+09:28:52.615806 4       Partial
+09:28:52.615728 veľryba: 190 tony
+09:28:52.615810 190     Partial
+09:28:52.615729 bizón: 2 tony
+09:28:52.615813 2       Partial
+09:28:52.615726 hroch: 4 tony
+09:28:52.615738 žirafa: 2 tony
+09:28:52.615829 4       Partial
+09:28:52.615832 2       Partial
+fatal error: all goroutines are asleep - deadlock!</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Vidíme šesť podvýsledkov a potom deadlock.</p>
+</div>
+<div class="paragraph">
+<p>Funkcia <code>aggregateResult</code> číta 6 čiastočných výsledkov z kanála a potom deadlockne — začne čakať na siedmy výsledok, ktorý nikdy nepríde, pretože program sa ukončí.
+Nezabúdajme, že <code>for</code> a <code>range</code> nad kanálom čaká na uzatvorenie kanála!</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Aj tu je dôležité najprv agregovať výsledky a potom čakať na dobehnutie korutín.</p>
+</div>
+</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_patlanie_s_kódom">Patlanie s kódom</h3>
+<div class="paragraph">
+<p>Ak by sme začaliť bezducho patlať a napríklad vymenili <code>aggregateResult</code> a <code>Wait</code>, nepomohli by sme si.
+Nastal by deadlock iného typu — producenti by čakali na konzumenta, ktorý by sa spustil až po <code>Wait</code>-e, a do toho by ešte čakal aj <code>Wait</code> (má to v popise práce).</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_uvoľnenie_deadlockov">Uvoľnenie deadlockov</h3>
+<div class="paragraph">
+<p>V kóde máme v skutočnosti tri druhy aktériek: hlavnú gorutinu (<code>main</code>), sadu gorutín a funkciu <code>aggregateResult</code>.
+Každá čaká na každého, čo musíme rozseknúť.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Hlavná gorutina čaká vo <code>Wait</code> na dobehnutie vážiacich gorutín.</p>
+</li>
+<li>
+<p>Vážiace gorutiny čakajú na konzumovanie z <code>aggregateResult</code> (cez nebufferovaný kanál).</p>
+</li>
+<li>
+<p>Funkcia <code>aggregateResult</code> v hlavnej gorutine čaká na výsledky z gorutín a ešte na uzatvorenie kanála.</p>
+</li>
+</ol>
+</div>
+<div class="admonitionblock note">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Riešenie je spustiť ešte jednu aktérku v gorutine.
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="sect3">
+<h4 id="_čakanie_na_gorutiny_v_gorutine">Čakanie na gorutiny v gorutine</h4>
+<div class="paragraph">
+<p>Jeden z trikov použíje čakanie na <em>WaitGroup</em> a následné uzavretie kanála v samostatnej gorutine.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-go" data-lang="go">func main() {
+	log.SetFlags(log.Ltime | log.Lmicroseconds)
+
+	results := make(chan int)
+	var wg sync.WaitGroup
+	for _, animal := range animals {
+		wg.Add(1)
+		a := animal
+		go func() {
+			time.Sleep(1 * time.Second)
+			log.Printf(&#34;%s: %d tony\n&#34;, a.species, a.weight)
+			results &lt;- a.weight
+			wg.Done()
+		}()
+	}
+	go func() { <i class="conum" data-value="1"></i><b>(1)</b>
+		wg.Wait()
+		close(results) <i class="conum" data-value="2"></i><b>(2)</b>
+	}()
+	aggregateResults(results)
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tbody><tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Čakanie na dobehnutie <em>WaitGroup</em> uskutočníme v gorutine.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Ak gorutiny dobehnú, máme garantovane všetky výsledky zapísané do výstupného kanála a môžeme ho zatvoriť.</td>
+</tr>
+</tbody></table>
+</div>
+<div class="paragraph">
+<p>Stav je nasledovný:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Gorutiny vážiace zvieratá blokujú pri zápise, kým  <code>aggregateResult</code> nezačne čítať z kanála a naopak.
+To je v poriadku.</p>
+</li>
+<li>
+<p>Čakanie na dobehnutie gorutín cez <code>WaitGroup</code> sa deje v samostatnej gorutine, ktorá neblokuje čítanie výsledkov z <code>aggregateResult</code>.
+Slovom, <code>main</code> naposiela salvu údajov a obratom začne čakať na výsledky v <code>aggregateResult</code>.</p>
+</li>
+<li>
+<p>Ak všetky vážiace gorutiny dobehli, zatvoríme kanál a tým odblokujeme čakanie na koniec vo funkcii <code>aggregateResults</code>.</p>
+</li>
+<li>
+<p>Funkcia <code>aggregateResult</code> pri čakaní na koniec kanála zároveň zabraňuje predčasnému ukončeniu programu.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_upratovanie_v_kóde">Upratovanie v kóde</h3>
+<div class="paragraph">
+<p>Upracme ešte v kóde. Predovšetkým, kódy v korutinách odsuňme do samostatných funkcií.</p>
+</div>
+<div class="paragraph">
+<p>Založme funkciu pre gorutinu:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-go" data-lang="go">func worker(a Animal, results chan&lt;- int, wg *sync.WaitGroup) { <i class="conum" data-value="1"></i><b>(1)</b>
+	time.Sleep(1 * time.Second)
+	log.Printf(&#34;%s: %d tony\n&#34;, a.species, a.weight)
+	results &lt;- a.weight
+	wg.Done()
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tbody><tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Nezabudnime posielať <code>WaitGroup</code> ako pointer.</td>
+</tr>
+</tbody></table>
+</div>
+<div class="paragraph">
+<p>Funkcia <code>aggregateResult</code> bude naozaj agregovať:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-go" data-lang="go">func aggregateResults(results &lt;-chan int) {
+	total := 0
+	for result := range results {
+		log.Printf(&#34;%d\tPartial\n&#34;, result)
+		total += result
+	}
+	log.Printf(&#34;%d\tTotal Weight\n&#34;, total) <i class="conum" data-value="1"></i><b>(1)</b>
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tbody><tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Vypíšeme celkový výsledok.</td>
+</tr>
+</tbody></table>
+</div>
+<div class="paragraph">
+<p>Čakanie na <code>WaitGroup</code> bude v samostatnej grupe.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-go" data-lang="go">func waitAndClose(wg *sync.WaitGroup, results chan&lt;- int) {
+	wg.Wait()
+	close(results)
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Hlavná funkcia sa sprehľadní.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>func main() {
+	log.SetFlags(log.Ltime | log.Lmicroseconds)
+
+	results := make(chan int)
+	wg := new(sync.WaitGroup) <i class="conum" data-value="1"></i><b>(1)</b>
+	for _, animal := range animals {
+		wg.Add(1)
+		a := animal
+		go worker(a, results, wg) <i class="conum" data-value="2"></i><b>(2)</b>
+	}
+	go waitAndClose(wg, results) <i class="conum" data-value="3"></i><b>(3)</b>
+	aggregateResults(results) <i class="conum" data-value="4"></i><b>(4)</b>
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tbody><tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td><code>WaitGroup</code> inicializujeme rovno ako pointer.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Funkciu pre váženie zavoláme ako gorutinu.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Čakanie na výsledky tiež pôjde v gorutine</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>Agregácia na výsledky nemusí ísť v gorutine, tá blokuje pri čakaní na zápis z gorutiny pre <code>worker</code>-ov.</td>
+</tr>
+</tbody></table>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="diagram-simplified.jpg" alt="diagram simplified"/>
+</div>
+</div>
+<div class="paragraph">
+<p>Všimnime si, ako sme sa zbavili cyklov — nestane sa, že aktér čaká na iného aktéra, ktorý naňho nepriamo tiež čaká.</p>
+</div>
+</div>
+</div>
+</div>
+
+    <a href="/"> >> Home</a>
+  </main>
+</div>
+    <footer>
+      
+<script>
+(function() {
+  function center_el(tagName) {
+    var tags = document.getElementsByTagName(tagName), i, tag;
+    for (i = 0; i < tags.length; i++) {
+      tag = tags[i];
+      var parent = tag.parentElement;
+      
+      if (parent.childNodes.length === 1) {
+        
+        if (parent.nodeName === 'A') {
+          parent = parent.parentElement;
+          if (parent.childNodes.length != 1) continue;
+        }
+        if (parent.nodeName === 'P') parent.style.textAlign = 'center';
+      }
+    }
+  }
+  var tagNames = ['img', 'embed', 'object'];
+  for (var i = 0; i < tagNames.length; i++) {
+    center_el(tagNames[i]);
+  }
+})();
+</script>
+
+      
+    </footer>
+  </body>
+</html>
+
