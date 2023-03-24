@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+    <link rel="manifest" href="/images/site.webmanifest">
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <title>OAuth 2.0, OpenID Connect, Keycloak a Spring Boot -- Rozbiehame Keycloak, získavame tokeny | robonovotny</title>
+
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.3/styles/dracula.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.3/highlight.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.3/languages/go.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    <link rel="stylesheet" href="https://novotnyr.github.io/asciidoctor.css">
+    <header>
+
+  <nav>
+    <ul>
+      
+      
+      <li class="pull-left ">
+        <a href="https://novotnyr.github.io/">~/robonovotny</a>
+      </li>
+      
+
+      
+
+    </ul>
+  </nav>
+</header>
+
+  </head>
+
+  <body>
+    <br/>
+
+<div class="article-meta">
+<h1><span class="title">OAuth 2.0, OpenID Connect, Keycloak a Spring Boot &ndash; Rozbiehame Keycloak, získavame tokeny</span></h1>
+
+<h2 class="date">2023/03/24</h2>
+<p class="terms">
+  
+  
+  
+  
+  
+</p>
+</div>
+
+
+<div class="content-wrapper">
+  <main>
+    <div class="sect1">
+<h2 id="_o_keycloak_u">O Keycloak-u</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><strong>Keycloak</strong> je open source riešenie pre:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>jednotné prihlasovanie (<em>single sign on</em>) do viacerých aplikácií, či microservisov</p>
+</li>
+<li>
+<p>správu identít používateľov (<em>identity management</em>) a správu prístupov (<em>access management</em>), sumárne systém typu IAM</p>
+</li>
+<li>
+<p>poskytovateľa identít (<em>identity provider</em>) pre protokol OpenID Connect či SAML</p>
+</li>
+<li>
+<p>autorizačný server (<em>Authorization Server</em>) pre protokol OAuth 2.0</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_typické_prípady_použitia_bez_keycloaku">Typické prípady použitia bez Keycloaku</h2>
+<div class="sectionbody">
+<div class="dlist">
+<dl>
+<dt class="hdlist1">HTTP Basic</dt>
+<dd>
+<p>do HTTP požiadavky priložíme hlavičku <code>Authorization</code>, kde uvedieme hashovaný login a heslo, čím realizujeme autorizovaný prístup.</p>
+</dd>
+<dt class="hdlist1">Bežný backend</dt>
+<dd>
+<p>používateľ sa prihlási cez formulár, server odpovie s <em>cookie</em> v hlavičke, a každá ďalšia požiadavka bude obsahovať <em>cookie</em> indikujúcu úspešné prihlásenie</p>
+</dd>
+</dl>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_načo_keycloak">Načo Keycloak?</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Keycloak je:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>databáza používateľov, ich osobných údajov</p>
+</li>
+<li>
+<p>evidencia hesiel či iných <em>credentials</em>, teda autentifikačných možností</p>
+</li>
+<li>
+<p>príslušnosti k skupinám</p>
+</li>
+<li>
+<p>priradenie rolí</p>
+</li>
+<li>
+<p>nástroj na realizáciu prihlasovacieho formulára</p>
+</li>
+<li>
+<p>s unifikovanými protokolmi, ktorým rozumejú rozličné jazyky</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_typické_prípady_použitia_s_keycloak_om">Typické prípady použitia s Keycloak-om</h2>
+<div class="sectionbody">
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Používateľ sa prihlási cez prihlasovací formulár v Keycloaku a tým je automaticky autentifikovaný pre náš webový portál.</p>
+</li>
+<li>
+<p>Používateľ pomocou loginu a hesla získa <em>token</em>, teda dôkaz o úspešnom prihlásení_ a prikladá ho ku každému volaniu REST API</p>
+</li>
+<li>
+<p>Používateľ sa prihlási v SPA (<em>Single Page App</em>) a jeho prihlasovanie sa automaticky propaguje na <em>backendovú</em> aplikáciu.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_plán_práce">Plán práce</h2>
+<div class="sectionbody">
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Stiahneme Keycloak, rozbalíme.</p>
+</li>
+<li>
+<p>Spustíme Keycloak na lokálnom stroji.</p>
+</li>
+<li>
+<p>Pridáme vzorových používateľov vrátane loginu a hesla</p>
+</li>
+<li>
+<p>Využijeme <em>flow</em>, teda postupnosť krokov, kde vymeníme login a heslo za token typu JWT.</p>
+</li>
+<li>
+<p>Pozrieme sa, čo je vo vnútri tokenu.</p>
+</li>
+</ol>
+</div>
+<div class="sect2">
+<h3 id="_stiahnutie_a_spustenie">Stiahnutie a spustenie</h3>
+<div class="paragraph">
+<p>Na spustenie je potrebná Java aspoň verzie 11, predpokladáme, že je nainštalovaná.</p>
+</div>
+<div class="paragraph">
+<p>Keycloak stiahneme z <a href="https://www.keycloak.org/downloads">domovskej stránky na Keycloak.org</a>.</p>
+</div>
+<div class="paragraph">
+<p>Rozbalíme ho:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>cp ~/Downloads/keycloak*.zip ~/Applications
+cd ~/Applications
+unzip keycloak*.zip
+cp ~/Applications/keycloak-21.0.1</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Keycloak spustíme na lokálnom stroji vo vývojárskom režíme:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>bin/kc.bat --start-dev</pre>
+</div>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+Keycloak beží na porte 8080.
+</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_pridanie_administrátorskeho_konta">Pridanie administrátorskeho konta</h3>
+<div class="paragraph">
+<p>Navštívme <a href="http://localhost:8080" class="bare">http://localhost:8080</a>.</p>
+</div>
+<div class="paragraph">
+<p>Vytvorme administrátorku:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Username: <code>admin</code></p>
+</li>
+<li>
+<p>Password i Password Confirmation: <code>Igieciehou1Mie</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Prihlásme sa do administrátorskej konzoly na adrese <a href="http://localhost:8080/admin/" class="bare">http://localhost:8080/admin/</a>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_realm">Realm</h3>
+<div class="paragraph">
+<p>Realm je niečo ako <em>projekt</em>, či <em>menný priestor</em>, alebo <em>workspace</em>, či <em>tenant</em> v ktorom možno v rámci inštancie nezávisle udržiavať konfiguračné nastavenia.</p>
+</div>
+<div class="paragraph">
+<p>Štandardný realm je <code>master</code>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_nový_používateľ">Nový používateľ</h3>
+<div class="paragraph">
+<p>Pridajme používateľa i s heslom.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="new-user.png" alt="new user"/>
+</div>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>V ľavom paneli zvoľme <code>Users</code>.</p>
+</li>
+<li>
+<p>Pridajme nového používateľa cez tlačidlo <strong>Add user</strong>.</p>
+</li>
+<li>
+<p>Vyplňme najmenej login, napr <code>harald</code>.</p>
+</li>
+<li>
+<p>Overme, že používateľ je povolený (<em>Enabled</em>), obvykle prepínačom vpravo hore.</p>
+</li>
+<li>
+<p>Na karte <strong>Credentials</strong> nastavme heslo cez <strong>Set Password</strong>.</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Vyplňme heslo a potvrdenie, napr. <code>Yei8eejaiJeith</code>.</p>
+</li>
+<li>
+<p>Zakážme dočasné heslo, inak by si ho používateľ po prvom prihlásení musel zmeniť: <strong>Temporary</strong> je vypnuté.</p>
+</li>
+</ol>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_klienti_a_aplikácie">Klienti a aplikácie</h2>
+<div class="sectionbody">
+<div class="admonitionblock important">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+Client (<em>klient</em>) sú aplikácie či služby, ktoré vyžadujú prihláseného používateľa.
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="paragraph">
+<p>Príkladom klienta môže byť backendová aplikácia s REST API, ktorá vyžaduje prihláseného používateľa; iným príkladom je aplikácia, ktorá dokáže získavať zabezpečené údaje <em>v mene</em> konkrétneho používateľa.</p>
+</div>
+<div class="paragraph">
+<p>Pripravme si klienta reprezentujúceho REST API backend.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="new-client.png" alt="new client"/>
+</div>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>V ľavom paneli zvoľme <strong>Client Scopes</strong>.</p>
+</li>
+<li>
+<p>Pridajme nového klienta cez tlačidlo <strong>Create client</strong>.</p>
+</li>
+<li>
+<p>Ponechajme protokol <strong>OpenID Connect</strong>.</p>
+</li>
+<li>
+<p>Vyplňme identifikátor klienta — <code>megabank</code>.</p>
+</li>
+<li>
+<p>Voliteľne dodajme popis a názov.</p>
+</li>
+<li>
+<p>V bloku <strong>Capability Config</strong> sa uistime, že máme povolený <em>Standard Flow</em> a <em>Direct access grants</em>.</p>
+</li>
+<li>
+<p>V bloku <strong>Login Settings</strong> ponechajme všetko prázdne.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_prihlásenie_cez_flows_ropc">Prihlásenie cez flows: ROPC</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Keycloak rozumie viacerým prístupom k prihlasovaniu — tzv. <strong>flow</strong>.
+Najjednoduchší flow je ROPC (<strong>Resource Owner Password Flow</strong>), definovaný v štandardne OAuth 2.0, ktorý dokáže vymeniť login a heslo za autentifikačný <em>token</em> reprezentujúci úspešné prihlásenie.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Tento <em>flow</em> je azda najjednoduchší a slúži pre aplikácie, ktoré len chcú migrovať na OAuth 2.0.
+Treba absolútne dôverovať aplikácii, ktorá prevezme prihlasovacie údaje, a nechce ich zneužiť.
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="paragraph">
+<p>S použitím nástroja <code>curl</code> dokážeme získať token:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>curl -X POST --location &#34;http://localhost:8080/realms/master/protocol/openid-connect/token&#34; \
+    -H &#34;Content-Type: application/x-www-form-urlencoded&#34; \
+    -d &#34;grant_type=password&#34; \ <i class="conum" data-value="1"></i><b>(1)</b>
+    -d &#34;client_id=megabank&#34; \ <i class="conum" data-value="2"></i><b>(2)</b>
+    -d &#34;scope=openid&#34; \ <i class="conum" data-value="3"></i><b>(3)</b>
+    -d &#34;username=harald&#34; \ <i class="conum" data-value="4"></i><b>(4)</b>
+    -d &#34;password=Yei8eejaiJeith&#34;</pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tbody><tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Používame flow ROPC indikovaný typom <code>grant_type</code>.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Uvedieme identifikátor klienta.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Dodáme špeciálny atribút, ktorý v Keycloaku indikuje použitie protokolu OIDC (OpenID Connect). V ňom vieme získavaať pokročilé informácie o prihlásení cez token.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>Dodáme login a heslo.</td>
+</tr>
+</tbody></table>
+</div>
+<div class="paragraph">
+<p>Odpoveďou bude JSON s viacerými atribútmi:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">{
+  &#34;access_token&#34;:&#34;eyJh....&#34;,
+  &#34;expires_in&#34;:60,
+  ...
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Odpoveďou bude token v atribúte <code>access_token</code>.
+Tento token reprezentuje informáciu o úspešnom prihlásení, s ktorou teraz vieme pristúpiť k autorizovanému REST API v našej službe, ktorú si potrebujeme vytvoriť.</p>
+</div>
+<div class="sect2">
+<h3 id="_overenie_tokenu">Overenie tokenu</h3>
+<div class="paragraph">
+<p>Celý token vieme zobrať a overiť pomocou keycloakovej služby na <em>endpointe</em> <code>userinfo</code>.</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>http://localhost:8080/realms/master/protocol/openid-connect/userinfo
+Authorization: Bearer eyJh....</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Výsledkom bude JSON s informáciami o prihlásení.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>{
+  &#34;sub&#34;: &#34;0f0d7fe9-9293-4ef4-a476-9e2aba73028c&#34;, <i class="conum" data-value="1"></i><b>(1)</b>
+  &#34;email_verified&#34;: false,
+  &#34;preferred_username&#34;: &#34;harald&#34;, <i class="conum" data-value="2"></i><b>(2)</b>
+  &#34;given_name&#34;: &#34;&#34;,
+  &#34;family_name&#34;: &#34;&#34;
+}</pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tbody><tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Identifikátor používateľa v Keycloaku vo formáte UUID.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Ľudsky čitateľný <em>login</em> používateľa.</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_tokeny">Tokeny</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Ak používame flow ROPC a požiadame si protokol OIDC, dostaneme token vo formáte JWT.</p>
+</div>
+<div class="paragraph">
+<p>Ide o digitálne podpísanú nemennú informáciu najmä o:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>identifikátore používateľa</p>
+</li>
+<li>
+<p>jeho logine</p>
+</li>
+<li>
+<p>klientovi, ktorého sa dotýka</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Okrem toho token obsahuje:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>časovú pečiatku vydania</p>
+</li>
+<li>
+<p>dátum expirácie</p>
+</li>
+<li>
+<p>algoritmus, ktorý sa použil na digitálny podpis</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+Tokeny majú obmedzenú platnosť.
+Každý token je totiž „kľúčom“, ktorým vieme pristúpiť k autorizačnej službe!
+Tokeny treba chrániť podobne ako heslá.
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="paragraph">
+<p>Tento token pozostáva z troch zložiek oddelených bodkou, pričom každá je reprezentovaná kódovaním Base64.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>ey[___].eyJleH[___]VZGO6-Aa7q_Sjygf21BYrm6bVAXnBGeJrOOCxyTUs9nmZ9wKP64I2O7NaJwPtdAhbeZVlh2MkxqWe9HtxBhgHXSNQ1DRs43ergRKbEpObV</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Token vieme zobrať a vložiť buď:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>do online služby <a href="https://jwt.io/" class="bare">https://jwt.io/</a></p>
+</li>
+<li>
+<p>prípadne <a href="https://plugins.jetbrains.com/plugin/9831-jwt-json-web-token-analyzer/">JWT plug-in pre platformu IntelliJ</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Po dekódovaní uvidíme tri zložky, každá vo formáte JSON.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>najprv hlavičku: s algoritmom a typom tokenu</p>
+</li>
+<li>
+<p>na konci digitálny podpis indikujúci neporušiteľnosť a autenticitu tokenu.
+Token je obvykle podpísaný privátnym kľúčom Keycloaku, a overiť ho môžeme verejným kľúčom.</p>
+</li>
+<li>
+<p>telo: reprezentujúce <em>claims</em>, teda tvrdenia o príslušnom prihlásení.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Príklad tela:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>{
+  &#34;exp&#34;: 1679693901, <i class="conum" data-value="1"></i><b>(1)</b>
+  &#34;iat&#34;: 1679693841, <i class="conum" data-value="2"></i><b>(2)</b>
+  &#34;sub&#34;: &#34;0f0d7fe9-9293-4ef4-a476-9e2aba73028c&#34;, <i class="conum" data-value="3"></i><b>(3)</b>
+  &#34;preferred_username&#34;: &#34;harald&#34; <i class="conum" data-value="4"></i><b>(4)</b>
+}</pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tbody><tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Dátum expirácie tokenu ako unixová časová pečiatka.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Dátum vydania tokenu, tiež ako pečiatka</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Subjekt, teda jednoznačný identifikátor používateľa z Keycloaku.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>Ľudsky čitateľné meno.</td>
+</tr>
+</tbody></table>
+</div>
+<div class="admonitionblock important">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+Pokusy upravovať token narušujú jeho digitálny podpis! Služba tak vie okamžite zistiť, či sa útočník nepokúša predstierať, že je niekto ný.
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="sect2">
+<h3 id="_platnosť_tokenov">Platnosť tokenov</h3>
+<div class="paragraph">
+<p>Štandardný token platí minútu.
+Ak máme testovacie prostredie a nechceme dokola získavať nové tokeny, môžeme pre konkrétneho klienta predĺžiť platnosť.</p>
+</div>
+<div class="paragraph">
+<p>V <strong>Clients</strong> &gt; <em>Megabank</em> na karte <strong>Advanced</strong> sa posunieme do spodných častí obrazovky.
+Nájdeme sekciu <strong>Access Token Lifespan</strong> a nastavíme expiráciu napríklad na 1 deň.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="access-token-lifespan.png" alt="access token lifespan"/>
+</div>
+</div>
+<div class="paragraph">
+<p>Nastavenia nezabudnime uložiť!</p>
+</div>
+<div class="paragraph">
+<p>Po získaní nového tokenu uvidíme v atribúte <code>expires_in</code> platnosť jedného dňa.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>&#34;expires_in&#34;: 36000,</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_ako_ďalej">Ako ďalej?</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>V ďalšom kroku je čas na vlastnú službu, ktorú ochránime autorizáciu s protokolom OAuth 2.0/OIDC, a preukážeme sa JWT tokenom.</p>
+</div>
+</div>
+</div>
+
+    <a href="/"> >> Home</a>
+  </main>
+</div>
+    <footer>
+      
+<script>
+(function() {
+  function center_el(tagName) {
+    var tags = document.getElementsByTagName(tagName), i, tag;
+    for (i = 0; i < tags.length; i++) {
+      tag = tags[i];
+      var parent = tag.parentElement;
+      
+      if (parent.childNodes.length === 1) {
+        
+        if (parent.nodeName === 'A') {
+          parent = parent.parentElement;
+          if (parent.childNodes.length != 1) continue;
+        }
+        if (parent.nodeName === 'P') parent.style.textAlign = 'center';
+      }
+    }
+  }
+  var tagNames = ['img', 'embed', 'object'];
+  for (var i = 0; i < tagNames.length; i++) {
+    center_el(tagNames[i]);
+  }
+})();
+</script>
+
+      
+    </footer>
+  </body>
+</html>
+

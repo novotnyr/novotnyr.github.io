@@ -1,0 +1,42 @@
+@startuml
+skinparam linetype ortho
+skinparam defaultFontName "Arial"
+skinparam defaultFontSize 9
+skinparam shadowing true
+skinparam cloud {
+	BackgroundColor white
+}
+
+skinparam DefaultFontColor automatic
+
+skinparam PLATFORMA {
+	BackgroundColor red
+}
+
+
+left to right direction
+
+actor "Používateľ" as USER
+
+() "HTTPS" as HTTPORT
+HTTPORT -down- PORTAL
+
+USER-->HTTPORT
+
+cloud "Vyhľadávací portál\ncode.gov.sk" as PORTAL #E7ECEF {
+	node "technologické jadro" AS CORE #A3CEF1
+	database "interná cache" as CACHE #A3CEF1
+}
+
+CORE -left- CACHE
+
+cloud "Platforma" as PLATFORMA #274C77 {
+}
+
+() "API" as GITGOVREST #274C77
+
+CORE ==left== GITGOVREST: zabezpečený\nprístup
+GITGOVREST -left--- PLATFORMA
+
+
+@enduml
