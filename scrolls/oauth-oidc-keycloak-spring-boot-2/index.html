@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+    <link rel="manifest" href="/images/site.webmanifest">
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <title>OAuth 2.0, OpenID Connect, Keycloak a Spring Boot -- Spring Boot ochránená tokenmi JWT | robonovotny</title>
+
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.3/styles/dracula.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.3/highlight.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.3/languages/go.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    <link rel="stylesheet" href="https://novotnyr.github.io/asciidoctor.css">
+    <header>
+
+  <nav>
+    <ul>
+      
+      
+      <li class="pull-left ">
+        <a href="https://novotnyr.github.io/">~/robonovotny</a>
+      </li>
+      
+
+      
+
+    </ul>
+  </nav>
+</header>
+
+  </head>
+
+  <body>
+    <br/>
+
+<div class="article-meta">
+<h1><span class="title">OAuth 2.0, OpenID Connect, Keycloak a Spring Boot &ndash; Spring Boot ochránená tokenmi JWT</span></h1>
+
+<h2 class="date">2023/03/25</h2>
+<p class="terms">
+  
+  
+  
+  
+  
+</p>
+</div>
+
+
+<div class="content-wrapper">
+  <main>
+    <div class="paragraph">
+<p>V predošlom dieli sme si ukázali, ako je možné rozbehať Keycloak v jednoduchej podobe „databázy pre používateľov a kontá“.</p>
+</div>
+<div class="paragraph">
+<p>Teraz si ukážme, ako je možné zobrať backendovú aplikáciu s REST API, a ochrániť ju tak, aby bola dostupné len po prihlásení používateľa cez Keycloak.</p>
+</div>
+<div class="paragraph">
+<p>Plán práce bude:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Pripravíme si REST API cez Spring Boot.</p>
+</li>
+<li>
+<p>Zabezpečíme ho cez knižnicu Spring Security, ktorá sa postará o autorizáciu.</p>
+</li>
+<li>
+<p>Dodáme integráciu s Keycloakom pomocou štandardu OAuth 2.0 / OpenID Connect 1.0.</p>
+</li>
+<li>
+<p>Ukážeme si, ako je možné zobrať token JWT a použiť ho v REST API na informáciu o prihlásení.</p>
+</li>
+</ul>
+</div>
+<div class="sect1">
+<h2 id="_rest_api_a_spring_boot">REST API a Spring Boot</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Pripravme si aplikáciu v Spring Boote.
+Najlepšie na to použiť <em>Spring Initializr</em>, či už cez portál <a href="https://start.spring.io" class="bare">https://start.spring.io</a> alebo cez IntelliJ IDEA.</p>
+</div>
+<div class="paragraph">
+<p>Dôležité je naklikať dva komponenty:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Spring Web</dt>
+<dd>
+<p>pre REST API</p>
+</dd>
+<dt class="hdlist1">OAuth 2 Resource Server</dt>
+<dd>
+<p>pre integráciu s Keycloakom.</p>
+</dd>
+</dl>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="spring-initializr.png" alt="spring initializr"/>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Náš backend v Spring Boote bude figurovať v role <em>Resource Servera</em>, čo je v terminológii OAuth 2.0 súčiastka, ktorá obsahuje používateľské dáta a zverejňuje ich autentifikovaným používateľom
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="sect2">
+<h3 id="_kontrolér_pre_rest_api">Kontrolér pre REST API</h3>
+<div class="paragraph">
+<p>Pripravme si metódu pre REST API, ktorá zverejní stav účtu:</p>
+</div>
+<div class="listingblock">
+<div class="title">BankApplication.java</div>
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@GetMapping(&#34;/accounts/{accountId}/balance&#34;)
+public BigDecimal getBalance(@PathVariable String accountId) {
+    return BigDecimal.TEN;
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Dodajme nad triedu <code>BankApplication</code> anotáciu <code>RestController</code>:</p>
+</div>
+<div class="listingblock">
+<div class="title">BankApplication.java</div>
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@SpringBootApplication
+@RestController
+public class BankApplication {
+    ///...
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Zmeňme tiež port pre HTTP na 8888 — nechceme kolidovať s portom 8080 pre Keycloak.</p>
+</div>
+<div class="listingblock">
+<div class="title">application.properties</div>
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">server.port=8888</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Spusťme teraz celý backend!</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_http_požiadavky_na_backend">HTTP požiadavky na backend</h3>
+<div class="paragraph">
+<p>Na požiadavky budeme používať HTTP klienta zabudovaného v IntelliJ IDEA.</p>
+</div>
+<div class="paragraph">
+<p>Založme súbor <code>src/test/resources/requests.http</code> s jediným riadkom:</p>
+</div>
+<div class="listingblock">
+<div class="title">src/test/resources/requests.http</div>
+<div class="content">
+<pre class="highlight"><code>http://localhost:8888/accounts/1</code></pre>
+</div>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Súbor je ekvivalentom príkazu pre <code>curl</code>:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>curl -X GET --location &#34;http://localhost:8888/accounts/1&#34;</pre>
+</div>
+</div>
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="paragraph">
+<p>Ak tento súbor spustíme, uvidíme odpoveď, ktorá vyžaduje autorizáciu:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>HTTP/1.1 401 <i class="conum" data-value="1"></i><b>(1)</b>
+WWW-Authenticate: Basic realm=&#34;Realm&#34; <i class="conum" data-value="2"></i><b>(2)</b>
+...</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tbody><tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Stavový kód 401 znamená, že sa vyžaduje autorizácia.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Podľa tejto hlavičky zistíme, že sa postupuje podľa filozofie <em>HTTP Basic</em>.</td>
+</tr>
+</tbody></table>
+</div>
+<div class="admonitionblock important">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+Toto všetko sa deje vďaka modulu <em>Spring Security</em>, ktorý sa automaticky objavil v projekte ako závislosť na knižnici <code>spring-boot-starter-oauth2-resource-server</code>.
+Toto zatiaľ nemá nič spoločné s OAuth 2.0/OIDC — je to štandardné správanie <em>Spring Security</em> v <em>Spring Boot</em>-e.
+</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_integrácia_s_keycloakom">Integrácia s Keycloakom</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_metadáta_pre_openid_connect_1_0">Metadáta pre OpenID Connect 1.0</h3>
+<div class="paragraph">
+<p>Keycloak ako autorizačný server nad protokolom <em>Open ID Connect</em> zverejňuje metadáta o svojej konfigurácii vo formáte JSON.
+Takto vieme zistiť napríklad:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>adresy URL pre jednotlivé <em>endpointy</em> podľa príslušného flowu,</p>
+</li>
+<li>
+<p>informácie o šifrovacích metódach pre tokeny JWT,</p>
+</li>
+<li>
+<p>flowy OAuth 2.0, ktoré tento server podporuje,</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Formát sa riadi normou <a href="https://openid.net/specs/openid-connect-discovery-1_0">OpenID Connect Discovery 1.0</a>.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Keycloak zverejňuje informácie na dohodnutej adrese, ktorá pre <em>realm</em> <code>master</code> je dostupná na <a href="http://localhost:8080/realms/master/.well-known/openid-configuration" class="bare">http://localhost:8080/realms/master/.well-known/openid-configuration</a>.</p>
+</div>
+<div class="paragraph">
+<p>Pokojne ju navštívme z prehliadača!</p>
+</div>
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="paragraph">
+<p>Spring Boot a modul OAuth 2.0 Resource Server dokáže z tejto adresy zistiť všetko podstatné pre integráciu!</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_integrácia_medzi_spring_boot_a_keycloak">Integrácia medzi Spring Boot a Keycloak</h3>
+<div class="paragraph">
+<p>Do <code>application.properties</code> v Spring Boote stačí dodať jedinú vlastnosť: cestu, z ktorej sa dajú odvodiť metadáta pre OIDC 1.0.</p>
+</div>
+<div class="listingblock">
+<div class="title">application.properties</div>
+<div class="content">
+<pre class="highlight"><code>spring.security.oauth2.resourceserver.jwt.issuer-uri=http://localhost:8080/realms/master</code></pre>
+</div>
+</div>
+<div class="admonitionblock important">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+Príponu <code>/.well-known/openid-configuration.</code> si Spring Boot domyslí.
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="paragraph">
+<p>Po reštarte aplikácie môžeme zopakovať požiadavku HTTP.
+Uvidíme stavový kód 401, hoci s inou hlavičkou.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>GET http://localhost:8888/accounts/1/balance
+
+HTTP/1.1 401
+WWW-Authenticate: Bearer <i class="conum" data-value="1"></i><b>(1)</b></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tbody><tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Vyžaduje sa hlavička <code>Bearer</code>, teda sa očakáva token JWT.</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_ropc_flow_a_rest_api">ROPC flow a REST API</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Na to, aby REST API fungovalo, potrebujeme získať token JWT.
+Najjednoduchší spôsob je využiť flow ROPC.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Z Keycloaku vymeníme login a heslo za JWT token</p>
+</li>
+<li>
+<p>JWT token priložíme ku požiadavke na springové REST API.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Ak používame IntelliJ IDEA, tak dvojicu požiadaviek vieme prepojiť cez premenné a vyhodnocovače odpovedí.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-httprequest" data-lang="httprequest">### Get JWT Token
+POST http://localhost:8080/realms/master/protocol/openid-connect/token
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=password&amp;client_id=megabank&amp;scope=openid&amp;username=harald&amp;password=Yei8eejaiJeith
+
+&gt; {%
+    client.global.set(&#34;jwt&#34;, response.body.access_token)
+%}
+
+### Retrieve bank balance
+http://localhost:8888/accounts/1/balance
+Authorization: Bearer {{jwt}}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Odpoveďou bude stav na účte.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Ak by sme používali <code>curl</code>, vyzeralo by to nasledovne:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>curl &#39;http://localhost:8888/accounts/1/balance&#39; \
+&gt;     -H &#34;Authorization: Bearer eyJh...WI-Q&#34;</code></pre>
+</div>
+</div>
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="sect2">
+<h3 id="_pozor_na_ropc_flow">Pozor na ROPC flow</h3>
+<div class="paragraph">
+<p>ROPC flow je síce extrémne jednoduchý, ale:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Každá aplikácia si musí implementovať svoju vlastnú prihlasovaciu stránku. Teraz síce získavame JWT token cez REST API, ale v reálnom nasadení (napr. cez SPA) musíme <em>odniekiaľ</em> zasielať login a heslo.</p>
+</li>
+<li>
+<p>ROPC vyžaduje extrémnu dôveru v klienta: musíme si byť istí, že login a heslo odovzdané do prihlasovacej stránky v prehliadači či mobilnej appke neunikne nikam bokom, alebo sa neodcudzí po ceste.</p>
+</li>
+<li>
+<p>Klient sa musí bezpečne starať o náš login a heslo a musí ho ukladať na citlivé miesto.</p>
+</li>
+</ol>
+</div>
+<div class="admonitionblock important">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+ROPC flow sa už neodporúča používať a v OAuth 2.1 zrejme ani nebude použiteľný.
+Ak je to možné, systém treba migrovať na lepší flow.
+</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_sprístupnenie_prihlasovacích_údajov_v_rest_api">Sprístupnenie prihlasovacích údajov v REST API</h3>
+<div class="paragraph">
+<p>Knižnica <em>Spring OAuth 2 Resource Server</em> sa priamo integruje s možnosťami Spring Security.</p>
+</div>
+<div class="paragraph">
+<p>Ak chceme zistiť, aký používateľ prišiel do REST API, použime anotáciu <a href="https://docs.spring.io/spring-security/site/docs/current/api/org/springframework/security/core/annotation/AuthenticationPrincipal.html"><code>AuthenticationPrincipal</code></a> nad parametrom typu <code>org.springframework.security.oauth2.jwt.Jwt</code>.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+Pozor, v Spring Boote existuje viacero tried <code>Jwt</code>.
+Treba vybrať tú správnu!
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@GetMapping(&#34;/accounts/{accountId}/balance&#34;)
+public BigDecimal getBalance(@PathVariable String accountId,                                                @AuthenticationPrincipal Jwt jwt) <i class="conum" data-value="1"></i><b>(1)</b>
+{
+    String userId = (String) jwt.getClaims().getOrDefault(&#34;sub&#34;, &#34;&#34;); <i class="conum" data-value="2"></i><b>(2)</b>
+    //...
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tbody><tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Informácie o prihlásenom používateľovi vo formáte JWT.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Objekt <code>Jwt</code> obsahuje všetky <em>claims</em>, teda údaje o používateľovi v podobe mapy.
+Claim <code>sub</code> obsahuje identifikátor <code>UUID</code> používateľa z Keycloaku.</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_mapovanie_mena_používateľa">Mapovanie mena používateľa</h3>
+<div class="paragraph">
+<p>Štandardne sa názov <em>principálu</em> berie z claimu <code>sub</code>.
+To však môžeme prispôsobiť — napríklad na claim <code>preferred_username</code>.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+Bean <code>JwtAuthenticationConverter</code> konvertuje token <code>Jwt</code> na objekt <code>Authentication</code> v Spring Security.
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@Bean
+JwtAuthenticationConverter jwtAuthenticationConverter() {
+    var authenticationConverter = new JwtAuthenticationConverter();
+    authenticationConverter.setPrincipalClaimName(&#34;preferred_username&#34;); <i class="conum" data-value="1"></i><b>(1)</b>
+    return authenticationConverter;
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tbody><tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Názov sa prevezme z claimu <code>preferred_username</code>.
+Ten obsahuje napríklad nášho <code>harald</code>-a.</td>
+</tr>
+</tbody></table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">public BigDecimal getBalance(
+        @PathVariable String accountId,
+        @CurrentSecurityContext(expression = &#34;authentication.name&#34;) <i class="conum" data-value="1"></i><b>(1)</b>
+            String userName)) { <i class="conum" data-value="2"></i><b>(2)</b>
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tbody><tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Z objektu <em>Security Context</em> v Spring Security vieme pomocou výrazu získať priamo názov principála, teda meno používateľa.</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_repozitár">Repozitár</h2>
+<div class="sectionbody">
+<div class="admonitionblock tip">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+Zdrojové kódy pre celý repozitár sú na GitHube, v repozitári <a href="https://github.com/novotnyr/bank-restapi-oidc"><code>novotnyr/bank-restapi-oidc</code></a>.
+</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+</div>
+
+    <a href="/"> >> Home</a>
+  </main>
+</div>
+    <footer>
+      
+<script>
+(function() {
+  function center_el(tagName) {
+    var tags = document.getElementsByTagName(tagName), i, tag;
+    for (i = 0; i < tags.length; i++) {
+      tag = tags[i];
+      var parent = tag.parentElement;
+      
+      if (parent.childNodes.length === 1) {
+        
+        if (parent.nodeName === 'A') {
+          parent = parent.parentElement;
+          if (parent.childNodes.length != 1) continue;
+        }
+        if (parent.nodeName === 'P') parent.style.textAlign = 'center';
+      }
+    }
+  }
+  var tagNames = ['img', 'embed', 'object'];
+  for (var i = 0; i < tagNames.length; i++) {
+    center_el(tagNames[i]);
+  }
+})();
+</script>
+
+      
+    </footer>
+  </body>
+</html>
+
