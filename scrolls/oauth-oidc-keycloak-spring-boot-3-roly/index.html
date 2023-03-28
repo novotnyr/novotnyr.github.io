@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+    <link rel="manifest" href="/images/site.webmanifest">
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <title>OAuth 2.0, OpenID Connect, Keycloak a Spring Boot 3 -- Roly používateľov a autorizácia | robonovotny</title>
+
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.3/styles/dracula.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.3/highlight.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.3/languages/go.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    <link rel="stylesheet" href="https://novotnyr.github.io/asciidoctor.css">
+    <header>
+
+  <nav>
+    <ul>
+      
+      
+      <li class="pull-left ">
+        <a href="https://novotnyr.github.io/">~/robonovotny</a>
+      </li>
+      
+
+      
+
+    </ul>
+  </nav>
+</header>
+
+  </head>
+
+  <body>
+    <br/>
+
+<div class="article-meta">
+<h1><span class="title">OAuth 2.0, OpenID Connect, Keycloak a Spring Boot 3 &ndash; Roly používateľov a autorizácia</span></h1>
+
+<h2 class="date">2023/03/26</h2>
+<p class="terms">
+  
+  
+  
+  
+  
+</p>
+</div>
+
+
+<div class="content-wrapper">
+  <main>
+    <div class="paragraph">
+<p><strong>Roly</strong> (<em>roles</em>) umožňujú v Keycloaku pridávať používateľom ľubovoľné „nálepky“, z ktorých je potom možné odvodzovať rozličné druhy oprávnení (<em>permissions</em>).
+Rolou je <code>admin</code>, <code>guest</code>, <code>teller</code>, čokoľvek.</p>
+</div>
+<div class="paragraph">
+<p>Ukážeme si:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Ako možno pridať rolu používateľovi v rámci <em>clienta</em>.</p>
+</li>
+<li>
+<p>Ako v REST API (Spring Boot) vytiahnuť rolu.</p>
+</li>
+<li>
+<p>Ako v REST API určiť autorizáciu: teda prístup k niektorému volaniu len pre vybrané roly.</p>
+</li>
+</ol>
+</div>
+<div class="sect1">
+<h2 id="_pridávanie_roly">Pridávanie roly</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_vytváranie_roly_pre_klienta_megabank">Vytváranie roly pre klienta <code>megabank</code></h3>
+<div class="paragraph">
+<p>Prihlásme sa do <a href="http://localhost:8080/admin/master/console/">administrátorskej konzoly</a> Keycloaku ako administrátorky (obvykle konto <code>admin</code>).</p>
+</div>
+<div class="paragraph">
+<p>Rolu môžeme vytvoriť buď pre celý <em>realm</em> alebo len pre konkrétneho klienta.
+Skúsme vytvoriť pre našu <em>megabanku</em> z predošlých dielov rolu <code>withdrawer</code> pre človeka, ktorý si dokáže vybrať peniaze.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="client-role-add.png" alt="client role add"/>
+</div>
+</div>
+<div class="paragraph">
+<p>V bloku <strong>Clients</strong> na karte <strong>Roles</strong> vytvorme novú rolu tlačidlom <strong>Create Role</strong>.</p>
+</div>
+<div class="paragraph">
+<p>Použime názov roly (<code>withdrawer</code>) a prípadný popis.</p>
+</div>
+<div class="paragraph">
+<p>Rola je tým vytvorená a môžeme ju pridať používateľovi!</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_pridanie_roly_používateľovi">Pridanie roly používateľovi</h3>
+<div class="paragraph">
+<p>V bočnej lište v sekcii <code>Users</code> kliknime na používateľa <code>harald</code> a pridajme mu rolu.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="assign-role.png" alt="assign role"/>
+</div>
+</div>
+<div class="paragraph">
+<p>Na karte <strong>Role Mapping</strong> priraďme rolu tlačidlom <strong>Assign Role</strong>.</p>
+</div>
+<div class="paragraph">
+<p>Uvidíme zoznam rolí — ale keďže ide o zoznam rolí celého <em>realmu</em> a nie klienta, musíme rolu vyhľadať cez textové pole — ale predtým ešte prepnime vo filtri možnosť na <em>Filter by clients</em>.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="assign-role-to-user.png" alt="assign role to user"/>
+</div>
+</div>
+<div class="paragraph">
+<p>Vyberme rolu a priraďme ju používateľovi — a to je všetko!</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_rola_a_tokeny_jwt">Rola a tokeny JWT</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Rola klienta sa automaticky objaví v tokene JWT.
+Skúsme spustiť klasické prihlásenie cez flow ROPC:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">curl -X POST --location &#34;http://localhost:8080/realms/master/protocol/openid-connect/token&#34; \
+-H &#34;Content-Type: application/x-www-form-urlencoded&#34; \
+-d &#34;grant_type=password&#34; \
+-d &#34;client_id=megabank&#34; \
+-d &#34;scope=openid&#34; \
+-d &#34;username=harald&#34; \
+-d &#34;password=Yei8eejaiJeith&#34;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Po dekódovaní tokenu JWT uvidíme <em>claim</em> <code>resource_access</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">{
+	&#34;megabank&#34;: {
+		&#34;roles&#34;: [&#34;withdrawer&#34;]
+	},
+	&#34;account&#34;: {
+		&#34;roles&#34;: [&#34;manage-account&#34;, &#34;manage-account-links&#34;, &#34;view-profile&#34;]
+	}
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_roly_a_spring_security">Roly a Spring Security</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Roly z tokenu JWT môžeme namapovať na roly v Spring Security.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+Do aplikačného kontextu v Springu dodáme objekt typu <code>Converter&lt;Jwt, Collection&lt;GrantedAuthority&gt;&gt;</code>, ktorý zmení token <code>JWT</code> na zoznam autorít (rolí) v Spring Security.
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="listingblock">
+<div class="title">KeycloakClaimRoleAuthoritiesConverter.java</div>
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">public class KeycloakClaimRoleAuthoritiesConverter implements Converter&lt;Jwt, Collection&lt;GrantedAuthority&gt;&gt; {
+    public static final String RESOURCE_ACCESS_CLAIM = &#34;resource_access&#34;;
+
+    public static final String ROLES_CLAIM = &#34;roles&#34;;
+
+    private final String oAuth2ClientId;
+
+    public KeycloakClaimRoleAuthoritiesConverter(String oAuth2ClientId) {
+        this.oAuth2ClientId = oAuth2ClientId;
+    }
+
+    @SuppressWarnings(&#34;unchecked&#34;)
+    @Override
+    public Collection&lt;GrantedAuthority&gt; convert(Jwt jwt) {
+        Map&lt;String, Object&gt; resourceAccessValues = jwt.getClaimAsMap(RESOURCE_ACCESS_CLAIM);
+        if (resourceAccessValues == null) {
+            return Collections.emptyList();
+        }
+        Object clientRolesObject = resourceAccessValues.get(this.oAuth2ClientId);
+        if (!(clientRolesObject instanceof Map&lt;?, ?&gt;)) {
+            return Collections.emptyList();
+        }
+        Map&lt;String, ?&gt; clientRoles = (Map&lt;String, ?&gt;) clientRolesObject;
+        Object rolesObject = clientRoles.get(ROLES_CLAIM);
+        if (!(rolesObject instanceof Collection&lt;?&gt;)) {
+            return Collections.emptyList();
+        }
+        Collection&lt;Object&gt; rolesList = (Collection&lt;Object&gt;) rolesObject;
+        List&lt;GrantedAuthority&gt; authorities = new ArrayList&lt;&gt;();
+        for (Object roleObject : rolesList) {
+            SimpleGrantedAuthority authority = new SimpleGrantedAuthority(roleObject.toString());
+            authorities.add(authority);
+        }
+        return authorities;
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Dodajme potom <em>bean</em> v podobne metódy:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@Bean
+JwtAuthenticationConverter jwtAuthenticationConverter() {
+    var authenticationConverter = new JwtAuthenticationConverter();
+    authenticationConverter.setJwtGrantedAuthoritiesConverter(new KeycloakClaimRoleAuthoritiesConverter(&#34;megabank&#34;));  <i class="conum" data-value="1"></i><b>(1)</b>
+    authenticationConverter.setPrincipalClaimName(&#34;preferred_username&#34;); /<i class="conum" data-value="2"></i><b>(2)</b>
+    return authenticationConverter;
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tbody><tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Autority v Spring Security budeme prevádzať pomocou nášho konvertéra.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Ako bonus vieme nastaviť meno <em>principala</em> z claimu, ktorý obsahuje meno používateľa namiesto jeho identifikátora UUID.</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_roly_a_autorizácie">Roly a autorizácie</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Toto všetko môžeme skombinovať aj do overovania rolí pri volaní metód.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Zapneme podporu pre autorizáciu volania metód.</p>
+</li>
+<li>
+<p>Dodáme nad metódu overovanie role.</p>
+</li>
+</ul>
+</div>
+<div class="sect2">
+<h3 id="_podpora_pre_autorizáciu_volania_metód">Podpora pre autorizáciu volania metód</h3>
+<div class="paragraph">
+<p>Od Spring Security 6.0 používame anotáciu <code>@EnableMethodSecurity</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@EnableMethodSecurity
+public class BankApplication {
+    //...
+}</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+V starších Spring Security bola štandardom anotácia <code>@EnableGlobalMethodSecurity</code>.
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="paragraph">
+<p>Teraz dodáme anotáciu <code>@PreAuthorize</code>, ktorá sa spustí iba ak má používateľ rolu <code>withdrawer</code> nastavenú v Keycloaku.
+V opačnom prípade získame stavový kód <em>503 (Forbidden)</em>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@PostMapping(&#34;/accounts/{accountId}/withdrawals&#34;)
+@PreAuthorize(&#34;hasAuthority(&#39;withdrawer&#39;)&#34;)
+public BigDecimal withdrawTenCrowns(@PathVariable String accountId,
+                                    @CurrentSecurityContext(expression = &#34;authentication.name&#34;) String userName) {
+    logger.info(&#34;Withdrawing 10 SKK: account: {}, user {}&#34;, accountId, userName);
+    return BigDecimal.ZERO;
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_roly_v_rámci_realmu">Roly v rámci <em>realmu</em></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Používateľovi môžeme priradiť aj globálnu rolu platnú pre celý <em>realm</em>, teda pre všetkých klientov.</p>
+</div>
+<div class="paragraph">
+<p>Rolu potom pridáme v administrátorskej konzole v sekcii <em>Realm Roles</em>.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="realm-roles.png" alt="realm roles"/>
+</div>
+</div>
+<div class="paragraph">
+<p>Tlačidlom <em>Create Role</em> vytvoríme rolu takým istým spôsobom ako v prípade roly pre konkrétneho klienta.
+Vytvorme teda rolu <code>creditor</code></p>
+</div>
+<div class="paragraph">
+<p>Rolu priradíme používateľovi podobne ako v prípade roly klienta, ba dokonca ju automaticky uvidíme v zozname rolí a nemusíme ju vyhľadávať.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="assign-realm-role.png" alt="assign realm role"/>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_roly_realmu_a_jwt">Roly <em>realmu</em> a JWT</h3>
+<div class="paragraph">
+<p>Roly realmu sa objavia v tokene JWT na inom mieste, budú schované v claime <code>realm_access</code> v podobe zanoreného JSONu.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">{
+  &#34;roles&#34;: [
+    &#34;default-roles-master&#34;,
+    &#34;offline_access&#34;,
+    &#34;creditor&#34;,
+    &#34;uma_authorization&#34;
+  ]
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Vidíme rolu <code>creditor</code> a niekoľko implicitných systémových rolí.</p>
+</div>
+<div class="paragraph">
+<p>Aj tieto roly vieme namapovať na roly / autority v Spring Security.
+Konverter bude vyzerať trochu inak:</p>
+</div>
+<div class="listingblock">
+<div class="title">KeycloakAuthoritiesConverter.java</div>
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">package com.github.novotnyr.bank;
+
+import org.springframework.core.convert.converter.Converter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.oauth2.jwt.Jwt;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * Extracts Keycloak roles to authorities.
+ * &lt;p&gt;
+ *     Source:
+ *     &lt;pre&gt;
+ *         &#34;realm_access : { &#34;roles&#34;:[&#34;visitor&#34;] }
+ *     &lt;/pre&gt;
+ * &lt;/p&gt;
+ */
+public class KeycloakAuthoritiesConverter implements Converter&lt;Jwt, Collection&lt;GrantedAuthority&gt;&gt; {
+
+    public static final String REALM_ACCESS_CLAIM = &#34;realm_access&#34;;
+
+    public static final String ROLES_CLAIM = &#34;roles&#34;;
+
+    @SuppressWarnings(&#34;unchecked&#34;)
+    @Override
+    public Collection&lt;GrantedAuthority&gt; convert(Jwt source) {
+        if (!source.hasClaim(REALM_ACCESS_CLAIM)) {
+            return Collections.emptyList();
+        }
+        Object claim = source.getClaim(REALM_ACCESS_CLAIM);
+        if (!(claim instanceof Map)) {
+            return Collections.emptyList();
+        }
+        Map&lt;String, Object&gt; realmAccess = (Map&lt;String, Object&gt;) claim;
+        if (!realmAccess.containsKey(ROLES_CLAIM)) {
+            return Collections.emptyList();
+        }
+        Object rolesClaimObject = realmAccess.get(ROLES_CLAIM);
+        if (!(rolesClaimObject instanceof Collection&lt;?&gt; roleObjects)) {
+            return Collections.emptyList();
+        }
+        List&lt;GrantedAuthority&gt; authorities = new ArrayList&lt;&gt;();
+        for (Object roleObject : roleObjects) {
+            String role = roleObject.toString();
+            SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(role);
+            authorities.add(simpleGrantedAuthority);
+        }
+        return authorities;
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Samozrejme, musíme sa rozhodnúť, ktorý konverter použijeme ako <em>bean</em> — či ten, ktorý vyťahuje roly z realmu alebo klienta.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+Na domácu úlohu si môžeme implementovať kompozitný konverter, ktorý zlúči roly <em>realmu</em> s rolami _klienta.
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="paragraph">
+<p>Všetko ostatné sa zachová: automaticky máme k dispozícii roly dostupné v <code>@Secured</code> či <code>@PreAuthorize</code>.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_repozitár">Repozitár</h2>
+<div class="sectionbody">
+<div class="admonitionblock tip">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+Zdrojové kódy pre celý repozitár sú na GitHube, v repozitári <a href="https://github.com/novotnyr/bank-restapi-oidc"><code>novotnyr/bank-restapi-oidc</code></a>.
+</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+</div>
+
+    <a href="/"> >> Home</a>
+  </main>
+</div>
+    <footer>
+      
+<script>
+(function() {
+  function center_el(tagName) {
+    var tags = document.getElementsByTagName(tagName), i, tag;
+    for (i = 0; i < tags.length; i++) {
+      tag = tags[i];
+      var parent = tag.parentElement;
+      
+      if (parent.childNodes.length === 1) {
+        
+        if (parent.nodeName === 'A') {
+          parent = parent.parentElement;
+          if (parent.childNodes.length != 1) continue;
+        }
+        if (parent.nodeName === 'P') parent.style.textAlign = 'center';
+      }
+    }
+  }
+  var tagNames = ['img', 'embed', 'object'];
+  for (var i = 0; i < tagNames.length; i++) {
+    center_el(tagNames[i]);
+  }
+})();
+</script>
+
+      
+    </footer>
+  </body>
+</html>
+
