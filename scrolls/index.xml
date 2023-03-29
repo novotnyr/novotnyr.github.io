@@ -27,7 +27,15 @@ Pridávanie roly Vytváranie roly pre klienta megabank Prihlásme sa do administ
       <pubDate>Sun, 26 Mar 2023 00:00:00 +0000</pubDate>
       
       <guid>https://novotnyr.github.io/scrolls/oauth-oidc-keycloak-spring-boot-4-authorization-code/</guid>
-      <description></description>
+      <description>Ukážme si, ako je možné dodať do aplikácie v Spring Boote prihlásenie pomocou Keycloaku.
+Vytvorenie Spring Boot aplikácie Vytvorme úplne novú aplikáciu v Spring Boote.
+Do závislostí dodajme
+štartér pre Spring Boot OAuth 2 Client (org.springframework.boot:spring-boot-starter-oauth2-client)
+štartér pre web
+Flow prihlásenia Prihlásenie bude používať OAuth 2.0 / OpenID Connect, a flow Authorization Code.
+Flow je dokumentovaný na viacerých miestach.
+Stručne:
+Používateľ vymení login a heslo za autorizačný kód (authorization code).</description>
     </item>
     
     <item>

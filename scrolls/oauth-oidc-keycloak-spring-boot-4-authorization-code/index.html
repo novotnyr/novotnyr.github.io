@@ -58,7 +58,434 @@
 
 <div class="content-wrapper">
   <main>
-    
+    <div class="paragraph">
+<p>Ukážme si, ako je možné dodať do aplikácie v Spring Boote prihlásenie pomocou Keycloaku.</p>
+</div>
+<div class="sect1">
+<h2 id="_vytvorenie_spring_boot_aplikácie">Vytvorenie Spring Boot aplikácie</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Vytvorme úplne novú aplikáciu v Spring Boote.</p>
+</div>
+<div class="paragraph">
+<p>Do závislostí dodajme</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>štartér pre <em>Spring Boot OAuth 2 Client</em> (<code>org.springframework.boot:spring-boot-starter-oauth2-client</code>)</p>
+</li>
+<li>
+<p>štartér pre web</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_flow_prihlásenia">Flow prihlásenia</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Prihlásenie bude používať OAuth 2.0 / OpenID Connect, a flow <em>Authorization Code</em>.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Flow je dokumentovaný na viacerých miestach.</p>
+</div>
+<div class="paragraph">
+<p>Stručne:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Používateľ vymení login a heslo za autorizačný kód (<em>authorization code</em>).</p>
+</li>
+<li>
+<p>Autorizačný kód prepošle do springovej backendovej aplikácie.</p>
+</li>
+<li>
+<p>Springová aplikácia vymení autorizačný kód a citlivé tajomstvo klienta (<em>client secret</em>) za identifikačný token (<em>ID Token</em>), ktorý považuje za potvrdenie o prihlásení.</p>
+</li>
+<li>
+<p>Informácia o prihlásení na strane servera je udržiavaná prostredníctvom HTTP Cookie.</p>
+</li>
+</ol>
+</div>
+</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_vytvorenie_nového_klienta">Vytvorenie nového klienta</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Vytvorme v administrátorskej konzole Keycloaku nového klienta.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="add-new-client.png" alt="add new client"/>
+</div>
+</div>
+<div class="paragraph">
+<p>Na rozdiel od ROPC klienta:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>pomenujme ho <code>gigabank</code>,</p>
+</li>
+<li>
+<p>zapnime <strong>Client Authentication</strong>: keďže aplikácia bude mať uzavretý zdrojový kód a bude bezpečne na serveri, bude vedieť bezpečne manipulovať s citlivým údajom <em>Client Secret</em>.</p>
+</li>
+<li>
+<p>vypnime všetky flowy, okrem <em>Standard Flow</em>, čo je iné označenie pre <em>Authorization Code Flow</em> v terminológii OAuth/OIDC.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>V ďalšom kroku vyplňme Root URL našej springovskej aplikácie, ktorým bude <a href="http://localhost:8888" class="bare">http://localhost:8888</a>. (Na tejto adrese pobeží naša aplikácia.)</p>
+</div>
+<div class="paragraph">
+<p>Na karte <strong>Credentials</strong> získajme citlivý <em>Client Secret</em>, ktoré sa bude používať na získanie tokenu JWT.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="client-secret.png" alt="client secret"/>
+</div>
+</div>
+<div class="paragraph">
+<p>Uistime sa, že v <strong>Client Authenticator</strong> budeme používať <em>Client ID and Secret</em>, teda identifikátor klienta spolu s citlivým „tajomstvom“.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<em>Client Secret</em> použijeme v konfigurácii aplikácie v Spring Boot.
+</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_konfigurácia_spring_boot">Konfigurácia Spring Boot</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Dokonfigurujme Spring Boot, najmä <code>application.properties</code>.</p>
+</div>
+<div class="listingblock">
+<div class="title">application.properties</div>
+<div class="content">
+<pre class="highlight"><code>server.port=8888 <i class="conum" data-value="1"></i><b>(1)</b>
+spring.security.oauth2.client.registration.keycloak.client-id=gigabank <i class="conum" data-value="2"></i><b>(2)</b>
+spring.security.oauth2.client.registration.keycloak.client-secret=EzPgZowPLvDzY7fTylCD893W4Nh1UC4t <i class="conum" data-value="3"></i><b>(3)</b>
+spring.security.oauth2.client.registration.keycloak.scope=openid <i class="conum" data-value="4"></i><b>(4)</b>
+spring.security.oauth2.client.provider.keycloak.issuer-uri=http://localhost:8080/realms/master <i class="conum" data-value="5"></i><b>(5)</b></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tbody><tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Port, na ktorom beží aplikácia.
+Pozor, tento port je už zaregistrovaný v Keycloaku ako <em>Root URL</em>.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Názov klienta z Keycloaku.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Citlivý <em>Secret Key</em> z Keycloaku.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>Budeme používať protokol OpenID, teda tokeny JWT a autentifikáciu podľa tohto protokolu.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="5"></i><b>5</b></td>
+<td>Adresa URL ku Keycloaku, z ktorej sa stiahnu kľúče a ďalšie metadáta.</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_spustenie_aplikácie">Spustenie aplikácie</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Spusťme Spring Boot a navštívme <a href="http://localhost:8888" class="bare">http://localhost:8888</a> z prehliadača.</p>
+</div>
+<div class="paragraph">
+<p>Prehliadač nás rovno presmeruje na prihlasovaciu stránku Keycloaku, kde môžeme vyplniť login a heslo (<code>harald</code> a príslušné heslo z predošlých dielov).
+Po úspešnom prihlásení sa ocitneme na …​ chybovej stránke, keďže v našej aplikácii na adrese <code>/</code> nemáme nič.</p>
+</div>
+<div class="paragraph">
+<p>Aspoň sme sa prihlásili!</p>
+</div>
+<div class="paragraph">
+<p>Ak by sme zapli logovanie, uvideli by sme hlášky zodpovedajúce flowu:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>FilterChainProxy                     : Securing GET /
+DefaultRedirectStrategy              : Redirecting to http://localhost:8888/oauth2/authorization/keycloak
+FilterChainProxy                     : Securing GET /oauth2/authorization/keycloak
+DefaultRedirectStrategy              : Redirecting to http://localhost:8080/realms/master/protocol/openid-connect/auth?response_type=code&amp;client_id=gigabank&amp;scope=openid&amp;state=jaXNvQifZfNBTv7rhGsIDsP4yBPvY0UvkIo6bP_6i68%3D&amp;redirect_uri=http://localhost:8888/login/oauth2/code/keycloak&amp;nonce=RbvtU5VSAb_7XEClpkOzcvZCx_haCynK-ArhvVOmLJM
+FilterChainProxy                     : Securing GET /login/oauth2/code/keycloak?state=jaXNvQifZfNBTv7rhGsIDsP4yBPvY0UvkIo6bP_6i68%3D&amp;session_state=656a1414-f9af-4312-9d49-e7746c757974&amp;code=8fafbb12-36b6-4d6e-b68e-489a04e2b5bd.656a1414-f9af-4312-9d49-e7746c757974.daaff20b-b0e8-4b9b-bbcf-f73e0a5f636a
+HttpURLConnection                    : sun.net.www.MessageHeader@72ce10a18 pairs: {POST /realms/master/protocol/openid-connect/token HTTP/1.1: null}{Accept: application/json;charset=UTF-8}{Content-Type: application/x-www-form-urlencoded;charset=UTF-8}{Authorization: Basic Z2lnYWJhbms6RXpQZ1pvd1BMdkR6WTdmVHlsQ0Q4OTNXNE5oMVVDNHQ=}{User-Agent: Java/17.0.5}{Host: localhost:8080}{Connection: keep-alive}{Content-Length: 223}
+RestTemplate                         : HTTP GET http://localhost:8080/realms/master/protocol/openid-connect/userinfo
+HttpURLConnection                    : sun.net.www.MessageHeader@78367bd16 pairs: {GET /realms/master/protocol/openid-connect/userinfo HTTP/1.1: null}{Accept: application/json}{Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJVMEwtSUI3aGtOQUc4T3hPNVF2SEg4OHMxa24yRDN1d3dLN3haUlVfNkRFIn0.eyJleHAiOjE2ODAwMTI2MDcsImlhdCI6MTY4MDAxMjU0NywiYXV0aF90aW1lIjoxNjgwMDEyNTQ3LCJqdGkiOiI2MjA0YTZiNy1iMDY4LTQxZmQtOTc1MS1jZTMwZjZiMDE4ODQiLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODAvcmVhbG1zL21hc3RlciIsImF1ZCI6WyJtZWdhYmFuayIsImFjY291bnQiXSwic3ViIjoiMGYwZDdmZTktOTI5My00ZWY0LWE0NzYtOWUyYWJhNzMwMjhjIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoiZ2lnYWJhbmsiLCJub25jZSI6IlJidnRVNVZTQWJfN1hFQ2xwa096Y3ZaQ3hfaGFDeW5LLUFyaHZWT21MSk0iLCJzZXNzaW9uX3N0YXRlIjoiNjU2YTE0MTQtZjlhZi00MzEyLTlkNDktZTc3NDZjNzU3OTc0IiwiYWNyIjoiMSIsImFsbG93ZWQtb3JpZ2lucyI6WyJodHRwOi8vbG9jYWxob3N0Ojg4ODgiXSwicmVhbG1fYWNjZXNzIjp7InJvbGVzIjpbImRlZmF1bHQtcm9sZXMtbWFzdGVyIiwib2ZmbGluZV9hY2Nlc3MiLCJjcmVkaXRvciIsInVtYV9hdXRob3JpemF0aW9uIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsibWVnYWJhbmsiOnsicm9sZXMiOlsid2l0aGRyYXdlciJdfSwiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fSwic2NvcGUiOiJvcGVuaWQgZW1haWwgcHJvZmlsZSIsInNpZCI6IjY1NmExNDE0LWY5YWYtNDMxMi05ZDQ5LWU3NzQ2Yzc1Nzk3NCIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwicHJlZmVycmVkX3VzZXJuYW1lIjoiaGFyYWxkIiwiZ2l2ZW5fbmFtZSI6IiIsImZhbWlseV9uYW1lIjoiIn0.ZDeIAMNl7GdQXaZXL-FYLrlhcvMjEbfBmEy4j-_Dv6NwD8E9YPevVModjaaYH5Bu0sUh3bb2FH5U2_NiHH2ab-fboCCRq15AweD7z80fJ2UqK6dU9pi1_Sc_23Wy18Rj4NcxMvbn6VndN3cWKcFdkFWI6HbfkxPfMVYB7Wq_pSHTtSS_SZ6EINYAWiYT5p9v08yNd2fQ37nWbUrcCnGe8bWruXfEINox3sRIiFEAgOi0Jf_REZUVGCs5VawdLYF5eP8iEl7iB0ifN2i5F4gBCsxeDDiuD0BWzjtYXJraVGe9GXYyZ5lxsPptHMHnZ3me6W96KEzFNfOzprNemTmixA}{User-Agent: Java/17.0.5}{Host: localhost:8080}{Connection: keep-alive}
+HttpURLConnection                    : sun.net.www.MessageHeader@3d34eab39 pairs: {null: HTTP/1.1 200 OK}{Referrer-Policy: no-referrer}{X-Frame-Options: SAMEORIGIN}{Strict-Transport-Security: max-age=31536000; includeSubDomains}{Cache-Control: no-cache}{X-Content-Type-Options: nosniff}{X-XSS-Protection: 1; mode=block}{Content-Type: application/json}{content-length: 132}
+RestTemplate                         : Response 200 OK
+RestTemplate                         : Reading to [java.util.Map&lt;java.lang.String, java.lang.Object&gt;]
+HttpSessionSecurityContextRepository : Stored SecurityContextImpl [Authentication=OAuth2AuthenticationToken [Principal=Name: [0f0d7fe9-9293-4ef4-a476-9e2aba73028c], Granted Authorities: [[OIDC_USER, SCOPE_email, SCOPE_openid, SCOPE_profile]], User Attributes: [{at_hash=ZyqDs4SxHW5wDGuAMUpriA, sub=0f0d7fe9-9293-4ef4-a476-9e2aba73028c, email_verified=false, iss=http://localhost:8080/realms/master, typ=ID, preferred_username=harald, given_name=, nonce=RbvtU5VSAb_7XEClpkOzcvZCx_haCynK-ArhvVOmLJM, sid=656a1414-f9af-4312-9d49-e7746c757974, aud=[gigabank], acr=1, azp=gigabank, auth_time=2023-03-28T14:09:07Z, exp=2023-03-28T14:10:07Z, session_state=656a1414-f9af-4312-9d49-e7746c757974, family_name=, iat=2023-03-28T14:09:07Z, jti=6b35b395-a159-435e-aa89-d3c12bbb92d5}], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=02A08225735D5D44D7B70B2B996B6298], Granted Authorities=[OIDC_USER, SCOPE_email, SCOPE_openid, SCOPE_profile]]] to HttpSession [org.apache.catalina.session.StandardSessionFacade@3f7daeac]
+OAuth2LoginAuthenticationFilter      : Set SecurityContextHolder to OAuth2AuthenticationToken [Principal=Name: [0f0d7fe9-9293-4ef4-a476-9e2aba73028c], Granted Authorities: [[OIDC_USER, SCOPE_email, SCOPE_openid, SCOPE_profile]], User Attributes: [{at_hash=ZyqDs4SxHW5wDGuAMUpriA, sub=0f0d7fe9-9293-4ef4-a476-9e2aba73028c, email_verified=false, iss=http://localhost:8080/realms/master, typ=ID, preferred_username=harald, given_name=, nonce=RbvtU5VSAb_7XEClpkOzcvZCx_haCynK-ArhvVOmLJM, sid=656a1414-f9af-4312-9d49-e7746c757974, aud=[gigabank], acr=1, azp=gigabank, auth_time=2023-03-28T14:09:07Z, exp=2023-03-28T14:10:07Z, session_state=656a1414-f9af-4312-9d49-e7746c757974, family_name=, iat=2023-03-28T14:09:07Z, jti=6b35b395-a159-435e-aa89-d3c12bbb92d5}], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=02A08225735D5D44D7B70B2B996B6298], Granted Authorities=[OIDC_USER, SCOPE_email, SCOPE_openid, SCOPE_profile]]
+DefaultRedirectStrategy              : Redirecting to http://localhost:8888/?continue
+HttpSessionSecurityContextRepository : Retrieved SecurityContextImpl [Authentication=OAuth2AuthenticationToken [Principal=Name: [0f0d7fe9-9293-4ef4-a476-9e2aba73028c], Granted Authorities: [[OIDC_USER, SCOPE_email, SCOPE_openid, SCOPE_profile]], User Attributes: [{at_hash=ZyqDs4SxHW5wDGuAMUpriA, sub=0f0d7fe9-9293-4ef4-a476-9e2aba73028c, email_verified=false, iss=http://localhost:8080/realms/master, typ=ID, preferred_username=harald, given_name=, nonce=RbvtU5VSAb_7XEClpkOzcvZCx_haCynK-ArhvVOmLJM, sid=656a1414-f9af-4312-9d49-e7746c757974, aud=[gigabank], acr=1, azp=gigabank, auth_time=2023-03-28T14:09:07Z, exp=2023-03-28T14:10:07Z, session_state=656a1414-f9af-4312-9d49-e7746c757974, family_name=, iat=2023-03-28T14:09:07Z, jti=6b35b395-a159-435e-aa89-d3c12bbb92d5}], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=02A08225735D5D44D7B70B2B996B6298], Granted Authorities=[OIDC_USER, SCOPE_email, SCOPE_openid, SCOPE_profile]]]
+FilterChainProxy                     : Secured GET /?continue</pre>
+</div>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Logovanie potrebuje:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>logging.level.sun.net.www.protocol.http.HttpURLConnection=DEBUG
+logging.level.org.springframework.web.client.RestTemplate=DEBUG
+logging.level.org.springframework.security=DEBUG</pre>
+</div>
+</div>
+</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_použitie_tokenu_v_spring_boote">Použitie tokenu v Spring Boote</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Token získaný knižnicou <em>Spring OAuth 2 Client</em> je iný než v prípade knižnice <em>Spring OAuth 2 Resource Server</em>.
+Namiesto objektu typu <code>Jwt</code> získame <em>principal</em> typu <code>org.springframework.security.oauth2.core.oidc.user.OidcUser</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@GetMapping(&#34;/accounts/{accountId}/balance&#34;)
+public BigDecimal getBalance(@PathVariable String accountId,
+                             @AuthenticationPrincipal OidcUser oicUser) { <i class="conum" data-value="1"></i><b>(1)</b>
+    String userId = oicUser.getPreferredUsername(); <i class="conum" data-value="2"></i><b>(2)</b>
+    logger.info(&#34;Retrieving bank account balance: account: {}, user {}&#34;, accountId, userId);
+    return BigDecimal.TEN;
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tbody><tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Objekt <em>principal</em> je typu <code>OidcUser</code>.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Namiesto <em>claimov</em>, ktoré sú uložené v mape, vieme používať priamo konkrétne metódy pre prístup k najdôležitejším údajom.</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_roly_v_spring_boote">Roly v Spring Boote</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Vo flowe ROPC sa roly publikovali do claimu <code>realm_access</code> (pre roly z realmu), resp. <code>resource_access</code> (pre roly z klienta).</p>
+</div>
+<div class="paragraph">
+<p>Ak chceme publikovať roly do tokenu vo flowe <em>Authorization Code</em>, musíme ich prispôsobiť, keďže Spring Boot vyťahuje roly z identifikačného tokenu (<em>ID Token</em>), resp. z výsledkov volania endpointu <em>user_info</em> v Keycloaku.
+Ani jeden z týchto spôsobov roly neobsahuje.</p>
+</div>
+<div class="paragraph">
+<p>Prispôsobme si to:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>pridajme nové mapovanie medzi rolami a claimom v tokene</p>
+</li>
+<li>
+<p>upravme Spring Boot, aby dokázal roly vytiahnuť.</p>
+</li>
+</ul>
+</div>
+<div class="sect2">
+<h3 id="_mapovanie_medzi_rolami_a_claimom_tokenu">Mapovanie medzi rolami a claimom tokenu</h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>V ľavom menu vyberme <em>Clients</em>, a zvoľme klienta <code>gigabank</code>.</p>
+</li>
+<li>
+<p>Na karte <em>Client Scopes</em> vyberme klientsky scope <code>gigabank-dedicated</code>, ktorý obsahuje mapovania do claimov pre klienta <code>gigabank</code>.</p>
+</li>
+<li>
+<p>Dodajme nový preddefinovaný mapovač cez <strong>Add predefined mapper</strong>.</p>
+</li>
+<li>
+<p>Zobrazí sa zoznam, kde sa musíme cez stránkovanie prepracovať k mapovaču pre roly realmu: <strong>realm roles</strong>.</p>
+</li>
+<li>
+<p>Pridajme ho do zoznamu, ale následne ho cez hypertextový odkaz prispôsobíme.</p>
+<div class="imageblock">
+<div class="content">
+<img src="mapper-details.png" alt="mapper details"/>
+</div>
+</div>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Nastavme názov claimu v tokene: <strong>Token Claim Name</strong>. Ak uvedieme <code>realm_roles</code>, v tokene sa objaví <em>claim</em> s týmto menom.</p>
+</li>
+<li>
+<p>Tento claim pridajme do oboch tokenov (<em>identifikačný token</em> aj <em>prístupový token</em>) i do endpointu <em>userinfo</em>.</p>
+</li>
+</ol>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Mapovanie vieme overiť cez Keycloak.
+. V ľavom menu vyberme <em>Clients</em>, a zvoľme klienta <code>gigabank</code>.
+. Na karte <em>Client Scopes</em> vyberme kartu <em>Evaluate</em>.
+. Vyberme používateľa <code>harald</code>.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="evaluate-scope.png" alt="evaluate scope"/>
+</div>
+</div>
+<div class="paragraph">
+<p>Následne si vpravo vieme prezrieť generované tokeny: <strong>Generated Access Token</strong> (pre prístupový token), <strong>Generated ID token</strong> a <strong>Generated User Info</strong>.
+V každom bloku uvidíme claim <code>realm_roles</code> s rolami realmu.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_mapovanie_v_springu">Mapovanie v Springu</h3>
+<div class="paragraph">
+<p>Modul <em>Spring OAuth 2 Client</em> potrebujeme prispôsobiť, aby vedel pristúpiť k rolám z tokenu.</p>
+</div>
+<div class="paragraph">
+<p>Štandardne sa totiž sprístupňujú len roly mapované na <em>scopes</em> z OAuth.</p>
+</div>
+<div class="paragraph">
+<p>Využijeme existujúcu triedu <a href="https://docs.spring.io/spring-security/site/docs/current/api/org/springframework/security/oauth2/client/oidc/userinfo/OidcUserService.html"><code>OidcUserService</code></a>, z ktorej vytiahneme existujúce roly, následne dotiahneme roly z claimu <code>realm_roles</code> a všetko dáme dohromady.</p>
+</div>
+<div class="listingblock">
+<div class="title">RealmRoleUserService.java</div>
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">public class RealmRoleUserService implements OAuth2UserService&lt;OidcUserRequest, OidcUser&gt; {
+    public static final String REALM_ROLES_CLAIM = &#34;realm_roles&#34;;
+
+    private String realmRolesClaim = REALM_ROLES_CLAIM;
+
+    private final OidcUserService delegateUserService = new OidcUserService(); <i class="conum" data-value="1"></i><b>(1)</b>
+
+    @Override
+    public OidcUser loadUser(OidcUserRequest userRequest) throws OAuth2AuthenticationException {
+        OidcUser oidcUser = this.delegateUserService.loadUser(userRequest); <i class="conum" data-value="2"></i><b>(2)</b>
+
+        Set&lt;GrantedAuthority&gt; allAuthorities = new HashSet&lt;&gt;(oidcUser.getAuthorities());  <i class="conum" data-value="3"></i><b>(3)</b>
+        oidcUser.getClaimAsStringList(this.realmRolesClaim) <i class="conum" data-value="4"></i><b>(4)</b>
+                .stream()
+                .map(SimpleGrantedAuthority::new)
+                .forEach(allAuthorities::add);
+        return new DefaultOidcUser(allAuthorities, oidcUser.getIdToken(), oidcUser.getUserInfo());
+    }
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tbody><tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Pripravíme si delegáta, ktorý vyrieši štandardné spracovanie tokenu.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Vytiahneme používateľa z OIDC tokenu.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Prevezmeme roly zo scopes.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>Vytiahneme roly z claimu <code>realm_roles</code>.</td>
+</tr>
+</tbody></table>
+</div>
+<div class="paragraph">
+<p>Triedu potom dodáme do aplikačného kontextu ako <em>bean</em>, aby ju dohľadal Spring Security.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@Bean
+OAuth2UserService&lt;OidcUserRequest, OidcUser&gt; oAuth2UserService() {
+    return new RealmRoleUserService();
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Následne môžeme používať autorizačné kontroly, napríklad:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@PreAuthorize(&#34;hasAuthority(&#39;creditor&#39;)&#34;)</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_celý_flow">Celý flow</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Celý flow s volaním endpointov medzi používateľským prehliadačom, Keycloakom a aplikáciou v Spring Boote je na nasledovnom obrázku.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="keycloak-spring-authorization-code-flow.jpg" alt="keycloak spring authorization code flow"/>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_repozitár_na_githube">Repozitár na GitHube</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Zdrojové kódy sú k dispozícii na GitHube, v repozitári <a href="https://github.com/novotnyr/bank-restapi-oidc-authorization-code"><code>novotnyr/bank-restapi-oidc-authorization-code</code></a>.</p>
+</div>
+</div>
+</div>
+
     <a href="/"> >> Home</a>
   </main>
 </div>
