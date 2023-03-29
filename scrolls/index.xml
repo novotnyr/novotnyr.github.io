@@ -6,7 +6,20 @@
     <description>Recent content in Scrolls on robonovotny</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 26 Mar 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://novotnyr.github.io/scrolls/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 29 Mar 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://novotnyr.github.io/scrolls/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>OAuth 2.0, OpenID Connect, Keycloak a Spring Boot -- Flow pre Authorization Code</title>
+      <link>https://novotnyr.github.io/scrolls/oauth-oidc-keycloak-spring-boot-4-authorization-code/</link>
+      <pubDate>Wed, 29 Mar 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://novotnyr.github.io/scrolls/oauth-oidc-keycloak-spring-boot-4-authorization-code/</guid>
+      <description>Ukážme si, ako je možné dodať do aplikácie v Spring Boote prihlásenie pomocou Keycloaku.
+Aplikácia bude ponúkať jednak REST API a jednak statickú stránku v HTML. Ktokoľvek, kto bude chcieť používať aplikáciu, sa bude môcť prihlásiť svojou identitou, ktorá je udržiavaná v Keycloaku, cez prihlasovací formulár zabezpečený Keycloakom.
+Vytvorenie Spring Boot aplikácie Vytvorme úplne novú aplikáciu v Spring Boote.
+Do závislostí dodajme
+štartér pre Spring Boot OAuth 2 Client (org.</description>
+    </item>
+    
     <item>
       <title>OAuth 2.0, OpenID Connect, Keycloak a Spring Boot 3 -- Roly používateľov a autorizácia</title>
       <link>https://novotnyr.github.io/scrolls/oauth-oidc-keycloak-spring-boot-3-roly/</link>
@@ -19,23 +32,6 @@ Ako možno pridať rolu používateľovi v rámci clienta.
 Ako v REST API (Spring Boot) vytiahnuť rolu.
 Ako v REST API určiť autorizáciu: teda prístup k niektorému volaniu len pre vybrané roly.
 Pridávanie roly Vytváranie roly pre klienta megabank Prihlásme sa do administrátorskej konzoly Keycloaku ako administrátorky (obvykle konto admin).</description>
-    </item>
-    
-    <item>
-      <title>OAuth 2.0, OpenID Connect, Keycloak a Spring Boot 4 -- Flow pre Authorization Code</title>
-      <link>https://novotnyr.github.io/scrolls/oauth-oidc-keycloak-spring-boot-4-authorization-code/</link>
-      <pubDate>Sun, 26 Mar 2023 00:00:00 +0000</pubDate>
-      
-      <guid>https://novotnyr.github.io/scrolls/oauth-oidc-keycloak-spring-boot-4-authorization-code/</guid>
-      <description>Ukážme si, ako je možné dodať do aplikácie v Spring Boote prihlásenie pomocou Keycloaku.
-Vytvorenie Spring Boot aplikácie Vytvorme úplne novú aplikáciu v Spring Boote.
-Do závislostí dodajme
-štartér pre Spring Boot OAuth 2 Client (org.springframework.boot:spring-boot-starter-oauth2-client)
-štartér pre web
-Flow prihlásenia Prihlásenie bude používať OAuth 2.0 / OpenID Connect, a flow Authorization Code.
-Flow je dokumentovaný na viacerých miestach.
-Stručne:
-Používateľ vymení login a heslo za autorizačný kód (authorization code).</description>
     </item>
     
     <item>

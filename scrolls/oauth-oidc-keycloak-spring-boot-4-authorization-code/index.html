@@ -10,7 +10,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
-    <title>OAuth 2.0, OpenID Connect, Keycloak a Spring Boot 4 -- Flow pre Authorization Code | robonovotny</title>
+    <title>OAuth 2.0, OpenID Connect, Keycloak a Spring Boot -- Flow pre Authorization Code | robonovotny</title>
 
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.3/styles/dracula.min.css">
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.3/highlight.min.js"></script>
@@ -43,9 +43,9 @@
     <br/>
 
 <div class="article-meta">
-<h1><span class="title">OAuth 2.0, OpenID Connect, Keycloak a Spring Boot 4 &ndash; Flow pre Authorization Code</span></h1>
+<h1><span class="title">OAuth 2.0, OpenID Connect, Keycloak a Spring Boot &ndash; Flow pre Authorization Code</span></h1>
 
-<h2 class="date">2023/03/26</h2>
+<h2 class="date">2023/03/29</h2>
 <p class="terms">
   
   
@@ -60,6 +60,10 @@
   <main>
     <div class="paragraph">
 <p>Ukážme si, ako je možné dodať do aplikácie v Spring Boote prihlásenie pomocou Keycloaku.</p>
+</div>
+<div class="paragraph">
+<p>Aplikácia bude ponúkať jednak REST API a jednak statickú stránku v HTML.
+Ktokoľvek, kto bude chcieť používať aplikáciu, sa bude môcť prihlásiť svojou identitou, ktorá je udržiavaná v Keycloaku, cez prihlasovací formulár zabezpečený Keycloakom.</p>
 </div>
 <div class="sect1">
 <h2 id="_vytvorenie_spring_boot_aplikácie">Vytvorenie Spring Boot aplikácie</h2>
@@ -76,7 +80,7 @@
 <p>štartér pre <em>Spring Boot OAuth 2 Client</em> (<code>org.springframework.boot:spring-boot-starter-oauth2-client</code>)</p>
 </li>
 <li>
-<p>štartér pre web</p>
+<p>štartér pre web (<code>org.springframework.boot:spring-boot-starter-web</code>)</p>
 </li>
 </ul>
 </div>
@@ -364,7 +368,7 @@ Ani jeden z týchto spôsobov roly neobsahuje.</p>
 <p>Nastavme názov claimu v tokene: <strong>Token Claim Name</strong>. Ak uvedieme <code>realm_roles</code>, v tokene sa objaví <em>claim</em> s týmto menom.</p>
 </li>
 <li>
-<p>Tento claim pridajme do oboch tokenov (<em>identifikačný token</em> aj <em>prístupový token</em>) i do endpointu <em>userinfo</em>.</p>
+<p>Tento claim pridajme do identifikačného tokenu (<em>ID token</em>), keďže z neho bude Spring Boot načítavať údaje o autorizovanom používateľovi.</p>
 </li>
 </ol>
 </div>
@@ -383,8 +387,24 @@ Ani jeden z týchto spôsobov roly neobsahuje.</p>
 </div>
 </div>
 <div class="paragraph">
-<p>Následne si vpravo vieme prezrieť generované tokeny: <strong>Generated Access Token</strong> (pre prístupový token), <strong>Generated ID token</strong> a <strong>Generated User Info</strong>.
+<p>Následne si vpravo vieme prezrieť generované tokeny: ale nás zaujíma len <strong>Generated ID token</strong>.
 V každom bloku uvidíme claim <code>realm_roles</code> s rolami realmu.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">{
+  &#34;exp&#34;: 1680097008,
+  &#34;iat&#34;: 1680096948,
+  &#34;preferred_username&#34;: &#34;harald&#34;,
+  ...
+  &#34;realm_roles&#34;: [
+    &#34;default-roles-master&#34;,
+    &#34;offline_access&#34;,
+    &#34;creditor&#34;,
+    &#34;uma_authorization&#34;
+  ]
+}</code></pre>
+</div>
 </div>
 </div>
 <div class="sect2">
