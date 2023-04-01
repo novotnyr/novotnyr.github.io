@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+    <link rel="manifest" href="/images/site.webmanifest">
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <title>Keycloak a Admin REST API -- Vytvárame používateľov | robonovotny</title>
+
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.3/styles/dracula.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.3/highlight.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.3/languages/go.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    <link rel="stylesheet" href="https://novotnyr.github.io/asciidoctor.css">
+    <header>
+
+  <nav>
+    <ul>
+      
+      
+      <li class="pull-left ">
+        <a href="https://novotnyr.github.io/">~/robonovotny</a>
+      </li>
+      
+
+      
+
+    </ul>
+  </nav>
+</header>
+
+  </head>
+
+  <body>
+    <br/>
+
+<div class="article-meta">
+<h1><span class="title">Keycloak a Admin REST API &ndash; Vytvárame používateľov</span></h1>
+
+<h2 class="date">2023/04/01</h2>
+<p class="terms">
+  
+  
+  
+  
+  
+</p>
+</div>
+
+
+<div class="content-wrapper">
+  <main>
+    <div class="exampleblock">
+<div class="content">
+<div class="paragraph">
+<p>Ako pristupovať k administrátorskému REST API v Keycloaku? Ako sa voči nemu autorizovať, a ako je možné napríklad vytvárať používateľov inak než cez administrátorskú konzolu?</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_administrátorské_rest_api_keycloaku">Administrátorské REST API Keycloaku</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Keycloak má k dispozícii administrátorské REST API, ktorým možno pristupovať k jednotlivým entitám pomocou programátorských nástrojov.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>REST API je dostupné na URL s predponou <a href="http://localhost:8080/admin/" class="bare">http://localhost:8080/admin/</a></p>
+</div>
+<div class="paragraph">
+<p>Dokumentácia entít a volaní <a href="https://www.keycloak.org/docs-api/15.0/rest-api/index.html">je k dispozícii na portáli Keycloaku</a></p>
+</div>
+</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_autorizácia">Autorizácia</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>REST API je implementované ako štandardný <em>OAuth Resource Server</em> ochránený bežnými flowmi OAuthu.</p>
+</div>
+<div class="paragraph">
+<p>Ak sme si istí, že k REST API pristupujeme z uzavretého klienta, ktorému vieme zdôveriť login a heslo, môžeme použiť na autorizáciu flow ROPC.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-httprequest" data-lang="httprequest">###
+POST http://localhost:8080/realms/master/protocol/openid-connect/token
+Content-Type: application/x-www-form-urlencoded
+
+client_id=admin-cli&amp;username=admin&amp;password=admin&amp;grant_type=password <i class="conum" data-value="1"></i><b>(1)</b>
+
+&gt; {%
+client.global.set(&#34;jwt&#34;, response.body.access_token) <i class="conum" data-value="2"></i><b>(2)</b>
+%}
+###</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tbody><tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Identifikátor klienta OAuth je <code>admin-cli</code>.
+<div class="paragraph">
+<p>Posielame login (<code>username</code>) a heslo (<code>password</code>).</p>
+</div>
+<div class="paragraph">
+<p>Keďže používame flow ROPC, typ grantu je <code>password</code>.</p>
+</div></td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Výsledok z odpovede typu JSON vyberá atribút <code>access_token</code>, ktorý obsahuje token JWT s autorizačnými údajmi.</td>
+</tr>
+</tbody></table>
+</div>
+<div class="paragraph">
+<p>Konfigurácia pre Postman-a je analogická.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="postman.png" alt="postman"/>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_volanie_api">Volanie API</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Volanie API využíva klasické priloženie tokenu JWT do hlavičky <code>Authorization</code> ku hodnote <code>Bearer</code>.</p>
+</div>
+<div class="sect2">
+<h3 id="_vytváranie_používateľa">Vytváranie používateľa</h3>
+<div class="paragraph">
+<p>Používateľa vytvoríme podľa dokumentácie: stačí vhodne pripraviť JSON do požiadavky a odhaliť adresu URL.</p>
+</div>
+<div class="paragraph">
+<p>Ukážka pre klienta v HTTP IntelliJ IDEA:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-httprequest" data-lang="httprequest">### Create user
+POST http://localhost:8080/admin/realms/master/users/
+Authorization: Bearer {{jwt}}
+Content-Type: application/json
+
+{ <i class="conum" data-value="1"></i><b>(1)</b>
+  &#34;username&#34;: &#34;janedoe&#34;,
+  &#34;enabled&#34;: true,
+  &#34;credentials&#34;: [
+     { <i class="conum" data-value="2"></i><b>(2)</b>
+       &#34;type&#34;: &#34;password&#34;,
+       &#34;value&#34;: &#34;eolooRup7pahngief5Fe&#34;,
+       &#34;temporary&#34;: false
+     }
+   ]
+}
+
+&gt; {%
+    client.global.set(&#34;newUserUrl&#34;, response.headers.valueOf(&#34;Location&#34;)) <i class="conum" data-value="3"></i><b>(3)</b>
+%}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tbody><tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Vytvárame používateľské konto, čo je entita typu <a href="https://www.keycloak.org/docs-api/15.0/rest-api/index.html#_userrepresentation">UserRepresentation</a>.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Pripravíme mu aj heslo <code>eolooRup7pahngief5Fe</code>, ktoré <em>nie je</em> dočasné, aby sa ním používateľ mohol okamžite prihlásiť.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Odpoveďou bude stavový kód 201 (<em>Created</em>) a hlavička <code>Location</code> s identifikátorom nového používateľského konta v podobe URL, napríklad <a href="http://localhost:8080/admin/realms/master/users/212aa1c7-667e-4c2b-a99b-4c050ea94644" class="bare">http://localhost:8080/admin/realms/master/users/212aa1c7-667e-4c2b-a99b-4c050ea94644</a></td>
+</tr>
+</tbody></table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_informácie_o_používateľovi">Informácie o používateľovi</h3>
+<div class="paragraph">
+<p>Informácie o používateľovi vieme získať z príslušnej URL, ak máme identifikátor používateľa vo formáte UUID.</p>
+</div>
+<div class="paragraph">
+<p>Napríklad:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>http://localhost:8080/admin/realms/master/users/212aa1c7-667e-4c2b-a99b-4c050ea94644</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Odpoveďou je JSON:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">{
+   &#34;id&#34;:&#34;212aa1c7-667e-4c2b-a99b-4c050ea94644&#34;,
+   &#34;createdTimestamp&#34;:1680364471327,
+   &#34;username&#34;:&#34;janedoe&#34;,
+   &#34;enabled&#34;:true,
+   &#34;totp&#34;:false,
+   &#34;emailVerified&#34;:false,
+   &#34;disableableCredentialTypes&#34;:[],
+   &#34;requiredActions&#34;:[],
+   &#34;notBefore&#34;:0,
+   &#34;access&#34;:{
+      &#34;manageGroupMembership&#34;:true,
+      &#34;view&#34;:true,
+      &#34;mapRoles&#34;:true,
+      &#34;impersonate&#34;:true,
+      &#34;manage&#34;:true
+   }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_rest_api">REST API</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Celý skript pre HTTP klienta pre IntelliJ IDEA.</p>
+</div>
+<div class="listingblock">
+<div class="title">keycloak-admin.http</div>
+<div class="content">
+<pre class="highlight"><code>Unresolved directive in &lt;stdin&gt; - include::keycloak-admin.http[]</code></pre>
+</div>
+</div>
+</div>
+</div>
+
+    <a href="/"> >> Home</a>
+  </main>
+</div>
+    <footer>
+      
+<script>
+(function() {
+  function center_el(tagName) {
+    var tags = document.getElementsByTagName(tagName), i, tag;
+    for (i = 0; i < tags.length; i++) {
+      tag = tags[i];
+      var parent = tag.parentElement;
+      
+      if (parent.childNodes.length === 1) {
+        
+        if (parent.nodeName === 'A') {
+          parent = parent.parentElement;
+          if (parent.childNodes.length != 1) continue;
+        }
+        if (parent.nodeName === 'P') parent.style.textAlign = 'center';
+      }
+    }
+  }
+  var tagNames = ['img', 'embed', 'object'];
+  for (var i = 0; i < tagNames.length; i++) {
+    center_el(tagNames[i]);
+  }
+})();
+</script>
+
+      
+    </footer>
+  </body>
+</html>
+
