@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+    <link rel="manifest" href="/images/site.webmanifest">
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <title>OAuth 2.0, OpenID Connect, Keycloak a Spring Boot -- Flow pre Authorization Code | robonovotny</title>
+
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.3/styles/dracula.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.3/highlight.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.3/languages/go.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    <link rel="stylesheet" href="https://novotnyr.github.io/asciidoctor.css">
+    <header>
+
+  <nav>
+    <ul>
+      
+      
+      <li class="pull-left ">
+        <a href="https://novotnyr.github.io/">~/robonovotny</a>
+      </li>
+      
+
+      
+
+    </ul>
+  </nav>
+</header>
+
+  </head>
+
+  <body>
+    <br/>
+
+<div class="article-meta">
+<h1><span class="title">OAuth 2.0, OpenID Connect, Keycloak a Spring Boot &ndash; Flow pre Authorization Code</span></h1>
+
+<h2 class="date">2023/03/30</h2>
+<p class="terms">
+  
+  
+  
+  
+  
+</p>
+</div>
+
+
+<div class="content-wrapper">
+  <main>
+    <div class="exampleblock">
+<div class="content">
+<div class="paragraph">
+<p>Ukážeme si, ako zabezpečiť springovú backendovú webovú aplikáciu pomocou OAuth 2.0 a OpenID Connect, kde klientom je aplikácia s otvoreným kódom — frontend typu SPA alebo mobilná appka.</p>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>Ak používame OAuth 2.0/OIDC 1.0 a:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>klient obsahuje otvorený zdrojový kód — napríklad JavaScript vo webovom prehliadači</p>
+</li>
+<li>
+<p>alebo klient obsahuje hackovateľný zdrojový kód — napr. dekompilovateľná mobilná appka</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>... je čas na flow <strong>Authorization Code with Proof Key for Code Exchange</strong> (PKCE).</p>
+</div>
+<div class="paragraph">
+<p>Plán práce:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>v Keycloaku zaregistrujeme ukážkového klienta <code>exabank</code> s podporou pre flow PKCE</p>
+</li>
+<li>
+<p>pripravíme Spring Boot aplikáciu s modulom <strong>OAuth 2 Client</strong>, ktorá bude spracovávať tokeny JWT s prihlásením.</p>
+</li>
+<li>
+<p>nezávisle od toho novú Spring Boot aplikáciu s modulom <strong>OAuth 2 Resource Server</strong>, ktorá bude reprezentovať iný spôsob poskytovania dát.</p>
+</li>
+</ul>
+</div>
+<div class="sect1">
+<h2 id="_registrácia_klienta_v_keycloaku">Registrácia klienta v Keycloaku</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>V Keycloaku vytvorme nového klienta (<em>OAuth Client</em>).</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="create-client.png" alt="create client"/>
+</div>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Client Authentication</dt>
+<dd>
+<p>ponechajme vypnutú, keďže chceme demonštrovať verejného klienta (<em>Public Client</em> v zmysle OAuth).</p>
+</dd>
+<dt class="hdlist1">Authentication flow</dt>
+<dd>
+<p>ponechajme len <em>Standard Flow</em>, čo je keycloaková terminológia pre <em>Authorization Code</em>.</p>
+<div class="paragraph">
+<p>V ďalšom kroku sprievodcu doplníme:</p>
+</div>
+</dd>
+<dt class="hdlist1">Root URL</dt>
+<dd>
+<p><a href="http://localhost:9999" class="bare">http://localhost:9999</a>, keďže tam pobeží naša aplikácia.</p>
+</dd>
+</dl>
+</div>
+<div class="paragraph">
+<p>Klient je teda pripravený.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+Na rozdiel od štandardného flowu <em>Authorization Code</em>, kde zdrojový kód je na serveri a klient si s autentifikačným serverom (Keycloak) vymieňa tajomstvo <em>Client Secret</em>, tuto sa na to nemôžeme spoliehať.
+<em>Client Secret</em> by tak mohol niekto ukradnúť zo zdrojového kódu, čím by sa stal vektorom útoku.
+</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_tvorba_klienta_v_spring_boote">Tvorba klienta v Spring Boote</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Pripravme klienta v Spring Boote.</p>
+</div>
+<div class="paragraph">
+<p>Cez <em>Spring Initializer</em> vytvorme klienta so štartérmi pre</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Spring OAuth 2 Client</p>
+</li>
+<li>
+<p>Spring Web</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Do <code>src/main/resources/static</code> dodajme nejakú statickú stránku <code>index.html</code>, na ktorej sa ocitneme po úspešnom prihlásení.</p>
+</div>
+<div class="paragraph">
+<p>Do <code>application.properties</code> dodajme konfiguráciu:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>server.port=9999 <i class="conum" data-value="1"></i><b>(1)</b>
+
+spring.security.oauth2.client.registration.keycloak.client-id=exabank
+spring.security.oauth2.client.registration.keycloak.scope=openid
+spring.security.oauth2.client.registration.keycloak.client-authentication-method=none <i class="conum" data-value="2"></i><b>(2)</b>
+spring.security.oauth2.client.provider.keycloak.issuer-uri=http://localhost:8080/realms/master
+
+logging.level.sun.net.www.protocol.http.HttpURLConnection=DEBUG <i class="conum" data-value="3"></i><b>(3)</b>
+logging.level.org.springframework.web.client.RestTemplate=DEBUG
+logging.level.org.springframework.security=DEBUG</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tbody><tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Webovú aplikáciu budeme spúšťať na porte 9999.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Nakonfigurujme klienta. Ak nepoužívame „žiadnu“ autentifikačnú metódu klienta, ide o verejného klienta, pri ktorom Spring Security zapne podporu PKCE.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Nastavíme logovanie.</td>
+</tr>
+</tbody></table>
+</div>
+<div class="paragraph">
+<p>Aplikáciu spusťme! Navštívme jej URL: <a href="http://localhost:9999/index.html" class="bare">http://localhost:9999/index.html</a>.</p>
+</div>
+<div class="paragraph">
+<p>Backend nás rovno presmeruje na prihlasovací formulár Keycloaku.
+Po vyplnení údajov sa ocitneme na úvodnej stránke <code>index.html</code>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_interakcia_medzi_klientom_a_keycloakom">Interakcia medzi klientom a Keycloakom</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Ak si pozrieme logy Spring Bootu, uvidíme zapnutie PKCE.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>Redirecting to http://localhost:8080/realms/master/protocol/openid-connect/auth?response_type=code&amp;client_id=exabank&amp;scope=openid&amp;state=u0W-_351UDxvhi9H-TXKQnBotcgYAJwCqDZIgEKwX-c%3D&amp;redirect_uri=http://localhost:9999/login/oauth2/code/keycloak&amp;nonce=S0DilI5RQ5G4egozrYaGgxNqc6F1qvCJEKPxB1Ac98Y&amp;code_challenge=YRyN1lEilHOZM5vyxnjbf6y3lKauBEFqa19jmfCtiqg&amp;code_challenge_method=S256</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Ak si to rozoberieme, tak Spring presmeroval prehliadač na autorizačný endpoint v Keycloaku:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>http://localhost:8080/realms/master/protocol/openid-connect/auth?
+    response_type=code
+    &amp;client_id=exabank
+    &amp;scope=openid
+    &amp;state=u0W-_351UDxvhi9H-TXKQnBotcgYAJwCqDZIgEKwX-c%3D
+    &amp;redirect_uri=http://localhost:9999/login/oauth2/code/keycloak
+    &amp;nonce=S0DilI5RQ5G4egozrYaGgxNqc6F1qvCJEKPxB1Ac98Y
+    &amp;code_challenge=YRyN1lEilHOZM5vyxnjbf6y3lKauBEFqa19jmfCtiqg <i class="conum" data-value="1"></i><b>(1)</b>
+    &amp;code_challenge_method=S256 <i class="conum" data-value="2"></i><b>(2)</b></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tbody><tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Prehliadač posiela na autentifikačný <em>endpoint</em> tzv. <em>code challenge</em>, čo je zahešovaná verzia špeciálneho kódu vygenerovaného klientom.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Na hešovanie sa používa algoritmus SHA256.</td>
+</tr>
+</tbody></table>
+</div>
+<div class="paragraph">
+<p>Keycloak (na porte 8080) autorizuje používateľa a zapamäta si heš k príslušne session.</p>
+</div>
+<div class="paragraph">
+<p>V súlade s flowom <em>Authentication Code</em> si používateľ vymenil svoj login a heslo za autorizačný kód (<em>Authorization Code</em>).</p>
+</div>
+<div class="paragraph">
+<p>Prakticky v nasledovnej výmene zoberie klient (Spring Boot):</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>autorizačný kód (<em>authorization code</em>)</p>
+</li>
+<li>
+<p>verifikátor kódu (<em>code verifier</em>)</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>a získa na výmenou sadu tokenov: zväčša identifikačný token (<em>ID token</em>) a autentifikačný token (<em>Authentication Token</em>).</p>
+</div>
+<div class="paragraph">
+<p>V logu uvidíme:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>2023-03-29T21:03:38.182+02:00 DEBUG 79846 --- [nio-9999-exec-3] o.s.web.client.RestTemplate              : Writing [{grant_type=[authorization_code], code=[1e65897eb], redirect_uri=[http://localhost:9999/login/oauth2/code/keycloak], client_id=[exabank], code_verifier=[iUOwf3wF59Agnn8OX7sh5hWEVJJFRrAyggBrVbA0JEFwPU9YsClsmarNc-fpFmxxK_54YEQwvvdLguTVAj8-QlV3UdYou940dIltjegAXsVXZZiEiawOXlNcxfuZ2bHC]}] as &#34;application/x-www-form-urlencoded;charset=UTF-8&#34;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Ak si to rozoberieme, tak do endpointu <code><a href="http://localhost:8080/realms/master/protocol/openid-connect/token" class="bare">http://localhost:8080/realms/master/protocol/openid-connect/token</a></code> pošleme cez HTTP POST nasledovné dvojice parametrov:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>grant_type=authorization_code <i class="conum" data-value="1"></i><b>(1)</b>
+&amp;code=1e65897eb <i class="conum" data-value="2"></i><b>(2)</b>
+&amp;code_verifier=iUOwf3wF59Agnn8OX7sh5hWEVJJFRrAyggBrVbA0JEFwPU9YsClsmarNc-fpFmxxK_54YEQwvvdLguTVAj8-QlV3UdYou940dIltjegAXsVXZZiEiawOXlNcxfuZ2bHC <i class="conum" data-value="3"></i><b>(3)</b>
+&amp;redirect_uri=[http://localhost:9999/login/oauth2/code/keycloak
+&amp;client_id=exabank</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tbody><tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Posielame autorizačný kód.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Obsah príslušného autorizačného kódu.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Verifikátor kódu.
+Keycloak vezme tento reťazec, vytvorí heš, následne naň použije <em>Base64</em> a overí, či sa zhoduje s hodnotou <em>code challenge</em> z predošlej výmeny.</td>
+</tr>
+</tbody></table>
+</div>
+<div class="admonitionblock important">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+PKCE a dvojica <em>code verifier</em> (verifikátor kódu) s <em>code challenge</em> (výzva) je prakticky náhrada klientskych tajomstiev.
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="paragraph">
+<p>Zjednodušený flow je na nasledovnom obrázku:</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="authorization-code-pkce-flow.png" alt="authorization code pkce flow"/></span>]</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_resource_server_a_flow_s_pkce"><em>Resource Server</em> a flow s PKCE</h2>
+<div class="sectionbody">
+<div class="exampleblock">
+<div class="content">
+<div class="paragraph">
+<p>Vytvorme serverovú aplikáciu, ktorá bude figurovať v role <em>OAuth 2.0 Resource Server</em>, čiže bude obsahovať napr. REST API vyžadujúce prihláseného používateľa.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_inicializácia_aplikácie">Inicializácia aplikácie</h3>
+<div class="paragraph">
+<p>S pomocou <em>Spring Initializr</em> vytvorme aplikáciu, ktorá využíva nasledovné štartéry:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><em>Web</em> (<code>org.springframework.boot:spring-boot-starter-web</code>)</p>
+</li>
+<li>
+<p><em>OAuth Resource Server</em> (<code>spring-boot-starter-oauth2-resource-server</code>)</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_rest_api_kontrolér">REST API kontrolér</h3>
+<div class="paragraph">
+<p>V aplikácii vytvorme kontrolér pre REST API:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@SpringBootApplication
+@RestController <i class="conum" data-value="1"></i><b>(1)</b>
+public class BankApplication {
+    public static final Logger logger = LoggerFactory.getLogger(BankApplication.class);
+
+    @GetMapping(&#34;/accounts/{accountId}/balance&#34;)
+    public BigDecimal getBalance(@PathVariable String accountId, @AuthenticationPrincipal Jwt token) { <i class="conum" data-value="2"></i><b>(2)</b>
+        logger.info(&#34;Getting balance on {} (token: {})&#34;, accountId, token);
+        return BigDecimal.TEN;
+    }
+
+    public static void main(String[] args) {
+        SpringApplication.run(BankApplication.class, args);
+    }
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tbody><tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Aplikácia je zároveň kontrolérom pre REST.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Metóda získa stav účtu a získa prístup k tokenu JWT po prihlásení.</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_integrácia_s_keycloakom">Integrácia s Keycloakom</h3>
+<div class="paragraph">
+<p>Integrácia s Keycloakom je podobná ako v prvom dieli — stačí pridať adresu URL ku Keycloaku.</p>
+</div>
+<div class="listingblock">
+<div class="title">application.properties</div>
+<div class="content">
+<pre class="highlight"><code>spring.security.oauth2.resourceserver.jwt.issuer-uri=http://localhost:8080/realms/master</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Po spustení dokáže tento <em>resource server</em> prijímať tokeny JWT a poskytovať autorizované údaje.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_odskúšanie_flowu">Odskúšanie flowu</h3>
+<div class="paragraph">
+<p>Na odskúšanie flowu už potrebujeme nejaký lepší nástroj — napríklad Postman.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="postman.png" alt="postman"/>
+</div>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Uvedieme adresu <a href="http://localhost:9999/accounts/1/balance" class="bare">http://localhost:9999/accounts/1/balance</a>, ku ktorej chceme pristúpiť na resource serveri.</p>
+</li>
+<li>
+<p>Na karte <em>Authorization</em> prispôsobíme autorizačné nastavenia.</p>
+</li>
+<li>
+<p>Vyberieme typ <strong>OAuth 2.0</strong>.</p>
+</li>
+<li>
+<p><em>Grant Type</em> reprezentuje používaný flow — vyberáme <em>Authorization Code (With PKCE)</em>.</p>
+</li>
+<li>
+<p>Adresa <em>Callback URL</em> reprezentuje adresu, kam sa prehliadač presmeruje po úspešnom prihlásení.
+Táto adresa musí zodpovedať nastaveniam v Keycloaku (<em>Root URL</em> a <em>Valid Redirect URIs</em> v nastaveniach klienta v administrátorskej konzole.)</p>
+</li>
+<li>
+<p><em>Auth URL</em>: obsahuje cestu k autorizačnému endpointu v Keycloaku.</p>
+<div class="paragraph">
+<p>Je to adresa <a href="http://localhost:8080/realms/master/protocol/openid-connect/auth" class="bare">http://localhost:8080/realms/master/protocol/openid-connect/auth</a></p>
+</div>
+</li>
+<li>
+<p><em>Access Token URL</em> je cesta k endpointu, ktorý vymení autorizačný kód a verifikátor kódu za tokeny JWT.</p>
+<div class="paragraph">
+<p>Ide o adresu <a href="http://localhost:8080/realms/master/protocol/openid-connect/auth" class="bare">http://localhost:8080/realms/master/protocol/openid-connect/auth</a></p>
+</div>
+</li>
+<li>
+<p>Ďalej nastavme <em>Client ID</em>: teda identifikátor klienta v autorizačnom serveri.</p>
+</li>
+<li>
+<p><em>Client Secret</em> ponechávame prázdne, keďže v tomto flowe sa nepoužíva.</p>
+</li>
+<li>
+<p><em>Code Challenge Method</em> je algoritmus, ktorým sa vytvára heš z verifikátora kódu, čo povedie ku reťazcu <em>code challenge</em>.</p>
+</li>
+<li>
+<p><em>Code Verifier</em> ponecháme prázdny, keďže si ho Postman ako klient vytvorí náhodne sám.</p>
+</li>
+<li>
+<p><em>Scope</em> je <code>openid</code>, aby sme sa riadili špecifikáciou OpenID Connect 1.0.</p>
+</li>
+<li>
+<p><em>State</em> nebudeme používať.</p>
+</li>
+<li>
+<p><em>Client Authentication</em> ponecháme bez zmeny.
+Keďže v tomto flowe sa nepoužíva, je to irelevantné.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Cez tlačidlo <strong>Get Access Token</strong> začne celý flow.</p>
+</div>
+<div class="paragraph">
+<p>Najprv sa zobrazí prihlasovací formulár Keycloaku, kde vyplňme login a heslo.
+Po úspešnom prihlásení získame token, ktorý môžeme použiť (<strong>Use Token</strong>) a následne už volať REST API štandardným spôsobom.</p>
+</div>
+</div>
+</div>
+</div>
+
+    <a href="/"> >> Home</a>
+  </main>
+</div>
+    <footer>
+      
+<script>
+(function() {
+  function center_el(tagName) {
+    var tags = document.getElementsByTagName(tagName), i, tag;
+    for (i = 0; i < tags.length; i++) {
+      tag = tags[i];
+      var parent = tag.parentElement;
+      
+      if (parent.childNodes.length === 1) {
+        
+        if (parent.nodeName === 'A') {
+          parent = parent.parentElement;
+          if (parent.childNodes.length != 1) continue;
+        }
+        if (parent.nodeName === 'P') parent.style.textAlign = 'center';
+      }
+    }
+  }
+  var tagNames = ['img', 'embed', 'object'];
+  for (var i = 0; i < tagNames.length; i++) {
+    center_el(tagNames[i]);
+  }
+})();
+</script>
+
+      
+    </footer>
+  </body>
+</html>
+
