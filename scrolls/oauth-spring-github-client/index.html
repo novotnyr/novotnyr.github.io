@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+    <link rel="manifest" href="/images/site.webmanifest">
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <title>OAuth klient pre REST API Githubu cez Spring Boot | robonovotny</title>
+
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.3/styles/dracula.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.3/highlight.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.3/languages/go.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    <link rel="stylesheet" href="https://novotnyr.github.io/asciidoctor.css">
+    <header>
+
+  <nav>
+    <ul>
+      
+      
+      <li class="pull-left ">
+        <a href="https://novotnyr.github.io/">~/robonovotny</a>
+      </li>
+      
+
+      
+
+    </ul>
+  </nav>
+</header>
+
+  </head>
+
+  <body>
+    <br/>
+
+<div class="article-meta">
+<h1><span class="title">OAuth klient pre REST API Githubu cez Spring Boot</span></h1>
+
+<h2 class="date">2023/04/02</h2>
+<p class="terms">
+  
+  
+  
+  
+  
+</p>
+</div>
+
+
+<div class="content-wrapper">
+  <main>
+    <div class="exampleblock">
+<div class="content">
+<div class="paragraph">
+<p>Ako zobraziť svoje vlastné repozitáre na GitHube cez REST API?</p>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>Ukážeme si:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>ako pristúpiť k REST API Githubu</p>
+</li>
+<li>
+<p>ako sa autentifikovať v aplikácii pomocou OAuth 2.0</p>
+</li>
+<li>
+<p>ako vytvoriť na GitHube aplikáciu, ktorá vie získať používateľove údaje v jeho mene a to kontrolovaným spôsobom</p>
+</li>
+<li>
+<p>ako implementovať klienta k REST API Githubu v Sprint Boote</p>
+</li>
+</ul>
+</div>
+<div class="sect1">
+<h2 id="_rest_api_githubu">REST API GitHubu</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>GitHub ponúka bohaté <a href="https://docs.github.com/en/rest/repos/repos?apiVersion=2022-11-28#list-repositories-for-the-authenticated-user">REST API</a> a to vrátane dokumentácie.</p>
+</div>
+<div class="paragraph">
+<p>To umožňuje budovať aplikácie, ktoré získavajú údaje o dôležitých entitách, napríklad:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>repozitároch</p>
+</li>
+<li>
+<p>organizáciách</p>
+</li>
+<li>
+<p>tímoch</p>
+</li>
+<li>
+<p>používateľoch</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_autentifikácia">Autentifikácia</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Ak chceme vytvoriť aplikáciu, ktorá dokáže získať repozitáre <em>v mene používateľa</em> (<em>On Behalf Of</em>), môžeme použiť OAuth.</p>
+</div>
+<div class="paragraph">
+<p>GitHub ako platforma dokáže vystupovať:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>v role <em>autorizačného servera</em> dostupného na <a href="https://github.com/" class="bare">https://github.com/</a></p>
+</li>
+<li>
+<p>v role <em>resource servera</em> dostupného na <a href="https://api.github.com" class="bare">https://api.github.com</a>.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Naša aplikácia v Spring Boote bude v role <em>klienta OAuth</em>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_registrácia_aplikácie">Registrácia aplikácie</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Klienta zaregistrujme v autorizačnom serveri GitHub.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Navštívme <a href="https://github.com/settings/developers" class="bare">https://github.com/settings/developers</a></p>
+</li>
+<li>
+<p>Zvoľme <em>Register a new application</em>.</p>
+</li>
+<li>
+<p>Vyplňme údaje.</p>
+<div class="imageblock">
+<div class="content">
+<img src="register-oauth-app.png" alt="register oauth app"/>
+</div>
+</div>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Application name: názov aplikácie, ktorý sa objaví v UI pre používateľov</p>
+</li>
+<li>
+<p>Homepage URL: cesta k domovskej stránke. Použijeme port 9999.</p>
+</li>
+<li>
+<p>Authorization Callback URL: cesta, na ktorú presmeruje autorizačný server používateľov prehliadač po úspešnom prihlásení.
+Túto URL zabezpečí modul Springu. Rovnako použijeme port 9999.</p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Na prehľadovom okne získame:</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Client ID: identifikátor klienta v OAuth</p>
+</li>
+<li>
+<p>Client Secret: ten si nechajme jednorazovo vygenerovať.</p>
+</li>
+</ol>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Máme všetko, čo potrebujeme pre integráciu.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_tvorba_aplikácie">Tvorba aplikácie</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Cez <em>Spring Initializr</em> vytvorme aplikáciu reprezentujúcu klienta OAuth 2, ktorá bude v mene prihláseného používateľa získavať informácie z <em>resource servera</em> (GitHub REST API) o repozitároch.</p>
+</div>
+<div class="paragraph">
+<p>Použime:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>OAuth 2 Client: <code>spring-boot-starter-oauth2-client</code></p>
+</li>
+<li>
+<p>Web: <code>spring-boot-starter-web</code> pre naše vlastné REST API</p>
+</li>
+<li>
+<p>WebFlux: <code>spring-webflux</code> v ktorom sa nachádza klientská strana pre prístup k REST API GitHubu.</p>
+</li>
+</ul>
+</div>
+<div class="sect2">
+<h3 id="_konfiguračný_súbor_application_properties">Konfiguračný súbor <code>application.properties</code>.</h3>
+<div class="listingblock">
+<div class="title">application.properties</div>
+<div class="content">
+<pre class="highlight"><code>server.port=9999 <i class="conum" data-value="1"></i><b>(1)</b>
+spring.security.oauth2.client.registration.github.client-id=a7923a1ba2a762dc5c6e <i class="conum" data-value="2"></i><b>(2)</b>
+spring.security.oauth2.client.registration.github.client-secret=eesuughu4Nahfogh4ahcietha <i class="conum" data-value="3"></i><b>(3)</b></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tbody><tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Port, na ktorom pobeží naša aplikácia.
+Port sa objavil v registrácii aplikácie na GitHube!</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Identifikátor klienta OAuth.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Tajomstvo medzi klientom a autorizačným serverom.</td>
+</tr>
+</tbody></table>
+</div>
+<div class="admonitionblock important">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<em>Spring OAuth 2 Client</em> obsahuje automatické nastavenie pre známe autorizačné servery (GitHub, Facebook, Okta, Google).
+</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_volanie_rest_api_githubu">Volanie REST API GitHubu</h3>
+<div class="paragraph">
+<p>Naša aplikácia bude prakticky proxy — zverejní REST API, ktoré zavolá REST API GitHubu.</p>
+</div>
+<div class="paragraph">
+<p><em>Spring OAuth Client</em> poskytuje podporu pre triedu <code>WebClient</code> a jej priamu integráciu s OAuth.
+Takýto <code>WebClient</code> sa postará o správne získanie tokenov, ich aktualizáciu cez obnovovacie tokeny (<em>refresh tokens</em>).</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<code>WebClient</code> je neblokujúca alternatíva k triede <code>RestTemplate</code>, ktorá bude v budúcich verziách Springu preferovanou možnosťou pre prístup k REST API.
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@Bean
+@Qualifier(&#34;github&#34;) <i class="conum" data-value="1"></i><b>(1)</b>
+WebClient webClient(ClientRegistrationRepository clientRegistrations,
+                    OAuth2AuthorizedClientRepository authorizedClients) { <i class="conum" data-value="2"></i><b>(2)</b>
+    var oauth = new ServletOAuth2AuthorizedClientExchangeFilterFunction(clientRegistrations, authorizedClients); <i class="conum" data-value="3"></i><b>(3)</b>
+    oauth.setDefaultClientRegistrationId(CommonOAuth2Provider.GITHUB.name().toLowerCase()); <i class="conum" data-value="4"></i><b>(4)</b>
+    return WebClient.builder()
+                    .apply(oauth.oauth2Configuration()) <i class="conum" data-value="5"></i><b>(5)</b>
+                    .build();
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tbody><tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Deklarujeme bean pre klienta.
+Aby sme ho obmedzili len na volania pre GitHub a neurobili ho globálny, dodáme mu kvalifikátor.
+Toto nie je povinná časť, ak máme v projekte len jedinú singleton inštanciu.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Budeme potrebovať:
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><code>ClientRegistrationRepository</code>: repozitár konfiguračných nastavení klientov.
+U nás máme jediného klienta — pre GitHub — nakonfigurovaného implicitne a zároveň pomocou <code>application.properties</code>.</p>
+</li>
+<li>
+<p><code>OAuth2AuthorizedClientRepository</code>, ktorý udržiava autentifikačné údaje počas prihlasovacieho sedenia medzi prehliadačom a touto aplikáciou.</p>
+</li>
+</ol>
+</div></td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Vyrobíme funkciu, ktorá sa postará o technikálie OAuth2: získavanie tokenov, obnovu tokenov a asociovanie správnych hlavičiek.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>Explicitne povieme, že táto funkcia sa vzťahuje len na klienta pre <code>GitHub</code>.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="5"></i><b>5</b></td>
+<td>Nakonfigurujeme webklienta tak, aby sa riadil možnosťami OAuth.</td>
+</tr>
+</tbody></table>
+</div>
+<div class="paragraph">
+<p>Teraz nastavme naše REST API.</p>
+</div>
+<div class="paragraph">
+<p>Vytvorme klasický kontrolér pre REST API, ktorý bude „proxy“ovať volania na GitHub.</p>
+</div>
+<div class="listingblock">
+<div class="title">ApiController.java</div>
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@RestController
+@RequestMapping(&#34;/api&#34;)
+public class ApiController { <i class="conum" data-value="1"></i><b>(1)</b>
+    private final WebClient webClient;
+
+    public ApiController(@Qualifier(&#34;github&#34;) WebClient webClient) { <i class="conum" data-value="2"></i><b>(2)</b>
+        this.webClient = webClient;
+    }
+
+    @GetMapping(&#34;/repositories&#34;)
+    public List&lt;Repository&gt; getRepositories() {
+        String url = &#34;https://api.github.com/user/repos?type=owner&amp;since=2023-01-01T00:00:00Z&#34;;
+        return webClient.get()
+                .uri(url) <i class="conum" data-value="3"></i><b>(3)</b>
+                .retrieve()
+                .bodyToFlux(Repository.class) <i class="conum" data-value="4"></i><b>(4)</b>
+                .collectList()
+                .block(); <i class="conum" data-value="5"></i><b>(5)</b>
+    }
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tbody><tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Bežný kontrolér pre REST API.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Nechajme si cez autowiring dodať inštanciu webklienta pre GitHub.
+Nezabudnime na kvalifikátor!</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Webklient použije HTTP GET a adresu URL pre REST API GitHubu. Táto adresa získa všetky repozitáre prihláseného používateľa.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>Výsledok príde ako JSON, v podobe zoznamu objektov, ktoré namapujeme na náš vlastný záznam <code>Repository</code> (<code>record</code>)</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="5"></i><b>5</b></td>
+<td>Webklient je neblokujúci a reaktívny, ale my budeme blokovať, aby sme vrátili štandardný zoznam objektov.</td>
+</tr>
+</tbody></table>
+</div>
+<div class="admonitionblock important">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+Práca s <em>webklientom</em> je mimo záberu tohto článku.
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="paragraph">
+<p>Záznam pre repozitár je jednoduchý — slúži len na to, aby sme odfiltrovali nepotrebné vlastnosti z JSONu.</p>
+</div>
+<div class="listingblock">
+<div class="title">Repository.java</div>
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">public record Repository(String name, URL url) {
+    // empty body
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_otestovanie_aplikácie">Otestovanie aplikácie</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Navštívme cez prehliadač naše REST API na <a href="http://localhost:9999/api/repositories" class="bare">http://localhost:9999/api/repositories</a>.</p>
+</div>
+<div class="paragraph">
+<p>Spring Boot zistí, že ako používateľ nie som autentifikovaný, a ako vlastník zdrojov (<em>OAuth Resource Owner</em>) som neudelil súhlas klientskej aplikácii na prístup k údajom.</p>
+</div>
+<div class="paragraph">
+<p>Presmeruje ma na adresu GitHubu, kde tento súhlas udelím:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="github-consent.png" alt="github consent"/>
+</div>
+</div>
+<div class="paragraph">
+<p>Následne sa vykoná séria presmerovaní podľa grantu <em>Authorization Code</em> až sa prehliadač ocitne na pôvodnej adrese, ktorá zobrazí odfiltrovaný JSON.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>[
+  {
+    &#34;name&#34;: &#34;akka-iot-2022&#34;,
+    &#34;url&#34;: &#34;https://api.github.com/repos/novotnyr/akka-iot-2022&#34;
+  },
+  {
+    &#34;name&#34;: &#34;akka-wordfrequencies-2017&#34;,
+    &#34;url&#34;: &#34;https://api.github.com/repos/novotnyr/akka-wordfrequencies-2017&#34;
+  },
+  ...
+]</code></pre>
+</div>
+</div>
+<div class="admonitionblock important">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+Vidíme, ako sa o autorizáciu postaral <em>Spring OAuth Client</em>.
+V tejto chvíli náš klient pristupuje k údajom prihláseného používateľa <em>v jeho mene</em>.
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="admonitionblock important">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+Ak by sme neboli prihlásení na GitHube, uvidíme ešte prihlasovací formulár GitHubu. Ako používateľ totiž musím byť autentifikovaný oproti autorizačnému serveru.
+</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_zdroje">Zdroje</h2>
+<div class="sectionbody">
+<div class="admonitionblock important">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+Zdrojový projekt je na GitHube v repozitári <a href="https://github.com/novotnyr/github-oauth-client-spring-boot"><code>novotnyr/github-oauth-client-spring-boot</code></a>.
+</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+</div>
+
+    <a href="/"> >> Home</a>
+  </main>
+</div>
+    <footer>
+      
+<script>
+(function() {
+  function center_el(tagName) {
+    var tags = document.getElementsByTagName(tagName), i, tag;
+    for (i = 0; i < tags.length; i++) {
+      tag = tags[i];
+      var parent = tag.parentElement;
+      
+      if (parent.childNodes.length === 1) {
+        
+        if (parent.nodeName === 'A') {
+          parent = parent.parentElement;
+          if (parent.childNodes.length != 1) continue;
+        }
+        if (parent.nodeName === 'P') parent.style.textAlign = 'center';
+      }
+    }
+  }
+  var tagNames = ['img', 'embed', 'object'];
+  for (var i = 0; i < tagNames.length; i++) {
+    center_el(tagNames[i]);
+  }
+})();
+</script>
+
+      
+    </footer>
+  </body>
+</html>
+
