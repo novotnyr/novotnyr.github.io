@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+    <link rel="manifest" href="/images/site.webmanifest">
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <title>OAuth 2.0, OpenID Connect, Keycloak a Spring Boot -- Flow pre Client Credentials | robonovotny</title>
+
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.3/styles/dracula.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.3/highlight.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.3/languages/go.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    <link rel="stylesheet" href="https://novotnyr.github.io/asciidoctor.css">
+    <header>
+
+  <nav>
+    <ul>
+      
+      
+      <li class="pull-left ">
+        <a href="https://novotnyr.github.io/">~/robonovotny</a>
+      </li>
+      
+
+      
+
+    </ul>
+  </nav>
+</header>
+
+  </head>
+
+  <body>
+    <br/>
+
+<div class="article-meta">
+<h1><span class="title">OAuth 2.0, OpenID Connect, Keycloak a Spring Boot &ndash; Flow pre Client Credentials</span></h1>
+
+<h2 class="date">2023/04/04</h2>
+<p class="terms">
+  
+  
+  
+  
+  
+</p>
+</div>
+
+
+<div class="content-wrapper">
+  <main>
+    <div class="exampleblock">
+<div class="content">
+<div class="paragraph">
+<p>Ukážeme si ako použiť aplikáciu v Spring Boote ako OAuth klientku, ktorá sa autorizuje ako servisná aplikácia.</p>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>OAuth podporuje aj situácie, kde sa prístup k údajom udeľuje aplikáciám, ktoré nemajú používateľa.
+Obvykle ide o servisné aplikácie, démonov, monitoringy a podobne. V týchto aplikáciách neexistuje používateľ, ktorý by schvaľoval prístup k zdrojom — sama aplikácia sa považuje za <em>majiteľa zdrojov</em>.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+Grant (flow) typu <code>client_credentials</code> slúži pre aplikácie, ktoré figurujú v dvojrole klienta (<em>OAuth Client</em>) i vlastníka zdrojov (<em>OAuth Resource Owner</em>).
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="sect1">
+<h2 id="_flow_client_credentials">Flow <em>Client Credentials</em></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Vo flowe figurujú len tri súčiastky:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><em>Authorization Server</em>: napríklad Keycloak</p>
+</li>
+<li>
+<p><em>Client</em>: je ním „servisná“ aplikácia.</p>
+</li>
+<li>
+<p><em>Resource Server</em>: napríklad REST API</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Klient je vždy dôverný (<em>confidential</em>), čiže má obvykle uzavretý kód, a dokáže starostlivo ochrániť tajomstvo <em>Client Secret</em>, ktoré sa považuje za citlivý údaj medzi ním a autorizačným serverom.
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Klient sa prezentuje svojim identifikátorom (<em>Client ID</em>) a klientskym tajomstvom (<em>Client Secret</em>).</p>
+</li>
+<li>
+<p>Autorizačný server vráti token.</p>
+</li>
+<li>
+<p>Klient sa pomocou tokenu autorizuje voči <em>Resource Serveru</em>.</p>
+</li>
+</ol>
+</div>
+<div class="admonitionblock important">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+Klient kontaktuje priamo endpoint pre <em>token</em>.
+Kroky s endpointom pre autorizáciu sa v tomto flowe ignorujú.
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="sect2">
+<h3 id="_registrácia_klienta">Registrácia klienta</h3>
+<div class="paragraph">
+<p>Klienta zaregistrujeme v Keycloaku (autorizačnom serveri).</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Vytvoríme nového klienta s identifikátorom <code>techbank</code>.</p>
+</li>
+<li>
+<p>Zapneme autentifikáciu klienta (<em>Client Authentication</em>), pretože ide o dôverného klienta (<em>confidential client</em>).</p>
+</li>
+<li>
+<p>Vypneme všetky flowy a ponecháme len <em>Service accounts roles</em>, čo zodpovedá grantu <em>Client Credentials</em> z OAuth 2.0.</p>
+</li>
+</ol>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="keycloak-registration.png" alt="keycloak registration"/>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_skúška_správnosti">Skúška správnosti</h3>
+<div class="paragraph">
+<p>Ak je klient registrovanný, môžeme overiť flow.</p>
+</div>
+<div class="paragraph">
+<p>Ukážka dopytu:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-sh" data-lang="sh">curl -X POST --location &#34;http://localhost:8080/realms/master/protocol/openid-connect/token&#34; \ <i class="conum" data-value="1"></i><b>(1)</b>
+    -H &#34;Content-Type: application/x-www-form-urlencoded&#34; \ <i class="conum" data-value="2"></i><b>(2)</b>
+    -d &#34;grant_type=client_credentials&#34; \ <i class="conum" data-value="3"></i><b>(3)</b>
+    --basic --user techbank:E5wzwZqbFiH1Gwh2qou8O332yzJ5mj5g <i class="conum" data-value="4"></i><b>(4)</b></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tbody><tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Požiadavku typu <code>POST</code> posielame na endpoint Keycloaku, ktorý vydá token.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Telo požiadavky sú formulárové údaje.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Používame <em>flow</em> typu <em>Client Credentials</em>.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>Klient sa autentifikuje dvojicou <em>Client ID</em> a  <em>Client Secret</em>, ktorá zodpovedá zaregistrovaným údajom v autorizačnom serveri Keycloak</td>
+</tr>
+</tbody></table>
+</div>
+<div class="paragraph">
+<p>Odpoveďou bude prístupový token (<em>access token</em>).
+Ak používame OpenID Connect, token bude vo formáte JWT.</p>
+</div>
+<div class="paragraph">
+<p>Token následne vieme priložiť ku volaniu <em>resource servera</em>, teda nejakého REST API.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>http://localhost:9999/accounts/1/balance
+Authorization: Bearer {{jwt}}</code></pre>
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="flow.png" alt="flow"/>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_klient_v_spring_boote">Klient v Spring Boote</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Klienta, ktorý sa bude pripájať k <em>resource serveru</em> postavíme na základe triedy <code>WebClient</code>, teda reaktívnom HTTP klientovi.</p>
+</div>
+<div class="paragraph">
+<p>Použijeme závislosti:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><em>Spring OAuth 2 Client</em>: <code>spring-boot-starter-oauth2-client</code></p>
+</li>
+<li>
+<p><em>Spring WebFlux</em>: <code>spring-boot-starter-webflux</code> s podporou pre reaktívne aplikácie</p>
+</li>
+</ul>
+</div>
+<div class="sect2">
+<h3 id="_konfigurácia_aplikácie">Konfigurácia aplikácie</h3>
+<div class="paragraph">
+<p>Klient pre OAuth potrebuje konfiguráciu — identifikátor klienta, jeho tajomstvo, explicitne uvedený <em>flow</em> a adresu, kde je k dispozícii Keycloak.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>spring.security.oauth2.client.registration.keycloak.client-id=techbank
+spring.security.oauth2.client.registration.keycloak.client-secret=E5wzwZqbFiH1Gwh2qou8O332yzJ5mj5g
+spring.security.oauth2.client.registration.keycloak.authorization-grant-type=client_credentials
+spring.security.oauth2.client.provider.keycloak.issuer-uri=http://localhost:8080/realms/master</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_konfigurácia_klienta_pre_http">Konfigurácia klienta pre HTTP</h3>
+<div class="paragraph">
+<p>Naša servisná aplikácia bude každých pár sekúnd <em>pingať</em> REST API na vzdialenom serveri — teda bude posielať jednoduchú požiadavku v HTTP.</p>
+</div>
+<div class="paragraph">
+<p>Aby dokázala bežať dlho, priamo ju spustíme ako službu bežiacu nad reaktívnym serverom Netty, o čo sa postará Spring WebFlux.</p>
+</div>
+<div class="paragraph">
+<p>Budeme potrebovať:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>bean, ktorý bude udržiavať autorizovaný stav</p>
+</li>
+<li>
+<p>HTTP klienta <code>WebClient</code></p>
+</li>
+<li>
+<p>funkciu, ktorá prepojí klienta s autorizačnými mechanizmami OAuth a bude automaticky posielať prihlasovacie požiadavky na Keycloak.</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_bean_pre_autorizovaný_stav">Bean pre autorizovaný stav</h3>
+<div class="paragraph">
+<p>Trieda <code>ReactiveOAuth2AuthorizedClientManager</code> berie klientov, ktorí sú nakonfigurovaní v <code>application.properties</code>, dokáže ich autorizovať voči autorizačnému serveru, po úspešnej autentifikácii ich vyhlásiť za <em>autorizovaných klientov</em> a tento zoznam ukladať (<em>perzistovať</em>) do vhodného úložiska.</p>
+</div>
+<div class="paragraph">
+<p>Keďže náš klient nepobeží v rámci webovej aplikácie — požiadavky cez HTTP budú vyvolávané autonómne, použijeme implementáciu <code>AuthorizedClientServiceReactiveOAuth2AuthorizedClientManager</code>.</p>
+</div>
+<div class="paragraph">
+<p>Trieda má dve závislosti, ktoré nám <em>Spring Boot WebFlux</em> dodá automaticky:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>zoznam klientov spravovaný  <code>ReactiveClientRegistrationRepository</code>.</p>
+</li>
+<li>
+<p>manažment autorizovaných klientov <code>ReactiveOAuth2AuthorizedClientService</code>, ktorý dokáže na základe identifikátora klienta a autentifikácie <code>Authentication</code> poskytnúť autorizovaného klienta, a zároveň ich udržiavať v príslušnom úložisku.</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>@Bean
+ReactiveOAuth2AuthorizedClientManager authorizedClientManager(
+        ReactiveClientRegistrationRepository clientRegistrations,
+        ReactiveOAuth2AuthorizedClientService authorizedClientService) {
+
+    return new AuthorizedClientServiceReactiveOAuth2AuthorizedClientManager(clientRegistrations, authorizedClientService);
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_webclient">WebClient</h3>
+<div class="paragraph">
+<p>Klienta pre HTTP prepojíme s autorizáciou.</p>
+</div>
+<div class="paragraph">
+<p>Trieda <code>ServerOAuth2AuthorizedClientExchangeFilterFunction</code> integruje klienta pre HTTP (<code>WebClient</code>) s mechanizmami OAuth.</p>
+</div>
+<div class="paragraph">
+<p>Spolupracuje s <code>ReactiveOAuth2AuthorizedClientManager</code>, ktorý rieši nízkoúrovňové technikálie.</p>
+</div>
+<div class="paragraph">
+<p>Ak tieto tri triedy prepojíme, získame klienta <code>WebClient</code>, ktorý vie automaticky kontaktovať Keycloak, získať token, a priložiť ho k požiadavkam smerovaným na REST API.</p>
+</div>
+<div class="listingblock">
+<div class="title">filename.java</div>
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@Bean
+public WebClient webClientSecurityCustomizer(
+        ReactiveOAuth2AuthorizedClientManager authorizedClients) {<i class="conum" data-value="1"></i><b>(1)</b>
+    var oAuthFilter
+        = new ServerOAuth2AuthorizedClientExchangeFilterFunction(
+                authorizedClients);<i class="conum" data-value="2"></i><b>(2)</b>
+    oAuthFilter.setDefaultClientRegistrationId(&#34;keycloak&#34;);<i class="conum" data-value="3"></i><b>(3)</b>
+
+    return WebClient.builder()
+            .filter(oAuthFilter) <i class="conum" data-value="4"></i><b>(4)</b>
+            .build();
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tbody><tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Ako závislosť si vyžiadame správcu autorizovaných klientov pre OAuth.
+Tú dostaneme v podobe <em>beanu</em> nakonfigurovaného v predošlom kroku.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Vytvoríme filter, ktorý sa postará o integráciu s OAuth.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Keďže filter beží autonómne, mimo požiadavky HTTP, musíme explicitne povedať, na ktorého klienta z <code>application.properties</code> sa táto konfigurácia vzťahuje.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>Filter zapojíme do klienta <code>WebClient</code>.</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_integrácie">Integrácie</h3>
+<div class="paragraph">
+<p>Od tejto chvíle môžeme automaticky používať klienta <code>WebClient</code>.</p>
+</div>
+<div class="paragraph">
+<p>Ak chceme napríklad periodicky posielať dopyty na server:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>zapneme anotáciu <code>@EnableScheduling</code>,</p>
+</li>
+<li>
+<p>vyrobíme metódu s anotáciou <code>@Scheduled</code>,</p>
+</li>
+<li>
+<p>automaticky nadrôtujeme klienta <code>WebClient</code>,</p>
+</li>
+<li>
+<p>voláme požiadavky na <em>resource server</em>.</p>
+</li>
+</ol>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@Component
+public class ScheduledBalanceChecker {
+    @Autowired
+    private WebClient webClient; <i class="conum" data-value="1"></i><b>(1)</b>
+
+    @Scheduled(fixedDelay = 5, timeUnit = TimeUnit.SECONDS) <i class="conum" data-value="3"></i><b>(3)</b>
+    public void checkBalance() {
+        int accountId = 1;
+        BigDecimal balance = webClient.get()
+                .uri(&#34;http://localhost:9999/accounts/{accountId}/balance&#34;, accountId)
+                .retrieve() <i class="conum" data-value="2"></i><b>(2)</b>
+                .bodyToMono(BigDecimal.class)
+                .block();
+        logger.info(&#34;Account {} has balance {}&#34;, accountId, balance);
+    }
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tbody><tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Necháme si automaticky nadrôtovať klienta pre HTTP požiadavky vrátane integrácie s OAuth.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Voláme klienta.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Periodicky zapneme volanie metódy.</td>
+</tr>
+</tbody></table>
+</div>
+<div class="admonitionblock important">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+V tomto prípade sa s každým volaním klienta získa nový token z autorizačného servera.
+V každej iterácii sa tak v skutočnosti vykonajú dva dopyty: jeden na autorizačný server a druhý na príslušné REST API v <em>resource serveri</em>.
+</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_záver">Záver</h2>
+<div class="sectionbody">
+<div class="admonitionblock tip">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+Repozitár s kódom pre Spring Boot je k dispozícii na GitHube, v repozitáru <a href="https://github.com/novotnyr/bank-oidc-client-credentials">novotnyr/bank-oidc-client-credentials</a>.
+</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+</div>
+
+    <a href="/"> >> Home</a>
+  </main>
+</div>
+    <footer>
+      
+<script>
+(function() {
+  function center_el(tagName) {
+    var tags = document.getElementsByTagName(tagName), i, tag;
+    for (i = 0; i < tags.length; i++) {
+      tag = tags[i];
+      var parent = tag.parentElement;
+      
+      if (parent.childNodes.length === 1) {
+        
+        if (parent.nodeName === 'A') {
+          parent = parent.parentElement;
+          if (parent.childNodes.length != 1) continue;
+        }
+        if (parent.nodeName === 'P') parent.style.textAlign = 'center';
+      }
+    }
+  }
+  var tagNames = ['img', 'embed', 'object'];
+  for (var i = 0; i < tagNames.length; i++) {
+    center_el(tagNames[i]);
+  }
+})();
+</script>
+
+      
+    </footer>
+  </body>
+</html>
+
