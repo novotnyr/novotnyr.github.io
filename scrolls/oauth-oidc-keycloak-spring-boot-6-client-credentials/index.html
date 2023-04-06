@@ -45,7 +45,7 @@
 <div class="article-meta">
 <h1><span class="title">OAuth 2.0, OpenID Connect, Keycloak a Spring Boot &ndash; Flow pre Client Credentials</span></h1>
 
-<h2 class="date">2023/04/04</h2>
+<h2 class="date">2023/04/06</h2>
 <p class="terms">
   
   
@@ -67,7 +67,7 @@
 </div>
 <div class="paragraph">
 <p>OAuth podporuje aj situácie, kde sa prístup k údajom udeľuje aplikáciám, ktoré nemajú používateľa.
-Obvykle ide o servisné aplikácie, démonov, monitoringy a podobne. V týchto aplikáciách neexistuje používateľ, ktorý by schvaľoval prístup k zdrojom — sama aplikácia sa považuje za <em>majiteľa zdrojov</em>.</p>
+Obvykle ide o servisné aplikácie, démonov, monitoringy a podobne. V týchto aplikáciách neexistuje používateľ, ktorý by schvaľoval prístup k zdrojom — sama aplikácia sa považuje za <em>vlastníka zdrojov</em>.</p>
 </div>
 <div class="admonitionblock important">
 <table>
@@ -138,6 +138,11 @@ Kroky s endpointom pre autorizáciu sa v tomto flowe ignorujú.
 </tr>
 </tbody></table>
 </div>
+<div class="imageblock">
+<div class="content">
+<img src="flow.png" alt="flow"/>
+</div>
+</div>
 <div class="sect2">
 <h3 id="_registrácia_klienta">Registrácia klienta</h3>
 <div class="paragraph">
@@ -202,6 +207,18 @@ Kroky s endpointom pre autorizáciu sa v tomto flowe ignorujú.
 <p>Odpoveďou bude prístupový token (<em>access token</em>).
 Ak používame OpenID Connect, token bude vo formáte JWT.</p>
 </div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>{
+  &#34;access_token&#34;: &#34;eyJh...&#34;,
+  &#34;expires_in&#34;: 60,
+  &#34;refresh_expires_in&#34;: 0,
+  &#34;token_type&#34;: &#34;Bearer&#34;,
+  &#34;not-before-policy&#34;: 0,
+  &#34;scope&#34;: &#34;profile email&#34;
+}</code></pre>
+</div>
+</div>
 <div class="paragraph">
 <p>Token následne vieme priložiť ku volaniu <em>resource servera</em>, teda nejakého REST API.</p>
 </div>
@@ -211,9 +228,60 @@ Ak používame OpenID Connect, token bude vo formáte JWT.</p>
 Authorization: Bearer {{jwt}}</code></pre>
 </div>
 </div>
-<div class="imageblock">
+<div class="sidebarblock">
 <div class="content">
-<img src="flow.png" alt="flow"/>
+<div class="paragraph">
+<p>Pre Keycloak bude vyzerať JWT token nasledovne:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>{
+  &#34;exp&#34;: 1680819148,
+  &#34;iat&#34;: 1680819088,
+  &#34;jti&#34;: &#34;9f28ee20-7631-43f3-b3d8-5ca6d5c5222a&#34;,
+  &#34;iss&#34;: &#34;http://localhost:8080/realms/master&#34;,
+  &#34;aud&#34;: &#34;account&#34;,
+  &#34;sub&#34;: &#34;2ee74099-6f39-42e0-a3c4-f73b5fe03874&#34;, <i class="conum" data-value="1"></i><b>(1)</b>
+  &#34;typ&#34;: &#34;Bearer&#34;,
+  &#34;azp&#34;: &#34;techbank&#34;,
+  &#34;acr&#34;: &#34;1&#34;,
+  &#34;allowed-origins&#34;: [
+    &#34;http://localhost:9991&#34;
+  ],
+  &#34;realm_access&#34;: {
+    &#34;roles&#34;: [
+      &#34;default-roles-master&#34;,
+      &#34;offline_access&#34;,
+      &#34;uma_authorization&#34;
+    ]
+  },
+  &#34;resource_access&#34;: {
+    &#34;account&#34;: {
+      &#34;roles&#34;: [
+        &#34;manage-account&#34;,
+        &#34;manage-account-links&#34;,
+        &#34;view-profile&#34;
+      ]
+    }
+  },
+  &#34;scope&#34;: &#34;profile email&#34;,
+  &#34;email_verified&#34;: false,
+  &#34;clientId&#34;: &#34;techbank&#34;,
+  &#34;clientHost&#34;: &#34;127.0.0.1&#34;,
+  &#34;preferred_username&#34;: &#34;service-account-techbank&#34;,
+  &#34;clientAddress&#34;: &#34;127.0.0.1&#34;
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tbody><tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Reprezentuje identifikátor technického používateľa.
+V Keycloaku vznikne používateľ <code>service-account-techbank</code>, ktorému je možné nastaviť roly a ďalšie oprávnenia.</td>
+</tr>
+</tbody></table>
+</div>
 </div>
 </div>
 </div>
@@ -276,6 +344,11 @@ spring.security.oauth2.client.provider.keycloak.issuer-uri=http://localhost:8080
 </li>
 </ol>
 </div>
+<div class="imageblock">
+<div class="content">
+<img src="beans.png" alt="beans"/>
+</div>
+</div>
 </div>
 <div class="sect2">
 <h3 id="_bean_pre_autorizovaný_stav">Bean pre autorizovaný stav</h3>
@@ -325,7 +398,7 @@ ReactiveOAuth2AuthorizedClientManager authorizedClientManager(
 <p>Ak tieto tri triedy prepojíme, získame klienta <code>WebClient</code>, ktorý vie automaticky kontaktovať Keycloak, získať token, a priložiť ho k požiadavkam smerovaným na REST API.</p>
 </div>
 <div class="listingblock">
-<div class="title">filename.java</div>
+<div class="title">OAuthConfiguration.java</div>
 <div class="content">
 <pre class="highlight"><code class="language-java" data-lang="java">@Bean
 public WebClient webClientSecurityCustomizer(
