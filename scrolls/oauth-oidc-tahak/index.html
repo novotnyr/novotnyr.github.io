@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+    <link rel="manifest" href="/images/site.webmanifest">
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <title>OAuth, OpenID Connect -- Ťahák | robonovotny</title>
+
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.3/styles/dracula.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.3/highlight.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.3/languages/go.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    <link rel="stylesheet" href="https://novotnyr.github.io/asciidoctor.css">
+    <header>
+
+  <nav>
+    <ul>
+      
+      
+      <li class="pull-left ">
+        <a href="https://novotnyr.github.io/">~/robonovotny</a>
+      </li>
+      
+
+      
+
+    </ul>
+  </nav>
+</header>
+
+  </head>
+
+  <body>
+    <br/>
+
+<div class="article-meta">
+<h1><span class="title">OAuth, OpenID Connect &ndash; Ťahák</span></h1>
+
+<h2 class="date">2023/04/09</h2>
+<p class="terms">
+  
+  
+  
+  
+  
+</p>
+</div>
+
+
+<div class="content-wrapper">
+  <main>
+    <div class="paragraph">
+<p>Predstavme si webovú aplikáciu s REST API, ktorá spravuje používateľkine chránené údaje — napríklad databázu domácich kvetín.</p>
+</div>
+<div class="paragraph">
+<p>Takáto aplikácia:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>beží napr. na <a href="https://domacekvetiny.io/api" class="bare">https://domacekvetiny.io/api</a></p>
+</li>
+<li>
+<p>prístup k údajom vyžaduje <strong>autorizáciu</strong>, čiže schválený prístup</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock important">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+Takáto aplikácia nazýva <em>Resource Server</em>.
+Chránené údaje sú <em>zdroje</em>, teda <em>protected resources</em>.
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="resource-server.png" alt="resource server"/>
+</div>
+</div>
+<div class="paragraph">
+<p>A predstavme si druhú aplikáciu, ktorá chce automatizovane zalievať domáce kvetiny používateľky.</p>
+</div>
+<div class="paragraph">
+<p>Na to potrebuje prístup ku používateľkiným chráneným údajom, teda zoznamu jej kvetín.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+OAuth je protokol, ktorý umožní používateľke <strong>delegovať prístup</strong> k svojim chráneným zdrojom na vybranú aplikáciu.
+Táto aplikácia sa volá <strong>klient</strong> a pristupuje k chráneným zdrojom <strong>v mene používateľky</strong> (<em>on behalf of</em>).
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="paragraph">
+<p>Používateľka tak vie delegovať prístup k svojim domácim kvetinám na automatizovaný zalievač.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="access-on-behalf-of.png" alt="access on behalf of"/>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Klientom môže byť webová aplikácia, mobilná aplikácia, či napríklad frontendová aplikácia typu SPA.
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="sect1">
+<h2 id="_identity_provider_idp_ako_centrálny_bod">Identity Provider (IdP) ako centrálny bod</h2>
+<div class="sectionbody">
+<div class="admonitionblock important">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+Keycloak je analógiou recepcie v hoteli. Oficiálne je to <em>autorizačný server</em> (<em>Authorization Server</em>) alebo aj <em>poskytovateľ identít</em> (<em>Identity Provider</em>).
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Registrovaní klienti</dt>
+<dd>
+<p>Keycloak eviduje klientov.</p>
+</dd>
+<dt class="hdlist1">Používatelia a ich prihlasovacie údaje</dt>
+<dd>
+<p>Keycloak slúži ako databáza používateľov a hesiel.</p>
+</dd>
+<dt class="hdlist1">Prístupové tokeny</dt>
+<dd>
+<p>Keycloak vydáva klientom <strong>tokeny</strong>: preukazy identity a preukazy autorizujúce prístup k chráneným dátam.</p>
+</dd>
+</dl>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_klienti_a_servery_zdrojov">Klienti a servery zdrojov</h2>
+<div class="sectionbody">
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Mám REST API?</dt>
+<dd>
+<p>Je to <em>resource server</em>.</p>
+</dd>
+<dt class="hdlist1">Aplikácia <em>produkuje</em> alebo <em>obsahuje</em> dáta, ktoré chcem nazdieľať?</dt>
+<dd>
+<p>Je to <em>resource server</em>.</p>
+</dd>
+<dt class="hdlist1">Mám mobilnú appku?</dt>
+<dd>
+<p>Je to klient.</p>
+</dd>
+<dt class="hdlist1">Mám Angular/React v prehliadači?</dt>
+<dd>
+<p>Je to klient.</p>
+</dd>
+<dt class="hdlist1">Mám Java backend konzumujúci dáta?</dt>
+<dd>
+<p>Je to klient.</p>
+</dd>
+</dl>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_flows_autorizačné_tance">Flows: Autorizačné tance</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><strong>Flow</strong> je postupnosť krokov komunikácie medzi:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>klientom</p>
+</li>
+<li>
+<p>Keycloakom</p>
+</li>
+<li>
+<p>REST API s dátami</p>
+</li>
+<li>
+<p>používateľkou</p>
+</li>
+</ul>
+</div>
+<div class="sect2">
+<h3 id="_aký_flow_zvoliť">Aký flow zvoliť?</h3>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Je to React/Angular aplikácia typu SPA v prehliadači?</dt>
+<dd>
+<p>Authorization Code with PKCE, verejný klient</p>
+</dd>
+<dt class="hdlist1">Je to mobilná appka?</dt>
+<dd>
+<p>Authorization Code with PKCE, verejný klient</p>
+</dd>
+<dt class="hdlist1">Je to mobilná appka, ktorej naozaj dôverujeme a dokážeme jej zveriť používateľkin login a heslo?</dt>
+<dd>
+<p>Resource Owner Password Credentials, verejný klient</p>
+</dd>
+<dt class="hdlist1">Je to backendová aplikácia v Jave/PHP/Go?</dt>
+<dd>
+<p>Authorization Code with PKCE, dôverný klient</p>
+</dd>
+<dt class="hdlist1">Je to servisná aplikácia / démon / monitorovacia aplikácia na serverovom backende, kde nie je potrebné prihlásenie používateľky?</dt>
+<dd>
+<p>Client Credentials, dôverný klient</p>
+</dd>
+<dt class="hdlist1">Je to serverová backendová aplikácia, ktorej vieme zveriť používateľkin login a heslo?</dt>
+<dd>
+<p>Resource Owner Password Credentials, dôveryhodný klient</p>
+</dd>
+<dt class="hdlist1">Používame autorizačný server ako databázu používateľov, lebo migrujeme na OAuth?</dt>
+<dd>
+<p>Resource Owner Password Credentials; klient podľa typu aplikácie.</p>
+</dd>
+<dt class="hdlist1">Beží aplikácia na televízore, hernej konzole, či inom zariadení, kde nevieme rozumne zadávať text?</dt>
+<dd>
+<p>Device Authorization, verejný klient</p>
+</dd>
+<dt class="hdlist1">Ešte stále som zmätený?</dt>
+<dd>
+<p>Flow <em>Authorization Code with PKCE</em>, verejný klient.</p>
+</dd>
+</dl>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_klient_alebo_server">Klient alebo server?</h2>
+<div class="sectionbody">
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Produkujem chránené dáta?</dt>
+<dd>
+<p><em>Resource Server</em></p>
+</dd>
+<dt class="hdlist1">Konzumujem chránené dáta?</dt>
+<dd>
+<p><em>Client</em></p>
+</dd>
+<dt class="hdlist1">Chcem „prihlásiť pomocou Google / Facebook / GitHub“?</dt>
+<dd>
+<p><em>Client</em></p>
+</dd>
+</dl>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_klienti">Klienti</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Ak potrebujeme aplikáciu, ktorá konzumuje chránené zdroje, musíme:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Programovať klienta (<em>client</em>).</p>
+</li>
+<li>
+<p>Zaevidovať ho v autorizačnom serveri.</p>
+</li>
+<li>
+<p>Získať jeho jednoznačný identifikátor: <em>Client ID</em>.</p>
+</li>
+<li>
+<p>Tento identifikátor použiť v konfigurácii klienta.</p>
+</li>
+</ol>
+</div>
+<div class="sect2">
+<h3 id="_typ_klienta">Typ klienta?</h3>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">confidential</dt>
+<dd>
+<p>klienti s uzavretým kódom, ktoré bežia na serveri.
+Poznajú „klientske heslo“ (<em>client secret</em>), ktoré nikdy nesmie uniknúť.</p>
+<div class="paragraph">
+<p>Klient sa Keycloaku preukáže identifikátorom a klientskym heslom, čo je jeho login a heslo.</p>
+</div>
+</dd>
+<dt class="hdlist1">public</dt>
+<dd>
+<p>klienti s otvoreným kódom, ktorí nedokážu bezpečne preukázať svoju identitu, ani spravovať svoje klientske tajomstvo.</p>
+<div class="paragraph">
+<p>Akákoľvek aplikácia sa dokáže prevteliť do akéhokoľvek verejného klienta.</p>
+</div>
+</dd>
+</dl>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_tri_tokeny_v_oidc">Tri tokeny v OIDC</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Súčasťou flowov je REST endpoint Keycloaku — obvykle <code>/token</code> — ktorý vracia tri tokeny vo formáte JWT.</p>
+</div>
+<div class="paragraph">
+<p>Všetky tokeny sú súčasťou JSONu v tele odpovede.</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">identity token</dt>
+<dd>
+<p>Preukaz autentifikácie — úspešného prihlásenia.
+Obsahuje údaje o používateľke (login, meno, e-mail)</p>
+</dd>
+<dt class="hdlist1">access token</dt>
+<dd>
+<p>Preukaz autorizácie k chráneným dátam.
+Prikladá sa k volaniam REST API do hlavičky <code>Authorization: Bearer</code>.</p>
+<div class="paragraph">
+<p>Obsahuje roly, oprávnenia, či <em>scopes</em>.</p>
+</div>
+<div class="paragraph">
+<p>Má obmedzenú platnosť, obvykle pol minúty, minútu, či inú krátku dobu.</p>
+</div>
+<div class="paragraph">
+<p>Môže obsahovať aj používateľkine údaje.</p>
+</div>
+</dd>
+<dt class="hdlist1">refresh token</dt>
+<dd>
+<p>Dlhotrvajúci token umožňujúci predĺžiť vydať nový prístupový token, ak predošlý vyprší.</p>
+<div class="paragraph">
+<p>Klient vie v Keycloaku vymeniť starý prístupový token a obnovovací token za nový prístupový token.</p>
+</div>
+</dd>
+</dl>
+</div>
+<div class="sect2">
+<h3 id="_čo_sú_scopes">Čo sú scopes</h3>
+<div class="admonitionblock important">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<em>Scopes</em> je ľubovoľná množina reťazcov, obvykle pre roly, či oprávnenia.
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="paragraph">
+<p>Keycloak dokáže poskytnúť <em>scope</em> pre používateľkin e-mail (<code>email</code>), používateľkin profil (<code>profile</code>), či pridelené roly (<code>roles</code>).</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Keycloak</strong> má pri evidovanom klientovi povedané, aké scopy mu dokáže poskytnúť.</p>
+</li>
+<li>
+<p><strong>Klient</strong> dokáže pri autorizácii požiadať o konkrétnu množinu scopov a Keycloak usúdi, ktoré z nich dokáže splniť.
+Scope <code>openid</code> je povinný.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><em>Scopes</em> sa vedia mapovať na GUI, ktoré vyžaduje súhlas používateľky s delegáciou.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_consentvýslovný_súhlas_s_delegovaním">Consent — výslovný súhlas s delegovaním</h3>
+<div class="paragraph">
+<p>Klient môže vyžadovať explicitný súhlas používateľky so získavaním chránených zdrojov v jej mene.</p>
+</div>
+<div class="paragraph">
+<p>Pri prvom prístupe si tak Keycloak od používateľky vyžiada explicitný súhlas — <strong>consent</strong>.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="keycloak-consent.png" alt="keycloak consent"/>
+</div>
+</div>
+<div class="paragraph">
+<p>V prípade Keycloaku sa jednotlivé položky zo súhlasu sa priamo mapujú na <em>scopes</em>, ktoré poskytuje autorizačný server:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">User profile</dt>
+<dd>
+<p>mapovaný na scope <code>profile</code>.</p>
+</dd>
+<dt class="hdlist1">Email address</dt>
+<dd>
+<p>mapovaný na scope <code>email</code>.</p>
+</dd>
+<dt class="hdlist1">User roles</dt>
+<dd>
+<p>mapovaný na scope <code>roles</code> obsahujúci používateľské roly konfigurovateľné v Keycloaku.</p>
+</dd>
+</dl>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_metadáta_autorizačného_servera">Metadáta autorizačného servera</h3>
+<div class="paragraph">
+<p>Keycloak poskytuje JSON s metadátami OIDC:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>autorizačný endpoint pre získanie autorizačného kódu</p>
+</li>
+<li>
+<p>endpoint, ktorým získame tokeny</p>
+</li>
+<li>
+<p>endpoint pre získanie informácií o používateľke (<em>userinfo</em>)</p>
+</li>
+<li>
+<p>endpoint pre získanie verejných kľúčov pre overenie digitálnych podpisov tokenov JWT</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Dostupná je na adrese <a href="http://localhost:8080/realms/master/.well-known/openid-configuration" class="bare">http://localhost:8080/realms/master/.well-known/openid-configuration</a></p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_jwt">JWT</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>JWT pozostáva z 3 častí. Prvé dve časti sú vo formáte JSON, všetky časti sú kódované cez Base64.</p>
+</div>
+<div class="paragraph">
+<p>JSON obsahuje <em>claims</em>, teda tvrdenia.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>hlavička: <strong>JOSE Header</strong>.</p>
+<div class="listingblock">
+<div class="title">Hlavička JOSE s dvoma tvrdeniami</div>
+<div class="content">
+<pre class="highlight"><code>{
+  &#34;alg&#34;: &#34;HS256&#34;,
+  &#34;typ&#34;: &#34;JWT&#34;
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Hlavička indikuje algoritmus pre elektronický podpis.</p>
+</div>
+</li>
+<li>
+<p>telo tokenu: <strong>payload</strong></p>
+<div class="listingblock">
+<div class="title">Hlavička JOSE so 4 tvrdeniami</div>
+<div class="content">
+<pre class="highlight"><code>{
+  &#34;exp&#34; : 1681045903,
+  &#34;iat&#34; : 1681044103,
+  &#34;sub&#34; : &#34;212aa1c7-667e-4c2b-a99b-4c050ea94644&#34;,
+  &#34;scope&#34; : &#34;openid profile email&#34;,
+}</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>exp</code>: tvrdenie s dátumom expirácie tokenu</p>
+</li>
+<li>
+<p><code>iat</code>: <em>Issued At</em> — tvrdenie s dátumom vydania</p>
+</li>
+<li>
+<p><code>sub</code>: identifikátor používateľky z Keycloaku</p>
+</li>
+<li>
+<p><code>scope</code>: zoznam scopovv</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>digitálny podpis: <strong>signature</strong>
+Hlavička a telo sú podpísané algoritmom a symetrickou/asymetrickou šifrou.
+Podpis je kódovaný Base64.</p>
+</li>
+</ol>
+</div>
+<div class="listingblock">
+<div class="title">Minimalistický JWT</div>
+<div class="content">
+<pre class="highlight"><code>eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2ODEwNTQxNzd9.SURFKdNgESGuubuvN9FgzBT929SjFmqXKJ29SSGM0vM</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Vidíme 3 zložky oddelené bodkami.</p>
+</div>
+</div>
+</div>
+
+    <a href="/"> >> Home</a>
+  </main>
+</div>
+    <footer>
+      
+<script>
+(function() {
+  function center_el(tagName) {
+    var tags = document.getElementsByTagName(tagName), i, tag;
+    for (i = 0; i < tags.length; i++) {
+      tag = tags[i];
+      var parent = tag.parentElement;
+      
+      if (parent.childNodes.length === 1) {
+        
+        if (parent.nodeName === 'A') {
+          parent = parent.parentElement;
+          if (parent.childNodes.length != 1) continue;
+        }
+        if (parent.nodeName === 'P') parent.style.textAlign = 'center';
+      }
+    }
+  }
+  var tagNames = ['img', 'embed', 'object'];
+  for (var i = 0; i < tagNames.length; i++) {
+    center_el(tagNames[i]);
+  }
+})();
+</script>
+
+      
+    </footer>
+  </body>
+</html>
+
