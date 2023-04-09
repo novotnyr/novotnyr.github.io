@@ -6,9 +6,24 @@
     <description>Recent content in Scrolls on robonovotny</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 06 Apr 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://novotnyr.github.io/scrolls/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 08 Apr 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://novotnyr.github.io/scrolls/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>OAuth 2.0, OpenID Connect, Keycloak a Spring Boot -- Flow pre Client Credentials</title>
+      <title>OAuth, OpenID Connect -- Všetko, čo potrebujú vývojárky vedieť</title>
+      <link>https://novotnyr.github.io/scrolls/oauth-oidc-esencialne-veci/</link>
+      <pubDate>Sat, 08 Apr 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://novotnyr.github.io/scrolls/oauth-oidc-esencialne-veci/</guid>
+      <description>Predstavme si webovú aplikáciu s REST API, ktorá spravuje používateľkine chránené údaje — napríklad databázu domácich kvetín.
+Takáto aplikácia:
+beží napr. na https://domacekvetiny.io/api
+prístup k údajom vyžaduje autorizáciu, čiže schválený prístup
+Takáto aplikácia nazýva Resource Server. Chránené údaje sú zdroje, teda protected resources. A predstavme si druhú aplikáciu, ktorá chce automatizovane zalievať domáce kvetiny používateľky.
+Na to potrebuje prístup ku používateľkiným chráneným údajom, teda zoznamu jej kvetín.
+OAuth 2.0 je protokol, ktorý umožní používateľke delegovať prístup k svojim chráneným zdrojom na vybranú aplikáciu.</description>
+    </item>
+    
+    <item>
+      <title>OAuth, OpenID Connect, Keycloak a Spring Boot VI. -- Flow pre Client Credentials</title>
       <link>https://novotnyr.github.io/scrolls/oauth-oidc-keycloak-spring-boot-6-client-credentials/</link>
       <pubDate>Thu, 06 Apr 2023 00:00:00 +0000</pubDate>
       
@@ -48,7 +63,7 @@ Autorizácia REST API je implementované ako štandardný OAuth Resource Server 
     </item>
     
     <item>
-      <title>OAuth 2.0, OpenID Connect, Keycloak a Spring Boot -- Flow pre Authorization Code s PKCE pre verejných klientov</title>
+      <title>OAuth, OpenID Connect, Keycloak a Spring Boot V. -- Flow pre Authorization Code s PKCE pre verejných klientov</title>
       <link>https://novotnyr.github.io/scrolls/oauth-oidc-keycloak-spring-boot-5-authorization-code-pkce/</link>
       <pubDate>Thu, 30 Mar 2023 00:00:00 +0000</pubDate>
       
@@ -61,7 +76,7 @@ alebo klient obsahuje hackovateľný zdrojový kód — napr. dekompilovate�
     </item>
     
     <item>
-      <title>OAuth 2.0, OpenID Connect, Keycloak a Spring Boot -- Flow pre Authorization Code</title>
+      <title>OAuth, OpenID Connect, Keycloak a Spring Boot IV. -- Flow pre Authorization Code</title>
       <link>https://novotnyr.github.io/scrolls/oauth-oidc-keycloak-spring-boot-4-authorization-code/</link>
       <pubDate>Wed, 29 Mar 2023 00:00:00 +0000</pubDate>
       
@@ -74,7 +89,7 @@ Do závislostí dodajme
     </item>
     
     <item>
-      <title>OAuth 2.0, OpenID Connect, Keycloak a Spring Boot 3 -- Roly používateľov a autorizácia</title>
+      <title>OAuth, OpenID Connect, Keycloak a Spring Boot III. -- Roly používateľov a autorizácia</title>
       <link>https://novotnyr.github.io/scrolls/oauth-oidc-keycloak-spring-boot-3-roly/</link>
       <pubDate>Sun, 26 Mar 2023 00:00:00 +0000</pubDate>
       
@@ -88,7 +103,7 @@ Pridávanie roly Vytváranie roly pre klienta megabank Prihlásme sa do administ
     </item>
     
     <item>
-      <title>OAuth 2.0, OpenID Connect, Keycloak a Spring Boot -- Spring Boot ochránená tokenmi JWT</title>
+      <title>OAuth, OpenID Connect, Keycloak a Spring Boot II. -- Spring Boot ochránená tokenmi JWT</title>
       <link>https://novotnyr.github.io/scrolls/oauth-oidc-keycloak-spring-boot-2/</link>
       <pubDate>Sat, 25 Mar 2023 00:00:00 +0000</pubDate>
       
@@ -102,7 +117,7 @@ Dodáme integráciu s Keycloakom pomocou štandardu OAuth 2.</description>
     </item>
     
     <item>
-      <title>OAuth 2.0, OpenID Connect, Keycloak a Spring Boot -- Rozbiehame Keycloak, získavame tokeny</title>
+      <title>OAuth, OpenID Connect, Keycloak a Spring Boot I. -- Rozbiehame Keycloak, získavame tokeny cez flow ROPC</title>
       <link>https://novotnyr.github.io/scrolls/oauth-oidc-keycloak-spring-boot-1/</link>
       <pubDate>Fri, 24 Mar 2023 00:00:00 +0000</pubDate>
       

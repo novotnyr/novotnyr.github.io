@@ -1,0 +1,1288 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+    <link rel="manifest" href="/images/site.webmanifest">
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <title>OAuth, OpenID Connect -- Všetko, čo potrebujú vývojárky vedieť | robonovotny</title>
+
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.3/styles/dracula.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.3/highlight.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.3/languages/go.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    <link rel="stylesheet" href="https://novotnyr.github.io/asciidoctor.css">
+    <header>
+
+  <nav>
+    <ul>
+      
+      
+      <li class="pull-left ">
+        <a href="https://novotnyr.github.io/">~/robonovotny</a>
+      </li>
+      
+
+      
+
+    </ul>
+  </nav>
+</header>
+
+  </head>
+
+  <body>
+    <br/>
+
+<div class="article-meta">
+<h1><span class="title">OAuth, OpenID Connect &ndash; Všetko, čo potrebujú vývojárky vedieť</span></h1>
+
+<h2 class="date">2023/04/08</h2>
+<p class="terms">
+  
+  
+  
+  
+  
+</p>
+</div>
+
+
+<div class="content-wrapper">
+  <main>
+    <div class="paragraph">
+<p>Predstavme si webovú aplikáciu s REST API, ktorá spravuje používateľkine chránené údaje — napríklad databázu domácich kvetín.</p>
+</div>
+<div class="paragraph">
+<p>Takáto aplikácia:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>beží napr. na <a href="https://domacekvetiny.io/api" class="bare">https://domacekvetiny.io/api</a></p>
+</li>
+<li>
+<p>prístup k údajom vyžaduje <strong>autorizáciu</strong>, čiže schválený prístup</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock important">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+Takáto aplikácia nazýva <em>Resource Server</em>.
+Chránené údaje sú <em>zdroje</em>, teda <em>protected resources</em>.
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="resource-server.png" alt="resource server"/>
+</div>
+</div>
+<div class="paragraph">
+<p>A predstavme si druhú aplikáciu, ktorá chce automatizovane zalievať domáce kvetiny používateľky.</p>
+</div>
+<div class="paragraph">
+<p>Na to potrebuje prístup ku používateľkiným chráneným údajom, teda zoznamu jej kvetín.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+OAuth 2.0 je protokol, ktorý umožní používateľke <strong>delegovať prístup</strong> k svojim chráneným zdrojom na vybranú aplikáciu.
+Táto aplikácia sa volá <strong>klient</strong> a pristupuje k chráneným zdrojom <strong>v mene používateľky</strong> (<em>on behalf of</em>).
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="paragraph">
+<p>Používateľka tak vie delegovať prístup k svojim domácim kvetinám na automatizovaný zalievač.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="access-on-behalf-of.png" alt="access on behalf of"/>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Klientom môže byť webová aplikácia, mobilná aplikácia, či napríklad frontendová aplikácia typu SPA.
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="sect1">
+<h2 id="_autorizačný_server_ako_centrálny_bod">Autorizačný server ako centrálny bod</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Delegovanie prístupu spravuje <strong>autorizačný server</strong>, ktorý zodpovedá <em>hotelovej recepcii</em>.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="authorization-server.png" alt="authorization server"/>
+</div>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Registrovaní klienti</dt>
+<dd>
+<p>autorizačný server pozná registrovaných klientov</p>
+</dd>
+<dt class="hdlist1">Používatelia a ich prihlasovacie údaje</dt>
+<dd>
+<p>autorizačný server slúži ako databáza používateľov a hesiel</p>
+</dd>
+<dt class="hdlist1">Prístupové tokeny</dt>
+<dd>
+<p>autorizačný server vydáva autorizovaným klientom <strong>tokeny</strong>, niečo ako šatňové žetóny či metaforické karty, ktoré umožňujú prístup k chráneným zdrojom.</p>
+</dd>
+</dl>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_autorizačné_tance">Autorizačné tance</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>OAuth 2.0 podporuje štyroch participantov, ktorí vzájomne „tancujú“ pri delegovaní prístupu.</p>
+</div>
+<div class="paragraph">
+<p>Ak chce klient-zalievač pristúpiť k zoznamu kvetov:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Požiada používateľa o autorizáciu.</p>
+</li>
+<li>
+<p>Používateľ poskytne autorizačný kód.</p>
+</li>
+<li>
+<p>Klient vezme autorizačný kód a požiada autorizačný server o výmenu za prístupový token.</p>
+</li>
+<li>
+<p>Autorizačný server vydá prístupový token.</p>
+</li>
+<li>
+<p>Klient priloží prístupový token k volaniam databázového servera.</p>
+</li>
+</ol>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="four-participants.png" alt="four participants"/>
+</div>
+</div>
+<div class="paragraph">
+<p>Inými slovami:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>Zalievač:           Hej, Miriamin skleník! Potrebujem zaliať kvety!
+Miriamin skleník:   A Miriam o tom vie?
+Zalievač:           Nie, idem sa jej spýtať.
+Zalievač:           Hej, Miriam, potrebujem ti zaliať tvoje kvety!
+                    Si s tým OK?
+Miriam:             Jasné, tu máš autorizačný kód.
+Zalievač:           Hej, autorizačný server, potrebujem Miriam zaliať kvety!
+                    Povolila mi to, tu mi dala autorizačný kód!
+Autorizačný server: Kód vyzerá dobre. Tu je plechový žetón, choď s ním do
+                    jej skleníka.
+Zalievač:           Hej, Miriamin skleník! Potrebujem zaliať kvety!
+                    Tu je token od autorizačného servera,
+                    že to môžem spraviť!</code></pre>
+</div>
+</div>
+<div class="admonitionblock important">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+Toto je najvšeobecnejší „tanec“.
+Vzájomná komunikácia medzi rolami a postupnosť krokov závisí hlavne od typu klienta (mobil? SPA?)
+Konkrétny tanec sa nazýva <strong>grant</strong> (terminológia OAuth 2.0) alebo <strong>flow</strong> (terminológia OpenID Connect 1.0).
+</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_oauth_2_0">OAuth 2.0</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>OAuth 2.0 je oficiálne:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p><strong>OAuth 2.0 Authorization Framework</strong> (<a href="https://www.rfc-editor.org/rfc/rfc6749">RFC 6749</a>) umožní získať aplikáciam tretích strán získať prístup k službe nad HTTP v mene používateľky po získaní jej súhlasu.</p>
+</div>
+</blockquote>
+</div>
+<div class="sect2">
+<h3 id="_oauth_2_0_je_o_autorizácii">OAuth 2.0 je o autorizácii!</h3>
+<div class="admonitionblock note">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+V OAuth 2.0 sa nič nehovorí o autentifikácii — prihlásení. Tento protokol je len o delegovaní prístupu!
+</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_oauth_2_0_je_len_oauth">OAuth 2.0 je „len OAuth“.</h3>
+<div class="admonitionblock note">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Existuje zastaralá špecifikácia OAuth 1.0, ktorá je odlišná a nepoužívaní.
+Odteraz už „OAuth“ znamená vždy „OAuth 2.0“.
+</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_tokeny_sú_netransparentné">Tokeny sú netransparentné</h3>
+<div class="paragraph">
+<p>OAuth nehovorí nič o podobe či formáte prístupového tokenu.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_openid_connect_1_0_oidc">OpenID Connect 1.0 (OIDC)</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>OIDC je nadstavba nad OAuth, ktorá:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>umožní autentifikovať používateľku.</p>
+</li>
+<li>
+<p>dokáže vydať preukaz identity používateľky, v mene ktorej sa získavajú chránené zdroje.</p>
+</li>
+<li>
+<p>do odpovede HTTP po zavolaní endpointu pre získanie tokenu pridá ešte jeden token — <em>identity token</em> ako dôkaz prihlásenej používateľky.</p>
+</li>
+<li>
+<p>umožní získať základné informácie o používateľskom profile z autorizačného servera cez REST API</p>
+</li>
+<li>
+<p>určuje, že autorizačný token (<em>access token</em>) sa pri volaniach prikladá do hlavičky <code>Authorization</code>.</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+<em>OpenID Connect</em> je o autentifikácii používateľky.
+Je dokonca ho možné použiť na jednotné prihlasovanie (<em>Single Sign On</em>) do viacerých klientov či serverov zdrojov.
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="paragraph">
+<p>OIDC používa alternatívne pojmy:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">flow</dt>
+<dd>
+<p>ekvivalent <em>grant</em> v OAuth. Reprezentuje konkrétny „tanec“ medzi entitami a postupnosť krokov</p>
+</dd>
+<dt class="hdlist1">OpenID Provider či Identity Provider (IdP)</dt>
+<dd>
+<p>autorizačný server, ktorý dokáže autentifikovať používateľku a poskytnúť informácie o jej identite.</p>
+</dd>
+</dl>
+</div>
+<div class="admonitionblock note">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Mnoho článkov automaticky používa „flow“ namiesto „grantu“ aj pre tance z OAuth.
+</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_typické_situácie">Typické situácie</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_prihlás_ma_cez_google">„Prihlás ma cez Google“</h3>
+<div class="paragraph">
+<p>Naša backendová aplikácia môže podporovať prihlásenie cez autorizačný server tretej strany.</p>
+</div>
+<div class="paragraph">
+<p>Používateľka sa tak napríklad prihlási svojim kontom na GMaili a naša backendová aplikácia nemusí vôbec spravovať heslá.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="login-with-apple.png" alt="login with apple"/>
+</div>
+</div>
+<div class="paragraph">
+<p>Naša aplikácia je <em>klientom</em> zaregistrovaným v autorizačnom serveri.</p>
+</div>
+<div class="paragraph">
+<p>Veľkí internetoví hráči poskytujú vlastné autorizačné servery:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Google poskytuje certifikovaný <a href="https://developers.google.com/identity/openid-connect/openid-connect">OIDC server</a>.</p>
+</li>
+<li>
+<p>Facebook dáva k dispozícii <a href="https://developers.facebook.com/docs/facebook-login/">OIDC Facebook Login</a></p>
+</li>
+<li>
+<p>GitHub poskytuje <a href="https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/authorizing-oauth-apps">protokol OAuth</a></p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+Toto je spôsob dosiahnutia <em>Single Sign On</em>, teda jednotného prihlasovania. Klient si nemusí pamätať žiadne loginy ani heslá.
+</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_chcem_mať_databázu_používateľov_ale_nechcem_ju_programovať">Chcem mať databázu používateľov, ale nechcem ju programovať</h3>
+<div class="paragraph">
+<p>Môžeme si vybrať existujúci autorizačný server:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://www.keycloak.org/">Keycloak</a>, open source, Java, sponzoruje RedHat</p>
+</li>
+<li>
+<p><a href="https://developer.okta.com">Okta</a>, cloud, bezplatný do 100 mesačných aktívnych používateliek</p>
+</li>
+<li>
+<p><a href="https://shibboleth.atlassian.net/wiki/spaces/IDPPLUGINS/pages/1376878976/OIDC+OP">Shibboleth IdP</a> s OIDC pluginom, open source, Java</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_potrebujem_klienta_či_resource_server">Potrebujem klienta či <em>resource server</em>?</h3>
+<div class="sect3">
+<h4 id="_client">Client</h4>
+<div class="paragraph">
+<p><em>Client</em> je typicky webová aplikácia bežiaca na serveri, alebo mobilná appka, prípadne webový frontend, ktorý beží v prehliadači ako aplikácia SPA. Klient <strong>konzumuje</strong> chránené zdroje, obvykle v mene používateľky.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+Klient musí byť evidovaný v autorizačnom serveri.
+</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_resource_server">Resource Server</h4>
+<div class="paragraph">
+<p><em>Resource Server</em> je typicky REST API, ktoré <strong>produkuje</strong> chránené zdroje.</p>
+</div>
+<div class="paragraph">
+<p>Prístup k nemu vyžaduje prístupový token. Ak využívame OIDC a token je vo formáte JWT, takýto server dokáže:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>získať verejné kľúče z autorizačného servera a overiť digitálny podpis tokenu</p>
+</li>
+<li>
+<p>vyčítať z tokenu jednotlivé tvrdenia (<em>claims</em>) a získať informácie o rolách či dodatočných prístupových oprávneniach.</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<em>Resource Server</em> nepotrebuje byť evidovaný v autorizačnom serveri.
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="client-server.png" alt="client server"/>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_klienti">Klienti</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Ak potrebujeme aplikáciu, ktorá konzumuje chránené zdroje, musíme:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Programovať klienta (<em>client</em>).</p>
+</li>
+<li>
+<p>Zaevidovať ho v autorizačnom serveri.</p>
+</li>
+<li>
+<p>Získať jeho jednoznačný identifikátor: <em>Client ID</em>.</p>
+</li>
+<li>
+<p>Tento identifikátor použiť v konfigurácii klienta.</p>
+</li>
+</ol>
+</div>
+<div class="sect2">
+<h3 id="_typ_klienta">Typ klienta?</h3>
+<div class="paragraph">
+<p>OAuth rozoznáva dva druhy klientov:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">confidential</dt>
+<dd>
+<p>klienti s uzavretým kódom, ktoré bežia na serveri.
+Dokáže bezpečne udržiavať citlivý údaj „client secret“, ktorým sa sám identifikuje a autorizuje voči autorizačnému serveru.</p>
+<div class="paragraph">
+<p>Dôverný klient dokáže posielať na autorizačný server dvojicu <em>Client ID</em> + <em>Client Secret</em>, ktorá vystupuje v role loginu a hesla samotného klienta.
+Autorizačný server tak dokáže overiť identitu samotného klienta.</p>
+</div>
+</dd>
+<dt class="hdlist1">public</dt>
+<dd>
+<p>klienti s otvoreným kódom, ktorí nedokážu bezpečne preukázať svoju identitu, ani spravovať svoje klientske tajomstvo.</p>
+</dd>
+</dl>
+</div>
+<div class="paragraph">
+<p>Príklady:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>backendová aplikácia v Java/Spring Boot uzavretá na serveri je <strong>confidential</strong> — klientske tajomstvo <em>client secret</em> nie je možné zistiť ani odhaliť pri dodržaní bezpečnostných zásad.</p>
+</li>
+<li>
+<p>frontend v Reacte je <strong>public</strong> — nie je technicky možné ochrániť klientske tajomstvo, ktoré je možné triviálne získať z webového prehliadača</p>
+</li>
+<li>
+<p>mobilná aplikácia je <strong>public</strong> — jej dekompiláciou je totiž možné získať <em>client secret</em> a zneužiť ho.</p>
+</li>
+<li>
+<p>servisná aplikácia v Go uzavretá na serveri je <strong>confidential</strong>.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_aký_flow">Aký flow?</h3>
+<div class="paragraph">
+<p>Oauth historicky špecifikoval viacero grantov (flowov).</p>
+</div>
+<div class="paragraph">
+<p>Ktorý z nich zvoliť?</p>
+</div>
+<div class="paragraph">
+<p>Zistime, čo je náš klient zač a potom:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Je to React/Angular aplikácia typu SPA v prehliadači?</dt>
+<dd>
+<p>Authorization Code with PKCE, verejný klient</p>
+</dd>
+<dt class="hdlist1">Je to mobilná appka?</dt>
+<dd>
+<p>Authorization Code with PKCE, verejný klient</p>
+</dd>
+<dt class="hdlist1">Je to mobilná appka, ktorej naozaj dôverujeme a dokážeme jej zveriť používateľkin login a heslo?</dt>
+<dd>
+<p>Resource Owner Password Credentials, verejný klient</p>
+</dd>
+<dt class="hdlist1">Je to webová backendová aplikácia?</dt>
+<dd>
+<p>Authorization Code with PKCE, dôverný klient</p>
+</dd>
+<dt class="hdlist1">Je to servisná aplikácia / démon / monitorovacia aplikácia na serverovom backende, kde nie je potrebné prihlásenie používateľky?</dt>
+<dd>
+<p>Client Credentials, dôverný klient</p>
+</dd>
+<dt class="hdlist1">Je to serverová backendová aplikácia, ktorej vieme zveriť používateľkin login a heslo?</dt>
+<dd>
+<p>Resource Owner Password Credentials, dôveryhodný klient</p>
+</dd>
+<dt class="hdlist1">Používame autorizačný server ako databázu používateľov, lebo migrujeme na OAuth?</dt>
+<dd>
+<p>Resource Owner Password Credentials; klient podľa typu aplikácie.</p>
+</dd>
+<dt class="hdlist1">Beží aplikácia na televízore, hernej konzole, či inom zariadení, kde nevieme rozumne zadávať text?</dt>
+<dd>
+<p>Device Authorization, verejný klient</p>
+</dd>
+</dl>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_tri_tokeny_v_oidc">Tri tokeny v OIDC</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>OIDC vracia v odpovedi z tokenového endpointu tri tokeny:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">identity token</dt>
+<dd>
+<p>token s údajmi o identite prihlásenej používateľky. Ide o token <strong>autentifikácie</strong>.
+Je vždy vo formáte JWT a musí byť podpísaný privátnym kľúčom servera.</p>
+</dd>
+<dt class="hdlist1">access token</dt>
+<dd>
+<p>prístupový token reprezentujúci autorizáciu. Ide o token <strong>autorizácie</strong>.</p>
+</dd>
+<dt class="hdlist1">refresh token</dt>
+<dd>
+<p>dlhotrvajúci token umožňujúci predĺžiť vydať nový prístupový token, ak predošlý vyprší.</p>
+</dd>
+</dl>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="id-access-refresh.png" alt="id access refresh"/>
+</div>
+</div>
+<div class="admonitionblock important">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>OIDC prikazuje <em>identifikačné tokeny</em> vo formáte JWT.</p>
+</div>
+<div class="paragraph">
+<p>O formáte prístupových tokenoch nehovorí nič, ale konvencia mnohých autorizačných serverov aj tieto tokeny poskytuje vo formáte JWT.</p>
+</div>
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="listingblock">
+<div class="title">Odpoveď endpointu pre tokeny z autorizačného servera Keycloak</div>
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">{
+  &#34;id_token&#34;: &#34;eyJh...&#34;, <i class="conum" data-value="1"></i><b>(1)</b>
+  &#34;access_token&#34;: &#34;eyJh....&#34;, <i class="conum" data-value="2"></i><b>(2)</b>
+  &#34;expires_in&#34;: 60,
+  &#34;scope&#34;: &#34;openid profile email&#34;, <i class="conum" data-value="3"></i><b>(3)</b>
+  &#34;token_type&#34;: &#34;Bearer&#34;,
+  &#34;not-before-policy&#34;: 0,
+  &#34;session_state&#34;: &#34;074ffb5f-f0ea-4182-b93d-023e9669f010&#34;
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tbody><tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Token s identitou v JWT formáte.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Prístupový token, tiež v JWT.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Scopes, ktoré umožnil autorizačný server.</td>
+</tr>
+</tbody></table>
+</div>
+<div class="sect2">
+<h3 id="_identity_tokenidentitný_token">Identity Token — Identitný token</h3>
+<div class="admonitionblock important">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+Identity Token dokazuje, že autorizačný server prihlásil  používateľku.
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="id-token.png" alt="id token"/>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Identitný token vydaný autorizačným serverom Keycloak, telo formátu JWT</div>
+<div class="content">
+<pre class="highlight"><code>{
+  &#34;exp&#34; : 1681033070,
+  &#34;iat&#34; : 1681033010,
+  &#34;auth_time&#34; : 1681033010,
+  &#34;jti&#34; : &#34;eadb5025-870b-4fdc-b17d-4996d8820b6e&#34;,
+  &#34;iss&#34; : &#34;http://localhost:8080/realms/master&#34;,
+  &#34;aud&#34; : &#34;exabank&#34;,
+  &#34;sub&#34; : &#34;212aa1c7-667e-4c2b-a99b-4c050ea94644&#34;,
+  &#34;typ&#34; : &#34;ID&#34;,
+  &#34;azp&#34; : &#34;exabank&#34;,
+  &#34;nonce&#34; : &#34;9qYmGQT4z6llfQuDgt5FyOexIz2SKsDL-LScEOwtpvo&#34;,
+  &#34;session_state&#34; : &#34;3b71e2a2-f8fb-43e3-aa8a-45ee0a6d7afd&#34;,
+  &#34;at_hash&#34; : &#34;KJq8-LeZZ35yNmpAzg7xrw&#34;,
+  &#34;acr&#34; : &#34;1&#34;,
+  &#34;sid&#34; : &#34;3b71e2a2-f8fb-43e3-aa8a-45ee0a6d7afd&#34;,
+  &#34;email_verified&#34; : true,
+  &#34;name&#34; : &#34;Jane Doe&#34;,
+  &#34;preferred_username&#34; : &#34;janedoe&#34;,
+  &#34;given_name&#34; : &#34;Jane&#34;,
+  &#34;family_name&#34; : &#34;Doe&#34;,
+  &#34;email&#34; : &#34;jane.doe@example.com&#34;
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_access_tokenprístupový_token">Access Token — Prístupový token</h3>
+<div class="admonitionblock important">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Prístupový token je preukaz oprávnenia prístupu k chráneným dátam.</p>
+</div>
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="paragraph">
+<p>Prístupový token má obmedzenú platnosť, obvykle pol minúty, minútu, či inú krátku dobu.</p>
+</div>
+<div class="paragraph">
+<p>Hoci to OIDC štandard nevyžaduje, často je vo formáte JWT, podpísaný privátnym kľúčom servera.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="access-token.png" alt="access token"/>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Access Token (prístupový token) vydaný Keycloakom.</div>
+<div class="content">
+<pre class="highlight"><code>{
+  &#34;exp&#34; : 1681033070,
+  &#34;iat&#34; : 1681033010,
+  &#34;auth_time&#34; : 1681033010,
+  &#34;jti&#34; : &#34;46892562-a643-4186-bba9-dee3ab2bd735&#34;,
+  &#34;iss&#34; : &#34;http://localhost:8080/realms/master&#34;,
+  &#34;sub&#34; : &#34;212aa1c7-667e-4c2b-a99b-4c050ea94644&#34;,
+  &#34;typ&#34; : &#34;Bearer&#34;,
+  &#34;azp&#34; : &#34;exabank&#34;,
+  &#34;nonce&#34; : &#34;9qYmGQT4z6llfQuDgt5FyOexIz2SKsDL-LScEOwtpvo&#34;,
+  &#34;session_state&#34; : &#34;3b71e2a2-f8fb-43e3-aa8a-45ee0a6d7afd&#34;,
+  &#34;acr&#34; : &#34;1&#34;,
+  &#34;allowed-origins&#34; : [ &#34;http://localhost:9999&#34; ],
+  &#34;realm_access&#34; : {
+    &#34;roles&#34; : [ &#34;default-roles-master&#34;, &#34;offline_access&#34;, &#34;uma_authorization&#34; ]
+  },
+  &#34;resource_access&#34; : {
+    &#34;account&#34; : {
+      &#34;roles&#34; : [ &#34;manage-account&#34;, &#34;manage-account-links&#34;, &#34;view-profile&#34; ]
+    }
+  },
+  &#34;email_verified&#34; : true, <i class="conum" data-value="1"></i><b>(1)</b>
+  &#34;name&#34; : &#34;Jane Doe&#34;,
+  &#34;preferred_username&#34; : &#34;janedoe&#34;,
+  &#34;given_name&#34; : &#34;Jane&#34;,
+  &#34;family_name&#34; : &#34;Doe&#34;,
+  &#34;email&#34; : &#34;jane.doe@example.com&#34;
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tbody><tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Tento prístupový token obsahuje aj údaje o profile.
+Nie je to však pravidlo!
+Keycloak tu len opakuje údaje z identifikačného profilu.</td>
+</tr>
+</tbody></table>
+</div>
+<div class="admonitionblock important">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Identifikačný token a prístupový token slúžia na odlišné prípady!
+Najdôležitejšie je ich nepopliesť!</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Identifikačný token</dt>
+<dd>
+<div class="ulist">
+<ul>
+<li>
+<p>Dôkaz o autentifikácii vo formáte JWT.</p>
+</li>
+<li>
+<p>Obsahuje profilové údaje používateľky ako tvrdenia v JWT.</p>
+</li>
+<li>
+<p><strong>Nie sú</strong> v ňom žiadne údaje o oprávneniach: ani scopes z OAuth, ani prípadné roly pridelené autorizačným serverom.</p>
+</li>
+</ul>
+</div>
+</dd>
+<dt class="hdlist1">Prístupový token (<em>Access Token</em>)</dt>
+<dd>
+<div class="ulist">
+<ul>
+<li>
+<p>Preukaz autorizácie k chráneným dátam.</p>
+</li>
+<li>
+<p>Obsahuje <em>scopes</em>, či vlastné role.</p>
+</li>
+<li>
+<p>Slúži na volanie API.</p>
+</li>
+</ul>
+</div>
+</dd>
+</dl>
+</div>
+</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_refresh_tokenobnovovací_token">Refresh Token — Obnovovací token</h3>
+<div class="paragraph">
+<p>Prístupové tokeny majú krátku platnosť, obvykle v desiatkach sekúnd.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<em>Refresh Token</em> (<em>Obnovovací token</em>) slúži na získanie nového platného autorizačného tokenu.
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="paragraph">
+<p>Autorizačný server môže pri vydávaní prístupového tokenu vydať aj <em>refresh token</em> s dlhou platnosťou.</p>
+</div>
+<div class="paragraph">
+<p>Klient potom dokáže v autorizačnom serveri vymeniť neplatný prístupový token a obnovovací token za nový autorizačný token.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Niektoré autorizačné servery vracajú aj obnovovací token v tvare JWT.</p>
+</div>
+<div class="listingblock">
+<div class="title">Obnovovací token (<em>Refresh Token</em>) z Keycloaku</div>
+<div class="content">
+<pre class="highlight"><code>{
+  &#34;exp&#34; : 1681045903,
+  &#34;iat&#34; : 1681044103,
+  &#34;jti&#34; : &#34;f1dcea45-dde6-4901-ad33-ffbe5cc95e2b&#34;,
+  &#34;iss&#34; : &#34;http://localhost:8080/realms/master&#34;,
+  &#34;aud&#34; : &#34;http://localhost:8080/realms/master&#34;,
+  &#34;sub&#34; : &#34;212aa1c7-667e-4c2b-a99b-4c050ea94644&#34;,
+  &#34;typ&#34; : &#34;Refresh&#34;,
+  &#34;azp&#34; : &#34;exabank&#34;,
+  &#34;nonce&#34; : &#34;KB3jrEkl-U8p_u6RHRlwgWkblRlfCCw3eha3bLLstVw&#34;,
+  &#34;session_state&#34; : &#34;074ffb5f-f0ea-4182-b93d-023e9669f010&#34;,
+  &#34;scope&#34; : &#34;openid profile email&#34;,
+  &#34;sid&#34; : &#34;074ffb5f-f0ea-4182-b93d-023e9669f010&#34;
+}</code></pre>
+</div>
+</div>
+</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_odovzdávanie_prístupového_tokenu_medzi_klientom_a_serverom_zdrojov">Odovzdávanie prístupového tokenu medzi klientom a serverom zdrojov</h3>
+<div class="paragraph">
+<p>OIDC určuje, že prístupový token (<em>Access Token</em>) sa vždy prikladá k volaniam API s chránenými údajmi do hlavičky HTTP <code>Authorization</code> vo formáte:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>Authorization: Bearer &lt;access_token&gt;</pre>
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="authorization-bearer.png" alt="authorization bearer"/>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_čo_sú_scopes">Čo sú scopes</h3>
+<div class="paragraph">
+<p>Klient môže pri autorizácii žiadať o rozličné <strong>scopes</strong>, čo je rozsah platnosti tokenu.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<em>Scopes</em> je možné použiť na aplikačné oprávnenia, či uvedenie druhu údajov, ktoré klient túži získať.
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Keycloak</dt>
+<dd>
+<p>dokáže poskytnúť <em>scope</em> pre používateľkin e-mail (<code>email</code>), používateľkin profil (<code>profile</code>), či pridelené roly (<code>roles</code>).</p>
+</dd>
+<dt class="hdlist1">GitHub</dt>
+<dd>
+<p>poskytuje <em>scope</em> pre <a href="https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/scopes-for-oauth-apps">jednotlivé privilégiá</a>, napr. scope <code>repo</code> autorizuje pre úplný prístup k používateľkinym repozitárom, či scope <code>user:read</code> umožní čítať údaje z používateľkinho profilu.</p>
+</dd>
+</dl>
+</div>
+<div class="paragraph">
+<p>Na technickej úrovni je <em>scopes</em> ľubovoľná množina reťazcov, kde význam je na dohode medzi klientom a autorizačným serverom.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Autorizačný server</strong> má pri evidovanom klientovi povedané, aké scopy mu dokáže poskytnúť.</p>
+</li>
+<li>
+<p><strong>Klient</strong> dokáže pri autorizácii požiadať o konkrétnu množinu scopov a autorizačný server usúdi, ktoré z nich dokáže splniť.</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock important">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+Pri použití OIDC sa očakáva, že klient požiada pri autorizácii o scope <code>openid</code>.
+Bez neho sa použije len štandardný protokol OAuth bez nadstavby OpenID Connect.
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="paragraph">
+<p>Na obrázku vidíme, ako klient (Spring Boot OAuth Client) požiadal autorizačný server o <em>scope</em> <code>openid</code>, ale získal autorizačný kód s rozšírenou množinou <em>scopes</em>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>openid</code> kvôli protokolu OIDC</p>
+</li>
+<li>
+<p><code>profile</code> s používateľkiným profilom</p>
+</li>
+<li>
+<p><code>email</code> s možnosťou získať e-mail používateľky</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Autorizačný server môže pridelené <em>scopes</em> uviesť aj do prístupového tokenu — ak ide o token vo formáte JWT, tak do niektorého z tvrdení <em>claims</em>.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="scopes.png" alt="scopes"/>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_consentvýslovný_súhlas_s_delegovaním">Consent — výslovný súhlas s delegovaním</h3>
+<div class="paragraph">
+<p>Autorizačný server môže v evidencii klienta určiť, že pri autorizácii je nutný explicitný súhlas používateľky so získavaním chránených zdrojov v jej mene.</p>
+</div>
+<div class="paragraph">
+<p>Dialóg potom vyzerá zhruba nasledovne:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>Zalievač:           Hej, Miriamin skleník! Potrebujem zaliať kvety!
+Miriamin skleník:   A Miriam o tom vie?
+Zalievač:           Nie, idem sa jej spýtať.
+Zalievač:           Hej, Miriam, potrebujem ti zaliať tvoje kvety!
+                    Si s tým OK?
+Autorizačný server: Hej, Miriam, mám tu Zalievača, chceš ho autorizovať
+                    a umožniť mu prístup?
+Miriam:             Áno, autorizačný server, som s tým OK.
+Autorizačný server: Zalievač, nech sa páči tu máš autorizačný kód.</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Pri prvom prístupe si tak autorizačný server vyžiada explicitný súhlas — <strong>consent</strong>.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="keycloak-consent.png" alt="keycloak consent"/>
+</div>
+</div>
+<div class="paragraph">
+<p>V prípade Keycloaku sa jednotlivé položky zo súhlasu sa priamo mapujú na <em>scopes</em>, ktoré poskytuje autorizačný server:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">User profile</dt>
+<dd>
+<p>mapovaný na scope <code>profile</code>.</p>
+</dd>
+<dt class="hdlist1">Email address</dt>
+<dd>
+<p>mapovaný na scope <code>email</code>.</p>
+</dd>
+<dt class="hdlist1">User roles</dt>
+<dd>
+<p>mapovaný na scope <code>roles</code> obsahujúci používateľské roly konfigurovateľné v Keycloaku.</p>
+</dd>
+</dl>
+</div>
+<div class="paragraph">
+<p>V prípade GitHubu v role autorizačného servera vyzerá súhlas nasledovne:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="github-consent.png" alt="github consent"/>
+</div>
+</div>
+<div class="paragraph">
+<p>Vidíme, že klient <code>spring-boot-repo-browser</code> požaduje autorizáciu.
+V GitHube je prístup k verejnému profilu súčasťou automatického <em>scope</em>, v prípade, že oň klient nežiada, ale i napriek tomu je ho vidno v sekcii <em>Personal user data</em>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_metadáta_autorizačného_servera">Metadáta autorizačného servera</h3>
+<div class="paragraph">
+<p>Autorizačný server môže poskytovať viacero endpointov cez REST či HTTP.
+Minimalistická verzia očakáva:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>autorizačný endpoint pre získanie autorizačného kódu</p>
+</li>
+<li>
+<p>endpoint pre získanie tokenu</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Ak používame OIDC, pribudne viacero endpointov, napr.:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>získanie informácií o používateľke (<em>userinfo</em>)</p>
+</li>
+<li>
+<p>získanie verejných kľúčov pre overenie digitálnych podpisov tokenov JWT</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock important">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+Špecifikácia <a href="https://openid.net/specs/openid-connect-discovery-1_0.html"><em>OpenID Connect Discovery</em></a> určuje endpoint, ktorý poskytne jednotný formát pre uvedené endpointy.
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Google</dt>
+<dd>
+<p>autorizačný server Google ponúka endpoint <a href="https://accounts.google.com/.well-known/openid-configuration" class="bare">https://accounts.google.com/.well-known/openid-configuration</a> s jednotlivými údajmi</p>
+</dd>
+<dt class="hdlist1">Facebook</dt>
+<dd>
+<p>autorizačný server Facebooku tiež ponúka endpoint <a href="https://www.facebook.com/.well-known/openid-configuration/" class="bare">https://www.facebook.com/.well-known/openid-configuration/</a></p>
+</dd>
+<dt class="hdlist1">Keycloak</dt>
+<dd>
+<p>k dispozícii je endpoint, napr. na adrese <a href="http://localhost:8080/realms/master/.well-known/openid-configuration" class="bare">http://localhost:8080/realms/master/.well-known/openid-configuration</a></p>
+</dd>
+</dl>
+</div>
+<div class="paragraph">
+<p>Endpoint podporovaný Googlom vyzerá napríklad nasledovne:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">{
+  &#34;authorization_endpoint&#34;: &#34;https://accounts.google.com/o/oauth2/v2/auth&#34;, <i class="conum" data-value="1"></i><b>(1)</b>
+  &#34;token_endpoint&#34;: &#34;https://oauth2.googleapis.com/token&#34;,  <i class="conum" data-value="2"></i><b>(2)</b>
+  &#34;jwks_uri&#34;: &#34;https://www.googleapis.com/oauth2/v3/certs&#34;,  <i class="conum" data-value="3"></i><b>(3)</b>
+  &#34;scopes_supported&#34;: [ &#34;openid&#34;, &#34;email&#34;, &#34;profile&#34; ],  <i class="conum" data-value="5"></i><b>(5)</b>
+  &#34;grant_types_supported&#34;: [  <i class="conum" data-value="4"></i><b>(4)</b>
+    &#34;authorization_code&#34;,
+    &#34;refresh_token&#34;,
+    &#34;urn:ietf:params:oauth:grant-type:device_code&#34;,
+    &#34;urn:ietf:params:oauth:grant-type:jwt-bearer&#34;
+  ]
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tbody><tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Endpoint pre získanie autorizačného kódu.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Endpoint pre získanie prístupového tokenu (JWT)</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Endpoint, ktorý poskytne informácie o verejných kľúčoch, ktorými sa podpísali tokeny JWT.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>Zoznam podporovaných flowov.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="5"></i><b>5</b></td>
+<td>Scopes, ktoré tento autorizačný server podporuje.</td>
+</tr>
+</tbody></table>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+Spring Boot a jeho integrácia s OAuth dokáže nastaviť aplikáciu podľa tohto metadátového endpointu.
+</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_jwt">JWT</h2>
+<div class="sectionbody">
+<div class="admonitionblock important">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+JSON Web Token (<a href="https://www.rfc-editor.org/rfc/rfc7519">JWT</a>) je špecifikácia pre tokeny.
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="paragraph">
+<p>JSON pozostáva z 3 častí:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>hlavička: <strong>JOSE Header</strong></p>
+</li>
+<li>
+<p>telo tokenu: <strong>payload</strong></p>
+</li>
+<li>
+<p>digitálny podpis: <strong>signature</strong></p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Všetky časti sú kódované pomocou Base64 a vzájomne oddelené bodkou.</p>
+</div>
+<div class="paragraph">
+<p>Telo tokenu i hlavička sú vo formáte JSON, kde jednotlivé kľúče a ich hodnoty sa nazývajú <strong>claim</strong> (tvrdenia).</p>
+</div>
+<div class="listingblock">
+<div class="title">Minimalistický JWT</div>
+<div class="content">
+<pre class="highlight"><code>eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2ODEwNTQxNzd9.SURFKdNgESGuubuvN9FgzBT929SjFmqXKJ29SSGM0vM</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Druhý blok medzi dvoma bodkami je telo s jediným tvrdením:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">{
+  &#34;iat&#34; : 1681054177 <i class="conum" data-value="1"></i><b>(1)</b>
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tbody><tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Tvrdenie <code>iat</code> obsahuje dátum vydania tokenu.</td>
+</tr>
+</tbody></table>
+</div>
+<div class="paragraph">
+<p>Prvý blok po bodku je hlavička a v nej claimy <code>alg</code> ako algoritmus pre podpis a <code>typ</code> tokenu.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>{
+  &#34;alg&#34;: &#34;HS256&#34;,
+  &#34;typ&#34;: &#34;JWT&#34;
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Tretí blok obsahuje digitálny podpis hlavičky a tela správy.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Algoritmus <em>HMAC with SHA-256</em> využíva symetrickú šifru a spolieha sa na to, že autor i overovateľ tokenu poznajú spoločné heslo.
+</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+</div>
+
+    <a href="/"> >> Home</a>
+  </main>
+</div>
+    <footer>
+      
+<script>
+(function() {
+  function center_el(tagName) {
+    var tags = document.getElementsByTagName(tagName), i, tag;
+    for (i = 0; i < tags.length; i++) {
+      tag = tags[i];
+      var parent = tag.parentElement;
+      
+      if (parent.childNodes.length === 1) {
+        
+        if (parent.nodeName === 'A') {
+          parent = parent.parentElement;
+          if (parent.childNodes.length != 1) continue;
+        }
+        if (parent.nodeName === 'P') parent.style.textAlign = 'center';
+      }
+    }
+  }
+  var tagNames = ['img', 'embed', 'object'];
+  for (var i = 0; i < tagNames.length; i++) {
+    center_el(tagNames[i]);
+  }
+})();
+</script>
+
+      
+    </footer>
+  </body>
+</html>
+
