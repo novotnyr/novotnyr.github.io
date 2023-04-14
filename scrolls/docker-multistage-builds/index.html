@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+    <link rel="manifest" href="/images/site.webmanifest">
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <title>Docker a viacfázové zostavenie (_multistage builds_). | robonovotny</title>
+
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.3/styles/dracula.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.3/highlight.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.3/languages/go.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    <link rel="stylesheet" href="https://novotnyr.github.io/asciidoctor.css">
+    <header>
+
+  <nav>
+    <ul>
+      
+      
+      <li class="pull-left ">
+        <a href="https://novotnyr.github.io/">~/robonovotny</a>
+      </li>
+      
+
+      
+
+    </ul>
+  </nav>
+</header>
+
+  </head>
+
+  <body>
+    <br/>
+
+<div class="article-meta">
+<h1><span class="title">Docker a viacfázové zostavenie (<em>multistage builds</em>).</span></h1>
+
+<h2 class="date">2023/04/14</h2>
+<p class="terms">
+  
+  
+  
+  
+  
+</p>
+</div>
+
+
+<div class="content-wrapper">
+  <main>
+    <div class="paragraph">
+<p>Viacfázové zostavenie — <strong>multistage build *</strong> — umožňuje optimalizovať veľkosť dockerovských imagov.</p>
+</div>
+<div class="paragraph">
+<p>Typická situácia v mnohých projektoch:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Fáza 1: kompilácia</dt>
+<dd>
+<div class="ulist">
+<ul>
+<li>
+<p>stiahnu sa nástroje na zostavenie projektu: kompilátory, správcovia balíčkov</p>
+</li>
+<li>
+<p>zostaví sa projekt z binárok, zbehne kompilácia</p>
+</li>
+</ul>
+</div>
+</dd>
+<dt class="hdlist1">Fáza 2: finálny image</dt>
+<dd>
+<div class="ulist">
+<ul>
+<li>
+<p>vytvorí sa image obsahujúci len samotné binárky, a ak treba, tak platformu (Java, Node.js)</p>
+</li>
+</ul>
+</div>
+</dd>
+</dl>
+</div>
+<div class="sect1">
+<h2 id="_implementácia_typescript_nad_node_js">Implementácia (Typescript nad Node.js)</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Každá fáza je reprezentovaná inštrukciou <code>FROM</code>.</p>
+</div>
+<div class="listingblock">
+<div class="title">Dockerfile</div>
+<div class="content">
+<pre class="highlight"><code class="language-dockerfile" data-lang="dockerfile">FROM node:19-alpine3.17 AS builder <i class="conum" data-value="1"></i><b>(1)</b>
+RUN npm install -g typescript <i class="conum" data-value="2"></i><b>(2)</b>
+COPY hello.ts . <i class="conum" data-value="3"></i><b>(3)</b>
+RUN tsc hello.ts <i class="conum" data-value="4"></i><b>(4)</b>
+
+FROM node:19-alpine3.17 <i class="conum" data-value="5"></i><b>(5)</b>
+WORKDIR /opt
+COPY --from=builder hello.js . <i class="conum" data-value="6"></i><b>(6)</b>
+CMD [ &#34;hello.js&#34; ]</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tbody><tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Budujeme cez Node.js.
+Direktíva <code>AS</code> dá fáze meno, aby sme sa na ňu v ďalších fázach vedeli odkázať.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Spustíme inštaláciu balíčkov.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Skopírujeme zdrojáky z kontextu do imagu.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>Spustíme kompilačný krok.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="5"></i><b>5</b></td>
+<td>Fáza dva: tvorba finálneho imagu.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="6"></i><b>6</b></td>
+<td>Inštrukcia <code>COPY</code> dokáže kopírovať súbory z predošlých fáz.
+<code>--from=builder</code> kopíruje hotové výsledky kompilácie z predošlej fázy do pracovného adresára (bodka <code>.</code>).</td>
+</tr>
+</tbody></table>
+</div>
+<div class="paragraph">
+<p>Buildujeme štandardne:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>docker build --tag novotnyr/hello-ts $PWD</pre>
+</div>
+</div>
+<div class="admonitionblock important">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+Výsledný image je omnoho menší než celý image s Typescriptom — ušetrí sa zhruba 80 MB.
+</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_implementácia_jazyk_c">Implementácia (jazyk C)</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Ukážme si projekt pre jazyk C:</p>
+</div>
+<div class="listingblock">
+<div class="title">Dockerfile</div>
+<div class="content">
+<pre class="highlight"><code class="language-dockerfile" data-lang="dockerfile">FROM gcc:12.2.0 AS builder <i class="conum" data-value="1"></i><b>(1)</b>
+WORKDIR /tmp/src  <i class="conum" data-value="2"></i><b>(2)</b>
+COPY zero.c .
+RUN [ &#34;gcc&#34;, &#34;zero.c&#34;, &#34;-o&#34;, &#34;zero&#34; ] <i class="conum" data-value="3"></i><b>(3)</b>
+
+FROM gcr.io/distroless/cc  <i class="conum" data-value="4"></i><b>(4)</b>
+COPY --from=builder /tmp/src/zero /usr/bin
+ENTRYPOINT [ &#34;zero&#34; ]  <i class="conum" data-value="5"></i><b>(5)</b></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tbody><tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Používame image pre kompilátor <code>gcc</code></td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Pracovný adresár, do ktorého skopírujeme zdrojáky.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Spustíme kompiláciu.
+Používame <em>exec</em> formu, ktorá nevolá kompilátor zo shellu, ale priamo.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>Používame minimalistický image bez shellu a nástrojov.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="5"></i><b>5</b></td>
+<td>Nastavíme binárku <code>zero</code> ako vstupný bod, ktorý sa zavolá automaticky pri <em>docker run</em>.</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_implementácia_java">Implementácia (Java)</h2>
+<div class="sectionbody">
+<div class="listingblock">
+<div class="title">Dockerfile</div>
+<div class="content">
+<pre class="highlight"><code class="language-dockerfile" data-lang="dockerfile">ARG WD=&#34;/tmp&#34; <i class="conum" data-value="1"></i><b>(1)</b>
+ARG TARGET=$WD/target <i class="conum" data-value="1"></i><b>(1)</b>
+
+FROM maven:3.9.1-eclipse-temurin-17 AS builder <i class="conum" data-value="2"></i><b>(2)</b>
+ARG WD <i class="conum" data-value="3"></i><b>(3)</b>
+ARG TARGET <i class="conum" data-value="3"></i><b>(3)</b>
+WORKDIR $WD <i class="conum" data-value="4"></i><b>(4)</b>
+COPY src/ src/ <i class="conum" data-value="5"></i><b>(5)</b>
+COPY pom.xml . <i class="conum" data-value="5"></i><b>(5)</b>
+RUN mvn package
+RUN mv $TARGET/*.jar $TARGET/app.jar <i class="conum" data-value="6"></i><b>(6)</b>
+
+FROM eclipse-temurin:17.0.6_10-jdk-ubi9-minimal <i class="conum" data-value="7"></i><b>(7)</b>
+ARG WD <i class="conum" data-value="3"></i><b>(3)</b>
+ARG TARGET <i class="conum" data-value="3"></i><b>(3)</b>
+WORKDIR /opt
+COPY --from=builder $TARGET/*.jar . <i class="conum" data-value="8"></i><b>(8)</b>
+CMD [ &#34;java&#34;, &#34;-jar&#34;, &#34;app.jar&#34; ] <i class="conum" data-value="9"></i><b>(9)</b></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tbody><tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Definujeme argument pre adresár so zdrojákmi a adresár pre binárky.
+Táto inštrukcia sa bude znovupoužívať vo fázach.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Budujeme cez Maven.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Deklarujeme argumenty, ktoré sme definovali v spoločnej sekcii pred prvou inštrukciou <code>FROM</code>.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>Definujeme pracovný adresár.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="5"></i><b>5</b></td>
+<td>Skopírujeme zdrojáky.
+Pozor na to, že kopírovanie adresára kopíruje len jeho obsah, nie adresár samotný!</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="6"></i><b>6</b></td>
+<td>Premenujeme binárku tak, aby sme z nej odstránili číslo verzie, ktoré do nej dá Maven.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="7"></i><b>7</b></td>
+<td>Fáza 2: bežíme nad Javou.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="8"></i><b>8</b></td>
+<td>Skopírujeme binárku (JAR) z predošlej fázy</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="9"></i><b>9</b></td>
+<td>Nastavíme vstupný bod do kontajnera.</td>
+</tr>
+</tbody></table>
+</div>
+<div class="paragraph">
+<p>Budujeme:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>docker build --tag docker-java-build $PWD</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Spúšťame:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>docker run --rm -it docker-java-build</pre>
+</div>
+</div>
+</div>
+</div>
+
+    <a href="/"> >> Home</a>
+  </main>
+</div>
+    <footer>
+      
+<script>
+(function() {
+  function center_el(tagName) {
+    var tags = document.getElementsByTagName(tagName), i, tag;
+    for (i = 0; i < tags.length; i++) {
+      tag = tags[i];
+      var parent = tag.parentElement;
+      
+      if (parent.childNodes.length === 1) {
+        
+        if (parent.nodeName === 'A') {
+          parent = parent.parentElement;
+          if (parent.childNodes.length != 1) continue;
+        }
+        if (parent.nodeName === 'P') parent.style.textAlign = 'center';
+      }
+    }
+  }
+  var tagNames = ['img', 'embed', 'object'];
+  for (var i = 0; i < tagNames.length; i++) {
+    center_el(tagNames[i]);
+  }
+})();
+</script>
+
+      
+    </footer>
+  </body>
+</html>
+

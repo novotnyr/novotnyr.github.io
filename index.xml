@@ -6,7 +6,22 @@
     <description>Recent content on robonovotny</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 09 Apr 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://novotnyr.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 14 Apr 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://novotnyr.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Docker a viacfázové zostavenie (_multistage builds_).</title>
+      <link>https://novotnyr.github.io/scrolls/docker-multistage-builds/</link>
+      <pubDate>Fri, 14 Apr 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://novotnyr.github.io/scrolls/docker-multistage-builds/</guid>
+      <description>Viacfázové zostavenie — multistage build * — umožňuje optimalizovať veľkosť dockerovských imagov.
+Typická situácia v mnohých projektoch:
+Fáza 1: kompilácia stiahnu sa nástroje na zostavenie projektu: kompilátory, správcovia balíčkov
+zostaví sa projekt z binárok, zbehne kompilácia
+Fáza 2: finálny image vytvorí sa image obsahujúci len samotné binárky, a ak treba, tak platformu (Java, Node.js)
+Implementácia (Typescript nad Node.js) Každá fáza je reprezentovaná inštrukciou FROM.
+Dockerfile FROM node:19-alpine3.17 AS builder (1) RUN npm install -g typescript (2) COPY hello.</description>
+    </item>
+    
     <item>
       <title>OAuth, OpenID Connect -- Ťahák</title>
       <link>https://novotnyr.github.io/scrolls/oauth-oidc-tahak/</link>
