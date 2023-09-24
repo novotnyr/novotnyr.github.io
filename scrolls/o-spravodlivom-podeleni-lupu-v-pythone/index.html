@@ -66,13 +66,13 @@
 <pre tabindex="0"><code>010110
 </code></pre><p>znamená, že prvá, tretia a posledná tehlička pôjde prvému zbojníkovi a zvyšné ostanú druhému.</p>
 <p>V Pythone je generovanie postupností triviálne, nasledovný kód vygeneruje všetky postupnosti núl a jednotiek dĺžky 5.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">from</span> <span style="color:#0e84b5;font-weight:bold">itertools</span> <span style="color:#289;font-weight:bold">import</span><span style="color:#333">.</span>product
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> itertools <span style="color:#f92672">import</span><span style="color:#f92672">.</span>product
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#072">print</span> product((<span style="color:#66f;font-weight:bold">0</span>, <span style="color:#66f;font-weight:bold">1</span>), repeat<span style="color:#333">=</span><span style="color:#66f;font-weight:bold">5</span>)
+</span></span><span style="display:flex;"><span>print product((<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>), repeat<span style="color:#f92672">=</span><span style="color:#ae81ff">5</span>)
 </span></span></code></pre></div><p>V iných jazykoch možno využiť i na toto špeciálny trik: postupnosti núl a jednotiek sú vlastne binárnym zápisom prirodzeného čísla. Ak chceme generovať všetky postupnosti dĺžky 5, môžeme generovať binárne zápisy čísiel v intervale 0 až 2^5 - 1.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">def</span> <span style="color:#5ed;font-weight:bold">nulaJedna</span>(dlzka):
-</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">for</span> i <span style="color:#000;font-weight:bold">in</span> <span style="color:#072">range</span>(<span style="color:#66f;font-weight:bold">2</span> <span style="color:#333">**</span> dlzka):
-</span></span><span style="display:flex;"><span>        <span style="color:#072">print</span> <span style="color:#072">list</span>(<span style="color:#072">bin</span>(i)[<span style="color:#66f;font-weight:bold">2</span>:]<span style="color:#333">.</span>rjust(dlzka, <span style="background-color:#e0e0ff">&#39;0&#39;</span>))
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">nulaJedna</span>(dlzka):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">2</span> <span style="color:#f92672">**</span> dlzka):
+</span></span><span style="display:flex;"><span>        print list(bin(i)[<span style="color:#ae81ff">2</span>:]<span style="color:#f92672">.</span>rjust(dlzka, <span style="color:#e6db74">&#39;0&#39;</span>))
 </span></span></code></pre></div><ul>
 <li>funkcia <code>bin()</code> prevedie číslo na reťazcový zápis, pozor ale, ten má prefix <code>0b</code></li>
 <li>prefixu sa zbavíme slice-nutím reťazca (od druhého znaku do konca)</li>
@@ -93,35 +93,35 @@
 <li>zisti rozdiel súm, ak je menší než priebežný, aktualizuj priebežný rozdiel a zapamätaj si rozdelenie tehál</li>
 </ul>
 <p>Tento prístup sa dá ešte vylepšiť. Nemusíme rátať sumu tehál pre druhého zbojníka: veď to je rozdiel sumy všetkých tehál a sumy pre prvého zbojníka. To sa týka aj rozdelenia konkrétnych tehál: prvý zbojník dostane svoje tehly a druhý zvyšok.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">from</span> <span style="color:#0e84b5;font-weight:bold">itertools</span> <span style="color:#289;font-weight:bold">import</span> product
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> itertools <span style="color:#f92672">import</span> product
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>loot <span style="color:#333">=</span> [<span style="color:#66f;font-weight:bold">2000</span>, <span style="color:#66f;font-weight:bold">1500</span>, <span style="color:#66f;font-weight:bold">750</span>, <span style="color:#66f;font-weight:bold">200</span>, <span style="color:#66f;font-weight:bold">560</span>]
-</span></span><span style="display:flex;"><span>finalneVeciPre1 <span style="color:#333">=</span> []
-</span></span><span style="display:flex;"><span>sumaVeci <span style="color:#333">=</span> <span style="color:#072">sum</span>(loot)
+</span></span><span style="display:flex;"><span>loot <span style="color:#f92672">=</span> [<span style="color:#ae81ff">2000</span>, <span style="color:#ae81ff">1500</span>, <span style="color:#ae81ff">750</span>, <span style="color:#ae81ff">200</span>, <span style="color:#ae81ff">560</span>]
+</span></span><span style="display:flex;"><span>finalneVeciPre1 <span style="color:#f92672">=</span> []
+</span></span><span style="display:flex;"><span>sumaVeci <span style="color:#f92672">=</span> sum(loot)
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#60e;font-weight:bold">1.</span>  na zaciatku je rozdiel obrovsky, budeme ho znizovat
-</span></span><span style="display:flex;"><span>najmensiRozdiel <span style="color:#333">=</span> sumaVeci
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">1.</span>  na zaciatku je rozdiel obrovsky, budeme ho znizovat
+</span></span><span style="display:flex;"><span>najmensiRozdiel <span style="color:#f92672">=</span> sumaVeci
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">for</span> rozdelenie <span style="color:#000;font-weight:bold">in</span> product((<span style="color:#66f;font-weight:bold">0</span>, <span style="color:#66f;font-weight:bold">1</span>), repeat<span style="color:#333">=</span><span style="color:#072">len</span>(loot)):
-</span></span><span style="display:flex;"><span>    r <span style="color:#333">=</span> <span style="color:#072">zip</span>(rozdelenie, loot)
-</span></span><span style="display:flex;"><span>    veciPre1 <span style="color:#333">=</span> [item <span style="color:#289;font-weight:bold">for</span> x, item <span style="color:#000;font-weight:bold">in</span> r <span style="color:#289;font-weight:bold">if</span> x <span style="color:#333">==</span> <span style="color:#66f;font-weight:bold">0</span>]
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> rozdelenie <span style="color:#f92672">in</span> product((<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>), repeat<span style="color:#f92672">=</span>len(loot)):
+</span></span><span style="display:flex;"><span>    r <span style="color:#f92672">=</span> zip(rozdelenie, loot)
+</span></span><span style="display:flex;"><span>    veciPre1 <span style="color:#f92672">=</span> [item <span style="color:#66d9ef">for</span> x, item <span style="color:#f92672">in</span> r <span style="color:#66d9ef">if</span> x <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>]
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    sum1 <span style="color:#333">=</span> <span style="color:#072">sum</span>(veciPre1)
-</span></span><span style="display:flex;"><span>    rozdiel <span style="color:#333">=</span> <span style="color:#072">abs</span>((sumaVeci <span style="color:#333">-</span> sum1) <span style="color:#333">-</span> sum1)
-</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">if</span> rozdiel <span style="color:#333">&lt;</span> najmensiRozdiel:
-</span></span><span style="display:flex;"><span>        najmensiRozdiel <span style="color:#333">=</span> rozdiel
-</span></span><span style="display:flex;"><span>        finalneVeciPre1 <span style="color:#333">=</span> veciPre1
+</span></span><span style="display:flex;"><span>    sum1 <span style="color:#f92672">=</span> sum(veciPre1)
+</span></span><span style="display:flex;"><span>    rozdiel <span style="color:#f92672">=</span> abs((sumaVeci <span style="color:#f92672">-</span> sum1) <span style="color:#f92672">-</span> sum1)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> rozdiel <span style="color:#f92672">&lt;</span> najmensiRozdiel:
+</span></span><span style="display:flex;"><span>        najmensiRozdiel <span style="color:#f92672">=</span> rozdiel
+</span></span><span style="display:flex;"><span>        finalneVeciPre1 <span style="color:#f92672">=</span> veciPre1
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#072">print</span> <span style="background-color:#e0e0ff">&#34;Prvy dostane &#34;</span>, finalneVeciPre1
-</span></span><span style="display:flex;"><span><span style="color:#072">print</span> <span style="background-color:#e0e0ff">&#34;Druhy dostane &#34;</span>, [item <span style="color:#289;font-weight:bold">for</span> item <span style="color:#000;font-weight:bold">in</span> loot <span style="color:#289;font-weight:bold">if</span> item <span style="color:#000;font-weight:bold">not</span> <span style="color:#000;font-weight:bold">in</span> finalneVeciPre1]
-</span></span><span style="display:flex;"><span><span style="color:#072">print</span> <span style="background-color:#e0e0ff">&#34;Rozdiel &#34;</span>, najmensiRozdiel
+</span></span><span style="display:flex;"><span>print <span style="color:#e6db74">&#34;Prvy dostane &#34;</span>, finalneVeciPre1
+</span></span><span style="display:flex;"><span>print <span style="color:#e6db74">&#34;Druhy dostane &#34;</span>, [item <span style="color:#66d9ef">for</span> item <span style="color:#f92672">in</span> loot <span style="color:#66d9ef">if</span> item <span style="color:#f92672">not</span> <span style="color:#f92672">in</span> finalneVeciPre1]
+</span></span><span style="display:flex;"><span>print <span style="color:#e6db74">&#34;Rozdiel &#34;</span>, najmensiRozdiel
 </span></span></code></pre></div><p>Funkcia <code>zip()</code> dokáže elegantne spojiť zoznam núl a jednotiek so zoznamom tehál, čo uľahčí indexovaný prístup. Ak máme dva zoznamy:</p>
 <pre tabindex="0"><code>[2000, 1500, 750, 200, 560]
 [0,    0,    0,   1,   1  ]
 </code></pre><p>funkcia <code>zip()</code> z nich vyrobí jeden zoznam, pričom spáruje prvé, druhé atď položky.</p>
 <pre tabindex="0"><code>priradenie = [[0, 2000], [0, 1500], [0, 750], [1, 200], [1, 560]]
 </code></pre><p>Zistiť veci pre prvého (alebo skôr nultého zbojníka) je záležitosťou jednej <em>list comprehension</em>:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>[hodnota <span style="color:#289;font-weight:bold">for</span> poradieZbojníka, hodnota <span style="color:#000;font-weight:bold">in</span> priradenie <span style="color:#289;font-weight:bold">if</span> poradieZbojníka <span style="color:#333">==</span> <span style="color:#66f;font-weight:bold">0</span>]
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>[hodnota <span style="color:#66d9ef">for</span> poradieZbojníka, hodnota <span style="color:#f92672">in</span> priradenie <span style="color:#66d9ef">if</span> poradieZbojníka <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>]
 </span></span></code></pre></div><hr>
 <h1 id="drevorubačský-algoritmus">Drevorubačský algoritmus</h1>
 <pre tabindex="0"><code>from itertools import *

@@ -91,54 +91,54 @@
 <p>V tomto prípade však vynechajme štýl, protokol i generovanie kostry služby, pretože si ho naklikáme vo vizuálnom editore WSDL.</p>
 <p><img src="diagram.png" alt=""></p>
 <h1 id="výsledné-wsdl">Výsledné WSDL</h1>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#579">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34; standalone=&#34;no&#34;?&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#070">&lt;wsdl:definitions</span> <span style="color:#007">xmlns:api=</span><span style="background-color:#e0e0ff">&#34;urn:example:translator&#34;</span>
-</span></span><span style="display:flex;"><span>	<span style="color:#007">xmlns:wsdl=</span><span style="background-color:#e0e0ff">&#34;http://schemas.xmlsoap.org/wsdl/&#34;</span>
-</span></span><span style="display:flex;"><span>	<span style="color:#007">xmlns:xsd=</span><span style="background-color:#e0e0ff">&#34;http://www.w3.org/2001/XMLSchema&#34;</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;translator&#34;</span>
-</span></span><span style="display:flex;"><span>	<span style="color:#007">targetNamespace=</span><span style="background-color:#e0e0ff">&#34;urn:example:translator&#34;</span>
-</span></span><span style="display:flex;"><span>	<span style="color:#007">xmlns:soap=</span><span style="background-color:#e0e0ff">&#34;http://schemas.xmlsoap.org/wsdl/soap/&#34;</span><span style="color:#070">&gt;</span>
-</span></span><span style="display:flex;"><span>	<span style="color:#070">&lt;wsdl:types&gt;</span>
-</span></span><span style="display:flex;"><span>		<span style="color:#070">&lt;xsd:schema</span> <span style="color:#007">xmlns:xsd=</span><span style="background-color:#e0e0ff">&#34;http://www.w3.org/2001/XMLSchema&#34;</span><span style="color:#070">&gt;</span>
-</span></span><span style="display:flex;"><span>			<span style="color:#070">&lt;xsd:import</span> <span style="color:#007">namespace=</span><span style="background-color:#e0e0ff">&#34;urn:example:translator&#34;</span>
-</span></span><span style="display:flex;"><span>				<span style="color:#007">schemaLocation=</span><span style="background-color:#e0e0ff">&#34;translator.xsd&#34;</span><span style="color:#070">&gt;</span>
-</span></span><span style="display:flex;"><span>			<span style="color:#070">&lt;/xsd:import&gt;</span>
-</span></span><span style="display:flex;"><span>		<span style="color:#070">&lt;/xsd:schema&gt;</span>
-</span></span><span style="display:flex;"><span>	<span style="color:#070">&lt;/wsdl:types&gt;</span>
-</span></span><span style="display:flex;"><span>	<span style="color:#070">&lt;wsdl:message</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;translateRequest&#34;</span><span style="color:#070">&gt;</span>
-</span></span><span style="display:flex;"><span>		<span style="color:#070">&lt;wsdl:part</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;body&#34;</span> <span style="color:#007">element=</span><span style="background-color:#e0e0ff">&#34;api:word&#34;</span><span style="color:#070">&gt;&lt;/wsdl:part&gt;</span>
-</span></span><span style="display:flex;"><span>	<span style="color:#070">&lt;/wsdl:message&gt;</span>
-</span></span><span style="display:flex;"><span>	<span style="color:#070">&lt;wsdl:message</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;translateResponse&#34;</span><span style="color:#070">&gt;</span>
-</span></span><span style="display:flex;"><span>		<span style="color:#070">&lt;wsdl:part</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;body&#34;</span> <span style="color:#007">element=</span><span style="background-color:#e0e0ff">&#34;api:words&#34;</span><span style="color:#070">&gt;&lt;/wsdl:part&gt;</span>
-</span></span><span style="display:flex;"><span>	<span style="color:#070">&lt;/wsdl:message&gt;</span>
-</span></span><span style="display:flex;"><span>	<span style="color:#070">&lt;wsdl:portType</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;TranslatorPortType&#34;</span><span style="color:#070">&gt;</span>
-</span></span><span style="display:flex;"><span>		<span style="color:#070">&lt;wsdl:operation</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;translate&#34;</span><span style="color:#070">&gt;</span>
-</span></span><span style="display:flex;"><span>			<span style="color:#070">&lt;wsdl:input</span> <span style="color:#007">message=</span><span style="background-color:#e0e0ff">&#34;api:translateRequest&#34;</span><span style="color:#070">&gt;&lt;/wsdl:input&gt;</span>
-</span></span><span style="display:flex;"><span>			<span style="color:#070">&lt;wsdl:output</span> <span style="color:#007">message=</span><span style="background-color:#e0e0ff">&#34;api:translateResponse&#34;</span><span style="color:#070">&gt;&lt;/wsdl:output&gt;</span>
-</span></span><span style="display:flex;"><span>		<span style="color:#070">&lt;/wsdl:operation&gt;</span>
-</span></span><span style="display:flex;"><span>	<span style="color:#070">&lt;/wsdl:portType&gt;</span>
-</span></span><span style="display:flex;"><span>	<span style="color:#070">&lt;wsdl:binding</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;TranslatorPortBinding&#34;</span>
-</span></span><span style="display:flex;"><span>		<span style="color:#007">type=</span><span style="background-color:#e0e0ff">&#34;api:TranslatorPortType&#34;</span><span style="color:#070">&gt;</span>
-</span></span><span style="display:flex;"><span>		<span style="color:#070">&lt;soap:binding</span> <span style="color:#007">style=</span><span style="background-color:#e0e0ff">&#34;document&#34;</span>
-</span></span><span style="display:flex;"><span>			<span style="color:#007">transport=</span><span style="background-color:#e0e0ff">&#34;http://schemas.xmlsoap.org/soap/http&#34;</span> <span style="color:#070">/&gt;</span>
-</span></span><span style="display:flex;"><span>		<span style="color:#070">&lt;wsdl:operation</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;translate&#34;</span><span style="color:#070">&gt;</span>
-</span></span><span style="display:flex;"><span>			<span style="color:#070">&lt;soap:operation</span>
-</span></span><span style="display:flex;"><span>				<span style="color:#007">soapAction=</span><span style="background-color:#e0e0ff">&#34;urn:example:translator/NewOperation&#34;</span> <span style="color:#070">/&gt;</span>
-</span></span><span style="display:flex;"><span>			<span style="color:#070">&lt;wsdl:input&gt;</span>
-</span></span><span style="display:flex;"><span>				<span style="color:#070">&lt;soap:body</span> <span style="color:#007">use=</span><span style="background-color:#e0e0ff">&#34;literal&#34;</span> <span style="color:#070">/&gt;</span>
-</span></span><span style="display:flex;"><span>			<span style="color:#070">&lt;/wsdl:input&gt;</span>
-</span></span><span style="display:flex;"><span>			<span style="color:#070">&lt;wsdl:output&gt;</span>
-</span></span><span style="display:flex;"><span>				<span style="color:#070">&lt;soap:body</span> <span style="color:#007">use=</span><span style="background-color:#e0e0ff">&#34;literal&#34;</span> <span style="color:#070">/&gt;</span>
-</span></span><span style="display:flex;"><span>			<span style="color:#070">&lt;/wsdl:output&gt;</span>
-</span></span><span style="display:flex;"><span>		<span style="color:#070">&lt;/wsdl:operation&gt;</span>
-</span></span><span style="display:flex;"><span>	<span style="color:#070">&lt;/wsdl:binding&gt;</span>
-</span></span><span style="display:flex;"><span>	<span style="color:#070">&lt;wsdl:service</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;TranslatorService&#34;</span><span style="color:#070">&gt;</span>
-</span></span><span style="display:flex;"><span>		<span style="color:#070">&lt;wsdl:port</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;TranslatorPort&#34;</span>
-</span></span><span style="display:flex;"><span>			<span style="color:#007">binding=</span><span style="background-color:#e0e0ff">&#34;api:TranslatorPortBinding&#34;</span><span style="color:#070">&gt;</span>
-</span></span><span style="display:flex;"><span>			<span style="color:#070">&lt;soap:address</span>
-</span></span><span style="display:flex;"><span>				<span style="color:#007">location=</span><span style="background-color:#e0e0ff">&#34;http://localhost:8080/translator&#34;</span> <span style="color:#070">/&gt;</span>
-</span></span><span style="display:flex;"><span>		<span style="color:#070">&lt;/wsdl:port&gt;</span>
-</span></span><span style="display:flex;"><span>	<span style="color:#070">&lt;/wsdl:service&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#070">&lt;/wsdl:definitions&gt;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34; standalone=&#34;no&#34;?&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;wsdl:definitions</span> <span style="color:#a6e22e">xmlns:api=</span><span style="color:#e6db74">&#34;urn:example:translator&#34;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">xmlns:wsdl=</span><span style="color:#e6db74">&#34;http://schemas.xmlsoap.org/wsdl/&#34;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">xmlns:xsd=</span><span style="color:#e6db74">&#34;http://www.w3.org/2001/XMLSchema&#34;</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;translator&#34;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">targetNamespace=</span><span style="color:#e6db74">&#34;urn:example:translator&#34;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">xmlns:soap=</span><span style="color:#e6db74">&#34;http://schemas.xmlsoap.org/wsdl/soap/&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">&lt;wsdl:types&gt;</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">&lt;xsd:schema</span> <span style="color:#a6e22e">xmlns:xsd=</span><span style="color:#e6db74">&#34;http://www.w3.org/2001/XMLSchema&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#f92672">&lt;xsd:import</span> <span style="color:#a6e22e">namespace=</span><span style="color:#e6db74">&#34;urn:example:translator&#34;</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#a6e22e">schemaLocation=</span><span style="color:#e6db74">&#34;translator.xsd&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#f92672">&lt;/xsd:import&gt;</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">&lt;/xsd:schema&gt;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">&lt;/wsdl:types&gt;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">&lt;wsdl:message</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;translateRequest&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">&lt;wsdl:part</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;body&#34;</span> <span style="color:#a6e22e">element=</span><span style="color:#e6db74">&#34;api:word&#34;</span><span style="color:#f92672">&gt;&lt;/wsdl:part&gt;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">&lt;/wsdl:message&gt;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">&lt;wsdl:message</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;translateResponse&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">&lt;wsdl:part</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;body&#34;</span> <span style="color:#a6e22e">element=</span><span style="color:#e6db74">&#34;api:words&#34;</span><span style="color:#f92672">&gt;&lt;/wsdl:part&gt;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">&lt;/wsdl:message&gt;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">&lt;wsdl:portType</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;TranslatorPortType&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">&lt;wsdl:operation</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;translate&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#f92672">&lt;wsdl:input</span> <span style="color:#a6e22e">message=</span><span style="color:#e6db74">&#34;api:translateRequest&#34;</span><span style="color:#f92672">&gt;&lt;/wsdl:input&gt;</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#f92672">&lt;wsdl:output</span> <span style="color:#a6e22e">message=</span><span style="color:#e6db74">&#34;api:translateResponse&#34;</span><span style="color:#f92672">&gt;&lt;/wsdl:output&gt;</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">&lt;/wsdl:operation&gt;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">&lt;/wsdl:portType&gt;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">&lt;wsdl:binding</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;TranslatorPortBinding&#34;</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">type=</span><span style="color:#e6db74">&#34;api:TranslatorPortType&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">&lt;soap:binding</span> <span style="color:#a6e22e">style=</span><span style="color:#e6db74">&#34;document&#34;</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#a6e22e">transport=</span><span style="color:#e6db74">&#34;http://schemas.xmlsoap.org/soap/http&#34;</span> <span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">&lt;wsdl:operation</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;translate&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#f92672">&lt;soap:operation</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#a6e22e">soapAction=</span><span style="color:#e6db74">&#34;urn:example:translator/NewOperation&#34;</span> <span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#f92672">&lt;wsdl:input&gt;</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#f92672">&lt;soap:body</span> <span style="color:#a6e22e">use=</span><span style="color:#e6db74">&#34;literal&#34;</span> <span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#f92672">&lt;/wsdl:input&gt;</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#f92672">&lt;wsdl:output&gt;</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#f92672">&lt;soap:body</span> <span style="color:#a6e22e">use=</span><span style="color:#e6db74">&#34;literal&#34;</span> <span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#f92672">&lt;/wsdl:output&gt;</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">&lt;/wsdl:operation&gt;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">&lt;/wsdl:binding&gt;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">&lt;wsdl:service</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;TranslatorService&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">&lt;wsdl:port</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;TranslatorPort&#34;</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#a6e22e">binding=</span><span style="color:#e6db74">&#34;api:TranslatorPortBinding&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#f92672">&lt;soap:address</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#a6e22e">location=</span><span style="color:#e6db74">&#34;http://localhost:8080/translator&#34;</span> <span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">&lt;/wsdl:port&gt;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">&lt;/wsdl:service&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/wsdl:definitions&gt;</span>
 </span></span></code></pre></div><h1 id="literatúra">Literatúra</h1>
 <ul>
 <li><a href="../od-wsdl-k-webovej-sluzbe-tvorime-vlastne-wsdl/">Od WSDL k webovej službe – tvoríme vlastné WSDL</a>. Článok o budovaní webovej služby na základe WSDL, na zelenej lúke.</li>

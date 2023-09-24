@@ -64,60 +64,60 @@
 <p>V článku si ukážeme príklad jednoduchej aplikácie, ktorú zabezpečíme a nasadíme v kontajneroch Tomcat a Jetty.</p>
 <h1 id="vytvorenie-servletov">Vytvorenie servletov</h1>
 <p>Webová aplikácia bude minimalistická. Budú ju totiž tvoriť len dva servlety: jeden reprezentujúci verejne dostupnú zónu a iný predstavujúci zónu určenú len pre správcov.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">package</span> <span style="color:#0e84b5;font-weight:bold">webapp</span><span style="color:#333">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic">/* .. importy .. */</span>
-</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">PublicServlet</span> <span style="color:#289;font-weight:bold">extends</span> HttpServlet <span style="color:#333">{</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#f92672">package</span> webapp<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">/* .. importy .. */</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">PublicServlet</span> <span style="color:#66d9ef">extends</span> HttpServlet <span style="color:#f92672">{</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#555;font-weight:bold">@Override</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#289;font-weight:bold">protected</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">doGet</span><span style="color:#333">(</span>HttpServletRequest request<span style="color:#333">,</span>  
-</span></span><span style="display:flex;"><span>                       HttpServletResponse response<span style="color:#333">)</span> 
-</span></span><span style="display:flex;"><span>  <span style="color:#289;font-weight:bold">throws</span> ServletException<span style="color:#333">,</span> IOException
-</span></span><span style="display:flex;"><span>  <span style="color:#333">{</span>
-</span></span><span style="display:flex;"><span>    PrintWriter out <span style="color:#333">=</span> response<span style="color:#333">.</span><span style="color:#007">getWriter</span><span style="color:#333">();</span>
-</span></span><span style="display:flex;"><span>    out<span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;&lt;h1&gt;Public zone&lt;/h1&gt;&#34;</span><span style="color:#333">);</span>
-</span></span><span style="display:flex;"><span>    out<span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;&lt;p&gt;This is a public servlet&lt;/p&gt;&#34;</span><span style="color:#333">);</span>
-</span></span><span style="display:flex;"><span>    out<span style="color:#333">.</span><span style="color:#007">flush</span><span style="color:#333">();</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#333">}</span>  
-</span></span><span style="display:flex;"><span><span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">doGet</span><span style="color:#f92672">(</span>HttpServletRequest request<span style="color:#f92672">,</span>  
+</span></span><span style="display:flex;"><span>                       HttpServletResponse response<span style="color:#f92672">)</span> 
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">throws</span> ServletException<span style="color:#f92672">,</span> IOException
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    PrintWriter out <span style="color:#f92672">=</span> response<span style="color:#f92672">.</span><span style="color:#a6e22e">getWriter</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>    out<span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;&lt;h1&gt;Public zone&lt;/h1&gt;&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    out<span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;&lt;p&gt;This is a public servlet&lt;/p&gt;&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    out<span style="color:#f92672">.</span><span style="color:#a6e22e">flush</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>  
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
 </span></span></code></pre></div><p>a</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">package</span> <span style="color:#0e84b5;font-weight:bold">webapp</span><span style="color:#333">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic">/* .. importy .. */</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#f92672">package</span> webapp<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">/* .. importy .. */</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">PrivateServlet</span> <span style="color:#289;font-weight:bold">extends</span> HttpServlet <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">PrivateServlet</span> <span style="color:#66d9ef">extends</span> HttpServlet <span style="color:#f92672">{</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#555;font-weight:bold">@Override</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#289;font-weight:bold">protected</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">doGet</span><span style="color:#333">(</span>HttpServletRequest request<span style="color:#333">,</span> 
-</span></span><span style="display:flex;"><span>                       HttpServletResponse response<span style="color:#333">)</span> 
-</span></span><span style="display:flex;"><span>  <span style="color:#289;font-weight:bold">throws</span> ServletException<span style="color:#333">,</span> IOException 
-</span></span><span style="display:flex;"><span>  <span style="color:#333">{</span>
-</span></span><span style="display:flex;"><span>    PrintWriter out <span style="color:#333">=</span> response<span style="color:#333">.</span><span style="color:#007">getWriter</span><span style="color:#333">();</span>
-</span></span><span style="display:flex;"><span>    out<span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;&lt;h1&gt;Private zone&lt;/h1&gt;&#34;</span><span style="color:#333">);</span>
-</span></span><span style="display:flex;"><span>    out<span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;&lt;p&gt;This is a servlet in a private zone&lt;/p&gt;&#34;</span><span style="color:#333">);</span>
-</span></span><span style="display:flex;"><span>    out<span style="color:#333">.</span><span style="color:#007">flush</span><span style="color:#333">();</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#333">}</span>  
-</span></span><span style="display:flex;"><span><span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">doGet</span><span style="color:#f92672">(</span>HttpServletRequest request<span style="color:#f92672">,</span> 
+</span></span><span style="display:flex;"><span>                       HttpServletResponse response<span style="color:#f92672">)</span> 
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">throws</span> ServletException<span style="color:#f92672">,</span> IOException 
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    PrintWriter out <span style="color:#f92672">=</span> response<span style="color:#f92672">.</span><span style="color:#a6e22e">getWriter</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>    out<span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;&lt;h1&gt;Private zone&lt;/h1&gt;&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    out<span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;&lt;p&gt;This is a servlet in a private zone&lt;/p&gt;&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    out<span style="color:#f92672">.</span><span style="color:#a6e22e">flush</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>  
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
 </span></span></code></pre></div><p>Oba servlety namapujeme klasickým spôsobom vo <code>web.xml</code>. Dohodneme sa, že všetky URL pod „adresárom&quot; <code>/private</code> budú mapované na <code>PrivateServlet</code> a adresy pod <code>/public</code> bude obsluhovať <code>PublicServlet</code>.</p>
 <p>Do <code>web.xml</code> teda pridáme:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#070">&lt;servlet&gt;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#070">&lt;servlet-name&gt;</span>PublicServlet<span style="color:#070">&lt;/servlet-name&gt;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#070">&lt;servlet-class&gt;</span>webapp.PublicServlet<span style="color:#070">&lt;/servlet-class&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#070">&lt;/servlet&gt;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;servlet&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;servlet-name&gt;</span>PublicServlet<span style="color:#f92672">&lt;/servlet-name&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;servlet-class&gt;</span>webapp.PublicServlet<span style="color:#f92672">&lt;/servlet-class&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/servlet&gt;</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#070">&lt;servlet&gt;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#070">&lt;servlet-name&gt;</span>PrivateServlet<span style="color:#070">&lt;/servlet-name&gt;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#070">&lt;servlet-class&gt;</span>webapp.PrivateServlet<span style="color:#070">&lt;/servlet-class&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#070">&lt;/servlet&gt;</span>  
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;servlet&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;servlet-name&gt;</span>PrivateServlet<span style="color:#f92672">&lt;/servlet-name&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;servlet-class&gt;</span>webapp.PrivateServlet<span style="color:#f92672">&lt;/servlet-class&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/servlet&gt;</span>  
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#070">&lt;servlet-mapping&gt;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#070">&lt;servlet-name&gt;</span>PublicServlet<span style="color:#070">&lt;/servlet-name&gt;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#070">&lt;url-pattern&gt;</span>/public/*<span style="color:#070">&lt;/url-pattern&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#070">&lt;/servlet-mapping&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;servlet-mapping&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;servlet-name&gt;</span>PublicServlet<span style="color:#f92672">&lt;/servlet-name&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;url-pattern&gt;</span>/public/*<span style="color:#f92672">&lt;/url-pattern&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/servlet-mapping&gt;</span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#070">&lt;servlet-mapping&gt;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#070">&lt;servlet-name&gt;</span>PrivateServlet<span style="color:#070">&lt;/servlet-name&gt;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#070">&lt;url-pattern&gt;</span>/private/*<span style="color:#070">&lt;/url-pattern&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#070">&lt;/servlet-mapping&gt;</span>  
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;servlet-mapping&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;servlet-name&gt;</span>PrivateServlet<span style="color:#f92672">&lt;/servlet-name&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;url-pattern&gt;</span>/private/*<span style="color:#f92672">&lt;/url-pattern&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/servlet-mapping&gt;</span>  
 </span></span></code></pre></div><p>Základná idea spočíva:</p>
 <ul>
 <li><strong>v určení URL</strong>, ktoré je treba zabezpečiť</li>
@@ -127,27 +127,27 @@
 <p>Všetky tieto náležitosti možno nakonfigurovať v súbore <code>web.xml</code>.</p>
 <h2 id="deklarácia-používateľských-rolí">Deklarácia používateľských rolí</h2>
 <p>V každej webovej aplikácii potrebujeme predovšetkým nadeklarovať všetky používateľské roly, ktoré sa budú používať. Na to slúži element <code>&lt;security-role&gt;</code>:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#070">&lt;security-role&gt;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#070">&lt;role-name&gt;</span>ADMIN<span style="color:#070">&lt;/role-name&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#070">&lt;/security-role&gt;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;security-role&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;role-name&gt;</span>ADMIN<span style="color:#f92672">&lt;/role-name&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/security-role&gt;</span>
 </span></span></code></pre></div><p>Tento element zavedie rolu <code>ADMIN</code>. V prípade, že chceme zaviesť aj ďalšie roly, musíme ich uviesť vo viacerých elementoch <code>&lt;security-role&gt;</code> idúcich po sebe.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#070">&lt;security-role&gt;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#070">&lt;role-name&gt;</span>ADMIN<span style="color:#070">&lt;/role-name&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#070">&lt;/security-role&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#070">&lt;security-role&gt;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#070">&lt;role-name&gt;</span>MANAGER<span style="color:#070">&lt;/role-name&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#070">&lt;/security-role&gt;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;security-role&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;role-name&gt;</span>ADMIN<span style="color:#f92672">&lt;/role-name&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/security-role&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;security-role&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;role-name&gt;</span>MANAGER<span style="color:#f92672">&lt;/role-name&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/security-role&gt;</span>
 </span></span></code></pre></div><h2 id="určenie-zabezpečených-častí-aplikácie-a-oprávnené-roly">Určenie zabezpečených častí aplikácie a oprávnené roly</h2>
 <p>Na vymedzenie zabezpečených častí webovej aplikácie slúži element <code>&lt;security-constraint&gt;</code> a jeho podelementy. Do <code>web.xml</code> dodáme nasledovný element:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#070">&lt;security-constraint&gt;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#070">&lt;web-resource-collection&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#070">&lt;web-resource-name&gt;</span>Private Zone<span style="color:#070">&lt;/web-resource-name&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#070">&lt;url-pattern&gt;</span>/private/*<span style="color:#070">&lt;/url-pattern&gt;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#070">&lt;/web-resource-collection&gt;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#070">&lt;auth-constraint&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#070">&lt;role-name&gt;</span>ADMIN<span style="color:#070">&lt;/role-name&gt;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#070">&lt;/auth-constraint&gt;</span>        
-</span></span><span style="display:flex;"><span><span style="color:#070">&lt;/security-constraint&gt;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;security-constraint&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;web-resource-collection&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;web-resource-name&gt;</span>Private Zone<span style="color:#f92672">&lt;/web-resource-name&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;url-pattern&gt;</span>/private/*<span style="color:#f92672">&lt;/url-pattern&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;/web-resource-collection&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;auth-constraint&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;role-name&gt;</span>ADMIN<span style="color:#f92672">&lt;/role-name&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;/auth-constraint&gt;</span>        
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/security-constraint&gt;</span>
 </span></span></code></pre></div><p>V ňom sme určili, že:</p>
 <ul>
 <li>zabezpečujeme URL adresy začínajúce sa na <code>/private/*</code>. Určili sme to v <code>&lt;url-pattern&gt;</code>e</li>
@@ -164,10 +164,10 @@
 </ul>
 <h3 id="http-basic-autentifikácia"><em>HTTP Basic</em> autentifikácia</h3>
 <p>Pre jednoduchosť si uvedieme príklad najjednoduchšej <em>Basic</em> autentifikácie. Tú možno dosiahnuť dodaním elementu <code>&lt;login-config&gt;</code> do <code>web.xml</code>, pričom v podelemente <code>&lt;auth-method&gt;</code> uvedieme <code>BASIC</code>.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#070">&lt;login-config&gt;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#070">&lt;auth-method&gt;</span>BASIC<span style="color:#070">&lt;/auth-method&gt;</span>	
-</span></span><span style="display:flex;"><span>  <span style="color:#070">&lt;realm-name&gt;</span>Admin<span style="color:#070">&lt;/realm-name&gt;</span>	
-</span></span><span style="display:flex;"><span><span style="color:#070">&lt;/login-config&gt;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;login-config&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;auth-method&gt;</span>BASIC<span style="color:#f92672">&lt;/auth-method&gt;</span>	
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;realm-name&gt;</span>Admin<span style="color:#f92672">&lt;/realm-name&gt;</span>	
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/login-config&gt;</span>
 </span></span></code></pre></div><p>Element <code>&lt;realm-name&gt;</code> určuje názov zóny, do ktorej sa chceme autentifikovať. Môže byť ľubovoľný, ale vzhľadom na to, že sa zobrazí v prihlasovacom okne v prehliadači, je vhodné ho nastaviť na nejaký prehľadný text.</p>
 <h1 id="konfigurácia-mien-a-hesiel">Konfigurácia mien a hesiel</h1>
 <p>Uvedením predošlých krokov sme ukončili konfiguráciu vo <code>web.xml</code>. Natíska sa však otázka, že kde vlastne nastavíme zoznam používateľov a ich heslá? To je však oblasť, ktorú špecifikácia servletov už nerieši a ponecháva ju na jednotlivých implementátorov servletových kontajnerov.</p>
@@ -179,27 +179,27 @@
 <li><code>JDBCUserRealm</code> pracujúci nad tabuľkou v SQL databáze.</li>
 </ul>
 <p>Voľbu implementácie uvedieme do konfiguračného súboru príslušnej webovej aplikácie. Štandardne je to XML súbor v adresári <code>contexts</code> v inštalačnom adresári Jetty. V najjednoduchšom prípade vyzerá súbor nasledovne:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#579">&lt;?xml version=&#34;1.0&#34;  encoding=&#34;ISO-8859-1&#34;?&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#579">&lt;!DOCTYPE Configure 
-</span></span></span><span style="display:flex;"><span><span style="color:#579">  PUBLIC &#34;-//Mort Bay Consulting//DTD Configure//EN&#34; 
-</span></span></span><span style="display:flex;"><span><span style="color:#579">  &#34;http://jetty.mortbay.org/configure.dtd&#34;&gt;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34;  encoding=&#34;ISO-8859-1&#34;?&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">&lt;!DOCTYPE Configure 
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">  PUBLIC &#34;-//Mort Bay Consulting//DTD Configure//EN&#34; 
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">  &#34;http://jetty.mortbay.org/configure.dtd&#34;&gt;</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#070">&lt;Configure</span> <span style="color:#007">class=</span><span style="background-color:#e0e0ff">&#34;org.mortbay.jetty.webapp.WebAppContext&#34;</span><span style="color:#070">&gt;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#070">&lt;Set</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;contextPath&#34;</span><span style="color:#070">&gt;</span>/secureapp<span style="color:#070">&lt;/Set&gt;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#070">&lt;Set</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;resourceBase&#34;</span><span style="color:#070">&gt;</span>c:/java/secureapp/web<span style="color:#070">&lt;/Set&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#070">&lt;/Configure&gt;</span> 
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;Configure</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;org.mortbay.jetty.webapp.WebAppContext&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;Set</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;contextPath&#34;</span><span style="color:#f92672">&gt;</span>/secureapp<span style="color:#f92672">&lt;/Set&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;Set</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;resourceBase&#34;</span><span style="color:#f92672">&gt;</span>c:/java/secureapp/web<span style="color:#f92672">&lt;/Set&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/Configure&gt;</span> 
 </span></span></code></pre></div><h3 id="načítavanie-mien-a-hesiel-zo-súboru">Načítavanie mien a hesiel zo súboru</h3>
 <p>Ak sa rozhodneme pre <code>HashUserRealm</code>, do elementu <code>&lt;Configure&gt;</code> dodáme element:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#070">&lt;Get</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;securityHandler&#34;</span><span style="color:#070">&gt;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#070">&lt;Set</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;userRealm&#34;</span><span style="color:#070">&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#070">&lt;New</span> <span style="color:#007">class=</span><span style="background-color:#e0e0ff">&#34;org.mortbay.jetty.security.HashUserRealm&#34;</span><span style="color:#070">&gt;</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#070">&lt;Set</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;name&#34;</span><span style="color:#070">&gt;</span>Admin<span style="color:#070">&lt;/Set&gt;</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#070">&lt;Set</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;config&#34;</span><span style="color:#070">&gt;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;Get</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;securityHandler&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;Set</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;userRealm&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;New</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;org.mortbay.jetty.security.HashUserRealm&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;Set</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;name&#34;</span><span style="color:#f92672">&gt;</span>Admin<span style="color:#f92672">&lt;/Set&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;Set</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;config&#34;</span><span style="color:#f92672">&gt;</span>
 </span></span><span style="display:flex;"><span>        c:/java/secureapp/web/WEB-INF/realm.properties
-</span></span><span style="display:flex;"><span>      <span style="color:#070">&lt;/Set&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#070">&lt;/New&gt;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#070">&lt;/Set&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#070">&lt;/Get&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;/Set&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/New&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;/Set&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/Get&gt;</span>
 </span></span></code></pre></div><p>Vytvorili sme teda zónu, ktorá načítava mená a heslá z textového súboru <code>realm.properties</code> v danom adresári. Podotknime, že názov zóny (teda <code>Admin</code>) v atribúte <code>name</code> sa musí zhodovať s názvom zóny (<code>realm-name</code>) z <code>web.xml</code>.</p>
 <p>Súbor obsahuje položky v tvare</p>
 <pre tabindex="0"><code>login:heslo,rola1,rola2,...
@@ -237,16 +237,16 @@ role varchar(45) NOT NULL
 </code></pre><p>Do elementu <code>&lt;Configure&gt;</code> dodáme príslušný element konfigurujúci zónu:</p>
 </li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#070">&lt;Get</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;securityHandler&#34;</span><span style="color:#070">&gt;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#070">&lt;Set</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;userRealm&#34;</span><span style="color:#070">&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#070">&lt;New</span> <span style="color:#007">class=</span><span style="background-color:#e0e0ff">&#34;org.mortbay.jetty.security.JDBCUserRealm&#34;</span><span style="color:#070">&gt;</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#070">&lt;Set</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;name&#34;</span><span style="color:#070">&gt;</span>Admin<span style="color:#070">&lt;/Set&gt;</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#070">&lt;Set</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;config&#34;</span><span style="color:#070">&gt;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;Get</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;securityHandler&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;Set</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;userRealm&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;New</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;org.mortbay.jetty.security.JDBCUserRealm&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;Set</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;name&#34;</span><span style="color:#f92672">&gt;</span>Admin<span style="color:#f92672">&lt;/Set&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;Set</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;config&#34;</span><span style="color:#f92672">&gt;</span>
 </span></span><span style="display:flex;"><span>          c:/java/secureapp/web/WEB-INF/jdbcRealm.properties
-</span></span><span style="display:flex;"><span>      <span style="color:#070">&lt;/Set&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#070">&lt;/New&gt;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#070">&lt;/Set&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#070">&lt;/Get&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;/Set&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/New&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;/Set&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/Get&gt;</span>
 </span></span></code></pre></div><p>Oproti <code>HashUserRealm</code> sme zmenili len názov triedy a cestu ku konfiguračnému súboru. V ňom uvedieme nastavenia pre pripojenie k databáze:</p>
 <ol>
 <li>
@@ -318,19 +318,19 @@ userroletablerolekey = role
 <li><em>JAASRealm</em> je založený na štandarde JAAS.</li>
 </ul>
 <p>Používanú implementáciu zóny nastavíme v konfiguračnom súbore webovej aplikácie. Štandardne je to súbor <code>názovAplikácie.xml</code> umiestnený v adresári <code>Catalina/localhost</code> v inštalačnom adresári Tomcatu. Minimalistický konfiguračný súbor vyzerá nasledovne:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#070">&lt;Context</span> <span style="color:#007">docBase=</span><span style="background-color:#e0e0ff">&#34;D:/projects/tomcat-security/web&#34;</span><span style="color:#070">&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#070">&lt;/Context&gt;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;Context</span> <span style="color:#a6e22e">docBase=</span><span style="color:#e6db74">&#34;D:/projects/tomcat-security/web&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/Context&gt;</span>
 </span></span></code></pre></div><p>Použitú implementáciu zóny dodáme pomocou elementu <code>&lt;Realm&gt;</code>.</p>
 <h3 id="načítavanie-mien-a-hesiel-zo-súboru-1">Načítavanie mien a hesiel zo súboru</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#070">&lt;Context</span> <span style="color:#007">docBase=</span><span style="background-color:#e0e0ff">&#34;D:/projects/tomcat-security/web&#34;</span><span style="color:#070">&gt;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#070">&lt;Realm</span> <span style="color:#007">className=</span><span style="background-color:#e0e0ff">&#34;org.apache.catalina.realm.MemoryRealm&#34;</span> 
-</span></span><span style="display:flex;"><span>         <span style="color:#007">pathname=</span><span style="background-color:#e0e0ff">&#34;c:/java/secureapp/web/WEB-INF/users.xml&#34;</span> <span style="color:#070">/&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#070">&lt;/Context&gt;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;Context</span> <span style="color:#a6e22e">docBase=</span><span style="color:#e6db74">&#34;D:/projects/tomcat-security/web&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;Realm</span> <span style="color:#a6e22e">className=</span><span style="color:#e6db74">&#34;org.apache.catalina.realm.MemoryRealm&#34;</span> 
+</span></span><span style="display:flex;"><span>         <span style="color:#a6e22e">pathname=</span><span style="color:#e6db74">&#34;c:/java/secureapp/web/WEB-INF/users.xml&#34;</span> <span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/Context&gt;</span>
 </span></span></code></pre></div><p>Zadeklarovali sme teda zónu načítavajúcu používateľov z XML súboru, ktorého cestu sme uviedli do atribútu <code>pathname</code>. Ako vyzerá daný súbor <code>users.xml</code>? Jednoducho:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#579">&lt;?xml version=&#39;1.0&#39; encoding=&#39;utf-8&#39;?&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#070">&lt;tomcat-users&gt;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#070">&lt;user</span> <span style="color:#007">username=</span><span style="background-color:#e0e0ff">&#34;turing25&#34;</span> <span style="color:#007">password=</span><span style="background-color:#e0e0ff">&#34;tm&#34;</span> <span style="color:#007">roles=</span><span style="background-color:#e0e0ff">&#34;ADMIN&#34;</span><span style="color:#070">/&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#070">&lt;/tomcat-users&gt;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#75715e">&lt;?xml version=&#39;1.0&#39; encoding=&#39;utf-8&#39;?&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;tomcat-users&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;user</span> <span style="color:#a6e22e">username=</span><span style="color:#e6db74">&#34;turing25&#34;</span> <span style="color:#a6e22e">password=</span><span style="color:#e6db74">&#34;tm&#34;</span> <span style="color:#a6e22e">roles=</span><span style="color:#e6db74">&#34;ADMIN&#34;</span><span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/tomcat-users&gt;</span>
 </span></span></code></pre></div><p>V nej sme pridelili používateľovi <code>turing25</code> s heslom <code>25</code> rolu <code>ADMIN</code>. Ak má používateľ viacero rol, oddelíme ich čiarkou.</p>
 <p>Následne reštartujeme server a naša aplikácia bude opäť zabezpečená.</p>
 <p>Poznamenajme, že element <code>&lt;Realm&gt;</code> môžeme uviesť aj v rámci elementu <code>&lt;Engine&gt;</code>. V tom prípade budú nastavenia zóny platné pre všetkých virtuálnych hostiteľov a všetky webové aplikácie. Ak ho uvedieme v rámci <code>&lt;Host&gt;</code>, bude to platiť pre webaplikácie v rámci virtuálneho hostiteľa. Nastavenia na špecifickejšej úrovni prekrývajú globálnejšie nastavenia.</p>
@@ -356,18 +356,18 @@ JOIN role ON role.name = user_roles.role
 </code></pre><p>Pre zónu použijeme implementáciu <code>JDBCRealm</code>, ktorú zadeklarujeme nasledovne:</p>
 </li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#070">&lt;Realm</span> <span style="color:#007">className=</span><span style="background-color:#e0e0ff">&#34;org.apache.catalina.realm.JDBCRealm&#34;</span> <span style="color:#007">debug=</span><span style="background-color:#e0e0ff">&#34;99&#34;</span>
-</span></span><span style="display:flex;"><span>       <span style="color:#007">driverName=</span><span style="background-color:#e0e0ff">&#34;com.mysql.jdbc.Driver&#34;</span>
-</span></span><span style="display:flex;"><span>       <span style="color:#007">connectionURL=</span><span style="background-color:#e0e0ff">&#34;jdbc:mysql://localhost/security&#34;</span>
-</span></span><span style="display:flex;"><span>       <span style="color:#007">connectionName=</span><span style="background-color:#e0e0ff">&#34;root&#34;</span>
-</span></span><span style="display:flex;"><span>       <span style="color:#007">connectionPassword=</span><span style="background-color:#e0e0ff">&#34;root&#34;</span>
-</span></span><span style="display:flex;"><span>       <span style="color:#007">userTable=</span><span style="background-color:#e0e0ff">&#34;user&#34;</span> 
-</span></span><span style="display:flex;"><span>       <span style="color:#007">userNameCol=</span><span style="background-color:#e0e0ff">&#34;username&#34;</span> 
-</span></span><span style="display:flex;"><span>       <span style="color:#007">userCredCol=</span><span style="background-color:#e0e0ff">&#34;password&#34;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;Realm</span> <span style="color:#a6e22e">className=</span><span style="color:#e6db74">&#34;org.apache.catalina.realm.JDBCRealm&#34;</span> <span style="color:#a6e22e">debug=</span><span style="color:#e6db74">&#34;99&#34;</span>
+</span></span><span style="display:flex;"><span>       <span style="color:#a6e22e">driverName=</span><span style="color:#e6db74">&#34;com.mysql.jdbc.Driver&#34;</span>
+</span></span><span style="display:flex;"><span>       <span style="color:#a6e22e">connectionURL=</span><span style="color:#e6db74">&#34;jdbc:mysql://localhost/security&#34;</span>
+</span></span><span style="display:flex;"><span>       <span style="color:#a6e22e">connectionName=</span><span style="color:#e6db74">&#34;root&#34;</span>
+</span></span><span style="display:flex;"><span>       <span style="color:#a6e22e">connectionPassword=</span><span style="color:#e6db74">&#34;root&#34;</span>
+</span></span><span style="display:flex;"><span>       <span style="color:#a6e22e">userTable=</span><span style="color:#e6db74">&#34;user&#34;</span> 
+</span></span><span style="display:flex;"><span>       <span style="color:#a6e22e">userNameCol=</span><span style="color:#e6db74">&#34;username&#34;</span> 
+</span></span><span style="display:flex;"><span>       <span style="color:#a6e22e">userCredCol=</span><span style="color:#e6db74">&#34;password&#34;</span>
 </span></span><span style="display:flex;"><span>         
-</span></span><span style="display:flex;"><span>       <span style="color:#007">userRoleTable=</span><span style="background-color:#e0e0ff">&#34;user_roles2&#34;</span> 
-</span></span><span style="display:flex;"><span>       <span style="color:#007">roleNameCol=</span><span style="background-color:#e0e0ff">&#34;role&#34;</span>
-</span></span><span style="display:flex;"><span><span style="color:#070">/&gt;</span>
+</span></span><span style="display:flex;"><span>       <span style="color:#a6e22e">userRoleTable=</span><span style="color:#e6db74">&#34;user_roles2&#34;</span> 
+</span></span><span style="display:flex;"><span>       <span style="color:#a6e22e">roleNameCol=</span><span style="color:#e6db74">&#34;role&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">/&gt;</span>
 </span></span></code></pre></div><ul>
 <li><code>userTable</code> obsahuje názov tabuľky s používateľmi</li>
 <li><code>userNameCol</code> je názvom stĺpca s používateľskými menami</li>
@@ -391,28 +391,28 @@ JOIN role ON role.name = user_roles.role
 <h2 id="vytvorenie-prihlasovacej-stránky">Vytvorenie prihlasovacej stránky</h2>
 <p>Prihlasovacia stránka je klasická HTML stránka so špeciálnym formulárom:
 (:source lang=html:)</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-html" data-lang="html"><span style="display:flex;"><span>&lt;<span style="color:#070">h1</span>&gt;Prihlásenie do systému&lt;/<span style="color:#070">h1</span>&gt;
-</span></span><span style="display:flex;"><span>&lt;<span style="color:#070">form</span> <span style="color:#007">method</span><span style="color:#333">=</span><span style="background-color:#e0e0ff">&#34;POST&#34;</span> <span style="color:#007">action</span><span style="color:#333">=</span><span style="background-color:#e0e0ff">&#34;j_security_check&#34;</span>&gt;
-</span></span><span style="display:flex;"><span>  Meno: &lt;<span style="color:#070">input</span> <span style="color:#007">type</span><span style="color:#333">=</span><span style="background-color:#e0e0ff">&#34;text&#34;</span> <span style="color:#007">name</span><span style="color:#333">=</span><span style="background-color:#e0e0ff">&#34;j_username&#34;</span>&gt; &lt;<span style="color:#070">br</span> /&gt;
-</span></span><span style="display:flex;"><span>  Heslo: &lt;<span style="color:#070">input</span> <span style="color:#007">type</span><span style="color:#333">=</span><span style="background-color:#e0e0ff">&#34;password&#34;</span> <span style="color:#007">name</span><span style="color:#333">=</span><span style="background-color:#e0e0ff">&#34;j_password&#34;</span>&gt; &lt;<span style="color:#070">br</span> /&gt;
-</span></span><span style="display:flex;"><span>  &lt;<span style="color:#070">input</span> <span style="color:#007">type</span><span style="color:#333">=</span><span style="background-color:#e0e0ff">&#34;submit&#34;</span> <span style="color:#007">value</span><span style="color:#333">=</span><span style="background-color:#e0e0ff">&#34;Prihlásiť sa&#34;</span> /&gt;
-</span></span><span style="display:flex;"><span>&lt;/<span style="color:#070">form</span>&gt;
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-html" data-lang="html"><span style="display:flex;"><span>&lt;<span style="color:#f92672">h1</span>&gt;Prihlásenie do systému&lt;/<span style="color:#f92672">h1</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#f92672">form</span> <span style="color:#a6e22e">method</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;POST&#34;</span> <span style="color:#a6e22e">action</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;j_security_check&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>  Meno: &lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;text&#34;</span> <span style="color:#a6e22e">name</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;j_username&#34;</span>&gt; &lt;<span style="color:#f92672">br</span> /&gt;
+</span></span><span style="display:flex;"><span>  Heslo: &lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;password&#34;</span> <span style="color:#a6e22e">name</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;j_password&#34;</span>&gt; &lt;<span style="color:#f92672">br</span> /&gt;
+</span></span><span style="display:flex;"><span>  &lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;submit&#34;</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Prihlásiť sa&#34;</span> /&gt;
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#f92672">form</span>&gt;
 </span></span></code></pre></div><p>Na tejto stránke nie je nič význačné. Do pozornosti dávame akurát názvy políčok. Meno používateľa musí byť uvádzané do ovládacieho prvku s názvom <code>j_username</code>, heslo do prvku s názvom <code>j_password</code>. Formulár musí byť namapovaný na akciu <code>j_security_check</code> (po spustení sem server dosadí vhodnú URL adresu).</p>
 <h2 id="nastavenie-formulárovej-autentifikácie">Nastavenie formulárovej autentifikácie</h2>
 <p>Ďalším krokom je zmena druhu autentifikácie vo <code>web.xml</code>. Element <code>&lt;login-config&gt;</code> upravíme nasledovne:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#070">&lt;login-config&gt;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#070">&lt;auth-method&gt;</span>FORM<span style="color:#070">&lt;/auth-method&gt;</span>	
-</span></span><span style="display:flex;"><span>  <span style="color:#070">&lt;realm-name&gt;</span>Admin<span style="color:#070">&lt;/realm-name&gt;</span>	
-</span></span><span style="display:flex;"><span>  <span style="color:#070">&lt;form-login-config&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#070">&lt;form-login-page&gt;</span>/login.html<span style="color:#070">&lt;/form-login-page&gt;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#070">&lt;/form-login-config&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#070">&lt;/login-config&gt;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;login-config&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;auth-method&gt;</span>FORM<span style="color:#f92672">&lt;/auth-method&gt;</span>	
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;realm-name&gt;</span>Admin<span style="color:#f92672">&lt;/realm-name&gt;</span>	
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;form-login-config&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;form-login-page&gt;</span>/login.html<span style="color:#f92672">&lt;/form-login-page&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;/form-login-config&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/login-config&gt;</span>
 </span></span></code></pre></div><p>Zmenili sme teda <code>auth-method</code> na <code>FORM</code> a dodali sme element <code>&lt;form-login-config&gt;</code>. V ňom sme nastavili adresu k stránke, ktorá bude slúžiť na prihlásenie.</p>
 <p>Ak sa prihlásiť nepodarí, zobrazí sa chybová stránka, ktorej vzhľad je závislý na serveri (a teda je často neprívetivý). Preto je lepšie nastaviť si vlastnú chybovú stránku, čo dosiahneme dodaním elementu <code>&lt;form-error-page&gt;</code> pod <code>&lt;form-login-config&gt;</code>:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#070">&lt;form-login-config&gt;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#070">&lt;form-login-page&gt;</span>/login.html<span style="color:#070">&lt;/form-login-page&gt;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#070">&lt;form-error-page&gt;</span>/error.html<span style="color:#070">&lt;/form-error-page&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#070">&lt;/form-login-config&gt;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;form-login-config&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;form-login-page&gt;</span>/login.html<span style="color:#f92672">&lt;/form-login-page&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;form-error-page&gt;</span>/error.html<span style="color:#f92672">&lt;/form-error-page&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/form-login-config&gt;</span>
 </span></span></code></pre></div><p>Ostáva si vytvoriť príslušnú HTML stránku. Uložíme ju <code>error.html</code> do adresára <code>web</code> v adresári webaplikácie.</p>
 <pre tabindex="0"><code>&lt;h1&gt;Chyba pri prihlásení!&lt;/h1&gt;
 Zadali ste nesprávne meno alebo heslo.
@@ -421,10 +421,10 @@ Zadali ste nesprávne meno alebo heslo.
 <ul>
 <li>
 <p><a href="http://java.sun.com/j2ee/1.4/docs/api/javax/servlet/http/HttpServletRequest.html#getUserPrincipal()"><code>getUserPrincipal()</code></a> vráti objekt <code>Principal</code> obsahujúci meno aktuálne prihláseného používateľa. V prípade, že používateľ nie je prihlásený, vráti <code>null</code>. Použiť ho teda môžeme napr. takto:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Principal principal <span style="color:#333">=</span> request<span style="color:#333">.</span><span style="color:#007">getUserPrincipal</span><span style="color:#333">();</span>
-</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">if</span><span style="color:#333">(</span>principal <span style="color:#333">!=</span> <span style="color:#289;font-weight:bold">null</span><span style="color:#333">)</span> <span style="color:#333">{</span>
-</span></span><span style="display:flex;"><span>		out<span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;Prihlásený používateľ: &#34;</span> <span style="color:#333">+</span> principal<span style="color:#333">.</span><span style="color:#007">getName</span><span style="color:#333">());</span>
-</span></span><span style="display:flex;"><span><span style="color:#333">}</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Principal principal <span style="color:#f92672">=</span> request<span style="color:#f92672">.</span><span style="color:#a6e22e">getUserPrincipal</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span><span style="color:#f92672">(</span>principal <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>		out<span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Prihlásený používateľ: &#34;</span> <span style="color:#f92672">+</span> principal<span style="color:#f92672">.</span><span style="color:#a6e22e">getName</span><span style="color:#f92672">());</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
 </span></span></code></pre></div></li>
 <li>
 <p><a href="http://java.sun.com/j2ee/1.4/docs/api/javax/servlet/http/HttpServletRequest.html#isUserInRole(java.lang.String)"><code>isUserInRole()</code></a> vráti <code>true</code> ak vystupuje používateľ pod danou rolou. (Názvy rolí musia byť nadeklarované vo <code>web.xml</code>.)</p>

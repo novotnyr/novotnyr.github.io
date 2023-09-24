@@ -65,31 +65,31 @@
     <h1 id="setting-up-camel-via-maven">Setting up Camel via Maven</h1>
 <h2 id="create-a-new-project">Create a new project</h2>
 <p>Within shell, move to your Eclipse workspace and create a new project.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>mvn archetype:generate
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>mvn archetype:generate
 </span></span></code></pre></div><p>In the interactive mode, use the default archetype (press <code>Enter</code>) with latest version (press <code>Enter</code>), fill in the group ID (<code>sk.upjs.ics.novotnyr</code>), artifact ID (<code>camel-xmpp-example</code>) and use the default values for version and package.</p>
 <p>A directory <code>camel-xmpp-example</code>·is created with a conventional subdirectory structure and a <code>pom.xml</code>.</p>
 <h2 id="upgrade-to-jdk6">Upgrade to JDK6</h2>
 <p>Camel is built upon JDK6. However, Maven uses JDK5 by default and therefore the default target is JDK5. Upgrade your configuration to create JDK6 compatible files.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#070">&lt;plugins&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#070">&lt;plugin&gt;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#070">&lt;groupId&gt;</span>org.apache.maven.plugins<span style="color:#070">&lt;/groupId&gt;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#070">&lt;artifactId&gt;</span>maven-compiler-plugin<span style="color:#070">&lt;/artifactId&gt;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#070">&lt;version&gt;</span>2.3.2<span style="color:#070">&lt;/version&gt;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#070">&lt;configuration&gt;</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#070">&lt;source&gt;</span>1.6<span style="color:#070">&lt;/source&gt;</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#070">&lt;target&gt;</span>1.6<span style="color:#070">&lt;/target&gt;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#070">&lt;/configuration&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#070">&lt;/plugin&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#070">&lt;/plugins&gt;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;plugins&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;plugin&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;groupId&gt;</span>org.apache.maven.plugins<span style="color:#f92672">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;artifactId&gt;</span>maven-compiler-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;version&gt;</span>2.3.2<span style="color:#f92672">&lt;/version&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;configuration&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;source&gt;</span>1.6<span style="color:#f92672">&lt;/source&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;target&gt;</span>1.6<span style="color:#f92672">&lt;/target&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;/configuration&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/plugin&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/plugins&gt;</span>
 </span></span></code></pre></div><h2 id="camel-dependencies">Camel dependencies</h2>
 <p>Add the following Camel dependency into <code>pom.xml</code></p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#070">&lt;dependency&gt;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#070">&lt;groupId&gt;</span>org.apache.camel<span style="color:#070">&lt;/groupId&gt;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#070">&lt;artifactId&gt;</span>camel-core<span style="color:#070">&lt;/artifactId&gt;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#070">&lt;version&gt;</span>2.9.0<span style="color:#070">&lt;/version&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#070">&lt;/dependency&gt;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;dependency&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;groupId&gt;</span>org.apache.camel<span style="color:#f92672">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;artifactId&gt;</span>camel-core<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;version&gt;</span>2.9.0<span style="color:#f92672">&lt;/version&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/dependency&gt;</span>
 </span></span></code></pre></div><p>and compile project.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>mvn compile
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>mvn compile
 </span></span></code></pre></div><p>Maven will download dependencies from Maven Central repository.</p>
 <h1 id="testing-a-simple-route">Testing a simple route</h1>
 <p>For test, we will use a simple stdin-stdout route according to the example code on <a href="http://camel.apache.org/walk-through-an-example.html">the Camel website</a>. We will type into the console, thus generating messages and Camel will route via <a href="http://camel.apache.org/stream.html">Stream Component</a> and print them to the <code>System.out</code>.</p>
@@ -126,11 +126,11 @@ SLF4J: Defaulting to no-operation (NOP) logger implementation
 SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
 </code></pre>
 <p>Resolve it by adding a proper SLF4J logging implementation, for example <a href="http://logback.qos.ch/"><code>logback</code></a>.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#070">&lt;dependency&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#070">&lt;groupId&gt;</span>ch.qos.logback<span style="color:#070">&lt;/groupId&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#070">&lt;artifactId&gt;</span>logback-classic<span style="color:#070">&lt;/artifactId&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#070">&lt;version&gt;</span>1.0.0<span style="color:#070">&lt;/version&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#070">&lt;/dependency&gt;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;dependency&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;groupId&gt;</span>ch.qos.logback<span style="color:#f92672">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;artifactId&gt;</span>logback-classic<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;version&gt;</span>1.0.0<span style="color:#f92672">&lt;/version&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/dependency&gt;</span>
 </span></span></code></pre></div><p>Running the example once again launches a context. Now we can submit messages by typing into the console. Camel will log each message delivery.</p>
 <p>Typing</p>
 <pre><code>Hello World

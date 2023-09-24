@@ -71,57 +71,57 @@
 </code></pre><ul>
 <li>Do <code>maven.xml</code> v projektovom adresari pridame / vytvorime</li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#070">&lt;project</span> <span style="color:#007">xmlns:j=</span><span style="background-color:#e0e0ff">&#34;jelly:core&#34;</span> <span style="color:#007">xmlns:ant=</span><span style="background-color:#e0e0ff">&#34;jelly:ant&#34;</span> <span style="color:#007">xmlns:util=</span><span style="background-color:#e0e0ff">&#34;jelly:util&#34;</span> <span style="color:#007">xmlns:maven=</span><span style="background-color:#e0e0ff">&#34;jelly:maven&#34;</span><span style="color:#070">&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#070">&lt;goal</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;docbook2xdoc&#34;</span><span style="color:#070">&gt;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#070">&lt;maven:get</span> <span style="color:#007">var=</span><span style="background-color:#e0e0ff">&#34;maven.sdocbook.generated.html&#34;</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#007">plugin=</span><span style="background-color:#e0e0ff">&#34;maven-sdocbook-plugin&#34;</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#007">property=</span><span style="background-color:#e0e0ff">&#34;maven.sdocbook.generated.html&#34;</span><span style="color:#070">/&gt;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#070">&lt;mkdir</span> <span style="color:#007">dir=</span><span style="background-color:#e0e0ff">&#34;${maven.gen.docs}/docbook2xdoc&#34;</span><span style="color:#070">/&gt;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;project</span> <span style="color:#a6e22e">xmlns:j=</span><span style="color:#e6db74">&#34;jelly:core&#34;</span> <span style="color:#a6e22e">xmlns:ant=</span><span style="color:#e6db74">&#34;jelly:ant&#34;</span> <span style="color:#a6e22e">xmlns:util=</span><span style="color:#e6db74">&#34;jelly:util&#34;</span> <span style="color:#a6e22e">xmlns:maven=</span><span style="color:#e6db74">&#34;jelly:maven&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;goal</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;docbook2xdoc&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;maven:get</span> <span style="color:#a6e22e">var=</span><span style="color:#e6db74">&#34;maven.sdocbook.generated.html&#34;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">plugin=</span><span style="color:#e6db74">&#34;maven-sdocbook-plugin&#34;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">property=</span><span style="color:#e6db74">&#34;maven.sdocbook.generated.html&#34;</span><span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;mkdir</span> <span style="color:#a6e22e">dir=</span><span style="color:#e6db74">&#34;${maven.gen.docs}/docbook2xdoc&#34;</span><span style="color:#f92672">/&gt;</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>        <span style="color:#070">&lt;j:set</span> <span style="color:#007">var=</span><span style="background-color:#e0e0ff">&#34;maven.html2xdoc.dir.bak&#34;</span> <span style="color:#007">value=</span><span style="background-color:#e0e0ff">&#34;${maven.html2xdoc.dir}&#34;</span><span style="color:#070">/&gt;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#070">&lt;j:set</span> <span style="color:#007">var=</span><span style="background-color:#e0e0ff">&#34;maven.gen.docs.bak&#34;</span> <span style="color:#007">value=</span><span style="background-color:#e0e0ff">&#34;${maven.gen.docs}&#34;</span><span style="color:#070">/&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;j:set</span> <span style="color:#a6e22e">var=</span><span style="color:#e6db74">&#34;maven.html2xdoc.dir.bak&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;${maven.html2xdoc.dir}&#34;</span><span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;j:set</span> <span style="color:#a6e22e">var=</span><span style="color:#e6db74">&#34;maven.gen.docs.bak&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;${maven.gen.docs}&#34;</span><span style="color:#f92672">/&gt;</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>        <span style="color:#070">&lt;j:set</span> <span style="color:#007">var=</span><span style="background-color:#e0e0ff">&#34;maven.html2xdoc.dir&#34;</span> <span style="color:#007">value=</span><span style="background-color:#e0e0ff">&#34;${maven.sdocbook.generated.html}&#34;</span><span style="color:#070">/&gt;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#070">&lt;j:set</span> <span style="color:#007">var=</span><span style="background-color:#e0e0ff">&#34;maven.gen.docs&#34;</span> <span style="color:#007">value=</span><span style="background-color:#e0e0ff">&#34;${maven.gen.docs}&#34;</span><span style="color:#070">/&gt;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#070">&lt;attainGoal</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;html2xdoc:transform&#34;</span><span style="color:#070">/&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;j:set</span> <span style="color:#a6e22e">var=</span><span style="color:#e6db74">&#34;maven.html2xdoc.dir&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;${maven.sdocbook.generated.html}&#34;</span><span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;j:set</span> <span style="color:#a6e22e">var=</span><span style="color:#e6db74">&#34;maven.gen.docs&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;${maven.gen.docs}&#34;</span><span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;attainGoal</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;html2xdoc:transform&#34;</span><span style="color:#f92672">/&gt;</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>        <span style="color:#070">&lt;j:set</span> <span style="color:#007">var=</span><span style="background-color:#e0e0ff">&#34;maven.html2xdoc.dir&#34;</span> <span style="color:#007">value=</span><span style="background-color:#e0e0ff">&#34;${maven.html2xdoc.dir.bak}&#34;</span><span style="color:#070">/&gt;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#070">&lt;j:set</span> <span style="color:#007">var=</span><span style="background-color:#e0e0ff">&#34;maven.gen.docs&#34;</span> <span style="color:#007">value=</span><span style="background-color:#e0e0ff">&#34;${maven.gen.docs.bak}&#34;</span><span style="color:#070">/&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#070">&lt;/goal&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#070">&lt;/project&gt;</span>    
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;j:set</span> <span style="color:#a6e22e">var=</span><span style="color:#e6db74">&#34;maven.html2xdoc.dir&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;${maven.html2xdoc.dir.bak}&#34;</span><span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;j:set</span> <span style="color:#a6e22e">var=</span><span style="color:#e6db74">&#34;maven.gen.docs&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;${maven.gen.docs.bak}&#34;</span><span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/goal&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/project&gt;</span>    
 </span></span></code></pre></div><ul>
 <li>Generujeme taskom</li>
 </ul>
 <pre tabindex="0"><code>maven clean sdocbook:generate-html docbook2xdoc xdoc`
 </code></pre><h1 id="kopírovanie-konfigurákov-v-prípade-viacerých-profilov">Kopírovanie konfigurákov v prípade viacerých profilov</h1>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#070">&lt;profiles&gt;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#070">&lt;profile&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#070">&lt;id&gt;</span>production<span style="color:#070">&lt;/id&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#070">&lt;build&gt;</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#070">&lt;plugins&gt;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#070">&lt;plugin&gt;</span>
-</span></span><span style="display:flex;"><span>          <span style="color:#070">&lt;artifactId&gt;</span>maven-antrun-plugin<span style="color:#070">&lt;/artifactId&gt;</span>
-</span></span><span style="display:flex;"><span>          <span style="color:#070">&lt;executions&gt;</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#070">&lt;execution&gt;</span>
-</span></span><span style="display:flex;"><span>              <span style="color:#070">&lt;phase&gt;</span>test<span style="color:#070">&lt;/phase&gt;</span>
-</span></span><span style="display:flex;"><span>              <span style="color:#070">&lt;goals&gt;</span>
-</span></span><span style="display:flex;"><span>                <span style="color:#070">&lt;goal&gt;</span>run<span style="color:#070">&lt;/goal&gt;</span>
-</span></span><span style="display:flex;"><span>              <span style="color:#070">&lt;/goals&gt;</span>
-</span></span><span style="display:flex;"><span>              <span style="color:#070">&lt;configuration&gt;</span>
-</span></span><span style="display:flex;"><span>                <span style="color:#070">&lt;tasks&gt;</span>
-</span></span><span style="display:flex;"><span>                  <span style="color:#070">&lt;delete</span>
-</span></span><span style="display:flex;"><span>                    <span style="color:#007">file=</span><span style="background-color:#e0e0ff">&#34;${project.build.outputDirectory}/database.properties&#34;</span> <span style="color:#070">/&gt;</span>
-</span></span><span style="display:flex;"><span>                  <span style="color:#070">&lt;copy</span> <span style="color:#007">file=</span><span style="background-color:#e0e0ff">&#34;src/main/resources/database.production.properties&#34;</span>
-</span></span><span style="display:flex;"><span>                    <span style="color:#007">tofile=</span><span style="background-color:#e0e0ff">&#34;${project.build.outputDirectory}/database.properties&#34;</span> <span style="color:#070">/&gt;</span>
-</span></span><span style="display:flex;"><span>                <span style="color:#070">&lt;/tasks&gt;</span>
-</span></span><span style="display:flex;"><span>              <span style="color:#070">&lt;/configuration&gt;</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#070">&lt;/execution&gt;</span>
-</span></span><span style="display:flex;"><span>          <span style="color:#070">&lt;/executions&gt;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#070">&lt;/plugin&gt;</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#070">&lt;/plugins&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#070">&lt;/build&gt;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#070">&lt;/profile&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#070">&lt;/profiles&gt;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;profiles&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;profile&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;id&gt;</span>production<span style="color:#f92672">&lt;/id&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;build&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;plugins&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;plugin&gt;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&lt;artifactId&gt;</span>maven-antrun-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&lt;executions&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;execution&gt;</span>
+</span></span><span style="display:flex;"><span>              <span style="color:#f92672">&lt;phase&gt;</span>test<span style="color:#f92672">&lt;/phase&gt;</span>
+</span></span><span style="display:flex;"><span>              <span style="color:#f92672">&lt;goals&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;goal&gt;</span>run<span style="color:#f92672">&lt;/goal&gt;</span>
+</span></span><span style="display:flex;"><span>              <span style="color:#f92672">&lt;/goals&gt;</span>
+</span></span><span style="display:flex;"><span>              <span style="color:#f92672">&lt;configuration&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;tasks&gt;</span>
+</span></span><span style="display:flex;"><span>                  <span style="color:#f92672">&lt;delete</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#a6e22e">file=</span><span style="color:#e6db74">&#34;${project.build.outputDirectory}/database.properties&#34;</span> <span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>                  <span style="color:#f92672">&lt;copy</span> <span style="color:#a6e22e">file=</span><span style="color:#e6db74">&#34;src/main/resources/database.production.properties&#34;</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#a6e22e">tofile=</span><span style="color:#e6db74">&#34;${project.build.outputDirectory}/database.properties&#34;</span> <span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;/tasks&gt;</span>
+</span></span><span style="display:flex;"><span>              <span style="color:#f92672">&lt;/configuration&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;/execution&gt;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&lt;/executions&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;/plugin&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;/plugins&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/build&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;/profile&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/profiles&gt;</span>
 </span></span></code></pre></div><p>Release potom cez</p>
 <pre tabindex="0"><code>mvn clean package -Pproduction -Dmaven.test.skip=true
 </code></pre>

@@ -61,28 +61,28 @@
     <p>Predpokladajme, že chceme sprístupniť v Tomcate globálny dátový zdroj JDBC dostupný cez JNDI vyhľadávanie. Globálnosť v tomto prípade znamená, že ho definujeme v Tomcate ako globálny JNDI zdroj.</p>
 <h1 id="zadefinovanie-globálneho-jndi-zdroja">Zadefinovanie globálneho JNDI zdroja.</h1>
 <p>V Tomcate 5.5.x zadefinujeme globálny dátový zdroj buď pomocou administrátorského panela, alebo manuálne. V prípade manuálnej konfigurácie vložíme do <code>server.xml</code> do elementu <code>&lt;GlobalNamingResources&gt;</code></p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#070">&lt;Resource</span> 
-</span></span><span style="display:flex;"><span> <span style="color:#007">auth=</span><span style="background-color:#e0e0ff">&#34;Container&#34;</span> 
-</span></span><span style="display:flex;"><span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;jdbc/MyDataSource&#34;</span> 
-</span></span><span style="display:flex;"><span> <span style="color:#007">type=</span><span style="background-color:#e0e0ff">&#34;javax.sql.DataSource&#34;</span> 
-</span></span><span style="display:flex;"><span> <span style="color:#007">url=</span><span style="background-color:#e0e0ff">&#34;jdbc:db2://dbserver:50000/mydb&#34;</span>
-</span></span><span style="display:flex;"><span> <span style="color:#007">driverClassName=</span><span style="background-color:#e0e0ff">&#34;com.p6spy.engine.spy.P6SpyDriver&#34;</span>
-</span></span><span style="display:flex;"><span> <span style="color:#007">username=</span><span style="background-color:#e0e0ff">&#34;xxx&#34;</span>
-</span></span><span style="display:flex;"><span> <span style="color:#007">password=</span><span style="background-color:#e0e0ff">&#34;xxx&#34;</span>
-</span></span><span style="display:flex;"><span> <span style="color:#007">maxActive=</span><span style="background-color:#e0e0ff">&#34;20&#34;</span>
-</span></span><span style="display:flex;"><span> <span style="color:#007">maxIdle=</span><span style="background-color:#e0e0ff">&#34;10&#34;</span>
-</span></span><span style="display:flex;"><span> <span style="color:#007">maxWait=</span><span style="background-color:#e0e0ff">&#34;-1&#34;</span>    
-</span></span><span style="display:flex;"><span><span style="color:#070">/&gt;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;Resource</span> 
+</span></span><span style="display:flex;"><span> <span style="color:#a6e22e">auth=</span><span style="color:#e6db74">&#34;Container&#34;</span> 
+</span></span><span style="display:flex;"><span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;jdbc/MyDataSource&#34;</span> 
+</span></span><span style="display:flex;"><span> <span style="color:#a6e22e">type=</span><span style="color:#e6db74">&#34;javax.sql.DataSource&#34;</span> 
+</span></span><span style="display:flex;"><span> <span style="color:#a6e22e">url=</span><span style="color:#e6db74">&#34;jdbc:db2://dbserver:50000/mydb&#34;</span>
+</span></span><span style="display:flex;"><span> <span style="color:#a6e22e">driverClassName=</span><span style="color:#e6db74">&#34;com.p6spy.engine.spy.P6SpyDriver&#34;</span>
+</span></span><span style="display:flex;"><span> <span style="color:#a6e22e">username=</span><span style="color:#e6db74">&#34;xxx&#34;</span>
+</span></span><span style="display:flex;"><span> <span style="color:#a6e22e">password=</span><span style="color:#e6db74">&#34;xxx&#34;</span>
+</span></span><span style="display:flex;"><span> <span style="color:#a6e22e">maxActive=</span><span style="color:#e6db74">&#34;20&#34;</span>
+</span></span><span style="display:flex;"><span> <span style="color:#a6e22e">maxIdle=</span><span style="color:#e6db74">&#34;10&#34;</span>
+</span></span><span style="display:flex;"><span> <span style="color:#a6e22e">maxWait=</span><span style="color:#e6db74">&#34;-1&#34;</span>    
+</span></span><span style="display:flex;"><span><span style="color:#f92672">/&gt;</span>
 </span></span></code></pre></div><h1 id="zadefinovanie-odkazu-na-globálny-zdroj-v-deskriptore-kontextu">Zadefinovanie odkazu na globálny zdroj v deskriptore kontextu.</h1>
 <p>(Tento krok je, zdá sa, voliteľný.) Do deskriptora kontextu (typicky v adresári <code>%CATALINA_HOME%/conf/Catalina/localhost/nazovKontextu.xml</code>) pridáme odkaz na globálny JNDI zdroj.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#070">&lt;ResourceLink</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;jdbc/MyDataSource&#34;</span> <span style="color:#007">global=</span><span style="background-color:#e0e0ff">&#34;jdbc/MyDataSource&#34;</span> <span style="color:#007">type=</span><span style="background-color:#e0e0ff">&#34;javax.sql.DataSource&#34;</span> <span style="color:#070">/&gt;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;ResourceLink</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;jdbc/MyDataSource&#34;</span> <span style="color:#a6e22e">global=</span><span style="color:#e6db74">&#34;jdbc/MyDataSource&#34;</span> <span style="color:#a6e22e">type=</span><span style="color:#e6db74">&#34;javax.sql.DataSource&#34;</span> <span style="color:#f92672">/&gt;</span>
 </span></span></code></pre></div><h1 id="zadefinovanie-odkazu-na-globálny-zdroj-vo-webxml">Zadefinovanie odkazu na globálny zdroj vo <code>web.xml</code></h1>
 <p>V deskriptore nasadenia (<code>web.xml</code>) pridáme odkaz na globálny zdroj.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#070">&lt;resource-ref&gt;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#070">&lt;res-ref-name&gt;</span>jdbc/MyDataSource<span style="color:#070">&lt;/res-ref-name&gt;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#070">&lt;res-type&gt;</span>javax.sql.DataSource<span style="color:#070">&lt;/res-type&gt;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#070">&lt;res-auth&gt;</span>Container<span style="color:#070">&lt;/res-auth&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#070">&lt;/resource-ref&gt;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;resource-ref&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;res-ref-name&gt;</span>jdbc/MyDataSource<span style="color:#f92672">&lt;/res-ref-name&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;res-type&gt;</span>javax.sql.DataSource<span style="color:#f92672">&lt;/res-type&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;res-auth&gt;</span>Container<span style="color:#f92672">&lt;/res-auth&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/resource-ref&gt;</span>
 </span></span></code></pre></div>
     <a href="/"> >> Home</a>
   </main>

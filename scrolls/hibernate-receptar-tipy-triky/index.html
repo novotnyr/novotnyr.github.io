@@ -59,64 +59,64 @@
 <div class="content-wrapper">
   <main>
     <h1 id="interceptory">Interceptory</h1>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">package</span> <span style="color:#0e84b5;font-weight:bold">sk.annun.davano.dao</span><span style="color:#333">;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#f92672">package</span> sk.annun.davano.dao<span style="color:#f92672">;</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">java.util.Collections</span><span style="color:#333">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">java.util.Iterator</span><span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.util.Collections<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.util.Iterator<span style="color:#f92672">;</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">org.apache.log4j.Logger</span><span style="color:#333">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">org.hibernate.EmptyInterceptor</span><span style="color:#333">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">org.springframework.jdbc.core.JdbcTemplate</span><span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> org.apache.log4j.Logger<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> org.hibernate.EmptyInterceptor<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> org.springframework.jdbc.core.JdbcTemplate<span style="color:#f92672">;</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">sk.annun.davano.Post</span><span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> sk.annun.davano.Post<span style="color:#f92672">;</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">FulltextSearchUpdateInterceptor</span> <span style="color:#289;font-weight:bold">extends</span> EmptyInterceptor <span style="color:#333">{</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">FulltextSearchUpdateInterceptor</span> <span style="color:#66d9ef">extends</span> EmptyInterceptor <span style="color:#f92672">{</span>
 </span></span><span style="display:flex;"><span>  
-</span></span><span style="display:flex;"><span>  <span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">static</span> <span style="color:#289;font-weight:bold">final</span> Logger logger <span style="color:#333">=</span> Logger<span style="color:#333">.</span><span style="color:#007">getLogger</span><span style="color:#333">(</span>FulltextSearchUpdateInterceptor<span style="color:#333">.</span><span style="color:#007">class</span><span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> Logger logger <span style="color:#f92672">=</span> Logger<span style="color:#f92672">.</span><span style="color:#a6e22e">getLogger</span><span style="color:#f92672">(</span>FulltextSearchUpdateInterceptor<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#289;font-weight:bold">private</span> JdbcTemplate jdbcTemplate<span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">private</span> JdbcTemplate jdbcTemplate<span style="color:#f92672">;</span>
 </span></span><span style="display:flex;"><span>  
-</span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic">//  @Override
-</span></span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic">//  public boolean onFlushDirty(Object entity, Serializable id, Object[] currentState, Object[] previousState, String[] propertyNames, Type[] types) {
-</span></span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic">//    if(entity instanceof Post) {
-</span></span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic">//      Object[] params = {getText((Post) entity), id};
-</span></span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic">//      jdbcTemplate.update(&#34;UPDATE post_fulltext SET text = ? WHERE id = ?&#34;, params);
-</span></span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic">//    }
-</span></span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic">//    return false;
-</span></span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic">//  }
-</span></span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic"></span>
-</span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic">//  @Override
-</span></span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic">//  public boolean onSave(Object entity, Serializable id, Object[] state, String[] propertyNames, Type[] types) {
-</span></span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic">//    if(entity instanceof Post) {
-</span></span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic">//      Object[] params = {id, getText((Post) entity)};
-</span></span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic">//      jdbcTemplate.update(&#34;INSERT into post_fulltext VALUES(?, ?)&#34;, params);  
-</span></span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic">//    }
-</span></span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic">//    return false;
-</span></span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic">//  }
-</span></span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic"></span>  
-</span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic">//  @Override
-</span></span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic">//  public void postFlush(Iterator entities) {
-</span></span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic">//    synchronized(this) {
-</span></span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic">//      while(entities.hasNext()) {
-</span></span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic">//        Object entity = entities.next();
-</span></span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic">//        System.err.println(entity);
-</span></span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic">//      }
-</span></span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic">//    }
-</span></span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic">//  }
-</span></span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic"></span>  
-</span></span><span style="display:flex;"><span>  <span style="color:#289;font-weight:bold">protected</span> String <span style="color:#5ed;font-weight:bold">getText</span><span style="color:#333">(</span>Post post<span style="color:#333">)</span> <span style="color:#333">{</span>
-</span></span><span style="display:flex;"><span>    StringBuilder fulltextData <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">new</span> StringBuilder<span style="color:#333">();</span>
-</span></span><span style="display:flex;"><span>    fulltextData<span style="color:#333">.</span><span style="color:#007">append</span><span style="color:#333">(</span>post<span style="color:#333">.</span><span style="color:#007">getTitle</span><span style="color:#333">()).</span><span style="color:#007">append</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34; &#34;</span><span style="color:#333">).</span><span style="color:#007">append</span><span style="color:#333">(</span>post<span style="color:#333">.</span><span style="color:#007">getText</span><span style="color:#333">());</span>
-</span></span><span style="display:flex;"><span>    fulltextData<span style="color:#333">.</span><span style="color:#007">append</span><span style="color:#333">(</span>post<span style="color:#333">.</span><span style="color:#007">getStory</span><span style="color:#333">().</span><span style="color:#007">getTitle</span><span style="color:#333">()).</span><span style="color:#007">append</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34; &#34;</span><span style="color:#333">).</span><span style="color:#007">append</span><span style="color:#333">(</span>post<span style="color:#333">.</span><span style="color:#007">getStory</span><span style="color:#333">().</span><span style="color:#007">getDescription</span><span style="color:#333">());</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">return</span> fulltextData<span style="color:#333">.</span><span style="color:#007">toString</span><span style="color:#333">();</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//  @Override
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">//  public boolean onFlushDirty(Object entity, Serializable id, Object[] currentState, Object[] previousState, String[] propertyNames, Type[] types) {
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">//    if(entity instanceof Post) {
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">//      Object[] params = {getText((Post) entity), id};
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">//      jdbcTemplate.update(&#34;UPDATE post_fulltext SET text = ? WHERE id = ?&#34;, params);
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">//    }
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">//    return false;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">//  }
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//  @Override
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">//  public boolean onSave(Object entity, Serializable id, Object[] state, String[] propertyNames, Type[] types) {
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">//    if(entity instanceof Post) {
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">//      Object[] params = {id, getText((Post) entity)};
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">//      jdbcTemplate.update(&#34;INSERT into post_fulltext VALUES(?, ?)&#34;, params);  
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">//    }
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">//    return false;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">//  }
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//  @Override
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">//  public void postFlush(Iterator entities) {
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">//    synchronized(this) {
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">//      while(entities.hasNext()) {
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">//        Object entity = entities.next();
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">//        System.err.println(entity);
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">//      }
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">//    }
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">//  }
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">protected</span> String <span style="color:#a6e22e">getText</span><span style="color:#f92672">(</span>Post post<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    StringBuilder fulltextData <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> StringBuilder<span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>    fulltextData<span style="color:#f92672">.</span><span style="color:#a6e22e">append</span><span style="color:#f92672">(</span>post<span style="color:#f92672">.</span><span style="color:#a6e22e">getTitle</span><span style="color:#f92672">()).</span><span style="color:#a6e22e">append</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34; &#34;</span><span style="color:#f92672">).</span><span style="color:#a6e22e">append</span><span style="color:#f92672">(</span>post<span style="color:#f92672">.</span><span style="color:#a6e22e">getText</span><span style="color:#f92672">());</span>
+</span></span><span style="display:flex;"><span>    fulltextData<span style="color:#f92672">.</span><span style="color:#a6e22e">append</span><span style="color:#f92672">(</span>post<span style="color:#f92672">.</span><span style="color:#a6e22e">getStory</span><span style="color:#f92672">().</span><span style="color:#a6e22e">getTitle</span><span style="color:#f92672">()).</span><span style="color:#a6e22e">append</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34; &#34;</span><span style="color:#f92672">).</span><span style="color:#a6e22e">append</span><span style="color:#f92672">(</span>post<span style="color:#f92672">.</span><span style="color:#a6e22e">getStory</span><span style="color:#f92672">().</span><span style="color:#a6e22e">getDescription</span><span style="color:#f92672">());</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> fulltextData<span style="color:#f92672">.</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#289;font-weight:bold">public</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">setJdbcTemplate</span><span style="color:#333">(</span>JdbcTemplate jdbcTemplate<span style="color:#333">)</span> <span style="color:#333">{</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">this</span><span style="color:#333">.</span><span style="color:#007">jdbcTemplate</span> <span style="color:#333">=</span> jdbcTemplate<span style="color:#333">;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setJdbcTemplate</span><span style="color:#f92672">(</span>JdbcTemplate jdbcTemplate<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">jdbcTemplate</span> <span style="color:#f92672">=</span> jdbcTemplate<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
 </span></span><span style="display:flex;"><span>  
 </span></span><span style="display:flex;"><span>  
-</span></span><span style="display:flex;"><span><span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
 </span></span></code></pre></div><h2 id="problémy">Problémy:</h2>
 <ul>
 <li><code>onSave()</code> sa volá pred uložením objektu. V prípade MySQL nemusí mať entita ešte pridelený primárny kľúč</li>
@@ -124,56 +124,56 @@
 <li><code>postFlush()</code> po dobehnutí <code>flush()</code>. Problém môže byť v tom, že prechádzanie iterátora entít nie je thread-safe a môže vyvolať <code>ConcurrentModificationException</code>, čo znemožňuje dosiahnutie cieľa.</li>
 </ul>
 <h2 id="deklarácia-interceptora-v-springu">Deklarácia interceptora v Springu</h2>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#070">&lt;bean</span> <span style="color:#007">id=</span><span style="background-color:#e0e0ff">&#34;sessionFactory&#34;</span>              
-</span></span><span style="display:flex;"><span>      <span style="color:#007">class=</span><span style="background-color:#e0e0ff">&#34;org.springframework.orm.hibernate3.
-</span></span></span><span style="display:flex;"><span><span style="background-color:#e0e0ff">                 annotation.AnnotationSessionFactoryBean&#34;</span><span style="color:#070">&gt;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#070">&lt;property</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;entityInterceptor&#34;</span><span style="color:#070">&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#070">&lt;bean</span> <span style="color:#007">class=</span><span style="background-color:#e0e0ff">&#34;dao.FulltextSearchUpdateInterceptor&#34;</span><span style="color:#070">&gt;</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#070">&lt;property</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;jdbcTemplate&#34;</span> <span style="color:#007">ref=</span><span style="background-color:#e0e0ff">&#34;jdbcTemplate&#34;</span> <span style="color:#070">/&gt;</span>           
-</span></span><span style="display:flex;"><span>    <span style="color:#070">&lt;/bean&gt;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#070">&lt;/property&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#070">&lt;/bean&gt;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;bean</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;sessionFactory&#34;</span>              
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;org.springframework.orm.hibernate3.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                 annotation.AnnotationSessionFactoryBean&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;entityInterceptor&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;bean</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;dao.FulltextSearchUpdateInterceptor&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;jdbcTemplate&#34;</span> <span style="color:#a6e22e">ref=</span><span style="color:#e6db74">&#34;jdbcTemplate&#34;</span> <span style="color:#f92672">/&gt;</span>           
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/bean&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;/property&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/bean&gt;</span>
 </span></span></code></pre></div><h1 id="udalosti">Udalosti</h1>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">FulltextSearchUpdateListener</span> <span style="color:#289;font-weight:bold">implements</span> PostInsertEventListener<span style="color:#333">,</span> PostUpdateEventListener <span style="color:#333">{</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#289;font-weight:bold">private</span> JdbcTemplate jdbcTemplate<span style="color:#333">;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">FulltextSearchUpdateListener</span> <span style="color:#66d9ef">implements</span> PostInsertEventListener<span style="color:#f92672">,</span> PostUpdateEventListener <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">private</span> JdbcTemplate jdbcTemplate<span style="color:#f92672">;</span>
 </span></span><span style="display:flex;"><span>  
-</span></span><span style="display:flex;"><span>  <span style="color:#289;font-weight:bold">public</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">onPostInsert</span><span style="color:#333">(</span>PostInsertEvent event<span style="color:#333">)</span> <span style="color:#333">{</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">if</span><span style="color:#333">(</span>event<span style="color:#333">.</span><span style="color:#007">getEntity</span><span style="color:#333">()</span> <span style="color:#289;font-weight:bold">instanceof</span> Post<span style="color:#333">)</span> <span style="color:#333">{</span>
-</span></span><span style="display:flex;"><span>      Post post <span style="color:#333">=</span> <span style="color:#333">(</span>Post<span style="color:#333">)</span> event<span style="color:#333">.</span><span style="color:#007">getEntity</span><span style="color:#333">();</span>
-</span></span><span style="display:flex;"><span>      Object<span style="color:#333">[]</span> params <span style="color:#333">=</span> <span style="color:#333">{</span>post<span style="color:#333">.</span><span style="color:#007">getId</span><span style="color:#333">(),</span> getText<span style="color:#333">(</span>post<span style="color:#333">)};</span>
-</span></span><span style="display:flex;"><span>      jdbcTemplate<span style="color:#333">.</span><span style="color:#007">update</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;INSERT into post_fulltext VALUES(?, ?)&#34;</span><span style="color:#333">,</span> 
-</span></span><span style="display:flex;"><span>                          params<span style="color:#333">);</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#333">}</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">onPostInsert</span><span style="color:#f92672">(</span>PostInsertEvent event<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span><span style="color:#f92672">(</span>event<span style="color:#f92672">.</span><span style="color:#a6e22e">getEntity</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">instanceof</span> Post<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>      Post post <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>Post<span style="color:#f92672">)</span> event<span style="color:#f92672">.</span><span style="color:#a6e22e">getEntity</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>      Object<span style="color:#f92672">[]</span> params <span style="color:#f92672">=</span> <span style="color:#f92672">{</span>post<span style="color:#f92672">.</span><span style="color:#a6e22e">getId</span><span style="color:#f92672">(),</span> getText<span style="color:#f92672">(</span>post<span style="color:#f92672">)};</span>
+</span></span><span style="display:flex;"><span>      jdbcTemplate<span style="color:#f92672">.</span><span style="color:#a6e22e">update</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;INSERT into post_fulltext VALUES(?, ?)&#34;</span><span style="color:#f92672">,</span> 
+</span></span><span style="display:flex;"><span>                          params<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#289;font-weight:bold">public</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">onPostUpdate</span><span style="color:#333">(</span>PostUpdateEvent event<span style="color:#333">)</span> <span style="color:#333">{</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">if</span><span style="color:#333">(</span>event<span style="color:#333">.</span><span style="color:#007">getEntity</span><span style="color:#333">()</span> <span style="color:#289;font-weight:bold">instanceof</span> Post<span style="color:#333">)</span> <span style="color:#333">{</span>
-</span></span><span style="display:flex;"><span>      Post post <span style="color:#333">=</span> <span style="color:#333">(</span>Post<span style="color:#333">)</span> event<span style="color:#333">.</span><span style="color:#007">getEntity</span><span style="color:#333">();</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">onPostUpdate</span><span style="color:#f92672">(</span>PostUpdateEvent event<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span><span style="color:#f92672">(</span>event<span style="color:#f92672">.</span><span style="color:#a6e22e">getEntity</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">instanceof</span> Post<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>      Post post <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>Post<span style="color:#f92672">)</span> event<span style="color:#f92672">.</span><span style="color:#a6e22e">getEntity</span><span style="color:#f92672">();</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>      Object<span style="color:#333">[]</span> params <span style="color:#333">=</span> <span style="color:#333">{</span>getText<span style="color:#333">(</span>post<span style="color:#333">),</span> post<span style="color:#333">.</span><span style="color:#007">getId</span><span style="color:#333">()};</span>
-</span></span><span style="display:flex;"><span>      jdbcTemplate<span style="color:#333">.</span><span style="color:#007">update</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;UPDATE post_fulltext SET text = ? &#34;</span> <span style="color:#333">+</span>
-</span></span><span style="display:flex;"><span>                          <span style="background-color:#e0e0ff">&#34;WHERE id = ?&#34;</span><span style="color:#333">,</span> params<span style="color:#333">);</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#333">}</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span>      Object<span style="color:#f92672">[]</span> params <span style="color:#f92672">=</span> <span style="color:#f92672">{</span>getText<span style="color:#f92672">(</span>post<span style="color:#f92672">),</span> post<span style="color:#f92672">.</span><span style="color:#a6e22e">getId</span><span style="color:#f92672">()};</span>
+</span></span><span style="display:flex;"><span>      jdbcTemplate<span style="color:#f92672">.</span><span style="color:#a6e22e">update</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;UPDATE post_fulltext SET text = ? &#34;</span> <span style="color:#f92672">+</span>
+</span></span><span style="display:flex;"><span>                          <span style="color:#e6db74">&#34;WHERE id = ?&#34;</span><span style="color:#f92672">,</span> params<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
 </span></span><span style="display:flex;"><span>  
-</span></span><span style="display:flex;"><span>  <span style="color:#289;font-weight:bold">private</span> String <span style="color:#5ed;font-weight:bold">getText</span><span style="color:#333">(</span>Post post<span style="color:#333">)</span> <span style="color:#333">{</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#666;font-style:italic">//..
-</span></span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic"></span>  <span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">private</span> String <span style="color:#a6e22e">getText</span><span style="color:#f92672">(</span>Post post<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">//..
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#f92672">}</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
 </span></span></code></pre></div><h2 id="deklarácia-v-springu">Deklarácia v Springu</h2>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#070">&lt;bean</span> <span style="color:#007">id=</span><span style="background-color:#e0e0ff">&#34;sessionFactory&#34;</span>              
-</span></span><span style="display:flex;"><span>      <span style="color:#007">class=</span><span style="background-color:#e0e0ff">&#34;org.springframework.orm.hibernate3.
-</span></span></span><span style="display:flex;"><span><span style="background-color:#e0e0ff">                 annotation.AnnotationSessionFactoryBean&#34;</span><span style="color:#070">&gt;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#070">&lt;property</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;eventListeners&#34;</span><span style="color:#070">&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#070">&lt;map&gt;</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#070">&lt;entry</span> <span style="color:#007">key=</span><span style="background-color:#e0e0ff">&#34;post-update&#34;</span> 
-</span></span><span style="display:flex;"><span>             <span style="color:#007">value-ref=</span><span style="background-color:#e0e0ff">&#34;hibernateFulltextListener&#34;</span> <span style="color:#070">/&gt;</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#070">&lt;entry</span> <span style="color:#007">key=</span><span style="background-color:#e0e0ff">&#34;post-insert&#34;</span> 
-</span></span><span style="display:flex;"><span>             <span style="color:#007">value-ref=</span><span style="background-color:#e0e0ff">&#34;hibernateFulltextListener&#34;</span> <span style="color:#070">/&gt;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#070">&lt;/map&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#070">&lt;/property&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#070">&lt;/bean&gt;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;bean</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;sessionFactory&#34;</span>              
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;org.springframework.orm.hibernate3.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                 annotation.AnnotationSessionFactoryBean&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;eventListeners&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;map&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;entry</span> <span style="color:#a6e22e">key=</span><span style="color:#e6db74">&#34;post-update&#34;</span> 
+</span></span><span style="display:flex;"><span>             <span style="color:#a6e22e">value-ref=</span><span style="color:#e6db74">&#34;hibernateFulltextListener&#34;</span> <span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;entry</span> <span style="color:#a6e22e">key=</span><span style="color:#e6db74">&#34;post-insert&#34;</span> 
+</span></span><span style="display:flex;"><span>             <span style="color:#a6e22e">value-ref=</span><span style="color:#e6db74">&#34;hibernateFulltextListener&#34;</span> <span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;/map&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/property&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/bean&gt;</span>
 </span></span></code></pre></div><p>V mape je treba uviesť aj hibernateovské implicitné listenery, alebo oddediť od defaultných listenerov (<code>MySaveOrUpdateListener extends DefaultSaveOrUpdateListener</code>). Inak sa môže odstaviť základná funkcionalita (keďže tá je tiež riešená listenermi).
 Kľúče do mapy je možné nájsť v DTD súbore <code>hibernate-configuration</code>. Platí pravidlo, že pre stringový kľúč treba namapovať listener s daným interfejsom. Napr. <code>post-update</code> -&gt; <code>PostUpdateEventListener</code>.</p>
 

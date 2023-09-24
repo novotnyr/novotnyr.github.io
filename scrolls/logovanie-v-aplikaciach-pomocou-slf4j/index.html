@@ -307,13 +307,13 @@ najrýchlejšie a nemalo by zdržiavať beh programu. Ďalšou možnosťou
 zrýchlenia logovania je vloženie podmienky, ktorá zistí, či má daný
 logger spracovávať hlášku daného levelu – ak nie, volanie logovacej
 metódy sa preskočí a ušetrí zbytočné spracovávanie.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">if</span><span style="color:#333">(</span>logger<span style="color:#333">.</span><span style="color:#007">isTraceEnabled</span><span style="color:#333">())</span> <span style="color:#333">{</span>
-</span></span><span style="display:flex;"><span>    logger<span style="color:#333">.</span><span style="color:#007">trace</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;Počítam dáta...&#34;</span><span style="color:#333">);</span>
-</span></span><span style="display:flex;"><span><span style="color:#333">}</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">if</span><span style="color:#f92672">(</span>logger<span style="color:#f92672">.</span><span style="color:#a6e22e">isTraceEnabled</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    logger<span style="color:#f92672">.</span><span style="color:#a6e22e">trace</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Počítam dáta...&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
 </span></span></code></pre></div><p>Dva dodatočné riadky však môžu opticky prekážať v kóde. Našťastie
 existuje spôsob, ktorý zabije dve muchy jednou ranou:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>logger<span style="color:#333">.</span><span style="color:#007">trace</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;Spracovávam &#34;</span> <span style="color:#333">+</span> i <span style="color:#333">+</span> <span style="background-color:#e0e0ff">&#34;. prvok: &#34;</span> <span style="color:#333">+</span> elements<span style="color:#333">[</span>i<span style="color:#333">]);</span>
-</span></span><span style="display:flex;"><span>logger<span style="color:#333">.</span><span style="color:#007">trace</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;Spracovávam {}. prvok {}&#34;</span><span style="color:#333">,</span> <span style="color:#289;font-weight:bold">new</span> Object<span style="color:#333">[]</span> <span style="color:#333">{</span>i<span style="color:#333">,</span> elements<span style="color:#333">[</span>i<span style="color:#333">]});</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>logger<span style="color:#f92672">.</span><span style="color:#a6e22e">trace</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Spracovávam &#34;</span> <span style="color:#f92672">+</span> i <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;. prvok: &#34;</span> <span style="color:#f92672">+</span> elements<span style="color:#f92672">[</span>i<span style="color:#f92672">]);</span>
+</span></span><span style="display:flex;"><span>logger<span style="color:#f92672">.</span><span style="color:#a6e22e">trace</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Spracovávam {}. prvok {}&#34;</span><span style="color:#f92672">,</span> <span style="color:#66d9ef">new</span> Object<span style="color:#f92672">[]</span> <span style="color:#f92672">{</span>i<span style="color:#f92672">,</span> elements<span style="color:#f92672">[</span>i<span style="color:#f92672">]});</span>
 </span></span></code></pre></div><p>Uvedené dva riadky vypíšu to isté – druhý riadok však automaticky
 skontroluje, či logger podporuje <code>TRACE</code> level, a ak nie, rovno preskočí
 typovú konverziu a spájanie reťazcov. Podľa autorov je v prípade
@@ -355,9 +355,9 @@ logback, teda nastavujeme triedy, ktoré sú uvedené v „pravej“ časti
 obrázka. (Projekt <em>slf4j</em> nemá žiadnu konfiguráciu.) V elemente
 <code>&lt;appender&gt;</code> sme nakonfigurovali konzolový appender (teda hlášky
 pôjdu do <code>System.out</code>)) a dali sme mu názov „STDOUT“.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#070">&lt;appender</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;STDOUT&#34;</span> <span style="color:#007">class=</span><span style="background-color:#e0e0ff">&#34;ch.qos.logback.core.ConsoleAppender&#34;</span><span style="color:#070">&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#070">&lt;layout</span> <span style="color:#007">class=</span><span style="background-color:#e0e0ff">&#34;ch.qos.logback.core.layout.EchoLayout&#34;</span> <span style="color:#070">/&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#070">&lt;/appender&gt;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;appender</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;STDOUT&#34;</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;ch.qos.logback.core.ConsoleAppender&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;layout</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;ch.qos.logback.core.layout.EchoLayout&#34;</span> <span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/appender&gt;</span>
 </span></span></code></pre></div><p>Tento <em>appender</em> bude využívať layout <code>EchoLayout</code>, ktorý funguje naozaj
 primitívne: pred ladiacu hlášku vloží reťazec s jej prioritou.</p>
 <p>V elemente <code>&lt;logger&gt;</code> nakonfigurujeme logger a pridelíme mu minimálny
@@ -379,7 +379,7 @@ Napríklad logger s identifikátorom <code>sk.test</code> je predkom loggera
 <code>sk.test.Arrays</code>, ale zase potomkom identifikátora <code>sk</code>. Všetky
 loggery majú jedného spoločného predka, tzv. koreňový logger, ktorý
 môžeme získať cez</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Logger rootLogger <span style="color:#333">=</span> LoggerFactory<span style="color:#333">.</span><span style="color:#007">getLogger</span><span style="color:#333">(</span>org<span style="color:#333">.</span><span style="color:#007">slf4j</span><span style="color:#333">.</span><span style="color:#007">Logger</span><span style="color:#333">.</span><span style="color:#007">ROOT_LOGGER_NAME</span><span style="color:#333">);</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Logger rootLogger <span style="color:#f92672">=</span> LoggerFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">getLogger</span><span style="color:#f92672">(</span>org<span style="color:#f92672">.</span><span style="color:#a6e22e">slf4j</span><span style="color:#f92672">.</span><span style="color:#a6e22e">Logger</span><span style="color:#f92672">.</span><span style="color:#a6e22e">ROOT_LOGGER_NAME</span><span style="color:#f92672">);</span>
 </span></span></code></pre></div><p>Hierarchia sa najčastejšie využíva pre dedenie levelu loggerov. Ak máme
 logger a chceme zistiť jeho level, postupujeme smerom nahor v hierarchii
 a hľadáme prvú nenullovú špecifikáciu levelu. V našom príklade je
@@ -387,9 +387,9 @@ situácia jednoduchá: level loggeru <code>sk.test.Arrays</code> je zjavne TRACE
 lebo to sme explicitne uviedli v jeho konfigurácii.</p>
 <p>Zoberme si ďalší situáciu. Zadefinujme si v XML súbore jedinú
 špecifikáciu loggera:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#070">&lt;logger</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;sk.test&#34;</span> <span style="color:#007">level=</span><span style="background-color:#e0e0ff">&#34;INFO&#34;</span><span style="color:#070">&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#070">&lt;appender-ref</span> <span style="color:#007">ref=</span><span style="background-color:#e0e0ff">&#34;STDOUT&#34;</span> <span style="color:#070">/&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#070">&lt;/logger&gt;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;logger</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;sk.test&#34;</span> <span style="color:#a6e22e">level=</span><span style="color:#e6db74">&#34;INFO&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;appender-ref</span> <span style="color:#a6e22e">ref=</span><span style="color:#e6db74">&#34;STDOUT&#34;</span> <span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/logger&gt;</span>
 </span></span></code></pre></div><p>Ak by sme mali triedu, ktorá loguje do loggera s
 menom<code>sk.test.algorithms.ComplexAlgorithm</code>, tak jeho level bude <code>INFO</code>.
 Postupne sa totiž prechádza cez hierarchiu smerom nahor a hľadá sa prvá
@@ -406,16 +406,16 @@ loggerov, ktoré sa v XML súbore konfigurujú pomocou elementu
 ktorom môžeme nastaviť appendery a prípadne zmeniť jeho implicitný
 level. Zmenou levelu koreňového loggera vieme hromadne nastaviť level
 všetkých potomkov (okrem tých, ktorý ho prekryjú).</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#579">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34; ?&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#070">&lt;configuration&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#070">&lt;appender</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;STDOUT&#34;</span> <span style="color:#007">class=</span><span style="background-color:#e0e0ff">&#34;ch.qos.logback.core.ConsoleAppender&#34;</span><span style="color:#070">&gt;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#070">&lt;layout</span> <span style="color:#007">class=</span><span style="background-color:#e0e0ff">&#34;ch.qos.logback.core.layout.EchoLayout&#34;</span> <span style="color:#070">/&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#070">&lt;/appender&gt;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34; ?&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;configuration&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;appender</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;STDOUT&#34;</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;ch.qos.logback.core.ConsoleAppender&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;layout</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;ch.qos.logback.core.layout.EchoLayout&#34;</span> <span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/appender&gt;</span>
 </span></span><span style="display:flex;"><span>    
-</span></span><span style="display:flex;"><span>    <span style="color:#070">&lt;root</span> <span style="color:#007">level=</span><span style="background-color:#e0e0ff">&#34;INFO&#34;</span><span style="color:#070">&gt;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#070">&lt;appender-ref</span> <span style="color:#007">ref=</span><span style="background-color:#e0e0ff">&#34;STDOUT&#34;</span> <span style="color:#070">/&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#070">&lt;/root&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#070">&lt;/configuration&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;root</span> <span style="color:#a6e22e">level=</span><span style="color:#e6db74">&#34;INFO&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;appender-ref</span> <span style="color:#a6e22e">ref=</span><span style="color:#e6db74">&#34;STDOUT&#34;</span> <span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/root&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/configuration&gt;</span>
 </span></span></code></pre></div><p>V tomto prípade sme nastavili koreňovému loggeru level <code>INFO</code>, ktorý sa
 automaticky „prepadne“ nadol do všetkých potomkov. Inak povedané, všetky
 potomkovské loggery budú mať level <code>INFO</code>, pokiaľ si ho nepredefinujú
@@ -456,29 +456,29 @@ sami. Iný príklad dedičnosti je v nasledovnej tabuľke:</p>
 sa dedičnosť aj appenderov? Istým spôsobom áno. V príklade z predošlej
 state máme koreňový logger, ktorý používa appender s
 názvom <code>STDOUT</code>. Dodajme konfiguráciu ďalšieho loggera:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span>    <span style="color:#579">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34; ?&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#070">&lt;configuration&gt;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#070">&lt;appender</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;STDOUT&#34;</span> <span style="color:#007">class=</span><span style="background-color:#e0e0ff">&#34;ch.qos.logback.core.ConsoleAppender&#34;</span><span style="color:#070">&gt;</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#070">&lt;layout</span> <span style="color:#007">class=</span><span style="background-color:#e0e0ff">&#34;ch.qos.logback.core.layout.EchoLayout&#34;</span> <span style="color:#070">/&gt;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#070">&lt;/appender&gt;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span>    <span style="color:#75715e">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34; ?&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;configuration&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;appender</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;STDOUT&#34;</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;ch.qos.logback.core.ConsoleAppender&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;layout</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;ch.qos.logback.core.layout.EchoLayout&#34;</span> <span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;/appender&gt;</span>
 </span></span><span style="display:flex;"><span>      
-</span></span><span style="display:flex;"><span>        <span style="color:#070">&lt;root</span> <span style="color:#007">level=</span><span style="background-color:#e0e0ff">&#34;INFO&#34;</span><span style="color:#070">&gt;</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#070">&lt;appender-ref</span> <span style="color:#007">ref=</span><span style="background-color:#e0e0ff">&#34;STDOUT&#34;</span> <span style="color:#070">/&gt;</span>     
-</span></span><span style="display:flex;"><span>        <span style="color:#070">&lt;/root&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;root</span> <span style="color:#a6e22e">level=</span><span style="color:#e6db74">&#34;INFO&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;appender-ref</span> <span style="color:#a6e22e">ref=</span><span style="color:#e6db74">&#34;STDOUT&#34;</span> <span style="color:#f92672">/&gt;</span>     
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;/root&gt;</span>
 </span></span><span style="display:flex;"><span>    
-</span></span><span style="display:flex;"><span>        <span style="color:#070">&lt;logger</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;sk.test.Arrays&#34;</span> <span style="color:#070">/&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#070">&lt;/configuration&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;logger</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;sk.test.Arrays&#34;</span> <span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/configuration&gt;</span>
 </span></span></code></pre></div><p>Logger <code>sk.test.Arrays</code> zdedí nielen level (teda získa efektívny level
 <code>INFO</code>), ale aj appender <code>STDOUT</code>. Dodajme do príkladu druhý appender, ktorý
 bude posielať na konzolu správy v tvare XML a asociujme ho s loggerom
 <code>sk.test.Arrays</code>.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span>    <span style="color:#070">&lt;appender</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;STDOUTXML&#34;</span> <span style="color:#007">class=</span><span style="background-color:#e0e0ff">&#34;ch.qos.logback.core.ConsoleAppender&#34;</span><span style="color:#070">&gt;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#070">&lt;layout</span> <span style="color:#007">class=</span><span style="background-color:#e0e0ff">&#34;ch.qos.logback.classic.log4j.XMLLayout&#34;</span> <span style="color:#070">/&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#070">&lt;/appender&gt;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span>    <span style="color:#f92672">&lt;appender</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;STDOUTXML&#34;</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;ch.qos.logback.core.ConsoleAppender&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;layout</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;ch.qos.logback.classic.log4j.XMLLayout&#34;</span> <span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/appender&gt;</span>
 </span></span><span style="display:flex;"><span>    ...
-</span></span><span style="display:flex;"><span>    <span style="color:#070">&lt;logger</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;sk.test.Arrays&#34;</span><span style="color:#070">&gt;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#070">&lt;appender-ref</span> <span style="color:#007">ref=</span><span style="background-color:#e0e0ff">&#34;STDOUTXML&#34;</span> <span style="color:#070">/&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#070">&lt;/logger&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;logger</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;sk.test.Arrays&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;appender-ref</span> <span style="color:#a6e22e">ref=</span><span style="color:#e6db74">&#34;STDOUTXML&#34;</span> <span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/logger&gt;</span>
 </span></span></code></pre></div><p>Po spustení Java triedy sa každá správa vypíše dvakrát: raz v bežnom
 jednoduchom formáte a raz v tvare XML:</p>
 <pre><code>&lt;log4j:event logger=&quot;sk.test.Arrays&quot;
@@ -506,24 +506,24 @@ jednak do konzoly a jednak do súboru <code>algorithms.txt</code>. Zároveň maj
 logger <code>sk.test</code>, ktorý zapisuje hlášky do centrálneho aplikačného log
 súboru <code>test.log</code>. Aditivita zabezpečí, že logovacie hlášky z loggera
 sk.test.algorithms sa zjavia v oboch súboroch i na konzole.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#070">&lt;appender</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;ALGORITHMSFILE&#34;</span> <span style="color:#f00;background-color:#faa">...</span>
-</span></span><span style="display:flex;"><span><span style="color:#f00;background-color:#faa">&lt;appender</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;TESTFILE&#34;</span> <span style="color:#f00;background-color:#faa">...</span>
-</span></span><span style="display:flex;"><span><span style="color:#f00;background-color:#faa">&lt;appender</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;STDOUT&#34;</span> <span style="color:#f00;background-color:#faa">...</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;appender</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;ALGORITHMSFILE&#34;</span> <span style="color:#960050;background-color:#1e0010">...</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">&lt;appender</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;TESTFILE&#34;</span> <span style="color:#960050;background-color:#1e0010">...</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">&lt;appender</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;STDOUT&#34;</span> <span style="color:#960050;background-color:#1e0010">...</span>
 </span></span><span style="display:flex;"><span>    
-</span></span><span style="display:flex;"><span><span style="color:#f00;background-color:#faa">&lt;logger</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;sk.test&#34;</span><span style="color:#070">&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#070">&lt;appender-ref</span> <span style="color:#007">ref=</span><span style="background-color:#e0e0ff">&#34;TESTFILE&#34;</span> <span style="color:#070">/&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#070">&lt;/logger&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">&lt;logger</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;sk.test&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;appender-ref</span> <span style="color:#a6e22e">ref=</span><span style="color:#e6db74">&#34;TESTFILE&#34;</span> <span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/logger&gt;</span>
 </span></span><span style="display:flex;"><span>    
-</span></span><span style="display:flex;"><span><span style="color:#070">&lt;logger</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;sk.test.algorithms&#34;</span><span style="color:#070">&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#070">&lt;appender-ref</span> <span style="color:#007">ref=</span><span style="background-color:#e0e0ff">&#34;ALGORITHMSFILE&#34;</span> <span style="color:#070">/&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#070">&lt;appender-ref</span> <span style="color:#007">ref=</span><span style="background-color:#e0e0ff">&#34;STDOUT&#34;</span> <span style="color:#070">/&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#070">&lt;/logger&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;logger</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;sk.test.algorithms&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;appender-ref</span> <span style="color:#a6e22e">ref=</span><span style="color:#e6db74">&#34;ALGORITHMSFILE&#34;</span> <span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;appender-ref</span> <span style="color:#a6e22e">ref=</span><span style="color:#e6db74">&#34;STDOUT&#34;</span> <span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/logger&gt;</span>
 </span></span></code></pre></div><p>Čo ak chceme zabrániť tomu, aby „ladiace hlásenia modulu“ putovali do
 centrálneho aplikačného log súboru? Stačí vypnúť aditivitu na loggeri
 <code>sk.test</code>:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#070">&lt;logger</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;sk.test&#34;</span> <span style="color:#007">additivity=</span><span style="background-color:#e0e0ff">&#34;false&#34;</span><span style="color:#070">&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#070">&lt;appender-ref</span> <span style="color:#007">ref=</span><span style="background-color:#e0e0ff">&#34;TESTFILE&#34;</span> <span style="color:#070">/&gt;</span>   
-</span></span><span style="display:flex;"><span><span style="color:#070">&lt;/logger&gt;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;logger</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;sk.test&#34;</span> <span style="color:#a6e22e">additivity=</span><span style="color:#e6db74">&#34;false&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;appender-ref</span> <span style="color:#a6e22e">ref=</span><span style="color:#e6db74">&#34;TESTFILE&#34;</span> <span style="color:#f92672">/&gt;</span>   
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/logger&gt;</span>
 </span></span></code></pre></div><p>Ladiace hlášky z potomkov loggera <code>sk.test</code> (teda v našom prípade z
 loggera <code>sk.test.algorithms</code>) už nebudú zasielané do appenderov loggera
 <code>sk.test</code>, ani do jeho rodičov. Zakázanie aditivity v podstate zabráni
@@ -577,11 +577,11 @@ Typická správa vyzerá nasledovne:</p>
 <p><code>PatternLayout</code> (layout založený na predpise) je veľmi flexibilný
 layout, ktorý umožňuje využívať pri správe premenné a pokročilé
 formátovanie.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#070">&lt;appender</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;FILE&#34;</span> <span style="color:#007">class=</span><span style="background-color:#e0e0ff">&#34;ch.qos.logback.core.ConsoleAppender&#34;</span><span style="color:#070">&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#070">&lt;layout</span> <span style="color:#007">class=</span><span style="background-color:#e0e0ff">&#34;ch.qos.logback.core.ConsoleAppender&#34;</span><span style="color:#070">&gt;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#070">&lt;Pattern&gt;</span>%-5level: %message%n<span style="color:#070">&lt;/Pattern&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#070">&lt;/layout&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#070">&lt;/appender&gt;</span> 
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;appender</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;FILE&#34;</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;ch.qos.logback.core.ConsoleAppender&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;layout</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;ch.qos.logback.core.ConsoleAppender&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;Pattern&gt;</span>%-5level: %message%n<span style="color:#f92672">&lt;/Pattern&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/layout&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/appender&gt;</span> 
 </span></span></code></pre></div><p>Hlášky sformátované uvedeným predpisom vyzerajú nasledovne: level hlášky
 v päťznakovej šírke oddelený dvojbodkou, za ktorou nasleduje text správy
 a koniec riadka.</p>

@@ -60,11 +60,11 @@
   <main>
     <p>Makefile prevezme použitý shell zo svojej internej premennej <code>SHELL</code> (pozri <a href="https://www.gnu.org/software/make/manual/html_node/Choosing-the-Shell.html#Choosing-the-Shell">sekcia 5.3.2 v dokumentácii GNU Make</a>). Štandardná hodnota je <code>/bin/sh</code>.</p>
 <p>Premennú môžeme zmeniť klasickým spôsobom:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-make" data-lang="make"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">export </span><span style="color:#036">SHELL</span> <span style="color:#333">=</span> /bin/bash
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-make" data-lang="make"><span style="display:flex;"><span><span style="color:#66d9ef">export </span>SHELL <span style="color:#f92672">=</span> /bin/bash
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#5ed;font-weight:bold">.PHONY</span><span style="color:#333">:</span> all
-</span></span><span style="display:flex;"><span><span style="color:#5ed;font-weight:bold">all</span><span style="color:#333">:</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#072">echo</span> <span style="background-color:#eee">${</span><span style="color:#036">SHELL</span><span style="background-color:#eee">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">.PHONY</span><span style="color:#f92672">:</span> all
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">all</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>        echo <span style="color:#e6db74">${</span>SHELL<span style="color:#e6db74">}</span>
 </span></span></code></pre></div><p>Použitie klauzuly <code>export</code> je nutné, pretože bez neho sa premenná neexportuje do externých skriptov, ani do sub-makeov.</p>
 <h2 id="načo-vlastne-predefinovávať">Načo vlastne predefinovávať?</h2>
 <p>Nápad zmeniť shell je málokedy dobrý. Moderné distribúcie očakávajú, že skripty budú implementované v norme POSIX a nebudú používať žiadne špeciality bashizmy, ani konštrukcie zo <code>zsh</code> či nebodaj <code>fish.</code></p>

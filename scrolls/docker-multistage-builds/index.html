@@ -10,7 +10,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
-    <title>Docker a viacfázové zostavenie (_multistage builds_). | robonovotny</title>
+    <title>Docker a viacfázové zostavenie (_multistage builds_) | robonovotny</title>
 
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.3/styles/dracula.min.css">
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.3/highlight.min.js"></script>
@@ -43,7 +43,7 @@
     <br/>
 
 <div class="article-meta">
-<h1><span class="title">Docker a viacfázové zostavenie (<em>multistage builds</em>).</span></h1>
+<h1><span class="title">Docker a viacfázové zostavenie (<em>multistage builds</em>)</span></h1>
 
 <h2 class="date">2023/04/14</h2>
 <p class="terms">
@@ -59,14 +59,14 @@
 <div class="content-wrapper">
   <main>
     <div class="paragraph">
-<p>Viacfázové zostavenie — <strong>multistage build *</strong> — umožňuje optimalizovať veľkosť dockerovských imagov.</p>
+<p>Viacfázové zostavenie — <strong>multistage build</strong> — umožňuje optimalizovať veľkosť dockerovských imagov.</p>
 </div>
 <div class="paragraph">
 <p>Typická situácia v mnohých projektoch:</p>
 </div>
 <div class="dlist">
 <dl>
-<dt class="hdlist1">Fáza 1: kompilácia</dt>
+<dt class="hdlist1">Fáza 1: image pre kompiláciu</dt>
 <dd>
 <div class="ulist">
 <ul>
@@ -84,7 +84,7 @@
 <div class="ulist">
 <ul>
 <li>
-<p>vytvorí sa image obsahujúci len samotné binárky, a ak treba, tak platformu (Java, Node.js)</p>
+<p>vytvorí sa image obsahujúci len samotné binárky, a ak treba, tak aj príslušnú platformu (Java, Node.js)</p>
 </li>
 </ul>
 </div>
@@ -204,6 +204,18 @@ Používame <em>exec</em> formu, ktorá nevolá kompilátor zo shellu, ale priam
 <tr>
 <td><i class="conum" data-value="5"></i><b>5</b></td>
 <td>Nastavíme binárku <code>zero</code> ako vstupný bod, ktorý sa zavolá automaticky pri <em>docker run</em>.</td>
+</tr>
+</tbody></table>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+V tomto prípade ušetríme zhruba 100 MB, a tento jednopríkazový image má zhruba 22MB.
+</td>
 </tr>
 </tbody></table>
 </div>

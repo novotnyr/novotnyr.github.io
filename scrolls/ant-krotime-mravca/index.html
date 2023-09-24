@@ -94,13 +94,13 @@ určených pre výsledky zostavovania: adresár <code>classes</code> bude obsaho
 <pre tabindex="0"><code>md src
 </code></pre><p>Nasledovná jednoduchá trieda vypíše správu na štandardný výstup. Zdrojový
 kód uložíme do adresára <code>src\oata\AhojSvet.java</code></p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">package</span> <span style="color:#0e84b5;font-weight:bold">oata</span><span style="color:#333">;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#f92672">package</span> oata<span style="color:#f92672">;</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">AhojSvet</span> <span style="color:#333">{</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">static</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">main</span><span style="color:#333">(</span>String<span style="color:#333">[]</span> args<span style="color:#333">)</span> <span style="color:#333">{</span>
-</span></span><span style="display:flex;"><span>    System<span style="color:#333">.</span><span style="color:#007">out</span><span style="color:#333">.</span><span style="color:#007">println</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;Ahoj svet!&#34;</span><span style="color:#333">);</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#333">}</span>
-</span></span><span style="display:flex;"><span><span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">AhojSvet</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Ahoj svet!&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
 </span></span></code></pre></div><p>Triedu sa pokúsime skompilovať a spustiť:</p>
 <pre tabindex="0"><code>md build\classes
 javac -sourcepath src -d build\classes src\oata\AhojSvet.java
@@ -141,31 +141,31 @@ V príklade by sme mali teda štyri kroky:</p>
 </ul>
 <p>Ciele sa v Ante definujú v zostavovacom súbore, ktorý sa štandardne volá <code>build.xml</code>. Vytvoríme
 si teda tento súbor a uložíme ho do <code>.\build.xml</code>.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#070">&lt;project&gt;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;project&gt;</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#070">&lt;target</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;clean&#34;</span><span style="color:#070">&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#070">&lt;delete</span> <span style="color:#007">dir=</span><span style="background-color:#e0e0ff">&#34;build&#34;</span><span style="color:#070">/&gt;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#070">&lt;/target&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;target</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;clean&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;delete</span> <span style="color:#a6e22e">dir=</span><span style="color:#e6db74">&#34;build&#34;</span><span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;/target&gt;</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#070">&lt;target</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;compile&#34;</span><span style="color:#070">&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#070">&lt;mkdir</span> <span style="color:#007">dir=</span><span style="background-color:#e0e0ff">&#34;build/classes&#34;</span><span style="color:#070">/&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#070">&lt;javac</span> <span style="color:#007">srcdir=</span><span style="background-color:#e0e0ff">&#34;src&#34;</span> <span style="color:#007">destdir=</span><span style="background-color:#e0e0ff">&#34;build/classes&#34;</span><span style="color:#070">/&gt;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#070">&lt;/target&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;target</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;compile&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;mkdir</span> <span style="color:#a6e22e">dir=</span><span style="color:#e6db74">&#34;build/classes&#34;</span><span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;javac</span> <span style="color:#a6e22e">srcdir=</span><span style="color:#e6db74">&#34;src&#34;</span> <span style="color:#a6e22e">destdir=</span><span style="color:#e6db74">&#34;build/classes&#34;</span><span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;/target&gt;</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#070">&lt;target</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;jar&#34;</span><span style="color:#070">&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#070">&lt;mkdir</span> <span style="color:#007">dir=</span><span style="background-color:#e0e0ff">&#34;build/jar&#34;</span><span style="color:#070">/&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#070">&lt;jar</span> <span style="color:#007">destfile=</span><span style="background-color:#e0e0ff">&#34;build/jar/ahojsvet.jar&#34;</span> <span style="color:#007">basedir=</span><span style="background-color:#e0e0ff">&#34;build/classes&#34;</span><span style="color:#070">&gt;</span>
-</span></span><span style="display:flex;"><span>       <span style="color:#070">&lt;manifest&gt;</span>
-</span></span><span style="display:flex;"><span>          <span style="color:#070">&lt;attribute</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;Main-Class&#34;</span> <span style="color:#007">value=</span><span style="background-color:#e0e0ff">&#34;oata.AhojSvet&#34;</span><span style="color:#070">/&gt;</span>
-</span></span><span style="display:flex;"><span>          <span style="color:#070">&lt;/manifest&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#070">&lt;/jar&gt;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#070">&lt;/target&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;target</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;jar&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;mkdir</span> <span style="color:#a6e22e">dir=</span><span style="color:#e6db74">&#34;build/jar&#34;</span><span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;jar</span> <span style="color:#a6e22e">destfile=</span><span style="color:#e6db74">&#34;build/jar/ahojsvet.jar&#34;</span> <span style="color:#a6e22e">basedir=</span><span style="color:#e6db74">&#34;build/classes&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>       <span style="color:#f92672">&lt;manifest&gt;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&lt;attribute</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;Main-Class&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;oata.AhojSvet&#34;</span><span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&lt;/manifest&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/jar&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;/target&gt;</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#070">&lt;target</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;run&#34;</span><span style="color:#070">&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#070">&lt;java</span> <span style="color:#007">jar=</span><span style="background-color:#e0e0ff">&#34;build/jar/HelloWorld.jar&#34;</span> <span style="color:#007">fork=</span><span style="background-color:#e0e0ff">&#34;true&#34;</span><span style="color:#070">/&gt;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#070">&lt;/target&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;target</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;run&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;java</span> <span style="color:#a6e22e">jar=</span><span style="color:#e6db74">&#34;build/jar/HelloWorld.jar&#34;</span> <span style="color:#a6e22e">fork=</span><span style="color:#e6db74">&#34;true&#34;</span><span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;/target&gt;</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#070">&lt;/project&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/project&gt;</span>
 </span></span></code></pre></div><p>Skompilovať, zabaliť a spustiť aplikáciu môžeme pomocou</p>
 <pre tabindex="0"><code>ant compile
 ant jar
@@ -177,7 +177,7 @@ medzi direktívami Antu a krokmi, ktoré sme vykonávali z príkazového riadku.
 <h3 id="vytvorenie-adresárov">Vytvorenie adresárov</h3>
 <pre tabindex="0"><code>md build\classes
 </code></pre><p>zodpovedá príkazu</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#070">&lt;mkdir</span> <span style="color:#007">dir=</span><span style="background-color:#e0e0ff">&#34;build/classes&#34;</span><span style="color:#070">/&gt;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;mkdir</span> <span style="color:#a6e22e">dir=</span><span style="color:#e6db74">&#34;build/classes&#34;</span><span style="color:#f92672">/&gt;</span>
 </span></span></code></pre></div><p><strong>Pozn.</strong> Príkazy sa v Ante nazývaju <em>úlohami</em> (t<em>asks</em>).</p>
 <h3 id="kompilácia">Kompilácia</h3>
 <p>Proces kompilácie, ktorý z príkazového riadku dosiahneme cez:</p>
@@ -186,9 +186,9 @@ medzi direktívami Antu a krokmi, ktoré sme vykonávali z príkazového riadku.
   -d build\classes
   src\oata\HelloWorld.java
 </code></pre><p>(celý príkaz musí byť na jednom riadku!) je možné dosiahnuť taskom <code>javac</code>.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#070">&lt;javac</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#007">srcdir=</span><span style="background-color:#e0e0ff">&#34;src&#34;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#007">destdir=</span><span style="background-color:#e0e0ff">&#34;build/classes&#34;</span><span style="color:#070">/&gt;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;javac</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">srcdir=</span><span style="color:#e6db74">&#34;src&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">destdir=</span><span style="color:#e6db74">&#34;build/classes&#34;</span><span style="color:#f92672">/&gt;</span>
 </span></span></code></pre></div><p>Všimnime si, že task <code>javac</code> automaticky detekuje všetky triedy, ktoré
 treba prekompilovať. Nie je nutné explicitne vymenovávať zdrojové súbory tried.</p>
 <p>Vytvorenie <code>manifest</code>u vyzeralo</p>
@@ -203,21 +203,21 @@ jar cfm
     -C build\classes
     .
 </code></pre><p>(Celý príkaz je na jednom riadku!) V Ante použijeme na to príslušnú dvojicu taskov</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#070">&lt;mkdir</span> <span style="color:#007">dir=</span><span style="background-color:#e0e0ff">&#34;build/jar&#34;</span><span style="color:#070">/&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#070">&lt;jar</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#007">destfile=</span><span style="background-color:#e0e0ff">&#34;build/jar/ahojsvet.jar&#34;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#007">basedir=</span><span style="background-color:#e0e0ff">&#34;build/classes&#34;</span><span style="color:#070">&gt;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#070">&lt;manifest&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#070">&lt;attribute</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;Main-Class&#34;</span> 
-</span></span><span style="display:flex;"><span>               <span style="color:#007">value=</span><span style="background-color:#e0e0ff">&#34;oata.AhojSvet&#34;</span><span style="color:#070">/&gt;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#070">&lt;/manifest&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#070">&lt;/jar&gt;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;mkdir</span> <span style="color:#a6e22e">dir=</span><span style="color:#e6db74">&#34;build/jar&#34;</span><span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;jar</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">destfile=</span><span style="color:#e6db74">&#34;build/jar/ahojsvet.jar&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">basedir=</span><span style="color:#e6db74">&#34;build/classes&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;manifest&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;attribute</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;Main-Class&#34;</span> 
+</span></span><span style="display:flex;"><span>               <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;oata.AhojSvet&#34;</span><span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;/manifest&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/jar&gt;</span>
 </span></span></code></pre></div><p>Task <code>jar</code> uloží do súboru nastaveného v <code>destfile</code> všetky súbory v adresári nastavenom v <code>basedir</code>.</p>
 <h3 id="spustenie">Spustenie</h3>
 <p>Záverečné spustenie, ktoré z príkazového riadku prebehlo cez</p>
 <pre tabindex="0"><code>java -jar build\jar\HelloWorld.jar
 </code></pre><p>je možné zrealizovať cez</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#070">&lt;java</span> <span style="color:#007">jar=</span><span style="background-color:#e0e0ff">&#34;build/jar/ahojsvet.jar&#34;</span> <span style="color:#007">fork=</span><span style="background-color:#e0e0ff">&#34;true&#34;</span><span style="color:#070">/&gt;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;java</span> <span style="color:#a6e22e">jar=</span><span style="color:#e6db74">&#34;build/jar/ahojsvet.jar&#34;</span> <span style="color:#a6e22e">fork=</span><span style="color:#e6db74">&#34;true&#34;</span><span style="color:#f92672">/&gt;</span>
 </span></span></code></pre></div><h2 id="vylepšenie-zostavovacieho-súboru">Vylepšenie zostavovacieho súboru</h2>
 <p>Podarilo sa nám vytvoriť prvý funkčný zostavovací súbor. Ale je tu samozrejme množstvo
 priestoru na vylepšenie. Častokrát sa stáva, že je potrebné sa odkazovať
@@ -227,46 +227,46 @@ vždy ideálny stav.</p>
 <p>Ďalším nedostatkom nášho súboru je nutnosť pamätať si správne poradie zostavovacích krokov.</p>
 <p>Prvý nedostatok odstránime pomocou tzv. <em>properties</em> (<em>parametrických hodnôt</em>).
 Poradie cieľov je možné vyriešiť pomocou závislostí.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#070">&lt;project</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;ahojsvet&#34;</span> <span style="color:#007">basedir=</span><span style="background-color:#e0e0ff">&#34;.&#34;</span> <span style="color:#007">default=</span><span style="background-color:#e0e0ff">&#34;main&#34;</span><span style="color:#070">&gt;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;project</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;ahojsvet&#34;</span> <span style="color:#a6e22e">basedir=</span><span style="color:#e6db74">&#34;.&#34;</span> <span style="color:#a6e22e">default=</span><span style="color:#e6db74">&#34;main&#34;</span><span style="color:#f92672">&gt;</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#070">&lt;property</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;src.dir&#34;</span>     <span style="color:#007">value=</span><span style="background-color:#e0e0ff">&#34;src&#34;</span><span style="color:#070">/&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;src.dir&#34;</span>     <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;src&#34;</span><span style="color:#f92672">/&gt;</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#070">&lt;property</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;build.dir&#34;</span>   <span style="color:#007">value=</span><span style="background-color:#e0e0ff">&#34;build&#34;</span><span style="color:#070">/&gt;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#070">&lt;property</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;classes.dir&#34;</span> <span style="color:#007">value=</span><span style="background-color:#e0e0ff">&#34;${build.dir}/classes&#34;</span><span style="color:#070">/&gt;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#070">&lt;property</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;jar.dir&#34;</span>     <span style="color:#007">value=</span><span style="background-color:#e0e0ff">&#34;${build.dir}/jar&#34;</span><span style="color:#070">/&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;build.dir&#34;</span>   <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;build&#34;</span><span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;classes.dir&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;${build.dir}/classes&#34;</span><span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;jar.dir&#34;</span>     <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;${build.dir}/jar&#34;</span><span style="color:#f92672">/&gt;</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#070">&lt;property</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;main-class&#34;</span>  <span style="color:#007">value=</span><span style="background-color:#e0e0ff">&#34;oata.AhojSvet&#34;</span><span style="color:#070">/&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;main-class&#34;</span>  <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;oata.AhojSvet&#34;</span><span style="color:#f92672">/&gt;</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#070">&lt;target</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;clean&#34;</span><span style="color:#070">&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#070">&lt;delete</span> <span style="color:#007">dir=</span><span style="background-color:#e0e0ff">&#34;${build.dir}&#34;</span><span style="color:#070">/&gt;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#070">&lt;/target&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;target</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;clean&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;delete</span> <span style="color:#a6e22e">dir=</span><span style="color:#e6db74">&#34;${build.dir}&#34;</span><span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;/target&gt;</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#070">&lt;target</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;compile&#34;</span><span style="color:#070">&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#070">&lt;mkdir</span> <span style="color:#007">dir=</span><span style="background-color:#e0e0ff">&#34;${classes.dir}&#34;</span><span style="color:#070">/&gt;</span>
-</span></span><span style="display:flex;"><span>     <span style="color:#070">&lt;javac</span> <span style="color:#007">srcdir=</span><span style="background-color:#e0e0ff">&#34;${src.dir}&#34;</span> <span style="color:#007">destdir=</span><span style="background-color:#e0e0ff">&#34;${classes.dir}&#34;</span><span style="color:#070">/&gt;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#070">&lt;/target&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;target</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;compile&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;mkdir</span> <span style="color:#a6e22e">dir=</span><span style="color:#e6db74">&#34;${classes.dir}&#34;</span><span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>     <span style="color:#f92672">&lt;javac</span> <span style="color:#a6e22e">srcdir=</span><span style="color:#e6db74">&#34;${src.dir}&#34;</span> <span style="color:#a6e22e">destdir=</span><span style="color:#e6db74">&#34;${classes.dir}&#34;</span><span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;/target&gt;</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#070">&lt;target</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;jar&#34;</span> <span style="color:#007">depends=</span><span style="background-color:#e0e0ff">&#34;compile&#34;</span><span style="color:#070">&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#070">&lt;mkdir</span> <span style="color:#007">dir=</span><span style="background-color:#e0e0ff">&#34;${jar.dir}&#34;</span><span style="color:#070">/&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#070">&lt;jar</span> <span style="color:#007">destfile=</span><span style="background-color:#e0e0ff">&#34;${jar.dir}/${ant.project.name}.jar&#34;</span> 
-</span></span><span style="display:flex;"><span>         <span style="color:#007">basedir=</span><span style="background-color:#e0e0ff">&#34;${classes.dir}&#34;</span><span style="color:#070">&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;target</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;jar&#34;</span> <span style="color:#a6e22e">depends=</span><span style="color:#e6db74">&#34;compile&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;mkdir</span> <span style="color:#a6e22e">dir=</span><span style="color:#e6db74">&#34;${jar.dir}&#34;</span><span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;jar</span> <span style="color:#a6e22e">destfile=</span><span style="color:#e6db74">&#34;${jar.dir}/${ant.project.name}.jar&#34;</span> 
+</span></span><span style="display:flex;"><span>         <span style="color:#a6e22e">basedir=</span><span style="color:#e6db74">&#34;${classes.dir}&#34;</span><span style="color:#f92672">&gt;</span>
 </span></span><span style="display:flex;"><span>         
-</span></span><span style="display:flex;"><span>      <span style="color:#070">&lt;manifest&gt;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#070">&lt;attribute</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;Main-Class&#34;</span> <span style="color:#007">value=</span><span style="background-color:#e0e0ff">&#34;${main-class}&#34;</span><span style="color:#070">/&gt;</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#070">&lt;/manifest&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;manifest&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;attribute</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;Main-Class&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;${main-class}&#34;</span><span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;/manifest&gt;</span>
 </span></span><span style="display:flex;"><span>      
-</span></span><span style="display:flex;"><span>    <span style="color:#070">&lt;/jar&gt;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#070">&lt;/target&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/jar&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;/target&gt;</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#070">&lt;target</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;run&#34;</span> <span style="color:#007">depends=</span><span style="background-color:#e0e0ff">&#34;jar&#34;</span><span style="color:#070">&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#070">&lt;java</span> <span style="color:#007">jar=</span><span style="background-color:#e0e0ff">&#34;${jar.dir}/${ant.project.name}.jar&#34;</span> <span style="color:#007">fork=</span><span style="background-color:#e0e0ff">&#34;true&#34;</span><span style="color:#070">/&gt;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#070">&lt;/target&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;target</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;run&#34;</span> <span style="color:#a6e22e">depends=</span><span style="color:#e6db74">&#34;jar&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;java</span> <span style="color:#a6e22e">jar=</span><span style="color:#e6db74">&#34;${jar.dir}/${ant.project.name}.jar&#34;</span> <span style="color:#a6e22e">fork=</span><span style="color:#e6db74">&#34;true&#34;</span><span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;/target&gt;</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#070">&lt;target</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;clean-build&#34;</span> <span style="color:#007">depends=</span><span style="background-color:#e0e0ff">&#34;clean,jar&#34;</span><span style="color:#070">/&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;target</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;clean-build&#34;</span> <span style="color:#a6e22e">depends=</span><span style="color:#e6db74">&#34;clean,jar&#34;</span><span style="color:#f92672">/&gt;</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#070">&lt;target</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;main&#34;</span> <span style="color:#007">depends=</span><span style="background-color:#e0e0ff">&#34;clean,run&#34;</span><span style="color:#070">/&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;target</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;main&#34;</span> <span style="color:#a6e22e">depends=</span><span style="color:#e6db74">&#34;clean,run&#34;</span><span style="color:#f92672">/&gt;</span>
 </span></span><span style="display:flex;"><span>  
-</span></span><span style="display:flex;"><span><span style="color:#070">&lt;/project&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/project&gt;</span>
 </span></span></code></pre></div><h3 id="premenné">Premenné</h3>
 <p>V elemente <code>project</code> pribudlo niekoľko elementov:</p>
 <ul>
@@ -276,9 +276,9 @@ Poradie cieľov je možné vyriešiť pomocou závislostí.</p>
 pri spúšťaní Antu neuvedieme žiadny cieľ, automaticky sa spustí implicitný cieľ.</li>
 </ul>
 <p>Ďalej sme špecifikovali niekoľko <code>properties</code>, čo je vlastne analógia premenných</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#070">&lt;property</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;build.dir&#34;</span>   <span style="color:#007">value=</span><span style="background-color:#e0e0ff">&#34;build&#34;</span><span style="color:#070">/&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#070">&lt;property</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;classes.dir&#34;</span> <span style="color:#007">value=</span><span style="background-color:#e0e0ff">&#34;${build.dir}/classes&#34;</span><span style="color:#070">/&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#070">&lt;property</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;jar.dir&#34;</span>     <span style="color:#007">value=</span><span style="background-color:#e0e0ff">&#34;${build.dir}/jar&#34;</span><span style="color:#070">/&gt;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;build.dir&#34;</span>   <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;build&#34;</span><span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;classes.dir&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;${build.dir}/classes&#34;</span><span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;jar.dir&#34;</span>     <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;${build.dir}/jar&#34;</span><span style="color:#f92672">/&gt;</span>
 </span></span></code></pre></div><p>Všimnime si, že v hodnotách premenných sa môžeme odkazovať na hodnoty
 už existujúcich premenných. Premenná <code>jar.dir</code> teda bude
 obsahovať hodnotu <code>build/jar</code>.</p>
@@ -290,7 +290,7 @@ Napr. <code>${ant.project.name}</code> obsahuje názov projektu z atribútu
 Napr. vytvorenie JAR súboru závisí na úspešnom skompilovaní zdrojákov.
 Závislosti možno udávať pomocou atribútu <code>depends</code> v elemente <code>target</code>.</p>
 <p>Cieľ <code>main</code> závisí na postupnom úspešnom skončení cieľov <code>clean</code> a <code>run</code>.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#070">&lt;target</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;main&#34;</span> <span style="color:#007">depends=</span><span style="background-color:#e0e0ff">&#34;clean,run&#34;</span><span style="color:#070">/&gt;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;target</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;main&#34;</span> <span style="color:#a6e22e">depends=</span><span style="color:#e6db74">&#34;clean,run&#34;</span><span style="color:#f92672">/&gt;</span>
 </span></span></code></pre></div><h3 id="spustenie-1">Spustenie</h3>
 <p>Ak teraz spustíme</p>
 <pre tabindex="0"><code>ant
@@ -333,19 +333,19 @@ modifikujeme zostavovací súbor tak, aby bola knižnica k dispozícii pri kompi
 a spustení.</p>
 <p>Postup práce s log4j je uvedený v príslušnej dokumentácii. My použijeme
 minimalistickú verziu triedy, ktorá bude vyzerať nasledovne:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">package</span> <span style="color:#0e84b5;font-weight:bold">oata</span><span style="color:#333">;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#f92672">package</span> oata<span style="color:#f92672">;</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">org.apache.log4j.Logger</span><span style="color:#333">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">org.apache.log4j.BasicConfigurator</span><span style="color:#333">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> org.apache.log4j.Logger<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> org.apache.log4j.BasicConfigurator<span style="color:#f92672">;</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">class</span> <span style="color:#e9e;font-weight:bold">AhojSvet</span> <span style="color:#333">{</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">static</span> Logger logger <span style="color:#333">=</span> Logger<span style="color:#333">.</span><span style="color:#007">getLogger</span><span style="color:#333">(</span>HelloWorld<span style="color:#333">.</span><span style="color:#007">class</span><span style="color:#333">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">AhojSvet</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">static</span> Logger logger <span style="color:#f92672">=</span> Logger<span style="color:#f92672">.</span><span style="color:#a6e22e">getLogger</span><span style="color:#f92672">(</span>HelloWorld<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">public</span> <span style="color:#289;font-weight:bold">static</span> <span style="color:#66f;font-weight:bold">void</span> <span style="color:#5ed;font-weight:bold">main</span><span style="color:#333">(</span>String<span style="color:#333">[]</span> args<span style="color:#333">)</span> <span style="color:#333">{</span>
-</span></span><span style="display:flex;"><span>        BasicConfigurator<span style="color:#333">.</span><span style="color:#007">configure</span><span style="color:#333">();</span>
-</span></span><span style="display:flex;"><span>        logger<span style="color:#333">.</span><span style="color:#007">info</span><span style="color:#333">(</span><span style="background-color:#e0e0ff">&#34;Ahoj svet!&#34;</span><span style="color:#333">);</span>  
-</span></span><span style="display:flex;"><span>    <span style="color:#333">}</span>
-</span></span><span style="display:flex;"><span><span style="color:#333">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        BasicConfigurator<span style="color:#f92672">.</span><span style="color:#a6e22e">configure</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>        logger<span style="color:#f92672">.</span><span style="color:#a6e22e">info</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Ahoj svet!&#34;</span><span style="color:#f92672">);</span>  
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
 </span></span></code></pre></div><p>Väčšina úprav pozostáva z dodania náležitostí vyžadovaných
 ladiacou knižnicou a z inicializácie systému pre výpisy.
 Riadok <code>logger.info()</code> je analógiou <code>System.out.println()</code>.</p>
@@ -359,35 +359,35 @@ iných Java aplikácií. Navyše, táto verzia log4j
 má význam len pre náš projekt a bolo by príliš zbytočné
 nanucovať ho pre celý systém.</p>
 <p>Závislosť na log4j zavedieme do zostavovacieho súboru nasledovne:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#070">&lt;project</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;HelloWorld&#34;</span> <span style="color:#007">basedir=</span><span style="background-color:#e0e0ff">&#34;.&#34;</span> <span style="color:#007">default=</span><span style="background-color:#e0e0ff">&#34;main&#34;</span><span style="color:#070">&gt;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;project</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;HelloWorld&#34;</span> <span style="color:#a6e22e">basedir=</span><span style="color:#e6db74">&#34;.&#34;</span> <span style="color:#a6e22e">default=</span><span style="color:#e6db74">&#34;main&#34;</span><span style="color:#f92672">&gt;</span>
 </span></span><span style="display:flex;"><span>    ...
-</span></span><span style="display:flex;"><span>    <span style="color:#070">&lt;property</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;lib.dir&#34;</span>     <span style="color:#007">value=</span><span style="background-color:#e0e0ff">&#34;lib&#34;</span><span style="color:#070">/&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;lib.dir&#34;</span>     <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;lib&#34;</span><span style="color:#f92672">/&gt;</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#070">&lt;path</span> <span style="color:#007">id=</span><span style="background-color:#e0e0ff">&#34;lib.classpath&#34;</span><span style="color:#070">&gt;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#070">&lt;fileset</span> <span style="color:#007">dir=</span><span style="background-color:#e0e0ff">&#34;${lib.dir}&#34;</span> <span style="color:#007">includes=</span><span style="background-color:#e0e0ff">&#34;**/*.jar&#34;</span><span style="color:#070">/&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#070">&lt;/path&gt;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    ...
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#070">&lt;target</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;compile&#34;</span><span style="color:#070">&gt;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#070">&lt;mkdir</span> <span style="color:#007">dir=</span><span style="background-color:#e0e0ff">&#34;${classes.dir}&#34;</span><span style="color:#070">/&gt;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#070">&lt;javac</span> <span style="color:#007">srcdir=</span><span style="background-color:#e0e0ff">&#34;${src.dir}&#34;</span> 
-</span></span><span style="display:flex;"><span>               <span style="color:#007">destdir=</span><span style="background-color:#e0e0ff">&#34;${classes.dir}&#34;</span> 
-</span></span><span style="display:flex;"><span>               <span style="color:#007">classpathref=</span><span style="background-color:#e0e0ff">&#34;lib.classpath&#34;</span><span style="color:#070">/&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#070">&lt;/target&gt;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#070">&lt;target</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;run&#34;</span> <span style="color:#007">depends=</span><span style="background-color:#e0e0ff">&#34;jar&#34;</span><span style="color:#070">&gt;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#070">&lt;java</span> <span style="color:#007">fork=</span><span style="background-color:#e0e0ff">&#34;true&#34;</span> <span style="color:#007">classname=</span><span style="background-color:#e0e0ff">&#34;${main-class}&#34;</span><span style="color:#070">&gt;</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#070">&lt;classpath&gt;</span>
-</span></span><span style="display:flex;"><span>                <span style="color:#070">&lt;path</span> <span style="color:#007">refid=</span><span style="background-color:#e0e0ff">&#34;lib.classpath&#34;</span><span style="color:#070">/&gt;</span>
-</span></span><span style="display:flex;"><span>                <span style="color:#070">&lt;path</span> <span style="color:#007">location=</span><span style="background-color:#e0e0ff">&#34;${jar.dir}/${ant.project.name}.jar&#34;</span><span style="color:#070">/&gt;</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#070">&lt;/classpath&gt;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#070">&lt;/java&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#070">&lt;/target&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;path</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;lib.classpath&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;fileset</span> <span style="color:#a6e22e">dir=</span><span style="color:#e6db74">&#34;${lib.dir}&#34;</span> <span style="color:#a6e22e">includes=</span><span style="color:#e6db74">&#34;**/*.jar&#34;</span><span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/path&gt;</span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>    ...
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#070">&lt;/project&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;target</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;compile&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;mkdir</span> <span style="color:#a6e22e">dir=</span><span style="color:#e6db74">&#34;${classes.dir}&#34;</span><span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;javac</span> <span style="color:#a6e22e">srcdir=</span><span style="color:#e6db74">&#34;${src.dir}&#34;</span> 
+</span></span><span style="display:flex;"><span>               <span style="color:#a6e22e">destdir=</span><span style="color:#e6db74">&#34;${classes.dir}&#34;</span> 
+</span></span><span style="display:flex;"><span>               <span style="color:#a6e22e">classpathref=</span><span style="color:#e6db74">&#34;lib.classpath&#34;</span><span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/target&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;target</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;run&#34;</span> <span style="color:#a6e22e">depends=</span><span style="color:#e6db74">&#34;jar&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;java</span> <span style="color:#a6e22e">fork=</span><span style="color:#e6db74">&#34;true&#34;</span> <span style="color:#a6e22e">classname=</span><span style="color:#e6db74">&#34;${main-class}&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;classpath&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;path</span> <span style="color:#a6e22e">refid=</span><span style="color:#e6db74">&#34;lib.classpath&#34;</span><span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;path</span> <span style="color:#a6e22e">location=</span><span style="color:#e6db74">&#34;${jar.dir}/${ant.project.name}.jar&#34;</span><span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;/classpath&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;/java&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/target&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    ...
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/project&gt;</span>
 </span></span></code></pre></div><p>Predovšetkým sme definovali novú <em>property</em> pre adresár s knižnicami.
 Direktíva <code>path</code> umožňuje definovať a logicky pomenovať množinu súborov a adresárov.
 V operačnom systéme by ste <code>CLASSPATH</code> zaviedli ako zoznam adresárov/súborov
@@ -396,19 +396,19 @@ oddelených čiarkami, v Ante je to možné docieliť definovaným pomocou tejto
 <code>lib.classpath</code>, ktorá bude obsahovať všetky JAR súbory v adresári a podadresároch
 adresára <code>lib</code>.</p>
 <p>Knižnicu je potrebné zaviesť pri kompilovaní:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#070">&lt;javac</span> <span style="color:#007">srcdir=</span><span style="background-color:#e0e0ff">&#34;${src.dir}&#34;</span> <span style="color:#007">destdir=</span><span style="background-color:#e0e0ff">&#34;${classes.dir}&#34;</span> 
-</span></span><span style="display:flex;"><span>       <span style="color:#007">classpathref=</span><span style="background-color:#e0e0ff">&#34;lib.classpath&#34;</span><span style="color:#070">/&gt;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;javac</span> <span style="color:#a6e22e">srcdir=</span><span style="color:#e6db74">&#34;${src.dir}&#34;</span> <span style="color:#a6e22e">destdir=</span><span style="color:#e6db74">&#34;${classes.dir}&#34;</span> 
+</span></span><span style="display:flex;"><span>       <span style="color:#a6e22e">classpathref=</span><span style="color:#e6db74">&#34;lib.classpath&#34;</span><span style="color:#f92672">/&gt;</span>
 </span></span></code></pre></div><p>Atribút <code>classpathref</code> sa odkazuje na súbory a adresáre špecifikované
 v množine s názvom <code>lib.classpath</code>.</p>
 <p>Pri spustení použijeme element <code>classpath</code>, kde uvedieme
 jednak súbory a adresáre z cesty <code>lib.classpath</code> a jednak
 výsledný JAR súbor:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#070">&lt;java</span> <span style="color:#007">fork=</span><span style="background-color:#e0e0ff">&#34;true&#34;</span> <span style="color:#007">classname=</span><span style="background-color:#e0e0ff">&#34;${main-class}&#34;</span><span style="color:#070">&gt;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#070">&lt;classpath&gt;</span>
-</span></span><span style="display:flex;"><span>     <span style="color:#070">&lt;path</span> <span style="color:#007">refid=</span><span style="background-color:#e0e0ff">&#34;lib.classpath&#34;</span><span style="color:#070">/&gt;</span>
-</span></span><span style="display:flex;"><span>     <span style="color:#070">&lt;path</span> <span style="color:#007">location=</span><span style="background-color:#e0e0ff">&#34;${jar.dir}/${ant.project.name}.jar&#34;</span><span style="color:#070">/&gt;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#070">&lt;/classpath&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#070">&lt;/java&gt;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;java</span> <span style="color:#a6e22e">fork=</span><span style="color:#e6db74">&#34;true&#34;</span> <span style="color:#a6e22e">classname=</span><span style="color:#e6db74">&#34;${main-class}&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;classpath&gt;</span>
+</span></span><span style="display:flex;"><span>     <span style="color:#f92672">&lt;path</span> <span style="color:#a6e22e">refid=</span><span style="color:#e6db74">&#34;lib.classpath&#34;</span><span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>     <span style="color:#f92672">&lt;path</span> <span style="color:#a6e22e">location=</span><span style="color:#e6db74">&#34;${jar.dir}/${ant.project.name}.jar&#34;</span><span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;/classpath&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/java&gt;</span>
 </span></span></code></pre></div><p>V tomto prípade by sme nemohli spustiť aplikáciu pomocou atribútu
 <code>Main-Class</code> z manifestu, pretože Java neumožňuje špecifikovať
 pri spustiteľných JAR súboroch CLASSPATH. (Vysvetlenie
@@ -430,7 +430,7 @@ viď napr. na <a href="http://ics.upjs.sk/~novotnyr/wiki/Java.ClasspathAClassNot
 <p>Jedným z dôvodov na použitie Log4j boli „široké možnosti konfigurácie&quot;.
 Ale v našom príklade sme mali všetky možnosti na formát výpisu uvedené natvrdo!
 To však nie je chyba log4j, ale nášho prístupu. Riadok</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>BasicConfigurator<span style="color:#333">.</span><span style="color:#007">configure</span><span style="color:#333">()</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>BasicConfigurator<span style="color:#f92672">.</span><span style="color:#a6e22e">configure</span><span style="color:#f92672">()</span>
 </span></span></code></pre></div><p>nastaví pre ladiace výpisy jednoduchý, lež pevne daný formát. Často je však
 potrebné prispôsobenie s využitím konfiguračného súboru.</p>
 <p>Odstráňme z triedy tento riadok (a príslušné importy). Log4j sa potom
@@ -452,105 +452,105 @@ priority <code>DEBUG</code> a vyššej budú posielané na kanál <code>stdout</
 <p>To však nie je všetko. Konfiguračný súbor sa totiž musí nachádzať v <code>CLASSPATH</code>.
 To docielime skopírovaním tohto súboru do adresára, v ktorom sa nachádzajú
 skompilované triedy a teda výhodným použitím tasku <code>copy</code>.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span>...
-</span></span><span style="display:flex;"><span><span style="color:#070">&lt;target</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;compile&#34;</span><span style="color:#070">&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#070">&lt;mkdir</span> <span style="color:#007">dir=</span><span style="background-color:#e0e0ff">&#34;${classes.dir}&#34;</span><span style="color:#070">/&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#070">&lt;javac</span> <span style="color:#007">srcdir=</span><span style="background-color:#e0e0ff">&#34;${src.dir}&#34;</span> <span style="color:#007">destdir=</span><span style="background-color:#e0e0ff">&#34;${classes.dir}&#34;</span> <span style="color:#007">classpathref=</span><span style="background-color:#e0e0ff">&#34;lib.classpath&#34;</span><span style="color:#070">/&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#070">&lt;copy</span> <span style="color:#007">todir=</span><span style="background-color:#e0e0ff">&#34;${classes.dir}&#34;</span><span style="color:#070">&gt;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#070">&lt;fileset</span> <span style="color:#007">dir=</span><span style="background-color:#e0e0ff">&#34;${src.dir}&#34;</span> <span style="color:#007">excludes=</span><span style="background-color:#e0e0ff">&#34;**/*.java&#34;</span><span style="color:#070">/&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#070">&lt;/copy&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#070">&lt;/target&gt;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span>...
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;target</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;compile&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;mkdir</span> <span style="color:#a6e22e">dir=</span><span style="color:#e6db74">&#34;${classes.dir}&#34;</span><span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;javac</span> <span style="color:#a6e22e">srcdir=</span><span style="color:#e6db74">&#34;${src.dir}&#34;</span> <span style="color:#a6e22e">destdir=</span><span style="color:#e6db74">&#34;${classes.dir}&#34;</span> <span style="color:#a6e22e">classpathref=</span><span style="color:#e6db74">&#34;lib.classpath&#34;</span><span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;copy</span> <span style="color:#a6e22e">todir=</span><span style="color:#e6db74">&#34;${classes.dir}&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;fileset</span> <span style="color:#a6e22e">dir=</span><span style="color:#e6db74">&#34;${src.dir}&#34;</span> <span style="color:#a6e22e">excludes=</span><span style="color:#e6db74">&#34;**/*.java&#34;</span><span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/copy&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/target&gt;</span>
 </span></span><span style="display:flex;"><span>...
 </span></span></code></pre></div><p>Task <code>copy</code> skopíruje všetky súbory, ktoré nemajú príponu <code>.java</code> z adresára
 pre zdrojové súbory do adresára pre triedy.</p>
 <p>To nám umožní korektne spustiť aplikáciu a rovnako pribaľovať <code>log4j.properties</code>
 do JAR súboru.</p>
 <h1 id="ďalší-príklad-reálneho-zostavovacieho-súboru">Ďalší príklad reálneho zostavovacieho súboru</h1>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#579">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#070">&lt;project</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;davano&#34;</span> <span style="color:#007">basedir=</span><span style="background-color:#e0e0ff">&#34;.&#34;</span> <span style="color:#007">default=</span><span style="background-color:#e0e0ff">&#34;build&#34;</span><span style="color:#070">&gt;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#070">&lt;property</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;build&#34;</span>       <span style="color:#007">location=</span><span style="background-color:#e0e0ff">&#34;build&#34;</span><span style="color:#070">/&gt;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#070">&lt;property</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;build.classes&#34;</span> <span style="color:#007">location=</span><span style="background-color:#e0e0ff">&#34;build/classes&#34;</span><span style="color:#070">/&gt;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#070">&lt;property</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;build.src&#34;</span>     <span style="color:#007">location=</span><span style="background-color:#e0e0ff">&#34;build/src&#34;</span><span style="color:#070">/&gt;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#070">&lt;property</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;src&#34;</span>           <span style="color:#007">location=</span><span style="background-color:#e0e0ff">&#34;src&#34;</span><span style="color:#070">/&gt;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#070">&lt;property</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;server.src&#34;</span>    <span style="color:#007">location=</span><span style="background-color:#e0e0ff">&#34;etc/server&#34;</span><span style="color:#070">/&gt;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;project</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;davano&#34;</span> <span style="color:#a6e22e">basedir=</span><span style="color:#e6db74">&#34;.&#34;</span> <span style="color:#a6e22e">default=</span><span style="color:#e6db74">&#34;build&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;build&#34;</span>       <span style="color:#a6e22e">location=</span><span style="color:#e6db74">&#34;build&#34;</span><span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;build.classes&#34;</span> <span style="color:#a6e22e">location=</span><span style="color:#e6db74">&#34;build/classes&#34;</span><span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;build.src&#34;</span>     <span style="color:#a6e22e">location=</span><span style="color:#e6db74">&#34;build/src&#34;</span><span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;src&#34;</span>           <span style="color:#a6e22e">location=</span><span style="color:#e6db74">&#34;src&#34;</span><span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;server.src&#34;</span>    <span style="color:#a6e22e">location=</span><span style="color:#e6db74">&#34;etc/server&#34;</span><span style="color:#f92672">/&gt;</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#070">&lt;path</span> <span style="color:#007">id=</span><span style="background-color:#e0e0ff">&#34;servlet-api.classpath&#34;</span><span style="color:#070">&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#070">&lt;fileset</span> <span style="color:#007">dir=</span><span style="background-color:#e0e0ff">&#34;c:\java\tomcat-6\lib&#34;</span><span style="color:#070">&gt;</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#070">&lt;include</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;servlet-api.jar&#34;</span><span style="color:#070">/&gt;</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#070">&lt;include</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;jsp-api.jar&#34;</span><span style="color:#070">/&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#070">&lt;/fileset&gt;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#070">&lt;/path&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;path</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;servlet-api.classpath&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;fileset</span> <span style="color:#a6e22e">dir=</span><span style="color:#e6db74">&#34;c:\java\tomcat-6\lib&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;include</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;servlet-api.jar&#34;</span><span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;include</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;jsp-api.jar&#34;</span><span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/fileset&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;/path&gt;</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#070">&lt;path</span> <span style="color:#007">id=</span><span style="background-color:#e0e0ff">&#34;project.classpath&#34;</span><span style="color:#070">&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#070">&lt;fileset</span> <span style="color:#007">dir=</span><span style="background-color:#e0e0ff">&#34;web/WEB-INF/lib&#34;</span><span style="color:#070">&gt;</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#070">&lt;include</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;*.jar&#34;</span><span style="color:#070">/&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#070">&lt;/fileset&gt;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#070">&lt;/path&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;path</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;project.classpath&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;fileset</span> <span style="color:#a6e22e">dir=</span><span style="color:#e6db74">&#34;web/WEB-INF/lib&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;include</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;*.jar&#34;</span><span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/fileset&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;/path&gt;</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#070">&lt;target</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;clean&#34;</span><span style="color:#070">&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#070">&lt;delete</span> <span style="color:#007">dir=</span><span style="background-color:#e0e0ff">&#34;${build.classes}&#34;</span> <span style="color:#070">/&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#070">&lt;delete</span> <span style="color:#007">dir=</span><span style="background-color:#e0e0ff">&#34;${build.src}&#34;</span> <span style="color:#070">/&gt;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#070">&lt;/target&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;target</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;clean&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;delete</span> <span style="color:#a6e22e">dir=</span><span style="color:#e6db74">&#34;${build.classes}&#34;</span> <span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;delete</span> <span style="color:#a6e22e">dir=</span><span style="color:#e6db74">&#34;${build.src}&#34;</span> <span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;/target&gt;</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#070">&lt;target</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;prepare&#34;</span><span style="color:#070">&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#070">&lt;mkdir</span> <span style="color:#007">dir=</span><span style="background-color:#e0e0ff">&#34;${build.classes}&#34;</span> <span style="color:#070">/&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#070">&lt;mkdir</span> <span style="color:#007">dir=</span><span style="background-color:#e0e0ff">&#34;${build.src}&#34;</span> <span style="color:#070">/&gt;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#070">&lt;/target&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;target</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;prepare&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;mkdir</span> <span style="color:#a6e22e">dir=</span><span style="color:#e6db74">&#34;${build.classes}&#34;</span> <span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;mkdir</span> <span style="color:#a6e22e">dir=</span><span style="color:#e6db74">&#34;${build.src}&#34;</span> <span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;/target&gt;</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#070">&lt;target</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;prepare-src&#34;</span><span style="color:#070">&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#070">&lt;copy</span> <span style="color:#007">todir=</span><span style="background-color:#e0e0ff">&#34;${build.src}&#34;</span><span style="color:#070">&gt;</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#070">&lt;fileset</span> <span style="color:#007">dir=</span><span style="background-color:#e0e0ff">&#34;${src}&#34;</span><span style="color:#070">&gt;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#070">&lt;include</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;**&#34;</span><span style="color:#070">/&gt;</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#070">&lt;/fileset&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#070">&lt;/copy&gt;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#070">&lt;/target&gt;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#070">&lt;target</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;copy-config&#34;</span><span style="color:#070">&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#070">&lt;copy</span> <span style="color:#007">todir=</span><span style="background-color:#e0e0ff">&#34;${build.classes}&#34;</span> <span style="color:#007">overwrite=</span><span style="background-color:#e0e0ff">&#34;yes&#34;</span><span style="color:#070">&gt;</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#070">&lt;fileset</span> <span style="color:#007">dir=</span><span style="background-color:#e0e0ff">&#34;src&#34;</span><span style="color:#070">&gt;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#070">&lt;exclude</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;*.java&#34;</span><span style="color:#070">/&gt;</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#070">&lt;/fileset&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#070">&lt;/copy&gt;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#070">&lt;/target&gt;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#070">&lt;target</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;copy-server-config&#34;</span><span style="color:#070">&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#070">&lt;copy</span> <span style="color:#007">todir=</span><span style="background-color:#e0e0ff">&#34;${build.classes}&#34;</span> <span style="color:#007">overwrite=</span><span style="background-color:#e0e0ff">&#34;yes&#34;</span><span style="color:#070">&gt;</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#070">&lt;fileset</span> <span style="color:#007">dir=</span><span style="background-color:#e0e0ff">&#34;${server.src}&#34;</span><span style="color:#070">&gt;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#070">&lt;include</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;**&#34;</span><span style="color:#070">/&gt;</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#070">&lt;/fileset&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#070">&lt;/copy&gt;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#070">&lt;/target&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;target</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;prepare-src&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;copy</span> <span style="color:#a6e22e">todir=</span><span style="color:#e6db74">&#34;${build.src}&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;fileset</span> <span style="color:#a6e22e">dir=</span><span style="color:#e6db74">&#34;${src}&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;include</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;**&#34;</span><span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;/fileset&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/copy&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;/target&gt;</span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#070">&lt;target</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;javac&#34;</span> <span style="color:#007">depends=</span><span style="background-color:#e0e0ff">&#34;prepare-src, patch-server-config&#34;</span><span style="color:#070">&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#070">&lt;javac</span> <span style="color:#007">srcdir=</span><span style="background-color:#e0e0ff">&#34;${build.src}&#34;</span> 
-</span></span><span style="display:flex;"><span>           <span style="color:#007">destdir=</span><span style="background-color:#e0e0ff">&#34;${build.classes}&#34;</span> <span style="color:#007">debug=</span><span style="background-color:#e0e0ff">&#34;on&#34;</span><span style="color:#070">&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;target</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;copy-config&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;copy</span> <span style="color:#a6e22e">todir=</span><span style="color:#e6db74">&#34;${build.classes}&#34;</span> <span style="color:#a6e22e">overwrite=</span><span style="color:#e6db74">&#34;yes&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;fileset</span> <span style="color:#a6e22e">dir=</span><span style="color:#e6db74">&#34;src&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;exclude</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;*.java&#34;</span><span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;/fileset&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/copy&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;/target&gt;</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>      <span style="color:#070">&lt;classpath</span> <span style="color:#007">refid=</span><span style="background-color:#e0e0ff">&#34;project.classpath&#34;</span> <span style="color:#070">/&gt;</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#070">&lt;classpath</span> <span style="color:#007">refid=</span><span style="background-color:#e0e0ff">&#34;servlet-api.classpath&#34;</span> <span style="color:#070">/&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#070">&lt;/javac&gt;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#070">&lt;/target&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;target</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;copy-server-config&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;copy</span> <span style="color:#a6e22e">todir=</span><span style="color:#e6db74">&#34;${build.classes}&#34;</span> <span style="color:#a6e22e">overwrite=</span><span style="color:#e6db74">&#34;yes&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;fileset</span> <span style="color:#a6e22e">dir=</span><span style="color:#e6db74">&#34;${server.src}&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;include</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;**&#34;</span><span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;/fileset&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/copy&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;/target&gt;</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#070">&lt;target</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;patch-server-config&#34;</span><span style="color:#070">&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#070">&lt;replace</span> <span style="color:#007">dir=</span><span style="background-color:#e0e0ff">&#34;${build.src}&#34;</span> 
-</span></span><span style="display:flex;"><span>             <span style="color:#007">includes=</span><span style="background-color:#e0e0ff">&#34;**/*.java&#34;</span> 
-</span></span><span style="display:flex;"><span>             <span style="color:#007">token=</span><span style="background-color:#e0e0ff">&#34;return Application.DEVELOPMENT;&#34;</span> 
-</span></span><span style="display:flex;"><span>             <span style="color:#007">value=</span><span style="background-color:#e0e0ff">&#34;return Application.DEPLOYMENT;&#34;</span><span style="color:#070">&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#070">&lt;/replace&gt;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#070">&lt;/target&gt;</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#070">&lt;target</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;jar&#34;</span><span style="color:#070">&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#070">&lt;tstamp&gt;</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#070">&lt;format</span> <span style="color:#007">property=</span><span style="background-color:#e0e0ff">&#34;timestamp&#34;</span> <span style="color:#007">pattern=</span><span style="background-color:#e0e0ff">&#34;yyyy-dd-MM&#34;</span><span style="color:#070">/&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#070">&lt;/tstamp&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#070">&lt;jar</span> <span style="color:#007">basedir=</span><span style="background-color:#e0e0ff">&#34;${build.classes}&#34;</span> 
-</span></span><span style="display:flex;"><span>         <span style="color:#007">destfile=</span><span style="background-color:#e0e0ff">&#34;${build}/${ant.project.name}-${timestamp}.jar&#34;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#070">/&gt;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#070">&lt;/target&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;target</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;javac&#34;</span> <span style="color:#a6e22e">depends=</span><span style="color:#e6db74">&#34;prepare-src, patch-server-config&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;javac</span> <span style="color:#a6e22e">srcdir=</span><span style="color:#e6db74">&#34;${build.src}&#34;</span> 
+</span></span><span style="display:flex;"><span>           <span style="color:#a6e22e">destdir=</span><span style="color:#e6db74">&#34;${build.classes}&#34;</span> <span style="color:#a6e22e">debug=</span><span style="color:#e6db74">&#34;on&#34;</span><span style="color:#f92672">&gt;</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#070">&lt;target</span> <span style="color:#007">name=</span><span style="background-color:#e0e0ff">&#34;build&#34;</span> <span style="color:#007">depends=</span><span style="background-color:#e0e0ff">&#34;clean,prepare,javac,copy-config,copy-server-config,jar&#34;</span> <span style="color:#070">/&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#070">&lt;/project&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;classpath</span> <span style="color:#a6e22e">refid=</span><span style="color:#e6db74">&#34;project.classpath&#34;</span> <span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;classpath</span> <span style="color:#a6e22e">refid=</span><span style="color:#e6db74">&#34;servlet-api.classpath&#34;</span> <span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/javac&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;/target&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;target</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;patch-server-config&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;replace</span> <span style="color:#a6e22e">dir=</span><span style="color:#e6db74">&#34;${build.src}&#34;</span> 
+</span></span><span style="display:flex;"><span>             <span style="color:#a6e22e">includes=</span><span style="color:#e6db74">&#34;**/*.java&#34;</span> 
+</span></span><span style="display:flex;"><span>             <span style="color:#a6e22e">token=</span><span style="color:#e6db74">&#34;return Application.DEVELOPMENT;&#34;</span> 
+</span></span><span style="display:flex;"><span>             <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;return Application.DEPLOYMENT;&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/replace&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;/target&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;target</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;jar&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;tstamp&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;format</span> <span style="color:#a6e22e">property=</span><span style="color:#e6db74">&#34;timestamp&#34;</span> <span style="color:#a6e22e">pattern=</span><span style="color:#e6db74">&#34;yyyy-dd-MM&#34;</span><span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/tstamp&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;jar</span> <span style="color:#a6e22e">basedir=</span><span style="color:#e6db74">&#34;${build.classes}&#34;</span> 
+</span></span><span style="display:flex;"><span>         <span style="color:#a6e22e">destfile=</span><span style="color:#e6db74">&#34;${build}/${ant.project.name}-${timestamp}.jar&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;/target&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;target</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;build&#34;</span> <span style="color:#a6e22e">depends=</span><span style="color:#e6db74">&#34;clean,prepare,javac,copy-config,copy-server-config,jar&#34;</span> <span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/project&gt;</span>
 </span></span></code></pre></div>
     <a href="/"> >> Home</a>
   </main>

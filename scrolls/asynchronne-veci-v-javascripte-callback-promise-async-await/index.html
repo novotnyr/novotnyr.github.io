@@ -97,9 +97,9 @@ setTimeout(ding, 3000);
     console.log(&#34;Three seconds elapsed!&#34;);
 }, 3000);
 </code></pre><h2 id="callback-príklad-práce-so-súborovým-systémom-v-nodejs">Callback: príklad práce so súborovým systémom v Node.js</h2>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span>fs.readFile(<span style="background-color:#e0e0ff">&#39;/etc/passwd&#39;</span>, <span style="background-color:#e0e0ff">&#39;utf8&#39;</span>, (err, data) =&gt; {
-</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">if</span> (err) <span style="color:#289;font-weight:bold">throw</span> err;
-</span></span><span style="display:flex;"><span>    console.log(data)
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#a6e22e">fs</span>.<span style="color:#a6e22e">readFile</span>(<span style="color:#e6db74">&#39;/etc/passwd&#39;</span>, <span style="color:#e6db74">&#39;utf8&#39;</span>, (<span style="color:#a6e22e">err</span>, <span style="color:#a6e22e">data</span>) =&gt; {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">err</span>) <span style="color:#66d9ef">throw</span> <span style="color:#a6e22e">err</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">data</span>)
 </span></span><span style="display:flex;"><span>});
 </span></span></code></pre></div><p>Callback v Node.js prijíma dva parametre:</p>
 <ul>
@@ -109,14 +109,14 @@ setTimeout(ding, 3000);
 <h2 id="pyramid-of-doom">Pyramid of Doom</h2>
 <p>Callbacky sú jednoduchý spôsob zápisu, ktorý však trpí neprehľadnosťou. Programátorský folklór ich často volá „pyramída hrôzy“, pretože biele miesto v odsadení pripomína otočenú pyramídu.</p>
 <p>Skrátene, „Kód ide rýchlejšie doprava než nadol“:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">const</span> fs <span style="color:#333">=</span> require(<span style="background-color:#e0e0ff">&#39;fs&#39;</span>);
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">fs</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">require</span>(<span style="color:#e6db74">&#39;fs&#39;</span>);
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>fs.open(<span style="background-color:#e0e0ff">&#39;/etc/passwd&#39;</span>, <span style="background-color:#e0e0ff">&#39;r&#39;</span>, (err, fd) =&gt; {
-</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">if</span> (err) <span style="color:#289;font-weight:bold">throw</span> err;
-</span></span><span style="display:flex;"><span>    fs.fstat(fd, (err, stats) =&gt; {
-</span></span><span style="display:flex;"><span>        console.log(stats.ctime)
-</span></span><span style="display:flex;"><span>        fs.close(fd, (err) =&gt; {
-</span></span><span style="display:flex;"><span>            <span style="color:#289;font-weight:bold">if</span> (err) <span style="color:#289;font-weight:bold">throw</span> err;
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">fs</span>.<span style="color:#a6e22e">open</span>(<span style="color:#e6db74">&#39;/etc/passwd&#39;</span>, <span style="color:#e6db74">&#39;r&#39;</span>, (<span style="color:#a6e22e">err</span>, <span style="color:#a6e22e">fd</span>) =&gt; {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">err</span>) <span style="color:#66d9ef">throw</span> <span style="color:#a6e22e">err</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">fs</span>.<span style="color:#a6e22e">fstat</span>(<span style="color:#a6e22e">fd</span>, (<span style="color:#a6e22e">err</span>, <span style="color:#a6e22e">stats</span>) =&gt; {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">stats</span>.<span style="color:#a6e22e">ctime</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">fs</span>.<span style="color:#a6e22e">close</span>(<span style="color:#a6e22e">fd</span>, (<span style="color:#a6e22e">err</span>) =&gt; {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">err</span>) <span style="color:#66d9ef">throw</span> <span style="color:#a6e22e">err</span>;
 </span></span><span style="display:flex;"><span>        });
 </span></span><span style="display:flex;"><span>    });
 </span></span><span style="display:flex;"><span>});
@@ -151,8 +151,8 @@ setTimeout(ding, 3000);
 <li>jQuery (ale tie sú pokazené!)</li>
 </ul>
 <h2 id="príklad-použitia-v-prehliadači">Príklad použitia v prehliadači</h2>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">let</span> promise <span style="color:#333">=</span> fetch(<span style="background-color:#e0e0ff">&#39;http://jsonplaceholder.typicode.com/albums&#39;</span>)
-</span></span><span style="display:flex;"><span>promise.then(response =&gt; showResult(response.statusText))
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">let</span> <span style="color:#a6e22e">promise</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">fetch</span>(<span style="color:#e6db74">&#39;http://jsonplaceholder.typicode.com/albums&#39;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">promise</span>.<span style="color:#a6e22e">then</span>(<span style="color:#a6e22e">response</span> =&gt; <span style="color:#a6e22e">showResult</span>(<span style="color:#a6e22e">response</span>.<span style="color:#a6e22e">statusText</span>))
 </span></span></code></pre></div><ul>
 <li>Funkcia <code>fetch()</code> vracia prísľub budúceho výsledku, <code>promise</code>.</li>
 <li>S premennou <code>promise</code> môžeme veselo narábať, aj keď jej výsledok bude dostupný až v momente, keď server pošle všetky dáta.</li>
@@ -191,8 +191,8 @@ setTimeout(ding, 3000);
 <p>Po zavolaní metódy <code>then()</code> získame nový promise, ktorý je splnený po dobehnutí handlera pre splnenie, či zamietnutý po dobehnutí zamietacieho handlera. V prípade úspechu je hodnota v splnenom promise prevzatá z návratovej hodnoty callbacku.</p>
 <p>To nám dáva možnosť reťaziť prísľuby, o čom si povieme podrobnejšie v sekcii <em>Reťazenie promisov</em>.</p>
 <h3 id="použitie-then-s-dvoma-callbackmi">Použitie <code>then</code> s dvoma callbackmi</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span>fetch(<span style="background-color:#e0e0ff">&#39;http://jsonplaceholder.typicode.com/albums&#39;</span>)
-</span></span><span style="display:flex;"><span>    .then(response =&gt; console.log(response.statusText), err =&gt; console.error(err));
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#a6e22e">fetch</span>(<span style="color:#e6db74">&#39;http://jsonplaceholder.typicode.com/albums&#39;</span>)
+</span></span><span style="display:flex;"><span>    .<span style="color:#a6e22e">then</span>(<span style="color:#a6e22e">response</span> =&gt; <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">response</span>.<span style="color:#a6e22e">statusText</span>), <span style="color:#a6e22e">err</span> =&gt; <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">error</span>(<span style="color:#a6e22e">err</span>));
 </span></span></code></pre></div><p>Funkcia <a href="https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API"><code>fetch</code></a> je zabudovaná funkcia v ES6/ECMAScript v prehliadači, ktorá predstavuje náhradu ajaxového API <em>XMLHttpRequest</em>.</p>
 <p>Výsledkom funkcie je promise, ktorému podsunieme dva callbacky:</p>
 <ul>
@@ -216,26 +216,26 @@ setTimeout(ding, 3000);
 <p>Ak callback promisu P vracia iný promise Q, promise P prevezme stav vráteného promisu Q (promise P musí byť v stave <em>pending</em> dovtedy, kým je v stave <em>pending</em> vrátený promise Q. Podobne sa spriahne aj prechod do splneného či zamietnutého vzťahu. Podrobnosti určuje <a href="https://promisesaplus.com/#point-49">špecifikácia</a>.).</p>
 <h3 id="ukážka-reťazenia">Ukážka reťazenia</h3>
 <p>V ukážke vidíme dvojité reťazenie promisov, v dvoch rozličných situáciách,.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span>fetch(<span style="background-color:#e0e0ff">&#39;http://jsonplaceholder.typicode.com/albums&#39;</span>)
-</span></span><span style="display:flex;"><span>    .then(response =&gt; response.json())
-</span></span><span style="display:flex;"><span>    .then(json =&gt; console.log(json))
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#a6e22e">fetch</span>(<span style="color:#e6db74">&#39;http://jsonplaceholder.typicode.com/albums&#39;</span>)
+</span></span><span style="display:flex;"><span>    .<span style="color:#a6e22e">then</span>(<span style="color:#a6e22e">response</span> =&gt; <span style="color:#a6e22e">response</span>.<span style="color:#a6e22e">json</span>())
+</span></span><span style="display:flex;"><span>    .<span style="color:#a6e22e">then</span>(<span style="color:#a6e22e">json</span> =&gt; <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">json</span>))
 </span></span></code></pre></div><ol>
 <li>Prvý callback vracia JSON z odpovede. Keďže metóda <a href="https://developer.mozilla.org/en-US/docs/Web/API/Body/json"><code>json()</code></a> vracia <code>Promise</code>, stav promisu vráteného z prvého <code>then</code> sa spriahne s prísľubom <code>json()</code>.</li>
 <li>Druhý callback prevezme parameter <code>json</code>, obsahujúci odbalenú hodnotu z predošlého promisu, teda samotný objekt s dátami, a vypíše ho. Callback nevracia nič, ale promise vrátený z druhej <code>then</code> už ani nepotrebujeme.</li>
 </ol>
 <h3 id="volanie-catch-odchytáva-výnimky">Volanie <code>catch()</code> odchytáva výnimky</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span>fetch(<span style="background-color:#e0e0ff">&#39;http://jsonplaceholder.typicode.com/albums&#39;</span>)
-</span></span><span style="display:flex;"><span>    .then(response =&gt; response.json())
-</span></span><span style="display:flex;"><span>    .then(json =&gt; console.log(json))
-</span></span><span style="display:flex;"><span>    .<span style="color:#289;font-weight:bold">catch</span>(err =&gt; console.error(err));
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#a6e22e">fetch</span>(<span style="color:#e6db74">&#39;http://jsonplaceholder.typicode.com/albums&#39;</span>)
+</span></span><span style="display:flex;"><span>    .<span style="color:#a6e22e">then</span>(<span style="color:#a6e22e">response</span> =&gt; <span style="color:#a6e22e">response</span>.<span style="color:#a6e22e">json</span>())
+</span></span><span style="display:flex;"><span>    .<span style="color:#a6e22e">then</span>(<span style="color:#a6e22e">json</span> =&gt; <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">json</span>))
+</span></span><span style="display:flex;"><span>    .<span style="color:#66d9ef">catch</span>(<span style="color:#a6e22e">err</span> =&gt; <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">error</span>(<span style="color:#a6e22e">err</span>));
 </span></span></code></pre></div><p>Volanie <code>catch()</code> je len syntaktický cukor pre volanie <code>.then()</code>, kde prvý parameter je <code>undefined</code>.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span>.then(<span style="color:#289;font-weight:bold">undefined</span>, err =&gt; console.error(err))
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span>.<span style="color:#a6e22e">then</span>(<span style="color:#66d9ef">undefined</span>, <span style="color:#a6e22e">err</span> =&gt; <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">error</span>(<span style="color:#a6e22e">err</span>))
 </span></span></code></pre></div><h3 id="skracovanie-zreťazených-promisov">Skracovanie zreťazených promisov</h3>
 <p>Ak sú kroky a obsluhy výnimiek implementované ako funkcie, máme takmer Java/.NET <em>try-catch</em> štýl. Môžeme využiť trik <em>eta-redukcia</em>, kde volanie funkcie s jedným parametrom nahradíme priamo jej názvom:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span>fetch(<span style="background-color:#e0e0ff">&#39;http://jsonplaceholder.typicode.com/albums&#39;</span>)
-</span></span><span style="display:flex;"><span>    .then(response =&gt; response.json())
-</span></span><span style="display:flex;"><span>    .then(console.log)
-</span></span><span style="display:flex;"><span>    .<span style="color:#289;font-weight:bold">catch</span>(console.error);
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#a6e22e">fetch</span>(<span style="color:#e6db74">&#39;http://jsonplaceholder.typicode.com/albums&#39;</span>)
+</span></span><span style="display:flex;"><span>    .<span style="color:#a6e22e">then</span>(<span style="color:#a6e22e">response</span> =&gt; <span style="color:#a6e22e">response</span>.<span style="color:#a6e22e">json</span>())
+</span></span><span style="display:flex;"><span>    .<span style="color:#a6e22e">then</span>(<span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>)
+</span></span><span style="display:flex;"><span>    .<span style="color:#66d9ef">catch</span>(<span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">error</span>);
 </span></span></code></pre></div><h2 id="komplexné-volania-rest-api">Komplexné volania REST API</h2>
 <p>Komplexné volania REST API pomocou promisov sú veľmi bežné. Predstavme si nasledovnú situáciu:</p>
 <ol>
@@ -248,12 +248,12 @@ setTimeout(ding, 3000);
 <p>Záludnosť spočíva v poslednom kroku: máme zoznam albumov, pre každú položku asynchrónne dotiahneme majiteľa a obohatíme existujúci album. Výsledný zoznam albumov však nemôžeme používať dovtedy, kým nedobehli všetky získavania jednotlivých majiteľov. Preto musíme <em>počkať</em> na splnenie všetkých prísľubov s majiteľmi albumov; to však urobíme asynchrónne, bez blokujúceho čakania!</p>
 <p>Poďme si to rozobrať po kroku:</p>
 <h3 id="získanie-albumu">Získanie albumu</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span>fetch(<span style="background-color:#e0e0ff">&#39;http://jsonplaceholder.typicode.com/albums&#39;</span>)
-</span></span><span style="display:flex;"><span>    .then(response =&gt; response.json())
-</span></span><span style="display:flex;"><span>    .then(fetchAlbumOwnersAsync)
-</span></span><span style="display:flex;"><span>    .then(JSON.stringify)
-</span></span><span style="display:flex;"><span>    .then(console.log)
-</span></span><span style="display:flex;"><span>    .<span style="color:#289;font-weight:bold">catch</span>(console.error);
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#a6e22e">fetch</span>(<span style="color:#e6db74">&#39;http://jsonplaceholder.typicode.com/albums&#39;</span>)
+</span></span><span style="display:flex;"><span>    .<span style="color:#a6e22e">then</span>(<span style="color:#a6e22e">response</span> =&gt; <span style="color:#a6e22e">response</span>.<span style="color:#a6e22e">json</span>())
+</span></span><span style="display:flex;"><span>    .<span style="color:#a6e22e">then</span>(<span style="color:#a6e22e">fetchAlbumOwnersAsync</span>)
+</span></span><span style="display:flex;"><span>    .<span style="color:#a6e22e">then</span>(<span style="color:#a6e22e">JSON</span>.<span style="color:#a6e22e">stringify</span>)
+</span></span><span style="display:flex;"><span>    .<span style="color:#a6e22e">then</span>(<span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>)
+</span></span><span style="display:flex;"><span>    .<span style="color:#66d9ef">catch</span>(<span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">error</span>);
 </span></span></code></pre></div><p>Získanie albumu zrealizujeme jednoducho: získame odpoveď, z nej vytiahneme JSON, a následne zavoláme funkciu <code>fetchAlbumOwnersAsync</code> (tá ešte neexistuje, ale vznikne). Funkcia vráti finálny zoznam albumov, ktorý následne zalogujeme, a obslúžime prípadné chyby.</p>
 <p>Všimnime si, že to všetko zrealizujeme reťazení promisov!</p>
 <p>Jednotlivé kroky si postupne odovzdávajú výsledky:</p>
@@ -268,15 +268,15 @@ setTimeout(ding, 3000);
 <h3 id="získanie-majiteľov-albumov">Získanie majiteľov albumov</h3>
 <p>Funkcia <code>fetchAlbumOwnersAsync</code> zoberie sadu albumov, a pre každý album v nej dotiahne autora pomocou vnoreného prísľubu.</p>
 <p>Funkcia má príponu <code>Async</code>, čo je menná konvencia z niektorých projektov, ktorá naznačuje, že návratovou hodnotou je <em>promise</em>.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">function</span> fetchAlbumOwnersAsync(albums) {
-</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">let</span> userPromises <span style="color:#333">=</span> albums.map(findUserByAlbumAsync);
-</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">return</span> <span style="color:#072">Promise</span>.all(userPromises)
-</span></span><span style="display:flex;"><span>        .then(users =&gt; associate(albums, users))
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">fetchAlbumOwnersAsync</span>(<span style="color:#a6e22e">albums</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> <span style="color:#a6e22e">userPromises</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">albums</span>.<span style="color:#a6e22e">map</span>(<span style="color:#a6e22e">findUserByAlbumAsync</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> Promise.<span style="color:#a6e22e">all</span>(<span style="color:#a6e22e">userPromises</span>)
+</span></span><span style="display:flex;"><span>        .<span style="color:#a6e22e">then</span>(<span style="color:#a6e22e">users</span> =&gt; <span style="color:#a6e22e">associate</span>(<span style="color:#a6e22e">albums</span>, <span style="color:#a6e22e">users</span>))
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>Funkcia prakticky namapuje každý album na prísľub, ktorý bude obsahovať jeho majiteľa. Mapovanie zrealizuje ďalšia funkcia, <code>findUserByAlbumAsync</code>, ku ktorej sa ihneď dostaneme:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">function</span> findUserByAlbumAsync(album) {
-</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">return</span> fetch(<span style="background-color:#e0e0ff">`http://jsonplaceholder.typicode.com/users/</span><span style="background-color:#eee">${</span>album.userId<span style="background-color:#eee">}</span><span style="background-color:#e0e0ff">`</span>)
-</span></span><span style="display:flex;"><span>        .then(response =&gt; response.json())
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">findUserByAlbumAsync</span>(<span style="color:#a6e22e">album</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">fetch</span>(<span style="color:#e6db74">`http://jsonplaceholder.typicode.com/users/</span><span style="color:#e6db74">${</span><span style="color:#a6e22e">album</span>.<span style="color:#a6e22e">userId</span><span style="color:#e6db74">}</span><span style="color:#e6db74">`</span>)
+</span></span><span style="display:flex;"><span>        .<span style="color:#a6e22e">then</span>(<span style="color:#a6e22e">response</span> =&gt; <span style="color:#a6e22e">response</span>.<span style="color:#a6e22e">json</span>())
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>Táto funkcia je jednoduchá: vráti prísľub s jedným používateľom, podľa identifikátora <code>userId</code> v albume.</p>
 <p>Opäť pripomeňme, že táto funkcia mapuje album na prísľub používateľa a preto sme jej dali príponu <code>Async</code>.</p>
@@ -286,34 +286,34 @@ setTimeout(ding, 3000);
 <p>Výsledné pole s výsledkami (s majiteľmi albumov v takom poradí, v akom sme zaslali albumy) následne preiterujeme a priradíme k nim albumy pomocou funkcie <code>associate()</code>.</p>
 <h3 id="asociovanie-majiteľa-s-albumom">Asociovanie majiteľa s albumom</h3>
 <p>Na asociovanie majiteľa s albumom si urobíme pomocnú funkciu:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">function</span> associate(albums, users) {
-</span></span><span style="display:flex;"><span>    albums.forEach((album, i) =&gt; album.user <span style="color:#333">=</span> users[i]);
-</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">return</span> albums
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">associate</span>(<span style="color:#a6e22e">albums</span>, <span style="color:#a6e22e">users</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">albums</span>.<span style="color:#a6e22e">forEach</span>((<span style="color:#a6e22e">album</span>, <span style="color:#a6e22e">i</span>) =&gt; <span style="color:#a6e22e">album</span>.<span style="color:#a6e22e">user</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">users</span>[<span style="color:#a6e22e">i</span>]);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">albums</span>
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>Funkcia prejde dve polia, index po indexe a priradí majiteľa zo zoznamu používateľov do dynamickej premennej <code>user</code> v príslušnom albume. Táto funkcia je úplne bežná, nie je asynchrónna, ani nevracia prísľub, ale bežný, upravený zoznam albumov.</p>
 <h3 id="výsledný-kód">Výsledný kód</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">function</span> associate(albums, users) {
-</span></span><span style="display:flex;"><span>    albums.forEach((album, i) =&gt; album.user <span style="color:#333">=</span> users[i]);
-</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">return</span> albums
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">associate</span>(<span style="color:#a6e22e">albums</span>, <span style="color:#a6e22e">users</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">albums</span>.<span style="color:#a6e22e">forEach</span>((<span style="color:#a6e22e">album</span>, <span style="color:#a6e22e">i</span>) =&gt; <span style="color:#a6e22e">album</span>.<span style="color:#a6e22e">user</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">users</span>[<span style="color:#a6e22e">i</span>]);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">albums</span>
 </span></span><span style="display:flex;"><span>}
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">function</span> findUserByAlbumAsync(album) {
-</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">return</span> fetch(<span style="background-color:#e0e0ff">`http://jsonplaceholder.typicode.com/users/</span><span style="background-color:#eee">${</span>album.userId<span style="background-color:#eee">}</span><span style="background-color:#e0e0ff">`</span>)
-</span></span><span style="display:flex;"><span>        .then(response =&gt; response.json())
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">findUserByAlbumAsync</span>(<span style="color:#a6e22e">album</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">fetch</span>(<span style="color:#e6db74">`http://jsonplaceholder.typicode.com/users/</span><span style="color:#e6db74">${</span><span style="color:#a6e22e">album</span>.<span style="color:#a6e22e">userId</span><span style="color:#e6db74">}</span><span style="color:#e6db74">`</span>)
+</span></span><span style="display:flex;"><span>        .<span style="color:#a6e22e">then</span>(<span style="color:#a6e22e">response</span> =&gt; <span style="color:#a6e22e">response</span>.<span style="color:#a6e22e">json</span>())
 </span></span><span style="display:flex;"><span>}
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">function</span> fetchAlbumOwnersAsync(albums) {
-</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">let</span> userPromises <span style="color:#333">=</span> albums.map(findUserByAlbumAsync);
-</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">return</span> <span style="color:#072">Promise</span>.all(userPromises)
-</span></span><span style="display:flex;"><span>        .then(users =&gt; associate(albums, users))
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">fetchAlbumOwnersAsync</span>(<span style="color:#a6e22e">albums</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> <span style="color:#a6e22e">userPromises</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">albums</span>.<span style="color:#a6e22e">map</span>(<span style="color:#a6e22e">findUserByAlbumAsync</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> Promise.<span style="color:#a6e22e">all</span>(<span style="color:#a6e22e">userPromises</span>)
+</span></span><span style="display:flex;"><span>        .<span style="color:#a6e22e">then</span>(<span style="color:#a6e22e">users</span> =&gt; <span style="color:#a6e22e">associate</span>(<span style="color:#a6e22e">albums</span>, <span style="color:#a6e22e">users</span>))
 </span></span><span style="display:flex;"><span>}
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>fetch(<span style="background-color:#e0e0ff">&#39;http://jsonplaceholder.typicode.com/albums&#39;</span>)
-</span></span><span style="display:flex;"><span>    .then(response =&gt; response.json())
-</span></span><span style="display:flex;"><span>    .then(fetchAlbumOwnersAsync)
-</span></span><span style="display:flex;"><span>    .then(JSON.stringify)
-</span></span><span style="display:flex;"><span>    .then(console.log)
-</span></span><span style="display:flex;"><span>    .<span style="color:#289;font-weight:bold">catch</span>(console.error);
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">fetch</span>(<span style="color:#e6db74">&#39;http://jsonplaceholder.typicode.com/albums&#39;</span>)
+</span></span><span style="display:flex;"><span>    .<span style="color:#a6e22e">then</span>(<span style="color:#a6e22e">response</span> =&gt; <span style="color:#a6e22e">response</span>.<span style="color:#a6e22e">json</span>())
+</span></span><span style="display:flex;"><span>    .<span style="color:#a6e22e">then</span>(<span style="color:#a6e22e">fetchAlbumOwnersAsync</span>)
+</span></span><span style="display:flex;"><span>    .<span style="color:#a6e22e">then</span>(<span style="color:#a6e22e">JSON</span>.<span style="color:#a6e22e">stringify</span>)
+</span></span><span style="display:flex;"><span>    .<span style="color:#a6e22e">then</span>(<span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>)
+</span></span><span style="display:flex;"><span>    .<span style="color:#66d9ef">catch</span>(<span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">error</span>);
 </span></span></code></pre></div><h1 id="async-await">Async-Await</h1>
 <p>Mechanizmus <code>async</code>/<code>await</code> slúži na <em>návrat</em> ku klasickému zápisu, kde máme premenné a priradenia do nich z návratových hodnôt funkcií namiesto používania <code>then</code> a callbackov.</p>
 <p>Kľúčové slová <code>async</code> /<code>await</code> sú k dispozícii vo viacerých programovacích jazykoch, napr. v modernom JavaScripte a v C#.</p>
@@ -325,26 +325,26 @@ setTimeout(ding, 3000);
 <p>Prebudujme teraz náš kód tak, aby používal <code>async</code>-<code>await</code>.</p>
 <p>Začnime zhora: a rovno povieme, že funkcie <code>associate</code> sa nedotkneme, lebo tá nie je asynchrónna.</p>
 <h2 id="vyhľadanie-používateľa-podľa-albumu">Vyhľadanie používateľa podľa albumu</h2>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">async</span> <span style="color:#289;font-weight:bold">function</span> findUserByAlbum(album) {
-</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">let</span> response <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">await</span> fetch(<span style="background-color:#e0e0ff">`http://jsonplaceholder.typicode.com/users/</span><span style="background-color:#eee">${</span>album.userId<span style="background-color:#eee">}</span><span style="background-color:#e0e0ff">`</span>);
-</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">return</span> response.json()
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">findUserByAlbum</span>(<span style="color:#a6e22e">album</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> <span style="color:#a6e22e">response</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> <span style="color:#a6e22e">fetch</span>(<span style="color:#e6db74">`http://jsonplaceholder.typicode.com/users/</span><span style="color:#e6db74">${</span><span style="color:#a6e22e">album</span>.<span style="color:#a6e22e">userId</span><span style="color:#e6db74">}</span><span style="color:#e6db74">`</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">response</span>.<span style="color:#a6e22e">json</span>()
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>Keďže funkcia <code>fetch</code> vracia prísľub, je to skvelý kandidát na prepis <code>then</code> na bežné priradenie do premennej. Keďže prísľub musíme odbaliť do hodnoty, použijeme slovo <code>await</code> (“očakávaj”).</p>
 <p>Odpoveď používa metódu <code>json()</code>, ktorá vracia prísľub s objektovou reprezentáciou albumov, ktorý prepočleme ďalej.</p>
 <p>A keďže funkcia <code>findUserByAlbum</code> vracia prísľub a keďže funkcia využíva <code>await</code>, musíme ju vyhlásiť za <code>async</code>, teda asynchrónnu.</p>
 <h2 id="dotiahnutie-majiteľov-albumu">Dotiahnutie majiteľov albumu</h2>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">async</span> <span style="color:#289;font-weight:bold">function</span> fetchAlbumOwners(albums) {
-</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">let</span> userPromises <span style="color:#333">=</span> albums.map(findUserByAlbum);
-</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">let</span> users <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">await</span> <span style="color:#072">Promise</span>.all(userPromises);
-</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">return</span> associate(albums, users)
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">fetchAlbumOwners</span>(<span style="color:#a6e22e">albums</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> <span style="color:#a6e22e">userPromises</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">albums</span>.<span style="color:#a6e22e">map</span>(<span style="color:#a6e22e">findUserByAlbum</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> <span style="color:#a6e22e">users</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> Promise.<span style="color:#a6e22e">all</span>(<span style="color:#a6e22e">userPromises</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">associate</span>(<span style="color:#a6e22e">albums</span>, <span style="color:#a6e22e">users</span>)
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>Funkcia je tiež asynchrónna. Keďže <code>all</code> vracia prísľub, môžeme ho nahradiť očakávaním odpovede s poľom používateľov, ktoré priradíme do premennej s použitím <code>await</code>. Výsledok následne použijeme ako argument pre funkciu <code>associate</code>, ktorá nevracia prísľub, ale bežnú hodnotu. To neprekáža, pretože vďaka kľúčovému slovu <code>async</code> nad funkciou sa návratová hodnota funkcie <code>fetchAlbumOwners</code> vždy zabalí do prísľubu.</p>
 <h2 id="spustenie-mašinérie">Spustenie mašinérie</h2>
 <p>Keďže zavolanie zoznamu albumov chceme prepísať do <code>async</code>/<code>await</code>, čo je možné len v rámci <code>async</code> funkcie, upracme v kóde:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">async</span> <span style="color:#289;font-weight:bold">function</span> findFullAlbums() {
-</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">let</span> response <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">await</span> fetch(<span style="background-color:#e0e0ff">&#39;http://jsonplaceholder.typicode.com/albums&#39;</span>);
-</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">let</span> albums <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">await</span> response.json();
-</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">return</span> fetchAlbumOwners(albums);
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">findFullAlbums</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> <span style="color:#a6e22e">response</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> <span style="color:#a6e22e">fetch</span>(<span style="color:#e6db74">&#39;http://jsonplaceholder.typicode.com/albums&#39;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> <span style="color:#a6e22e">albums</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> <span style="color:#a6e22e">response</span>.<span style="color:#a6e22e">json</span>();
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">fetchAlbumOwners</span>(<span style="color:#a6e22e">albums</span>);
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>Odpoveď z funkcie <code>fetch</code> je prísľub, preto ho odbalíme do premennej <code>response</code>.</p>
 <p>V ďalšom kroku prevedieme prísľub z funkcie <code>json()</code> na zoznam albumov, opäť odbalením pomocou <code>await</code>.</p>
@@ -352,12 +352,12 @@ setTimeout(ding, 3000);
 <h3 id="vajce-sliepka-pri-asynchrónnych-funkciách">Vajce-sliepka pri asynchrónnych funkciách</h3>
 <p>Samotná mašinéria teraz trpí problémom vajca a sliepky. Potrebujeme zavolať <code>findFullAlbums</code>, ktorá je asynchrónna, ale to môžeme robiť len v rámci asynchrónnej funkcie. Ako z toho von?</p>
 <p>Pripravíme si <strong>anonymnú asynchrónnu funkciu</strong>, ktorá sa navyše nielen zadeklaruje, ale aj sama spustí. Ide o <em>immediately invoked async function expression</em>, čo je rozšírenie vzorca IIFE z JavaScriptu.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span>(<span style="color:#289;font-weight:bold">async</span> <span style="color:#289;font-weight:bold">function</span> () {
-</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">try</span> {
-</span></span><span style="display:flex;"><span>        <span style="color:#289;font-weight:bold">let</span> fullAlbums <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">await</span> findFullAlbums();
-</span></span><span style="display:flex;"><span>        console.log(JSON.stringify(fullAlbums));
-</span></span><span style="display:flex;"><span>    } <span style="color:#289;font-weight:bold">catch</span> (e) {
-</span></span><span style="display:flex;"><span>        console.error(e)
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span>(<span style="color:#66d9ef">async</span> <span style="color:#66d9ef">function</span> () {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">try</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">let</span> <span style="color:#a6e22e">fullAlbums</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> <span style="color:#a6e22e">findFullAlbums</span>();
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">JSON</span>.<span style="color:#a6e22e">stringify</span>(<span style="color:#a6e22e">fullAlbums</span>));
+</span></span><span style="display:flex;"><span>    } <span style="color:#66d9ef">catch</span> (<span style="color:#a6e22e">e</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">error</span>(<span style="color:#a6e22e">e</span>)
 </span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>})();
 </span></span></code></pre></div><p>Kolekcia zátvoriek definuje anonymnú funkciu (medzi úplne prvou guľatou zátvorkou a jej párom), ktorú následne okamžite vykoná (úplne posledný pár zátvoriek pred finálnou bodkočiarkou.).</p>
@@ -365,34 +365,34 @@ setTimeout(ding, 3000);
 <h2 id="obsluha-výnimiek-a-flow">Obsluha výnimiek a flow</h2>
 <p>Všimnime si, ako sa vieme vrátiť k civilizovanej obsluhe výnimiek pomocou <code>try</code>/<code>catch</code>, čo je obvyklý spôsob! Vďaka <code>async</code>/<code>await</code> vieme používať asynchrónny kód skoro tak isto ako bežný, synchrónny&quot;</p>
 <h2 id="celý-kód">Celý kód</h2>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#289;font-weight:bold">function</span> associate(albums, users) {
-</span></span><span style="display:flex;"><span>    albums.forEach((album, i) =&gt; album.user <span style="color:#333">=</span> users[i]);
-</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">return</span> albums
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">associate</span>(<span style="color:#a6e22e">albums</span>, <span style="color:#a6e22e">users</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">albums</span>.<span style="color:#a6e22e">forEach</span>((<span style="color:#a6e22e">album</span>, <span style="color:#a6e22e">i</span>) =&gt; <span style="color:#a6e22e">album</span>.<span style="color:#a6e22e">user</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">users</span>[<span style="color:#a6e22e">i</span>]);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">albums</span>
 </span></span><span style="display:flex;"><span>}
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">async</span> <span style="color:#289;font-weight:bold">function</span> findUserByAlbum(album) {
-</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">let</span> response <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">await</span> fetch(<span style="background-color:#e0e0ff">`http://jsonplaceholder.typicode.com/users/</span><span style="background-color:#eee">${</span>album.userId<span style="background-color:#eee">}</span><span style="background-color:#e0e0ff">`</span>);
-</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">return</span> response.json()
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">findUserByAlbum</span>(<span style="color:#a6e22e">album</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> <span style="color:#a6e22e">response</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> <span style="color:#a6e22e">fetch</span>(<span style="color:#e6db74">`http://jsonplaceholder.typicode.com/users/</span><span style="color:#e6db74">${</span><span style="color:#a6e22e">album</span>.<span style="color:#a6e22e">userId</span><span style="color:#e6db74">}</span><span style="color:#e6db74">`</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">response</span>.<span style="color:#a6e22e">json</span>()
 </span></span><span style="display:flex;"><span>}
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">async</span> <span style="color:#289;font-weight:bold">function</span> fetchAlbumOwners(albums) {
-</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">let</span> userPromises <span style="color:#333">=</span> albums.map(findUserByAlbum);
-</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">let</span> users <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">await</span> <span style="color:#072">Promise</span>.all(userPromises);
-</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">return</span> associate(albums, users)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">fetchAlbumOwners</span>(<span style="color:#a6e22e">albums</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> <span style="color:#a6e22e">userPromises</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">albums</span>.<span style="color:#a6e22e">map</span>(<span style="color:#a6e22e">findUserByAlbum</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> <span style="color:#a6e22e">users</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> Promise.<span style="color:#a6e22e">all</span>(<span style="color:#a6e22e">userPromises</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">associate</span>(<span style="color:#a6e22e">albums</span>, <span style="color:#a6e22e">users</span>)
 </span></span><span style="display:flex;"><span>}
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#289;font-weight:bold">async</span> <span style="color:#289;font-weight:bold">function</span> findFullAlbums() {
-</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">let</span> response <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">await</span> fetch(<span style="background-color:#e0e0ff">&#39;http://jsonplaceholder.typicode.com/albums&#39;</span>);
-</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">let</span> albums <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">await</span> response.json();
-</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">return</span> fetchAlbumOwners(albums);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">findFullAlbums</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> <span style="color:#a6e22e">response</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> <span style="color:#a6e22e">fetch</span>(<span style="color:#e6db74">&#39;http://jsonplaceholder.typicode.com/albums&#39;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> <span style="color:#a6e22e">albums</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> <span style="color:#a6e22e">response</span>.<span style="color:#a6e22e">json</span>();
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">fetchAlbumOwners</span>(<span style="color:#a6e22e">albums</span>);
 </span></span><span style="display:flex;"><span>}
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>(<span style="color:#289;font-weight:bold">async</span> <span style="color:#289;font-weight:bold">function</span> () {
-</span></span><span style="display:flex;"><span>    <span style="color:#289;font-weight:bold">try</span> {
-</span></span><span style="display:flex;"><span>        <span style="color:#289;font-weight:bold">let</span> fullAlbums <span style="color:#333">=</span> <span style="color:#289;font-weight:bold">await</span> findFullAlbums();
-</span></span><span style="display:flex;"><span>        console.log(JSON.stringify(fullAlbums));
-</span></span><span style="display:flex;"><span>    } <span style="color:#289;font-weight:bold">catch</span> (e) {
-</span></span><span style="display:flex;"><span>        console.error(e)
+</span></span><span style="display:flex;"><span>(<span style="color:#66d9ef">async</span> <span style="color:#66d9ef">function</span> () {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">try</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">let</span> <span style="color:#a6e22e">fullAlbums</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> <span style="color:#a6e22e">findFullAlbums</span>();
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">JSON</span>.<span style="color:#a6e22e">stringify</span>(<span style="color:#a6e22e">fullAlbums</span>));
+</span></span><span style="display:flex;"><span>    } <span style="color:#66d9ef">catch</span> (<span style="color:#a6e22e">e</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">error</span>(<span style="color:#a6e22e">e</span>)
 </span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>})();
 </span></span></code></pre></div><h1 id="repozitár-v-gite">Repozitár v Gite</h1>
