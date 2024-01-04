@@ -177,33 +177,33 @@ File[] children = fileC.listFiles();
 <h3 id="zásobník-javautilstack">Zásobník <code>java.util.Stack</code></h3>
 <p>Zásobník je v Jave k dispozícii v podobe triedy <code>java.util.Stack</code>. Najdôležitejšie metódy boli zmienené vyššie.</p>
 <h3 id="algoritmus-v-jave-s-použitím-zásobníka">Algoritmus v Jave s použitím zásobníka</h3>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// vytvoríme zásobník
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>Stack<span style="color:#f92672">&lt;</span>File<span style="color:#f92672">&gt;</span> zásobník <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Stack<span style="color:#f92672">&lt;</span>File<span style="color:#f92672">&gt;();</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">// pridáme koreň do fronty
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>zásobník<span style="color:#f92672">.</span><span style="color:#a6e22e">push</span><span style="color:#f92672">(</span>root<span style="color:#f92672">);</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// vytvoríme zásobník</span>
+</span></span><span style="display:flex;"><span>Stack<span style="color:#f92672">&lt;</span>File<span style="color:#f92672">&gt;</span> zásobník <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Stack<span style="color:#f92672">&lt;</span>File<span style="color:#f92672">&gt;</span>();
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// pridáme koreň do fronty</span>
+</span></span><span style="display:flex;"><span>zásobník.<span style="color:#a6e22e">push</span>(root);
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">//pokiaľ fronta nie je prázdna
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">while</span><span style="color:#f92672">(!</span>zásobník<span style="color:#f92672">.</span><span style="color:#a6e22e">isEmpty</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// vyberme uzol z vrcholu zásobníka
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    File file <span style="color:#f92672">=</span> zásobník<span style="color:#f92672">.</span><span style="color:#a6e22e">pop</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// vybavme ho
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>file<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// potomkov zaradíme do fronty
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">if</span><span style="color:#f92672">(</span>file<span style="color:#f92672">.</span><span style="color:#a6e22e">isDirectory</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>        File<span style="color:#f92672">[]</span> children <span style="color:#f92672">=</span> file<span style="color:#f92672">.</span><span style="color:#a6e22e">listFiles</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// hádžeme na vrchol zásobníka v opačnom poradí
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#66d9ef">for</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> children<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span> <span style="color:#f92672">-</span> 1<span style="color:#f92672">;</span> i <span style="color:#f92672">&gt;=</span> 0<span style="color:#f92672">;</span> i<span style="color:#f92672">--)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>          	zásobník<span style="color:#f92672">.</span><span style="color:#a6e22e">push</span><span style="color:#f92672">(</span>children<span style="color:#f92672">[</span>i<span style="color:#f92672">]);</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>       
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//pokiaľ fronta nie je prázdna</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">while</span>(<span style="color:#f92672">!</span>zásobník.<span style="color:#a6e22e">isEmpty</span>()) {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// vyberme uzol z vrcholu zásobníka</span>
+</span></span><span style="display:flex;"><span>    File file <span style="color:#f92672">=</span> zásobník.<span style="color:#a6e22e">pop</span>();
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// vybavme ho</span>
+</span></span><span style="display:flex;"><span>    System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(file);
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// potomkov zaradíme do fronty</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span>(file.<span style="color:#a6e22e">isDirectory</span>()) {
+</span></span><span style="display:flex;"><span>        File<span style="color:#f92672">[]</span> children <span style="color:#f92672">=</span> file.<span style="color:#a6e22e">listFiles</span>();
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// hádžeme na vrchol zásobníka v opačnom poradí</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span>(<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> children.<span style="color:#a6e22e">length</span> <span style="color:#f92672">-</span> 1; i <span style="color:#f92672">&gt;=</span> 0; i<span style="color:#f92672">--</span>) {
+</span></span><span style="display:flex;"><span>          	zásobník.<span style="color:#a6e22e">push</span>(children<span style="color:#f92672">[</span>i<span style="color:#f92672">]</span>);
+</span></span><span style="display:flex;"><span>        }       
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><h1 id="zabudovaný-algoritmus-v-jave">Zabudovaný algoritmus v Jave</h1>
 <p>Trieda <code>javax.swing.tree.DefaultMutableTreeNode</code> má medzi svojimi metódami tiež prehľadávanie do hĺbky. Na koreňovom uzle stačí zavolať <code>depthFirstEnumeration()</code>, ktorá vráti enumeráciu uzlov.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Enumeration<span style="color:#f92672">&lt;</span>DefaultMutableTreeNode<span style="color:#f92672">&gt;</span> bfsEnum <span style="color:#f92672">=</span> root<span style="color:#f92672">.</span><span style="color:#a6e22e">depthFirstEnumeration</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span>bfsEnum<span style="color:#f92672">.</span><span style="color:#a6e22e">hasMoreElements</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>  	DefaultMutableTreeNode treeNode  <span style="color:#f92672">=</span> bfsEnum<span style="color:#f92672">.</span><span style="color:#a6e22e">nextElement</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>  	System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>treeNode<span style="color:#f92672">.</span><span style="color:#a6e22e">getUserObject</span><span style="color:#f92672">());</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Enumeration<span style="color:#f92672">&lt;</span>DefaultMutableTreeNode<span style="color:#f92672">&gt;</span> bfsEnum <span style="color:#f92672">=</span> root.<span style="color:#a6e22e">depthFirstEnumeration</span>();
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">while</span> (bfsEnum.<span style="color:#a6e22e">hasMoreElements</span>()) {
+</span></span><span style="display:flex;"><span>  	DefaultMutableTreeNode treeNode  <span style="color:#f92672">=</span> bfsEnum.<span style="color:#a6e22e">nextElement</span>();
+</span></span><span style="display:flex;"><span>  	System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(treeNode.<span style="color:#a6e22e">getUserObject</span>());
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div>
     <a href="/"> >> Home</a>
   </main>

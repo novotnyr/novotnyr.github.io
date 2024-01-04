@@ -70,29 +70,29 @@
 </ul>
 <h1 id="doménové-objekty-webovej-aplikácie">Doménové objekty webovej aplikácie</h1>
 <p>Trieda študenta je klasický Java bean:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Student</span> <span style="color:#f92672">{</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Student</span> {
 </span></span><span style="display:flex;"><span>  <span style="color:#75715e">/**
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">   * Id študenta.
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">   */</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">private</span> Long id<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">private</span> Long id;
 </span></span><span style="display:flex;"><span>  <span style="color:#75715e">/**
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">   * Krstné meno študenta.
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">   */</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">private</span> String firstName<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">private</span> String firstName;
 </span></span><span style="display:flex;"><span>  <span style="color:#75715e">/**
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">   * Priezvisko študenta. 
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">   */</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">private</span> String lastName<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">private</span> String lastName;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">int</span> year<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">int</span> year;
 </span></span><span style="display:flex;"><span>  <span style="color:#75715e">/**
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">   * Dátum narodenia študenta.
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">   */</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">private</span> Date birthDate<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">private</span> Date birthDate;
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>  <span style="color:#75715e">/* gettre, settre, konštruktory, hashCode() a equals() */</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>Každý študent má jednoznačný identifikátor typu <code>java.lang.Long</code>. (Použitie objektového typu namiesto primitívu má niekoľko výhod, ktoré sa ukážu neskôr.)</p>
 <h1 id="stiahnutie-knižníc">Stiahnutie knižníc</h1>
 <p>Základná štruktúra webovej aplikácie sa ničím nelíši od inej webovej aplikácie (základom je adresár <code>WEB-INF</code> s podadresármi <code>classes</code> a <code>lib</code>). Dôležité je získať knižnice pre Spring, ktoré získame zo stránok Springu. Okrem nej budeme potrebovať niektoré ďalšie JAR knižnice.
@@ -185,24 +185,24 @@ Tieto knižnice by sme mali dodať aj do <code>CLASSPATH</code>u, resp. do proje
 </ol>
 <h1 id="zobrazenie-študenta">Zobrazenie študenta</h1>
 <p>Ako prvú vec v našej webovej aplikácii vyrobíme stránku, ktorá zobrazí stále rovnakého študenta. Vyrobme si teda triedu s príslušnou metódou:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">DisplayStudent</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> Student <span style="color:#a6e22e">getStudent</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    Student student <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Student<span style="color:#f92672">(</span>1L<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;John&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;Doe&#34;</span><span style="color:#f92672">,</span> 1<span style="color:#f92672">,</span> <span style="color:#66d9ef">new</span> Date<span style="color:#f92672">(</span>87<span style="color:#f92672">,</span> 4<span style="color:#f92672">,</span> 2<span style="color:#f92672">)));</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> student<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">DisplayStudent</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> Student <span style="color:#a6e22e">getStudent</span>() {
+</span></span><span style="display:flex;"><span>    Student student <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Student(1L, <span style="color:#e6db74">&#34;John&#34;</span>, <span style="color:#e6db74">&#34;Doe&#34;</span>, 1, <span style="color:#66d9ef">new</span> Date(87, 4, 2)));
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> student;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>Táto trieda nie je zatiaľ ničím výnimočná. Tú správnu šťavu jej dajú až anotácie, ktorými ju okoreníme.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#f92672">package</span> sk.spring.mvc<span style="color:#f92672">;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#f92672">package</span> sk.spring.mvc;
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#a6e22e">@Controller</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">DisplayStudent</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">DisplayStudent</span> {
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@RequestMapping</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/displayStudent.do&#34;</span><span style="color:#f92672">)</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> Student <span style="color:#a6e22e">getStudent</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    Student student <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Student<span style="color:#f92672">(</span>1L<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;John&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;Doe&#34;</span><span style="color:#f92672">,</span> 1<span style="color:#f92672">,</span> <span style="color:#66d9ef">new</span> Date<span style="color:#f92672">(</span>87<span style="color:#f92672">,</span> 4<span style="color:#f92672">,</span> 2<span style="color:#f92672">)));</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> student<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@RequestMapping</span>(<span style="color:#e6db74">&#34;/displayStudent.do&#34;</span>)
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> Student <span style="color:#a6e22e">getStudent</span>() {
+</span></span><span style="display:flex;"><span>    Student student <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Student(1L, <span style="color:#e6db74">&#34;John&#34;</span>, <span style="color:#e6db74">&#34;Doe&#34;</span>, 1, <span style="color:#66d9ef">new</span> Date(87, 4, 2)));
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> student;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>Všimnime si názov balíčka, ktorý je zhodný s deklaráciou v elemente <code>&lt;context:component-scan&gt;</code>. Ak použijeme musíme prispôsobiť názov balíčka v tejto deklarácii, v opačnom prípade Spring naše triedy nenájde.</p>
 <p>Význam anotácií je nasledovný:</p>
 <ul>
@@ -249,44 +249,44 @@ Ukážeme si len najjednoduchší prípad, kde budeme logické označenie viewu 
 <h1 id="zobrazenie-študenta-s-použitím-databázy">Zobrazenie študenta s použitím databázy</h1>
 <p>V ďalšom kroku si upravíme kontrolér tak, aby umožňoval zobrazenie študenta na základe užívateľom dodaného identifikátora. Ešte predtým si však vytvorme triedu, ktorá bude simulovať relačnú databázu, v ktorej budú uložení študenti.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Component</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Database</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">private</span> List<span style="color:#f92672">&lt;</span>Student<span style="color:#f92672">&gt;</span> students <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">&lt;</span>Student<span style="color:#f92672">&gt;();</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Database</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">private</span> List<span style="color:#f92672">&lt;</span>Student<span style="color:#f92672">&gt;</span> students <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">&lt;</span>Student<span style="color:#f92672">&gt;</span>();
 </span></span><span style="display:flex;"><span>  
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">Database</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    students<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">new</span> Student<span style="color:#f92672">(</span>1L<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;John&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;Doe&#34;</span><span style="color:#f92672">,</span> 1<span style="color:#f92672">,</span> <span style="color:#66d9ef">new</span> Date<span style="color:#f92672">(</span>87<span style="color:#f92672">,</span> 4<span style="color:#f92672">,</span> 2<span style="color:#f92672">)));</span>
-</span></span><span style="display:flex;"><span>    students<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">new</span> Student<span style="color:#f92672">(</span>2L<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;Michael&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;Jackson&#34;</span><span style="color:#f92672">,</span> 1<span style="color:#f92672">,</span> <span style="color:#66d9ef">new</span> Date<span style="color:#f92672">(</span>86<span style="color:#f92672">,</span> 1<span style="color:#f92672">,</span> 2<span style="color:#f92672">)));</span>
-</span></span><span style="display:flex;"><span>    students<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">new</span> Student<span style="color:#f92672">(</span>3L<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;Jane&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;Greengroces&#34;</span><span style="color:#f92672">,</span> 2<span style="color:#f92672">,</span> <span style="color:#66d9ef">new</span> Date<span style="color:#f92672">(</span>83<span style="color:#f92672">,</span> 4<span style="color:#f92672">,</span> 3<span style="color:#f92672">)));</span>
-</span></span><span style="display:flex;"><span>    students<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">new</span> Student<span style="color:#f92672">(</span>4L<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;Arthur&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;Pewtey&#34;</span><span style="color:#f92672">,</span> 4<span style="color:#f92672">,</span> <span style="color:#66d9ef">new</span> Date<span style="color:#f92672">(</span>84<span style="color:#f92672">,</span> 12<span style="color:#f92672">,</span> 12<span style="color:#f92672">)));</span>
-</span></span><span style="display:flex;"><span>    students<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">new</span> Student<span style="color:#f92672">(</span>5L<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;Sidney&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;Pollack&#34;</span><span style="color:#f92672">,</span> 3<span style="color:#f92672">,</span> <span style="color:#66d9ef">new</span> Date<span style="color:#f92672">(</span>78<span style="color:#f92672">,</span> 10<span style="color:#f92672">,</span> 4<span style="color:#f92672">)));</span>
-</span></span><span style="display:flex;"><span>    students<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">new</span> Student<span style="color:#f92672">(</span>6L<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;Andrew&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;Mordon&#34;</span><span style="color:#f92672">,</span> 5<span style="color:#f92672">,</span> <span style="color:#66d9ef">new</span> Date<span style="color:#f92672">(</span>12<span style="color:#f92672">,</span> 5<span style="color:#f92672">,</span> 8<span style="color:#f92672">)));</span>   
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">Database</span>() {
+</span></span><span style="display:flex;"><span>    students.<span style="color:#a6e22e">add</span>(
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">new</span> Student(1L, <span style="color:#e6db74">&#34;John&#34;</span>, <span style="color:#e6db74">&#34;Doe&#34;</span>, 1, <span style="color:#66d9ef">new</span> Date(87, 4, 2)));
+</span></span><span style="display:flex;"><span>    students.<span style="color:#a6e22e">add</span>(
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">new</span> Student(2L, <span style="color:#e6db74">&#34;Michael&#34;</span>, <span style="color:#e6db74">&#34;Jackson&#34;</span>, 1, <span style="color:#66d9ef">new</span> Date(86, 1, 2)));
+</span></span><span style="display:flex;"><span>    students.<span style="color:#a6e22e">add</span>(
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">new</span> Student(3L, <span style="color:#e6db74">&#34;Jane&#34;</span>, <span style="color:#e6db74">&#34;Greengroces&#34;</span>, 2, <span style="color:#66d9ef">new</span> Date(83, 4, 3)));
+</span></span><span style="display:flex;"><span>    students.<span style="color:#a6e22e">add</span>(
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">new</span> Student(4L, <span style="color:#e6db74">&#34;Arthur&#34;</span>, <span style="color:#e6db74">&#34;Pewtey&#34;</span>, 4, <span style="color:#66d9ef">new</span> Date(84, 12, 12)));
+</span></span><span style="display:flex;"><span>    students.<span style="color:#a6e22e">add</span>(
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">new</span> Student(5L, <span style="color:#e6db74">&#34;Sidney&#34;</span>, <span style="color:#e6db74">&#34;Pollack&#34;</span>, 3, <span style="color:#66d9ef">new</span> Date(78, 10, 4)));
+</span></span><span style="display:flex;"><span>    students.<span style="color:#a6e22e">add</span>(
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">new</span> Student(6L, <span style="color:#e6db74">&#34;Andrew&#34;</span>, <span style="color:#e6db74">&#34;Mordon&#34;</span>, 5, <span style="color:#66d9ef">new</span> Date(12, 5, 8)));   
+</span></span><span style="display:flex;"><span>  }
 </span></span><span style="display:flex;"><span>  
 </span></span><span style="display:flex;"><span>  <span style="color:#75715e">/**
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">   * Vráti zoznam všetkých študentov v databáze. Zoznam
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">   * je nemeniteľný.
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">   */</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> List<span style="color:#f92672">&lt;</span>Student<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">listStudents</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> Collections<span style="color:#f92672">.</span><span style="color:#a6e22e">unmodifiableList</span><span style="color:#f92672">(</span>students<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> List<span style="color:#f92672">&lt;</span>Student<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">listStudents</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> Collections.<span style="color:#a6e22e">unmodifiableList</span>(students);
+</span></span><span style="display:flex;"><span>  }
 </span></span><span style="display:flex;"><span>  
 </span></span><span style="display:flex;"><span>  <span style="color:#75715e">/**
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">   * Nájde v databáze študenta s daným identifikátorom. Ak
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">   * sa taký študent nenájde, vráti &lt;code&gt;null&lt;/code&gt;.
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">   */</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> Student <span style="color:#a6e22e">findById</span><span style="color:#f92672">(</span>Long id<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>Student student <span style="color:#f92672">:</span> students<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">if</span><span style="color:#f92672">(</span>student<span style="color:#f92672">.</span><span style="color:#a6e22e">getId</span><span style="color:#f92672">().</span><span style="color:#a6e22e">equals</span><span style="color:#f92672">(</span>id<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> student<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> Student <span style="color:#a6e22e">findById</span>(Long id) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> (Student student : students) {
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">if</span>(student.<span style="color:#a6e22e">getId</span>().<span style="color:#a6e22e">equals</span>(id)) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> student;
+</span></span><span style="display:flex;"><span>      }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">null</span>;
+</span></span><span style="display:flex;"><span>  }
 </span></span><span style="display:flex;"><span>  
 </span></span><span style="display:flex;"><span>  <span style="color:#75715e">/**
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">   * Uloží alebo aktualizuje objekt študenta. Ak má študent
@@ -297,41 +297,41 @@ Ukážeme si len najjednoduchší prípad, kde budeme logické označenie viewu 
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">   * 
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">   * @param student
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">   */</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">saveOrUpdate</span><span style="color:#f92672">(</span>Student student<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span><span style="color:#f92672">(</span>student<span style="color:#f92672">.</span><span style="color:#a6e22e">getId</span><span style="color:#f92672">()</span> <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>      student<span style="color:#f92672">.</span><span style="color:#a6e22e">setId</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> Date<span style="color:#f92672">().</span><span style="color:#a6e22e">getTime</span><span style="color:#f92672">());</span>
-</span></span><span style="display:flex;"><span>      students<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>student<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">return</span><span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>    Student dbStudent <span style="color:#f92672">=</span> findById<span style="color:#f92672">(</span>student<span style="color:#f92672">.</span><span style="color:#a6e22e">getId</span><span style="color:#f92672">());</span>
-</span></span><span style="display:flex;"><span>    students<span style="color:#f92672">.</span><span style="color:#a6e22e">remove</span><span style="color:#f92672">(</span>dbStudent<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>    students<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>student<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">saveOrUpdate</span>(Student student) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span>(student.<span style="color:#a6e22e">getId</span>() <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span>) {
+</span></span><span style="display:flex;"><span>      student.<span style="color:#a6e22e">setId</span>(<span style="color:#66d9ef">new</span> Date().<span style="color:#a6e22e">getTime</span>());
+</span></span><span style="display:flex;"><span>      students.<span style="color:#a6e22e">add</span>(student);
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">return</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    Student dbStudent <span style="color:#f92672">=</span> findById(student.<span style="color:#a6e22e">getId</span>());
+</span></span><span style="display:flex;"><span>    students.<span style="color:#a6e22e">remove</span>(dbStudent);
+</span></span><span style="display:flex;"><span>    students.<span style="color:#a6e22e">add</span>(student);
+</span></span><span style="display:flex;"><span>  }
 </span></span><span style="display:flex;"><span>  
 </span></span><span style="display:flex;"><span>  <span style="color:#75715e">/**
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">   * Odstráni z databázy študenta s daným identifikátorom.
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">   * Inštancia v parametri nemusí mať vyplnené všetky údaje, stačí,
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">   * keď má vyplnený identifikátor.
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">   */</span> 
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">removeStudent</span><span style="color:#f92672">(</span>Student student<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    Student dbStudent <span style="color:#f92672">=</span> findById<span style="color:#f92672">(</span>student<span style="color:#f92672">.</span><span style="color:#a6e22e">getId</span><span style="color:#f92672">());</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span><span style="color:#f92672">(</span>dbStudent <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>      students<span style="color:#f92672">.</span><span style="color:#a6e22e">remove</span><span style="color:#f92672">(</span>dbStudent<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">removeStudent</span>(Student student) {
+</span></span><span style="display:flex;"><span>    Student dbStudent <span style="color:#f92672">=</span> findById(student.<span style="color:#a6e22e">getId</span>());
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span>(dbStudent <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span>) {
+</span></span><span style="display:flex;"><span>      students.<span style="color:#a6e22e">remove</span>(dbStudent);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>Všimnime si, že trieda má anotáciu <code>@Component</code>, čo zaručí jej automatickú registráciu v aplikačnom kontexte Springu. Triedy, ktoré budú potrebovať prístup k databáze, sa na ňu budú môcť odkazovať pomocou špeciálnej anotácie, ktorú si ukážeme o niečo nižšie.</p>
 <p>Upravme si teraz kontrolér tak, aby jeho metóda mala medzi parametrami identifikátor a vracala príslušného študenta.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Controller</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">DisplayStudent</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">DisplayStudent</span> {
 </span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@Autowired</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">private</span> Database database<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">private</span> Database database;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@RequestMapping</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/displayStudent.do&#34;</span><span style="color:#f92672">)</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> Student <span style="color:#a6e22e">getStudent</span><span style="color:#f92672">(</span>Long id<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> database<span style="color:#f92672">.</span><span style="color:#a6e22e">findById</span><span style="color:#f92672">(</span>id<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@RequestMapping</span>(<span style="color:#e6db74">&#34;/displayStudent.do&#34;</span>)
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> Student <span style="color:#a6e22e">getStudent</span>(Long id) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> database.<span style="color:#a6e22e">findById</span>(id);
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>Vykonali sme dve zmeny: pridali sme inštančnú premennú <code>database</code> s anotáciou <code>@Autowired</code>. To naznačí Springu, že do nej má vložiť inštanciu beanu pre databázu, ktorá sa nachádza v aplikačnom kontexte. (Taká inštancia existuje, keďže trieda <code>Database</code> bola anotovaná ako komponent). Okrem toho sme do metódy <code>getStudent()</code> dodali parameter s identifikátorom.</p>
 <p>Je známe, že URL adresy môžu v sebe obsahovať parametre dopytu. Príkladom môže byť adresa <code>http://localhost:8080/students/displayStudent.do?id=2&amp;displayAll=true</code>. Za otáznikom nasledujú dvojice <em>názov parametra</em>=<em>hodnota parametra</em> oddelené ampersandom. V našom prípade máme dva parametre: <em>id</em>=<em>2</em> a <em>displayAll</em> = <em>true</em>. Spring MVC vie namapovať tieto parametre z URL adresy na parametre metódy. Parameter <em>id</em> sa namapuje na parameter <code>Long id</code>. Keďže parametre v URL adrese sú len reťazcové, je potrebné previesť konverziu hodnôt. Spring MVC však tieto prevody rieši automaticky.</p>
 <p>Inými slovami, po navštívení adresy <code>http://localhost:8080/students/displayStudent.do?id=2&amp;displayAll=true</code> sa v rámci metódy <code>getStudent()</code> vloží do parametra <code>id</code> hodnota 2. Parameter <code>displayAll</code> sa nedá namapovať na žiadny parameter metódy a preto sa ignoruje.</p>
@@ -361,16 +361,16 @@ Ukážeme si len najjednoduchší prípad, kde budeme logické označenie viewu 
 <h2 id="kontrolér">Kontrolér</h2>
 <p>Kontrolér sa nebude líšiť od toho predošlého - rozdielom bude návratová hodnota.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Controller</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ListStudents</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ListStudents</span> {
 </span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@Autowired</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">private</span> Database database<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">private</span> Database database;
 </span></span><span style="display:flex;"><span>  
-</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@RequestMapping</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/listStudents.do&#34;</span><span style="color:#f92672">)</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> List<span style="color:#f92672">&lt;</span>Student<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">listStudents</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    List<span style="color:#f92672">&lt;</span>Student<span style="color:#f92672">&gt;</span> students <span style="color:#f92672">=</span> database<span style="color:#f92672">.</span><span style="color:#a6e22e">listStudents</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> students<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@RequestMapping</span>(<span style="color:#e6db74">&#34;/listStudents.do&#34;</span>)
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> List<span style="color:#f92672">&lt;</span>Student<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">listStudents</span>() {
+</span></span><span style="display:flex;"><span>    List<span style="color:#f92672">&lt;</span>Student<span style="color:#f92672">&gt;</span> students <span style="color:#f92672">=</span> database.<span style="color:#a6e22e">listStudents</span>();
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> students;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>V tomto prípade vracia metóda zoznam študentov <code>List&lt;Student&gt;</code>. Do mapovania premenných stránky sa vloží premenná <code>studentList</code> (predpona sa odvodí z dátového typu zoznamu, prípona <code>list</code> zodpovedá kolekcii) s výsledným zoznamom.</p>
 <h1 id="vytvorenie-študenta">Vytvorenie študenta</h1>
 <h2 id="jsp-stránka-2">JSP stránka</h2>
@@ -416,48 +416,48 @@ V našom prípade je modelový objekt uložený v premennej <code>student</code>
 </ol>
 <p>Vytvorme teraz prvú verziu triedy kontroléra:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Controller</span>
-</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@RequestMapping</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/createStudent.do&#34;</span><span style="color:#f92672">)</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CreateStudent</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@RequestMapping</span>(<span style="color:#e6db74">&#34;/createStudent.do&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CreateStudent</span> {
 </span></span><span style="display:flex;"><span> 
-</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@RequestMapping</span><span style="color:#f92672">(</span>method <span style="color:#f92672">=</span> RequestMethod<span style="color:#f92672">.</span><span style="color:#a6e22e">GET</span><span style="color:#f92672">)</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> Student <span style="color:#a6e22e">displayStudent</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    Student student <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Student<span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> student<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@RequestMapping</span>(method <span style="color:#f92672">=</span> RequestMethod.<span style="color:#a6e22e">GET</span>)
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> Student <span style="color:#a6e22e">displayStudent</span>() {
+</span></span><span style="display:flex;"><span>    Student student <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Student();
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> student;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>Anotáciu <code>@RequestMapping</code> teraz odsunieme nad triedu. Vytvoríme metódu <code>displayStudent()</code>, ktorú anotujeme samostatným <code>@RequestMapping</code>om indikujúcim, že táto metóda sa má vykonať pri GET požiadavke. V nej vytvoríme prázdneho študenta, ktorý bude slúžiť ako modelový objekt. Dôvodom je to, že potrebujeme pre prázdny formulár potrebujeme nejaký modelový objekt. Prázdny študent s nevyplnenými dátami bude tým objektom, ktorý sa vo formulári vyplní. Metóda vracia mapovanie, kde sa premennej <code>&quot;student&quot;</code> priradí inštancia prázdneho študenta. Po jej vykonaní sa zobrazí view <code>createStudent</code>, kde sa vo formulári pracuje nad daným študentom.</p>
 <p>Teraz dodajme metódu, ktorá bude spracovávať odoslané dáta.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Autowired</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">private</span> Database database<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">private</span> Database database;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@RequestMapping</span><span style="color:#f92672">(</span>method <span style="color:#f92672">=</span> RequestMethod<span style="color:#f92672">.</span><span style="color:#a6e22e">POST</span><span style="color:#f92672">)</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">updateStudent</span><span style="color:#f92672">(</span>Student student<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>  database<span style="color:#f92672">.</span><span style="color:#a6e22e">saveOrUpdate</span><span style="color:#f92672">(</span>student<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;redirect:listStudents.do&#34;</span><span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>  
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@RequestMapping</span>(method <span style="color:#f92672">=</span> RequestMethod.<span style="color:#a6e22e">POST</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">updateStudent</span>(Student student) {
+</span></span><span style="display:flex;"><span>  database.<span style="color:#a6e22e">saveOrUpdate</span>(student);
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;redirect:listStudents.do&#34;</span>;
+</span></span><span style="display:flex;"><span>}  
 </span></span></code></pre></div><p>Metóda <code>updateStudent()</code> sa zavolá pri odoslaní formulára, teda pri požiadavke POST (viď anotácia). Má jeden parameter typu <code>Student</code>, na ktorý sa namapujú dáta z formulára (na základe atribútu <code>path</code> v ovládacích prvkoch formulára). Objekt typu <code>Student</code> len uložíme do databázy a zobrazíme nový view.</p>
 <p>V tomto prípade budeme chcieť po odoslaní formulára zobraziť zoznam študentov, teda stránku na adrese <code>/listStudents.do</code>. V metódach kontroléra, ktoré sú anotované pomocou <code>@RequestMapping</code> platí, že ak je návratovou hodnotou reťazec, tak ten sa zinterpretuje ako názov viewu, ktorý sa má zobraziť.</p>
 <p>View so špeciálnym názvom <code>redirect:listStudents.do</code> presmeruje používateľa na adresu končiacu sa na <code>listStudents.do</code>. Na takúto adresu už máme namapovaný predošlý kontrolér <code>ListStudents</code>, na ktorom sa automaticky zavolá príslušná metóda a zobrazí sa nový zoznam (aj s čerstvo pridaným študentom).</p>
 <h3 id="validácia">Validácia</h3>
 <p>Náš kontrolér má jednu chybu - uloží aj študenta, ktorý nemá žiadne vyplnené údaje, čo zrejme nie je ideálny prípad. Validácia by mala zaistiť kontrolu korektnosti a konzistencie dát a v prípade nesúladu na ne používateľa upozorniť.</p>
 <p>V Spring MVC existuje užitočný interfejs <code>Validator</code>, ktoré reprezentuje triedu schopnú zvalidovať daný objekt. Vytvorme si triedu <code>StudentValidator</code>:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">StudentValidator</span> <span style="color:#66d9ef">implements</span> Validator <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">validate</span><span style="color:#f92672">(</span>Object target<span style="color:#f92672">,</span> Errors errors<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    Student student <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>Student<span style="color:#f92672">)</span> target<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>    ValidationUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">rejectIfEmptyOrWhitespace</span><span style="color:#f92672">(</span>
-</span></span><span style="display:flex;"><span>      errors<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;firstName&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;Name cannot be empty.&#34;</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>    ValidationUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">rejectIfEmptyOrWhitespace</span><span style="color:#f92672">(</span>
-</span></span><span style="display:flex;"><span>      errors<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;lastName&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;Last name cannot be empty.&#34;</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span><span style="color:#f92672">(</span>student<span style="color:#f92672">.</span><span style="color:#a6e22e">getYear</span><span style="color:#f92672">()</span> <span style="color:#f92672">&lt;</span> 1 <span style="color:#f92672">||</span> student<span style="color:#f92672">.</span><span style="color:#a6e22e">getYear</span><span style="color:#f92672">()</span> <span style="color:#f92672">&gt;</span> 5<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>      errors<span style="color:#f92672">.</span><span style="color:#a6e22e">rejectValue</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;year&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;&#34;</span><span style="color:#f92672">,</span> 
-</span></span><span style="display:flex;"><span>                         <span style="color:#e6db74">&#34;Year must be between 1 and 5!&#34;</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">StudentValidator</span> <span style="color:#66d9ef">implements</span> Validator {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">validate</span>(Object target, Errors errors) {
+</span></span><span style="display:flex;"><span>    Student student <span style="color:#f92672">=</span> (Student) target;
+</span></span><span style="display:flex;"><span>    ValidationUtils.<span style="color:#a6e22e">rejectIfEmptyOrWhitespace</span>(
+</span></span><span style="display:flex;"><span>      errors, <span style="color:#e6db74">&#34;firstName&#34;</span>, <span style="color:#e6db74">&#34;&#34;</span>, <span style="color:#e6db74">&#34;Name cannot be empty.&#34;</span>);
+</span></span><span style="display:flex;"><span>    ValidationUtils.<span style="color:#a6e22e">rejectIfEmptyOrWhitespace</span>(
+</span></span><span style="display:flex;"><span>      errors, <span style="color:#e6db74">&#34;lastName&#34;</span>, <span style="color:#e6db74">&#34;&#34;</span>, <span style="color:#e6db74">&#34;Last name cannot be empty.&#34;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span>(student.<span style="color:#a6e22e">getYear</span>() <span style="color:#f92672">&lt;</span> 1 <span style="color:#f92672">||</span> student.<span style="color:#a6e22e">getYear</span>() <span style="color:#f92672">&gt;</span> 5) {
+</span></span><span style="display:flex;"><span>      errors.<span style="color:#a6e22e">rejectValue</span>(<span style="color:#e6db74">&#34;year&#34;</span>, <span style="color:#e6db74">&#34;&#34;</span>, 
+</span></span><span style="display:flex;"><span>                         <span style="color:#e6db74">&#34;Year must be between 1 and 5!&#34;</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  }
 </span></span><span style="display:flex;"><span>  
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">supports</span><span style="color:#f92672">(</span>Class clazz<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> Student<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">.</span><span style="color:#a6e22e">isAssignableFrom</span><span style="color:#f92672">(</span>clazz<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>  
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">supports</span>(Class clazz) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> Student.<span style="color:#a6e22e">class</span>.<span style="color:#a6e22e">isAssignableFrom</span>(clazz);
+</span></span><span style="display:flex;"><span>  }  
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>V metóde <code>supports()</code> určíme aké dátové typy vie validátor spracovať - je zrejmé, že <code>Student</code>ov. Filozofia metódy <code>validate()</code> je nasledovná: v <code>target</code> máme objekt, ktorý chceme zvalidovať a <code>errors</code> predstavuje objekt, do ktorého pridávame chybové hlášky. V ukážke máme dva prístupy k validácii:</p>
 <ul>
 <li><code>ValidationUtils.rejectIfEmptyOrWhitespace()</code> skontroluje neprázdnosť danej inštančnej premennej.</li>
@@ -465,18 +465,18 @@ V našom prípade je modelový objekt uložený v premennej <code>student</code>
 </ul>
 <p>Validátor potom pridáme do kontroléra jednoducho: napr. ako inštančnú premennú:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> StudentValidator studentValidator 
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> StudentValidator<span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> StudentValidator();
 </span></span></code></pre></div><p>Jeho použitie bude nasledovné - upravíme si metódu volanú pri POST požiadavke:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@RequestMapping</span><span style="color:#f92672">(</span>method <span style="color:#f92672">=</span> RequestMethod<span style="color:#f92672">.</span><span style="color:#a6e22e">POST</span><span style="color:#f92672">)</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">updateStudent</span><span style="color:#f92672">(</span>Student student<span style="color:#f92672">,</span> Errors errors<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>  studentValidator<span style="color:#f92672">.</span><span style="color:#a6e22e">validate</span><span style="color:#f92672">(</span>student<span style="color:#f92672">,</span> errors<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span><span style="color:#f92672">(</span>errors<span style="color:#f92672">.</span><span style="color:#a6e22e">hasErrors</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;createStudent&#34;</span><span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>  database<span style="color:#f92672">.</span><span style="color:#a6e22e">saveOrUpdate</span><span style="color:#f92672">(</span>student<span style="color:#f92672">);</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@RequestMapping</span>(method <span style="color:#f92672">=</span> RequestMethod.<span style="color:#a6e22e">POST</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">updateStudent</span>(Student student, Errors errors) {
+</span></span><span style="display:flex;"><span>  studentValidator.<span style="color:#a6e22e">validate</span>(student, errors);
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span>(errors.<span style="color:#a6e22e">hasErrors</span>()) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;createStudent&#34;</span>;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>  database.<span style="color:#a6e22e">saveOrUpdate</span>(student);
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;redirect:listStudents.do&#34;</span><span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;redirect:listStudents.do&#34;</span>;
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>Do metódy <code>updateStudent()</code> sme dodali nový parameter typu <code>Errors</code>, do ktorého môžeme vkladať chybové hlášky. Modelový objekt zvalidujeme a v prípade, že nastala nejaká chyba zobrazíme pôvodnú stránku (teda view <code>createStudent</code>). V prípade úspešnej validácie objekt uložíme a zobrazíme zoznam študentov.</p>
 <p>Náš kontrolér je nedokonalý - v prípade, že validácia neprejde, sa používateľovi zobrazí pôvodný formulár bez akejkoľvek chybovej hlášky či upozornenia. Tie je možné zobraziť pomocou tagu <code>&lt;form:errors&gt;</code>, ktorý dodáme do formulára:</p>
 <pre tabindex="0"><code>...
@@ -491,16 +491,16 @@ V našom prípade je modelový objekt uložený v premennej <code>student</code>
 <p>JSP stránku nemusíme vyrábať - môžeme totiž použiť stránku <code>createStudent.jsp</code>.</p>
 <h2 id="kontrolér-2">Kontrolér</h2>
 <p>Kontrolér <code>EditStudent</code> anotovaný ako <code>@RequestMapping(&quot;/editStudent.do&quot;)</code> bude veľmi podobný kontroléru pre vytvorenie študenta. Jedinou odlišnosťou bude kód v metóde <code>displayStudent()</code>:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@RequestMapping</span><span style="color:#f92672">(</span>method <span style="color:#f92672">=</span> RequestMethod<span style="color:#f92672">.</span><span style="color:#a6e22e">GET</span><span style="color:#f92672">)</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">displayStudent</span><span style="color:#f92672">(</span>Long studentId<span style="color:#f92672">,</span> ModelMap model<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>  Student student <span style="color:#f92672">=</span> database<span style="color:#f92672">.</span><span style="color:#a6e22e">findById</span><span style="color:#f92672">(</span>studentId<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span><span style="color:#f92672">(</span>student <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> IllegalArgumentException<span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span> 
-</span></span><span style="display:flex;"><span>  model<span style="color:#f92672">.</span><span style="color:#a6e22e">addAttribute</span><span style="color:#f92672">(</span>student<span style="color:#f92672">);</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@RequestMapping</span>(method <span style="color:#f92672">=</span> RequestMethod.<span style="color:#a6e22e">GET</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">displayStudent</span>(Long studentId, ModelMap model) {
+</span></span><span style="display:flex;"><span>  Student student <span style="color:#f92672">=</span> database.<span style="color:#a6e22e">findById</span>(studentId);
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span>(student <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> IllegalArgumentException();
+</span></span><span style="display:flex;"><span>  } 
+</span></span><span style="display:flex;"><span>  model.<span style="color:#a6e22e">addAttribute</span>(student);
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;createStudent&#34;</span><span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;createStudent&#34;</span>;
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>V tomto prípade je situácia o niečo odlišnejšia. Dosiaľ sme totiž vracali view odvodený od URL adresy. V tomto prípade však potrebujeme zobraziť view <code>createStudent</code> a navyše doň chceme odovzdať model obsahujúci objekt študenta. Ako na to? Do metódy sme dodali nový parameter - modelovú mapu. To je presne mapa, do ktorej môžeme pridávať názvy premenných a ich hodnoty. Údaje v tejto mape zodpovedajú modelu, ktorý sa použije pri zobrazovaní stránky. Metóda <code>addAttribute(student)</code> pridá do modelovej mapy premennú student` (odvodenú od názvu triedy) s hodnotou zodpovedajúcemu objektu v parametri.</p>
 <p>Metóda <code>displayStudent()</code> vracia reťazec, ktorý sa interpretuje ako názov viewu, ktorý sa má zobraziť. Súhrnne sa po zavolaní metódy zobrazí view <code>createStudent</code>, pričom dáta doň sa prevezmú z modelovej mapy <code>model</code>.</p>
 <h2 id="ošetrovanie-výnimiek">Ošetrovanie výnimiek</h2>
@@ -524,17 +524,17 @@ V našom prípade je modelový objekt uložený v premennej <code>student</code>
 </span></span></code></pre></div><p>špeciálnou značkou, ktorá automaticky vygeneruje rozbaľovací zoznam:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-html" data-lang="html"><span style="display:flex;"><span>&lt;<span style="color:#f92672">form:select</span> <span style="color:#a6e22e">path</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;year&#34;</span> <span style="color:#a6e22e">items</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;${allYears}&#34;</span>/&gt;
 </span></span></code></pre></div><p>Položky v zozname sa naplnia z premennej <code>allYears</code>, ktorú prirodzene musíme naplniť v kontroléri.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@ModelAttribute</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;allYears&#34;</span><span style="color:#f92672">)</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> Map<span style="color:#f92672">&lt;</span>Integer<span style="color:#f92672">,</span> String<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">getAllYears</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>  Map<span style="color:#f92672">&lt;</span>Integer<span style="color:#f92672">,</span> String<span style="color:#f92672">&gt;</span> hodnoty <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> TreeMap<span style="color:#f92672">&lt;</span>Integer<span style="color:#f92672">,</span> String<span style="color:#f92672">&gt;();</span>
-</span></span><span style="display:flex;"><span>  hodnoty<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span>1<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;prvák&#34;</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>  hodnoty<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span>2<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;druhák&#34;</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>  hodnoty<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span>3<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;tretiak&#34;</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>  hodnoty<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span>4<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;štvrták&#34;</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>  hodnoty<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span>5<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;piatak&#34;</span><span style="color:#f92672">);</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@ModelAttribute</span>(<span style="color:#e6db74">&#34;allYears&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> Map<span style="color:#f92672">&lt;</span>Integer, String<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">getAllYears</span>() {
+</span></span><span style="display:flex;"><span>  Map<span style="color:#f92672">&lt;</span>Integer, String<span style="color:#f92672">&gt;</span> hodnoty <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> TreeMap<span style="color:#f92672">&lt;</span>Integer, String<span style="color:#f92672">&gt;</span>();
+</span></span><span style="display:flex;"><span>  hodnoty.<span style="color:#a6e22e">put</span>(1, <span style="color:#e6db74">&#34;prvák&#34;</span>);
+</span></span><span style="display:flex;"><span>  hodnoty.<span style="color:#a6e22e">put</span>(2, <span style="color:#e6db74">&#34;druhák&#34;</span>);
+</span></span><span style="display:flex;"><span>  hodnoty.<span style="color:#a6e22e">put</span>(3, <span style="color:#e6db74">&#34;tretiak&#34;</span>);
+</span></span><span style="display:flex;"><span>  hodnoty.<span style="color:#a6e22e">put</span>(4, <span style="color:#e6db74">&#34;štvrták&#34;</span>);
+</span></span><span style="display:flex;"><span>  hodnoty.<span style="color:#a6e22e">put</span>(5, <span style="color:#e6db74">&#34;piatak&#34;</span>);
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> hodnoty<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> hodnoty;
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>V kontroléri stačí vytvoriť metódu, ktorá vracia buď zoznam objektov alebo mapu. Metódu treba anotovať pomocou <code>@ModelAttribute</code>, kde
 určíme názov premennej v modeli, na ktorú sa namapuje výsledný zoznam. Keďže ju chceme namapovať na premennú <code>allYears</code>, jej názov
 dodáme do anotácie. V našej metóde vytvoríme klasickú mapu (<code>TreeMap</code> preto, aby sa nám zachovalo poradie kľúčov), kde každej položke
@@ -545,23 +545,23 @@ Ak by sme totiž modelovú mapu napĺňali len v metóde obsluhujúcej GET poži
 <p>Jeden kontrolér môže obsluhovať aj viacero akcií. Predstavme si, že by sme chceli v zozname študentov dodať položky pre vymazanie študenta a jeho postup do ďalšieho ročníka. Prvým nápadom by bolo vytvorenie dvoch kontrolérov (jedného pre mazanie a druhého pre postup) a ich namapovanie na dve URL adresy. Spring MVC však ponúka kontroléry, ktoré môžu mať každú metódu namapovanú na samostatnú URL adresu.</p>
 <p>Príkladom je nasledovný kontrolér:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Controller</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">StudentActions</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">StudentActions</span> {
 </span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@Autowired</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">private</span> Database database<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">private</span> Database database;
 </span></span><span style="display:flex;"><span>  
-</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@RequestMapping</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/deleteStudent.do&#34;</span><span style="color:#f92672">)</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">delete</span><span style="color:#f92672">(</span>Long studentId<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    database<span style="color:#f92672">.</span><span style="color:#a6e22e">removeStudent</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> Student<span style="color:#f92672">(</span>studentId<span style="color:#f92672">));</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;redirect:listStudents.do&#34;</span><span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@RequestMapping</span>(<span style="color:#e6db74">&#34;/deleteStudent.do&#34;</span>)
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">delete</span>(Long studentId) {
+</span></span><span style="display:flex;"><span>    database.<span style="color:#a6e22e">removeStudent</span>(<span style="color:#66d9ef">new</span> Student(studentId));
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;redirect:listStudents.do&#34;</span>;
+</span></span><span style="display:flex;"><span>  }
 </span></span><span style="display:flex;"><span>  
-</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@RequestMapping</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/advanceStudent.do&#34;</span><span style="color:#f92672">)</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">advance</span><span style="color:#f92672">(</span>Long studentId<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    Student student <span style="color:#f92672">=</span> database<span style="color:#f92672">.</span><span style="color:#a6e22e">findById</span><span style="color:#f92672">(</span>studentId<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>    student<span style="color:#f92672">.</span><span style="color:#a6e22e">setYear</span><span style="color:#f92672">(</span>student<span style="color:#f92672">.</span><span style="color:#a6e22e">getYear</span><span style="color:#f92672">()</span> <span style="color:#f92672">+</span> 1<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;redirect:listStudents.do&#34;</span><span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@RequestMapping</span>(<span style="color:#e6db74">&#34;/advanceStudent.do&#34;</span>)
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">advance</span>(Long studentId) {
+</span></span><span style="display:flex;"><span>    Student student <span style="color:#f92672">=</span> database.<span style="color:#a6e22e">findById</span>(studentId);
+</span></span><span style="display:flex;"><span>    student.<span style="color:#a6e22e">setYear</span>(student.<span style="color:#a6e22e">getYear</span>() <span style="color:#f92672">+</span> 1);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;redirect:listStudents.do&#34;</span>;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>Metóda <code>delete()</code> je namapovaná na URL končiacu sa na <code>/deleteStudent.do</code> a očakáva parameter <code>studentId</code>. Druhá metóda sa vykoná analogicky pri zavolaní URL adresy typu <code>http://.../advanceStudent.do?studentId=2</code>.</p>
 <p>Odkaz na tento kontrolér môžeme zaviesť do JSP stránky so zoznamom študentov, stačí do tabuľky dodať nové bunky:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#75715e">&lt;!-- hodnota atribútu href nesmie byť na viacerých riadkoch! --&gt;</span>

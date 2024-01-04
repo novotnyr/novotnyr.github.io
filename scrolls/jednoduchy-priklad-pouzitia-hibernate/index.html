@@ -62,45 +62,45 @@
 <p>Hibernate (<a href="http://www.hibernate.org">http://www.hibernate.org</a>) je nástroj podporujúci objektovú perzistenciu &ndash; v preklade: umožňuje ukladať objekty do databázy a následne ich z nej vyberať (často sa možno stretnúť so pojmom <em>ORM &ndash; Object Relational Mapping</em>). Výhodou je jeho ľahké používanie, stabilita a rozšírenosť.</p>
 <h1 id="príklad">Príklad</h1>
 <p>Uvažujme niekoľko jednoduchých tried, ktoré sa zaoberajú mačkami. Majme koncept mačky: mačka má meno a deti. Teda môžeme ju reprezentovať triedou <code>Cat</code>.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#f92672">package</span> catology<span style="color:#f92672">;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#f92672">package</span> catology;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.util.HashSet<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.util.Set<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.util.HashSet;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.util.Set;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Cat</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">private</span> String name<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Cat</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">private</span> String name;
 </span></span><span style="display:flex;"><span>  
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">getName</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> name<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">getName</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> name;
+</span></span><span style="display:flex;"><span>  }
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setName</span><span style="color:#f92672">(</span>String name<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">name</span> <span style="color:#f92672">=</span> name<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setName</span>(String name) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">name</span> <span style="color:#f92672">=</span> name;
+</span></span><span style="display:flex;"><span>  }
 </span></span><span style="display:flex;"><span> 
 </span></span><span style="display:flex;"><span>  
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">protected</span> Set children <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HashSet<span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">protected</span> Set children <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HashSet();
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> Set <span style="color:#a6e22e">getChildren</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">children</span><span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> Set <span style="color:#a6e22e">getChildren</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">children</span>;
+</span></span><span style="display:flex;"><span>  }
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setChildren</span><span style="color:#f92672">(</span>Set children<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">children</span> <span style="color:#f92672">=</span> children<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span> 
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setChildren</span>(Set children) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">children</span> <span style="color:#f92672">=</span> children;
+</span></span><span style="display:flex;"><span>  } 
 </span></span><span style="display:flex;"><span>  
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">addChild</span><span style="color:#f92672">(</span>Cat child<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>   
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">children</span><span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>child<span style="color:#f92672">);</span>   
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">addChild</span>(Cat child) {   
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">children</span>.<span style="color:#a6e22e">add</span>(child);   
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>Táto trieda je veľmi jednoduchá, vidíme, že neimplementuje žiadny špeciálny interfejs. Jej použitie je tiež priamočiare.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Cat parent <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Cat<span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>parent<span style="color:#f92672">.</span><span style="color:#a6e22e">setName</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Pigislav&#34;</span><span style="color:#f92672">);</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Cat parent <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Cat();
+</span></span><span style="display:flex;"><span>parent.<span style="color:#a6e22e">setName</span>(<span style="color:#e6db74">&#34;Pigislav&#34;</span>);
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>Cat child <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Cat<span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>child<span style="color:#f92672">.</span><span style="color:#a6e22e">setName</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Poldo&#34;</span><span style="color:#f92672">);</span>   
+</span></span><span style="display:flex;"><span>Cat child <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Cat();
+</span></span><span style="display:flex;"><span>child.<span style="color:#a6e22e">setName</span>(<span style="color:#e6db74">&#34;Poldo&#34;</span>);   
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>parent<span style="color:#f92672">.</span><span style="color:#a6e22e">addChild</span><span style="color:#f92672">(</span>child<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>parent.<span style="color:#a6e22e">addChild</span>(child);
 </span></span></code></pre></div><p>Teraz by sme chceli uložiť mačku do databázy. Mohli by sme to urobiť dvoma spôsobmi: buď jednoducho vytvoriť pomocnú triedu, ktorá by z objektu typu <code>Cat</code> vytiahla príslušné vlastnosti, spojila sa s databázou a odoslala zodpovedajúci SQL dopyt typu <code>INSERT</code>.</p>
 <p>Hibernate tento proces v prípade komplikovaných tried, alebo ich veľkého počtu, značne uľahčuje.</p>
 <h2 id="základ">Základ</h2>
@@ -189,66 +189,66 @@ Element <code>set</code> reprezentuje množinu. Dátový člen <code>children</c
 <p>Na mapovanie ostatných typov odkazujeme do dokumentácie, prípadne do stránok s prehľadom asociácií a ich mapovaní (<a href="http://www.xylax.net/hibernate/index.html)">http://www.xylax.net/hibernate/index.html)</a>.</p>
 <h2 id="proces-hibernácie-a-dehibernácie">Proces hibernácie a dehibernácie</h2>
 <p>Proces hibernácie je potom pomerne priamočiary (neuvádzame odchytávanie výnimiek)</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">//nakonfigujueme tovaren, ktora nam bude davat sessiony s Hibernate
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>sessionFactory <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Configuration<span style="color:#f92672">()</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">.</span><span style="color:#a6e22e">configure</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> java<span style="color:#f92672">.</span><span style="color:#a6e22e">io</span><span style="color:#f92672">.</span><span style="color:#a6e22e">File</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/home/user/catology/bin/hibernate.cfg.xml&#34;</span><span style="color:#f92672">))</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">.</span><span style="color:#a6e22e">buildSessionFactory</span><span style="color:#f92672">();</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">//nakonfigujueme tovaren, ktora nam bude davat sessiony s Hibernate</span>
+</span></span><span style="display:flex;"><span>sessionFactory <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Configuration()
+</span></span><span style="display:flex;"><span>  .<span style="color:#a6e22e">configure</span>(<span style="color:#66d9ef">new</span> java.<span style="color:#a6e22e">io</span>.<span style="color:#a6e22e">File</span>(<span style="color:#e6db74">&#34;/home/user/catology/bin/hibernate.cfg.xml&#34;</span>))
+</span></span><span style="display:flex;"><span>  .<span style="color:#a6e22e">buildSessionFactory</span>();
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">//vytvorime triedy, ktore chceme hibernovat
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>Cat parent <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Cat<span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>parent<span style="color:#f92672">.</span><span style="color:#a6e22e">setName</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Pigislav&#34;</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>Cat child <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Cat<span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>child<span style="color:#f92672">.</span><span style="color:#a6e22e">setName</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Poldo&#34;</span><span style="color:#f92672">);</span> 
-</span></span><span style="display:flex;"><span>parent<span style="color:#f92672">.</span><span style="color:#a6e22e">addChild</span><span style="color:#f92672">(</span>child<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//vytvorime triedy, ktore chceme hibernovat</span>
+</span></span><span style="display:flex;"><span>Cat parent <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Cat();
+</span></span><span style="display:flex;"><span>parent.<span style="color:#a6e22e">setName</span>(<span style="color:#e6db74">&#34;Pigislav&#34;</span>);
+</span></span><span style="display:flex;"><span>Cat child <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Cat();
+</span></span><span style="display:flex;"><span>child.<span style="color:#a6e22e">setName</span>(<span style="color:#e6db74">&#34;Poldo&#34;</span>); 
+</span></span><span style="display:flex;"><span>parent.<span style="color:#a6e22e">addChild</span>(child);
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">//vyziadame si session
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>Session session <span style="color:#f92672">=</span> sessionFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">openSession</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">//zacneme transakciu (v duchu transakcii v DB)
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>Transaction tx <span style="color:#f92672">=</span> session<span style="color:#f92672">.</span><span style="color:#a6e22e">beginTransaction</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//vyziadame si session</span>
+</span></span><span style="display:flex;"><span>Session session <span style="color:#f92672">=</span> sessionFactory.<span style="color:#a6e22e">openSession</span>();
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//zacneme transakciu (v duchu transakcii v DB)</span>
+</span></span><span style="display:flex;"><span>Transaction tx <span style="color:#f92672">=</span> session.<span style="color:#a6e22e">beginTransaction</span>();
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">//hibernujeme triedu (to je vsetko!)
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>session<span style="color:#f92672">.</span><span style="color:#a6e22e">save</span><span style="color:#f92672">(</span>parent<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//hibernujeme triedu (to je vsetko!)</span>
+</span></span><span style="display:flex;"><span>session.<span style="color:#a6e22e">save</span>(parent);
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">//commitneme transakciu
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>tx<span style="color:#f92672">.</span><span style="color:#a6e22e">commit</span><span style="color:#f92672">();</span>         
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//commitneme transakciu</span>
+</span></span><span style="display:flex;"><span>tx.<span style="color:#a6e22e">commit</span>();         
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">//skoncime session 
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>session<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//skoncime session </span>
+</span></span><span style="display:flex;"><span>session.<span style="color:#a6e22e">close</span>();
 </span></span></code></pre></div><p>Analogicky môžeme jednoducho dehibernovať triedy. Na získavanie tried z databázy jestvuje mnoho metód a Hibernate dokonca definuje vlastný jazyk jemne rozširujúci SQL o objektové črty.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">//nakonfigujueme tovaren, ktora nam bude davat sessiony s Hibernate
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>sessionFactory <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Configuration<span style="color:#f92672">()</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">.</span><span style="color:#a6e22e">configure</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> java<span style="color:#f92672">.</span><span style="color:#a6e22e">io</span><span style="color:#f92672">.</span><span style="color:#a6e22e">File</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/home/user/catology/bin/hibernate.cfg.xml&#34;</span><span style="color:#f92672">))</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">.</span><span style="color:#a6e22e">buildSessionFactory</span><span style="color:#f92672">();</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">//nakonfigujueme tovaren, ktora nam bude davat sessiony s Hibernate</span>
+</span></span><span style="display:flex;"><span>sessionFactory <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Configuration()
+</span></span><span style="display:flex;"><span>  .<span style="color:#a6e22e">configure</span>(<span style="color:#66d9ef">new</span> java.<span style="color:#a6e22e">io</span>.<span style="color:#a6e22e">File</span>(<span style="color:#e6db74">&#34;/home/user/catology/bin/hibernate.cfg.xml&#34;</span>))
+</span></span><span style="display:flex;"><span>  .<span style="color:#a6e22e">buildSessionFactory</span>();
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">//vyziadame si session
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>Session session <span style="color:#f92672">=</span> sessionFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">openSession</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">//zacneme transakciu (v duchu transakcii v DB)
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>Transaction tx <span style="color:#f92672">=</span> session<span style="color:#f92672">.</span><span style="color:#a6e22e">beginTransaction</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//vyziadame si session</span>
+</span></span><span style="display:flex;"><span>Session session <span style="color:#f92672">=</span> sessionFactory.<span style="color:#a6e22e">openSession</span>();
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//zacneme transakciu (v duchu transakcii v DB)</span>
+</span></span><span style="display:flex;"><span>Transaction tx <span style="color:#f92672">=</span> session.<span style="color:#a6e22e">beginTransaction</span>();
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">//chcem vsetky macky! (&#34;from Cat&#34;) je vyraz dopytovacieho jazyka
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>List result <span style="color:#f92672">=</span> session<span style="color:#f92672">.</span><span style="color:#a6e22e">find</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;from Cat&#34;</span><span style="color:#f92672">);</span>         
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//chcem vsetky macky! (&#34;from Cat&#34;) je vyraz dopytovacieho jazyka</span>
+</span></span><span style="display:flex;"><span>List result <span style="color:#f92672">=</span> session.<span style="color:#a6e22e">find</span>(<span style="color:#e6db74">&#34;from Cat&#34;</span>);         
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>Cat c <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>Cat kitten <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>Cat c <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span>;
+</span></span><span style="display:flex;"><span>Cat kitten <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span>;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">//iterujeme zoznam maciek
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">for</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span> i <span style="color:#f92672">&lt;</span> result<span style="color:#f92672">.</span><span style="color:#a6e22e">size</span><span style="color:#f92672">();</span> i<span style="color:#f92672">++)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>  c <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>Cat<span style="color:#f92672">)</span> result<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>i<span style="color:#f92672">);</span>            
-</span></span><span style="display:flex;"><span>  System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>c<span style="color:#f92672">.</span><span style="color:#a6e22e">getName</span><span style="color:#f92672">());</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//iterujeme zoznam maciek</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span>(<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> 0; i <span style="color:#f92672">&lt;</span> result.<span style="color:#a6e22e">size</span>(); i<span style="color:#f92672">++</span>) {
+</span></span><span style="display:flex;"><span>  c <span style="color:#f92672">=</span> (Cat) result.<span style="color:#a6e22e">get</span>(i);            
+</span></span><span style="display:flex;"><span>  System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(c.<span style="color:#a6e22e">getName</span>());
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#75715e">//iterujeme cez deti macky a vypisujeme ich
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  Iterator it <span style="color:#f92672">=</span> c<span style="color:#f92672">.</span><span style="color:#a6e22e">getChildren</span><span style="color:#f92672">().</span><span style="color:#a6e22e">iterator</span><span style="color:#f92672">();</span> 
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">while</span><span style="color:#f92672">(</span>it<span style="color:#f92672">.</span><span style="color:#a6e22e">hasNext</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    kitten <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>Cat<span style="color:#f92672">)</span>it<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>    System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;  &#34;</span> <span style="color:#f92672">+</span> kitten<span style="color:#f92672">.</span><span style="color:#a6e22e">getName</span><span style="color:#f92672">());</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>           
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">//iterujeme cez deti macky a vypisujeme ich</span>
+</span></span><span style="display:flex;"><span>  Iterator it <span style="color:#f92672">=</span> c.<span style="color:#a6e22e">getChildren</span>().<span style="color:#a6e22e">iterator</span>(); 
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">while</span>(it.<span style="color:#a6e22e">hasNext</span>()) {
+</span></span><span style="display:flex;"><span>    kitten <span style="color:#f92672">=</span> (Cat)it.<span style="color:#a6e22e">next</span>();
+</span></span><span style="display:flex;"><span>    System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(<span style="color:#e6db74">&#34;  &#34;</span> <span style="color:#f92672">+</span> kitten.<span style="color:#a6e22e">getName</span>());
+</span></span><span style="display:flex;"><span>  }           
+</span></span><span style="display:flex;"><span>}
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">//commitneme transakciu
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>tx<span style="color:#f92672">.</span><span style="color:#a6e22e">commit</span><span style="color:#f92672">();</span>         
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//commitneme transakciu</span>
+</span></span><span style="display:flex;"><span>tx.<span style="color:#a6e22e">commit</span>();         
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">//skoncime session 
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>session<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//skoncime session </span>
+</span></span><span style="display:flex;"><span>session.<span style="color:#a6e22e">close</span>();
 </span></span></code></pre></div><h1 id="odkazy">Odkazy</h1>
 <ul>
 <li><a href="http://www.xylax.net/hibernate/index.html">http://www.xylax.net/hibernate/index.html</a></li>
@@ -277,34 +277,34 @@ podrobnosti napr. na <a href="http://www.eclipseplugincentral.com/PNphpBB2+file-
 <p>Bliaka to, ze <code>Batch update row count wrong</code>!</p>
 <p><strong>Riešenie:</strong> Atribut <code>unsaved-value</code> nie je nastaveny. Ak identifikacny atribut nema implicitnu hodnotu <code>null</code> (to je v pripade primitivnych typov ako napr. <code>long</code>), je potrebné uviesť implicitnu hodnotu.</p>
 <p><strong>Riešenie 2:</strong> Alternativne je uzitocne pouzivate neprimitivne typy:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Cat</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">private</span> Long id<span style="color:#f92672">;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Cat</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">private</span> Long id;
 </span></span><span style="display:flex;"><span>  
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> Long <span style="color:#a6e22e">getId</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>     <span style="color:#66d9ef">return</span> id<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> Long <span style="color:#a6e22e">getId</span>() {
+</span></span><span style="display:flex;"><span>     <span style="color:#66d9ef">return</span> id;
+</span></span><span style="display:flex;"><span>  }
 </span></span><span style="display:flex;"><span>  
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setId</span><span style="color:#f92672">(</span>Long id<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>     <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">id</span> <span style="color:#f92672">=</span> id<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setId</span>(Long id) {
+</span></span><span style="display:flex;"><span>     <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">id</span> <span style="color:#f92672">=</span> id;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;id</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;id&#34;</span> <span style="color:#a6e22e">column=</span><span style="color:#e6db74">&#34;id&#34;</span> <span style="color:#a6e22e">type=</span><span style="color:#e6db74">&#34;java.lang.Long&#34;</span><span style="color:#f92672">&gt;</span>
 </span></span></code></pre></div><h2 id="triedy-sa-neukladajú">Triedy sa neukladajú</h2>
 <p>Moje inštancie sa neukladajú do databázy! Vypíše sa, že prebehol <code>INSERT</code>, ale v databáze sa nič nezmenilo!</p>
 <p><strong>Riešenie:</strong> Skontrolujte, či ukladanie prebieha v rámci transakcie. Ak nepoužívate transakcie, je stále možné použiť najprimitívnejší spôsob a to vypnutím autocommitu JDBC pripojení. Dodajte konfiguračné nastaveniee</p>
 <pre tabindex="0"><code>hibernate.connection.autocommit = true
 </code></pre><p>a pred uzatvorením sessionu ho flushnite (Hibernate totiž kvôli optimalizácii zoskupuje dopyty a odošle ich až v prípade potreby)</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Session session <span style="color:#f92672">=</span> factory<span style="color:#f92672">.</span><span style="color:#a6e22e">openSession</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>  Hotel hotel <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Hotel<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Plaza&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;Main Street 1&#34;</span><span style="color:#f92672">,</span> 4<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>  session<span style="color:#f92672">.</span><span style="color:#a6e22e">saveOrUpdate</span><span style="color:#f92672">(</span>hotel<span style="color:#f92672">);</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Session session <span style="color:#f92672">=</span> factory.<span style="color:#a6e22e">openSession</span>();
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">try</span> {
+</span></span><span style="display:flex;"><span>  Hotel hotel <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Hotel(<span style="color:#e6db74">&#34;Plaza&#34;</span>, <span style="color:#e6db74">&#34;Main Street 1&#34;</span>, 4);
+</span></span><span style="display:flex;"><span>  session.<span style="color:#a6e22e">saveOrUpdate</span>(hotel);
 </span></span><span style="display:flex;"><span>			
-</span></span><span style="display:flex;"><span>  Hotel hotel2 <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Hotel<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Continental&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;Turing Street 1&#34;</span><span style="color:#f92672">,</span> 5<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>  session<span style="color:#f92672">.</span><span style="color:#a6e22e">saveOrUpdate</span><span style="color:#f92672">(</span>hotel2<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span> <span style="color:#66d9ef">finally</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>  session<span style="color:#f92672">.</span><span style="color:#a6e22e">flush</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>  session<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>  Hotel hotel2 <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Hotel(<span style="color:#e6db74">&#34;Continental&#34;</span>, <span style="color:#e6db74">&#34;Turing Street 1&#34;</span>, 5);
+</span></span><span style="display:flex;"><span>  session.<span style="color:#a6e22e">saveOrUpdate</span>(hotel2);
+</span></span><span style="display:flex;"><span>} <span style="color:#66d9ef">finally</span> {
+</span></span><span style="display:flex;"><span>  session.<span style="color:#a6e22e">flush</span>();
+</span></span><span style="display:flex;"><span>  session.<span style="color:#a6e22e">close</span>();
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><h1 id="faq">FAQ</h1>
 <h2 id="aký-je-rozdiel-medzi-get-a-load">Aký je rozdiel medzi <code>get()</code> a <code>load()</code>?</h2>
 <ul>

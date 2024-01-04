@@ -142,48 +142,48 @@ Vyberme si napríklad Bratislavu-Trnavu a zvýraznime ju.</p>
 <h1 id="implementácia-v-jave">Implementácia v Jave</h1>
 <p>Implementácia v Jave je opäť jednoduchá, dôležité je si ale premyslieť dátové štruktúry, ktoré budú použité.</p>
 <p>Predovšetkým definujeme triedu pre hranu <code>Edge</code>, ktorá bude obsahovať dva uzly (reprezentované ako reťazce) a váhu.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Edge</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// uzol 1
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#66d9ef">private</span> String node1<span style="color:#f92672">;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Edge</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// uzol 1</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">private</span> String node1;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// uzol 2
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#66d9ef">private</span> String node2<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// uzol 2</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">private</span> String node2;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// váha
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">int</span> weight<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// váha</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">int</span> weight;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">Edge</span><span style="color:#f92672">(</span>String node1<span style="color:#f92672">,</span> String node2<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span> weight<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">super</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">node1</span> <span style="color:#f92672">=</span> node1<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">node2</span> <span style="color:#f92672">=</span> node2<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">weight</span> <span style="color:#f92672">=</span> weight<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">Edge</span>(String node1, String node2, <span style="color:#66d9ef">int</span> weight) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">super</span>();
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">node1</span> <span style="color:#f92672">=</span> node1;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">node2</span> <span style="color:#f92672">=</span> node2;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">weight</span> <span style="color:#f92672">=</span> weight;
+</span></span><span style="display:flex;"><span>  }
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// gettre a settre
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// gettre a settre</span>
+</span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@Override</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">toString</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> node1 <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;--&#34;</span> <span style="color:#f92672">+</span> node2 <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34; [&#34;</span> <span style="color:#f92672">+</span> weight <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34; ]&#34;</span><span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">toString</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> node1 <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;--&#34;</span> <span style="color:#f92672">+</span> node2 <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34; [&#34;</span> <span style="color:#f92672">+</span> weight <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34; ]&#34;</span>;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>Ďalej si vytvoríme triedu <code>SpanningTree</code>, ktorá bude obsahovať operácie na pridanie hrán a na nájdenie minimálnej kostry. Predovšetkým vyvstáva otázka, kde budeme uchovávať zoznam hrán. Vystačili by sme si s klasickým zoznamom <code>java.util.List</code>, kde by sme hranu s najmenšou váhou našli pomocnou metódou, ktorá by prešla zoznam a vrátila požadovaný prvok.</p>
 <p>V jave však môžeme použiť špeciálny prípad zoznamu — <strong>prioritný front</strong> (implementácia <code>java.util.PriorityQueue</code>), čo je front, ktorý automaticky usporiadava hrany na základe požadovaného kritéria. Toto kritérium môžeme ustanoviť implementáciou interfejsu <code>java.util.Comparator</code>, ktorá umožňuje vzájomne porovnať dve inštancie hrán. V našom prípade platí, že hrana je „menšia“ ako iná hrana, ak má menšiu váhu.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">EdgeByWeightComparator</span> <span style="color:#66d9ef">implements</span> Comparator<span style="color:#f92672">&lt;</span>Edge<span style="color:#f92672">&gt;</span> <span style="color:#f92672">{</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">EdgeByWeightComparator</span> <span style="color:#66d9ef">implements</span> Comparator<span style="color:#f92672">&lt;</span>Edge<span style="color:#f92672">&gt;</span> {
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">compare</span><span style="color:#f92672">(</span>Edge edge1<span style="color:#f92672">,</span> Edge edge2<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#75715e">// vezmeme obe hrany a porovnáme ich pomocou metódy java.lang.Integer
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> Integer<span style="color:#f92672">(</span>edge1<span style="color:#f92672">.</span><span style="color:#a6e22e">getWeight</span><span style="color:#f92672">())</span>
-</span></span><span style="display:flex;"><span>              <span style="color:#f92672">.</span><span style="color:#a6e22e">compareTo</span><span style="color:#f92672">(</span>edge2<span style="color:#f92672">.</span><span style="color:#a6e22e">getWeight</span><span style="color:#f92672">());</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">compare</span>(Edge edge1, Edge edge2) {
+</span></span><span style="display:flex;"><span>      <span style="color:#75715e">// vezmeme obe hrany a porovnáme ich pomocou metódy java.lang.Integer</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> Integer(edge1.<span style="color:#a6e22e">getWeight</span>())
+</span></span><span style="display:flex;"><span>              .<span style="color:#a6e22e">compareTo</span>(edge2.<span style="color:#a6e22e">getWeight</span>());
+</span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>Prioritný front potom deklarujeme v triede <code>SpanningTree</code> nasledovne:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">private</span> PriorityQueue<span style="color:#f92672">&lt;</span>Edge<span style="color:#f92672">&gt;</span> edges 
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> PriorityQueue<span style="color:#f92672">&lt;</span>Edge<span style="color:#f92672">&gt;(</span>10<span style="color:#f92672">,</span> <span style="color:#66d9ef">new</span> EdgeByWeightComparator<span style="color:#f92672">());</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> PriorityQueue<span style="color:#f92672">&lt;</span>Edge<span style="color:#f92672">&gt;</span>(10, <span style="color:#66d9ef">new</span> EdgeByWeightComparator());
 </span></span></code></pre></div><p>Prvý parameter udáva iniciálnu kapacitu fronty a druhý parameter ustanovuje usporiadané určené komparátorom.</p>
 <p>Ako budeme reprezentovať naše stromy (v príklade majúce samostatnú farbu?)  Pre každý uzol v grafe si môžeme pamätať množinu uzlov s rovnakou farbou. Vieme si teda urobiť mapovanie z uzlov do množín uzlov, čiže</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">private</span> Map<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span> Set<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;&gt;</span> mapping 
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HashMap<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span> Set<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;&gt;();</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">private</span> Map<span style="color:#f92672">&lt;</span>String, Set<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;&gt;</span> mapping 
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HashMap<span style="color:#f92672">&lt;</span>String, Set<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;&gt;</span>();
 </span></span></code></pre></div><p>Napríklad v treťom kroku algoritmu budeme mať v mape:</p>
 <pre tabindex="0"><code>Bratislava  =&gt; {Bratislava, Trnava, Nitra}
 Prešov      =&gt; {Prešov, Košice}
@@ -197,46 +197,46 @@ B. Bystrica =&gt; {B. Bystrica}
 <li>vytvorenie stromu pre prvý vrchol. Tento strom obsahuje zatiaľ len prvý vrchol.</li>
 <li>vytvorenie stromu pre druhý vrchol. Tento strom obsahuje zatiaľ len druhý vrchol.</li>
 </ol>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">addPair</span><span style="color:#f92672">(</span>String node1<span style="color:#f92672">,</span> String node2<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span> weight<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// vytvor hranu
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  Edge edge <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Edge<span style="color:#f92672">(</span>node1<span style="color:#f92672">,</span> node2<span style="color:#f92672">,</span> weight<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// pridaj ju do prioritného frontu
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  edges<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>edge<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// pridaj dvojicu node1 =&gt; {node1}
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  mapping<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span>node1<span style="color:#f92672">,</span> 
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">new</span> HashSet<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;(</span>Collections<span style="color:#f92672">.</span><span style="color:#a6e22e">singleton</span><span style="color:#f92672">(</span>node1<span style="color:#f92672">)));</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// pridaj dvojicu node2 =&gt; {node2}
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  mapping<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span>node2<span style="color:#f92672">,</span> 
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">new</span> HashSet<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;(</span>Collections<span style="color:#f92672">.</span><span style="color:#a6e22e">singleton</span><span style="color:#f92672">(</span>node2<span style="color:#f92672">)));</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">addPair</span>(String node1, String node2, <span style="color:#66d9ef">int</span> weight) {
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// vytvor hranu</span>
+</span></span><span style="display:flex;"><span>  Edge edge <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Edge(node1, node2, weight);
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// pridaj ju do prioritného frontu</span>
+</span></span><span style="display:flex;"><span>  edges.<span style="color:#a6e22e">add</span>(edge);
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// pridaj dvojicu node1 =&gt; {node1}</span>
+</span></span><span style="display:flex;"><span>  mapping.<span style="color:#a6e22e">put</span>(node1, 
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">new</span> HashSet<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span>(Collections.<span style="color:#a6e22e">singleton</span>(node1)));
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// pridaj dvojicu node2 =&gt; {node2}</span>
+</span></span><span style="display:flex;"><span>  mapping.<span style="color:#a6e22e">put</span>(node2, 
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">new</span> HashSet<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span>(Collections.<span style="color:#a6e22e">singleton</span>(node2)));
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><h2 id="hľadanie-minimálnej-kostry">Hľadanie minimálnej kostry</h2>
 <p>Hľadanie minimálnej kostry potom spočíva v prejdení prvkov prioritnej fronty (tá je usporiadaná podľa váh hrán). Pre každú hranu sa pozrieme do stromu prvého uzla a do stromu druhého uzla. Ak sú množiny uzlov rovnaké, znamená to, že uzly sú v rovnakom strome (podľa nášho príkladu majú rovnakú farbu) a teda hrana medzi nimi by utvorila cyklus.</p>
 <p>V opačnom prípade vezmeme všetky uzly zo stromu druhého uzla a pridáme ich medzi uzly stromu druhého uzla. To je jednoduchá množinová operácia (keďže stromy reprezentujeme ako množiny).</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> Set<span style="color:#f92672">&lt;</span>Edge<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">getSpanningTree</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// výsledná množina hrán kostry
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  Set<span style="color:#f92672">&lt;</span>Edge<span style="color:#f92672">&gt;</span> spanningTreeEdges <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HashSet<span style="color:#f92672">&lt;</span>Edge<span style="color:#f92672">&gt;();</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// hrany získavame v správnom poradí
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>Edge edge <span style="color:#f92672">:</span> edges<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// množina uzlov v strome prvého uzla
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    Set<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> tree1Nodes <span style="color:#f92672">=</span> mapping<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>edge<span style="color:#f92672">.</span><span style="color:#a6e22e">getNode1</span><span style="color:#f92672">());</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// množina uzlov v strome prvého uzla
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    Set<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> tree2Nodes <span style="color:#f92672">=</span> mapping<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>edge<span style="color:#f92672">.</span><span style="color:#a6e22e">getNode2</span><span style="color:#f92672">());</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> Set<span style="color:#f92672">&lt;</span>Edge<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">getSpanningTree</span>() {
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// výsledná množina hrán kostry</span>
+</span></span><span style="display:flex;"><span>  Set<span style="color:#f92672">&lt;</span>Edge<span style="color:#f92672">&gt;</span> spanningTreeEdges <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HashSet<span style="color:#f92672">&lt;</span>Edge<span style="color:#f92672">&gt;</span>();
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// hrany získavame v správnom poradí</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">for</span> (Edge edge : edges) {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// množina uzlov v strome prvého uzla</span>
+</span></span><span style="display:flex;"><span>    Set<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> tree1Nodes <span style="color:#f92672">=</span> mapping.<span style="color:#a6e22e">get</span>(edge.<span style="color:#a6e22e">getNode1</span>());
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// množina uzlov v strome prvého uzla</span>
+</span></span><span style="display:flex;"><span>    Set<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> tree2Nodes <span style="color:#f92672">=</span> mapping.<span style="color:#a6e22e">get</span>(edge.<span style="color:#a6e22e">getNode2</span>());
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span><span style="color:#f92672">(</span>tree1Nodes<span style="color:#f92672">.</span><span style="color:#a6e22e">equals</span><span style="color:#f92672">(</span>tree2Nodes<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#75715e">// množina uzlov v prvom strome je rovnaká
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>      <span style="color:#75715e">// ako množina uzlov v druhom strome,
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>      <span style="color:#75715e">// hranu preskočíme
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#75715e">// vezmeme všetky uzly zo stromu
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>      <span style="color:#75715e">// druhého uzla a presunieme ich medzi uzly stromu druhého uzla.
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>      tree1Nodes<span style="color:#f92672">.</span><span style="color:#a6e22e">addAll</span><span style="color:#f92672">(</span>tree2Nodes<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>      tree2Nodes<span style="color:#f92672">.</span><span style="color:#a6e22e">clear</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span>(tree1Nodes.<span style="color:#a6e22e">equals</span>(tree2Nodes)) {
+</span></span><span style="display:flex;"><span>      <span style="color:#75715e">// množina uzlov v prvom strome je rovnaká</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#75715e">// ako množina uzlov v druhom strome,</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#75715e">// hranu preskočíme</span>
+</span></span><span style="display:flex;"><span>    } <span style="color:#66d9ef">else</span> {
+</span></span><span style="display:flex;"><span>      <span style="color:#75715e">// vezmeme všetky uzly zo stromu</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#75715e">// druhého uzla a presunieme ich medzi uzly stromu druhého uzla.</span>
+</span></span><span style="display:flex;"><span>      tree1Nodes.<span style="color:#a6e22e">addAll</span>(tree2Nodes);
+</span></span><span style="display:flex;"><span>      tree2Nodes.<span style="color:#a6e22e">clear</span>();
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>      spanningTreeEdges<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>edge<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> spanningTreeEdges<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>      spanningTreeEdges.<span style="color:#a6e22e">add</span>(edge);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> spanningTreeEdges;
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div>
     <a href="/"> >> Home</a>
   </main>

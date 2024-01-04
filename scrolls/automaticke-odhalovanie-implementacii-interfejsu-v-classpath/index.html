@@ -62,31 +62,31 @@
 <p>Máte zadanú aplikáciu, ktorá má vykonávať nejakú činnosť nad rôznymi geometrickými útvarmi (pre jednoduchosť: štvorce, kruhy a pod.) Nové geometrické útvary však môžu byť pridávané do aplikácie za behu (napr. dopracujeme meňavku a chceme ju zaviesť do systému).</p>
 <h1 id="riešenie">Riešenie</h1>
 <p>Predpokladajme, že všetky geometrické útvary implementujú rozhranie <code>Shape</code>, ktoré poskytuje jedinú možnú činnosť - výpočet obsahu.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#f92672">package</span> sk.novotnyr.shapes<span style="color:#f92672">;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#f92672">package</span> sk.novotnyr.shapes;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">Shape</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">double</span> <span style="color:#a6e22e">getArea</span><span style="color:#f92672">();</span> 
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">Shape</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">double</span> <span style="color:#a6e22e">getArea</span>(); 
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>Príklady ostatných geometrických útvarov môžu byť napr.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#f92672">package</span> sk.novotnyr.shapes<span style="color:#f92672">;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#f92672">package</span> sk.novotnyr.shapes;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Square</span> <span style="color:#66d9ef">implements</span> Shape <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">double</span> size <span style="color:#f92672">=</span> 1<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Square</span> <span style="color:#66d9ef">implements</span> Shape {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">double</span> size <span style="color:#f92672">=</span> 1;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">double</span> <span style="color:#a6e22e">getArea</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> size <span style="color:#f92672">*</span> size<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span> 
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">double</span> <span style="color:#a6e22e">getArea</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> size <span style="color:#f92672">*</span> size;
+</span></span><span style="display:flex;"><span>  } 
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>alebo</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#f92672">package</span> sk.novotnyr.shapes<span style="color:#f92672">;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#f92672">package</span> sk.novotnyr.shapes;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Circle</span> <span style="color:#66d9ef">implements</span> Shape <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">double</span> diameter <span style="color:#f92672">=</span> 1<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Circle</span> <span style="color:#66d9ef">implements</span> Shape {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">double</span> diameter <span style="color:#f92672">=</span> 1;
 </span></span><span style="display:flex;"><span>  
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">double</span> <span style="color:#a6e22e">getArea</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> Math<span style="color:#f92672">.</span><span style="color:#a6e22e">PI</span> <span style="color:#f92672">*</span> <span style="color:#f92672">(</span>diameter <span style="color:#f92672">*</span> diameter<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>  
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">double</span> <span style="color:#a6e22e">getArea</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> Math.<span style="color:#a6e22e">PI</span> <span style="color:#f92672">*</span> (diameter <span style="color:#f92672">*</span> diameter);
+</span></span><span style="display:flex;"><span>  }  
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>Dohodneme sa, že všetky nové geometrické útvary musia implementovať rozhranie <code>Shape</code> a že sa budú nachádzať v pevne danom balíčku <code>sk.novotnyr.shapes</code>. Ak budeme chcieť pridať do bežiacej aplikácie nový útvar, budeme musieť skopírovať do <code>CLASSPATH</code> skompilovaný <code>.class</code> súbor s implementáciou nového útvaru. Tu využijeme dôležitú vlastnosť Javy &ndash; načítavanie skompilovanej triedy sa vykonáva až s vytvorením prvej inštancie triedy.</p>
 <p>Základná idea na odhaľovanie implementácii je založená na premennej <code>java.class.path</code>, ktorá obsahuje obsah systémovej premennej prostredia <code>CLASSPATH</code>. K tejto premennej môžeme pristupovať pomocou <code>System.getProperty(&quot;java.class.path&quot;)</code>.</p>
 <p>Obsah tejto premennej môže obsahovať viacero adresárov. Každý z týchto adresárov prelezieme, vyhľadáme v ňom <code>CLASS</code> súbory z podadresára zodpovedajúcemu dohodnutému balíčku a pokúsime sa na základe ich názvu získať objekt <code>Class</code>.</p>
@@ -99,24 +99,24 @@
 <li>súbor <code>C:\PROGRA~1\IBM\SQLLIB\java\db2java.zip</code>. Neadresárové súbory automaticky preskočíme.</li>
 </ul>
 <p>Trieda na odhaľovanie môže vyzerať nasledovne:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#f92672">package</span> sk.novotnyr.shapes<span style="color:#f92672">;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#f92672">package</span> sk.novotnyr.shapes;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.io.File<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.util.ArrayList<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.util.Iterator<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.util.List<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.util.logging.Logger<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.io.File;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.util.ArrayList;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.util.Iterator;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.util.List;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.util.logging.Logger;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ShapeDiscoverer</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> Logger logger <span style="color:#f92672">=</span> Logger<span style="color:#f92672">.</span><span style="color:#a6e22e">getLogger</span><span style="color:#f92672">(</span>ShapeDiscoverer<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getName</span><span style="color:#f92672">());</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ShapeDiscoverer</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> Logger logger <span style="color:#f92672">=</span> Logger.<span style="color:#a6e22e">getLogger</span>(ShapeDiscoverer.<span style="color:#a6e22e">class</span>.<span style="color:#a6e22e">getName</span>());
 </span></span><span style="display:flex;"><span>  
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> String PROPERTY_KEY <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;java.class.path&#34;</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> String PROPERTY_KEY <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;java.class.path&#34;</span>;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> String CLASS_EXTENSION <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;.class&#34;</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> String CLASS_EXTENSION <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;.class&#34;</span>;
 </span></span><span style="display:flex;"><span>  
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> String PACKAGE_NAME <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;sk.novotnyr.shapes&#34;</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> String PACKAGE_NAME <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;sk.novotnyr.shapes&#34;</span>;
 </span></span><span style="display:flex;"><span>  
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> String PACKAGE_DIRECTORY_NAME <span style="color:#f92672">=</span> PACKAGE_NAME<span style="color:#f92672">.</span><span style="color:#a6e22e">replace</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;.&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;/&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> String PACKAGE_DIRECTORY_NAME <span style="color:#f92672">=</span> PACKAGE_NAME.<span style="color:#a6e22e">replace</span>(<span style="color:#e6db74">&#34;.&#34;</span>, <span style="color:#e6db74">&#34;/&#34;</span>);
 </span></span><span style="display:flex;"><span>  
 </span></span><span style="display:flex;"><span>  <span style="color:#75715e">/**
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">   * Vrati nazov triedy zo suboru ukazujuceho na CLASS subor.
@@ -126,13 +126,13 @@
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">   * @param file subor obsahujuci nazov a cestu ku CLASS suboru
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">   * @return nazov triedy
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">   */</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">protected</span> String <span style="color:#a6e22e">getClassNameFromFile</span><span style="color:#f92672">(</span>File file<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span><span style="color:#f92672">(</span>file<span style="color:#f92672">.</span><span style="color:#a6e22e">getName</span><span style="color:#f92672">().</span><span style="color:#a6e22e">endsWith</span><span style="color:#f92672">(</span>CLASS_EXTENSION<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">return</span> PACKAGE_NAME <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;.&#34;</span> <span style="color:#f92672">+</span> file<span style="color:#f92672">.</span><span style="color:#a6e22e">getName</span><span style="color:#f92672">().</span><span style="color:#a6e22e">substring</span><span style="color:#f92672">(</span>0<span style="color:#f92672">,</span> file<span style="color:#f92672">.</span><span style="color:#a6e22e">getName</span><span style="color:#f92672">().</span><span style="color:#a6e22e">length</span><span style="color:#f92672">()</span> <span style="color:#f92672">-</span> CLASS_EXTENSION<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span><span style="color:#f92672">());</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">protected</span> String <span style="color:#a6e22e">getClassNameFromFile</span>(File file) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span>(file.<span style="color:#a6e22e">getName</span>().<span style="color:#a6e22e">endsWith</span>(CLASS_EXTENSION)) {
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">return</span> PACKAGE_NAME <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;.&#34;</span> <span style="color:#f92672">+</span> file.<span style="color:#a6e22e">getName</span>().<span style="color:#a6e22e">substring</span>(0, file.<span style="color:#a6e22e">getName</span>().<span style="color:#a6e22e">length</span>() <span style="color:#f92672">-</span> CLASS_EXTENSION.<span style="color:#a6e22e">length</span>());
+</span></span><span style="display:flex;"><span>    } <span style="color:#66d9ef">else</span> {
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">null</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  }
 </span></span><span style="display:flex;"><span>  
 </span></span><span style="display:flex;"><span>  <span style="color:#75715e">/**
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">   * Zisti vsetky triedy implementujuce dane rozhranie
@@ -142,31 +142,31 @@
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">   * @param aPath cesta k adresaru v ktorom zacina balickova struktura. Musi 
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">   * to byt adresar (JAR subory a pod su ignorovane). 
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">   */</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">protected</span> List<span style="color:#f92672">&lt;</span>Class<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">findClassNames</span><span style="color:#f92672">(</span>String aPath<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span><span style="color:#f92672">(</span>aPath <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">||</span> aPath<span style="color:#f92672">.</span><span style="color:#a6e22e">trim</span><span style="color:#f92672">().</span><span style="color:#a6e22e">length</span><span style="color:#f92672">()</span> <span style="color:#f92672">==</span> 0<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">&lt;</span>Class<span style="color:#f92672">&gt;();</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>    List<span style="color:#f92672">&lt;</span>Class<span style="color:#f92672">&gt;</span> classes <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">&lt;</span>Class<span style="color:#f92672">&gt;();</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">protected</span> List<span style="color:#f92672">&lt;</span>Class<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">findClassNames</span>(String aPath) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span>(aPath <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">||</span> aPath.<span style="color:#a6e22e">trim</span>().<span style="color:#a6e22e">length</span>() <span style="color:#f92672">==</span> 0) {
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">&lt;</span>Class<span style="color:#f92672">&gt;</span>();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    List<span style="color:#f92672">&lt;</span>Class<span style="color:#f92672">&gt;</span> classes <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">&lt;</span>Class<span style="color:#f92672">&gt;</span>();
 </span></span><span style="display:flex;"><span>    
-</span></span><span style="display:flex;"><span>    File path <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> File<span style="color:#f92672">(</span>aPath<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span><span style="color:#f92672">(</span>path<span style="color:#f92672">.</span><span style="color:#a6e22e">isDirectory</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>      File packageFile <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> File<span style="color:#f92672">(</span>path<span style="color:#f92672">,</span> PACKAGE_DIRECTORY_NAME<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>File f <span style="color:#f92672">:</span> packageFile<span style="color:#f92672">.</span><span style="color:#a6e22e">listFiles</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>        String className <span style="color:#f92672">=</span> getClassNameFromFile<span style="color:#f92672">(</span>f<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span><span style="color:#f92672">(</span>className <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>          <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>            Class clazz <span style="color:#f92672">=</span> Class<span style="color:#f92672">.</span><span style="color:#a6e22e">forName</span><span style="color:#f92672">(</span>className<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span><span style="color:#f92672">(</span>Shape<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">.</span><span style="color:#a6e22e">isAssignableFrom</span><span style="color:#f92672">(</span>clazz<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>              classes<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>clazz<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>          <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>ClassNotFoundException e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>            logger<span style="color:#f92672">.</span><span style="color:#a6e22e">severe</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Cannot instantiate &#34;</span> <span style="color:#f92672">+</span> className<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>          <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> classes<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    File path <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> File(aPath);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span>(path.<span style="color:#a6e22e">isDirectory</span>()) {
+</span></span><span style="display:flex;"><span>      File packageFile <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> File(path, PACKAGE_DIRECTORY_NAME);
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">for</span> (File f : packageFile.<span style="color:#a6e22e">listFiles</span>()) {
+</span></span><span style="display:flex;"><span>        String className <span style="color:#f92672">=</span> getClassNameFromFile(f);
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span>(className <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span>) {
+</span></span><span style="display:flex;"><span>          <span style="color:#66d9ef">try</span> {
+</span></span><span style="display:flex;"><span>            Class clazz <span style="color:#f92672">=</span> Class.<span style="color:#a6e22e">forName</span>(className);
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span>(Shape.<span style="color:#a6e22e">class</span>.<span style="color:#a6e22e">isAssignableFrom</span>(clazz)) {
+</span></span><span style="display:flex;"><span>              classes.<span style="color:#a6e22e">add</span>(clazz);
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>          } <span style="color:#66d9ef">catch</span> (ClassNotFoundException e) {
+</span></span><span style="display:flex;"><span>            logger.<span style="color:#a6e22e">severe</span>(<span style="color:#e6db74">&#34;Cannot instantiate &#34;</span> <span style="color:#f92672">+</span> className);
+</span></span><span style="display:flex;"><span>          }
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>      }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> classes;
+</span></span><span style="display:flex;"><span>  }
 </span></span><span style="display:flex;"><span>  
 </span></span><span style="display:flex;"><span>  <span style="color:#75715e">/**
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">   * Vrati zoznam tried implementujucich Shape z CLASSPATH.
@@ -175,109 +175,109 @@
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">   * a kazda polozka reprezentujuca adresar sa prehlada pre triedy.
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">   * 
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">   */</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> List<span style="color:#f92672">&lt;</span>Class<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">discover</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    String javaClasspath <span style="color:#f92672">=</span> System<span style="color:#f92672">.</span><span style="color:#a6e22e">getProperty</span><span style="color:#f92672">(</span>PROPERTY_KEY<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span><span style="color:#f92672">(</span>javaClasspath <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> IllegalArgumentException<span style="color:#f92672">(</span>PROPERTY_KEY <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34; not found in system properties.&#34;</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>    String<span style="color:#f92672">[]</span> paths <span style="color:#f92672">=</span> javaClasspath<span style="color:#f92672">.</span><span style="color:#a6e22e">split</span><span style="color:#f92672">(</span>File<span style="color:#f92672">.</span><span style="color:#a6e22e">pathSeparator</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> List<span style="color:#f92672">&lt;</span>Class<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">discover</span>() {
+</span></span><span style="display:flex;"><span>    String javaClasspath <span style="color:#f92672">=</span> System.<span style="color:#a6e22e">getProperty</span>(PROPERTY_KEY);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span>(javaClasspath <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span>) {
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> IllegalArgumentException(PROPERTY_KEY <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34; not found in system properties.&#34;</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    String<span style="color:#f92672">[]</span> paths <span style="color:#f92672">=</span> javaClasspath.<span style="color:#a6e22e">split</span>(File.<span style="color:#a6e22e">pathSeparator</span>);
 </span></span><span style="display:flex;"><span>    
-</span></span><span style="display:flex;"><span>    List<span style="color:#f92672">&lt;</span>Class<span style="color:#f92672">&gt;</span> classes <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">&lt;</span>Class<span style="color:#f92672">&gt;();</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>String path <span style="color:#f92672">:</span> paths<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>     
-</span></span><span style="display:flex;"><span>      classes<span style="color:#f92672">.</span><span style="color:#a6e22e">addAll</span><span style="color:#f92672">(</span>findClassNames<span style="color:#f92672">(</span>path<span style="color:#f92672">));</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> classes<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    List<span style="color:#f92672">&lt;</span>Class<span style="color:#f92672">&gt;</span> classes <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">&lt;</span>Class<span style="color:#f92672">&gt;</span>();
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> (String path : paths) {     
+</span></span><span style="display:flex;"><span>      classes.<span style="color:#a6e22e">addAll</span>(findClassNames(path));
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> classes;
+</span></span><span style="display:flex;"><span>  }
 </span></span><span style="display:flex;"><span>  
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><h1 id="grafické-rozhranie-a-riešenie-automatického-obnovovania">Grafické rozhranie a riešenie automatického obnovovania</h1>
 <p>Vytvoríme grafickú aplikáciu, v ktorej sa bude periodicky vyhľadávať zoznam tried.</p>
 <h2 id="periodické-vykonávanie-akcií">Periodické vykonávanie akcií</h2>
 <p>Na periodické vykonávanie akcií môžeme použiť kombináciu tried <code>java.util.Timer</code> a <code>java.util.TimerTask</code>. Prvá trieda umožňuje periodické spúštanie akcií, ktoré sú reprezentované <code>TimerTask</code>ami. Naša úloha bude jednoduchá &ndash; po jej spustení zavolá metódu <code>discover</code> na odhaľovači implementácií a vrátený zoznam tried zobrazí v danom swingovskom komponente <code>JList</code>.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#f92672">package</span> sk.novotnyr.shapes<span style="color:#f92672">;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#f92672">package</span> sk.novotnyr.shapes;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.util.ArrayList<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.util.Date<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.util.List<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.util.TimerTask<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.util.ArrayList;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.util.Date;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.util.List;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.util.TimerTask;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> javax.swing.JList<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> javax.swing.JList;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">RefreshClassesAction</span> <span style="color:#66d9ef">extends</span> TimerTask <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">RefreshClassesAction</span> <span style="color:#66d9ef">extends</span> TimerTask {
 </span></span><span style="display:flex;"><span>  <span style="color:#75715e">/**
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">   * Komponent Zoznam, ktory bude aktualizovany
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">   */</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">private</span> JList jList<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">private</span> JList jList;
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>  <span style="color:#75715e">/**
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">   * Odhalovac implementacii
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">   */</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">private</span> ShapeDiscoverer discoverer <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ShapeDiscoverer<span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">private</span> ShapeDiscoverer discoverer <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ShapeDiscoverer();
 </span></span><span style="display:flex;"><span>  
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">RefreshClassesAction</span><span style="color:#f92672">(</span>JList list<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">super</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">jList</span> <span style="color:#f92672">=</span> list<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">RefreshClassesAction</span>(JList list) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">super</span>();
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">jList</span> <span style="color:#f92672">=</span> list;
+</span></span><span style="display:flex;"><span>  }
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>  <span style="color:#75715e">/**
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">   * Aktualizuje zoznam na zaklade novonajdenych tried
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">   */</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">run</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    jList<span style="color:#f92672">.</span><span style="color:#a6e22e">setListData</span><span style="color:#f92672">(</span>discoverer<span style="color:#f92672">.</span><span style="color:#a6e22e">discover</span><span style="color:#f92672">().</span><span style="color:#a6e22e">toArray</span><span style="color:#f92672">());</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">run</span>() {
+</span></span><span style="display:flex;"><span>    jList.<span style="color:#a6e22e">setListData</span>(discoverer.<span style="color:#a6e22e">discover</span>().<span style="color:#a6e22e">toArray</span>());
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>Samotnú akciu môžeme naplánovať vytvorením inštancie <code>Timer</code>a:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Timer timer <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Timer<span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>RefreshClassesAction action <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> RefreshClassesAction<span style="color:#f92672">(</span>list<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>timer<span style="color:#f92672">.</span><span style="color:#a6e22e">schedule</span><span style="color:#f92672">(</span>action<span style="color:#f92672">,</span> 0<span style="color:#f92672">,</span> 3000<span style="color:#f92672">);</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Timer timer <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Timer();
+</span></span><span style="display:flex;"><span>RefreshClassesAction action <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> RefreshClassesAction(list);
+</span></span><span style="display:flex;"><span>timer.<span style="color:#a6e22e">schedule</span>(action, 0, 3000);
 </span></span></code></pre></div><p>Každé tri sekundy počnúc súčasnosťou sa zavolá metóda <code>run()</code> na inštancii nášho odhaľovača.</p>
 <h2 id="grafické-rozhranie">Grafické rozhranie</h2>
 <p>Na záver vytvoríme jednoduché grafické rozhranie s jedným zoznamom JList a jedným tlačidlom JButton, po ktorého stlačení sa zavolá metóda <code>getArea()</code> na novovytvorenej inštancii triedy, ktorá je vybratá zo zoznamu.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#f92672">package</span> sk.novotnyr.shapes<span style="color:#f92672">;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#f92672">package</span> sk.novotnyr.shapes;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.awt.BorderLayout<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.awt.Container<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.awt.event.ActionEvent<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.awt.event.ActionListener<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.util.Timer<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.awt.BorderLayout;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.awt.Container;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.awt.event.ActionEvent;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.awt.event.ActionListener;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.util.Timer;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> javax.swing.JButton<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> javax.swing.JFrame<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> javax.swing.JList<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> javax.swing.JButton;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> javax.swing.JFrame;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> javax.swing.JList;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Gui</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    JFrame frame <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> JFrame<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;GUI&#34;</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>    frame<span style="color:#f92672">.</span><span style="color:#a6e22e">setDefaultCloseOperation</span><span style="color:#f92672">(</span>JFrame<span style="color:#f92672">.</span><span style="color:#a6e22e">EXIT_ON_CLOSE</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Gui</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span>(String<span style="color:#f92672">[]</span> args) {
+</span></span><span style="display:flex;"><span>    JFrame frame <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> JFrame(<span style="color:#e6db74">&#34;GUI&#34;</span>);
+</span></span><span style="display:flex;"><span>    frame.<span style="color:#a6e22e">setDefaultCloseOperation</span>(JFrame.<span style="color:#a6e22e">EXIT_ON_CLOSE</span>);
 </span></span><span style="display:flex;"><span>    
-</span></span><span style="display:flex;"><span>    Container cp <span style="color:#f92672">=</span> frame<span style="color:#f92672">.</span><span style="color:#a6e22e">getContentPane</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>    Container cp <span style="color:#f92672">=</span> frame.<span style="color:#a6e22e">getContentPane</span>();
 </span></span><span style="display:flex;"><span>    
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">final</span> JList list <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> JList<span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>    cp<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>list<span style="color:#f92672">,</span> BorderLayout<span style="color:#f92672">.</span><span style="color:#a6e22e">CENTER</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">final</span> JList list <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> JList();
+</span></span><span style="display:flex;"><span>    cp.<span style="color:#a6e22e">add</span>(list, BorderLayout.<span style="color:#a6e22e">CENTER</span>);
 </span></span><span style="display:flex;"><span>    
-</span></span><span style="display:flex;"><span>    JButton button <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> JButton<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Go!&#34;</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>    button<span style="color:#f92672">.</span><span style="color:#a6e22e">addActionListener</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> ActionListener<span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">actionPerformed</span><span style="color:#f92672">(</span>ActionEvent e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>        Class clazz <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>Class<span style="color:#f92672">)</span> list<span style="color:#f92672">.</span><span style="color:#a6e22e">getSelectedValue</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>          Shape shape <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>Shape<span style="color:#f92672">)</span> clazz<span style="color:#f92672">.</span><span style="color:#a6e22e">newInstance</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>          System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>shape<span style="color:#f92672">.</span><span style="color:#a6e22e">getArea</span><span style="color:#f92672">());</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>Exception e1<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>          System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Cannot instantiate the selected class &#34;</span> <span style="color:#f92672">+</span> clazz<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span> 
-</span></span><span style="display:flex;"><span>      <span style="color:#f92672">}</span>     
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">});</span>
-</span></span><span style="display:flex;"><span>    cp<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>button<span style="color:#f92672">,</span> BorderLayout<span style="color:#f92672">.</span><span style="color:#a6e22e">SOUTH</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    JButton button <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> JButton(<span style="color:#e6db74">&#34;Go!&#34;</span>);
+</span></span><span style="display:flex;"><span>    button.<span style="color:#a6e22e">addActionListener</span>(<span style="color:#66d9ef">new</span> ActionListener() {
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">actionPerformed</span>(ActionEvent e) {
+</span></span><span style="display:flex;"><span>        Class clazz <span style="color:#f92672">=</span> (Class) list.<span style="color:#a6e22e">getSelectedValue</span>();
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">try</span> {
+</span></span><span style="display:flex;"><span>          Shape shape <span style="color:#f92672">=</span> (Shape) clazz.<span style="color:#a6e22e">newInstance</span>();
+</span></span><span style="display:flex;"><span>          System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(shape.<span style="color:#a6e22e">getArea</span>());
+</span></span><span style="display:flex;"><span>        } <span style="color:#66d9ef">catch</span> (Exception e1) {
+</span></span><span style="display:flex;"><span>          System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(<span style="color:#e6db74">&#34;Cannot instantiate the selected class &#34;</span> <span style="color:#f92672">+</span> clazz);
+</span></span><span style="display:flex;"><span>        } 
+</span></span><span style="display:flex;"><span>      }     
+</span></span><span style="display:flex;"><span>    });
+</span></span><span style="display:flex;"><span>    cp.<span style="color:#a6e22e">add</span>(button, BorderLayout.<span style="color:#a6e22e">SOUTH</span>);
 </span></span><span style="display:flex;"><span>    
-</span></span><span style="display:flex;"><span>    frame<span style="color:#f92672">.</span><span style="color:#a6e22e">pack</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>    frame<span style="color:#f92672">.</span><span style="color:#a6e22e">setVisible</span><span style="color:#f92672">(</span><span style="color:#66d9ef">true</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    frame.<span style="color:#a6e22e">pack</span>();
+</span></span><span style="display:flex;"><span>    frame.<span style="color:#a6e22e">setVisible</span>(<span style="color:#66d9ef">true</span>);
 </span></span><span style="display:flex;"><span>    
-</span></span><span style="display:flex;"><span>    Timer timer <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Timer<span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>    RefreshClassesAction action <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> RefreshClassesAction<span style="color:#f92672">(</span>list<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>    timer<span style="color:#f92672">.</span><span style="color:#a6e22e">schedule</span><span style="color:#f92672">(</span>action<span style="color:#f92672">,</span> 0<span style="color:#f92672">,</span> 3000<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    Timer timer <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Timer();
+</span></span><span style="display:flex;"><span>    RefreshClassesAction action <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> RefreshClassesAction(list);
+</span></span><span style="display:flex;"><span>    timer.<span style="color:#a6e22e">schedule</span>(action, 0, 3000);
 </span></span><span style="display:flex;"><span>    
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>Ak do adresára v <code>CLASSPATH</code> skopírujeme napríklad triedu <code>Point</code>, po krátkej chvíli sa zjaví v zozname a môžeme vytvárať jej inštancie.</p>
 <h1 id="potenciálne-problémy">Potenciálne problémy</h1>
 <p>Tento prístup zrejme nebude fungovať vo webových aplikáciách. Napr. servletový kontajner <a href="http://tomcat.apache.org">Tomcat</a> ignoruje systémovú premennú <code>CLASSPATH</code> a triedy bežiace v ňom vidia v premennej <code>java.class.path</code> len niekoľko málo JAR archívov z útrob Tomcata. V takom prípade je zrejme nutné použiť nejaký zložitejší prístup - napr. vyhľadávaním súborov pomocou metódy <code>Class#getResources()</code>, ktorá na to používa aktuálne používaný classloader.</p>

@@ -62,156 +62,156 @@
 <p>Ak ste niekedy chceli vlastniť svoj vlastný bar, máte príležitosť. V tomto príklade si totiž jeden navrhneme. Na tomto príklade si ukážeme použitie návrhového vzoru <strong>dependency injection</strong> (vkladanie závislostí), filozofie <strong>inversion of control</strong> (prevráteného riadenia) a jeho použitie v aplikačnom rámci Spring.</p>
 <h2 id="jednoduchý-bar">Jednoduchý bar</h2>
 <p>Predstavme si, že na začiatku podnikateľskej kariéry bude bar podávať iba fľaškové pivo. Ak by sme to namodelovali v Jave, vzišla by z toho nasledovné triedy. Pivo <code>Beer</code> budeme reprezentovať ako jednoduchú triedu.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#f92672">package</span> sk.beer<span style="color:#f92672">;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#f92672">package</span> sk.beer;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Beer</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">toString</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>     <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;Pivo&#34;</span><span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Beer</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">toString</span>() {
+</span></span><span style="display:flex;"><span>     <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;Pivo&#34;</span>;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>Bar bude fungovať primitívne. Bude mať jedinú metódu na získanie piva. Ak v zásobarni piva dostatok fľašiek, vrátime novú inštanciu piva a kapacitu znížime o 1.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#f92672">package</span> sk.beer<span style="color:#f92672">;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#f92672">package</span> sk.beer;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.util.ArrayList<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.util.List<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.util.ArrayList;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.util.List;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Bar</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> List<span style="color:#f92672">&lt;</span>Beer<span style="color:#f92672">&gt;</span> beers <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">&lt;</span>Beer<span style="color:#f92672">&gt;();</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Bar</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> List<span style="color:#f92672">&lt;</span>Beer<span style="color:#f92672">&gt;</span> beers <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">&lt;</span>Beer<span style="color:#f92672">&gt;</span>();
 </span></span><span style="display:flex;"><span>    
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">Bar</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> capacity<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span> i <span style="color:#f92672">&lt;</span> capacity<span style="color:#f92672">;</span> i<span style="color:#f92672">++)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>            beers<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> Beer<span style="color:#f92672">());</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">Bar</span>(<span style="color:#66d9ef">int</span> capacity) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span>(<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> 0; i <span style="color:#f92672">&lt;</span> capacity; i<span style="color:#f92672">++</span>) {
+</span></span><span style="display:flex;"><span>            beers.<span style="color:#a6e22e">add</span>(<span style="color:#66d9ef">new</span> Beer());
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>    
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">serve</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span><span style="color:#f92672">(</span>beers<span style="color:#f92672">.</span><span style="color:#a6e22e">isEmpty</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>            System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Došlo pivo.&#34;</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>        beers<span style="color:#f92672">.</span><span style="color:#a6e22e">remove</span><span style="color:#f92672">(</span>0<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Zákazník dostal pivo&#34;</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">serve</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span>(beers.<span style="color:#a6e22e">isEmpty</span>()) {
+</span></span><span style="display:flex;"><span>            System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(<span style="color:#e6db74">&#34;Došlo pivo.&#34;</span>);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        beers.<span style="color:#a6e22e">remove</span>(0);
+</span></span><span style="display:flex;"><span>        System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(<span style="color:#e6db74">&#34;Zákazník dostal pivo&#34;</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p><img src="bar.png" alt=""></p>
 <h2 id="vylepšujeme-návrh">Vylepšujeme návrh</h2>
 <p>Predstavme si ale, že by sme chceli ponúkať nielen pivo z fľašky, ale aj čapované zo sudov. Návrh triedy by sme museli značne prepracovať. Nehovoriac o tom, že časom príde do módy tankové pivo, ktoré si určite budú zákazníci želať.</p>
 <p>Je preto dobré oddeliť funkcionalitu baru od funkcionality zdroja piva. Zdrojom piva môže byť zásobáreň fľašiek, sudy alebo tank.</p>
 <p>Vytvorme triedu <code>BottleBeerSource</code> reprezentujúci chladničku s fľaškami. Kód bude viac než podobný prvotnej implementácii baru.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#f92672">package</span> sk.beer<span style="color:#f92672">;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#f92672">package</span> sk.beer;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.util.ArrayList<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.util.List<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.util.ArrayList;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.util.List;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">BottleBeerSource</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> List<span style="color:#f92672">&lt;</span>Beer<span style="color:#f92672">&gt;</span> beers <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">&lt;</span>Beer<span style="color:#f92672">&gt;();</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">BottleBeerSource</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> List<span style="color:#f92672">&lt;</span>Beer<span style="color:#f92672">&gt;</span> beers <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">&lt;</span>Beer<span style="color:#f92672">&gt;</span>();
 </span></span><span style="display:flex;"><span>    
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">BottleBeerSource</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> capacity<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span> i <span style="color:#f92672">&lt;</span> capacity<span style="color:#f92672">;</span> i<span style="color:#f92672">++)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>            beers<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> Beer<span style="color:#f92672">());</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">BottleBeerSource</span>(<span style="color:#66d9ef">int</span> capacity) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span>(<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> 0; i <span style="color:#f92672">&lt;</span> capacity; i<span style="color:#f92672">++</span>) {
+</span></span><span style="display:flex;"><span>            beers.<span style="color:#a6e22e">add</span>(<span style="color:#66d9ef">new</span> Beer());
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>    
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> Beer <span style="color:#a6e22e">getBeer</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span><span style="color:#f92672">(</span>beers<span style="color:#f92672">.</span><span style="color:#a6e22e">isEmpty</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> beers<span style="color:#f92672">.</span><span style="color:#a6e22e">remove</span><span style="color:#f92672">(</span>0<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> Beer <span style="color:#a6e22e">getBeer</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span>(beers.<span style="color:#a6e22e">isEmpty</span>()) {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">null</span>;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> beers.<span style="color:#a6e22e">remove</span>(0);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>Bar v tejto chvíli potrebuje mať zdroj piva. Inak povedané, bar bude obsahovať inštanciu typu <code>BottleBeerSource</code>, z ktorej bude získavať inštancie pív.</p>
 <p>Modifikovaný bar bude vyzerať nasledovne:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Bar</span> <span style="color:#f92672">{</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Bar</span> {
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> BottleBeerSource bottleBeerSource 
-</span></span><span style="display:flex;"><span>      <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> BottleBeerSource<span style="color:#f92672">(</span>25<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> BottleBeerSource(25);
 </span></span><span style="display:flex;"><span>    
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">serve</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span><span style="color:#f92672">(</span>bottleBeerSource<span style="color:#f92672">.</span><span style="color:#a6e22e">getBeer</span><span style="color:#f92672">()</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>            System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Zákazník dostal pivo.&#34;</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">serve</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span>(bottleBeerSource.<span style="color:#a6e22e">getBeer</span>() <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span>) {
+</span></span><span style="display:flex;"><span>            System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(<span style="color:#e6db74">&#34;Zákazník dostal pivo.&#34;</span>);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>Všimnime si, že bar je závislý na zdroji piva. Ak by sme na zakreslenie tried použili škatuľový jazyk UML, medzi <code>Bar</code>om a <code>BottleBeerSource</code>om je natiahnutá čiara.</p>
 <p><img src="bar2.png" alt=""></p>
 <p>Ďalej si všimnime, že bar si inštancie tried, na ktorých závisí, vytvára sám. V našom prípade sme to vykonali pri deklarácii premennej. (Tento prístup je jednoduchý, ale všimnite si napevno zadanú kapacitu chladničky.)</p>
 <p>Čo ak by sme chceli zmeniť bar ponúkajúci fľašky na bar čapujúci pivo z tanku? Vytvorme novú triedu <code>TankBeerSource</code>:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#f92672">package</span> sk.beer<span style="color:#f92672">;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#f92672">package</span> sk.beer;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">TankBeerSource</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">int</span> capacity<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">TankBeerSource</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">int</span> capacity;
 </span></span><span style="display:flex;"><span>    
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">TankBeerSource</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> capacity<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">capacity</span> <span style="color:#f92672">=</span> capacity<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">TankBeerSource</span>(<span style="color:#66d9ef">int</span> capacity) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">capacity</span> <span style="color:#f92672">=</span> capacity;
+</span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>    
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> Beer <span style="color:#a6e22e">tankBeer</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span><span style="color:#f92672">(</span>capacity <span style="color:#f92672">==</span> 0<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>        capacity<span style="color:#f92672">--;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> Beer<span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> Beer <span style="color:#a6e22e">tankBeer</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span>(capacity <span style="color:#f92672">==</span> 0) {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">null</span>;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        capacity<span style="color:#f92672">--</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> Beer();
+</span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>Teraz potrebujeme nahradiť <em>všetky</em> výskyty <code>BottleBeerSource</code> novou triedou <code>TankBeerSource</code>. Navyše, všetky výskyty metódy <code>getBeer()</code> musíme nahradiť metódou <code>tankBeer()</code>.</p>
 <h2 id="použitie-interfejsu-v-návrhu">Použitie interfejsu v návrhu</h2>
 <p>Je však zjavné, že <code>BottleBeerSource</code> i <code>TankBeerSource</code> riešia rovnaký problém: dajú novú inštanciu piva. Na ich základe vieme da nový interfejs <code>BeerSource</code>, ktorý budú obidve triedy implementovať.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#f92672">package</span> sk.beer<span style="color:#f92672">;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#f92672">package</span> sk.beer;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">BeerSource</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> Beer <span style="color:#a6e22e">getBeer</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">BeerSource</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> Beer <span style="color:#a6e22e">getBeer</span>();
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>Pozmeňme teda obe triedy:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">BottleBeerSource</span> <span style="color:#66d9ef">implements</span> BeerSource <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#75715e">//...
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#f92672">}</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">BottleBeerSource</span> <span style="color:#66d9ef">implements</span> BeerSource {
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">//...</span>
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>A</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">TankBeerSource</span> <span style="color:#66d9ef">implements</span> BeerSource <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">int</span> capacity<span style="color:#f92672">;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">TankBeerSource</span> <span style="color:#66d9ef">implements</span> BeerSource {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">int</span> capacity;
 </span></span><span style="display:flex;"><span>    
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">TankBeerSource</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> capacity<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">capacity</span> <span style="color:#f92672">=</span> capacity<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">TankBeerSource</span>(<span style="color:#66d9ef">int</span> capacity) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">capacity</span> <span style="color:#f92672">=</span> capacity;
+</span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>    
 </span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> Beer <span style="color:#a6e22e">getBeer</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span><span style="color:#f92672">(</span>capacity <span style="color:#f92672">==</span> 0<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>        capacity<span style="color:#f92672">--;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> Beer<span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> Beer <span style="color:#a6e22e">getBeer</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span>(capacity <span style="color:#f92672">==</span> 0) {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">null</span>;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        capacity<span style="color:#f92672">--</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> Beer();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>Použitie interfejsu zaručuje ľahkú výmenu implementácií. Z toho vyplýva známa zásada <em>„program to interfaces, not to implementations“</em>, čiže v dátových typoch by ste do čo najväčšej miery mali používať vhodné rozhrania, namiesto konkrétnych implementácií. Typický príklad sú kolekcie. Namiesto</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">private</span> ArrayList<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> zoznam <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;();</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">private</span> ArrayList<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> zoznam <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span>();
 </span></span></code></pre></div><p>je lepšie</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">private</span> List<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> zoznam <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;();</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">private</span> List<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> zoznam <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span>();
 </span></span></code></pre></div><p>Interfejs totiž podporuje abstrakciu a polymorfizmus. To je vidieť aj na našom príklade baru. Bar založený na fľaškách vyzerá nasledovne:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Bar</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// používame interfejs
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">private</span> BeerSource beerSource 
-</span></span><span style="display:flex;"><span>      <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> BottleBeerSource<span style="color:#f92672">(</span>25<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>   <span style="color:#75715e">//...
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#f92672">}</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Bar</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// používame interfejs</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> BeerSource beerSource 
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> BottleBeerSource(25);
+</span></span><span style="display:flex;"><span>   <span style="color:#75715e">//...</span>
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p><img src="bar4.png" alt=""></p>
 <p>Migrácia baru na tankové pivo je jednoduchá: stačí zmeniť dátový typ použitý pri vytváraní konkrétneho zdroja piva: teda z <code>new BottleBeerSource()</code> na <code>new TankBeerSource()</code>. Namiesto predošlého prípadu, kde sme museli nahradiť i dátové typy premenných, i vytvárané inštancie (a dokonca aj metódu), v tomto prípade stačí zmeniť jediný riadok.</p>
 <h2 id="prevrátené-riadenie">Prevrátené riadenie</h2>
 <p>Tento postup sa však dá ešte viac vylepšiť. Namiesto toho, aby si bar vytváral závislé triedy sám, môžeme použiť princíp „prevráteného riadenia“ (<strong>inversion of control</strong>). Bar si nebude vytvárať inštancie sám, ale získa ju „zvonku“. Vytvoríme inštanciu baru, nezávisle od toho vytvoríme inštanciu zdroja piva a tieto dve inštancie prepojíme &ndash; pri vytváraní baru mu dodáme zdroj piva. Na to, aby sme to mohli spraviť, potrebujeme dodať príslušný konštruktor.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Bar</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">private</span> BeerSource beerSource<span style="color:#f92672">;</span> 
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Bar</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">private</span> BeerSource beerSource; 
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">Bar</span><span style="color:#f92672">(</span>BeerSource beerSource<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>     <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">beerSource</span> <span style="color:#f92672">=</span> beerSource<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">Bar</span>(BeerSource beerSource) {
+</span></span><span style="display:flex;"><span>     <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">beerSource</span> <span style="color:#f92672">=</span> beerSource;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>Použitie v kóde je potom nasledovné:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> main<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// vytvoríme zdroj piva, používame interfejs
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  BeerSource beerSource <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> BottleBeerSource<span style="color:#f92672">(</span>25<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// vytvoríme nový bar postavený na fľaškách 
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  Bar javaBar <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Bar<span style="color:#f92672">(</span>beerSource<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// obsluhujeme
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  javaBar<span style="color:#f92672">.</span><span style="color:#a6e22e">serve</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span>(String<span style="color:#f92672">[]</span> main) {
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// vytvoríme zdroj piva, používame interfejs</span>
+</span></span><span style="display:flex;"><span>  BeerSource beerSource <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> BottleBeerSource(25);
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// vytvoríme nový bar postavený na fľaškách </span>
+</span></span><span style="display:flex;"><span>  Bar javaBar <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Bar(beerSource);
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// obsluhujeme</span>
+</span></span><span style="display:flex;"><span>  javaBar.<span style="color:#a6e22e">serve</span>();
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>Prevrátené riadenie sa tiež nazýva <strong>dependency injection</strong>, teda „vstreknutie závislostí“. Zdroj piva je závislosťou baru, ktorá bude doň vložená. Stretnúť sa možno tiež s veselou analógiou „hollywoodskeho princípu“: <em>„nevolajte nám, my vás zavoláme“</em>. Inak povedané, namiesto toho, aby bar sa sám dožadoval závislostí, niekto iný mu tie závislosti dodá. Tým niekým sme zatiaľ boli my v metóde <code>main()</code>.</p>
 <p>Všimnime si, že migrácia na tankové pivo je teraz jednoduchá. Nemusíme meniť žiadnu z existujúci tried <code>Bar</code>. Stačí zmeniť len implementačnú triedu v kóde, ktorý realizuje prepojenia tried. V našom prípade zmeníme <code>new BottleBeerSource()</code> na <code>new TankBeerSource()</code>.</p>
 <h1 id="kontajnery-ioc">Kontajnery IoC</h1>
@@ -252,7 +252,7 @@
 </span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;constructor-arg</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;25&#34;</span> <span style="color:#f92672">/&gt;</span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/bean&gt;</span>
 </span></span></code></pre></div><p>Táto deklarácia zodpovedá kódu</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#f92672">...</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> BottleBeerSource<span style="color:#f92672">(</span>25<span style="color:#f92672">);</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>... <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> BottleBeerSource(25);
 </span></span></code></pre></div><p>Bean zodpovedajúci baru vytvoríme analogickým spôsobom. Bar závisí na zdroji piva, ktorý sme mu v kóde dodali pomocou konštruktora. Túto závislosť nastavíme pomocou atribútu <code>ref</code> (referencia, čiže odkaz), kde uvedieme identifikátor beanu, ktorého inštancia sa vloží do inštancie baru.</p>
 <p>V springovskom slangu sa prepájanie beanov nazýva <strong>wiring</strong> (predrôtovanie&hellip;);</p>
 <h2 id="spustenie-ioc-kontajnera">Spustenie IoC kontajnera</h2>
@@ -266,16 +266,16 @@
 <p>IoC kontajner má v Springu viacero reprezentácií. Najjednoduchším je použitie interfejsu <code>BeanFactory</code>, teda továrne na beany. Ten umožňuje získať z IoC kontajnera nakonfigurovaný bean na základe identifikátora.</p>
 <p><img src="beanfactory.png" alt=""></p>
 <p>Na to slúži nasledovný kód:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// zdrojom XML konfigurácie je XML súbor beans.xml s deklaráciou
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// beanov
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>Resource xmlConfigFile 
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> FileSystemResource<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;D:/projects/spring/beans.xml&#34;</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">// vytvoríme IoC kontajner
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>BeanFactory beanFactory <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> XmlBeanFactory<span style="color:#f92672">(</span>xmlConfigFile<span style="color:#f92672">);</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// zdrojom XML konfigurácie je XML súbor beans.xml s deklaráciou</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// beanov</span>
+</span></span><span style="display:flex;"><span>Resource xmlConfigFile 
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> FileSystemResource(<span style="color:#e6db74">&#34;D:/projects/spring/beans.xml&#34;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// vytvoríme IoC kontajner</span>
+</span></span><span style="display:flex;"><span>BeanFactory beanFactory <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> XmlBeanFactory(xmlConfigFile);
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">// získame bean z kontajnera
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>Bar bar <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>Bar<span style="color:#f92672">)</span> beanFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">getBean</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;bar&#34;</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>bar<span style="color:#f92672">.</span><span style="color:#a6e22e">serve</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// získame bean z kontajnera</span>
+</span></span><span style="display:flex;"><span>Bar bar <span style="color:#f92672">=</span> (Bar) beanFactory.<span style="color:#a6e22e">getBean</span>(<span style="color:#e6db74">&#34;bar&#34;</span>);
+</span></span><span style="display:flex;"><span>bar.<span style="color:#a6e22e">serve</span>();
 </span></span></code></pre></div><p>Inštanciu beanu môžeme z kontajnera získať metódou <code>getBean()</code>, do ktorej uvedieme identifikátor beanu. (Keďže táto metóda vracia <code>Object</code>, je nutné pretypovanie.)</p>
 <p>Inštancia baru má v sebe vloženú inštanciu fľaškového zdroja piva, o čo sa postaral Spring.</p>
 <p>XML konfigurácia má množstvo výhod:</p>
@@ -286,13 +286,13 @@
 <h1 id="rôzne-prístupy-k-dependency-injection">Rôzne prístupy k dependency injection</h1>
 <p>Návrhový vzor <em>dependency injection</em> má viacero variantov. V príklade sme použili variant nazývaný <strong>constructor injection</strong>. Zdroj piva je do baru vložený pomocou konštruktora. To je prirodzené, pretože konštruktor slúži na inicializáciu triedy a teda sa očakáva, že inštancia baru bude dostupná hneď po jej konštrukcii. Bar, ktorý nemá nastavenú žiadnu inštanciu zdroja piva je v akomsi <em>medzistave</em> (mohlo by to zodpovedať baru, ktorý je síce otvorený, ale nedostaneme v ňom žiadne pivo, keďže je práve v hlbokej rekonštrukcii.) Tento prístup je preferovaným prístupom v PicoContaineri.</p>
 <p>Spring preferuje inú možnosť: <strong>setter injection</strong>, kde sú závislosti vkladané do beanu pomocou setterov. Ukážka tohto prístupu v kóde je nasledovná:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>BottleBeerSource beerSource <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> BottleBeerSource<span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>beerSource<span style="color:#f92672">.</span><span style="color:#a6e22e">setCapacity</span><span style="color:#f92672">(</span>25<span style="color:#f92672">);</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>BottleBeerSource beerSource <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> BottleBeerSource();
+</span></span><span style="display:flex;"><span>beerSource.<span style="color:#a6e22e">setCapacity</span>(25);
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>Bar bar <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Bar<span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>bar<span style="color:#f92672">.</span><span style="color:#a6e22e">setBeerSource</span><span style="color:#f92672">(</span>beerSource<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>Bar bar <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Bar();
+</span></span><span style="display:flex;"><span>bar.<span style="color:#a6e22e">setBeerSource</span>(beerSource);
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>bar<span style="color:#f92672">.</span><span style="color:#a6e22e">serve</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>bar.<span style="color:#a6e22e">serve</span>();
 </span></span></code></pre></div><p>Vytvorenie inštancie má tak tri fázy:</p>
 <ul>
 <li>vytvorenie inštancie implicitným konštruktorom</li>
@@ -301,44 +301,44 @@
 </ul>
 <p>To je bližšie filozofii JavaBeanov, kde sa očakáva od beanu prázdny konštruktor a settre a gettre. Hoci sa na prvý pohľad môže stať, že inštancia beanu môže byť v medzistave (už jestvuje, ale nemá ešte vložené závislosti), v praxi sa to nestáva. Továreň na beany totiž vracia beany, ktorých závislosti sú už vyriešené.</p>
 <p>Na to, aby sme tento prístup mohli používať v príklade, potrebujeme do všetkých tried dodať prázdne konštruktory a gettre a settre.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">BottleBeerSource</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span> DEFAULT_CAPACITY <span style="color:#f92672">=</span> 25<span style="color:#f92672">;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">BottleBeerSource</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span> DEFAULT_CAPACITY <span style="color:#f92672">=</span> 25;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">BottleBeerSource</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">this</span><span style="color:#f92672">(</span>DEFAULT_CAPACITY<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>    
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">BottleBeerSource</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">this</span>(DEFAULT_CAPACITY);
+</span></span><span style="display:flex;"><span>  }    
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setCapacity</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> capacity<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">capacity</span> <span style="color:#f92672">=</span> capacity<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setCapacity</span>(<span style="color:#66d9ef">int</span> capacity) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">capacity</span> <span style="color:#f92672">=</span> capacity;
+</span></span><span style="display:flex;"><span>  }
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#75715e">//...
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">//...</span>
+</span></span><span style="display:flex;"><span>}
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">TankBeerSource</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span> DEFAULT_CAPACITY <span style="color:#f92672">=</span> 100<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">TankBeerSource</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span> DEFAULT_CAPACITY <span style="color:#f92672">=</span> 100;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">TankBeerSource</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">this</span><span style="color:#f92672">(</span>DEFAULT_CAPACITY<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>    
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">TankBeerSource</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">this</span>(DEFAULT_CAPACITY);
+</span></span><span style="display:flex;"><span>  }    
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setCapacity</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> capacity<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">capacity</span> <span style="color:#f92672">=</span> capacity<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setCapacity</span>(<span style="color:#66d9ef">int</span> capacity) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">capacity</span> <span style="color:#f92672">=</span> capacity;
+</span></span><span style="display:flex;"><span>  }
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#75715e">//...
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">//...</span>
+</span></span><span style="display:flex;"><span>}
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Bar</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">Bar</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// prázdny konštruktor
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Bar</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">Bar</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// prázdny konštruktor</span>
+</span></span><span style="display:flex;"><span>  }
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setBeerSource</span><span style="color:#f92672">(</span>BeerSource beerSource<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">beerSource</span> <span style="color:#f92672">=</span> beerSource<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setBeerSource</span>(BeerSource beerSource) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">beerSource</span> <span style="color:#f92672">=</span> beerSource;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>Konfigurácia Springu potom bude vyzerať nasledovne:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
 </span></span><span style="display:flex;"><span><span style="color:#75715e">&lt;!DOCTYPE beans PUBLIC &#34;-//SPRING//DTD BEAN//EN&#34; 

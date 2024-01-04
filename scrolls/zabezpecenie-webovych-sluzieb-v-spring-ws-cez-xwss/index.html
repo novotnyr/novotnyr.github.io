@@ -62,23 +62,23 @@
 <p>Predpokladajme, že máme hotovú kostru pre serverovskú časť Spring-WS.
 Majme bežný endpoint, ktorý je klasickým POJOm. Endpoint predstavuje metódu, ktorá nevracia nič a dokument na vstupe pošle na štandardný výstup na serveri.</p>
 <h2 id="endpoint">Endpoint</h2>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#f92672">package</span> ais.ws<span style="color:#f92672">;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#f92672">package</span> ais.ws;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> javax.xml.transform.Source<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> javax.xml.transform.Transformer<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> javax.xml.transform.TransformerFactory<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> javax.xml.transform.stream.StreamResult<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> javax.xml.transform.Source;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> javax.xml.transform.Transformer;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> javax.xml.transform.TransformerFactory;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> javax.xml.transform.stream.StreamResult;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">RegistrationEndPoint</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">handleMovieReservationRequest</span><span style="color:#f92672">(</span>Source messageSource<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>      Transformer transformer <span style="color:#f92672">=</span> TransformerFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">newInstance</span><span style="color:#f92672">().</span><span style="color:#a6e22e">newTransformer</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>      transformer<span style="color:#f92672">.</span><span style="color:#a6e22e">transform</span><span style="color:#f92672">(</span>messageSource<span style="color:#f92672">,</span> <span style="color:#66d9ef">new</span> StreamResult<span style="color:#f92672">(</span>System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">));</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>Exception e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>      e<span style="color:#f92672">.</span><span style="color:#a6e22e">printStackTrace</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span> 
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">RegistrationEndPoint</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">handleMovieReservationRequest</span>(Source messageSource) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">try</span> {
+</span></span><span style="display:flex;"><span>      Transformer transformer <span style="color:#f92672">=</span> TransformerFactory.<span style="color:#a6e22e">newInstance</span>().<span style="color:#a6e22e">newTransformer</span>();
+</span></span><span style="display:flex;"><span>      transformer.<span style="color:#a6e22e">transform</span>(messageSource, <span style="color:#66d9ef">new</span> StreamResult(System.<span style="color:#a6e22e">out</span>));
+</span></span><span style="display:flex;"><span>    } <span style="color:#66d9ef">catch</span> (Exception e) {
+</span></span><span style="display:flex;"><span>      e.<span style="color:#a6e22e">printStackTrace</span>();
+</span></span><span style="display:flex;"><span>    } 
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>Bean zadeklarujeme v aplikačnom kontexte Springu:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;bean</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;registrationEndpoint&#34;</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;ais.ws.RegistrationEndPoint&#34;</span> <span style="color:#f92672">/&gt;</span>
 </span></span></code></pre></div><h2 id="mapovanie-endpointu">Mapovanie endpointu</h2>
@@ -134,31 +134,31 @@ Majme bežný endpoint, ktorý je klasickým POJOm. Endpoint predstavuje metódu
 </span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;xwss:UsernameToken</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;Bert&#34;</span> <span style="color:#a6e22e">password=</span><span style="color:#e6db74">&#34;Ernie&#34;</span> <span style="color:#a6e22e">digestPassword=</span><span style="color:#e6db74">&#34;false&#34;</span> <span style="color:#a6e22e">useNonce=</span><span style="color:#e6db74">&#34;false&#34;</span><span style="color:#f92672">/&gt;</span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/xwss:SecurityConfiguration&gt;</span>
 </span></span></code></pre></div><p>Kód klienta:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Client</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    WebServiceTemplate webServiceTemplate <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> WebServiceTemplate<span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>    webServiceTemplate<span style="color:#f92672">.</span><span style="color:#a6e22e">setDefaultUri</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;http://localhost:8080/movie-ws/&#34;</span><span style="color:#f92672">);</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Client</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span>(String<span style="color:#f92672">[]</span> args) <span style="color:#66d9ef">throws</span> Exception {
+</span></span><span style="display:flex;"><span>    WebServiceTemplate webServiceTemplate <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> WebServiceTemplate();
+</span></span><span style="display:flex;"><span>    webServiceTemplate.<span style="color:#a6e22e">setDefaultUri</span>(<span style="color:#e6db74">&#34;http://localhost:8080/movie-ws/&#34;</span>);
 </span></span><span style="display:flex;"><span>    
-</span></span><span style="display:flex;"><span>    XwsSecurityInterceptor securityInterceptor <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> XwsSecurityInterceptor<span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>    securityInterceptor<span style="color:#f92672">.</span><span style="color:#a6e22e">setPolicyConfiguration</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> ClassPathResource<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;xwss-client-config.xml&#34;</span><span style="color:#f92672">));</span>
-</span></span><span style="display:flex;"><span>    securityInterceptor<span style="color:#f92672">.</span><span style="color:#a6e22e">setCallbackHandler</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> CallbackHandler<span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    XwsSecurityInterceptor securityInterceptor <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> XwsSecurityInterceptor();
+</span></span><span style="display:flex;"><span>    securityInterceptor.<span style="color:#a6e22e">setPolicyConfiguration</span>(<span style="color:#66d9ef">new</span> ClassPathResource(<span style="color:#e6db74">&#34;xwss-client-config.xml&#34;</span>));
+</span></span><span style="display:flex;"><span>    securityInterceptor.<span style="color:#a6e22e">setCallbackHandler</span>(<span style="color:#66d9ef">new</span> CallbackHandler() {
 </span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">@Override</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">handle</span><span style="color:#f92672">(</span>Callback<span style="color:#f92672">[]</span> callbacks<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> IOException<span style="color:#f92672">,</span> UnsupportedCallbackException <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#75715e">//do nothing
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>      <span style="color:#f92672">}</span>     
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">});</span>
-</span></span><span style="display:flex;"><span>    securityInterceptor<span style="color:#f92672">.</span><span style="color:#a6e22e">afterPropertiesSet</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">handle</span>(Callback<span style="color:#f92672">[]</span> callbacks) <span style="color:#66d9ef">throws</span> IOException, UnsupportedCallbackException {
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">//do nothing</span>
+</span></span><span style="display:flex;"><span>      }     
+</span></span><span style="display:flex;"><span>    });
+</span></span><span style="display:flex;"><span>    securityInterceptor.<span style="color:#a6e22e">afterPropertiesSet</span>();
 </span></span><span style="display:flex;"><span>    
 </span></span><span style="display:flex;"><span>    
-</span></span><span style="display:flex;"><span>    ClientInterceptor<span style="color:#f92672">[]</span> interceptors <span style="color:#f92672">=</span> <span style="color:#f92672">{</span>securityInterceptor<span style="color:#f92672">};</span>
+</span></span><span style="display:flex;"><span>    ClientInterceptor<span style="color:#f92672">[]</span> interceptors <span style="color:#f92672">=</span> {securityInterceptor};
 </span></span><span style="display:flex;"><span>    
-</span></span><span style="display:flex;"><span>    webServiceTemplate<span style="color:#f92672">.</span><span style="color:#a6e22e">setInterceptors</span><span style="color:#f92672">(</span>interceptors<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    webServiceTemplate.<span style="color:#a6e22e">setInterceptors</span>(interceptors);
 </span></span><span style="display:flex;"><span>    
-</span></span><span style="display:flex;"><span>    StreamSource source <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> StreamSource<span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> FileReader<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;MovieReservationRequest.xml&#34;</span><span style="color:#f92672">));</span>
-</span></span><span style="display:flex;"><span>    webServiceTemplate<span style="color:#f92672">.</span><span style="color:#a6e22e">sendSourceAndReceiveToResult</span><span style="color:#f92672">(</span>source<span style="color:#f92672">,</span> <span style="color:#66d9ef">new</span> StreamResult<span style="color:#f92672">(</span>System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">));</span>
+</span></span><span style="display:flex;"><span>    StreamSource source <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> StreamSource(<span style="color:#66d9ef">new</span> FileReader(<span style="color:#e6db74">&#34;MovieReservationRequest.xml&#34;</span>));
+</span></span><span style="display:flex;"><span>    webServiceTemplate.<span style="color:#a6e22e">sendSourceAndReceiveToResult</span>(source, <span style="color:#66d9ef">new</span> StreamResult(System.<span style="color:#a6e22e">out</span>));
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>Vyššie uvedený prázdny <em>callbackhandler</em> je obídenie situácie, v ktorej XWSS interceptor požaduje mať definovaného aspoň jeden <em>callbackhandler</em>. Vytvoríme teda jeden prázdny.</p>
 
     <a href="/"> >> Home</a>

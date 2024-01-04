@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+    <link rel="manifest" href="/images/site.webmanifest">
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <title>Kotlin - lambdy, anonymné funkcie, rozširujúce funkcie a lambdy s prijímačom | robonovotny</title>
+
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.3/styles/dracula.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.3/highlight.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.3/languages/go.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    <link rel="stylesheet" href="https://novotnyr.github.io/asciidoctor.css">
+    <header>
+
+  <nav>
+    <ul>
+      
+      
+      <li class="pull-left ">
+        <a href="https://novotnyr.github.io/">~/robonovotny</a>
+      </li>
+      
+
+      
+
+    </ul>
+  </nav>
+</header>
+
+  </head>
+
+  <body>
+    <br/>
+
+<div class="article-meta">
+<h1><span class="title">Kotlin - lambdy, anonymné funkcie, rozširujúce funkcie a lambdy s prijímačom</span></h1>
+
+<h2 class="date">2024/01/04</h2>
+<p class="terms">
+  
+  
+  
+  
+  
+</p>
+</div>
+
+
+<div class="content-wrapper">
+  <main>
+    <p>Toto je funkcia:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">double</span>(n: Int): Int {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> n * <span style="color:#ae81ff">2</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Funkciu môžeme priradiť do premennej:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">double</span>(n: Int): Int {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> n * <span style="color:#ae81ff">2</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">main</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">val</span> f = <span style="color:#f92672">::</span>double
+</span></span><span style="display:flex;"><span>    println(f(<span style="color:#ae81ff">2</span>))
+</span></span></code></pre></div><p>Syntax <code>::</code> používa <em>method references</em>, teda odkazy na funkcie, či metódy.</p>
+<h2 id="anonymné-funkcie">Anonymné funkcie</h2>
+<p>Funkcia môže byť anonymná.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">val</span> double = <span style="color:#66d9ef">fun</span> <span style="color:#960050;background-color:#1e0010">(</span><span style="color:#a6e22e">n</span>: Int): Int {
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">return</span> n * <span style="color:#ae81ff">2</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>println(double(<span style="color:#ae81ff">2</span>))
+</span></span></code></pre></div><p>Ako vidno, medzi <code>fun</code> a zoznamom argumentov nie je meno. Môžeme ju potom priradiť do premennej <code>double</code> a volať naďalej.
+Ak sme zvedaví, tak dátový typ premennej (!) <code>double</code> je:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span>(Int) <span style="color:#f92672">-&gt;</span> Int
+</span></span></code></pre></div><p>Berieme jeden <code>Int</code>ídžer a vraciame tiež <code>Int</code>ídžer.</p>
+<h2 id="anonymné-funkcie-ako-parametre">Anonymné funkcie ako parametre</h2>
+<p>Funkcie sú v Kotline bežnými občanmi. Môžeme ich odovzdávať ako parametre:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">val</span> double = <span style="color:#66d9ef">fun</span> <span style="color:#960050;background-color:#1e0010">(</span><span style="color:#a6e22e">n</span>: Int): Int {
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">return</span> n * <span style="color:#ae81ff">2</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">val</span> doubles = listOf(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>).map(double)
+</span></span><span style="display:flex;"><span>println(doubles)
+</span></span></code></pre></div><p>Funkcia <code>map</code> na zozname <code>List</code> berie ako parameter funkciu, ktorá sa spustí na každom prvku zoznamu.</p>
+<h2 id="lambdy">Lambdy</h2>
+<p>Anonymné funkcie sa volajú <strong>lambdy</strong>. Keďže v Kotline sa používajú kade-tade, existuje skrátený zápis:</p>
+<pre tabindex="0"><code>val double = { n: Int -&gt; n * 2 }
+</code></pre><p>Premenná <code>double</code> obsahuje anonymnú funkciu, po novom <strong>lambda výraz</strong>, ktorý má</p>
+<ul>
+<li>jeden celočíselný parameter</li>
+<li>vracia celé číslo.
+Na rozdiel od anonymnej funkcie sa návratový typ automaticky zistí pomocou <em>odvodzovania typov</em> (<em>type inference</em>), lebo intídžer krát dva je intídžer.
+Zároveň nepoužívame <code>return</code>.</li>
+</ul>
+<p>Lambdu používame rovnako ako anonymné funkcie:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">val</span> doubles = listOf(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>).map(double)
+</span></span></code></pre></div><h2 id="lambdy-ako-parametre">Lambdy ako parametre</h2>
+<p>Funkcia môže brať lambdu ako parameter. Obvykle predstavuje nejaký „kus kódu“, čo sa môže dynamicky vykonať.</p>
+<p>Funkcia <code>map</code> zoberie po jednom prvky zoznamu a na každom z nich „vykoná kus kódu“. Tento kus kódu je reprezentovaný lambdou.</p>
+<p>Na zozname čísiel preto berie ako parameter funkciu <code>(Int) -&gt; Int</code>, čiže z intídžrov do intídžrov. Naša premenná <code>double</code> predstavuje „kus kódu“, ktorá zdvojnásobí ľuboľný vstup a teda ju môžeme použiť na každý prvok zoznamu.</p>
+<h2 id="lambdy-ako-koncové-parametre">Lambdy ako koncové parametre</h2>
+<p>Ak má funkcia posledný parameter typu lambda, máme skrátený zápis:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">val</span> doubles = listOf(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>).map { n: Int <span style="color:#f92672">-&gt;</span> n * <span style="color:#ae81ff">2</span> }
+</span></span></code></pre></div><p>Oficiálne sa to volá <strong>trailing lambda</strong> (<em>koncová lambda</em>).
+Toto v skutočnosti pripomína funkcie, až na šípku:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">val</span> doubles = listOf(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>).map { n: Int <span style="color:#f92672">-&gt;</span> 
+</span></span><span style="display:flex;"><span>	n * <span style="color:#ae81ff">2</span> 
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Odvodzovanie typov je zázračné — niekedy vie uhádnuť dátový typ parametra <code>n</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">val</span> doubles = listOf(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>).map { n <span style="color:#f92672">-&gt;</span>  n * <span style="color:#ae81ff">2</span> }
+</span></span></code></pre></div><p>Keďže máme zoznam <code>Int</code>-egerov, lambda vykonaná na každom prvku musí byť <code>Int</code> a teda ho nemusíme uviesť ako dátový typ premennej <code>n</code>.
+Ak má lambda jediný parameter, je to ešte kratšie:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">val</span> doubles = listOf(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>).map { <span style="color:#66d9ef">it</span> * <span style="color:#ae81ff">2</span> }
+</span></span></code></pre></div><p>Zjaví sa automatická premenná <code>it</code> („to“) s automaticky odvodeným dátovým typom - napríklad <code>Int</code>.</p>
+<h2 id="lambda-a-viacero-riadkov">Lambda a viacero riadkov</h2>
+<p>Lambda môže mať viacero riadkov:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">val</span> doubles = listOf(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>).map { 
+</span></span><span style="display:flex;"><span>	println(<span style="color:#e6db74">&#34;Calculating double of </span><span style="color:#e6db74">$it</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">it</span> * <span style="color:#ae81ff">2</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Výsledkom lambdy je posledný výraz, teda dvojnásobok premennej <code>it</code>.</p>
+<p>Zátvorky <code>{</code> &hellip; <code>}</code> sa podobajú na blok kódu. Toto nám dáva nové možnosti!</p>
+<h2 id="ľubovoľné-bloky">Ľubovoľné bloky</h2>
+<p>Aha, kód:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span>repeat(<span style="color:#ae81ff">5</span>) {
+</span></span><span style="display:flex;"><span>	println(<span style="color:#66d9ef">it</span>)
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>To, čo vyzerá podozrivo ako <code>while(true) {... }</code> je bežné použitie lambdy a parametrov.
+Ale je to bežná funkcia! Tento <code>repeat</code> má dva parametre:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">repeat</span>(times: Int, action: (Int) <span style="color:#f92672">-&gt;</span> Unit)
+</span></span></code></pre></div><ol>
+<li>počet opakovaní <code>times</code></li>
+<li>a lambdu z <code>Int</code> do „ničoho“ (<code>Unit</code>), lebo nepotrebujeme z nej vracať žiadnu hodnotu.</li>
+</ol>
+<p>To by sme mohli celé napísať komplikovane napríklad takto:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">val</span> printToConsole = { n: Int <span style="color:#f92672">-&gt;</span> println(n) }
+</span></span><span style="display:flex;"><span>repeat(<span style="color:#ae81ff">5</span>, printToConsole)
+</span></span></code></pre></div><p>Ale načo, keď máme koncové lambdy?</p>
+<h2 id="budovateľské-nadšenie-s-buildermi">Budovateľské nadšenie s buildermi</h2>
+<p>Predstavme si košík na veci. Presnejšie, košík na reťazce, ktoré doň môžeme pridávať.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Basket</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> items = mutableListOf&lt;String&gt;()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">add</span>(item: String) {
+</span></span><span style="display:flex;"><span>        items <span style="color:#f92672">+=</span> item
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Môžeme si predstaviť nasledovný pseudojazyk (DSL, <em>domain specific language</em>):</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span>basket {
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">it</span>.add(<span style="color:#e6db74">&#34;Cabbage&#34;</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">it</span>.add(<span style="color:#e6db74">&#34;Carrot&#34;</span>)
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Toto je v skutočnosti skrátený zápis za:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span>basket { b: Basket <span style="color:#f92672">-&gt;</span> 
+</span></span><span style="display:flex;"><span>	b.add(<span style="color:#e6db74">&#34;Cabbage&#34;</span>)
+</span></span><span style="display:flex;"><span>	b.add(<span style="color:#e6db74">&#34;Carrot&#34;</span>)
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Aby toto fungovalo, zostrojíme funkciu <code>basket</code> s koncovou lambdou:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">basket</span>(build: (Basket) <span style="color:#f92672">-&gt;</span> Unit) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">val</span> basket = Basket()
+</span></span><span style="display:flex;"><span>    build(basket)
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Lambda berie košík <code>Basket</code> a nevracia nič.
+Konkrétny objekt košíka, ktorý sa ocitne ako argument lambdy <code>builder</code>, vytvoríme a pošleme pri volaní lambdy do argumentu.</p>
+<p>Takto sa môžeme napojiť na odvodzovanie typov: keďže funkcia <code>basket</code> vie, že parametrom lambdy je <code>Basket</code> a tento parameter je len jeden, môžeme ho použiť v podobe <code>it</code>.</p>
+<h2 id="lambdy-s-prijímačmi-_lambdas-with-receivers_">Lambdy s prijímačmi (<em>Lambdas with Receivers</em>)</h2>
+<p>Aha, akú krásnu syntax vieme v Kotline ešte vymyslieť:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span>basket {
+</span></span><span style="display:flex;"><span>	add(<span style="color:#e6db74">&#34;Cabbage&#34;</span>)
+</span></span><span style="display:flex;"><span>	add(<span style="color:#e6db74">&#34;Milk&#34;</span>)
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Čo je <code>add</code>? Je to metóda na objekte typu <code>Basket</code>.
+A kde je ten objekt? Je skrytý pod zamlčaným <code>this</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span>basket {
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">this</span>.add(<span style="color:#e6db74">&#34;Cabbage&#34;</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">this</span>.add(<span style="color:#e6db74">&#34;Milk&#34;</span>)
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>A čo je <code>this</code>? Je to prijímač (<em>receiver</em>), ktorý vieme uviesť v lambde.</p>
+<p>V skratke: toto je ešte kratší zápis ako hrajkanie sa s <code>it</code>.</p>
+<p><strong>Lambda s poslucháčom</strong> má extra parameter:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span>contentBuilder: <span style="color:#a6e22e">Basket</span>.() <span style="color:#f92672">-&gt;</span> Unit
+</span></span></code></pre></div><p><code>Basket</code> pred bodkou znamená typ, ktorý sa vo vnútri lambdy zjaví pod premennou <code>this</code>.
+Čítame to ako „lambda má prijímač typu <code>Basket</code>, žiadne parametre a nič nevracia“.
+Ako to použijeme?</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">basket</span>(contentBuilder: <span style="color:#a6e22e">Basket</span>.() <span style="color:#f92672">-&gt;</span> Unit) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">val</span> b = Basket()
+</span></span><span style="display:flex;"><span>    b.contentBuilder()
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Lambdu tuto zavoláme na objekte <code>basket</code> akoby išlo o jeho bežnú metódu. Vo vnútri lambdy sa objekt <code>basket</code> objaví v premennej <code>this</code>. Takto môžeme košík naplniť vo vnútri lambdy <code>contentBuilder</code>.</p>
+<p>Lebo naozaj: prijímač typu <code>Basket</code> (premenná <code>b</code>) volá lambdu bez parametrov a bez návratovej hodnoty.</p>
+<p>A ešte: <em>receiver</em> je naozaj dodatočný parameter, lebo volanie lambdy môžeme urobiť aj naopak:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span>contentBuilder(basket)
+</span></span></code></pre></div><p>Syntax zrazu začne fungovať!</p>
+<h2 id="extension-functions---rozširujúce-funkcie">Extension Functions - rozširujúce funkcie</h2>
+<p>Predstavme si ďalší syntaktický cukor:</p>
+<pre tabindex="0"><code>5.times {
+	println(&#34;Hello&#34;)
+}
+</code></pre><p>Toto je veľmi podobné ako:</p>
+<pre tabindex="0"><code>repeat(5) {
+	println(&#34;Hello&#34;)
+}
+</code></pre><p>Ibaže číslo je vysunuté pred bodku, čiže to vyzerá ako metóda!
+Dokonca na čísle <code>5</code>, teda metóda na <code>Int</code>egeri. Ale <code>Int</code> nemá metódu <code>times</code>, tak ako to funguje?
+Začnime jednoduchším prípadom:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#ae81ff">5.</span>times(<span style="color:#e6db74">&#34;Hello&#34;</span>)
+</span></span></code></pre></div><p>V Kotline môžeme vytvárať funkcie, ktoré budia dojem, že ide o dodávanie metód triedam. A na to naozaj slúžia!
+Vytvorme funkciu:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">Int</span>.times(s: String) {
+</span></span><span style="display:flex;"><span>    TODO(<span style="color:#e6db74">&#34;Not yet implemented&#34;</span>)
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Pred názvom funkcie a pred bodkou je <code>Int</code>, čo je akýsi dodatočný parameter funkcie reprezentujúci objekt, na ktorom môžeme volať metódu <code>times</code>.
+Takáto funkcia sa volá <em>extension function</em> (rozširujúca funkcia).
+Pozor, toto nie je lambda s prijímačom (<em>lambda with receiver</em>)! Je to normálna, slušná, pomenovaná funkcia.
+Keďže hodnota <code>5</code> je typu <code>Int</code>, môžeme na nej volať metódu <code>times</code>. Funkcia <code>times</code> je verejná a patrí do nejakého balíčka. Ak by sme ju chceli použiť v inom balíčku, musíme ju <em>importnúť</em>, aby sme jasne povedali, odkiaľ takéto „náhodné“ dodatočné metódy na „náhodných“ triedach pochádzajú a nedošlo k nečakaným prekvapeniam.</p>
+<h2 id="rozšírenia-a-lambdy">Rozšírenia a lambdy</h2>
+<p>Extension Functions (rozširujúce funkcie) a lambdy môžeme kombinovať!</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">Int</span>.times(iteration: (Int) <span style="color:#f92672">-&gt;</span> Unit) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> (i <span style="color:#66d9ef">in</span> <span style="color:#ae81ff">1.</span>.<span style="color:#66d9ef">this</span>) {
+</span></span><span style="display:flex;"><span>        iteration(i)
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Funkcia <code>times</code> prijme lambdu, ktorá síce nevracia nič, ale zato má jeden celočíselný parameter (reprezentujúci „poradové číslo kola“, ktoré sa práve vykonáva).
+Teraz už môžeme volať:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#ae81ff">5.</span>times {
+</span></span><span style="display:flex;"><span>	println(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">$it</span><span style="color:#e6db74">: Hello&#34;</span>)
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="naspäť-ku-košíku">Naspäť ku košíku!</h2>
+<p>Ak chceme mať peknú syntax:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span>basket {
+</span></span><span style="display:flex;"><span>	item(<span style="color:#e6db74">&#34;Milk&#34;</span>)
+</span></span><span style="display:flex;"><span>	item(<span style="color:#e6db74">&#34;Sugar&#34;</span>)
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Stačí dodať rozširujúcu funkciu:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">Basket</span>.item(item: String) = add(item)
+</span></span></code></pre></div><p>Toto prakticky slúži ako <em>alias</em> metódy <code>add</code> na triede <code>Basket</code>. Alias sa však správa úplne rovnako ako pôvodná metóda a môžeme ho použiť pri volaní na <em>prijímači</em> vo vnútri lambdy, ktorú volá funkcia <code>basket</code>.</p>
+
+    <a href="/"> >> Home</a>
+  </main>
+</div>
+    <footer>
+      
+<script>
+(function() {
+  function center_el(tagName) {
+    var tags = document.getElementsByTagName(tagName), i, tag;
+    for (i = 0; i < tags.length; i++) {
+      tag = tags[i];
+      var parent = tag.parentElement;
+      
+      if (parent.childNodes.length === 1) {
+        
+        if (parent.nodeName === 'A') {
+          parent = parent.parentElement;
+          if (parent.childNodes.length != 1) continue;
+        }
+        if (parent.nodeName === 'P') parent.style.textAlign = 'center';
+      }
+    }
+  }
+  var tagNames = ['img', 'embed', 'object'];
+  for (var i = 0; i < tagNames.length; i++) {
+    center_el(tagNames[i]);
+  }
+})();
+</script>
+
+      
+    </footer>
+  </body>
+</html>
+

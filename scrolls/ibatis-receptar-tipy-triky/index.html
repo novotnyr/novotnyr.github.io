@@ -72,14 +72,14 @@
 </span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;result</span> <span style="color:#a6e22e">property=</span><span style="color:#e6db74">&#34;series&#34;</span> <span style="color:#a6e22e">resultMap=</span><span style="color:#e6db74">&#34;Book.seriesRM&#34;</span><span style="color:#f92672">/&gt;</span>       
 </span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/resultMap&gt;</span>
 </span></span></code></pre></div><p>a triedu</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Book</span> <span style="color:#66d9ef">implements</span> Serializable <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">protected</span> Integer id<span style="color:#f92672">;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Book</span> <span style="color:#66d9ef">implements</span> Serializable {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">protected</span> Integer id;
 </span></span><span style="display:flex;"><span>  
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">protected</span> String title <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> String<span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">protected</span> String title <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> String();
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">private</span> BookStatus status<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">private</span> BookStatus status;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">private</span> SimpleSeries series <span style="color:#f92672">=</span> SimpleSeries<span style="color:#f92672">.</span><span style="color:#a6e22e">EMPTY_SERIES</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">private</span> SimpleSeries series <span style="color:#f92672">=</span> SimpleSeries.<span style="color:#a6e22e">EMPTY_SERIES</span>;
 </span></span></code></pre></div><p>Všimnime si dve situácie:</p>
 <ol>
 <li>premenná <code>status</code> je v <code>Book</code>u nastavená na <code>null</code> a v mapovaní je reprezentovaná pomocou explicitného stĺpcového mapovania. iBatis v tomto prípade vytvorí novú inštanciu <code>BookStatus</code>u a nastaví jej <code>requestCount</code> a <code>borrowedTo</code> zo stĺpcov <code>request_count</code> a <code>borrowee</code>.</li>

@@ -102,23 +102,23 @@ Tie je možné skopírovať do adresára <code>WEB-INF/lib</code> svojej webovej
 <p>Zobrazenie pív v ponuke je pekným príkladom <code>read</code> aspektu.</p>
 <p>V tomto prípade si však vystačíme s klasickým JSP (bez akýchkoľvek komponentov Stripes).</p>
 <p>Vytvorme bean, ktorý bude poskytovať dáta stránke:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#f92672">package</span> sk.beer.web<span style="color:#f92672">;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#f92672">package</span> sk.beer.web;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.util.ArrayList<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.util.List<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.util.ArrayList;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.util.List;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> sk.beer.Beer<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> sk.beer.Beer;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ListBeersBean</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> List<span style="color:#f92672">&lt;</span>Beer<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">getAllBeers</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    List<span style="color:#f92672">&lt;</span>Beer<span style="color:#f92672">&gt;</span> beers <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">&lt;</span>Beer<span style="color:#f92672">&gt;();</span>
-</span></span><span style="display:flex;"><span>    beers<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> Beer<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Saris&#34;</span><span style="color:#f92672">));</span>
-</span></span><span style="display:flex;"><span>    beers<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> Beer<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Hoegaarden&#34;</span><span style="color:#f92672">));</span>
-</span></span><span style="display:flex;"><span>    beers<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> Beer<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Bazant&#34;</span><span style="color:#f92672">));</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ListBeersBean</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> List<span style="color:#f92672">&lt;</span>Beer<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">getAllBeers</span>() {
+</span></span><span style="display:flex;"><span>    List<span style="color:#f92672">&lt;</span>Beer<span style="color:#f92672">&gt;</span> beers <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">&lt;</span>Beer<span style="color:#f92672">&gt;</span>();
+</span></span><span style="display:flex;"><span>    beers.<span style="color:#a6e22e">add</span>(<span style="color:#66d9ef">new</span> Beer(<span style="color:#e6db74">&#34;Saris&#34;</span>));
+</span></span><span style="display:flex;"><span>    beers.<span style="color:#a6e22e">add</span>(<span style="color:#66d9ef">new</span> Beer(<span style="color:#e6db74">&#34;Hoegaarden&#34;</span>));
+</span></span><span style="display:flex;"><span>    beers.<span style="color:#a6e22e">add</span>(<span style="color:#66d9ef">new</span> Beer(<span style="color:#e6db74">&#34;Bazant&#34;</span>));
 </span></span><span style="display:flex;"><span>    
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> beers<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> beers;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>Samotná stránka bude klasické JSP využívajúce JSTL tagy</p>
 <pre tabindex="0"><code>&lt;%@ taglib prefix=&#34;c&#34; uri=&#34;http://java.sun.com/jsp/jstl/core&#34; %&gt;
 &lt;%@ taglib prefix=&#34;fmt&#34; uri=&#34;http://java.sun.com/jsp/jstl/fmt&#34; %&gt;
@@ -167,49 +167,49 @@ Tie je možné skopírovať do adresára <code>WEB-INF/lib</code> svojej webovej
 <h3 id="kontrolér---trieda-addbeeractionbean">Kontrolér - trieda <code>AddBeerActionBean</code></h3>
 <p>Kontrolér je objekt, ktorý spracuje dáta z formulára, zavolá objekty bussiness logiky a v prípade potreby vykoná presmerovanie na ďalší view.</p>
 <p>V Stripes je kontrolérom trieda, ktorá implementuje interfejs <code>ActionBean</code>.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#f92672">package</span> sk.beer.web<span style="color:#f92672">;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#f92672">package</span> sk.beer.web;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> net.sourceforge.stripes.action.ActionBean<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> net.sourceforge.stripes.action.ActionBeanContext<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> net.sourceforge.stripes.action.DefaultHandler<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> net.sourceforge.stripes.action.ForwardResolution<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> net.sourceforge.stripes.action.RedirectResolution<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> net.sourceforge.stripes.action.Resolution<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> sk.beer.Beer<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> net.sourceforge.stripes.action.ActionBean;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> net.sourceforge.stripes.action.ActionBeanContext;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> net.sourceforge.stripes.action.DefaultHandler;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> net.sourceforge.stripes.action.ForwardResolution;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> net.sourceforge.stripes.action.RedirectResolution;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> net.sourceforge.stripes.action.Resolution;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> sk.beer.Beer;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">AddBeerAction</span> <span style="color:#66d9ef">implements</span> ActionBean <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">private</span> Beer beer<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">AddBeerAction</span> <span style="color:#66d9ef">implements</span> ActionBean {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">private</span> Beer beer;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">private</span> ActionBeanContext context<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">private</span> ActionBeanContext context;
 </span></span><span style="display:flex;"><span>  
 </span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@DefaultHandler</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> Resolution <span style="color:#a6e22e">displayForm</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Displaying form&#34;</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> ForwardResolution<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/addBeer.jsp&#34;</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> Resolution <span style="color:#a6e22e">displayForm</span>() {
+</span></span><span style="display:flex;"><span>    System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(<span style="color:#e6db74">&#34;Displaying form&#34;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> ForwardResolution(<span style="color:#e6db74">&#34;/addBeer.jsp&#34;</span>);
+</span></span><span style="display:flex;"><span>  }
 </span></span><span style="display:flex;"><span>  
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> Resolution <span style="color:#a6e22e">addBeer</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Adding beer: &#34;</span> <span style="color:#f92672">+</span> beer<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> RedirectResolution<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/listBeers.jsp&#34;</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> Resolution <span style="color:#a6e22e">addBeer</span>() {
+</span></span><span style="display:flex;"><span>    System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(<span style="color:#e6db74">&#34;Adding beer: &#34;</span> <span style="color:#f92672">+</span> beer);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> RedirectResolution(<span style="color:#e6db74">&#34;/listBeers.jsp&#34;</span>);
+</span></span><span style="display:flex;"><span>  }
 </span></span><span style="display:flex;"><span>  
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> ActionBeanContext <span style="color:#a6e22e">getContext</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> context<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> ActionBeanContext <span style="color:#a6e22e">getContext</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> context;
+</span></span><span style="display:flex;"><span>  }
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> Beer <span style="color:#a6e22e">getBeer</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> beer<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> Beer <span style="color:#a6e22e">getBeer</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> beer;
+</span></span><span style="display:flex;"><span>  }
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setBeer</span><span style="color:#f92672">(</span>Beer beer<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">beer</span> <span style="color:#f92672">=</span> beer<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setBeer</span>(Beer beer) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">beer</span> <span style="color:#f92672">=</span> beer;
+</span></span><span style="display:flex;"><span>  }
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setContext</span><span style="color:#f92672">(</span>ActionBeanContext context<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">context</span> <span style="color:#f92672">=</span> context<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setContext</span>(ActionBeanContext context) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">context</span> <span style="color:#f92672">=</span> context;
+</span></span><span style="display:flex;"><span>  }
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>Implementácia interfejsu vynucuje prekrytie dvoch metód: <code>getContext()</code> a <code>setContext()</code>, pomocou ktorých je možné získať prístup k objektu typu <code>ActionBeanContext</code> (tento kontext umožňuje prístup k objektu HTTP session a pod). V našich metódach si nastavený objekt kontextu uložíme do inštančnej premennej a v metóde <code>getContext()</code> ho vrátime.</p>
 <p>Ďalšie dve významné metódy sú metódy vracajúce objekt <code>Resolution</code>. Obe tieto metódy predstavujú reakciu na udalosti (udalosť môže byť vyvolaná formulárom alebo parametrom v URL).</p>
 <p>Anotácia <code>DefaultHandler</code> špecifikuje metódu, ktorá sa zavolá v prípade, že nebola vyvolaná žiadna udalosť. V tomto jednoduchom prípade vypíšeme na štandardný výstup správu a vrátime <code>ForwardResolution</code>, ktorý predstavuje presmerovanie na danú stránku (forward-presmerovanie znamená presmerovanie na strane servera, takže klient nespozoruje zmenu URL adresy v prehliadači).</p>

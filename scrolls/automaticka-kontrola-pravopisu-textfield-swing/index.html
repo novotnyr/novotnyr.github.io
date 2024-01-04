@@ -73,14 +73,14 @@ trieda
 <a href="http://java.sun.com/javase/6/docs/api/java/text/BreakIterator.html"><code>java.text.BreakIterator</code></a>,
 ktorá to umožňuje realizovať bez akýchkoľvek problémov.</p>
 <p>Ukážme si príklad jednoduchého kódu, ktorý nájde medzery medzi slovami:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>BreakIterator iterator <span style="color:#f92672">=</span> BreakIterator<span style="color:#f92672">.</span><span style="color:#a6e22e">getWordInstance</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>iterator<span style="color:#f92672">.</span><span style="color:#a6e22e">setText</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34; 1  23 4&#34;</span><span style="color:#f92672">);</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>BreakIterator iterator <span style="color:#f92672">=</span> BreakIterator.<span style="color:#a6e22e">getWordInstance</span>();
+</span></span><span style="display:flex;"><span>iterator.<span style="color:#a6e22e">setText</span>(<span style="color:#e6db74">&#34; 1  23 4&#34;</span>);
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> pos <span style="color:#f92672">=</span> iterator<span style="color:#f92672">.</span><span style="color:#a6e22e">first</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">while</span><span style="color:#f92672">(</span>pos <span style="color:#f92672">!=</span> BreakIterator<span style="color:#f92672">.</span><span style="color:#a6e22e">DONE</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>iterator<span style="color:#f92672">.</span><span style="color:#a6e22e">current</span><span style="color:#f92672">());</span>
-</span></span><span style="display:flex;"><span>    pos <span style="color:#f92672">=</span> iterator<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> pos <span style="color:#f92672">=</span> iterator.<span style="color:#a6e22e">first</span>();
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">while</span>(pos <span style="color:#f92672">!=</span> BreakIterator.<span style="color:#a6e22e">DONE</span>) {
+</span></span><span style="display:flex;"><span>    System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(iterator.<span style="color:#a6e22e">current</span>());
+</span></span><span style="display:flex;"><span>    pos <span style="color:#f92672">=</span> iterator.<span style="color:#a6e22e">next</span>();
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>Trieda, ako už naznačuje jej názov, je založená na princípe iterátora.
 Inštanciu však nezískavame použitím konštruktora, ale cez statickú
 metódu <code>getWordInstance()</code>. To je zámer, ktorý zväčšuje jej flexibilitu,
@@ -127,98 +127,98 @@ potrebujeme extrahovať indexy pre všetky tri slová:</p>
 </tbody>
 </table>
 <p>Kód, ktorý získa všetky slová, vyzerá nasledovne:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>BreakIterator iterator <span style="color:#f92672">=</span> BreakIterator<span style="color:#f92672">.</span><span style="color:#a6e22e">getWordInstance</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>iterator<span style="color:#f92672">.</span><span style="color:#a6e22e">setText</span><span style="color:#f92672">(</span>text<span style="color:#f92672">);</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>BreakIterator iterator <span style="color:#f92672">=</span> BreakIterator.<span style="color:#a6e22e">getWordInstance</span>();
+</span></span><span style="display:flex;"><span>iterator.<span style="color:#a6e22e">setText</span>(text);
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> start <span style="color:#f92672">=</span> iterator<span style="color:#f92672">.</span><span style="color:#a6e22e">first</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> end <span style="color:#f92672">=</span> iterator<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> start <span style="color:#f92672">=</span> iterator.<span style="color:#a6e22e">first</span>();
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> end <span style="color:#f92672">=</span> iterator.<span style="color:#a6e22e">next</span>();
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span>end <span style="color:#f92672">!=</span> BreakIterator<span style="color:#f92672">.</span><span style="color:#a6e22e">DONE</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    writeWord<span style="color:#f92672">(</span>text<span style="color:#f92672">,</span> start<span style="color:#f92672">,</span> end<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>    start <span style="color:#f92672">=</span> end<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>    end <span style="color:#f92672">=</span> iterator<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">// spracujme aj posledné slovo
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>writeWord<span style="color:#f92672">(</span>text<span style="color:#f92672">,</span> start<span style="color:#f92672">,</span> end<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">while</span> (end <span style="color:#f92672">!=</span> BreakIterator.<span style="color:#a6e22e">DONE</span>) {
+</span></span><span style="display:flex;"><span>    writeWord(text, start, end);
+</span></span><span style="display:flex;"><span>    start <span style="color:#f92672">=</span> end;
+</span></span><span style="display:flex;"><span>    end <span style="color:#f92672">=</span> iterator.<span style="color:#a6e22e">next</span>();
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// spracujme aj posledné slovo</span>
+</span></span><span style="display:flex;"><span>writeWord(text, start, end);
 </span></span></code></pre></div><p>Metóda <code>writeWord()</code> vypíšte časť slova medzi danými indexami.
 Najdôležitejšie je ignorovať tie slová, ktoré sú buď prázdne (teda
 predstavujú medzery či iné biele miesto) alebo zodpovedajú číslam či
 interpunkcii. To zaistíme skontrolovaním prvého znaku metódou
 <a href="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Character.html">Character.isLetterOrDigit()</a>.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">writeWord</span><span style="color:#f92672">(</span>String text<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span> startIndex<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span> endIndex<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    String word <span style="color:#f92672">=</span> text<span style="color:#f92672">.</span><span style="color:#a6e22e">substring</span><span style="color:#f92672">(</span>start<span style="color:#f92672">,</span> end<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>Character<span style="color:#f92672">.</span><span style="color:#a6e22e">isLetterOrDigit</span><span style="color:#f92672">(</span>word<span style="color:#f92672">.</span><span style="color:#a6e22e">charAt</span><span style="color:#f92672">(</span>0<span style="color:#f92672">)))</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>word<span style="color:#f92672">);</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">writeWord</span>(String text, <span style="color:#66d9ef">int</span> startIndex, <span style="color:#66d9ef">int</span> endIndex) {
+</span></span><span style="display:flex;"><span>    String word <span style="color:#f92672">=</span> text.<span style="color:#a6e22e">substring</span>(start, end);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (Character.<span style="color:#a6e22e">isLetterOrDigit</span>(word.<span style="color:#a6e22e">charAt</span>(0))) {
+</span></span><span style="display:flex;"><span>        System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(word);
 </span></span><span style="display:flex;"><span>    
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><h2 id="kontrola-pravopisu">Kontrola pravopisu</h2>
 <p>Vo chvíli, keď vieme deliť text na slová, kontrola pravopisu je
 jednoduchá. Stačí si urobiť triedu <code>KontrolaPravopisu</code>, ktorá v
 jednoduchej verzii skontroluje, či je každé slovo textu v zozname
 povolených slov.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#f92672">package</span> kontrolapravopisu<span style="color:#f92672">;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#f92672">package</span> kontrolapravopisu;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.text.BreakIterator<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.util.*<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.text.BreakIterator;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.util.*;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">KontrolaPravopisu</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">KontrolaPravopisu</span> {
 </span></span><span style="display:flex;"><span>    <span style="color:#75715e">/** zoznam korektných slov **/</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> List<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> korektneSlova <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;();</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> List<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> korektneSlova <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span>();
 </span></span><span style="display:flex;"><span>    
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">KontrolaPravopisu</span><span style="color:#f92672">(</span>String<span style="color:#f92672">...</span> korektneSlova<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>        korektneSlova<span style="color:#f92672">.</span><span style="color:#a6e22e">addAll</span><span style="color:#f92672">(</span>Arrays<span style="color:#f92672">.</span><span style="color:#a6e22e">asList</span><span style="color:#f92672">(</span>korektneSlova<span style="color:#f92672">));</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">KontrolaPravopisu</span>(String... korektneSlova) {
+</span></span><span style="display:flex;"><span>        korektneSlova.<span style="color:#a6e22e">addAll</span>(Arrays.<span style="color:#a6e22e">asList</span>(korektneSlova));
+</span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>    
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> List<span style="color:#f92672">&lt;</span>WordCoordinate<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">skontroluj</span><span style="color:#f92672">(</span>String text<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>        List<span style="color:#f92672">&lt;</span>WordCoordinate<span style="color:#f92672">&gt;</span> errors <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">&lt;</span>WordCoordinate<span style="color:#f92672">&gt;();</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> List<span style="color:#f92672">&lt;</span>WordCoordinate<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">skontroluj</span>(String text) {
+</span></span><span style="display:flex;"><span>        List<span style="color:#f92672">&lt;</span>WordCoordinate<span style="color:#f92672">&gt;</span> errors <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">&lt;</span>WordCoordinate<span style="color:#f92672">&gt;</span>();
 </span></span><span style="display:flex;"><span>        
-</span></span><span style="display:flex;"><span>        BreakIterator iterator <span style="color:#f92672">=</span> BreakIterator<span style="color:#f92672">.</span><span style="color:#a6e22e">getWordInstance</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>        iterator<span style="color:#f92672">.</span><span style="color:#a6e22e">setText</span><span style="color:#f92672">(</span>text<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        BreakIterator iterator <span style="color:#f92672">=</span> BreakIterator.<span style="color:#a6e22e">getWordInstance</span>();
+</span></span><span style="display:flex;"><span>        iterator.<span style="color:#a6e22e">setText</span>(text);
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">int</span> start <span style="color:#f92672">=</span> iterator<span style="color:#f92672">.</span><span style="color:#a6e22e">first</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">int</span> end <span style="color:#f92672">=</span> iterator<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">int</span> start <span style="color:#f92672">=</span> iterator.<span style="color:#a6e22e">first</span>();
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">int</span> end <span style="color:#f92672">=</span> iterator.<span style="color:#a6e22e">next</span>();
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span>end <span style="color:#f92672">!=</span> BreakIterator<span style="color:#f92672">.</span><span style="color:#a6e22e">DONE</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>            skontrolujSlovo<span style="color:#f92672">(</span>text<span style="color:#f92672">,</span> start<span style="color:#f92672">,</span> end<span style="color:#f92672">,</span> errors<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">while</span> (end <span style="color:#f92672">!=</span> BreakIterator.<span style="color:#a6e22e">DONE</span>) {
+</span></span><span style="display:flex;"><span>            skontrolujSlovo(text, start, end, errors);
 </span></span><span style="display:flex;"><span>            
-</span></span><span style="display:flex;"><span>            start <span style="color:#f92672">=</span> end<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>            end <span style="color:#f92672">=</span> iterator<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>        skontrolujSlovo<span style="color:#f92672">(</span>text<span style="color:#f92672">,</span> start<span style="color:#f92672">,</span> end<span style="color:#f92672">,</span> errors<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>            start <span style="color:#f92672">=</span> end;
+</span></span><span style="display:flex;"><span>            end <span style="color:#f92672">=</span> iterator.<span style="color:#a6e22e">next</span>();
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        skontrolujSlovo(text, start, end, errors);
 </span></span><span style="display:flex;"><span>    
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> errors<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> errors;
+</span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>    
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">skontrolujSlovo</span><span style="color:#f92672">(</span>String text<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span> start<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span> end<span style="color:#f92672">,</span> List<span style="color:#f92672">&lt;</span>WordCoordinate<span style="color:#f92672">&gt;</span> errors<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>        String word <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;</span><span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span><span style="color:#f92672">(</span>end <span style="color:#f92672">==</span> <span style="color:#f92672">-</span>1<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>            word <span style="color:#f92672">=</span> text<span style="color:#f92672">.</span><span style="color:#a6e22e">substring</span><span style="color:#f92672">(</span>start<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>            word <span style="color:#f92672">=</span> text<span style="color:#f92672">.</span><span style="color:#a6e22e">substring</span><span style="color:#f92672">(</span>start<span style="color:#f92672">,</span> end<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(!</span>word<span style="color:#f92672">.</span><span style="color:#a6e22e">isEmpty</span><span style="color:#f92672">()</span> <span style="color:#f92672">&amp;&amp;</span> Character<span style="color:#f92672">.</span><span style="color:#a6e22e">isLetterOrDigit</span><span style="color:#f92672">(</span>word<span style="color:#f92672">.</span><span style="color:#a6e22e">charAt</span><span style="color:#f92672">(</span>0<span style="color:#f92672">)))</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span><span style="color:#f92672">(!</span>spellCheck<span style="color:#f92672">(</span>word<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>                errors<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> WordCoordinate<span style="color:#f92672">(</span>start<span style="color:#f92672">,</span> end<span style="color:#f92672">));</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>   
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> errors<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">skontrolujSlovo</span>(String text, <span style="color:#66d9ef">int</span> start, <span style="color:#66d9ef">int</span> end, List<span style="color:#f92672">&lt;</span>WordCoordinate<span style="color:#f92672">&gt;</span> errors) {
+</span></span><span style="display:flex;"><span>        String word <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span>(end <span style="color:#f92672">==</span> <span style="color:#f92672">-</span>1) {
+</span></span><span style="display:flex;"><span>            word <span style="color:#f92672">=</span> text.<span style="color:#a6e22e">substring</span>(start);
+</span></span><span style="display:flex;"><span>        } <span style="color:#66d9ef">else</span> {
+</span></span><span style="display:flex;"><span>            word <span style="color:#f92672">=</span> text.<span style="color:#a6e22e">substring</span>(start, end);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span>word.<span style="color:#a6e22e">isEmpty</span>() <span style="color:#f92672">&amp;&amp;</span> Character.<span style="color:#a6e22e">isLetterOrDigit</span>(word.<span style="color:#a6e22e">charAt</span>(0))) {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span>(<span style="color:#f92672">!</span>spellCheck(word)) {
+</span></span><span style="display:flex;"><span>                errors.<span style="color:#a6e22e">add</span>(<span style="color:#66d9ef">new</span> WordCoordinate(start, end));
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        }   
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> errors;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>Metóda <code>skontrolujSlovo()</code> eviduje nekorektné slová v zozname objektov
 typu <code>WordCoordinate</code>, čo je jednoduchá dvojica udávajúca začiatočnú a
 koncovú pozíciu slova v texte:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">WordCoordinate</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">int</span> start<span style="color:#f92672">;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">WordCoordinate</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">int</span> start;
 </span></span><span style="display:flex;"><span>    
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">int</span> end<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">int</span> end;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">WordCoordinate</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> start<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span> end<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">start</span> <span style="color:#f92672">=</span> start<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">end</span> <span style="color:#f92672">=</span> end<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">WordCoordinate</span>(<span style="color:#66d9ef">int</span> start, <span style="color:#66d9ef">int</span> end) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">start</span> <span style="color:#f92672">=</span> start;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">end</span> <span style="color:#f92672">=</span> end;
+</span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// gettre a settre vynechané    
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// gettre a settre vynechané    </span>
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><h1 id="zvýrazňovanie-textu-v-textových-políčkach">Zvýrazňovanie textu v textových políčkach</h1>
 <p>Komponent <code>JTextArea</code> podporuje pohodlné zvýrazňovanie textu. V našej
 aplikácii budeme chcieť zvýrazniť nekorektné slová, napr. tak, že ich
@@ -238,10 +238,10 @@ zvýraznenia. Pre jednoduché situácie môžeme použiť objekt
 požadovaný interfejs a umožňuje zvýrazniť text konkrétnou farbou.</p>
 <p><img src="class-diagram.png" alt="Diagram tried pre zvýrazňovače"></p>
 <p>Nasledovný <em>highlight painter</em> zobrazí text na červenom pozadí:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Highlighter<span style="color:#f92672">.</span><span style="color:#a6e22e">HighlightPainter</span> painter <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> DefaultHighlighter<span style="color:#f92672">.</span><span style="color:#a6e22e">DefaultHighlightPainter</span><span style="color:#f92672">(</span>Color<span style="color:#f92672">.</span><span style="color:#a6e22e">RED</span><span style="color:#f92672">);</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Highlighter.<span style="color:#a6e22e">HighlightPainter</span> painter <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> DefaultHighlighter.<span style="color:#a6e22e">DefaultHighlightPainter</span>(Color.<span style="color:#a6e22e">RED</span>);
 </span></span></code></pre></div><p>Nasledovný text zvýrazní prvý znak červenou, pričom použije <em>painter</em>
 definovaný na predošlom riadku.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>textArea<span style="color:#f92672">.</span><span style="color:#a6e22e">getHighlighter</span><span style="color:#f92672">().</span><span style="color:#a6e22e">addHighlight</span><span style="color:#f92672">(</span>0<span style="color:#f92672">,</span> 1<span style="color:#f92672">,</span> painter<span style="color:#f92672">);</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>textArea.<span style="color:#a6e22e">getHighlighter</span>().<span style="color:#a6e22e">addHighlight</span>(0, 1, painter);
 </span></span></code></pre></div><p>Ak chceme zrušiť zvýraznenia, stačí zavolať metódu
 <code>highlighter.removeAllHighlights()</code>.</p>
 <h1 id="vlákno-kontrolujúce-pravopis">Vlákno kontrolujúce pravopis</h1>
@@ -255,16 +255,16 @@ korektnosť textu v danom textovom políčku typu <code>JTextArea</code>. Namies
 vláknové
 programovanie</a>.</p>
 </blockquote>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SpellCheckSwingWorker</span> <span style="color:#66d9ef">extends</span> SwingWorker<span style="color:#f92672">&lt;</span>Void<span style="color:#f92672">,</span> List<span style="color:#f92672">&lt;</span>WordCoordinate<span style="color:#f92672">&gt;&gt;</span> <span style="color:#f92672">{</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SpellCheckSwingWorker</span> <span style="color:#66d9ef">extends</span> SwingWorker<span style="color:#f92672">&lt;</span>Void, List<span style="color:#f92672">&lt;</span>WordCoordinate<span style="color:#f92672">&gt;&gt;</span> {
 </span></span><span style="display:flex;"><span>    
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> KontrolaPravopisu spellCheck <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> KontrolaPravopisu<span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> JTextArea textArea<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> KontrolaPravopisu spellCheck <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> KontrolaPravopisu();
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> JTextArea textArea;
 </span></span><span style="display:flex;"><span>    
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">SpellCheckSwingWorker</span><span style="color:#f92672">(</span>JTextArea textArea<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">textArea</span> <span style="color:#f92672">=</span> textArea<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">SpellCheckSwingWorker</span>(JTextArea textArea) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">textArea</span> <span style="color:#f92672">=</span> textArea;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span> <span style="color:#f92672">...</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span> ...
 </span></span></code></pre></div><p>Trieda vytvorí inštanciu kontroly pravopisu a do konštruktora vezme
 <code>JTextArea</code>, teda inštanciu, ktorú mieni kontrolovať.</p>
 <p>Metóda <code>doInBackground()</code> je jednoduchá: v nekonečnom cykle vezmeme text z
@@ -272,31 +272,31 @@ textového poľa, skontrolujeme ho a uspíme sa na 500 milisekúnd (aby sme
 zbytočne nevyťažovali procesor; navyše používateľ mení text tiež s
 prestávkami.)</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Override</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">protected</span> Void <span style="color:#a6e22e">doInBackground</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">while</span><span style="color:#f92672">(</span><span style="color:#66d9ef">true</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>        String text <span style="color:#f92672">=</span> textArea<span style="color:#f92672">.</span><span style="color:#a6e22e">getText</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">protected</span> Void <span style="color:#a6e22e">doInBackground</span>() <span style="color:#66d9ef">throws</span> Exception {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">while</span>(<span style="color:#66d9ef">true</span>) {
+</span></span><span style="display:flex;"><span>        String text <span style="color:#f92672">=</span> textArea.<span style="color:#a6e22e">getText</span>();
 </span></span><span style="display:flex;"><span>        
-</span></span><span style="display:flex;"><span>        List<span style="color:#f92672">&lt;</span>WordCoordinate<span style="color:#f92672">&gt;</span> kontrola <span style="color:#f92672">=</span> spellCheck<span style="color:#f92672">.</span><span style="color:#a6e22e">skontroluj</span><span style="color:#f92672">(</span>text<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        List<span style="color:#f92672">&lt;</span>WordCoordinate<span style="color:#f92672">&gt;</span> kontrola <span style="color:#f92672">=</span> spellCheck.<span style="color:#a6e22e">skontroluj</span>(text);
 </span></span><span style="display:flex;"><span>        
-</span></span><span style="display:flex;"><span>        publish<span style="color:#f92672">(</span>kontrola<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>        TimeUnit<span style="color:#f92672">.</span><span style="color:#a6e22e">MILLISECONDS</span><span style="color:#f92672">.</span><span style="color:#a6e22e">sleep</span><span style="color:#f92672">(</span>500<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>        publish(kontrola);
+</span></span><span style="display:flex;"><span>        TimeUnit.<span style="color:#a6e22e">MILLISECONDS</span>.<span style="color:#a6e22e">sleep</span>(500);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>Pomocou metódy <code>publish()</code> odošleme do vlákna EDT výsledky kontroly.</p>
 <p>V rámci metódy <code>process()</code> zase vyzdvihneme odoslané výsledky a na ich
 základe upravíme stav komponentu <code>JTextArea</code>.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Override</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">process</span><span style="color:#f92672">(</span>List<span style="color:#f92672">&lt;</span>List<span style="color:#f92672">&lt;</span>WordCoordinate<span style="color:#f92672">&gt;&gt;</span> chunks<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    List<span style="color:#f92672">&lt;</span>WordCoordinate<span style="color:#f92672">&gt;</span> errors <span style="color:#f92672">=</span> chunks<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>chunks<span style="color:#f92672">.</span><span style="color:#a6e22e">size</span><span style="color:#f92672">()</span> <span style="color:#f92672">-</span> 1<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>    textArea<span style="color:#f92672">.</span><span style="color:#a6e22e">getHighlighter</span><span style="color:#f92672">().</span><span style="color:#a6e22e">removeAllHighlights</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>WordCoordinate wordCoordinate <span style="color:#f92672">:</span> errors<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>            textArea<span style="color:#f92672">.</span><span style="color:#a6e22e">getHighlighter</span><span style="color:#f92672">().</span><span style="color:#a6e22e">addHighlight</span><span style="color:#f92672">(</span>wordCoordinate<span style="color:#f92672">.</span><span style="color:#a6e22e">getStart</span><span style="color:#f92672">(),</span> wordCoordinate<span style="color:#f92672">.</span><span style="color:#a6e22e">getEnd</span><span style="color:#f92672">(),</span> HIGHLIGHT_PAINTER<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>BadLocationException e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>            e<span style="color:#f92672">.</span><span style="color:#a6e22e">printStackTrace</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">process</span>(List<span style="color:#f92672">&lt;</span>List<span style="color:#f92672">&lt;</span>WordCoordinate<span style="color:#f92672">&gt;&gt;</span> chunks) {
+</span></span><span style="display:flex;"><span>    List<span style="color:#f92672">&lt;</span>WordCoordinate<span style="color:#f92672">&gt;</span> errors <span style="color:#f92672">=</span> chunks.<span style="color:#a6e22e">get</span>(chunks.<span style="color:#a6e22e">size</span>() <span style="color:#f92672">-</span> 1);
+</span></span><span style="display:flex;"><span>    textArea.<span style="color:#a6e22e">getHighlighter</span>().<span style="color:#a6e22e">removeAllHighlights</span>();
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> (WordCoordinate wordCoordinate : errors) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">try</span> {
+</span></span><span style="display:flex;"><span>            textArea.<span style="color:#a6e22e">getHighlighter</span>().<span style="color:#a6e22e">addHighlight</span>(wordCoordinate.<span style="color:#a6e22e">getStart</span>(), wordCoordinate.<span style="color:#a6e22e">getEnd</span>(), HIGHLIGHT_PAINTER);
+</span></span><span style="display:flex;"><span>        } <span style="color:#66d9ef">catch</span> (BadLocationException e) {
+</span></span><span style="display:flex;"><span>            e.<span style="color:#a6e22e">printStackTrace</span>();
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>Podotknime, že <code>HIGHLIGHT_PAINTER</code> je inštancia typu
 <code>DefaultHighlighter.DefaultHighlightPainter</code>.</p>
 <h1 id="záver">Záver</h1>

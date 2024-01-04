@@ -6,28 +6,21 @@
     <description>Recent content in Talks on robonovotny</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 04 Jul 2012 12:56:00 +0100</lastBuildDate><atom:link href="https://novotnyr.github.io/talks/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 04 Jul 2012 12:56:00 +0100</lastBuildDate>
+    <atom:link href="https://novotnyr.github.io/talks/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Letná škola sieťovania 2012</title>
       <link>https://novotnyr.github.io/talks/letna-skola-sietovania-2012/</link>
       <pubDate>Wed, 04 Jul 2012 12:56:00 +0100</pubDate>
-      
       <guid>https://novotnyr.github.io/talks/letna-skola-sietovania-2012/</guid>
-      <description>Júl 2012, Danišovce, pre UINF PF UPJŠ
-Prípravné práce Maven proxy settings &amp;lt;settings xmlns=&amp;#34;http://maven.apache.org/SETTINGS/1.0.0&amp;#34; xmlns:xsi=&amp;#34;http://www.w3.org/2001/XMLSchema-instance&amp;#34; xsi:schemaLocation=&amp;#34;http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd&amp;#34;&amp;gt; &amp;lt;proxies&amp;gt; &amp;lt;proxy&amp;gt; &amp;lt;active&amp;gt;true&amp;lt;/active&amp;gt; &amp;lt;protocol&amp;gt;http&amp;lt;/protocol&amp;gt; &amp;lt;host&amp;gt;localhost&amp;lt;/host&amp;gt; &amp;lt;port&amp;gt;8787&amp;lt;/port&amp;gt; &amp;lt;/proxy&amp;gt; &amp;lt;/proxies&amp;gt; &amp;lt;/settings&amp;gt; Konfigurácia Jetty &amp;lt;build&amp;gt; &amp;lt;plugins&amp;gt; &amp;lt;plugin&amp;gt; &amp;lt;groupId&amp;gt;org.mortbay.jetty&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;jetty-maven-plugin&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;8.1.4.v20120524&amp;lt;/version&amp;gt; &amp;lt;/plugin&amp;gt; &amp;lt;/plugins&amp;gt; &amp;lt;/build&amp;gt; Závislosť pre servlety &amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;javax.servlet&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;javax.servlet-api&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;3.0.1&amp;lt;/version&amp;gt; &amp;lt;scope&amp;gt;provided&amp;lt;/scope&amp;gt; &amp;lt;/dependency&amp;gt; WAR &amp;lt;plugin&amp;gt; &amp;lt;groupId&amp;gt;org.apache.maven.plugins&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;maven-war-plugin&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;2.2&amp;lt;/version&amp;gt; &amp;lt;configuration&amp;gt; &amp;lt;failOnMissingWebXml&amp;gt;false&amp;lt;/failOnMissingWebXml&amp;gt; &amp;lt;/configuration&amp;gt; &amp;lt;/plugin&amp;gt; Ukážkové JSP &amp;lt;%@ page language=&amp;#34;java&amp;#34; contentType=&amp;#34;text/html; charset=utf-8&amp;#34; pageEncoding=&amp;#34;utf-8&amp;#34;%&amp;gt; &amp;lt;%@ taglib prefix=&amp;#34;c&amp;#34; uri=&amp;#34;http://java.sun.com/jsp/jstl/core&amp;#34; %&amp;gt; </description>
+      <description>Júl 2012, Danišovce, pre UINF PF UPJŠ&#xA;Prípravné práce Maven proxy settings &amp;lt;settings xmlns=&amp;#34;http://maven.apache.org/SETTINGS/1.0.0&amp;#34; xmlns:xsi=&amp;#34;http://www.w3.org/2001/XMLSchema-instance&amp;#34; xsi:schemaLocation=&amp;#34;http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd&amp;#34;&amp;gt; &amp;lt;proxies&amp;gt; &amp;lt;proxy&amp;gt; &amp;lt;active&amp;gt;true&amp;lt;/active&amp;gt; &amp;lt;protocol&amp;gt;http&amp;lt;/protocol&amp;gt; &amp;lt;host&amp;gt;localhost&amp;lt;/host&amp;gt; &amp;lt;port&amp;gt;8787&amp;lt;/port&amp;gt; &amp;lt;/proxy&amp;gt; &amp;lt;/proxies&amp;gt; &amp;lt;/settings&amp;gt; Konfigurácia Jetty &amp;lt;build&amp;gt; &amp;lt;plugins&amp;gt; &amp;lt;plugin&amp;gt; &amp;lt;groupId&amp;gt;org.mortbay.jetty&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;jetty-maven-plugin&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;8.1.4.v20120524&amp;lt;/version&amp;gt; &amp;lt;/plugin&amp;gt; &amp;lt;/plugins&amp;gt; &amp;lt;/build&amp;gt; Závislosť pre servlety &amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;javax.servlet&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;javax.servlet-api&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;3.0.1&amp;lt;/version&amp;gt; &amp;lt;scope&amp;gt;provided&amp;lt;/scope&amp;gt; &amp;lt;/dependency&amp;gt; WAR &amp;lt;plugin&amp;gt; &amp;lt;groupId&amp;gt;org.apache.maven.plugins&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;maven-war-plugin&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;2.2&amp;lt;/version&amp;gt; &amp;lt;configuration&amp;gt; &amp;lt;failOnMissingWebXml&amp;gt;false&amp;lt;/failOnMissingWebXml&amp;gt; &amp;lt;/configuration&amp;gt; &amp;lt;/plugin&amp;gt; Ukážkové JSP &amp;lt;%@ page language=&amp;#34;java&amp;#34; contentType=&amp;#34;text/html; charset=utf-8&amp;#34; pageEncoding=&amp;#34;utf-8&amp;#34;%&amp;gt; &amp;lt;%@ taglib prefix=&amp;#34;c&amp;#34; uri=&amp;#34;http://java.sun.com/jsp/jstl/core&amp;#34; %&amp;gt; </description>
     </item>
-    
     <item>
       <title>Tvorba GUI v Jave</title>
       <link>https://novotnyr.github.io/talks/tvorba-gui-v-jave/</link>
       <pubDate>Thu, 17 Apr 2008 10:00:00 +0100</pubDate>
-      
       <guid>https://novotnyr.github.io/talks/tvorba-gui-v-jave/</guid>
-      <description>Koordináty Kedy: 17.4.2008 10.00
-Kde: P/07
-Téma: Tvorba grafického používateľského rozhrania s použitím Swing-u. Ukážka jednoduchých aplikácií a demonštrácia ich tvorby v prostredí NetBeans. Základné idey a filozofia.
-Zverejnené materiály: Prezentácia PPT Aplikácia Konvertor mien Aplikácia ID3 Tagy </description>
+      <description>Koordináty Kedy: 17.4.2008 10.00&#xA;Kde: P/07&#xA;Téma: Tvorba grafického používateľského rozhrania s použitím Swing-u. Ukážka jednoduchých aplikácií a demonštrácia ich tvorby v prostredí NetBeans. Základné idey a filozofia.&#xA;Zverejnené materiály: Prezentácia PPT Aplikácia Konvertor mien Aplikácia ID3 Tagy </description>
     </item>
-    
   </channel>
 </rss>

@@ -121,41 +121,41 @@
 </span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;/bean&gt;</span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/beans&gt;</span>
-</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#f92672">package</span> sk.upjs.js<span style="color:#f92672">;</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#f92672">package</span> sk.upjs.js;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.util.List<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.util.List;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> org.springframework.context.support.ClassPathXmlApplicationContext<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> org.springframework.orm.hibernate3.HibernateTemplate<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> org.springframework.test.annotation.AbstractAnnotationAwareTransactionalTests<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> org.springframework.context.support.ClassPathXmlApplicationContext;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> org.springframework.orm.hibernate3.HibernateTemplate;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> org.springframework.test.annotation.AbstractAnnotationAwareTransactionalTests;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">JUnitTest</span> <span style="color:#66d9ef">extends</span> AbstractAnnotationAwareTransactionalTests <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">private</span> HibernateTemplate hibernateTemplate<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">JUnitTest</span> <span style="color:#66d9ef">extends</span> AbstractAnnotationAwareTransactionalTests {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">private</span> HibernateTemplate hibernateTemplate;
 </span></span><span style="display:flex;"><span>  
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">JUnitTest</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">super</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>    applicationContext <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ClassPathXmlApplicationContext<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;applicationContext.xml&#34;</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">hibernateTemplate</span> <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>HibernateTemplate<span style="color:#f92672">)</span> applicationContext<span style="color:#f92672">.</span><span style="color:#a6e22e">getBean</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;hibernateTemplate&#34;</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">JUnitTest</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">super</span>();
+</span></span><span style="display:flex;"><span>    applicationContext <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ClassPathXmlApplicationContext(<span style="color:#e6db74">&#34;applicationContext.xml&#34;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">hibernateTemplate</span> <span style="color:#f92672">=</span> (HibernateTemplate) applicationContext.<span style="color:#a6e22e">getBean</span>(<span style="color:#e6db74">&#34;hibernateTemplate&#34;</span>);
+</span></span><span style="display:flex;"><span>  }
 </span></span><span style="display:flex;"><span>  
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">testStudentiPredmetu</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    Predmet p <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>Predmet<span style="color:#f92672">)</span> hibernateTemplate<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>Predmet<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">,</span> 8<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">testStudentiPredmetu</span>() {
+</span></span><span style="display:flex;"><span>    Predmet p <span style="color:#f92672">=</span> (Predmet) hibernateTemplate.<span style="color:#a6e22e">get</span>(Predmet.<span style="color:#a6e22e">class</span>, 8);
 </span></span><span style="display:flex;"><span>    
-</span></span><span style="display:flex;"><span>    System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>p<span style="color:#f92672">.</span><span style="color:#a6e22e">getNazov</span><span style="color:#f92672">());</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>Student s <span style="color:#f92672">:</span> p<span style="color:#f92672">.</span><span style="color:#a6e22e">getStudenti</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>      System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>s<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>   
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(p.<span style="color:#a6e22e">getNazov</span>());
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> (Student s : p.<span style="color:#a6e22e">getStudenti</span>()) {
+</span></span><span style="display:flex;"><span>      System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(s);
+</span></span><span style="display:flex;"><span>    }   
+</span></span><span style="display:flex;"><span>  }
 </span></span><span style="display:flex;"><span>  
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">testDatabase</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    Database db <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>Database<span style="color:#f92672">)</span> applicationContext<span style="color:#f92672">.</span><span style="color:#a6e22e">getBean</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;database&#34;</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>    List<span style="color:#f92672">&lt;</span>Student<span style="color:#f92672">&gt;</span> studenti <span style="color:#f92672">=</span> db<span style="color:#f92672">.</span><span style="color:#a6e22e">listStudents</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>Student student <span style="color:#f92672">:</span> studenti<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>      System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>student<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>      System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>student<span style="color:#f92672">.</span><span style="color:#a6e22e">getPredmety</span><span style="color:#f92672">().</span><span style="color:#a6e22e">size</span><span style="color:#f92672">());</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">testDatabase</span>() {
+</span></span><span style="display:flex;"><span>    Database db <span style="color:#f92672">=</span> (Database) applicationContext.<span style="color:#a6e22e">getBean</span>(<span style="color:#e6db74">&#34;database&#34;</span>);
+</span></span><span style="display:flex;"><span>    List<span style="color:#f92672">&lt;</span>Student<span style="color:#f92672">&gt;</span> studenti <span style="color:#f92672">=</span> db.<span style="color:#a6e22e">listStudents</span>();
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> (Student student : studenti) {
+</span></span><span style="display:flex;"><span>      System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(student);
+</span></span><span style="display:flex;"><span>      System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(student.<span style="color:#a6e22e">getPredmety</span>().<span style="color:#a6e22e">size</span>());
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div>
     <a href="/"> >> Home</a>
   </main>

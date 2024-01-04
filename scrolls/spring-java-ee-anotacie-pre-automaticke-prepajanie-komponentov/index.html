@@ -78,42 +78,42 @@
 <p>Ukážme si jednoduchý príklad v ktorom sa používajú anotácie.</p>
 <h1 id="springovské-anotácie">Springovské anotácie</h1>
 <p>Majme interfejs na generovanie citátov:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#f92672">package</span> sk.novotnyr.quotes<span style="color:#f92672">;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#f92672">package</span> sk.novotnyr.quotes;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">QuoteGenerator</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">getQuote</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">QuoteGenerator</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">getQuote</span>();
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>a jeho jednoduchú implementáciu:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#f92672">package</span> sk.novotnyr.quotes<span style="color:#f92672">;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#f92672">package</span> sk.novotnyr.quotes;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">HardwiredQuoteGenerator</span> <span style="color:#66d9ef">implements</span> QuoteGenerator <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">HardwiredQuoteGenerator</span> <span style="color:#66d9ef">implements</span> QuoteGenerator {
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">getQuote</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;Spring is gr8&#34;</span><span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">getQuote</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;Spring is gr8&#34;</span>;
+</span></span><span style="display:flex;"><span>  }
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>A okrem toho majme triedu, ktorá bude vypisovať citáty na štandardný výstup:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">QuotePrinter</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">private</span> QuoteGenerator quoteGenerator<span style="color:#f92672">;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">QuotePrinter</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">private</span> QuoteGenerator quoteGenerator;
 </span></span><span style="display:flex;"><span>  
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">print</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    String quote <span style="color:#f92672">=</span> quoteGenerator<span style="color:#f92672">.</span><span style="color:#a6e22e">getQuote</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>    System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>quote<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">print</span>() {
+</span></span><span style="display:flex;"><span>    String quote <span style="color:#f92672">=</span> quoteGenerator.<span style="color:#a6e22e">getQuote</span>();
+</span></span><span style="display:flex;"><span>    System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(quote);
+</span></span><span style="display:flex;"><span>  }
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// gettre a settre
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// gettre a settre</span>
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>V JSR-330 je k dispozícii anotácia <code>@Inject</code>, ktorá indikuje nutnosť injektovania inštancie. Keďže <code>QuotePrinter</code> vyžaduje inštanciu <code>QuoteGenerator</code>a, injektovanie označíme anotáciou.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">QuotePrinter</span> <span style="color:#f92672">{</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">QuotePrinter</span> {
 </span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@Inject</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">private</span> QuoteGenerator quoteGenerator<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">private</span> QuoteGenerator quoteGenerator;
 </span></span><span style="display:flex;"><span>  
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">print</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    String quote <span style="color:#f92672">=</span> quoteGenerator<span style="color:#f92672">.</span><span style="color:#a6e22e">getQuote</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>    System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>quote<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">print</span>() {
+</span></span><span style="display:flex;"><span>    String quote <span style="color:#f92672">=</span> quoteGenerator.<span style="color:#a6e22e">getQuote</span>();
+</span></span><span style="display:flex;"><span>    System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(quote);
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>Do <code>quoteGeneratora</code> sa automaticky nawireuje implementácia príslušného rozhrania (prebieha detekcia podľa typu, v kontexte sa musí nájsť práve jedna implementácia, inak nastane výnimka). Ak použijeme <code>@Inject</code> na inštančnej premennej, nemusíme dokonca poskytnúť gettre a settre.</p>
 <p>Ostáva ešte jedna „drobnosť: ako zaregistrovať beany v aplikačnom kontexte? Klasických možností je viac:</p>
 <ul>
@@ -122,25 +122,25 @@
 Treťou možnosťou je využitie JSR-330 anotácie <code>Named</code>. Ak je ňou anotovaný typ, Spring ho automaticky odhalí a zaradí do aplikačného kontextu.</li>
 </ul>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Named</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">QuotePrinter</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">QuotePrinter</span> {
 </span></span></code></pre></div><p>a</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Named</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">QuoteGenerator</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">QuoteGenerator</span> {
 </span></span></code></pre></div><p>Teraz už môžeme vytvoriť aplikačný kontext. V tomto prípade môžeme s výhodou využiť triedu <code>AnnotationConfigApplicationContext</code>:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>AnnotationConfigApplicationContext context 
-</span></span><span style="display:flex;"><span>   <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> AnnotationConfigApplicationContext<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;sk.novotnyr.quotes&#34;</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>QuotePrinter printer <span style="color:#f92672">=</span> context<span style="color:#f92672">.</span><span style="color:#a6e22e">getBean</span><span style="color:#f92672">(</span>QuotePrinter<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span> i <span style="color:#f92672">&lt;</span> 3<span style="color:#f92672">;</span> i<span style="color:#f92672">++)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>  printer<span style="color:#f92672">.</span><span style="color:#a6e22e">print</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> AnnotationConfigApplicationContext(<span style="color:#e6db74">&#34;sk.novotnyr.quotes&#34;</span>);
+</span></span><span style="display:flex;"><span>QuotePrinter printer <span style="color:#f92672">=</span> context.<span style="color:#a6e22e">getBean</span>(QuotePrinter.<span style="color:#a6e22e">class</span>);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> 0; i <span style="color:#f92672">&lt;</span> 3; i<span style="color:#f92672">++</span>) {
+</span></span><span style="display:flex;"><span>  printer.<span style="color:#a6e22e">print</span>();
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>Trieda automaticky vyhľadá v balíčku <code>sk.novotnyr.quote</code> nielen triedy anotované ako <code>Named</code>, ale aj všetky triedy so springovským stereotypom <code>@Component</code> (teda všetky triedy anotované ako <code>@Component</code>, <code>@Repository</code>, <code>@Service</code> a <code>@Controller</code>).</p>
 <p>Anotácia <code>@Named</code> môže byť použitá v prípade, že chceme pri injektovaní presnejšie vyšpecifikovať použitý bean (napr. v prípade, že sa v aplikačnom kontexte nachádza viacero implementácií daného interfejsu):</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Inject</span>
-</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@Named</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;HardwiredQuoteGenerator&#34;</span><span style="color:#f92672">)</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">private</span> QuoteGenerator quoteGenerator<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@Named</span>(<span style="color:#e6db74">&#34;HardwiredQuoteGenerator&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">private</span> QuoteGenerator quoteGenerator;
 </span></span></code></pre></div><p>V tomto prípade sa injektne ten bean, ktorý má v triede anotáciu <code>@Named(&quot;HardwiredQuoteGenerator&quot;)</code>.</p>
 <p>Nezabúdajme na to, že v tomto prípade prebehne §§prototype§§ injektovanie. Vytvorí sa teda toľko inštancií <code>QuoteGeneratora</code>, koľko je inštancií <code>QuotePrintera</code>. Ak chceme mať <code>QuoteGenerator</code> ako singleton, musíme ho tak označiť.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Named</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;HardwiredQuoteGenerator&#34;</span><span style="color:#f92672">)</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Named</span>(<span style="color:#e6db74">&#34;HardwiredQuoteGenerator&#34;</span>)
 </span></span><span style="display:flex;"><span><span style="color:#a6e22e">@Singleton</span>
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">HardwiredQuoteGenerator</span>
 </span></span></code></pre></div><h1 id="vzťah-k-jsr-250">Vzťah k JSR-250</h1>

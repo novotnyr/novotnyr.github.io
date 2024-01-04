@@ -73,46 +73,46 @@
 <p>Jetty umožňuje implementovať triedy obsluhujúce HTTP požiadavky klienta viacerými spôsobmi. Od primitívneho handlera až po plne funkčnú webovú aplikáciu konfigurovanú podľa špecifikácie.</p>
 <h1 id="implementácia-tried-pomocou-handlera">Implementácia tried pomocou handlera</h1>
 <p>Najprimitívnejším spôsobom ako rýchlo postaviť obslužnú triedu je použitie <em>handlera</em>. Handler je konceptuálne veľmi podobný servletom. Nerozlišuje však HTTP príkazy, poskytuje jedinú univerzálnu metódu <code>handle()</code>, nie je možné špecifikovať mapovanie URL adries (handler vybavuje ľubovoľnú adresu). Výhoda oproti iným postupom spočíva v tom, že server je možné nakonfigurovať menším počtom riadkov.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">HelloWorldHandler</span> <span style="color:#66d9ef">extends</span> AbstractHandler <span style="color:#f92672">{</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">HelloWorldHandler</span> <span style="color:#66d9ef">extends</span> AbstractHandler {
 </span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@Override</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">handle</span><span style="color:#f92672">(</span>String target<span style="color:#f92672">,</span> HttpServletRequest request<span style="color:#f92672">,</span>
-</span></span><span style="display:flex;"><span>                 HttpServletResponse response<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span> dispatch<span style="color:#f92672">)</span> 
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">throws</span> IOException<span style="color:#f92672">,</span> ServletException 
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>target<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// odpoveď musíme flushnúť, inak ju bude Jetty 
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">// bude považovať za nevybavenú a vráti 404
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    response<span style="color:#f92672">.</span><span style="color:#a6e22e">flushBuffer</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">handle</span>(String target, HttpServletRequest request,
+</span></span><span style="display:flex;"><span>                 HttpServletResponse response, <span style="color:#66d9ef">int</span> dispatch) 
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">throws</span> IOException, ServletException 
+</span></span><span style="display:flex;"><span>  {
+</span></span><span style="display:flex;"><span>    System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(target);
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// odpoveď musíme flushnúť, inak ju bude Jetty </span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// bude považovať za nevybavenú a vráti 404</span>
+</span></span><span style="display:flex;"><span>    response.<span style="color:#a6e22e">flushBuffer</span>();
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>Nevýhoda je nutnosť <em>flush</em>-núť odpoveď. V parametri <code>target</code> dostaneme príponu URL adresy za názvom servera - čiže ak navštívime adresu <code>http://localhost:8080/service/data</code>, v <code>target</code>e bude <code>/service/data</code>.</p>
 <p>Celý server následne naštartujeme troma riadkami. Špecifikujeme port, nastavíme serveru implicitný handler a spustíme ho.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>  Server server <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Server<span style="color:#f92672">(</span>8080<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>  server<span style="color:#f92672">.</span><span style="color:#a6e22e">setHandler</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> HelloWorldHandler<span style="color:#f92672">());</span>
-</span></span><span style="display:flex;"><span>  server<span style="color:#f92672">.</span><span style="color:#a6e22e">start</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span>(String<span style="color:#f92672">[]</span> args) <span style="color:#66d9ef">throws</span> Exception {
+</span></span><span style="display:flex;"><span>  Server server <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Server(8080);
+</span></span><span style="display:flex;"><span>  server.<span style="color:#a6e22e">setHandler</span>(<span style="color:#66d9ef">new</span> HelloWorldHandler());
+</span></span><span style="display:flex;"><span>  server.<span style="color:#a6e22e">start</span>();
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>Existuje možnosť používať viacero handlerov naraz, pričom pridať do servera ich môžeme použitím metódy <code>addHandler()</code>. Požiadavka na server potom bude obslúžená všetkými handlermi.</p>
 <h1 id="implementácia-tried-pomocou-jedného-servletu">Implementácia tried pomocou jedného servletu</h1>
 <p>Ďalšou možnosťou je použitie plnoprávneho servletu.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">DateServlet</span> <span style="color:#66d9ef">extends</span> HttpServlet <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">doGet</span><span style="color:#f92672">(</span>HttpServletRequest req<span style="color:#f92672">,</span> 
-</span></span><span style="display:flex;"><span>                       HttpServletResponse resp<span style="color:#f92672">)</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">throws</span> ServletException<span style="color:#f92672">,</span> IOException <span style="color:#f92672">{</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">DateServlet</span> <span style="color:#66d9ef">extends</span> HttpServlet {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">doGet</span>(HttpServletRequest req, 
+</span></span><span style="display:flex;"><span>                       HttpServletResponse resp)
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">throws</span> ServletException, IOException {
 </span></span><span style="display:flex;"><span>    
-</span></span><span style="display:flex;"><span>    PrintWriter writer <span style="color:#f92672">=</span> resp<span style="color:#f92672">.</span><span style="color:#a6e22e">getWriter</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// vypíšeme aktuálny dátum a čas
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    writer<span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> Date<span style="color:#f92672">());</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    PrintWriter writer <span style="color:#f92672">=</span> resp.<span style="color:#a6e22e">getWriter</span>();
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// vypíšeme aktuálny dátum a čas</span>
+</span></span><span style="display:flex;"><span>    writer.<span style="color:#a6e22e">println</span>(<span style="color:#66d9ef">new</span> Date());
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>Nasadenie servletov pre jednoduché prípady je možné urobiť pomocou preddefinovaného handlera podporujúceho servlety, čiže triedy <code>ServletHandler</code>.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Server server <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Server<span style="color:#f92672">(</span>8080<span style="color:#f92672">);</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Server server <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Server(8080);
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>ServletHandler handler <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ServletHandler<span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>handler<span style="color:#f92672">.</span><span style="color:#a6e22e">addServletWithMapping</span><span style="color:#f92672">(</span>DateServlet<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;/&#34;</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>server<span style="color:#f92672">.</span><span style="color:#a6e22e">setHandler</span><span style="color:#f92672">(</span>handler<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>ServletHandler handler <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ServletHandler();
+</span></span><span style="display:flex;"><span>handler.<span style="color:#a6e22e">addServletWithMapping</span>(DateServlet.<span style="color:#a6e22e">class</span>, <span style="color:#e6db74">&#34;/&#34;</span>);
+</span></span><span style="display:flex;"><span>server.<span style="color:#a6e22e">setHandler</span>(handler);
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>server<span style="color:#f92672">.</span><span style="color:#a6e22e">start</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>server.<span style="color:#a6e22e">start</span>();
 </span></span></code></pre></div><p>V metóde <code>addServletWithMapping</code> špecifikujeme triedu servletu (o vytvorenie inštancie sa postará servlet) a navyše sme povinní uviesť aj koncovku URL adresy, ktorú bude obsluhovať tento servlet.</p>
 <p>Toto primitívne použitie servletového handlera však nedáva k dispozícii <a href="http://java.sun.com/j2ee/1.4/docs/api/javax/servlet/ServletContext.html"><code>ServletContext</code>u</a> ani sessiony. (Pokus o vytvorenie session zlyhá.)</p>
 <h2 id="mapovanie-url-adries-na-servlety">Mapovanie URL adries na servlety</h2>
@@ -126,42 +126,42 @@ Sufix <code>*.do</code> má zhodu s <code>http://localhost:8080/books.do</code> 
 </ul>
 <h1 id="implementácia-pomocou-servletholdera">Implementácia pomocou <code>ServletHolder</code>a</h1>
 <p>V predošlom prípade sme nemali možnosť nijak konfigurovať servlet v takom rozmedzí, ako to poskytuje <code>web.xml</code>. <code>ServletHandler</code> umožňuje len pridať servlet a namapovať ho na URL. Pokročilú konfiguráciu možno riešiť cez <code>ServletHolder</code>, ktorým obalíme inštanciu servletu, a pridáme ho do <code>Server</code>a.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>ServletHandler handler <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ServletHandler<span style="color:#f92672">();</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>ServletHandler handler <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ServletHandler();
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>ServletHolder springServletHolder 
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ServletHolder<span style="color:#f92672">(</span>DispatcherServlet<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">// ekvivalentné nastaveniu init-param vo web.xml
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>springServletHolder<span style="color:#f92672">.</span><span style="color:#a6e22e">setInitParameter</span><span style="color:#f92672">(</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#34;contextConfigLocation&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;classpath:spring-mvc.xml&#34;</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">// Ekvivalent init-on startup. Číslo špecifikuje poradie.
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>springServletHolder<span style="color:#f92672">.</span><span style="color:#a6e22e">setInitOrder</span><span style="color:#f92672">(</span>0<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ServletHolder(DispatcherServlet.<span style="color:#a6e22e">class</span>);
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// ekvivalentné nastaveniu init-param vo web.xml</span>
+</span></span><span style="display:flex;"><span>springServletHolder.<span style="color:#a6e22e">setInitParameter</span>(
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#34;contextConfigLocation&#34;</span>, <span style="color:#e6db74">&#34;classpath:spring-mvc.xml&#34;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Ekvivalent init-on startup. Číslo špecifikuje poradie.</span>
+</span></span><span style="display:flex;"><span>springServletHolder.<span style="color:#a6e22e">setInitOrder</span>(0);
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>handler<span style="color:#f92672">.</span><span style="color:#a6e22e">addServlet</span><span style="color:#f92672">(</span>springServletHolder<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;*.do&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>handler.<span style="color:#a6e22e">addServlet</span>(springServletHolder, <span style="color:#e6db74">&#34;*.do&#34;</span>);
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>server<span style="color:#f92672">.</span><span style="color:#a6e22e">setHandler</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> handler<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>server<span style="color:#f92672">.</span><span style="color:#a6e22e">start</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>server.<span style="color:#a6e22e">setHandler</span>(<span style="color:#66d9ef">new</span> handler);
+</span></span><span style="display:flex;"><span>server.<span style="color:#a6e22e">start</span>();
 </span></span></code></pre></div><p>Podobne ako v predošlých prípadoch nemáme k dispozícii <code>ServletContext</code> ani sessiony.</p>
 <h1 id="implementácia-pomocou-contextu">Implementácia pomocou <code>Context</code>u</h1>
 <p>Ak v našej aplikácii potrebujeme podporu sessionov, môžeme použiť triedu <code>Context</code> ako náhradu <code>ServletHandler</code>a. Popri tom umožňuje nastaviť tzv. <em>context path</em>, teda prefix pre URL adresy, od ktorého sa budú odvíjať URL cesty namapované pre servlety. <code>Context</code> navyše dáva servletom k dispozícii inštanciu <code>ServletContextu</code>, čo v predošlých prípadoch nebolo možné.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Server server <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Server<span style="color:#f92672">(</span>8080<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">// vytvoríme nový kontext s podporou sessions a namapujeme ho na adresy začínajúce sa na /books
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>Context context <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Context<span style="color:#f92672">(</span>server<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;/books&#34;</span><span style="color:#f92672">,</span> Context<span style="color:#f92672">.</span><span style="color:#a6e22e">SESSIONS</span><span style="color:#f92672">);</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Server server <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Server(8080);
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// vytvoríme nový kontext s podporou sessions a namapujeme ho na adresy začínajúce sa na /books</span>
+</span></span><span style="display:flex;"><span>Context context <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Context(server, <span style="color:#e6db74">&#34;/books&#34;</span>, Context.<span style="color:#a6e22e">SESSIONS</span>);
 </span></span><span style="display:flex;"><span>ServletHolder servletHolder 
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ServletHolder<span style="color:#f92672">(</span>DispatcherServlet<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>servletHolder<span style="color:#f92672">.</span><span style="color:#a6e22e">setInitParameter</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;contextConfigLocation&#34;</span><span style="color:#f92672">,</span> 
-</span></span><span style="display:flex;"><span>                               <span style="color:#e6db74">&#34;classpath:spring-mvc.xml&#34;</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">// load-on-startup
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>servletHolder<span style="color:#f92672">.</span><span style="color:#a6e22e">setInitOrder</span><span style="color:#f92672">(</span>1<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>context<span style="color:#f92672">.</span><span style="color:#a6e22e">addServlet</span><span style="color:#f92672">(</span>servletHolder<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;*.do&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ServletHolder(DispatcherServlet.<span style="color:#a6e22e">class</span>);
+</span></span><span style="display:flex;"><span>servletHolder.<span style="color:#a6e22e">setInitParameter</span>(<span style="color:#e6db74">&#34;contextConfigLocation&#34;</span>, 
+</span></span><span style="display:flex;"><span>                               <span style="color:#e6db74">&#34;classpath:spring-mvc.xml&#34;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// load-on-startup</span>
+</span></span><span style="display:flex;"><span>servletHolder.<span style="color:#a6e22e">setInitOrder</span>(1);
+</span></span><span style="display:flex;"><span>context.<span style="color:#a6e22e">addServlet</span>(servletHolder, <span style="color:#e6db74">&#34;*.do&#34;</span>);
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>server<span style="color:#f92672">.</span><span style="color:#a6e22e">start</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>server.<span style="color:#a6e22e">start</span>();
 </span></span></code></pre></div><p>V tejto konfigurácii bude <code>DispatcherServlet</code> obsluhovať adresy s prefixom <code>http://.../books</code> a so sufixom <code>.do</code>.</p>
 <h2 id="nastavenie-adresára-so-statickými-stránkami">Nastavenie adresára so statickými stránkami</h2>
 <p>Bežná webová aplikácia spĺňajúca štandardy musí dodržiavať <a href="http://ics.upjs.sk/~novotnyr/js/web-tomcat/web-tomcat.html#d0e55">predpísanú adresárovú štruktúru</a>. Základom je koreňový adresár webovej aplikácie, v ktorom sú statické stránky (ich URL je tvorená kontextovou cestou a názvom súboru) a podadresár <code>WEB-INF</code> (obsahujúci triedy a knižnice).</p>
 <p>Niektoré servlety vyžadujú korektné fungovanie tejto vlastnosti - príkladom je servlet v Spring MVC, ktorý používa koreňový adresár na vyhľadávanie JSP stránok.</p>
 <p>Na tejto vlastnosti tiež závisí správne fungovanie metódy <a href="http://java.sun.com/javaee/5/docs/api/javax/servlet/ServletContext.html#getResource(java.lang.String)">getResource()</a> zo špecifikácie servletov.</p>
 <p>Povoliť toto správanie v rámci <code>Contextu</code> je ľahké: na kontexte nastavíme túto cestu pomocou <code>setResourceBase()</code>. Použiť možno buď absolútnu cestu alebo relatívnu cestu vzhľadom k aktuálnemu adresáru.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>context<span style="color:#f92672">.</span><span style="color:#a6e22e">setResourceBase</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;web&#34;</span><span style="color:#f92672">);</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>context.<span style="color:#a6e22e">setResourceBase</span>(<span style="color:#e6db74">&#34;web&#34;</span>);
 </span></span></code></pre></div><p>Ak máme <strong>resource base</strong> nastavenú na <code>D:/books/web</code> a <strong>context path</strong> nastavená v kontexte je <code>/books</code>, potom vyžiadanie <code>getResource(&quot;/index.html&quot;) vráti obsah stránky v adresári </code>D:/books/web/index.html`.</p>
 <h2 id="štandardný-defaultservlet-pre-výpis-adresárov-a-statické-súbory">Štandardný <code>DefaultServlet</code> pre výpis adresárov a statické súbory.</h2>
 <p>Veľmi často chceme, aby Jetty dokázala vypisovať obsahy adresárov a obsluhovať požiadavky na statické súbory v koreňovom adresári aplikácie. Na tento účel je k dispozícii <a href="http://jetty.mortbay.org/apidocs/org/mortbay/jetty/servlet/DefaultServlet.html"><code>DefaultServlet</code></a>, ktorý toto všetko umožňuje.</p>
@@ -186,13 +186,13 @@ Sufix <code>*.do</code> má zhodu s <code>http://localhost:8080/books.do</code> 
 </span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;/servlet-mapping&gt;</span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/web-app&gt;</span>
 </span></span></code></pre></div><p>Ak ho uložíme do súboru <code>D:/AIS/jetty-test/web/WEB-INF/web.xml</code>, potom konfigurácia v kóde je nasledovná:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Server server <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Server<span style="color:#f92672">(</span>8080<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">// prvý parameter udáva cestu k adresáru s WEB-INF
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// druhý parameter udáva context path
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>WebAppContext context 
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> WebAppContext<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;D:/AIS/jetty-test/web&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;/date&#34;</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>server<span style="color:#f92672">.</span><span style="color:#a6e22e">addHandler</span><span style="color:#f92672">(</span>context<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>server<span style="color:#f92672">.</span><span style="color:#a6e22e">start</span><span style="color:#f92672">();</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Server server <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Server(8080);
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// prvý parameter udáva cestu k adresáru s WEB-INF</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// druhý parameter udáva context path</span>
+</span></span><span style="display:flex;"><span>WebAppContext context 
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> WebAppContext(<span style="color:#e6db74">&#34;D:/AIS/jetty-test/web&#34;</span>, <span style="color:#e6db74">&#34;/date&#34;</span>);
+</span></span><span style="display:flex;"><span>server.<span style="color:#a6e22e">addHandler</span>(context);
+</span></span><span style="display:flex;"><span>server.<span style="color:#a6e22e">start</span>();
 </span></span></code></pre></div><p>Servlet potom počúva na adrese <code>http://localhost:8080/date</code>.</p>
 <p>Prvý parameter v konštruktore môže byť cesta alebo URL k adresáru s WEB-INF alebo k WAR súboru.</p>
 <h1 id="automatická-aktualizácia-kontextov">Automatická aktualizácia kontextov</h1>
@@ -214,24 +214,24 @@ Sufix <code>*.do</code> má zhodu s <code>http://localhost:8080/books.do</code> 
 <p>Následne potrebujeme vytvoriť zoznam kontextových handlerov (<code>ContextHandlerCollection</code>) a podhodiť ho deployeru. Deployer po uplynutí intervalu prejde popisovače v adresári a na základe nich vytvorí nové kontexty, zahodí už neaktuálne alebo aktualizuje tie, ktoré sa zmenili.</p>
 <p>Ten istý zoznam handlerov potrebujeme nastaviť inštancii <code>Server</code>a, čím asociujeme kontexty so serverom.</p>
 <p>Inak povedané, server si pamätá zoznam handlerov a deployer tento zoznam v pravidelných intervaloch aktualizuje.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Server server <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Server<span style="color:#f92672">(</span>8080<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">// zoznam handlerov
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>ContextHandlerCollection contexts <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ContextHandlerCollection<span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">// vytvoríme deployer
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>ContextDeployer deployer <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ContextDeployer<span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">// nastavíme zoznam, ktorý má deployer aktualizovať
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>deployer<span style="color:#f92672">.</span><span style="color:#a6e22e">setContexts</span><span style="color:#f92672">(</span>contexts<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">// nastavíme adresár s XML súbormi
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>deployer<span style="color:#f92672">.</span><span style="color:#a6e22e">setConfigurationDir</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;D:/projects/books&#34;</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">// interval kontroly
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>deployer<span style="color:#f92672">.</span><span style="color:#a6e22e">setScanInterval</span><span style="color:#f92672">(</span>1<span style="color:#f92672">);</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Server server <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Server(8080);
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// zoznam handlerov</span>
+</span></span><span style="display:flex;"><span>ContextHandlerCollection contexts <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ContextHandlerCollection();
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// vytvoríme deployer</span>
+</span></span><span style="display:flex;"><span>ContextDeployer deployer <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ContextDeployer();
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// nastavíme zoznam, ktorý má deployer aktualizovať</span>
+</span></span><span style="display:flex;"><span>deployer.<span style="color:#a6e22e">setContexts</span>(contexts);
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// nastavíme adresár s XML súbormi</span>
+</span></span><span style="display:flex;"><span>deployer.<span style="color:#a6e22e">setConfigurationDir</span>(<span style="color:#e6db74">&#34;D:/projects/books&#34;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// interval kontroly</span>
+</span></span><span style="display:flex;"><span>deployer.<span style="color:#a6e22e">setScanInterval</span>(1);
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">// zoznam handlerov priradíme serveru
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>server<span style="color:#f92672">.</span><span style="color:#a6e22e">addHandler</span><span style="color:#f92672">(</span>deployer<span style="color:#f92672">.</span><span style="color:#a6e22e">getContexts</span><span style="color:#f92672">());</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">// deployer podhodíme pod server, aby sa spúšťal zároveň s ním
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>server<span style="color:#f92672">.</span><span style="color:#a6e22e">addLifeCycle</span><span style="color:#f92672">(</span>deployer<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// zoznam handlerov priradíme serveru</span>
+</span></span><span style="display:flex;"><span>server.<span style="color:#a6e22e">addHandler</span>(deployer.<span style="color:#a6e22e">getContexts</span>());
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// deployer podhodíme pod server, aby sa spúšťal zároveň s ním</span>
+</span></span><span style="display:flex;"><span>server.<span style="color:#a6e22e">addLifeCycle</span>(deployer);
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>server<span style="color:#f92672">.</span><span style="color:#a6e22e">start</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>server.<span style="color:#a6e22e">start</span>();
 </span></span></code></pre></div><h1 id="porovnanie-prístupov">Porovnanie prístupov</h1>
 <table>
 <thead>

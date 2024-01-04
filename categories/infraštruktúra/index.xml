@@ -6,20 +6,14 @@
     <description>Recent content in infraštruktúra on robonovotny</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 14 Sep 2015 16:20:00 +0100</lastBuildDate><atom:link href="https://novotnyr.github.io/categories/infra%C5%A1trukt%C3%BAra/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 14 Sep 2015 16:20:00 +0100</lastBuildDate>
+    <atom:link href="https://novotnyr.github.io/categories/infra%C5%A1trukt%C3%BAra/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Connect to LDAP server from Windows client via SSL</title>
       <link>https://novotnyr.github.io/scrolls/connect-to-ldap-server-from-windows-client-via-ssl/</link>
       <pubDate>Mon, 14 Sep 2015 16:20:00 +0100</pubDate>
-      
       <guid>https://novotnyr.github.io/scrolls/connect-to-ldap-server-from-windows-client-via-ssl/</guid>
-      <description>Connecting to LDAP server with SSL via client side may be difficult due to Windows peculiarities. How to ldapmodify the data?
-Retrieve server certificate Locate the server certificate on the server in:
-secure/certs/server.pem Extract the parts between and including
------BEGIN CERTIFICATE----- ... -----END CERTIFICATE----- Store the certificate to the client machine to the c:/etc/ldap/server.pem.
-Prepare client certificate Create c:/etc/ldap/ldap.conf with the following contents:
-TLS_CACERT c:/etc/ldap/server.pem Set the location of client configuration file</description>
+      <description>Connecting to LDAP server with SSL via client side may be difficult due to Windows peculiarities. How to ldapmodify the data?&#xA;Retrieve server certificate Locate the server certificate on the server in:&#xA;secure/certs/server.pem Extract the parts between and including&#xA;-----BEGIN CERTIFICATE----- ... -----END CERTIFICATE----- Store the certificate to the client machine to the c:/etc/ldap/server.pem.&#xA;Prepare client certificate Create c:/etc/ldap/ldap.conf with the following contents:&#xA;TLS_CACERT c:/etc/ldap/server.pem Set the location of client configuration file</description>
     </item>
-    
   </channel>
 </rss>

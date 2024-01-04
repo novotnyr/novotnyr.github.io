@@ -70,75 +70,75 @@ Tu je ich presný zoznam:
   #end
 </code></pre><p>V šablóne sa používajú direktívy (začínajúce na <code>#</code>), možno využívať premenné (začínajúce <code>$</code>), s premennými možno vykonávať rôzne operácie (bodková notácia ako v Jave).</p>
 <p>Pri parsovaní a vyhodnocovaní šablóny sa Velocity spolieha na kontext &ndash; ten obsahuje objekty, na ktoré sa v šablóne odkazujeme.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span> String<span style="color:#f92672">[]</span> args <span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span>( String<span style="color:#f92672">[]</span> args ) <span style="color:#66d9ef">throws</span> Exception {
 </span></span><span style="display:flex;"><span>  <span style="color:#75715e">/*  inicializujeme motor  */</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  VelocityEngine ve <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> VelocityEngine<span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>  ve<span style="color:#f92672">.</span><span style="color:#a6e22e">init</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>  VelocityEngine ve <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> VelocityEngine();
+</span></span><span style="display:flex;"><span>  ve.<span style="color:#a6e22e">init</span>();
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>  <span style="color:#75715e">/*  vytvorime data, na ktore sa budeme v kontexte odkazovat  */</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  List list <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>  list<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Arthur&#34;</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>  list<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Lancelot&#34;</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>  list<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Galahad&#34;</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>  list<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Robin&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>  List list <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ArrayList();
+</span></span><span style="display:flex;"><span>  list.<span style="color:#a6e22e">add</span>(<span style="color:#e6db74">&#34;Arthur&#34;</span>);
+</span></span><span style="display:flex;"><span>  list.<span style="color:#a6e22e">add</span>(<span style="color:#e6db74">&#34;Lancelot&#34;</span>);
+</span></span><span style="display:flex;"><span>  list.<span style="color:#a6e22e">add</span>(<span style="color:#e6db74">&#34;Galahad&#34;</span>);
+</span></span><span style="display:flex;"><span>  list.<span style="color:#a6e22e">add</span>(<span style="color:#e6db74">&#34;Robin&#34;</span>);
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>  <span style="color:#75715e">/*  vytvorime kontext  */</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  VelocityContext context <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> VelocityContext<span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>  VelocityContext context <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> VelocityContext();
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>  <span style="color:#75715e">/*  vytvoreny zoznam ulozime do kontextu pod prislusnym menom  */</span>
-</span></span><span style="display:flex;"><span>  context<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;knightList&#34;</span><span style="color:#f92672">,</span> list<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>  context.<span style="color:#a6e22e">put</span>(<span style="color:#e6db74">&#34;knightList&#34;</span>, list);
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>  <span style="color:#75715e">/*  otvorme sablonu  */</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  Template t <span style="color:#f92672">=</span> ve<span style="color:#f92672">.</span><span style="color:#a6e22e">getTemplate</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;knights.vm&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>  Template t <span style="color:#f92672">=</span> ve.<span style="color:#a6e22e">getTemplate</span>(<span style="color:#e6db74">&#34;knights.vm&#34;</span>);
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>  <span style="color:#75715e">/*  spracujme sablonu a vypisme ju na standardny vystup  */</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  StringWriter writer <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> StringWriter<span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>  t<span style="color:#f92672">.</span><span style="color:#a6e22e">merge</span><span style="color:#f92672">(</span>context<span style="color:#f92672">,</span> writer<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>  System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>writer<span style="color:#f92672">.</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">());</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>  StringWriter writer <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> StringWriter();
+</span></span><span style="display:flex;"><span>  t.<span style="color:#a6e22e">merge</span>(context, writer);
+</span></span><span style="display:flex;"><span>  System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(writer.<span style="color:#a6e22e">toString</span>());
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><h2 id="použitie-v-servletoch">Použitie v servletoch</h2>
 <p>Velocity sa dá učelne využiť ako vrstva View pri práci s webovými aplikáciami &ndash; napr. namiesto JSP. Každej stránke zodpovedá jedna šablóna (v podstate HTML stránka obsahujúca príkazy jazyka Velocity) a jeden Velocity servlet (trieda dediaca od <code>VelocityServlet</code>).</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">FirstVelocityServlet</span> <span style="color:#66d9ef">extends</span> VelocityServlet <span style="color:#f92672">{</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">FirstVelocityServlet</span> <span style="color:#66d9ef">extends</span> VelocityServlet {
 </span></span><span style="display:flex;"><span>  <span style="color:#75715e">/* potrebujeme prekryt nasledovnu metodu */</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> Template <span style="color:#a6e22e">handleRequest</span><span style="color:#f92672">(</span>HttpServletRequest request<span style="color:#f92672">,</span> HttpServletResponse response<span style="color:#f92672">,</span> Context context <span style="color:#f92672">)</span> <span style="color:#f92672">{</span>  
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> Template <span style="color:#a6e22e">handleRequest</span>(HttpServletRequest request, HttpServletResponse response, Context context ) {  
 </span></span><span style="display:flex;"><span>    <span style="color:#75715e">/* vytvorime data, na ktore sa budeme v kontexte odkazovat  */</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    ArrayList list <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>    list<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Arthur&#34;</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>    list<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Lancelot&#34;</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>    list<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Galahad&#34;</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>    list<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Robin&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    ArrayList list <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ArrayList();
+</span></span><span style="display:flex;"><span>    list.<span style="color:#a6e22e">add</span>(<span style="color:#e6db74">&#34;Arthur&#34;</span>);
+</span></span><span style="display:flex;"><span>    list.<span style="color:#a6e22e">add</span>(<span style="color:#e6db74">&#34;Lancelot&#34;</span>);
+</span></span><span style="display:flex;"><span>    list.<span style="color:#a6e22e">add</span>(<span style="color:#e6db74">&#34;Galahad&#34;</span>);
+</span></span><span style="display:flex;"><span>    list.<span style="color:#a6e22e">add</span>(<span style="color:#e6db74">&#34;Robin&#34;</span>);
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>    <span style="color:#75715e">/* vytvoreny ArrayList ulozime do kontextu 
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">       (kontext je datovym clenom servletu) pod prislusnym menom  
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">    */</span>
-</span></span><span style="display:flex;"><span>    context<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;knightList&#34;</span><span style="color:#f92672">,</span> list<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    context.<span style="color:#a6e22e">put</span>(<span style="color:#e6db74">&#34;knightList&#34;</span>, list);
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>    <span style="color:#75715e">/*  otvorme sablonu (getTemplate je metoda servletu) */</span>
-</span></span><span style="display:flex;"><span>    Template template <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>  
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>      template <span style="color:#f92672">=</span> getTemplate<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;knights.vm&#34;</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span><span style="color:#f92672">(</span> Exception e <span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>      System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Nastala chyba pri tvorbe sablony &#34;</span> <span style="color:#f92672">+</span> e<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    Template template <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span>;  
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">try</span> {
+</span></span><span style="display:flex;"><span>      template <span style="color:#f92672">=</span> getTemplate(<span style="color:#e6db74">&#34;knights.vm&#34;</span>);
+</span></span><span style="display:flex;"><span>    } <span style="color:#66d9ef">catch</span>( Exception e ) {
+</span></span><span style="display:flex;"><span>      System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(<span style="color:#e6db74">&#34;Nastala chyba pri tvorbe sablony &#34;</span> <span style="color:#f92672">+</span> e);
+</span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>    <span style="color:#75715e">/*  vratime z metody ziskanu sablonu */</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> template<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> template;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>Stránka je potom jednoduchá šablóna</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#f92672">&lt;</span>html<span style="color:#f92672">&gt;</span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;</span>h1<span style="color:#f92672">&gt;</span>Oznam<span style="color:#f92672">&lt;/</span>h1<span style="color:#f92672">&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;</span>p<span style="color:#f92672">&gt;</span>Rytieri okrúhleho stola sa dnes zišli v počte $knightsList<span style="color:#f92672">.</span><span style="color:#a6e22e">size</span><span style="color:#f92672">().&lt;/</span>p<span style="color:#f92672">&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;</span>p<span style="color:#f92672">&gt;</span>Tu je ich presný zoznam<span style="color:#f92672">:&lt;/</span>p<span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;</span>p<span style="color:#f92672">&gt;</span>Rytieri okrúhleho stola sa dnes zišli v počte $knightsList.<span style="color:#a6e22e">size</span>().<span style="color:#f92672">&lt;/</span>p<span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;</span>p<span style="color:#f92672">&gt;</span>Tu je ich presný zoznam:<span style="color:#f92672">&lt;/</span>p<span style="color:#f92672">&gt;</span>
 </span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;</span>ol<span style="color:#f92672">&gt;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">#</span>foreach<span style="color:#f92672">(</span> $knight in $knightList <span style="color:#f92672">)</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;</span>li<span style="color:#f92672">&gt;</span>$knight<span style="color:#f92672">.</span><span style="color:#a6e22e">name</span><span style="color:#f92672">&lt;/</span>li<span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">#</span>foreach( $knight in $knightList )
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;</span>li<span style="color:#f92672">&gt;</span>$knight.<span style="color:#a6e22e">name</span><span style="color:#f92672">&lt;/</span>li<span style="color:#f92672">&gt;</span>
 </span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">#</span>end
 </span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;/</span>ol<span style="color:#f92672">&gt;</span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/</span>html<span style="color:#f92672">&gt;</span>

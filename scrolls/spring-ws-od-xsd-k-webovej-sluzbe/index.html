@@ -102,39 +102,39 @@
 </span></span></span><span style="display:flex;"><span><span style="color:#e6db74">               .PayloadRootAnnotationMethodEndpointMapping&#34;</span><span style="color:#f92672">/&gt;</span> 
 </span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/beans&gt;</span>
 </span></span></code></pre></div><h2 id="endpoint">Endpoint</h2>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#f92672">package</span> sk.novotnyr.movie<span style="color:#f92672">;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#f92672">package</span> sk.novotnyr.movie;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> javax.xml.transform.Source<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> javax.xml.transform.Transformer<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> javax.xml.transform.TransformerFactory<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> javax.xml.transform.stream.StreamResult<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> javax.xml.transform.Source;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> javax.xml.transform.Transformer;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> javax.xml.transform.TransformerFactory;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> javax.xml.transform.stream.StreamResult;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> org.springframework.ws.server.endpoint.annotation.Endpoint<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> org.springframework.ws.server.endpoint.annotation.PayloadRoot<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> org.springframework.ws.server.endpoint.annotation.Endpoint;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#a6e22e">@Endpoint</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">RegistrationEndPoint</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@PayloadRoot</span><span style="color:#f92672">(</span>namespace<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;http://movie.novotnyr.sk/ws/types&#34;</span><span style="color:#f92672">,</span> 
-</span></span><span style="display:flex;"><span>               localPart<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;movieReservationRequest&#34;</span><span style="color:#f92672">)</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">register</span><span style="color:#f92672">(</span>Source messageSource<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">RegistrationEndPoint</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@PayloadRoot</span>(namespace<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;http://movie.novotnyr.sk/ws/types&#34;</span>, 
+</span></span><span style="display:flex;"><span>               localPart<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;movieReservationRequest&#34;</span>)
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">register</span>(Source messageSource) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">try</span> {
 </span></span><span style="display:flex;"><span>      Transformer transformer 
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">=</span> TransformerFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">newInstance</span><span style="color:#f92672">().</span><span style="color:#a6e22e">newTransformer</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>      transformer<span style="color:#f92672">.</span><span style="color:#a6e22e">transform</span><span style="color:#f92672">(</span>messageSource<span style="color:#f92672">,</span> 
-</span></span><span style="display:flex;"><span>                            <span style="color:#66d9ef">new</span> StreamResult<span style="color:#f92672">(</span>System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">));</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>Exception e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>      e<span style="color:#f92672">.</span><span style="color:#a6e22e">printStackTrace</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span> 
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">=</span> TransformerFactory.<span style="color:#a6e22e">newInstance</span>().<span style="color:#a6e22e">newTransformer</span>();
+</span></span><span style="display:flex;"><span>      transformer.<span style="color:#a6e22e">transform</span>(messageSource, 
+</span></span><span style="display:flex;"><span>                            <span style="color:#66d9ef">new</span> StreamResult(System.<span style="color:#a6e22e">out</span>));
+</span></span><span style="display:flex;"><span>    } <span style="color:#66d9ef">catch</span> (Exception e) {
+</span></span><span style="display:flex;"><span>      e.<span style="color:#a6e22e">printStackTrace</span>();
+</span></span><span style="display:flex;"><span>    } 
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><h2 id="klient">Klient</h2>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>WebServiceTemplate webServiceTemplate <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> WebServiceTemplate<span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>webServiceTemplate<span style="color:#f92672">.</span><span style="color:#a6e22e">setDefaultUri</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;http://localhost:8080/movie-ws/&#34;</span><span style="color:#f92672">);</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>WebServiceTemplate webServiceTemplate <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> WebServiceTemplate();
+</span></span><span style="display:flex;"><span>webServiceTemplate.<span style="color:#a6e22e">setDefaultUri</span>(<span style="color:#e6db74">&#34;http://localhost:8080/movie-ws/&#34;</span>);
 </span></span><span style="display:flex;"><span>		
-</span></span><span style="display:flex;"><span>StreamSource source <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> StreamSource<span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> FileReader<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;D:\\Projects\\movie-ws\\web\\WEB-INF\\xml\\movieReservationRequest.xml&#34;</span><span style="color:#f92672">));</span>
-</span></span><span style="display:flex;"><span>StreamResult result <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> StreamResult<span style="color:#f92672">(</span>System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>StreamSource source <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> StreamSource(<span style="color:#66d9ef">new</span> FileReader(<span style="color:#e6db74">&#34;D:\\Projects\\movie-ws\\web\\WEB-INF\\xml\\movieReservationRequest.xml&#34;</span>));
+</span></span><span style="display:flex;"><span>StreamResult result <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> StreamResult(System.<span style="color:#a6e22e">out</span>);
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>webServiceTemplate<span style="color:#f92672">.</span><span style="color:#a6e22e">sendSourceAndReceiveToResult</span><span style="color:#f92672">(</span>source<span style="color:#f92672">,</span> result<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>webServiceTemplate.<span style="color:#a6e22e">sendSourceAndReceiveToResult</span>(source, result);
 </span></span></code></pre></div><h1 id="krok-2---dodanie-wsdl">Krok 2 - dodanie WSDL</h1>
 <h2 id="xml-schema">XML schema</h2>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>

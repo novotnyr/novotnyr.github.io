@@ -63,27 +63,27 @@
 <p>Ukážme si však spôsob, ktorým je možné vybudovať jednoduchú webovú službu práve „ignorovaným&quot; opačným spôsobom. Obetujeme popri tom množstvo z platformových vymožeností webových služieb, ale dosiahneme popri tom fungujúci prototyp.</p>
 <h1 id="triedy-a-serializácia-do-xml-pomocou-xstream">Triedy a serializácia do XML pomocou XStream</h1>
 <p>V našom príklade budeme chcieť vybudovať webovú službu pre rezerváciu lístkov v kine. Klient zašle požiadavku, v ktorej špecifikuje názov filmu, dátum jeho premientania a počet lístkov, ktoré si chce zarezervovať. Príkladom rezervačného lístka bude nasledovná trieda:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#f92672">package</span> sk.novotnyr.movie<span style="color:#f92672">;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#f92672">package</span> sk.novotnyr.movie;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.util.Date<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.util.Date;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MovieReservation</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MovieReservation</span> {
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">protected</span> String title<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">protected</span> Date date<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">int</span> numberOfTickets<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">protected</span> String title;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">protected</span> Date date;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">int</span> numberOfTickets;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// gettre a settre
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// gettre a settre</span>
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>Trieda nie je ničím mimoriadna, je to klasické POJO.</p>
 <h2 id="serializácia-do-xml">Serializácia do XML</h2>
 <p>Túto triedu budeme musieť vložiť do SOAP správy ako XML. Existuje množstvo spôsobov, ktorými je možné namapovať triedu v Jave na XML súbor. Jedným z najjednoduchších nástrojov je <a href="http://xstream.codehaus.org/">XStream</a>. Príklad na serializáciu triedy do XML je nasledovný:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>MovieReservation reservation <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> MovieReservation<span style="color:#f92672">(</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#34;Godzilla&#34;</span><span style="color:#f92672">,</span> <span style="color:#66d9ef">new</span> Date<span style="color:#f92672">(),</span> 4<span style="color:#f92672">);</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>MovieReservation reservation <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> MovieReservation(
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#34;Godzilla&#34;</span>, <span style="color:#66d9ef">new</span> Date(), 4);
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>XStream xStream <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> XStream<span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>String xml <span style="color:#f92672">=</span> xStream<span style="color:#f92672">.</span><span style="color:#a6e22e">toXML</span><span style="color:#f92672">(</span>reservation<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>xml<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>XStream xStream <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> XStream();
+</span></span><span style="display:flex;"><span>String xml <span style="color:#f92672">=</span> xStream.<span style="color:#a6e22e">toXML</span>(reservation);
+</span></span><span style="display:flex;"><span>System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(xml);
 </span></span></code></pre></div><p>Výsledkom je nasledovné XML na štandardnom výstupe:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;sk.novotnyr.movie.MovieReservation&gt;</span>
 </span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;title&gt;</span>Godzilla<span style="color:#f92672">&lt;/title&gt;</span>
@@ -91,7 +91,7 @@
 </span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;numberOfTickets&gt;</span>4<span style="color:#f92672">&lt;/numberOfTickets&gt;</span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/sk.novotnyr.movie.MovieReservation&gt;</span>
 </span></span></code></pre></div><p>Ak sa nám nepáči úplný názov triedy ako názov elementu, môžeme použiť alias (ten mapuje názov triedy na element a späť):</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>xStream<span style="color:#f92672">.</span><span style="color:#a6e22e">alias</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;movieReservation&#34;</span><span style="color:#f92672">,</span> MovieReservation<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>xStream.<span style="color:#a6e22e">alias</span>(<span style="color:#e6db74">&#34;movieReservation&#34;</span>, MovieReservation.<span style="color:#a6e22e">class</span>);
 </span></span></code></pre></div><p>Výsledné XML bude nasledovné:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;movieReservation&gt;</span>
 </span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;title&gt;</span>Godzilla<span style="color:#f92672">&lt;/title&gt;</span>
@@ -182,31 +182,31 @@ Táto stratégia je poskytovaná triedou <code>org.springframework.ws.server.end
 <p>Príkladom je:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">XStreamMovieReservationEndpoint</span> 
 </span></span><span style="display:flex;"><span>   <span style="color:#66d9ef">extends</span> AbstractMarshallingPayloadEndpoint 
-</span></span><span style="display:flex;"><span><span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>{
 </span></span><span style="display:flex;"><span>  
 </span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@Override</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">protected</span> Object <span style="color:#a6e22e">invokeInternal</span><span style="color:#f92672">(</span>Object object<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">protected</span> Object <span style="color:#a6e22e">invokeInternal</span>(Object object) <span style="color:#66d9ef">throws</span> Exception {
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>    MovieReservation movieReservationRequest 
-</span></span><span style="display:flex;"><span>      <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>MovieReservation<span style="color:#f92672">)</span> object<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>    System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>movieReservationRequest<span style="color:#f92672">.</span><span style="color:#a6e22e">getTitle</span><span style="color:#f92672">());</span>
-</span></span><span style="display:flex;"><span>    System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>movieReservationRequest<span style="color:#f92672">.</span><span style="color:#a6e22e">getDate</span><span style="color:#f92672">());</span>
-</span></span><span style="display:flex;"><span>    System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>movieReservationRequest<span style="color:#f92672">.</span><span style="color:#a6e22e">getNumberOfTickets</span><span style="color:#f92672">());</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">=</span> (MovieReservation) object;
+</span></span><span style="display:flex;"><span>    System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(movieReservationRequest.<span style="color:#a6e22e">getTitle</span>());
+</span></span><span style="display:flex;"><span>    System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(movieReservationRequest.<span style="color:#a6e22e">getDate</span>());
+</span></span><span style="display:flex;"><span>    System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(movieReservationRequest.<span style="color:#a6e22e">getNumberOfTickets</span>());
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">null</span>;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>V príklade sme pretypovali objekt z parametra na požiadavku <code>MovieReservation</code> a vypísali ju na konzolu servera. V tomto jednoduchom prípade nevraciame nič - takto implementujeme <em>one-way messages</em>, čiže správy bez odpovede.</p>
 <p>Ostáva otázka, akým spôsobom sa realizuje prevod objektov na XML a naopak? To je záležitosť tzv. marshallerov (prevodníkov objektov na XML) a unmarshallerov (XML na objekty). V Spring-WS sú k dispozícii hotové marshallery pre typické technológie - napr. pre JAXB, XMLBeans alebo XStream. Práve tento posledný marshaller a unmarshaller použijeme. Stačí ho v konštruktore zaregistrovať s našim endpointom:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#a6e22e">XStreamMovieReservationEndpoint</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">super</span><span style="color:#f92672">();</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#a6e22e">XStreamMovieReservationEndpoint</span>() {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">super</span>();
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  XStreamMarshaller marshaller <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> XStreamMarshaller<span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>  setMarshaller<span style="color:#f92672">(</span>marshaller<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>  setUnmarshaller<span style="color:#f92672">(</span>marshaller<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>  XStreamMarshaller marshaller <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> XStreamMarshaller();
+</span></span><span style="display:flex;"><span>  setMarshaller(marshaller);
+</span></span><span style="display:flex;"><span>  setUnmarshaller(marshaller);
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>Aby sme zachovali požiadavku na aliasy našich tried, môžeme dodať do konštruktora:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>marshaller<span style="color:#f92672">.</span><span style="color:#a6e22e">addAlias</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;movieReservation&#34;</span><span style="color:#f92672">,</span>  MovieReservation<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>marshaller.<span style="color:#a6e22e">addAlias</span>(<span style="color:#e6db74">&#34;movieReservation&#34;</span>,  MovieReservation.<span style="color:#a6e22e">class</span>);
 </span></span></code></pre></div><p>Po dohotovení endpointu môžeme celú aplikáciu nasadiť do obľúbeného servletového kontajnera pod menom <code>/movies</code> a spustiť.</p>
 <h1 id="klient">Klient</h1>
 <p>Webová služba bola spustená a je čas k nej pristúpiť pomocou klienta.
@@ -216,32 +216,32 @@ Na klienta sa používa analogický návrhový vzor ako v prípade prístupu k d
 <li>nakonfigurujeme marshallery a unmarshallery identickým spôsobom ako na strane servera</li>
 <li>vytvoríme objekt pre požiadavku a spracujeme odpoveď</li>
 </ol>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">XStreamClient</span> <span style="color:#f92672">{</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">XStreamClient</span> {
 </span></span><span style="display:flex;"><span>  
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// vytvoríme marshaller
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    XStreamMarshaller marshaller <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> XStreamMarshaller<span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>    marshaller<span style="color:#f92672">.</span><span style="color:#a6e22e">addAlias</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;movieReservation&#34;</span><span style="color:#f92672">,</span> MovieReservation<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span>(String<span style="color:#f92672">[]</span> args) <span style="color:#66d9ef">throws</span> Exception {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// vytvoríme marshaller</span>
+</span></span><span style="display:flex;"><span>    XStreamMarshaller marshaller <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> XStreamMarshaller();
+</span></span><span style="display:flex;"><span>    marshaller.<span style="color:#a6e22e">addAlias</span>(<span style="color:#e6db74">&#34;movieReservation&#34;</span>, MovieReservation.<span style="color:#a6e22e">class</span>);
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// šablóna pre webovú službu    
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    WebServiceTemplate webServiceTemplate <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> WebServiceTemplate<span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// šablóna pre webovú službu    </span>
+</span></span><span style="display:flex;"><span>    WebServiceTemplate webServiceTemplate <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> WebServiceTemplate();
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// URI, ktoré budeme volať
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    webServiceTemplate<span style="color:#f92672">.</span><span style="color:#a6e22e">setDefaultUri</span><span style="color:#f92672">(</span>
-</span></span><span style="display:flex;"><span>       <span style="color:#e6db74">&#34;http://localhost:8080/movie/ws/reservation&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// URI, ktoré budeme volať</span>
+</span></span><span style="display:flex;"><span>    webServiceTemplate.<span style="color:#a6e22e">setDefaultUri</span>(
+</span></span><span style="display:flex;"><span>       <span style="color:#e6db74">&#34;http://localhost:8080/movie/ws/reservation&#34;</span>);
 </span></span><span style="display:flex;"><span>    
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// priradíme marshallery a unmarshallery
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    webServiceTemplate<span style="color:#f92672">.</span><span style="color:#a6e22e">setMarshaller</span><span style="color:#f92672">(</span>marshaller<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>    webServiceTemplate<span style="color:#f92672">.</span><span style="color:#a6e22e">setUnmarshaller</span><span style="color:#f92672">(</span>marshaller<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// priradíme marshallery a unmarshallery</span>
+</span></span><span style="display:flex;"><span>    webServiceTemplate.<span style="color:#a6e22e">setMarshaller</span>(marshaller);
+</span></span><span style="display:flex;"><span>    webServiceTemplate.<span style="color:#a6e22e">setUnmarshaller</span>(marshaller);
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">//vytvoríme objekt požiadavky
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    MovieReservation reservation <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> MovieReservation<span style="color:#f92672">(</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;Godzilla&#34;</span><span style="color:#f92672">,</span> <span style="color:#66d9ef">new</span> Date<span style="color:#f92672">(),</span> 4<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">//vytvoríme objekt požiadavky</span>
+</span></span><span style="display:flex;"><span>    MovieReservation reservation <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> MovieReservation(
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;Godzilla&#34;</span>, <span style="color:#66d9ef">new</span> Date(), 4);
 </span></span><span style="display:flex;"><span>    
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// odošleme ho, výstup ignorujeme, lebo nemáme žiadny
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    webServiceTemplate<span style="color:#f92672">.</span><span style="color:#a6e22e">marshalSendAndReceive</span><span style="color:#f92672">(</span>reservation<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// odošleme ho, výstup ignorujeme, lebo nemáme žiadny</span>
+</span></span><span style="display:flex;"><span>    webServiceTemplate.<span style="color:#a6e22e">marshalSendAndReceive</span>(reservation);
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>SOAP požiadavka bude vyzerať nasledovne:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;SOAP-ENV:Envelope</span> 
 </span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">xmlns:SOAP-ENV=</span><span style="color:#e6db74">&#34;http://schemas.xmlsoap.org/soap/envelope/&#34;</span><span style="color:#f92672">&gt;</span>
@@ -257,25 +257,25 @@ Na klienta sa používa analogický návrhový vzor ako v prípade prístupu k d
 </span></span></code></pre></div><h1 id="endpoint-s-metódou-ktorá-vracia-výsledok">Endpoint s metódou, ktorá vracia výsledok</h1>
 <p>Doteraz nevracal endpoint žiadnu správu ako odpoveď. V praxi je takýto prípad však asi dosť zriedkavý. Aj klient by možno očakával nejakú zmysluplnú odpoveď (možno číslo rezervácie a pod.) v prípade, že sa jeho registrácia podarila.</p>
 <p>Upravme teda metódu <code>invokeInternal()</code> tak, aby vracala inštanciu našej vlastnej triedy <code>ReservationConfirmation</code>:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">protected</span> Object <span style="color:#a6e22e">invokeInternal</span><span style="color:#f92672">(</span>Object object<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">protected</span> Object <span style="color:#a6e22e">invokeInternal</span>(Object object) <span style="color:#66d9ef">throws</span> Exception {
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>  MovieReservation movieReservationRequest 
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>MovieReservation<span style="color:#f92672">)</span> object<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">=</span> (MovieReservation) object;
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>  ReservationConfirmation confirmation 
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ReservationConfirmation<span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>  confirmation<span style="color:#f92672">.</span><span style="color:#a6e22e">setId</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> Date<span style="color:#f92672">().</span><span style="color:#a6e22e">getDate</span><span style="color:#f92672">());</span>
-</span></span><span style="display:flex;"><span>  confirmation<span style="color:#f92672">.</span><span style="color:#a6e22e">setSeatIds</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> <span style="color:#66d9ef">int</span><span style="color:#f92672">[]</span> <span style="color:#f92672">{</span>1<span style="color:#f92672">,</span> 2<span style="color:#f92672">,</span> 3<span style="color:#f92672">,</span> 4<span style="color:#f92672">});</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ReservationConfirmation();
+</span></span><span style="display:flex;"><span>  confirmation.<span style="color:#a6e22e">setId</span>(<span style="color:#66d9ef">new</span> Date().<span style="color:#a6e22e">getDate</span>());
+</span></span><span style="display:flex;"><span>  confirmation.<span style="color:#a6e22e">setSeatIds</span>(<span style="color:#66d9ef">new</span> <span style="color:#66d9ef">int</span><span style="color:#f92672">[]</span> {1, 2, 3, 4});
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> confirmation<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> confirmation;
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>Keďže používame novú triedu, je dobré ju zaregistrovať v XStream marshalleri tak, aby sa jej element volal skrátene a nie na základe plného mena triedy:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>marshaller<span style="color:#f92672">.</span><span style="color:#a6e22e">addAlias</span><span style="color:#f92672">(</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#34;reservationConfirmation&#34;</span><span style="color:#f92672">,</span> ReservationConfirmation<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>marshaller.<span style="color:#a6e22e">addAlias</span>(
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#34;reservationConfirmation&#34;</span>, ReservationConfirmation.<span style="color:#a6e22e">class</span>);
 </span></span></code></pre></div><p>Aliasovanie musíme spraviť aj v endpointe, aj v klientovi.</p>
 <p>Modifikované volanie v klientovi je potom nasledovné:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>ReservationConfirmation confirmation <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>ReservationConfirmation<span style="color:#f92672">)</span> webServiceTemplate<span style="color:#f92672">.</span><span style="color:#a6e22e">marshalSendAndReceive</span><span style="color:#f92672">(</span>reservation<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>confirmation<span style="color:#f92672">);</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>ReservationConfirmation confirmation <span style="color:#f92672">=</span> (ReservationConfirmation) webServiceTemplate.<span style="color:#a6e22e">marshalSendAndReceive</span>(reservation);
+</span></span><span style="display:flex;"><span>System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(confirmation);
 </span></span></code></pre></div><p>SOAP odpoveď vyzerá nasledovne:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;SOAP-ENV:Envelope</span> <span style="color:#a6e22e">xmlns:SOAP-ENV=</span><span style="color:#e6db74">&#34;http://schemas.xmlsoap.org/soap/envelope/&#34;</span><span style="color:#f92672">&gt;</span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;SOAP-ENV:Header/&gt;</span>

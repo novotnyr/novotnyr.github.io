@@ -59,12 +59,12 @@
 <div class="content-wrapper">
   <main>
     <p>V jednom z projektov používame JAXB, čo je nástroj na mapovanie XML schémy na Java triedy. Jedného pekného rána sme dostali nápad použiť plugin <a href="https://jaxb2-commons.dev.java.net/fluent-api/">FluentAPI</a>, ktorý vie dodať triedam vygenerovaným zo schémy metódy <code>with...</code>. Potom vieme používať</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>USAddress address <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> USAddress<span style="color:#f92672">()</span>
-</span></span><span style="display:flex;"><span>			<span style="color:#f92672">.</span><span style="color:#a6e22e">withName</span><span style="color:#f92672">(</span>name<span style="color:#f92672">)</span>
-</span></span><span style="display:flex;"><span>			<span style="color:#f92672">.</span><span style="color:#a6e22e">withStreet</span><span style="color:#f92672">(</span>street<span style="color:#f92672">)</span>
-</span></span><span style="display:flex;"><span>			<span style="color:#f92672">.</span><span style="color:#a6e22e">withCity</span><span style="color:#f92672">(</span>city<span style="color:#f92672">)</span>
-</span></span><span style="display:flex;"><span>			<span style="color:#f92672">.</span><span style="color:#a6e22e">withState</span><span style="color:#f92672">(</span>state<span style="color:#f92672">)</span>
-</span></span><span style="display:flex;"><span>			<span style="color:#f92672">.</span><span style="color:#a6e22e">withZip</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> BigDecimal<span style="color:#f92672">(</span>zip<span style="color:#f92672">));</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>USAddress address <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> USAddress()
+</span></span><span style="display:flex;"><span>			.<span style="color:#a6e22e">withName</span>(name)
+</span></span><span style="display:flex;"><span>			.<span style="color:#a6e22e">withStreet</span>(street)
+</span></span><span style="display:flex;"><span>			.<span style="color:#a6e22e">withCity</span>(city)
+</span></span><span style="display:flex;"><span>			.<span style="color:#a6e22e">withState</span>(state)
+</span></span><span style="display:flex;"><span>			.<span style="color:#a6e22e">withZip</span>(<span style="color:#66d9ef">new</span> BigDecimal(zip));
 </span></span></code></pre></div><p>Stiahli sme teda JAR súbor, a do antovského <code>build.xml</code> dodali:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;taskdef</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;xjc&#34;</span> <span style="color:#a6e22e">classname=</span><span style="color:#e6db74">&#34;com.sun.tools.xjc.XJCTask&#34;</span><span style="color:#f92672">&gt;</span>
 </span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;classpath&gt;</span>

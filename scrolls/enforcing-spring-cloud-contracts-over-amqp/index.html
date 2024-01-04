@@ -170,10 +170,10 @@
 <p>This is a process that is completely independent from the Spring Cloud Contract classes!</p>
 <h3 id="message-class">Message Class</h3>
 <p>The inbound message will be mapped to a proper domain object:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">UserGoesOnlineMessage</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">private</span> String user<span style="color:#f92672">;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">UserGoesOnlineMessage</span> {
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">private</span> String user;
 </span></span><span style="display:flex;"><span>  	<span style="color:#75715e">/* ..getters and setters */</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>  }
 </span></span></code></pre></div><h3 id="message-listener">Message Listener</h3>
 <p>Inbound AMQP message will be handled by a usual <code>@RabbitListener</code>-annotated method in a <code>@Component</code>:</p>
 <pre tabindex="0"><code>  @Component
@@ -204,34 +204,34 @@
 </li>
 </ul>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@SpringBootApplication</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ConsumerApplication</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ConsumerApplication</span> {
 </span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Bean</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> Binding <span style="color:#a6e22e">binding</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> Binding <span style="color:#a6e22e">binding</span>() {
 </span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> BindingBuilder
-</span></span><span style="display:flex;"><span>                <span style="color:#f92672">.</span><span style="color:#a6e22e">bind</span><span style="color:#f92672">(</span>userPresenceQueue<span style="color:#f92672">())</span>
-</span></span><span style="display:flex;"><span>                <span style="color:#f92672">.</span><span style="color:#a6e22e">to</span><span style="color:#f92672">(</span>userPresenceExchange<span style="color:#f92672">())</span>
-</span></span><span style="display:flex;"><span>                <span style="color:#f92672">.</span><span style="color:#a6e22e">with</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;#&#34;</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>                .<span style="color:#a6e22e">bind</span>(userPresenceQueue())
+</span></span><span style="display:flex;"><span>                .<span style="color:#a6e22e">to</span>(userPresenceExchange())
+</span></span><span style="display:flex;"><span>                .<span style="color:#a6e22e">with</span>(<span style="color:#e6db74">&#34;#&#34;</span>);
+</span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> DirectExchange <span style="color:#a6e22e">userPresenceExchange</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> DirectExchange<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;user-presence&#34;</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Bean</span>
-</span></span><span style="display:flex;"><span>    Queue <span style="color:#a6e22e">userPresenceQueue</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> Queue<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;user-presence&#34;</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> DirectExchange <span style="color:#a6e22e">userPresenceExchange</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> DirectExchange(<span style="color:#e6db74">&#34;user-presence&#34;</span>);
+</span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Bean</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> MessageConverter <span style="color:#a6e22e">jackson2JsonMessageConverter</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> Jackson2JsonMessageConverter<span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    Queue <span style="color:#a6e22e">userPresenceQueue</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> Queue(<span style="color:#e6db74">&#34;user-presence&#34;</span>);
+</span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>        SpringApplication<span style="color:#f92672">.</span><span style="color:#a6e22e">run</span><span style="color:#f92672">(</span>ConsumerApplication<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">,</span> args<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Bean</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> MessageConverter <span style="color:#a6e22e">jackson2JsonMessageConverter</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> Jackson2JsonMessageConverter();
+</span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span>(String<span style="color:#f92672">[]</span> args) {
+</span></span><span style="display:flex;"><span>        SpringApplication.<span style="color:#a6e22e">run</span>(ConsumerApplication.<span style="color:#a6e22e">class</span>, args);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>Obviously, we might be tempted to run this application. This is okay, however, this won’t help us in the verification of the contract that we created.</p>
 <p>Let’s create a proper integration test instead!</p>
 <h1 id="consumer-side-integration-tests">Consumer-Side Integration Tests</h1>
@@ -284,31 +284,31 @@ public class ListenerTest {
 <h2 id="producer-side-implementation">Producer-Side Implementation</h2>
 <p>Let’s create a minimalistic all-in-one class that handles both Spring Boot configuration and message dispatch:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@SpringBootApplication</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Application</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Application</span> {
 </span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Autowired</span>
-</span></span><span style="display:flex;"><span>    AmqpTemplate amqpTemplate<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    AmqpTemplate amqpTemplate;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">sendNotification</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>        amqpTemplate<span style="color:#f92672">.</span><span style="color:#a6e22e">convertAndSend</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;user-presence&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">,</span> <span style="color:#66d9ef">new</span> Notification<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;amadeus&#34;</span><span style="color:#f92672">));</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">sendNotification</span>() {
+</span></span><span style="display:flex;"><span>        amqpTemplate.<span style="color:#a6e22e">convertAndSend</span>(<span style="color:#e6db74">&#34;user-presence&#34;</span>, <span style="color:#e6db74">&#34;&#34;</span> , <span style="color:#66d9ef">new</span> Notification(<span style="color:#e6db74">&#34;amadeus&#34;</span>));
+</span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Bean</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> MessageConverter <span style="color:#a6e22e">jackson2JsonMessageConverter</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> Jackson2JsonMessageConverter<span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> MessageConverter <span style="color:#a6e22e">jackson2JsonMessageConverter</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> Jackson2JsonMessageConverter();
+</span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>        SpringApplication<span style="color:#f92672">.</span><span style="color:#a6e22e">run</span><span style="color:#f92672">(</span>Application<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">,</span> args<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span>(String<span style="color:#f92672">[]</span> args) {
+</span></span><span style="display:flex;"><span>        SpringApplication.<span style="color:#a6e22e">run</span>(Application.<span style="color:#a6e22e">class</span>, args);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>We configure a <code>MessageConverter</code> that will automatically convert payloads to JSON format.</p>
 <p>Then, we create a <code>sendNotification()</code> method that will send an AMQP message via autowired <code>AmqpTemplate</code>. This message is represented by a simple domain object:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#f92672">package</span> com.github.novotnyr.contract<span style="color:#f92672">;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#f92672">package</span> com.github.novotnyr.contract;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Notification</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String user<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Notification</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String user;
 </span></span><span style="display:flex;"><span>    <span style="color:#75715e">/* ... */</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>Finally, since this is a standalone Spring Boot app, we provide a <code>main</code> method.</p>
 <h2 id="producer-side-integration-tests">Producer-Side Integration Tests</h2>
 <p>Having completed consumer-side tests, we can return to the producer side and implement contract-based integration tests as well. We should make sure that producer-side is honoring the established contract in the same way as the consumer does.</p>

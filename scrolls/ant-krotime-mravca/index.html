@@ -94,13 +94,13 @@ určených pre výsledky zostavovania: adresár <code>classes</code> bude obsaho
 <pre tabindex="0"><code>md src
 </code></pre><p>Nasledovná jednoduchá trieda vypíše správu na štandardný výstup. Zdrojový
 kód uložíme do adresára <code>src\oata\AhojSvet.java</code></p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#f92672">package</span> oata<span style="color:#f92672">;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#f92672">package</span> oata;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">AhojSvet</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Ahoj svet!&#34;</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">AhojSvet</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span>(String<span style="color:#f92672">[]</span> args) {
+</span></span><span style="display:flex;"><span>    System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(<span style="color:#e6db74">&#34;Ahoj svet!&#34;</span>);
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>Triedu sa pokúsime skompilovať a spustiť:</p>
 <pre tabindex="0"><code>md build\classes
 javac -sourcepath src -d build\classes src\oata\AhojSvet.java
@@ -333,19 +333,19 @@ modifikujeme zostavovací súbor tak, aby bola knižnica k dispozícii pri kompi
 a spustení.</p>
 <p>Postup práce s log4j je uvedený v príslušnej dokumentácii. My použijeme
 minimalistickú verziu triedy, ktorá bude vyzerať nasledovne:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#f92672">package</span> oata<span style="color:#f92672">;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#f92672">package</span> oata;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> org.apache.log4j.Logger<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> org.apache.log4j.BasicConfigurator<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> org.apache.log4j.Logger;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> org.apache.log4j.BasicConfigurator;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">AhojSvet</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">static</span> Logger logger <span style="color:#f92672">=</span> Logger<span style="color:#f92672">.</span><span style="color:#a6e22e">getLogger</span><span style="color:#f92672">(</span>HelloWorld<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">AhojSvet</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">static</span> Logger logger <span style="color:#f92672">=</span> Logger.<span style="color:#a6e22e">getLogger</span>(HelloWorld.<span style="color:#a6e22e">class</span>);
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>        BasicConfigurator<span style="color:#f92672">.</span><span style="color:#a6e22e">configure</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>        logger<span style="color:#f92672">.</span><span style="color:#a6e22e">info</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Ahoj svet!&#34;</span><span style="color:#f92672">);</span>  
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span>(String<span style="color:#f92672">[]</span> args) {
+</span></span><span style="display:flex;"><span>        BasicConfigurator.<span style="color:#a6e22e">configure</span>();
+</span></span><span style="display:flex;"><span>        logger.<span style="color:#a6e22e">info</span>(<span style="color:#e6db74">&#34;Ahoj svet!&#34;</span>);  
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>Väčšina úprav pozostáva z dodania náležitostí vyžadovaných
 ladiacou knižnicou a z inicializácie systému pre výpisy.
 Riadok <code>logger.info()</code> je analógiou <code>System.out.println()</code>.</p>
@@ -430,7 +430,7 @@ viď napr. na <a href="http://ics.upjs.sk/~novotnyr/wiki/Java.ClasspathAClassNot
 <p>Jedným z dôvodov na použitie Log4j boli „široké možnosti konfigurácie&quot;.
 Ale v našom príklade sme mali všetky možnosti na formát výpisu uvedené natvrdo!
 To však nie je chyba log4j, ale nášho prístupu. Riadok</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>BasicConfigurator<span style="color:#f92672">.</span><span style="color:#a6e22e">configure</span><span style="color:#f92672">()</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>BasicConfigurator.<span style="color:#a6e22e">configure</span>()
 </span></span></code></pre></div><p>nastaví pre ladiace výpisy jednoduchý, lež pevne daný formát. Často je však
 potrebné prispôsobenie s využitím konfiguračného súboru.</p>
 <p>Odstráňme z triedy tento riadok (a príslušné importy). Log4j sa potom
