@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+    <link rel="manifest" href="/images/site.webmanifest">
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <title>Paralelná dekompozícia v kotlinovských korutinách | robonovotny</title>
+
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.3/styles/dracula.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.3/highlight.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.3/languages/go.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    <link rel="stylesheet" href="https://novotnyr.github.io/asciidoctor.css">
+    <header>
+
+  <nav>
+    <ul>
+      
+      
+      <li class="pull-left ">
+        <a href="https://novotnyr.github.io/">~/robonovotny</a>
+      </li>
+      
+
+      
+
+    </ul>
+  </nav>
+</header>
+
+  </head>
+
+  <body>
+    <br/>
+
+<div class="article-meta">
+<h1><span class="title">Paralelná dekompozícia v kotlinovských korutinách</span></h1>
+
+<h2 class="date">2024/01/07</h2>
+<p class="terms">
+  
+  
+  
+  
+  
+</p>
+</div>
+
+
+<div class="content-wrapper">
+  <main>
+    <div class="exampleblock">
+<div class="content">
+<div class="paragraph">
+<p>Ukážme si delenie úlohy na paralelné výpočty s použitím kotlinovských korutín.</p>
+</div>
+<div class="paragraph">
+<p>Počítajme slová v samostatných korutinách bežiacich paralelne a spočítavajme celkové výsledky§</p>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>Urobme si funkciu na počítanie slov v súbore:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-kotlin" data-lang="kotlin">fun File.wc(): Int = useLines { lines -&gt;
+    lines.flatMap {
+        it.split(Regex(&#34;\\s+&#34;))
+    }.count()
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Ak chceme počítať súbory v adresári, vytvorme si pomocnú funkciu:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-kotlin" data-lang="kotlin">fun File.children(): Array&lt;out File&gt; {
+    return listFiles { child: File -&gt; child.isFile } ?: emptyArray()
+}</code></pre>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_sekvenčné_počítanie">Sekvenčné počítanie</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><strong>Sekvenčné</strong> počítanie je jednoduché:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-kotlin" data-lang="kotlin">fun main() {
+    val wordCounts = File(&#34;src/test/resources&#34;).children().map {
+        it.wc()
+    }
+    println(wordCounts)
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Čo takto však rýchlejšie paralelné výpočty?</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_paralelné_výpočty">Paralelné výpočty</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Paralelné spustenie potrebuje najmä:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>spustenie úlohy v sekcii <code>async</code>,</p>
+</li>
+<li>
+<p>získanie objektu s úlohou <code>Deferred</code>,</p>
+</li>
+<li>
+<p>vyčkanie na dobehnutie úloh pomocou a získanie výsledkov cez <code>awaitAll</code>,</p>
+</li>
+<li>
+<p>spravovanie chýb cez <code>coroutineScope</code></p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-kotlin" data-lang="kotlin">coroutineScope { <i class="conum" data-value="3"></i><b>(3)</b>
+    val jobs = mutableListOf&lt;Deferred&lt;Int&gt;&gt;()
+    File(&#34;src/test/resources&#34;).children().forEach {
+        jobs += async(Dispatchers.IO) { <i class="conum" data-value="1"></i><b>(1)</b>
+            it.wc()
+        }
+    }
+    val wordCounts = jobs.awaitAll() <i class="conum" data-value="2"></i><b>(2)</b>
+    println(wordCounts)
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tbody><tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Výpočet pustíme v samostatnej korutine na pozadí.
+Keďže ide o vstupno-výstupnú operáciu, použijeme dispečera pre I/O.
+<div class="paragraph">
+<p>Výsledkom je objekt <code>Deferred</code> reprezentujúci úlohu.</p>
+</div></td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Vyčkáme na dobehnutie všetkých úloh v korutinách.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Ustanovíme záber (<em>scope</em>) korutín.
+Ak ktorákoľvek z úloh zlyhá s výnimkou, všetky ostatné korutiny pre výpočet počtov slov sa zrušia tiež.
+Zároveň zabezpečíme, že tento <em>scope</em> dobehne až keď dobehnú korutiny, ktoré sa v ňom spustia.</td>
+</tr>
+</tbody></table>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+Objekt <code>Deferred</code>  reprezentuje „budúci výsledok“, či „hodnotu, ktorá sa eventuálne vypočíta“. Ke filozoficky podobný <code>CompletableFuture</code> (Java), či <code>Promise</code> (JavaScript).
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="paragraph">
+<p>Ak to chceme vyskúšať v <code>main</code>-e, musíme použiť <code>runBlocking</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-kotlin" data-lang="kotlin">fun main() = runBlocking {
+    coroutineScope {
+        val jobs = mutableListOf&lt;Deferred&lt;Int&gt;&gt;()
+        File(&#34;src/test/resources&#34;).children().forEach {
+            jobs += async(Dispatchers.IO) {
+                it.wc()
+            }
+        }
+        val wordCounts = jobs.awaitAll()
+        println(wordCounts)
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Ak chceme byť viac funkcionálni a zbaviť sa premennej <code>jobs</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-kotlin" data-lang="kotlin">coroutineScope {
+    val wordCounts = File(&#34;src/test/resources&#34;)
+        .children()
+        .map {
+            async(Dispatchers.IO) {
+                it.wc()
+            }
+        }
+        .awaitAll()
+    println(wordCounts)
+}</code></pre>
+</div>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+Filozofia <code>async</code>-<code>awaitAll</code> skôr pripomína filozofiu „fork-join“ či „map-reduceH, kde sa v bloku <code>async</code> spustia paralelné úlohy a v bloku <code>awaitAll</code> pozbierajú výsledky.
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="paragraph">
+<p>+
+Sekcia <code>coroutineScope</code> dbá na to, aby v prípade chýb sa celá operácia rovno zrušila.</p>
+</div>
+<div class="paragraph">
+<p>Kombinácia <code>coroutineScope</code>, <code>async</code> a <code>awaitAll</code> umožňuje <em>štruktúrovanú konkurentnosť</em> (<strong>structured concurrency</strong>).</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Nové korutiny sa spúšťajú v rámci konkrétneho <em>scope</em>, ktorý určuje ich životnosť.</p>
+</li>
+<li>
+<p>Dbá sa na to, aby beh korutiny „neunikol“ mimo životnosti rodiča.</p>
+</li>
+<li>
+<p>Výnimky sa korektne spracujú tak, aby sa nenarušili životnosti korutín a rodičovského scopu.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_výnimky_a_korutiny">Výnimky a korutiny</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Predstavme si, že chceme počítať slová nad zoznamom súborov, kde jeden z nich nejestvuje:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-kotlin" data-lang="kotlin">coroutineScope {
+    val dir = File(&#34;src/test/resources&#34;)
+    val wordCounts = listOf(dir.resolve(&#34;bible.txt&#34;), dir.resolve(&#34;bible999.txt&#34;))
+        .map {
+            async(Dispatchers.IO) {
+                it.wc()
+            }
+        }
+        .awaitAll()
+    println(wordCounts)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Obratom uvidíme výnimku:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>Exception in thread &#34;main&#34; java.io.FileNotFoundException: src/test/resources/bible999.txt (No such file or directory)
+	at java.base/java.io.FileInputStream.open0(Native Method)
+	at java.base/java.io.FileInputStream.open(FileInputStream.java:216)
+	at java.base/java.io.FileInputStream.&lt;init&gt;(FileInputStream.java:157)
+	at com.github.novotnyr.coroutines.parallelDecomposition.ForkJoinKt.wc(ForkJoin.kt:67)
+	at com.github.novotnyr.coroutines.parallelDecomposition.ForkJoinKt$main$1$1$wordCounts$1$1.invokeSuspend(ForkJoin.kt:25)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:33)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:108)
+	at kotlinx.coroutines.internal.LimitedDispatcher$Worker.run(LimitedDispatcher.kt:115)
+	at kotlinx.coroutines.scheduling.TaskImpl.run(Tasks.kt:103)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:584)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:793)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:697)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:684)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>V prípade výnimky v ktorejkoľvek z korutín spúšťaných v <code>async</code> bloku sa ostatné súrodenecké korutiny zrušia.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Nezabudnime, že <code>coroutineScope</code> plní dva účely:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Pozastaví sa (<em>suspend</em>), kým korutiny, ktoré sú v ňom deklarované, nedobehnú.</p>
+</li>
+<li>
+<p>Ak tento scope zlyhá - či kvôli zrušeniu (<em>cancel</em>) alebo výnimke — všetky vnorené korutiny sa tiež zrušia.</p>
+</li>
+</ol>
+</div>
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="sect2">
+<h3 id="_supervisor_scope">Supervisor Scope</h3>
+<div class="paragraph">
+<p>Supervízorský scope je podobný ako <code>coroutineScope</code>, ale rušenie potomkov prebieha len smerom „od rodiča k potomkom“, nikdy nie naopak.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Ak ktorýkoľvek potomok zlyhá, <em>scope</em> sa nezruší.</p>
+</li>
+<li>
+<p>Pozastaví sa (<em>suspend</em>), kým korutiny, ktoré sú v ňom deklarované, nedobehnú.</p>
+</li>
+<li>
+<p>Ak <em>scope</em> zlyhá - či kvôli zrušeniu (<em>cancel</em>) alebo výnimke — všetky vnorené korutiny sa tiež zrušia.</p>
+</li>
+</ol>
+</div>
+<div class="sect3">
+<h4 id="_vyčkávanie_na_dobehnutie_potomkov">Vyčkávanie na dobehnutie potomkov</h4>
+<div class="paragraph">
+<p>Na rozdiel od <code>coroutineScope</code> nie je vhodné používať <code>awaitAll</code>, ktorý skončí v momente, keď ktorýkoľvek z potomkov zlyhá.
+To sme videli vo výnimke hore.</p>
+</div>
+<div class="paragraph">
+<p>Namiesto toho budeme vyčkávať jednotlivo a ošetrovať prípadné výnimky, ktoré korutiny vyhodia.</p>
+</div>
+<div class="paragraph">
+<p>Každý výsledok volania <code>async</code> typu <code>Deferred</code> vyčkáme pomocou samostatného volania <code>await</code>.
+Toto volanie buď uspeje a vráti výsledok — teda počet slov v súbore — alebo zlyhá s výnimkou, ktorú odchytíme a vhodne spracujeme.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-kotlin" data-lang="kotlin">val dir = File(&#34;src/test/resources&#34;)
+supervisorScope {
+    val files = listOf(&#34;bible.txt&#34;, &#34;bible999.txt&#34;)
+    val wordCounts = files.map { dir.resolve(it) }
+        .map {
+            async(Dispatchers.IO) {
+                it.wc()
+            }
+        }.map { it: Deferred&lt;Int&gt; -&gt; <i class="conum" data-value="1"></i><b>(1)</b>
+            it.runCatching { <i class="conum" data-value="3"></i><b>(3)</b>
+                await() <i class="conum" data-value="2"></i><b>(2)</b>
+            }.getOrNull() <i class="conum" data-value="3"></i><b>(3)</b>
+        }
+
+    println(wordCounts)
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tbody><tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Prúd objektov <code>Deferred</code> postupne spracujeme po jednom.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Na každý <code>Deferred</code> vyčkáme cez <code>await</code>.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Ak nastane výnimka, odchytíme ju a vrátime <code>null</code>&gt;</td>
+</tr>
+</tbody></table>
+</div>
+<div class="paragraph">
+<p>Výsledkom bude zoznam, kde niektoré prvky budú obsahovať počet slov v súbore a pre nedostupné veľkosti kvôli výnimkám bude v zozname <code>null</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>[796494, null]</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_bloky_runblocking_a_coroutinescope">Bloky <code>runBlocking</code> a <code>coroutineScope</code></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Blok <code>runBlocking</code> je <em>coroutine builder</em>, teda nástroj na zostrojenie a spustenie korutiny.
+Jeho jediné použitie je pri premostení sveta bežného programovania a sveta, v ktorom je možné spúšťať <code>suspend</code> funkcie — typicky len v metóde <code>main</code>, historických knižniciach a testoch.</p>
+</div>
+<div class="paragraph">
+<p><code>coroutineScope</code> sa používa len vo svete <code>suspend</code> funkcií. (Samotná funkcia <code>coroutineScope</code> je označená ako <code>suspend</code>). Tento blok <em>nevytvára</em> a <em>nespúšťa</em> novú korutinu.</p>
+</div>
+<div class="paragraph">
+<p>Oba bloky počkajú na dobehnutie potomkovských korutín, ale <code>runBlocking</code> pri tom <strong>zablokuje</strong> vlákno v ktorom beží, zatiaľ čo <code>coroutineScope</code> sa pozastaví (<strong>suspenduje</strong>) bez blokovania.</p>
+</div>
+<div class="paragraph">
+<p>Oba bloky riešia obojsmerné rušenie: ak zlyhá potomok, zrušia sa aj všetky ostatné potomkovské korutiny a zároveň aj príslušný rodičovský scope.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Priama kombinácia <code>runBlocking</code> a <code>coroutineScope</code> nedáva dohromady zmysel, keďže <code>coroutineScope</code> vyčká na dobehnutie korutín v <code>async</code> a <code>runBlocking</code> tiež počká na dobehnutie tých istých korutín.
+To je však špeciálna situácia v hračkárskych a tutoriálových textoch.
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="paragraph">
+<p>Jednoduchý, ale výhradne tutoriálový príklad spustí rovno korutinu v dispečeri pre vstupno-výstupné operácie, počítacie korutiny sa spustia cez <code>async</code> v tom istom dispečeri a vyčkávanie na dobehnutie korutín (spolu s vyblokovaním hlavného vlákna) zabezpečí <code>runBlocking</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-kotlin" data-lang="kotlin">fun main() = runBlocking(Dispatchers.IO) {
+    val wordCounts = File(&#34;src/test/resources&#34;)
+        .children()
+        .map {
+            async {
+                it.wc()
+            }
+        }.awaitAll()
+
+    println(wordCounts)
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+
+    <a href="/"> >> Home</a>
+  </main>
+</div>
+    <footer>
+      
+<script>
+(function() {
+  function center_el(tagName) {
+    var tags = document.getElementsByTagName(tagName), i, tag;
+    for (i = 0; i < tags.length; i++) {
+      tag = tags[i];
+      var parent = tag.parentElement;
+      
+      if (parent.childNodes.length === 1) {
+        
+        if (parent.nodeName === 'A') {
+          parent = parent.parentElement;
+          if (parent.childNodes.length != 1) continue;
+        }
+        if (parent.nodeName === 'P') parent.style.textAlign = 'center';
+      }
+    }
+  }
+  var tagNames = ['img', 'embed', 'object'];
+  for (var i = 0; i < tagNames.length; i++) {
+    center_el(tagNames[i]);
+  }
+})();
+</script>
+
+      
+    </footer>
+  </body>
+</html>
+
