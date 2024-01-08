@@ -13,14 +13,14 @@
       <link>https://novotnyr.github.io/scrolls/kotlin-koroutiny-parallel-decomposition/</link>
       <pubDate>Sun, 07 Jan 2024 00:00:00 +0000</pubDate>
       <guid>https://novotnyr.github.io/scrolls/kotlin-koroutiny-parallel-decomposition/</guid>
-      <description>Ukážme si delenie úlohy na paralelné výpočty s použitím kotlinovských korutín.&#xA;Počítajme slová v samostatných korutinách bežiacich paralelne a spočítavajme celkové výsledky§&#xA;Urobme si funkciu na počítanie slov v súbore:&#xA;fun File.wc(): Int = useLines { lines -&amp;gt; lines.flatMap { it.split(Regex(&amp;#34;\\s+&amp;#34;)) }.count() } Ak chceme počítať súbory v adresári, vytvorme si pomocnú funkciu:&#xA;fun File.children(): Array&amp;lt;out File&amp;gt; { return listFiles { child: File -&amp;gt; child.isFile } ?: emptyArray() } Sekvenčné počítanie Sekvenčné počítanie je jednoduché:</description>
+      <description>Ukážme si delenie úlohy na paralelné výpočty s použitím kotlinovských korutín.&#xA;Počítajme slová v samostatných korutinách bežiacich paralelne a spočítavajme celkové výsledky.&#xA;Urobme si funkciu na počítanie slov v súbore:&#xA;fun File.wc(): Int = useLines { lines -&amp;gt; lines.flatMap { it.split(Regex(&amp;#34;\\s+&amp;#34;)) }.count() } Ak chceme počítať súbory v adresári, vytvorme si pomocnú funkciu:&#xA;fun File.children(): Array&amp;lt;File&amp;gt; { return listFiles { child: File -&amp;gt; child.isFile } ?: emptyArray() } Sekvenčné počítanie Sekvenčné počítanie je jednoduché:</description>
     </item>
     <item>
-      <title>Kotlin - lambdy, anonymné funkcie, rozširujúce funkcie a lambdy s prijímačom</title>
+      <title>Kotlin — lambdy, anonymné funkcie, rozširujúce funkcie a lambdy s prijímačom</title>
       <link>https://novotnyr.github.io/scrolls/kotlin-lambda-extension-function-receiver/</link>
       <pubDate>Thu, 04 Jan 2024 22:00:36 +0100</pubDate>
       <guid>https://novotnyr.github.io/scrolls/kotlin-lambda-extension-function-receiver/</guid>
-      <description>Toto je funkcia:&#xA;fun double(n: Int): Int { return n * 2 } Funkciu môžeme priradiť do premennej:&#xA;fun double(n: Int): Int { return n * 2 } fun main() { val f = ::double println(f(2)) Syntax :: používa method references, teda odkazy na funkcie, či metódy.&#xA;Anonymné funkcie Funkcia môže byť anonymná.&#xA;val double = fun (n: Int): Int { return n * 2 } println(double(2)) Ako vidno, medzi fun a zoznamom argumentov nie je meno.</description>
+      <description>Toto je funkcia:&#xA;fun double(n: Int): Int { return n * 2 } Funkciu môžeme priradiť do premennej:&#xA;fun double(n: Int): Int { return n * 2 } fun main() { val f = ::double println(f(2)) } Syntax :: používa references, teda odkazy na funkcie, či metódy.&#xA;Funkcie môžu byť tvorené len výrazmi Toto je tiež funkcia!&#xA;fun double(n: Int) = n * 2 neexistujú zátvorky {&amp;hellip;}! Funkcia je tvorená len jedným výrazom.</description>
     </item>
     <item>
       <title>Docker a viacfázové zostavenie (_multistage builds_)</title>

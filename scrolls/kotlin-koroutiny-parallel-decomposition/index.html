@@ -64,7 +64,7 @@
 <p>Ukážme si delenie úlohy na paralelné výpočty s použitím kotlinovských korutín.</p>
 </div>
 <div class="paragraph">
-<p>Počítajme slová v samostatných korutinách bežiacich paralelne a spočítavajme celkové výsledky§</p>
+<p>Počítajme slová v samostatných korutinách bežiacich paralelne a spočítavajme celkové výsledky.</p>
 </div>
 </div>
 </div>
@@ -85,7 +85,7 @@
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-kotlin" data-lang="kotlin">fun File.children(): Array&lt;out File&gt; {
+<pre class="highlight"><code class="language-kotlin" data-lang="kotlin">fun File.children(): Array&lt;File&gt; {
     return listFiles { child: File -&gt; child.isFile } ?: emptyArray()
 }</code></pre>
 </div>
@@ -129,7 +129,7 @@
 <p>vyčkanie na dobehnutie úloh pomocou a získanie výsledkov cez <code>awaitAll</code>,</p>
 </li>
 <li>
-<p>spravovanie chýb cez <code>coroutineScope</code></p>
+<p>spravovanie chýb a rozsah platnosti cez <code>coroutineScope</code></p>
 </li>
 </ul>
 </div>
@@ -225,17 +225,16 @@ Objekt <code>Deferred</code>  reprezentuje „budúci výsledok“, či „hodno
 <i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-Filozofia <code>async</code>-<code>awaitAll</code> skôr pripomína filozofiu „fork-join“ či „map-reduceH, kde sa v bloku <code>async</code> spustia paralelné úlohy a v bloku <code>awaitAll</code> pozbierajú výsledky.
+Filozofia <code>async</code>-<code>awaitAll</code> skôr pripomína filozofiu „fork-join“ či „map-reduce“, kde sa v bloku <code>async</code> spustia paralelné úlohy a v bloku <code>awaitAll</code> pozbierajú výsledky.
 </td>
 </tr>
 </tbody></table>
 </div>
 <div class="paragraph">
-<p>+
-Sekcia <code>coroutineScope</code> dbá na to, aby v prípade chýb sa celá operácia rovno zrušila.</p>
+<p>Sekcia <code>coroutineScope</code> dbá na to, aby sa v prípade chýb celá operácia rovno zrušila.</p>
 </div>
 <div class="paragraph">
-<p>Kombinácia <code>coroutineScope</code>, <code>async</code> a <code>awaitAll</code> umožňuje <em>štruktúrovanú konkurentnosť</em> (<strong>structured concurrency</strong>).</p>
+<p>Kombinácia <code>coroutineScope</code>, <code>async</code> a <code>awaitAll</code> umožňuje <em>štruktúrovanú konkurentnosť</em> (<strong>structured concurrency</strong>):</p>
 </div>
 <div class="ulist">
 <ul>
@@ -247,6 +246,33 @@ Sekcia <code>coroutineScope</code> dbá na to, aby v prípade chýb sa celá ope
 </li>
 <li>
 <p>Výnimky sa korektne spracujú tak, aby sa nenarušili životnosti korutín a rodičovského scopu.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Na našom konkrétnom príklade:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>coroutineScope</code> hovorí, že sa počká na dobehnutie korutín v bloku.
+Životnosť korutín pre počítanie slov v bloku <code>coroutineScope { …​ }</code> je teda vždy kratšia ako životnosť celého scope <code>coroutineSCope</code>.</p>
+</li>
+<li>
+<p>samotný <code>coroutineScope</code> má takú životnosť ako rodič.
+Rodičom <code>coroutineScope</code> je scope v <code>runBlocking</code> a jeho životnosť je vždy kratšia ako životnosť celej aplikácie.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>A výnimky?</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Ak nastane výnimka v ktorejkoľvek korutine, nesmie sa stať, že pravidlo o „matrioškových životnostiach“ sa poruší.
+Rodič sa nesmie zrušiť, kým bežia deti a naopak: ak sa zruší rodič, musia sa zrušiť aj jeho deti.
+Okrem toho rodič vyčkáva na dobehnutie svojich detí!</p>
 </li>
 </ul>
 </div>
@@ -269,7 +295,8 @@ Sekcia <code>coroutineScope</code> dbá na to, aby v prípade chýb sa celá ope
             }
         }
         .awaitAll()
-    println(wordCounts)</code></pre>
+    println(wordCounts)
+}</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -277,7 +304,7 @@ Sekcia <code>coroutineScope</code> dbá na to, aby v prípade chýb sa celá ope
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code>Exception in thread &#34;main&#34; java.io.FileNotFoundException: src/test/resources/bible999.txt (No such file or directory)
+<pre>Exception in thread &#34;main&#34; java.io.FileNotFoundException: src/test/resources/bible999.txt (No such file or directory)
 	at java.base/java.io.FileInputStream.open0(Native Method)
 	at java.base/java.io.FileInputStream.open(FileInputStream.java:216)
 	at java.base/java.io.FileInputStream.&lt;init&gt;(FileInputStream.java:157)
@@ -290,7 +317,7 @@ Sekcia <code>coroutineScope</code> dbá na to, aby v prípade chýb sa celá ope
 	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:584)
 	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:793)
 	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:697)
-	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:684)</code></pre>
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:684)</pre>
 </div>
 </div>
 <div class="paragraph">
@@ -312,7 +339,7 @@ Sekcia <code>coroutineScope</code> dbá na to, aby v prípade chýb sa celá ope
 <p>Pozastaví sa (<em>suspend</em>), kým korutiny, ktoré sú v ňom deklarované, nedobehnú.</p>
 </li>
 <li>
-<p>Ak tento scope zlyhá - či kvôli zrušeniu (<em>cancel</em>) alebo výnimke — všetky vnorené korutiny sa tiež zrušia.</p>
+<p>Ak tento scope zlyhá — či kvôli zrušeniu (<em>cancel</em>) alebo výnimke — všetky vnorené korutiny sa tiež zrušia.</p>
 </li>
 </ol>
 </div>
@@ -334,7 +361,7 @@ Sekcia <code>coroutineScope</code> dbá na to, aby v prípade chýb sa celá ope
 <p>Pozastaví sa (<em>suspend</em>), kým korutiny, ktoré sú v ňom deklarované, nedobehnú.</p>
 </li>
 <li>
-<p>Ak <em>scope</em> zlyhá - či kvôli zrušeniu (<em>cancel</em>) alebo výnimke — všetky vnorené korutiny sa tiež zrušia.</p>
+<p>Ak <em>scope</em> zlyhá — či kvôli zrušeniu (<em>cancel</em>) alebo výnimke — všetky vnorené korutiny sa tiež zrušia.</p>
 </li>
 </ol>
 </div>
@@ -349,7 +376,7 @@ To sme videli vo výnimke hore.</p>
 </div>
 <div class="paragraph">
 <p>Každý výsledok volania <code>async</code> typu <code>Deferred</code> vyčkáme pomocou samostatného volania <code>await</code>.
-Toto volanie buď uspeje a vráti výsledok — teda počet slov v súbore — alebo zlyhá s výnimkou, ktorú odchytíme a vhodne spracujeme.</p>
+Toto volanie buď uspeje a vráti výsledok — teda počet slov v súbore — alebo zlyhá s výnimkou, ktorú odchytíme a vhodne spracujeme.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -383,7 +410,7 @@ supervisorScope {
 </tr>
 <tr>
 <td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>Ak nastane výnimka, odchytíme ju a vrátime <code>null</code>&gt;</td>
+<td>Ak nastane výnimka, odchytíme ju a vrátime <code>null</code>.</td>
 </tr>
 </tbody></table>
 </div>
@@ -404,7 +431,7 @@ supervisorScope {
 <div class="sectionbody">
 <div class="paragraph">
 <p>Blok <code>runBlocking</code> je <em>coroutine builder</em>, teda nástroj na zostrojenie a spustenie korutiny.
-Jeho jediné použitie je pri premostení sveta bežného programovania a sveta, v ktorom je možné spúšťať <code>suspend</code> funkcie — typicky len v metóde <code>main</code>, historických knižniciach a testoch.</p>
+Jeho jediné použitie je pri premostení sveta bežného programovania a sveta, v ktorom je možné spúšťať <code>suspend</code> funkcie — typicky len v metóde <code>main</code>, historických knižniciach a testoch.</p>
 </div>
 <div class="paragraph">
 <p><code>coroutineScope</code> sa používa len vo svete <code>suspend</code> funkcií. (Samotná funkcia <code>coroutineScope</code> je označená ako <code>suspend</code>). Tento blok <em>nevytvára</em> a <em>nespúšťa</em> novú korutinu.</p>
