@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+    <link rel="manifest" href="/images/site.webmanifest">
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <title>Deľba práce v korutinách cez kanáy) | robonovotny</title>
+
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.3/styles/dracula.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.3/highlight.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.3/languages/go.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    <link rel="stylesheet" href="https://novotnyr.github.io/asciidoctor.css">
+    <header>
+
+  <nav>
+    <ul>
+      
+      
+      <li class="pull-left ">
+        <a href="https://novotnyr.github.io/">~/robonovotny</a>
+      </li>
+      
+
+      
+
+    </ul>
+  </nav>
+</header>
+
+  </head>
+
+  <body>
+    <br/>
+
+<div class="article-meta">
+<h1><span class="title">Deľba práce v korutinách cez kanáy)</span></h1>
+
+<h2 class="date">2024/01/28</h2>
+<p class="terms">
+  
+  
+  
+  
+  
+</p>
+</div>
+
+
+<div class="content-wrapper">
+  <main>
+    <div class="exampleblock">
+<div class="content">
+<div class="paragraph">
+<p>Ukážme si delenie roboty medzi korutiny pomocou spoločného kanála.</p>
+</div>
+<div class="paragraph">
+<p>Rátajme veľkosti podadresárov v adresári paralelne!</p>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>Rozkaz znel jasne: zrátať veľkosť adresára vrátane podadresárov a to čo najrýchlejšie.</p>
+</div>
+<div class="paragraph">
+<p>Na to potrebujeme:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Zrátať rekurzívne veľkosť jedného adresára.</p>
+</li>
+<li>
+<p>Rozumne rozdeliť robotu medzi viacerých pracovníkov.</p>
+</li>
+</ol>
+</div>
+<div class="sect1">
+<h2 id="_veľkosť_jedného_adresára">Veľkosť jedného adresára</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Veľkosť jedného adresára zrátame napríklad takto:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-kotlin" data-lang="kotlin">fun Path.totalSize(): Long = Files.newDirectoryStream(this).use { dirs -&gt; <i class="conum" data-value="1"></i><b>(1)</b><i class="conum" data-value="2"></i><b>(2)</b><i class="conum" data-value="3"></i><b>(3)</b>
+    dirs.sumOf { child: Path -&gt; <i class="conum" data-value="4"></i><b>(4)</b>
+        when {
+            child.isRegularFile() -&gt; child.fileSize() <i class="conum" data-value="6"></i><b>(6)</b>
+            child.isDirectory() -&gt; child.totalSize() <i class="conum" data-value="5"></i><b>(5)</b>
+            else -&gt; 0
+        }
+    }
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tbody><tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Založíme <em>extension function</em> na triede <code>java.nio.file.Path</code>.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Získame prúd súborov a adresárov typu <a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/DirectoryStream.html"><code>DirectoryStream</code></a>.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Keďže tento prúd musíme korektne uzatvoriť po skončení práce, využijeme kotlinovský blok <code>use</code>, čo je ekvivalent javáckeho <em>try-with-resources</em>.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>Dohromady zosumarizujeme veľkosti podadresárov.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="5"></i><b>5</b></td>
+<td>Ak je to adresár, jeho veľkosť zistíme rekurzívne.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="6"></i><b>6</b></td>
+<td>Ak je to bežný súbor, jeho veľkosť zistíme napiamo.</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_delenie_práce">Delenie práce</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Spustíme dve korutiny:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Korutina, ktorá zozbiera podadresáre v danom adresári.</p>
+</li>
+<li>
+<p>Korutina, ktorá pre daný adresár zistí jeho <em>celkovú</em> veľkosť.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Obe korutiny budú komunikovať prostredníctvom <strong>kanála</strong> (<em>channel</em>), ktorým budú putovať adresáre súce na spočítanie celkovej veľkosti.
+Dátový typu adresárov bude <code>Path</code>.</p>
+</div>
+<div class="sect2">
+<h3 id="_korutina_na_zber_podadresárov_v_adresári">Korutina na zber podadresárov v adresári</h3>
+<div class="admonitionblock important">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Blok <code>produce</code> predstavuje <em>coroutine builder</em>, teda blok, ktorý nastaví a spustí novú korutinu.</p>
+</div>
+<div class="paragraph">
+<p>Okrem toho, že sa spustí nová korutina, sa pripraví aj nový kanál, do ktorého sa budú posielať elementy určené na konzumovanie z inej korutiny.</p>
+</div>
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-kotlin" data-lang="kotlin">fun CoroutineScope.directories(path: Path) = produce { <i class="conum" data-value="1"></i><b>(1)</b>
+    Files.newDirectoryStream(path, Path::isDirectory).forEach {
+        logger.info(&#34;Submitting $it to a channel&#34;)
+        channel.send(it) <i class="conum" data-value="2"></i><b>(2)</b>
+    }
+    channel.close() <i class="conum" data-value="3"></i><b>(3)</b>
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tbody><tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Spustíme novú korutinu.
+Korutina vyžaduje <em>scope</em> — teda rozsah platnosti, v ktorom pobeží.
+Keďže funkcia spúšťa novú korutinu, podľa konvencie je <code>CoroutineScope</code> uvedený ako jej prijímač (<em>receiver</em>).</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Každý adresár v danom adresári pošleme do kanála ako kandidáta na výpočet celkovej veľkosti.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Na konci kanál zavrieme — je to akýsi ekvivalent EOF („end-of-file“), teda koncu dát.</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_distribúcia_práce">Distribúcia práce</h3>
+<div class="paragraph">
+<p>Distribúcia práce bude nasledovná:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>získame kanál, do ktorého budeme posielať adresáre súce na výpočet</p>
+</li>
+<li>
+<p>spustíme niekoľko korutín, ktoré budú zo spoločného kanála čítať adresáre</p>
+</li>
+<li>
+<p>každý adresár bude spracovaný a zistí sa jeho veľkosť.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Ukážme si kód:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-kotlin" data-lang="kotlin">fun main(): Unit = runBlocking {
+    val rootDir = Path.of(&#34;.m2&#34;) <i class="conum" data-value="1"></i><b>(1)</b>
+    val channel: ReceiveChannel&lt;Path&gt; = directories(rootDir) <i class="conum" data-value="2"></i><b>(2)</b>
+    repeat(5) { <i class="conum" data-value="3"></i><b>(3)</b>
+        launch(Dispatchers.Default) { <i class="conum" data-value="4"></i><b>(4)</b>
+            for (path in channel) { <i class="conum" data-value="5"></i><b>(5)</b>
+                val size = path.totalSize() <i class="conum" data-value="6"></i><b>(6)</b>
+                logger.info(&#34;$path: $size&#34;)
+            }
+        }
+    }
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tbody><tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Nastavme iniciálny adresár.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Funkcia <code>directories</code> vyžaduje <em>coroutine scope</em> (záber platnosti), ktorý prevezmeme od rodiča.
+Rodičom je v tomto prípade záber <em>runBlocking</em>.
+Výsledkom volania je kanál určený výhradne na čítanie, z ktorého vypadávajú cesty <code>Path</code>.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Spustíme päť korutín na čítanie zo spoločného kanála.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>Každú korutinu spustíme nanovo v dispečeri <em>Default</em>.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="5"></i><b>5</b></td>
+<td>Zo spoločného kanála čítame pomocou cyklu <code>for</code>.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="6"></i><b>6</b></td>
+<td>Získame cestu, pre ktorú spočítame celkovú veľkosť.</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_vzorový_výpis">Vzorový výpis</h3>
+<div class="paragraph">
+<p>Ukážme si vzorový výpis:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>00:27:27.119 [main @coroutine#2] INFO df -- Submitting .m2/repository to a channel
+00:27:27.122 [main @coroutine#2] INFO df -- Submitting .m2/wrapper to a channel
+00:27:27.123 [main @coroutine#2] INFO df -- Submitting .m2/.lemminx-maven to a channel
+00:27:27.123 [main @coroutine#2] INFO df -- Submitting .m2/mvnd to a channel
+00:27:27.125 [DefaultDispatcher-worker-2 @coroutine#7] INFO df -- .m2/mvnd: 2656560
+00:27:27.125 [DefaultDispatcher-worker-4 @coroutine#6] INFO df -- .m2/.lemminx-maven: 0
+00:27:27.133 [DefaultDispatcher-worker-3 @coroutine#5] INFO df -- .m2/wrapper: 76772816
+00:27:28.799 [DefaultDispatcher-worker-1 @coroutine#4] INFO df -- .m2/repository: 15613915434</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Načítavanie adresárov sa deje v korutine bežiacej v hlavnom vlákne <code>main</code>.
+Všetky adresáre sa zapíšu do spoločného kanála.</p>
+</div>
+<div class="paragraph">
+<p>Následne vidíme, ako každá z korutín beží v samostatnom vlákne (<code>DefaultDispatcher-worker</code>) a nezávisle ráta veľkosti jednotlivých adresárov.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_kanál_typu_fan_out">Kanál typu <em>fan out</em></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Toto je ukážka delenia práce — kanál slúži ako centrálne miesto, v ktorom sa kopí robota a jednotlivé korutiny si z neho vyberajú úlohy a dokola spracovávajú.</p>
+</div>
+<div class="paragraph">
+<p>Každá korutina dostane jednu úlohu presne raz!</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Podrobnosti možno nájsť v <a href="https://kotlinlang.org/docs/channels.html#fan-in">dokumentácii</a>.</p>
+</div>
+</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+</div>
+
+    <a href="/"> >> Home</a>
+  </main>
+</div>
+    <footer>
+      
+<script>
+(function() {
+  function center_el(tagName) {
+    var tags = document.getElementsByTagName(tagName), i, tag;
+    for (i = 0; i < tags.length; i++) {
+      tag = tags[i];
+      var parent = tag.parentElement;
+      
+      if (parent.childNodes.length === 1) {
+        
+        if (parent.nodeName === 'A') {
+          parent = parent.parentElement;
+          if (parent.childNodes.length != 1) continue;
+        }
+        if (parent.nodeName === 'P') parent.style.textAlign = 'center';
+      }
+    }
+  }
+  var tagNames = ['img', 'embed', 'object'];
+  for (var i = 0; i < tagNames.length; i++) {
+    center_el(tagNames[i]);
+  }
+})();
+</script>
+
+      
+    </footer>
+  </body>
+</html>
+
